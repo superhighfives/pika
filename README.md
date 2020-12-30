@@ -12,7 +12,19 @@ An open-source colour picker app for macOS.
 ### Development
 
 - Xcode 12.3
-- Cocoapods
+- Swift Package Manager
+- [Mint](https://github.com/yonaskolb/Mint)
+
+## Getting started
+
+Make sure you have [mint](https://github.com/yonaskolb/Mint) installed, and bootstrap the toolchain dependencies:
+
+```
+brew install mint
+mint bootstrap
+```
+
+And then you should be good to go.
 
 ## Dependencies and thanks
 

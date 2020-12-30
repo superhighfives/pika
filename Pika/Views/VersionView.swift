@@ -8,23 +8,22 @@
 import SwiftUI
 
 struct VersionView: View {
-  let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
-  let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String
+    let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
+    let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String
     var body: some View {
-      
-      VStack(spacing: 10.0) {
-        VStack(spacing: 2.0) {
-          Image("StatusBarIcon")
-          Text("Pika")
-            .font(.title)
+        VStack(spacing: 10.0) {
+            VStack(spacing: 2.0) {
+                Image("StatusBarIcon")
+                Text("Pika")
+                    .font(.title)
+            }
+            VStack(spacing: 2.0) {
+                Text("Version \(appVersion ?? "Unknown")")
+                    .bold()
+                Text("(Build \(buildNumber ?? "Unknown"))")
+                    .foregroundColor(.gray)
+            }
         }
-        HStack(alignment: .bottom) {
-          Text("Version \(appVersion ?? "Unknown")")
-            .bold()
-          Text("(Build \(buildNumber ?? "Unknown"))")
-            .foregroundColor(.gray)
-        }
-      }
     }
 }
 

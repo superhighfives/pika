@@ -8,5 +8,5 @@
 import KeyboardShortcuts
 
 extension KeyboardShortcuts.Name {
-  static let togglePika = Self("togglePika")
+    static let togglePika = Self("togglePika")
 }
