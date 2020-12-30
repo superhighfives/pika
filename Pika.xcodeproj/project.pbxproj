@@ -3,26 +3,41 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		EAD0B6CC259CED1C00FA2F67 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6CB259CED1C00FA2F67 /* AppDelegate.swift */; };
-		EAD0B6CE259CED1C00FA2F67 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6CD259CED1C00FA2F67 /* ContentView.swift */; };
 		EAD0B6D0259CED1D00FA2F67 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EAD0B6CF259CED1D00FA2F67 /* Assets.xcassets */; };
 		EAD0B6D3259CED1D00FA2F67 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EAD0B6D2259CED1D00FA2F67 /* Preview Assets.xcassets */; };
 		EAD0B6D6259CED1D00FA2F67 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EAD0B6D4259CED1D00FA2F67 /* Main.storyboard */; };
+		EAD0B6E1259CED3200FA2F67 /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; productRef = EAD0B6E0259CED3200FA2F67 /* LaunchAtLogin */; };
+		EAD0B6E5259CED6000FA2F67 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = EAD0B6E4259CED6000FA2F67 /* KeyboardShortcuts */; };
+		EAD0B6E9259CEF8600FA2F67 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = EAD0B6E8259CEF8600FA2F67 /* Sparkle */; };
+		EAD0B6EE259CF28D00FA2F67 /* Sweetercolor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6ED259CF28D00FA2F67 /* Sweetercolor.swift */; };
+		EAD0B6F7259CF29300FA2F67 /* Eyedropper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6F1259CF29300FA2F67 /* Eyedropper.swift */; };
+		EAD0B6F8259CF29300FA2F67 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6F3259CF29300FA2F67 /* AboutView.swift */; };
+		EAD0B6F9259CF29300FA2F67 /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6F4259CF29300FA2F67 /* PreferencesView.swift */; };
+		EAD0B6FA259CF29300FA2F67 /* VersionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6F5259CF29300FA2F67 /* VersionView.swift */; };
+		EAD0B6FB259CF29300FA2F67 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6F6259CF29300FA2F67 /* ContentView.swift */; };
+		EAD0B6FE259CF29C00FA2F67 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6FD259CF29C00FA2F67 /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		EAD0B6C8259CED1C00FA2F67 /* Pika.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pika.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAD0B6CB259CED1C00FA2F67 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		EAD0B6CD259CED1C00FA2F67 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		EAD0B6CF259CED1D00FA2F67 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EAD0B6D2259CED1D00FA2F67 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		EAD0B6D5259CED1D00FA2F67 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		EAD0B6D7259CED1D00FA2F67 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EAD0B6D8259CED1D00FA2F67 /* Pika.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Pika.entitlements; sourceTree = "<group>"; };
+		EAD0B6ED259CF28D00FA2F67 /* Sweetercolor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sweetercolor.swift; sourceTree = "<group>"; };
+		EAD0B6F1259CF29300FA2F67 /* Eyedropper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Eyedropper.swift; sourceTree = "<group>"; };
+		EAD0B6F3259CF29300FA2F67 /* AboutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+		EAD0B6F4259CF29300FA2F67 /* PreferencesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
+		EAD0B6F5259CF29300FA2F67 /* VersionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VersionView.swift; sourceTree = "<group>"; };
+		EAD0B6F6259CF29300FA2F67 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		EAD0B6FD259CF29C00FA2F67 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -30,6 +45,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EAD0B6E9259CEF8600FA2F67 /* Sparkle in Frameworks */,
+				EAD0B6E1259CED3200FA2F67 /* LaunchAtLogin in Frameworks */,
+				EAD0B6E5259CED6000FA2F67 /* KeyboardShortcuts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,12 +74,15 @@
 			isa = PBXGroup;
 			children = (
 				EAD0B6CB259CED1C00FA2F67 /* AppDelegate.swift */,
-				EAD0B6CD259CED1C00FA2F67 /* ContentView.swift */,
 				EAD0B6CF259CED1D00FA2F67 /* Assets.xcassets */,
-				EAD0B6D4259CED1D00FA2F67 /* Main.storyboard */,
+				EAD0B6FD259CF29C00FA2F67 /* Constants.swift */,
+				EAD0B6EC259CF28D00FA2F67 /* Extensions */,
 				EAD0B6D7259CED1D00FA2F67 /* Info.plist */,
+				EAD0B6D4259CED1D00FA2F67 /* Main.storyboard */,
 				EAD0B6D8259CED1D00FA2F67 /* Pika.entitlements */,
 				EAD0B6D1259CED1D00FA2F67 /* Preview Content */,
+				EAD0B6F0259CF29300FA2F67 /* Utilities */,
+				EAD0B6F2259CF29300FA2F67 /* Views */,
 			);
 			path = Pika;
 			sourceTree = "<group>";
@@ -72,6 +93,33 @@
 				EAD0B6D2259CED1D00FA2F67 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		EAD0B6EC259CF28D00FA2F67 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				EAD0B6ED259CF28D00FA2F67 /* Sweetercolor.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		EAD0B6F0259CF29300FA2F67 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				EAD0B6F1259CF29300FA2F67 /* Eyedropper.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		EAD0B6F2259CF29300FA2F67 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				EAD0B6F3259CF29300FA2F67 /* AboutView.swift */,
+				EAD0B6F4259CF29300FA2F67 /* PreferencesView.swift */,
+				EAD0B6F5259CF29300FA2F67 /* VersionView.swift */,
+				EAD0B6F6259CF29300FA2F67 /* ContentView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -90,6 +138,11 @@
 			dependencies = (
 			);
 			name = Pika;
+			packageProductDependencies = (
+				EAD0B6E0259CED3200FA2F67 /* LaunchAtLogin */,
+				EAD0B6E4259CED6000FA2F67 /* KeyboardShortcuts */,
+				EAD0B6E8259CEF8600FA2F67 /* Sparkle */,
+			);
 			productName = Pika;
 			productReference = EAD0B6C8259CED1C00FA2F67 /* Pika.app */;
 			productType = "com.apple.product-type.application";
@@ -117,6 +170,11 @@
 				Base,
 			);
 			mainGroup = EAD0B6BF259CED1C00FA2F67;
+			packageReferences = (
+				EAD0B6DF259CED3200FA2F67 /* XCRemoteSwiftPackageReference "LaunchAtLogin" */,
+				EAD0B6E3259CED6000FA2F67 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
+				EAD0B6E7259CEF8600FA2F67 /* XCRemoteSwiftPackageReference "Sparkle" */,
+			);
 			productRefGroup = EAD0B6C9259CED1C00FA2F67 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -144,8 +202,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EAD0B6CE259CED1C00FA2F67 /* ContentView.swift in Sources */,
+				EAD0B6F9259CF29300FA2F67 /* PreferencesView.swift in Sources */,
+				EAD0B6FB259CF29300FA2F67 /* ContentView.swift in Sources */,
 				EAD0B6CC259CED1C00FA2F67 /* AppDelegate.swift in Sources */,
+				EAD0B6F7259CF29300FA2F67 /* Eyedropper.swift in Sources */,
+				EAD0B6EE259CF28D00FA2F67 /* Sweetercolor.swift in Sources */,
+				EAD0B6F8259CF29300FA2F67 /* AboutView.swift in Sources */,
+				EAD0B6FA259CF29300FA2F67 /* VersionView.swift in Sources */,
+				EAD0B6FE259CF29C00FA2F67 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -214,7 +278,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 11.1;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -269,7 +333,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 11.1;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
@@ -295,7 +359,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.superhighfives.Pika;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -319,7 +383,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.superhighfives.Pika;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -348,6 +412,51 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		EAD0B6DF259CED3200FA2F67 /* XCRemoteSwiftPackageReference "LaunchAtLogin" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sindresorhus/LaunchAtLogin";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
+		EAD0B6E3259CED6000FA2F67 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sindresorhus/KeyboardShortcuts";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.6.0;
+			};
+		};
+		EAD0B6E7259CEF8600FA2F67 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparkle-project/Sparkle";
+			requirement = {
+				kind = revision;
+				revision = 891afd44c7075e699924ed9b81d8dc94a5111dfd;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		EAD0B6E0259CED3200FA2F67 /* LaunchAtLogin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EAD0B6DF259CED3200FA2F67 /* XCRemoteSwiftPackageReference "LaunchAtLogin" */;
+			productName = LaunchAtLogin;
+		};
+		EAD0B6E4259CED6000FA2F67 /* KeyboardShortcuts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EAD0B6E3259CED6000FA2F67 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */;
+			productName = KeyboardShortcuts;
+		};
+		EAD0B6E8259CEF8600FA2F67 /* Sparkle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EAD0B6E7259CEF8600FA2F67 /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = Sparkle;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = EAD0B6C0259CED1C00FA2F67 /* Project object */;
 }

@@ -1,0 +1,34 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "KeyboardShortcuts",
+        "repositoryURL": "https://github.com/sindresorhus/KeyboardShortcuts",
+        "state": {
+          "branch": null,
+          "revision": "81e72f4787f2d642d788594834f42431f079e505",
+          "version": "0.6.0"
+        }
+      },
+      {
+        "package": "LaunchAtLogin",
+        "repositoryURL": "https://github.com/sindresorhus/LaunchAtLogin",
+        "state": {
+          "branch": null,
+          "revision": "0f39982b9d6993eef253b81219d3c39ba1e680f3",
+          "version": "4.0.0"
+        }
+      },
+      {
+        "package": "Sparkle",
+        "repositoryURL": "https://github.com/sparkle-project/Sparkle",
+        "state": {
+          "branch": null,
+          "revision": "891afd44c7075e699924ed9b81d8dc94a5111dfd",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
