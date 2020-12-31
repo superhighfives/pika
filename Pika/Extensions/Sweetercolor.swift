@@ -474,6 +474,25 @@ extension NSColor {
         return strict ? (ratio >= 7) : (ratio > 4.5)
     }
 
+    struct WCAG {
+        var Level2A: Bool
+        var Level3A: Bool
+        var Level2ALarge: Bool
+        var Level3ALarge: Bool
+    }
+
+    func WCAGCompliance(with color: NSColor) -> (WCAG) {
+        // WCAG 2.0 level AA requires a contrast ratio of at least 4.5:1 for normal text and 3:1 for large text. WCAG 2.1 requires a contrast ratio of at least 3:1 for graphics and user interface components (such as form input borders). WCAG Level AAA requires a contrast ratio of at least 7:1 for normal text and 4.5:1 for large text.
+        let ratio = contrastRatio(with: color)
+        let results = WCAG(
+            Level2A: ratio >= 4.5,
+            Level3A: ratio >= 7.0,
+            Level2ALarge: ratio >= 3.0,
+            Level3ALarge: ratio >= 4.5
+        )
+        return results
+    }
+
     /**
      Get either black or white to contrast against a color.
 

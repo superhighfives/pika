@@ -40,7 +40,7 @@ struct PreferencesView: View {
 
                         Section(header: Text("Colour Format").font(.title3)) {
                             VStack(alignment: .leading) {
-                                Text("Set a global hot key shortcut to invoke Pika from anywhere.")
+                                Text("Set your preferred display format for colors.")
                                     .font(.callout)
                                 Picker("Colour Format", selection: $colorFormat) {
                                     ForEach(ColorFormatKeys.allCases, id: \.self) { value in
@@ -66,9 +66,7 @@ struct PreferencesView: View {
                 }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             }
             .padding(.all, 20.0)
-//            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
-//        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 
