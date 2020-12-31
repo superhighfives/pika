@@ -7,6 +7,7 @@
 
 import Defaults
 import KeyboardShortcuts
+import LaunchAtLogin
 import SwiftUI
 
 struct PreferencesView: View {
@@ -14,35 +15,60 @@ struct PreferencesView: View {
 
     var body: some View {
         HStack(spacing: 0) {
-            VersionView()
-                .padding([.all], 30.0)
-                .frame(width: 150.0)
-
-            Divider()
+            NavigationView {
+                VersionView()
+            }
+            .frame(maxWidth: 140.0)
+            .allowsHitTesting(false)
 
             VStack(spacing: 10.0) {
                 Form {
-                    Picker(selection: $colorFormat, label: Text("Colour Scheme:")) {
-                        ForEach(ColorFormatKeys.allCases, id: \.self) { value in
-                            Text(value.rawValue)
+                    VStack(alignment: .leading, spacing: 16.0) {
+                        // Global Shortcut
+
+                        Section(header: Text("Global Shortcut").font(.title3)) {
+                            VStack(alignment: .leading) {
+                                Text("Set a global hot key shortcut to invoke Pika from anywhere.")
+                                    .font(.callout)
+                                KeyboardShortcuts.Recorder(for: .togglePika)
+                            }
+                        }
+
+                        Divider()
+
+                        // Colour Format
+
+                        Section(header: Text("Colour Format").font(.title3)) {
+                            VStack(alignment: .leading) {
+                                Text("Set a global hot key shortcut to invoke Pika from anywhere.")
+                                    .font(.callout)
+                                Picker("Colour Format", selection: $colorFormat) {
+                                    ForEach(ColorFormatKeys.allCases, id: \.self) { value in
+                                        Text(value.rawValue)
+                                    }
+                                }
+                                .pickerStyle(RadioGroupPickerStyle())
+                                .horizontalRadioGroupLayout()
+                                .labelsHidden()
+                            }
+                        }
+
+                        Divider()
+
+                        // Launch at login
+                        Section {
+                            LaunchAtLogin.Toggle {
+                                Text("Launch at login")
+                            }
                         }
                     }
-                    .pickerStyle(SegmentedPickerStyle())
-                }
-                Text("Preferences")
-                    .font(.title3)
 
-                HStack {
-                    Text("Global Pika:")
-                    KeyboardShortcuts.Recorder(for: .togglePika)
-                }
-
-                HStack {}
+                }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             }
             .padding(.all, 20.0)
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+//            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+//        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 

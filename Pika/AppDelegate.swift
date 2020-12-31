@@ -37,7 +37,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         // Create primary window
         pikaWindow = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 0, height: 0),
+            contentRect: NSRect(x: 0, y: 0, width: 320, height: 150),
             styleMask: [.titled, .closable, .miniaturizable, .resizable, .borderless],
             backing: .buffered, defer: false
         )
@@ -47,6 +47,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         pikaWindow.level = .floating
         pikaWindow.isMovableByWindowBackground = true
         pikaWindow.standardWindowButton(NSWindow.ButtonType.zoomButton)!.isHidden = true
+        pikaWindow.titlebarAppearsTransparent = true
 
         // Set up toolbar
         pikaWindow.toolbar = NSToolbar()
@@ -89,13 +90,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
-    func createWindow(title: String) -> NSWindow {
+    func createWindow(title: String, size: NSRect) -> NSWindow {
         let window = NSWindow(
-            contentRect: NSRect(x: 20, y: 20, width: 480, height: 300),
-            styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView],
+            contentRect: size,
+            styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView, .borderless],
             backing: .buffered,
             defer: false
         )
+        window.titlebarAppearsTransparent = true
+        window.titleVisibility = .hidden
         window.level = .floating
         window.center()
         window.setFrameAutosaveName("\(title) Window")
@@ -103,9 +106,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         return window
     }
 
-    @IBAction func openAboutWindow(_: Any) {
+    @IBAction func openAboutWindow(_: Any?) {
         if aboutWindow == nil {
-            aboutWindow = createWindow(title: "About")
+            aboutWindow = createWindow(title: "About", size: NSRect(x: 0, y: 0, width: 300, height: 300))
             aboutWindow.contentView = NSHostingView(rootView: AboutView())
         }
         aboutWindow.makeKeyAndOrderFront(nil)
@@ -113,7 +116,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBAction func openPreferencesWindow(_: Any?) {
         if preferencesWindow == nil {
-            preferencesWindow = createWindow(title: "Preferences")
+            preferencesWindow = createWindow(title: "Preferences", size: NSRect(x: 0, y: 0, width: 550, height: 340))
             preferencesWindow.contentView = NSHostingView(rootView: PreferencesView())
         }
         preferencesWindow.makeKeyAndOrderFront(nil)

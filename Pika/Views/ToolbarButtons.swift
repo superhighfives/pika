@@ -26,6 +26,7 @@ struct ToolbarButtons: View {
             Button("Quit", action: {
                 NSApplication.shared.terminate(self)
             })
+                .keyboardShortcut("q", modifiers: .command)
         } label: {
             Image(systemName: "gear")
         }
