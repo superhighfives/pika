@@ -12,7 +12,8 @@ struct EyedropperButtonStyle: ButtonStyle {
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
             .foregroundColor(configuration.isPressed ? Color.blue : Color.white)
-            .background(configuration.isPressed ? Color.white : color)
+            .background(configuration.isPressed ? color : color)
             .padding(0.0)
+            .scaleEffect(configuration.isPressed ? 1.3 : 1.0)
     }
 }

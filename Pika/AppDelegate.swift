@@ -27,8 +27,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         // Defined content view
         let contentView = ContentView()
-            .frame(minWidth: 320,
-                   idealWidth: 320,
+            .frame(minWidth: 340,
+                   idealWidth: 340,
                    maxWidth: 500,
                    minHeight: 150,
                    idealHeight: 150,
@@ -46,7 +46,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         pikaWindow.title = "Pika"
         pikaWindow.level = .floating
         pikaWindow.isMovableByWindowBackground = true
-        pikaWindow.standardWindowButton(NSWindow.ButtonType.zoomButton)!.isHidden = true
+        pikaWindow.standardWindowButton(NSWindow.ButtonType.zoomButton)!.isEnabled = false
         pikaWindow.titlebarAppearsTransparent = true
 
         // Set up toolbar

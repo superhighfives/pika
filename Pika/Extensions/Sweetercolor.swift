@@ -153,6 +153,16 @@ extension NSColor {
     }
 
     /**
+     Get the 8 bit red, green, and blue values.
+
+     - returns: An array of three CGFloat numbers from [0, 255] representing RGB respectively.
+     */
+    var RGB_8Bit: [CGFloat] {
+        let RGBA = self.RGBA
+        return [round(RGBA[0] * 255), round(RGBA[1] * 255), round(RGBA[2] * 255)]
+    }
+
+    /**
      Get the hue, saturation, brightness and alpha values.
 
      - returns: An array of four CGFloat numbers from [0, 255] representing HSBA respectively.
@@ -174,6 +184,16 @@ extension NSColor {
     var HSBA_8Bit: [CGFloat] {
         let HSBA = self.HSBA
         return [round(HSBA[0] * 360), round(HSBA[1] * 100), round(HSBA[2] * 100), HSBA[3]]
+    }
+
+    /**
+     Get the 8 bit hue, saturation, and brightness values.
+
+     - returns: An array of three CGFloat numbers representing HSB respectively. Ranges: H[0,360], S[0,100], B[0,100]
+     */
+    var HSB_8Bit: [CGFloat] {
+        let HSBA = self.HSBA
+        return [round(HSBA[0] * 360), round(HSBA[1] * 100), round(HSBA[2] * 100)]
     }
 
     /**
@@ -633,12 +653,51 @@ extension NSColor {
      */
     var toHex: String {
         guard let rgbColor = usingColorSpace(NSColorSpace.deviceRGB) else {
-            return "FFFFFF"
+            return "Unknown Hex"
         }
         let red = Int(round(rgbColor.redComponent * 0xFF))
         let green = Int(round(rgbColor.greenComponent * 0xFF))
         let blue = Int(round(rgbColor.blueComponent * 0xFF))
         let hexString = NSString(format: "#%02X%02X%02X", red, green, blue)
         return hexString as String
+    }
+
+    /**
+     Get the rgb values of this color.
+
+     - returns: An NSColor as an rgb string.
+     */
+    var toRGB: String {
+        let RGB = RGB_8Bit
+        let red = Int(RGB[0])
+        let green = Int(RGB[1])
+        let blue = Int(RGB[2])
+        let rgbString = NSString(format: "rgb(%d, %d, %d)", red, green, blue)
+        return rgbString as String
+    }
+
+    /**
+     Get the hsb values of this color.
+
+     - returns: An NSColor as an hsb string.
+     */
+    var toHSB: String {
+        let HSB = HSB_8Bit
+        let hue = Int(HSB[0])
+        let saturation = Int(HSB[1])
+        let brightness = Int(HSB[2])
+        let hsbString = NSString(format: "hsb(%d, %d, %d)", hue, saturation, brightness)
+        return hsbString as String
+    }
+
+    func toFormat(format: ColorFormatKeys) -> String {
+        switch format {
+        case .hex:
+            return toHex
+        case .rgb:
+            return toRGB
+        case .hsb:
+            return toHSB
+        }
     }
 }
