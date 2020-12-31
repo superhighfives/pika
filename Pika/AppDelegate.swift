@@ -25,6 +25,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             button.action = #selector(togglePopover(_:))
         }
 
+        // Defined content view
         let contentView = ContentView()
             .frame(minWidth: 320,
                    idealWidth: 320,
@@ -34,6 +35,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                    maxHeight: 350,
                    alignment: .center)
 
+        // Create primary window
         pikaWindow = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 0, height: 0),
             styleMask: [.titled, .closable, .miniaturizable, .resizable, .borderless],
@@ -44,35 +46,46 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         pikaWindow.title = "Pika"
         pikaWindow.level = .floating
         pikaWindow.isMovableByWindowBackground = true
-        pikaWindow.standardWindowButton(NSWindow.ButtonType.zoomButton)!.isEnabled = false
-        pikaWindow.toolbar = NSToolbar()
+        pikaWindow.standardWindowButton(NSWindow.ButtonType.zoomButton)!.isHidden = true
 
+        // Set up toolbar
+        pikaWindow.toolbar = NSToolbar()
+        pikaWindow.toolbarStyle = .unifiedCompact
         let toolbarButtons = NSHostingView(rootView: ToolbarButtons())
         toolbarButtons.frame.size = toolbarButtons.fittingSize
-
         let titlebarAccessory = NSTitlebarAccessoryViewController()
         titlebarAccessory.view = toolbarButtons
         titlebarAccessory.layoutAttribute = .trailing
-
         pikaWindow.addTitlebarAccessoryViewController(titlebarAccessory)
 
+        // Frame and content set up
+        pikaWindow.makeMain()
         pikaWindow.setFrameAutosaveName("Pika Window")
         pikaWindow.contentView = NSHostingView(rootView: contentView)
 
-        pikaWindow.makeKeyAndOrderFront(nil)
-        NSApp.activate(ignoringOtherApps: true)
+        // Bring window to front
+        showMainWindow()
 
+        // Define global keyboard shortcuts
         KeyboardShortcuts.onKeyUp(for: .togglePika) { [self] in
             togglePopover(nil)
         }
     }
 
+    func showMainWindow() {
+        pikaWindow.makeKeyAndOrderFront(nil)
+        NSApp.activate(ignoringOtherApps: true)
+    }
+
+    func hideMainWindow() {
+        pikaWindow.orderOut(nil)
+    }
+
     @objc func togglePopover(_: AnyObject?) {
         if pikaWindow.isVisible {
-            pikaWindow.orderOut(nil)
+            hideMainWindow()
         } else {
-            pikaWindow.makeKeyAndOrderFront(nil)
-            NSApp.activate(ignoringOtherApps: true)
+            showMainWindow()
         }
     }
 
