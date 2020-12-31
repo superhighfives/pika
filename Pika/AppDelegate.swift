@@ -103,23 +103,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         return window
     }
 
-    @objc func openAboutWindow() {
-        if aboutWindow == nil { // create once
+    @IBAction func openAboutWindow(_: Any) {
+        if aboutWindow == nil {
             aboutWindow = createWindow(title: "About")
             aboutWindow.contentView = NSHostingView(rootView: AboutView())
         }
         aboutWindow.makeKeyAndOrderFront(nil)
     }
 
-    @objc func openPreferencesWindow() {
-        if preferencesWindow == nil { // create once
+    @IBAction func openPreferencesWindow(_: Any?) {
+        if preferencesWindow == nil {
             preferencesWindow = createWindow(title: "Preferences")
             preferencesWindow.contentView = NSHostingView(rootView: PreferencesView())
         }
         preferencesWindow.makeKeyAndOrderFront(nil)
-    }
-
-    @IBAction func handlePreferencesShortcut(_: Any) {
-        openPreferencesWindow()
     }
 }

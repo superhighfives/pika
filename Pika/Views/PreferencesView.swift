@@ -13,10 +13,10 @@ struct PreferencesView: View {
     @Default(.colorFormat) var colorFormat
 
     var body: some View {
-        HStack {
+        HStack(spacing: 0) {
             VersionView()
-                .padding(/*@START_MENU_TOKEN@*/ .all/*@END_MENU_TOKEN@*/, 30.0)
-                .frame(width: 180.0)
+                .padding([.all], 30.0)
+                .frame(width: 150.0)
 
             Divider()
 
