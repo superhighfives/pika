@@ -15,7 +15,7 @@ struct ToolbarButtons: View {
                 NSApp.sendAction(#selector(AppDelegate.openAboutWindow), to: nil, from: nil)
             })
             Button("Check for updates...", action: {
-                SUUpdater.shared().feedURL = URL(string: "https://")
+                SUUpdater.shared().feedURL = URL(string: PikaConstants.url)
                 SUUpdater.shared()?.checkForUpdates(self)
             })
             Button("Preferences...", action: {
