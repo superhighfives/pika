@@ -12,8 +12,8 @@ struct VersionView: View {
     let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String
     var body: some View {
         VStack(spacing: 10.0) {
-            VStack(spacing: 2.0) {
-                Image("StatusBarIcon")
+            VStack(spacing: 5.0) {
+                Image("AboutIcon")
                 Text("Pika")
                     .font(.title)
             }

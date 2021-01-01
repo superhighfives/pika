@@ -27,8 +27,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         // Defined content view
         let contentView = ContentView()
-            .frame(minWidth: 340,
-                   idealWidth: 340,
+            .frame(minWidth: 380,
+                   idealWidth: 380,
                    maxWidth: 500,
                    minHeight: 150,
                    idealHeight: 150,
@@ -37,7 +37,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         // Create primary window
         pikaWindow = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 320, height: 150),
+            contentRect: NSRect(x: 0, y: 0, width: 380, height: 150),
             styleMask: [.titled, .closable, .miniaturizable, .resizable, .borderless],
             backing: .buffered, defer: false
         )

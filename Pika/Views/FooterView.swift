@@ -30,7 +30,7 @@ struct FooterView: View {
         let colorContrastRatio = Double(round(100 * foreground.contrastRatio(with: background)) / 100).description
 
         HStack(spacing: 16.0) {
-            VStack(alignment: .leading, spacing: 3.0) {
+            VStack(alignment: .leading, spacing: 0.0) {
                 Text("Contrast ratio")
                     .font(.caption)
                     .bold()
@@ -41,7 +41,7 @@ struct FooterView: View {
 
             Divider()
 
-            VStack(alignment: .leading, spacing: 6.0) {
+            VStack(alignment: .leading, spacing: 3.0) {
                 Text("WCAG Compliance")
                     .font(.caption)
                     .bold()
