@@ -26,4 +26,8 @@ class Eyedropper: ObservableObject {
             }
         }
     }
+
+    func set(color: NSColor) {
+        self.color = color
+    }
 }

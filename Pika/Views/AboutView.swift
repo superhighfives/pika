@@ -9,14 +9,14 @@ import SwiftUI
 
 struct AboutView: View {
     var body: some View {
-        VStack(spacing: 20.0) {
+        VStack(spacing: 16.0) {
             VersionView()
-            VStack(spacing: 30.0) {
+            VStack(spacing: 20.0) {
                 HStack(spacing: 20.0) {
                     Link("Website",
-                         destination: URL(string: "https://www.github.com/superhighfives/pika")!)
+                         destination: URL(string: "https://superhighfives/pika")!)
                     Link("GitHub",
-                         destination: URL(string: "https://www.github.com/superhighfives/pika")!)
+                         destination: URL(string: "https://github.com/superhighfives/pika")!)
                 }
 
                 Divider()

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		EA057887259F54B500ACCD89 /* ColorNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA057886259F54B500ACCD89 /* ColorNavigation.swift */; };
+		EA801285259F8F480026D5D9 /* ComplianceToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA801284259F8F480026D5D9 /* ComplianceToggle.swift */; };
 		EA8124C1259E307D00033F0B /* FooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8124C0259E307D00033F0B /* FooterView.swift */; };
 		EAD0B6CC259CED1C00FA2F67 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6CB259CED1C00FA2F67 /* AppDelegate.swift */; };
 		EAD0B6D0259CED1D00FA2F67 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EAD0B6CF259CED1D00FA2F67 /* Assets.xcassets */; };
@@ -31,6 +32,7 @@
 
 /* Begin PBXFileReference section */
 		EA057886259F54B500ACCD89 /* ColorNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorNavigation.swift; sourceTree = "<group>"; };
+		EA801284259F8F480026D5D9 /* ComplianceToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplianceToggle.swift; sourceTree = "<group>"; };
 		EA8124C0259E307D00033F0B /* FooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterView.swift; sourceTree = "<group>"; };
 		EAD0B6C8259CED1C00FA2F67 /* Pika.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pika.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAD0B6CB259CED1C00FA2F67 /* AppDelegate.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; tabWidth = 4; };
@@ -139,6 +141,7 @@
 				EAD0B71B259D151400FA2F67 /* ToolbarButtons.swift */,
 				EA8124C0259E307D00033F0B /* FooterView.swift */,
 				EA057886259F54B500ACCD89 /* ColorNavigation.swift */,
+				EA801284259F8F480026D5D9 /* ComplianceToggle.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -279,6 +282,7 @@
 				EAD0B6CC259CED1C00FA2F67 /* AppDelegate.swift in Sources */,
 				EAD0B6F7259CF29300FA2F67 /* Eyedropper.swift in Sources */,
 				EAD0B6EE259CF28D00FA2F67 /* Sweetercolor.swift in Sources */,
+				EA801285259F8F480026D5D9 /* ComplianceToggle.swift in Sources */,
 				EAD0B71C259D151400FA2F67 /* ToolbarButtons.swift in Sources */,
 				EAD0B6F8259CF29300FA2F67 /* AboutView.swift in Sources */,
 				EAD0B718259D146200FA2F67 /* EyedropperButtonStyle.swift in Sources */,
@@ -436,6 +440,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 0.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.superhighfives.Pika;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -460,6 +465,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 0.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.superhighfives.Pika;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

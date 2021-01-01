@@ -5,6 +5,8 @@
 //  Created by Charlie Gleason on 30/12/2020.
 //
 
+// swiftlint:disable trailing_comma
+
 import Defaults
 import SwiftUI
 
@@ -22,11 +24,13 @@ let initialColors = [
 ]
 
 struct ContentView: View {
-    @ObservedObject var eyedropperForeground = Eyedropper(title: "Foreground", color: Color(initialColors.randomElement()!))
-    @ObservedObject var eyedropperBackground = Eyedropper(title: "Background", color: NSColor(r: 240.0, g: 240.0, b: 240.0))
+    @ObservedObject var eyedropperForeground = Eyedropper(
+        title: "Foreground", color: Color(initialColors.randomElement()!)
+    )
+    @ObservedObject var eyedropperBackground = Eyedropper(title: "Background", color: .black)
 
     @Default(.colorFormat) var colorFormat
-    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.colorScheme) var colorScheme: ColorScheme
 
     var body: some View {
         let eyedroppers = [eyedropperForeground, eyedropperBackground]
@@ -43,9 +47,9 @@ struct ContentView: View {
                                 Group {
                                     Rectangle()
                                         .fill(Color(eyedropper.color.overlayBlack))
-                                        .frame(height: 50.0)
+                                        .frame(height: 55.0)
                                 }
-                                .opacity(0.1)
+                                .opacity(0.2)
                                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
 
                                 VStack(alignment: .leading) {
@@ -95,6 +99,9 @@ struct ContentView: View {
             Divider()
 
             FooterView(foreground: self.$eyedropperForeground.color, background: self.$eyedropperBackground.color)
+        }
+        .onAppear {
+            eyedropperBackground.set(color: NSColor(colorScheme == .light ? Color.white : .black))
         }
     }
 }

@@ -7,20 +7,6 @@
 
 import SwiftUI
 
-struct ComplianceToggle: View {
-    var title: String
-    var isCompliant: Bool
-
-    var body: some View {
-        HStack(spacing: 2.0) {
-            Image(systemName: isCompliant ? "checkmark.circle.fill" : "xmark.circle")
-                .opacity(isCompliant ? 1.0 : 0.4)
-            Text(title)
-        }
-        .opacity(isCompliant ? 1.0 : 0.4)
-    }
-}
-
 struct FooterView: View {
     @Binding var foreground: NSColor
     @Binding var background: NSColor
@@ -47,10 +33,16 @@ struct FooterView: View {
                     .bold()
                     .foregroundColor(.gray)
                 HStack(spacing: 6.0) {
-                    ComplianceToggle(title: "AA", isCompliant: colorWCAGCompliance.Level2A)
-                    ComplianceToggle(title: "AA+", isCompliant: colorWCAGCompliance.Level2ALarge)
-                    ComplianceToggle(title: "AAA", isCompliant: colorWCAGCompliance.Level3A)
-                    ComplianceToggle(title: "AAA+", isCompliant: colorWCAGCompliance.Level3ALarge)
+                    // swiftlint:disable line_length
+                    ComplianceToggle(title: "AA", isCompliant: colorWCAGCompliance.Level2A,
+                                     tooltip: "WCAG 2.0 level AA requires a contrast ratio of at least 4.5:1 for normal text.")
+                    ComplianceToggle(title: "AA+", isCompliant: colorWCAGCompliance.Level2ALarge,
+                                     tooltip: "WCAG 2.0 level AA requires a contrast ratio of at least 3:1 for large text.")
+                    ComplianceToggle(title: "AAA", isCompliant: colorWCAGCompliance.Level3A,
+                                     tooltip: "WCAG 2.0 level AAA requires a contrast ratio of at least 7:1 for normal text.")
+                    ComplianceToggle(title: "AAA+", isCompliant: colorWCAGCompliance.Level3ALarge,
+                                     tooltip: "WCAG 2.0 level AAA requires a contrast ratio of at least 4.5:1 for large text.")
+                    // swiftlint:enable line_length
                 }
             }
         }
