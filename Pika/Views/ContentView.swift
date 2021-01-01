@@ -8,31 +8,22 @@
 import Defaults
 import SwiftUI
 
-struct ColorNavigation: View {
-    var eyedropper: Eyedropper
-    let pasteboard = NSPasteboard.general
-
-    var body: some View {
-        Text(eyedropper.title)
-        Divider()
-        Button(action: {
-            pasteboard.clearContents()
-            pasteboard.setString(eyedropper.color.toHex, forType: .string)
-        }, label: { Text("Copy color hex") })
-        Button(action: {
-            pasteboard.clearContents()
-            pasteboard.setString(eyedropper.color.toRGB, forType: .string)
-        }, label: { Text("Copy RGB values") })
-        Button(action: {
-            pasteboard.clearContents()
-            pasteboard.setString(eyedropper.color.toHSB, forType: .string)
-        }, label: { Text("Copy HSB values") })
-    }
-}
+let colors = [
+    NSColor(r: 143.0, g: 15.0, b: 208.0),
+    NSColor(r: 224.0, g: 53.0, b: 139.0),
+    NSColor(r: 20.0, g: 63.0, b: 245.0),
+    NSColor(r: 235.0, g: 54.0, b: 75.0),
+    NSColor(r: 182.0, g: 26.0, b: 129.0),
+    NSColor(r: 88.0, g: 32.0, b: 228.0),
+    NSColor(r: 191.0, g: 19.0, b: 186.0),
+    NSColor(r: 119.0, g: 77.0, b: 178.0),
+    NSColor(r: 14.0, g: 35.0, b: 204.0),
+    NSColor(r: 188.0, g: 42.0, b: 97.0),
+]
 
 struct ContentView: View {
-    @ObservedObject var eyedropperForeground = Eyedropper(title: "Foreground", color: Color(NSColor.random()))
-    @ObservedObject var eyedropperBackground = Eyedropper(title: "Background", color: Color(NSColor.random()))
+    @ObservedObject var eyedropperForeground = Eyedropper(title: "Foreground", color: Color(colors.randomElement()!))
+    @ObservedObject var eyedropperBackground = Eyedropper(title: "Background", color: .white)
 
     @Default(.colorFormat) var colorFormat
     @Environment(\.colorScheme) var colorScheme
@@ -48,7 +39,15 @@ struct ContentView: View {
 
                     ZStack {
                         Button(action: { eyedropper.start() }, label: {
-                            HStack(alignment: .bottom) {
+                            ZStack {
+                                Group {
+                                    Rectangle()
+                                        .fill(Color(eyedropper.color.overlayBlack))
+                                        .frame(height: 50.0)
+                                }
+                                .opacity(0.1)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+
                                 VStack(alignment: .leading) {
                                     Text(eyedropper.title)
                                         .font(.caption)
@@ -67,6 +66,7 @@ struct ContentView: View {
                                 .padding([.bottom, .leading], 8.0)
                                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
                             }
+
                         })
                             .buttonStyle(EyedropperButtonStyle(color: Color(eyedropper.color)))
                             .contextMenu {
@@ -86,9 +86,10 @@ struct ContentView: View {
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
                         .padding(8.0)
                     }
+
+                    Divider()
                 }
             }
-            .shadow(color: Color.black.opacity(0.2), radius: 1, x: 0, y: 1)
             .clipped()
 
             Divider()

@@ -13,6 +13,6 @@ struct EyedropperButtonStyle: ButtonStyle {
         configuration.label
             .background(color)
             .opacity(configuration.isPressed ? 0.8 : 1.0)
-            .animation(.easeIn)
+            .animation(.easeIn(duration: 0.15))
     }
 }
