@@ -8,7 +8,7 @@
 import Defaults
 import SwiftUI
 
-let colors = [
+let initialColors = [
     NSColor(r: 143.0, g: 15.0, b: 208.0),
     NSColor(r: 224.0, g: 53.0, b: 139.0),
     NSColor(r: 20.0, g: 63.0, b: 245.0),
@@ -22,8 +22,8 @@ let colors = [
 ]
 
 struct ContentView: View {
-    @ObservedObject var eyedropperForeground = Eyedropper(title: "Foreground", color: Color(colors.randomElement()!))
-    @ObservedObject var eyedropperBackground = Eyedropper(title: "Background", color: .white)
+    @ObservedObject var eyedropperForeground = Eyedropper(title: "Foreground", color: Color(initialColors.randomElement()!))
+    @ObservedObject var eyedropperBackground = Eyedropper(title: "Background", color: NSColor(r: 240.0, g: 240.0, b: 240.0))
 
     @Default(.colorFormat) var colorFormat
     @Environment(\.colorScheme) var colorScheme
