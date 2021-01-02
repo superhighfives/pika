@@ -18,7 +18,7 @@ struct PreferencesView: View {
             NavigationView {
                 VersionView()
             }
-            .frame(maxWidth: 140.0)
+            .frame(maxWidth: 145.0)
             .allowsHitTesting(false)
 
             VStack(spacing: 10.0) {
@@ -56,7 +56,7 @@ struct PreferencesView: View {
                         Divider()
 
                         // Launch at login
-                        Section {
+                        Section(header: Text("Startup Settings").font(.title3)) {
                             LaunchAtLogin.Toggle {
                                 Text("Launch at login")
                             }

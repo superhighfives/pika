@@ -21,8 +21,6 @@ class Eyedropper: ObservableObject {
         sampler.show { selectedColor in
             if let selectedColor = selectedColor {
                 self.color = selectedColor
-            } else {
-                print("Nope. They cancelled.")
             }
         }
     }
