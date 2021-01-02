@@ -30,6 +30,8 @@
 	<string>Copyright © 2020 Charlie Gleason, under the MIT License</string>
 	<key>NSMainStoryboardFile</key>
 	<string>Main</string>
+	<key>SUPublicEDKey</key>
+	<string>+hHTCW8zfGxSQeowmFxlZzE4N/fxolLQRpA7zLlzBvk=</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 </dict>
