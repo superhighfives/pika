@@ -29,7 +29,7 @@ And then you should be good to go.
 ## Dependencies and thanks
 
 - [Sweetercolor](https://github.com/jathu/sweetercolor) colour extension library for Swift (slightly tweaked for NSColor, rather than UIColor)
-- [Sparkle](hhttps://github.com/sparkle-project/Sparkle) software update framework.
+- [Sparkle](https://github.com/sparkle-project/Sparkle) software update framework.
 - [Defaults](https://github.com/sindresorhus/Defaults)
 - [Keyboard Shortcuts](https://github.com/sindresorhus/KeyboardShortcuts)
 - [Launch At Login](https://github.com/sindresorhus/LaunchAtLogin)
