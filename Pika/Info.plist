@@ -32,6 +32,8 @@
 	<string>Main</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>SUEnableAutomaticChecks</key>
+	<true/>
 	<key>SUPublicEDKey</key>
 	<string>+hHTCW8zfGxSQeowmFxlZzE4N/fxolLQRpA7zLlzBvk=</string>
 </dict>
