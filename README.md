@@ -33,7 +33,7 @@ And then you should be good to go. If you into my problems, please [detail them 
 
 ## Contributions
 
-Any and all contributions are welcomed. Check for [open issues](https://github.com/superhighfives/pika/issues), check out the [project roadmap](https://github.com/superhighfives/pika/projects/1), and [submit a PR](https://github.com/superhighfives/pika/compare).
+Any and all contributions are welcomed. Check for [open issues](https://github.com/superhighfives/pika/issues), look through the [project roadmap](https://github.com/superhighfives/pika/projects/1), and [submit a PR](https://github.com/superhighfives/pika/compare).
 
 ## Dependencies and thanks
 
