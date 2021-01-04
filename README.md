@@ -16,7 +16,7 @@ Download the latest version of the app at [superhighfives.com/pika](https://supe
 
 ### Development
 
-- Xcode 12.3
+- [Xcode](https://developer.apple.com/xcode/) 12.3
 - Swift Package Manager
 - [Mint](https://github.com/yonaskolb/Mint)
 
