@@ -2,7 +2,9 @@
 
 # Pika
 
-An open-source colour picker app for macOS.
+Pika (pronounced pi·kuh) is an easy to use, open-source, native colour picker for macOS. Pika makes it easy to quickly find colours onscreen, in the format you need, so you can get on with being a speedy, successful designer.
+
+Download the latest version of the app at [superhighfives.com/pika](https://superhighfives.com/pika).
 
 <img width="768" alt="Screenshots of the dark and light Pika interface" src="https://user-images.githubusercontent.com/449385/103492507-4e55cd80-4e23-11eb-9366-d31c2bb74030.png">
 
@@ -40,3 +42,5 @@ Any and all contributions are welcomed. Check for [open issues](https://github.c
 - [Defaults](https://github.com/sindresorhus/Defaults)
 - [Keyboard Shortcuts](https://github.com/sindresorhus/KeyboardShortcuts)
 - [Launch At Login](https://github.com/sindresorhus/LaunchAtLogin)
+
+And a huge thank you to [Stormnoid](https://twitter.com/stormoid) for the incredible [2D vector field visualisation](https://www.shadertoy.com/view/4tfSRj) on Shadertoy.
