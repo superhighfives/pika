@@ -20,7 +20,7 @@ struct ComplianceToggle: View {
         }
         .opacity(isCompliant ? 1.0 : 0.4)
         if #available(OSX 11.0, *) {
-          view.help(tooltip)
+            view.help(tooltip)
         }
     }
 }

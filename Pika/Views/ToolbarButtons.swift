@@ -20,33 +20,32 @@ struct MenuItems: View {
         Button("Preferences...", action: {
             NSApp.sendAction(#selector(AppDelegate.openPreferencesWindow), to: nil, from: nil)
         })
-        .modify {
-            if #available(OSX 11.0, *) {
-                $0.keyboardShortcut(",", modifiers: .command)
-            } else {
-                // TODO: Look at keyboard shortcut options for 10.5
-                $0
+            .modify {
+                if #available(OSX 11.0, *) {
+                    $0.keyboardShortcut(",", modifiers: .command)
+                } else {
+                    // TODO: Look at keyboard shortcut options for 10.5
+                    $0
+                }
             }
-        }
-        
+
         Divider()
-        
+
         Button("Quit", action: {
             NSApplication.shared.terminate(self)
         })
-        .modify {
-            if #available(OSX 11.0, *) {
-                $0.keyboardShortcut("q", modifiers: .command)
-            } else {
-                // TODO: Look at keyboard shortcut options for 10.5
-                $0
+            .modify {
+                if #available(OSX 11.0, *) {
+                    $0.keyboardShortcut("q", modifiers: .command)
+                } else {
+                    // TODO: Look at keyboard shortcut options for 10.5
+                    $0
+                }
             }
-        }
     }
 }
 
 struct ToolbarButtons: View {
-    
     @ViewBuilder
     func getMenu() -> some View {
         if #available(OSX 11.0, *) {
@@ -62,17 +61,13 @@ struct ToolbarButtons: View {
             })
         }
     }
-    
+
     var body: some View {
         Group {
-            if #available(OSX 11.0, *) {
-                getMenu()
+            getMenu()
                 .frame(alignment: .leading)
                 .padding(.horizontal, 16.0)
                 .fixedSize()
-            } else {
-            
-            }
         }
     }
 }
