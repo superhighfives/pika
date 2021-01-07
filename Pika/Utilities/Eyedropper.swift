@@ -11,9 +11,9 @@ class Eyedropper: ObservableObject {
     var title: String
     @Published public var color: NSColor
 
-    init(title: String, color: Color) {
+    init(title: String, color: NSColor) {
         self.title = title
-        self.color = NSColor(color)
+        self.color = color
     }
 
     func start() {

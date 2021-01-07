@@ -134,11 +134,15 @@ extension NSColor {
      - returns: An array of four CGFloat numbers from [0, 1] representing RGBA respectively.
      */
     var RGBA: [CGFloat] {
-        var R: CGFloat = 0
-        var G: CGFloat = 0
-        var B: CGFloat = 0
-        var A: CGFloat = 0
-        getRed(&R, green: &G, blue: &B, alpha: &A)
+        guard let rgbColor = usingColorSpace(NSColorSpace.deviceRGB) else {
+            return [0, 0, 0, 0]
+        }
+
+        let R: CGFloat = rgbColor.redComponent
+        let G: CGFloat = rgbColor.greenComponent
+        let B: CGFloat = rgbColor.blueComponent
+        let A: CGFloat = rgbColor.alphaComponent
+
         return [R, G, B, A]
     }
 
@@ -570,7 +574,7 @@ extension NSColor {
      - returns: A NSColor with a black overlay.
      */
     var overlayBlack: NSColor {
-        overlay(with: NSColor.black())
+        overlay(with: NSColor.black)
     }
 
     /**
@@ -579,7 +583,7 @@ extension NSColor {
      - returns: A NSColor with a white overlay.
      */
     var overlayWhite: NSColor {
-        overlay(with: NSColor.white())
+        overlay(with: NSColor.white)
     }
 
     /**

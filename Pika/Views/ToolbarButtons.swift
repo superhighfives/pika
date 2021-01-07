@@ -24,7 +24,7 @@ struct MenuItems: View {
                 if #available(OSX 11.0, *) {
                     $0.keyboardShortcut(",", modifiers: .command)
                 } else {
-                    // TODO: Look at keyboard shortcut options for 10.5
+                    // TODO: Look into options for keyboard shortcut for 10.15
                     $0
                 }
             }
@@ -38,7 +38,7 @@ struct MenuItems: View {
                 if #available(OSX 11.0, *) {
                     $0.keyboardShortcut("q", modifiers: .command)
                 } else {
-                    // TODO: Look at keyboard shortcut options for 10.5
+                    // TODO: Look into options for keyboard shortcut for 10.15
                     $0
                 }
             }
@@ -47,24 +47,27 @@ struct MenuItems: View {
 
 struct ToolbarButtons: View {
     @ViewBuilder
-    func getMenu() -> some View {
+    func getMenu(title _: String) -> some View {
+        let icon = "gearshape"
+
         if #available(OSX 11.0, *) {
             Menu {
                 MenuItems()
             } label: {
-                IconImage(name: "gear")
+                IconImage(name: icon)
             }
             .menuStyle(BorderlessButtonMenuStyle(showsMenuIndicator: true))
         } else {
-            MenuButton(label: IconImage(name: "gear"), content: {
+            MenuButton(label: IconImage(name: icon), content: {
                 MenuItems()
             })
+                .menuButtonStyle(BorderlessButtonMenuButtonStyle())
         }
     }
 
     var body: some View {
         Group {
-            getMenu()
+            getMenu(title: "Lol")
                 .frame(alignment: .leading)
                 .padding(.horizontal, 16.0)
                 .fixedSize()

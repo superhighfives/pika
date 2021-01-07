@@ -25,12 +25,29 @@ let initialColors = [
 
 struct ContentView: View {
     @ObservedObject var eyedropperForeground = Eyedropper(
-        title: "Foreground", color: Color(initialColors.randomElement()!)
+        title: "Foreground", color: initialColors.randomElement()!
     )
-    @ObservedObject var eyedropperBackground = Eyedropper(title: "Background", color: .black)
+    @ObservedObject var eyedropperBackground = Eyedropper(title: "Background", color: NSColor.black)
 
     @Default(.colorFormat) var colorFormat
     @Environment(\.colorScheme) var colorScheme: ColorScheme
+
+    @ViewBuilder
+    func getMenu(eyedropper: Eyedropper) -> some View {
+        if #available(OSX 11.0, *) {
+            Menu {
+                ColorNavigation(eyedropper: eyedropper)
+            } label: {
+                Image(systemName: "ellipsis.circle")
+            }
+            .menuStyle(BorderlessButtonMenuStyle(showsMenuIndicator: false))
+        } else {
+            MenuButton(label: IconImage(name: "ellipsis.circle"), content: {
+                ColorNavigation(eyedropper: eyedropper)
+            })
+                .menuButtonStyle(BorderlessButtonMenuButtonStyle())
+        }
+    }
 
     var body: some View {
         let eyedroppers = [eyedropperForeground, eyedropperBackground]
@@ -47,7 +64,7 @@ struct ContentView: View {
                                 Group {
                                     Rectangle()
                                         .fill(Color(eyedropper.color.overlayBlack))
-                                        .frame(height: 55.0)
+                                        .frame(height: 60.0)
                                 }
                                 .opacity(0.2)
                                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
@@ -60,8 +77,8 @@ struct ContentView: View {
                                     HStack {
                                         Text(eyedropper.color.toFormat(format: colorFormat))
                                             .foregroundColor(textColor)
-                                            .font(.title2)
-                                        Image(systemName: "eyedropper")
+                                            .font(.title)
+                                        IconImage(name: "eyedropper")
                                             .foregroundColor(textColor)
                                             .padding(.leading, 0.0)
                                             .opacity(0.8)
@@ -78,17 +95,12 @@ struct ContentView: View {
                             }
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
 
-                        Menu {
-                            ColorNavigation(eyedropper: eyedropper)
-                        } label: {
-                            Image(systemName: "ellipsis.circle")
-                        }
-                        .shadow(radius: 0, x: 0, y: 1)
-                        .opacity(0.8)
-                        .menuStyle(BorderlessButtonMenuStyle(showsMenuIndicator: false))
-                        .fixedSize()
-                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
-                        .padding(8.0)
+                        getMenu(eyedropper: eyedropper)
+                            .shadow(radius: 0, x: 0, y: 1)
+                            .opacity(0.8)
+                            .fixedSize()
+                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+                            .padding(8.0)
                     }
 
                     Divider()
@@ -101,7 +113,10 @@ struct ContentView: View {
             FooterView(foreground: self.$eyedropperForeground.color, background: self.$eyedropperBackground.color)
         }
         .onAppear {
-            eyedropperBackground.set(color: NSColor(colorScheme == .light ? Color.white : .black))
+            eyedropperBackground.set(color: colorScheme == .light
+                ? NSColor(r: 255.0, g: 255.0, b: 255.0)
+                : NSColor(r: 0.0, g: 0.0, b: 0.0)
+            )
         }
     }
 }

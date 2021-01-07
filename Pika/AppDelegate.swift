@@ -51,7 +51,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         // Set up toolbar
         pikaWindow.toolbar = NSToolbar()
-        pikaWindow.toolbarStyle = .unifiedCompact
+        if #available(OSX 11.0, *) {
+            pikaWindow.toolbarStyle = .unifiedCompact
+        }
         let toolbarButtons = NSHostingView(rootView: ToolbarButtons())
         toolbarButtons.frame.size = toolbarButtons.fittingSize
         let titlebarAccessory = NSTitlebarAccessoryViewController()

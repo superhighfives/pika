@@ -26,7 +26,7 @@ struct PreferencesView: View {
                     VStack(alignment: .leading, spacing: 16.0) {
                         // Global Shortcut
 
-                        Section(header: Text("Global Shortcut").font(.title3)) {
+                        Section(header: Text("Global Shortcut").font(.headline)) {
                             VStack(alignment: .leading) {
                                 Text("Set a global hot key shortcut to invoke Pika from anywhere.")
                                     .font(.callout)
@@ -38,7 +38,7 @@ struct PreferencesView: View {
 
                         // Colour Format
 
-                        Section(header: Text("Colour Format").font(.title3)) {
+                        Section(header: Text("Colour Format").font(.headline)) {
                             VStack(alignment: .leading) {
                                 Text("Set your preferred display format for colors.")
                                     .font(.callout)
@@ -56,7 +56,7 @@ struct PreferencesView: View {
                         Divider()
 
                         // Launch at login
-                        Section(header: Text("Startup Settings").font(.title3)) {
+                        Section(header: Text("Startup Settings").font(.headline)) {
                             LaunchAtLogin.Toggle {
                                 Text("Launch at login")
                             }

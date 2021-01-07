@@ -31,7 +31,7 @@ struct ColorNavigation: View {
 
 struct ColorNavigation_Previews: PreviewProvider {
     static var previews: some View {
-        let eyedropper = Eyedropper(title: "Foreground", color: Color(NSColor.random()))
+        let eyedropper = Eyedropper(title: "Foreground", color: NSColor.random())
         ColorNavigation(eyedropper: eyedropper)
     }
 }
