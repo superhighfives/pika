@@ -75,6 +75,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
+    func applicationShouldHandleReopen(_: NSApplication, hasVisibleWindows: Bool) -> Bool {
+        if !hasVisibleWindows {
+            pikaWindow.makeKeyAndOrderFront(self)
+        }
+        return true
+    }
+
     func showMainWindow() {
         pikaWindow.makeKeyAndOrderFront(nil)
         NSApp.activate(ignoringOtherApps: true)
