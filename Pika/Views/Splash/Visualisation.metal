@@ -1,6 +1,5 @@
 
 // File for Metal kernel and shader functions
-
 #include <metal_stdlib>
 #include <simd/simd.h>
 
@@ -44,7 +43,7 @@ float2 within(float2 uv, float4 rect)
 float4 Main(float2 uv, float time)
 {
     float2 p = uv.xy;
-    p *= 10;
+    p *= 6;
   
     float3 foreground = float3(143, 15, 208) / 255.0;
     float3 background = float3(188, 42, 97) / 255.0;

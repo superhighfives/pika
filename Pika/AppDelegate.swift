@@ -66,9 +66,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         pikaWindow.setFrameAutosaveName("Pika Window")
         pikaWindow.contentView = NSHostingView(rootView: contentView)
 
-        // Bring window to front
-        showMainWindow()
-
         // Define global keyboard shortcuts
         KeyboardShortcuts.onKeyUp(for: .togglePika) { [self] in
             togglePopover(nil)
@@ -77,6 +74,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Open splash window
         // TODO: Only show on first open
         openSplashWindow(nil)
+
+        // Bring window to front
+//        showMainWindow()
+        NSApp.activate(ignoringOtherApps: true)
     }
 
     func applicationShouldHandleReopen(_: NSApplication, hasVisibleWindows: Bool) -> Bool {
@@ -86,9 +87,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         return true
     }
 
+    func startMainWindow() {
+        if !pikaWindow.isVisible {
+            pikaWindow.fadeIn(nil)
+        }
+    }
+
     func showMainWindow() {
         pikaWindow.makeKeyAndOrderFront(nil)
-        NSApp.activate(ignoringOtherApps: true)
     }
 
     func hideMainWindow() {
@@ -96,7 +102,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     @objc func closeSplashWindow() {
-        splashWindow.close()
+        splashWindow.fadeOut(sender: nil, duration: 0.25, closeSelector: .close, completionHandler: startMainWindow)
     }
 
     @objc func togglePopover(_: AnyObject?) {
@@ -110,7 +116,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func createWindow(title: String, size: NSRect) -> NSWindow {
         let window = NSWindow(
             contentRect: size,
-            styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView, .resizable],
+            styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView],
             backing: .buffered,
             defer: false
         )
@@ -141,11 +147,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBAction func openSplashWindow(_: Any?) {
         if splashWindow == nil {
-            splashWindow = createWindow(title: "Splash", size: NSRect(x: 0, y: 0, width: 550, height: 380))
+            splashWindow = createWindow(title: "Splash", size: NSRect(x: 0, y: 0, width: 600, height: 280))
             splashWindow.titleVisibility = .visible
             splashWindow.title = "Welcome to Pika"
             splashWindow.contentView = NSHostingView(rootView: SplashView().edgesIgnoringSafeArea(.all))
         }
-        splashWindow.makeKeyAndOrderFront(nil)
+        splashWindow.fadeIn(nil)
     }
 }

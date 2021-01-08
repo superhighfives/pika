@@ -8,9 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		EA057887259F54B500ACCD89 /* ColorNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA057886259F54B500ACCD89 /* ColorNavigation.swift */; };
-		EA72BB8425A5334B008205E7 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = EA72BB8225A5334B008205E7 /* Shaders.metal */; };
+		EA72BB8425A5334B008205E7 /* Visualisation.metal in Sources */ = {isa = PBXBuildFile; fileRef = EA72BB8225A5334B008205E7 /* Visualisation.metal */; };
 		EA72BB8825A53750008205E7 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA72BB8725A53750008205E7 /* SplashView.swift */; };
 		EA72BB8B25A537C3008205E7 /* Visualisation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA72BB8A25A537C3008205E7 /* Visualisation.swift */; };
+		EA72BBA925A7CE9C008205E7 /* NSWindowFade.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA72BBA825A7CE9C008205E7 /* NSWindowFade.swift */; };
 		EA801285259F8F480026D5D9 /* ComplianceToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA801284259F8F480026D5D9 /* ComplianceToggle.swift */; };
 		EA8124C1259E307D00033F0B /* FooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8124C0259E307D00033F0B /* FooterView.swift */; };
 		EAD0B6CC259CED1C00FA2F67 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6CB259CED1C00FA2F67 /* AppDelegate.swift */; };
@@ -35,9 +36,10 @@
 
 /* Begin PBXFileReference section */
 		EA057886259F54B500ACCD89 /* ColorNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorNavigation.swift; sourceTree = "<group>"; };
-		EA72BB8225A5334B008205E7 /* Shaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
+		EA72BB8225A5334B008205E7 /* Visualisation.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Visualisation.metal; sourceTree = "<group>"; };
 		EA72BB8725A53750008205E7 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		EA72BB8A25A537C3008205E7 /* Visualisation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Visualisation.swift; sourceTree = "<group>"; };
+		EA72BBA825A7CE9C008205E7 /* NSWindowFade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSWindowFade.swift; sourceTree = "<group>"; };
 		EA801284259F8F480026D5D9 /* ComplianceToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplianceToggle.swift; sourceTree = "<group>"; };
 		EA8124C0259E307D00033F0B /* FooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterView.swift; sourceTree = "<group>"; };
 		EAD0B6C8259CED1C00FA2F67 /* Pika.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pika.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -79,7 +81,7 @@
 		EA72BB8125A5334B008205E7 /* Splash */ = {
 			isa = PBXGroup;
 			children = (
-				EA72BB8225A5334B008205E7 /* Shaders.metal */,
+				EA72BB8225A5334B008205E7 /* Visualisation.metal */,
 				EA72BB8A25A537C3008205E7 /* Visualisation.swift */,
 			);
 			path = Splash;
@@ -134,6 +136,7 @@
 			isa = PBXGroup;
 			children = (
 				EAD0B6ED259CF28D00FA2F67 /* Sweetercolor.swift */,
+				EA72BBA825A7CE9C008205E7 /* NSWindowFade.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -304,7 +307,8 @@
 				EA801285259F8F480026D5D9 /* ComplianceToggle.swift in Sources */,
 				EAD0B71C259D151400FA2F67 /* ToolbarButtons.swift in Sources */,
 				EAD0B6F8259CF29300FA2F67 /* AboutView.swift in Sources */,
-				EA72BB8425A5334B008205E7 /* Shaders.metal in Sources */,
+				EA72BB8425A5334B008205E7 /* Visualisation.metal in Sources */,
+				EA72BBA925A7CE9C008205E7 /* NSWindowFade.swift in Sources */,
 				EAD0B718259D146200FA2F67 /* EyedropperButtonStyle.swift in Sources */,
 				EAD0B6FA259CF29300FA2F67 /* VersionView.swift in Sources */,
 				EA8124C1259E307D00033F0B /* FooterView.swift in Sources */,

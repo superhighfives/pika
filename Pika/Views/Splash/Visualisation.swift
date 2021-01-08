@@ -2,12 +2,12 @@ import MetalKit
 import simd
 import SwiftUI
 
-struct MetalView: NSViewRepresentable {
+struct Visualisation: NSViewRepresentable {
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
 
-    func makeNSView(context: NSViewRepresentableContext<MetalView>) -> MTKView {
+    func makeNSView(context: NSViewRepresentableContext<Visualisation>) -> MTKView {
         let mtkView = MTKView()
         mtkView.delegate = context.coordinator
         context.coordinator.mtkView(mtkView, drawableSizeWillChange: mtkView.drawableSize)
@@ -22,19 +22,19 @@ struct MetalView: NSViewRepresentable {
         return mtkView
     }
 
-    func updateNSView(_: MTKView, context _: NSViewRepresentableContext<MetalView>) {}
+    func updateNSView(_: MTKView, context _: NSViewRepresentableContext<Visualisation>) {}
 
     class Coordinator: NSObject, MTKViewDelegate {
         let timeStep = Float(1.0 / 60.0)
         var time = Float(0)
 
-        var parent: MetalView
+        var parent: Visualisation
         var device: MTLDevice!
         var commandQueue: MTLCommandQueue!
         var pipelineState: MTLComputePipelineState!
         var inputBuffer: MTLBuffer!
 
-        init(_ parent: MetalView) {
+        init(_ parent: Visualisation) {
             self.parent = parent
 
             if let device = MTLCreateSystemDefaultDevice() {
