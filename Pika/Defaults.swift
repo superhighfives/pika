@@ -15,4 +15,5 @@ enum ColorFormatKeys: String, Codable, CaseIterable {
 
 extension Defaults.Keys {
     static let colorFormat = Key<ColorFormatKeys>("colorFormat", default: .hex)
+    static let showSplash = Key<Bool>("showSplash", default: true)
 }

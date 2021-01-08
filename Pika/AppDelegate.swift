@@ -6,12 +6,15 @@
 //
 
 import Cocoa
+import Defaults
 import KeyboardShortcuts
 import MetalKit
 import SwiftUI
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
+    @Default(.showSplash) var showSplash
+
     var statusBarItem: NSStatusItem!
     var pikaWindow: NSWindow!
     var splashWindow: NSWindow!
@@ -68,15 +71,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         // Define global keyboard shortcuts
         KeyboardShortcuts.onKeyUp(for: .togglePika) { [self] in
-            togglePopover(nil)
+            if !Defaults[.showSplash] {
+                togglePopover(nil)
+            }
         }
 
         // Open splash window
-        // TODO: Only show on first open
-        openSplashWindow(nil)
-
-        // Bring window to front
-//        showMainWindow()
+        if showSplash {
+            openSplashWindow(nil)
+        } else {
+            showMainWindow()
+        }
         NSApp.activate(ignoringOtherApps: true)
     }
 
@@ -91,6 +96,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if !pikaWindow.isVisible {
             pikaWindow.fadeIn(nil)
         }
+        Defaults[.showSplash] = false
     }
 
     func showMainWindow() {
@@ -113,10 +119,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
-    func createWindow(title: String, size: NSRect) -> NSWindow {
+    func createWindow(title: String, size: NSRect, styleMask: NSWindow.StyleMask) -> NSWindow {
         let window = NSWindow(
             contentRect: size,
-            styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView],
+            styleMask: styleMask,
             backing: .buffered,
             defer: false
         )
@@ -131,7 +137,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBAction func openAboutWindow(_: Any?) {
         if aboutWindow == nil {
-            aboutWindow = createWindow(title: "About", size: NSRect(x: 0, y: 0, width: 300, height: 300))
+            aboutWindow = createWindow(title: "About", size: NSRect(x: 0, y: 0, width: 300, height: 300), styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView])
             aboutWindow.contentView = NSHostingView(rootView: AboutView())
         }
         aboutWindow.makeKeyAndOrderFront(nil)
@@ -139,7 +145,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBAction func openPreferencesWindow(_: Any?) {
         if preferencesWindow == nil {
-            preferencesWindow = createWindow(title: "Preferences", size: NSRect(x: 0, y: 0, width: 550, height: 380))
+            preferencesWindow = createWindow(title: "Preferences", size: NSRect(x: 0, y: 0, width: 550, height: 380), styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView])
             preferencesWindow.contentView = NSHostingView(rootView: PreferencesView())
         }
         preferencesWindow.makeKeyAndOrderFront(nil)
@@ -147,7 +153,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBAction func openSplashWindow(_: Any?) {
         if splashWindow == nil {
-            splashWindow = createWindow(title: "Splash", size: NSRect(x: 0, y: 0, width: 600, height: 280))
+            splashWindow = createWindow(title: "Splash", size: NSRect(x: 0, y: 0, width: 600, height: 280), styleMask: [.titled, .fullSizeContentView])
             splashWindow.titleVisibility = .visible
             splashWindow.title = "Welcome to Pika"
             splashWindow.contentView = NSHostingView(rootView: SplashView().edgesIgnoringSafeArea(.all))
