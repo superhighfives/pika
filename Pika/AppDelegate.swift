@@ -142,7 +142,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBAction func openAboutWindow(_: Any?) {
         if aboutWindow == nil {
-            aboutWindow = createWindow(title: "About", size: NSRect(x: 0, y: 0, width: 300, height: 300), styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView])
+            aboutWindow = createWindow(
+                title: "About",
+                size: NSRect(x: 0, y: 0, width: 300, height: 300),
+                styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView]
+            )
             aboutWindow.contentView = NSHostingView(rootView: AboutView())
         }
         aboutWindow.makeKeyAndOrderFront(nil)
@@ -150,7 +154,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBAction func openPreferencesWindow(_: Any?) {
         if preferencesWindow == nil {
-            preferencesWindow = createWindow(title: "Preferences", size: NSRect(x: 0, y: 0, width: 550, height: 380), styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView])
+            preferencesWindow = createWindow(
+                title: "Preferences",
+                size: NSRect(x: 0, y: 0, width: 550, height: 380),
+                styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView]
+            )
             preferencesWindow.contentView = NSHostingView(rootView: PreferencesView())
         }
         preferencesWindow.makeKeyAndOrderFront(nil)
@@ -158,7 +166,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBAction func openSplashWindow(_: Any?) {
         if splashWindow == nil {
-            splashWindow = createWindow(title: "Splash", size: NSRect(x: 0, y: 0, width: 600, height: 280), styleMask: [.titled, .fullSizeContentView])
+            splashWindow = createWindow(
+                title: "Splash",
+                size: NSRect(x: 0, y: 0, width: 600, height: 280),
+                styleMask: [.titled, .fullSizeContentView]
+            )
             splashWindow.titleVisibility = .visible
             splashWindow.title = "Welcome to Pika"
             splashWindow.contentView = NSHostingView(rootView: SplashView().edgesIgnoringSafeArea(.all))
