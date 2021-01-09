@@ -123,7 +123,6 @@
 			isa = PBXGroup;
 			children = (
 				EAD0B6ED259CF28D00FA2F67 /* Sweetercolor.swift */,
-				221600F825A62E5B00B8B7D9 /* IconImage.swift */,
 				221600FC25A636D600B8B7D9 /* ConditionalModifier.swift */,
 			);
 			path = Extensions;
@@ -140,6 +139,7 @@
 		EAD0B6F2259CF29300FA2F67 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				221600F825A62E5B00B8B7D9 /* IconImage.swift */,
 				EAD0B6F3259CF29300FA2F67 /* AboutView.swift */,
 				EAD0B6F4259CF29300FA2F67 /* PreferencesView.swift */,
 				EAD0B6F5259CF29300FA2F67 /* VersionView.swift */,

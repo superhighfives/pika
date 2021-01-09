@@ -64,12 +64,12 @@ struct ContentView: View {
                                 Group {
                                     Rectangle()
                                         .fill(Color(eyedropper.color.overlayBlack))
-                                        .frame(height: 60.0)
+                                        .frame(height: 55.0)
                                 }
                                 .opacity(0.2)
                                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
 
-                                VStack(alignment: .leading) {
+                                VStack(alignment: .leading, spacing: 0.0) {
                                     Text(eyedropper.title)
                                         .font(.caption)
                                         .bold()
@@ -77,14 +77,14 @@ struct ContentView: View {
                                     HStack {
                                         Text(eyedropper.color.toFormat(format: colorFormat))
                                             .foregroundColor(textColor)
-                                            .font(.title)
+                                            .font(.system(size: 18, weight: .regular))
                                         IconImage(name: "eyedropper")
                                             .foregroundColor(textColor)
                                             .padding(.leading, 0.0)
                                             .opacity(0.8)
                                     }
                                 }
-                                .padding([.bottom, .leading], 8.0)
+                                .padding([.bottom, .leading], 10.0)
                                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
                             }
 
