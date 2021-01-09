@@ -7,26 +7,35 @@
 
 import SwiftUI
 
+struct LinkButton: View {
+    var title: String
+    var link: String
+
+    var body: some View {
+        Button(title) {
+            NSWorkspace.shared.open(URL(string: link)!)
+        }
+        .buttonStyle(LinkButtonStyle())
+    }
+}
+
 struct AboutView: View {
     var body: some View {
         VStack(spacing: 16.0) {
             VersionView()
             VStack(spacing: 20.0) {
                 HStack(spacing: 20.0) {
-                    Link("Website",
-                         destination: URL(string: "https://superhighfives/pika")!)
-                    Link("GitHub",
-                         destination: URL(string: "https://github.com/superhighfives/pika")!)
+                    LinkButton(title: "Website", link: "https://superhighfives.com/pika")
+                    LinkButton(title: "GitHub", link: "https://github.com/superhighfives/pika")
                 }
 
                 Divider()
 
                 HStack(spacing: 5.0) {
-                    Image(systemName: "hand.thumbsup.fill")
+                    IconImage(name: "hand.thumbsup.fill")
                     Text("Designed by")
-                    Link("Charlie Gleason",
-                         destination: URL(string: "https://charliegleason.com")!)
-                }.font(.callout)
+                    LinkButton(title: "Charlie Gleason", link: "https://charliegleason.com")
+                }
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)

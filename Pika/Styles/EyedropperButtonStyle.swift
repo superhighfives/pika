@@ -13,6 +13,12 @@ struct EyedropperButtonStyle: ButtonStyle {
         configuration.label
             .background(color)
             .opacity(configuration.isPressed ? 0.8 : 1.0)
-            .animation(.easeIn(duration: 0.15))
+            .modify {
+                if #available(OSX 11.0, *) {
+                    $0.animation(.easeIn(duration: 0.15))
+                } else {
+                    $0
+                }
+            }
     }
 }

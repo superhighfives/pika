@@ -12,8 +12,10 @@ struct ColorNavigation: View {
     let pasteboard = NSPasteboard.general
 
     var body: some View {
-        Text(eyedropper.title)
-        Divider()
+        VStack(alignment: .leading, spacing: 0.0) {
+            Text(eyedropper.title)
+            Divider()
+        }
         Button(action: {
             pasteboard.clearContents()
             pasteboard.setString(eyedropper.color.toHex, forType: .string)
@@ -31,7 +33,7 @@ struct ColorNavigation: View {
 
 struct ColorNavigation_Previews: PreviewProvider {
     static var previews: some View {
-        let eyedropper = Eyedropper(title: "Foreground", color: Color(NSColor.random()))
+        let eyedropper = Eyedropper(title: "Foreground", color: NSColor.random())
         ColorNavigation(eyedropper: eyedropper)
     }
 }

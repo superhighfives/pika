@@ -14,12 +14,18 @@ struct ComplianceToggle: View {
 
     var body: some View {
         HStack(spacing: 2.0) {
-            Image(systemName: isCompliant ? "checkmark.circle.fill" : "xmark.circle")
+            IconImage(name: isCompliant ? "checkmark.circle.fill" : "xmark.circle")
                 .opacity(isCompliant ? 1.0 : 0.4)
             Text(title)
         }
         .opacity(isCompliant ? 1.0 : 0.4)
-        .help(tooltip)
+        .modify {
+            if #available(OSX 11.0, *) {
+                $0.help(tooltip)
+            } else {
+                $0
+            }
+        }
     }
 }
 

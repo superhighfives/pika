@@ -22,7 +22,7 @@ struct FooterView: View {
                     .bold()
                     .foregroundColor(.gray)
                 Text("\(colorContrastRatio)")
-                    .font(.title2)
+                    .font(.system(size: 18))
             }
 
             Divider()
@@ -53,8 +53,8 @@ struct FooterView: View {
 
 struct FooterView_Previews: PreviewProvider {
     private struct ViewWrapper: View {
-        @ObservedObject var eyedropperForeground = Eyedropper(title: "Foreground", color: Color(NSColor.random()))
-        @ObservedObject var eyedropperBackground = Eyedropper(title: "Background", color: Color(NSColor.random()))
+        @ObservedObject var eyedropperForeground = Eyedropper(title: "Foreground", color: NSColor.random())
+        @ObservedObject var eyedropperBackground = Eyedropper(title: "Background", color: NSColor.random())
 
         var body: some View {
             FooterView(foreground: self.$eyedropperForeground.color, background: self.$eyedropperBackground.color)
