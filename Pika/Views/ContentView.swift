@@ -87,7 +87,6 @@ struct ContentView: View {
                                 .padding([.bottom, .leading], 10.0)
                                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
                             }
-
                         })
                             .buttonStyle(EyedropperButtonStyle(color: Color(eyedropper.color)))
                             .contextMenu {

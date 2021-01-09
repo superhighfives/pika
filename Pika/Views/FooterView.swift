@@ -22,7 +22,7 @@ struct FooterView: View {
                     .bold()
                     .foregroundColor(.gray)
                 Text("\(colorContrastRatio)")
-                    .font(.title)
+                    .font(.system(size: 18))
             }
 
             Divider()

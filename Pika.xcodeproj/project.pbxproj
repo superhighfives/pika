@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		221600F925A62E5B00B8B7D9 /* IconImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221600F825A62E5B00B8B7D9 /* IconImage.swift */; };
 		221600FD25A636D600B8B7D9 /* ConditionalModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221600FC25A636D600B8B7D9 /* ConditionalModifier.swift */; };
+		226FD61025A940F90021A67F /* VisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226FD60F25A940F90021A67F /* VisualEffectView.swift */; };
 		EA057887259F54B500ACCD89 /* ColorNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA057886259F54B500ACCD89 /* ColorNavigation.swift */; };
 		EA801285259F8F480026D5D9 /* ComplianceToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA801284259F8F480026D5D9 /* ComplianceToggle.swift */; };
 		EA8124C1259E307D00033F0B /* FooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8124C0259E307D00033F0B /* FooterView.swift */; };
@@ -35,6 +36,7 @@
 /* Begin PBXFileReference section */
 		221600F825A62E5B00B8B7D9 /* IconImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconImage.swift; sourceTree = "<group>"; };
 		221600FC25A636D600B8B7D9 /* ConditionalModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionalModifier.swift; sourceTree = "<group>"; };
+		226FD60F25A940F90021A67F /* VisualEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectView.swift; sourceTree = "<group>"; };
 		EA057886259F54B500ACCD89 /* ColorNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorNavigation.swift; sourceTree = "<group>"; };
 		EA801284259F8F480026D5D9 /* ComplianceToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplianceToggle.swift; sourceTree = "<group>"; };
 		EA8124C0259E307D00033F0B /* FooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterView.swift; sourceTree = "<group>"; };
@@ -95,7 +97,6 @@
 		EAD0B6CA259CED1C00FA2F67 /* Pika */ = {
 			isa = PBXGroup;
 			children = (
-				EAD0B71A259D14C200FA2F67 /* Styles */,
 				EAD0B6CB259CED1C00FA2F67 /* AppDelegate.swift */,
 				EAD0B6CF259CED1D00FA2F67 /* Assets.xcassets */,
 				EAD0B6FD259CF29C00FA2F67 /* Constants.swift */,
@@ -105,6 +106,7 @@
 				EAD0B6D4259CED1D00FA2F67 /* Main.storyboard */,
 				EAD0B6D8259CED1D00FA2F67 /* Pika.entitlements */,
 				EAD0B6D1259CED1D00FA2F67 /* Preview Content */,
+				EAD0B71A259D14C200FA2F67 /* Styles */,
 				EAD0B6F0259CF29300FA2F67 /* Utilities */,
 				EAD0B6F2259CF29300FA2F67 /* Views */,
 			);
@@ -148,6 +150,7 @@
 				EA8124C0259E307D00033F0B /* FooterView.swift */,
 				EA057886259F54B500ACCD89 /* ColorNavigation.swift */,
 				EA801284259F8F480026D5D9 /* ComplianceToggle.swift */,
+				226FD60F25A940F90021A67F /* VisualEffectView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -297,6 +300,7 @@
 				EAD0B6FA259CF29300FA2F67 /* VersionView.swift in Sources */,
 				EA8124C1259E307D00033F0B /* FooterView.swift in Sources */,
 				EAD0B713259CFD2000FA2F67 /* Defaults.swift in Sources */,
+				226FD61025A940F90021A67F /* VisualEffectView.swift in Sources */,
 				EAD0B6FE259CF29C00FA2F67 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

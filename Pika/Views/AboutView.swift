@@ -35,7 +35,7 @@ struct AboutView: View {
                     IconImage(name: "hand.thumbsup.fill")
                     Text("Designed by")
                     LinkButton(title: "Charlie Gleason", link: "https://charliegleason.com")
-                }.font(.callout)
+                }
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)

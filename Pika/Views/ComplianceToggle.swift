@@ -22,6 +22,7 @@ struct ComplianceToggle: View {
         if #available(OSX 11.0, *) {
             view.help(tooltip)
         }
+        return view
     }
 }
 

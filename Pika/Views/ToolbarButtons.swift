@@ -47,7 +47,7 @@ struct MenuItems: View {
 
 struct ToolbarButtons: View {
     @ViewBuilder
-    func getMenu(title _: String) -> some View {
+    func getMenu() -> some View {
         let icon = "gearshape"
 
         if #available(OSX 11.0, *) {
@@ -58,20 +58,21 @@ struct ToolbarButtons: View {
             }
             .menuStyle(BorderlessButtonMenuStyle(showsMenuIndicator: true))
         } else {
-            MenuButton(label: IconImage(name: icon), content: {
+            MenuButton(label: HStack { Spacer(); IconImage(name: icon) }, content: {
                 MenuItems()
             })
-                .menuButtonStyle(BorderlessButtonMenuButtonStyle())
+                .menuButtonStyle(BorderlessPullDownMenuButtonStyle())
+                .padding(EdgeInsets(top: 40, leading: 0, bottom: 0, trailing: 0))
+                .edgesIgnoringSafeArea(.all)
+                .fixedSize()
         }
     }
 
     var body: some View {
-        Group {
-            getMenu(title: "Lol")
-                .frame(alignment: .leading)
-                .padding(.horizontal, 16.0)
-                .fixedSize()
-        }
+        getMenu()
+            .frame(alignment: .leading)
+            .padding(.horizontal, 16.0)
+            .fixedSize()
     }
 }
 

@@ -53,6 +53,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         pikaWindow.toolbar = NSToolbar()
         if #available(OSX 11.0, *) {
             pikaWindow.toolbarStyle = .unifiedCompact
+        } else {
+            pikaWindow.toolbar!.showsBaselineSeparator = false
+            pikaWindow.titleVisibility = .hidden
         }
         let toolbarButtons = NSHostingView(rootView: ToolbarButtons())
         toolbarButtons.frame.size = toolbarButtons.fittingSize
@@ -62,7 +65,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         pikaWindow.addTitlebarAccessoryViewController(titlebarAccessory)
 
         // Frame and content set up
-        pikaWindow.makeMain()
         pikaWindow.setFrameAutosaveName("Pika Window")
         pikaWindow.contentView = NSHostingView(rootView: contentView)
 
@@ -102,13 +104,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func createWindow(title: String, size: NSRect) -> NSWindow {
         let window = NSWindow(
             contentRect: size,
-            styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView, .borderless],
+            styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView],
             backing: .buffered,
             defer: false
         )
-        window.titlebarAppearsTransparent = true
         window.titleVisibility = .hidden
+        window.titlebarAppearsTransparent = true
         window.level = .floating
+        window.isMovableByWindowBackground = true
         window.center()
         window.setFrameAutosaveName("\(title) Window")
         window.isReleasedWhenClosed = false
