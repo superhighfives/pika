@@ -41,6 +41,7 @@ struct Visualisation: NSViewRepresentable {
                 self.device = device
             }
             commandQueue = device.makeCommandQueue()!
+
             super.init()
 
             pipelineState = createPipeline()

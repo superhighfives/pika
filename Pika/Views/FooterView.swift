@@ -48,6 +48,10 @@ struct FooterView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: 50.0, alignment: .leading)
         .padding(.horizontal, 12.0)
+        .background(VisualEffectView(
+            material: NSVisualEffectView.Material.underWindowBackground,
+            blendingMode: NSVisualEffectView.BlendingMode.behindWindow
+        ))
     }
 }
 

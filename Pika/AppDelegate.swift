@@ -144,7 +144,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if aboutWindow == nil {
             aboutWindow = createWindow(
                 title: "About",
-                size: NSRect(x: 0, y: 0, width: 300, height: 300),
+                size: NSRect(x: 0, y: 0, width: 300, height: 400),
                 styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView]
             )
             aboutWindow.contentView = NSHostingView(rootView: AboutView())
@@ -172,7 +172,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 styleMask: [.titled, .fullSizeContentView]
             )
             splashWindow.titleVisibility = .visible
-            splashWindow.title = "Welcome to Pika"
+            splashWindow.title = "Pika"
             splashWindow.contentView = NSHostingView(rootView: SplashView().edgesIgnoringSafeArea(.all))
         }
         splashWindow.fadeIn(nil)
