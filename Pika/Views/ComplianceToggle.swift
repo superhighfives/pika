@@ -13,16 +13,19 @@ struct ComplianceToggle: View {
     var tooltip: String
 
     var body: some View {
-        let view = HStack(spacing: 2.0) {
+        HStack(spacing: 2.0) {
             IconImage(name: isCompliant ? "checkmark.circle.fill" : "xmark.circle")
                 .opacity(isCompliant ? 1.0 : 0.4)
             Text(title)
         }
         .opacity(isCompliant ? 1.0 : 0.4)
-        if #available(OSX 11.0, *) {
-            view.help(tooltip)
+        .modify {
+            if #available(OSX 11.0, *) {
+                $0.help(tooltip)
+            } else {
+                $0
+            }
         }
-        return view
     }
 }
 

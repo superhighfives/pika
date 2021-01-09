@@ -24,7 +24,6 @@ struct MenuItems: View {
                 if #available(OSX 11.0, *) {
                     $0.keyboardShortcut(",", modifiers: .command)
                 } else {
-                    // TODO: Look into options for keyboard shortcut for 10.15
                     $0
                 }
             }
@@ -38,7 +37,6 @@ struct MenuItems: View {
                 if #available(OSX 11.0, *) {
                     $0.keyboardShortcut("q", modifiers: .command)
                 } else {
-                    // TODO: Look into options for keyboard shortcut for 10.15
                     $0
                 }
             }
