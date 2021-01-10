@@ -13,8 +13,6 @@ import SwiftUI
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
-    @Default(.showSplash) var showSplash
-
     var statusBarItem: NSStatusItem!
     var pikaWindow: NSWindow!
     var splashWindow: NSWindow!
@@ -75,16 +73,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         // Define global keyboard shortcuts
         KeyboardShortcuts.onKeyUp(for: .togglePika) { [self] in
-            if !Defaults[.showSplash] {
+            if Defaults[.viewedSplash] {
                 togglePopover(nil)
             }
         }
 
         // Open splash window
-        if showSplash {
-            openSplashWindow(nil)
-        } else {
+        if Defaults[.viewedSplash] {
             showMainWindow()
+        } else {
+            openSplashWindow(nil)
         }
         NSApp.activate(ignoringOtherApps: true)
     }
@@ -100,7 +98,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if !pikaWindow.isVisible {
             pikaWindow.fadeIn(nil)
         }
-        Defaults[.showSplash] = false
+        Defaults[.viewedSplash] = true
     }
 
     func showMainWindow() {
