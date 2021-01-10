@@ -13,17 +13,17 @@ struct SplashView: View {
     var body: some View {
         VStack(spacing: 0) {
             ZStack {
-                Visualisation()
+                VisualisationView()
                 Image("AppSplash")
                     .resizable()
                     .scaledToFit()
-                    .frame(maxWidth: 150.0)
+                    .frame(maxWidth: 140.0)
+                    .offset(x: 0.0, y: 5.0)
             }
             Divider()
             HStack(spacing: 15.0) {
                 HStack {
-                    Text("Set shortcut")
-                        .font(.callout)
+                    Text("Global shortcut")
                     KeyboardShortcuts.Recorder(for: .togglePika)
                 }
 
@@ -38,6 +38,14 @@ struct SplashView: View {
                 Button(action: {
                     NSApp.sendAction(#selector(AppDelegate.closeSplashWindow), to: nil, from: nil)
                 }, label: { Text("Get Started") })
+                    .modify {
+                        if #available(OSX 11.0, *) {
+                            $0.keyboardShortcut(.defaultAction)
+                                .accentColor(.accentColor)
+                        } else {
+                            $0
+                        }
+                    }
             }
             .frame(maxWidth: .infinity, maxHeight: 50.0)
         }

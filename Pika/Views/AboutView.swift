@@ -23,8 +23,7 @@ struct AboutView: View {
     var body: some View {
         VStack(spacing: 16.0) {
             ZStack(alignment: .bottom) {
-                Visualisation()
-                    .frame(maxHeight: .infinity)
+                VisualisationView()
                 Rectangle()
                     .fill(LinearGradient(gradient: Gradient(colors: [Color.black.opacity(0), Color.black.opacity(0.5)]), startPoint: .top, endPoint: .bottom))
                     .frame(maxWidth: .infinity, maxHeight: 100.0)
