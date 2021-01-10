@@ -1,14 +1,7 @@
-//
-//  VisualisationView.swift
-//  Pika
-//
-//  Created by Charlie Gleason on 09/01/2021.
-//
-
 import MetalKit
 import SwiftUI
 
-struct VisualisationView: View {
+struct Visualisation: View {
     var device: MTLDevice!
 
     init() {
@@ -25,7 +18,9 @@ struct VisualisationView: View {
                 Image("AppBackground")
                     .resizable()
                     .scaledToFill()
-                    .frame(maxWidth: geo.size.width, maxHeight: geo.size.height, alignment: .center)
+                    .frame(maxWidth: geo.size.width,
+                           maxHeight: geo.size.height,
+                           alignment: .center)
                     .clipped()
             }
         }
@@ -34,6 +29,6 @@ struct VisualisationView: View {
 
 struct VisualisationView_Previews: PreviewProvider {
     static var previews: some View {
-        VisualisationView()
+        Visualisation()
     }
 }

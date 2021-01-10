@@ -1,13 +1,6 @@
-//
-//  VersionView.swift
-//  Pika
-//
-//  Created by Charlie Gleason on 30/12/2020.
-//
-
 import SwiftUI
 
-struct VersionView: View {
+struct AppVersion: View {
     let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
     let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String
     var body: some View {
@@ -29,6 +22,6 @@ struct VersionView: View {
 
 struct VersionView_Previews: PreviewProvider {
     static var previews: some View {
-        VersionView()
+        AppVersion()
     }
 }

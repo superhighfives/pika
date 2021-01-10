@@ -1,13 +1,6 @@
-//
-//  ColorNavigation.swift
-//  Pika
-//
-//  Created by Charlie Gleason on 01/01/2021.
-//
-
 import SwiftUI
 
-struct ColorNavigation: View {
+struct ColorMenuItems: View {
     var eyedropper: Eyedropper
     let pasteboard = NSPasteboard.general
 
@@ -31,9 +24,9 @@ struct ColorNavigation: View {
     }
 }
 
-struct ColorNavigation_Previews: PreviewProvider {
+struct ColorMenuItems_Previews: PreviewProvider {
     static var previews: some View {
         let eyedropper = Eyedropper(title: "Foreground", color: NSColor.random())
-        ColorNavigation(eyedropper: eyedropper)
+        ColorMenuItems(eyedropper: eyedropper)
     }
 }

@@ -4,6 +4,7 @@
 //
 //  Created by Jathu Satkunarajah - August 2015 - Toronto
 //  Copyright (c) 2015 Jathu Satkunarajah. All rights reserved.
+//  Original repo: https://github.com/jathu/sweetercolor
 //
 
 import SwiftUI

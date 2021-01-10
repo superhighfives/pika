@@ -1,13 +1,6 @@
-//
-//  VisualEffectView.swift
-//  Pika
-//
-//  Created by Charlie Gleason on 09/01/2021.
-//
-
 import SwiftUI
 
-struct VisualEffectView: NSViewRepresentable {
+struct VisualEffect: NSViewRepresentable {
     let material: NSVisualEffectView.Material
     let blendingMode: NSVisualEffectView.BlendingMode
 

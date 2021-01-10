@@ -1,10 +1,3 @@
-//
-//  AboutView.swift
-//  Pika
-//
-//  Created by Charlie Gleason on 24/12/2020.
-//
-
 import SwiftUI
 
 struct LinkButton: View {
@@ -23,12 +16,16 @@ struct AboutView: View {
     var body: some View {
         VStack(spacing: 16.0) {
             ZStack(alignment: .bottom) {
-                VisualisationView()
+                Visualisation()
                 Rectangle()
-                    .fill(LinearGradient(gradient: Gradient(colors: [Color.black.opacity(0), Color.black.opacity(0.5)]), startPoint: .top, endPoint: .bottom))
+                    .fill(LinearGradient(
+                        gradient: Gradient(colors: [Color.black.opacity(0), Color.black.opacity(0.5)]),
+                        startPoint: .top,
+                        endPoint: .bottom
+                    ))
                     .frame(maxWidth: .infinity, maxHeight: 100.0)
             }
-            VersionView()
+            AppVersion()
                 .padding(EdgeInsets(top: -50, leading: 0, bottom: 0, trailing: 0))
             VStack(spacing: 20.0) {
                 HStack(spacing: 20.0) {

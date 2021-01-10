@@ -1,10 +1,3 @@
-//
-//  SplashView.swift
-//  Pika
-//
-//  Created by Charlie Gleason on 06/01/2021.
-//
-
 import KeyboardShortcuts
 import LaunchAtLogin
 import SwiftUI
@@ -13,7 +6,7 @@ struct SplashView: View {
     var body: some View {
         VStack(spacing: 0) {
             ZStack {
-                VisualisationView()
+                Visualisation()
                 Image("AppSplash")
                     .resizable()
                     .scaledToFit()

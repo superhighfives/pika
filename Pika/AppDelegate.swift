@@ -1,14 +1,6 @@
-//
-//  AppDelegate.swift
-//  Pika
-//
-//  Created by Charlie Gleason on 30/12/2020.
-//
-
 import Cocoa
 import Defaults
 import KeyboardShortcuts
-import MetalKit
 import SwiftUI
 
 @main
@@ -28,7 +20,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             button.action = #selector(togglePopover(_:))
         }
 
-        // Defined content view
+        // Define content view
         let contentView = ContentView()
             .frame(minWidth: 380,
                    idealWidth: 380,
@@ -38,37 +30,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                    maxHeight: 350,
                    alignment: .center)
 
-        // Create primary window
-        pikaWindow = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 380, height: 150),
-            styleMask: [.titled, .closable, .miniaturizable, .resizable],
-            backing: .buffered, defer: false
-        )
-        pikaWindow.isReleasedWhenClosed = false
-        pikaWindow.center()
-        pikaWindow.title = "Pika"
-        pikaWindow.level = .floating
-        pikaWindow.isMovableByWindowBackground = true
-        pikaWindow.standardWindowButton(NSWindow.ButtonType.zoomButton)!.isEnabled = false
-        pikaWindow.titlebarAppearsTransparent = true
-
-        // Set up toolbar
-        pikaWindow.toolbar = NSToolbar()
-        if #available(OSX 11.0, *) {
-            pikaWindow.toolbarStyle = .unifiedCompact
-        } else {
-            pikaWindow.toolbar!.showsBaselineSeparator = false
-            pikaWindow.titleVisibility = .hidden
-        }
-        let toolbarButtons = NSHostingView(rootView: ToolbarButtons())
-        toolbarButtons.frame.size = toolbarButtons.fittingSize
-        let titlebarAccessory = NSTitlebarAccessoryViewController()
-        titlebarAccessory.view = toolbarButtons
-        titlebarAccessory.layoutAttribute = .trailing
-        pikaWindow.addTitlebarAccessoryViewController(titlebarAccessory)
-
-        // Frame and content set up
-        pikaWindow.setFrameAutosaveName("Pika Window")
+        pikaWindow = PikaWindow.createPrimaryWindow()
         pikaWindow.contentView = NSHostingView(rootView: contentView)
 
         // Define global keyboard shortcuts
@@ -78,12 +40,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             }
         }
 
-        // Open splash window
+        // Open splash window, or main
         if Defaults[.viewedSplash] {
             showMainWindow()
         } else {
             openSplashWindow(nil)
         }
+
         NSApp.activate(ignoringOtherApps: true)
     }
 
@@ -121,26 +84,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
-    func createWindow(title: String, size: NSRect, styleMask: NSWindow.StyleMask) -> NSWindow {
-        let window = NSWindow(
-            contentRect: size,
-            styleMask: styleMask,
-            backing: .buffered,
-            defer: false
-        )
-        window.titleVisibility = .hidden
-        window.titlebarAppearsTransparent = true
-        window.level = .floating
-        window.isMovableByWindowBackground = true
-        window.center()
-        window.setFrameAutosaveName("\(title) Window")
-        window.isReleasedWhenClosed = false
-        return window
-    }
-
     @IBAction func openAboutWindow(_: Any?) {
         if aboutWindow == nil {
-            aboutWindow = createWindow(
+            aboutWindow = PikaWindow.createSecondaryWindow(
                 title: "About",
                 size: NSRect(x: 0, y: 0, width: 300, height: 380),
                 styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView]
@@ -152,7 +98,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBAction func openPreferencesWindow(_: Any?) {
         if preferencesWindow == nil {
-            preferencesWindow = createWindow(
+            preferencesWindow = PikaWindow.createSecondaryWindow(
                 title: "Preferences",
                 size: NSRect(x: 0, y: 0, width: 550, height: 380),
                 styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView]
@@ -164,7 +110,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBAction func openSplashWindow(_: Any?) {
         if splashWindow == nil {
-            splashWindow = createWindow(
+            splashWindow = PikaWindow.createSecondaryWindow(
                 title: "Splash",
                 size: NSRect(x: 0, y: 0, width: 600, height: 260),
                 styleMask: [.titled, .fullSizeContentView]

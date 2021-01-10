@@ -9,15 +9,19 @@
 /* Begin PBXBuildFile section */
 		221600F925A62E5B00B8B7D9 /* IconImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221600F825A62E5B00B8B7D9 /* IconImage.swift */; };
 		221600FD25A636D600B8B7D9 /* ConditionalModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221600FC25A636D600B8B7D9 /* ConditionalModifier.swift */; };
-		226FD61025A940F90021A67F /* VisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226FD60F25A940F90021A67F /* VisualEffectView.swift */; };
-		EA057887259F54B500ACCD89 /* ColorNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA057886259F54B500ACCD89 /* ColorNavigation.swift */; };
-		EA0C525025AA729300AFF716 /* VisualisationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C524F25AA729300AFF716 /* VisualisationView.swift */; };
+		226FD61025A940F90021A67F /* VisualEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226FD60F25A940F90021A67F /* VisualEffect.swift */; };
+		EA057887259F54B500ACCD89 /* ColorMenuItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA057886259F54B500ACCD89 /* ColorMenuItems.swift */; };
+		EA0C525025AA729300AFF716 /* Visualisation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C524F25AA729300AFF716 /* Visualisation.swift */; };
+		EA0C526025AB5A2B00AFF716 /* NavigationMenuItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C525F25AB5A2B00AFF716 /* NavigationMenuItems.swift */; };
+		EA0C526425AB5D1700AFF716 /* PikaWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C526325AB5D1700AFF716 /* PikaWindow.swift */; };
+		EA0C526F25AB683400AFF716 /* EyedropperButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C526E25AB683400AFF716 /* EyedropperButton.swift */; };
+		EA0C527325AB6C6000AFF716 /* ColorMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C527225AB6C6000AFF716 /* ColorMenu.swift */; };
 		EA72BB8425A5334B008205E7 /* MetalShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = EA72BB8225A5334B008205E7 /* MetalShader.metal */; };
 		EA72BB8825A53750008205E7 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA72BB8725A53750008205E7 /* SplashView.swift */; };
 		EA72BB8B25A537C3008205E7 /* MetalShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA72BB8A25A537C3008205E7 /* MetalShader.swift */; };
 		EA72BBA925A7CE9C008205E7 /* NSWindowFade.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA72BBA825A7CE9C008205E7 /* NSWindowFade.swift */; };
 		EA801285259F8F480026D5D9 /* ComplianceToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA801284259F8F480026D5D9 /* ComplianceToggle.swift */; };
-		EA8124C1259E307D00033F0B /* FooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8124C0259E307D00033F0B /* FooterView.swift */; };
+		EA8124C1259E307D00033F0B /* Footer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8124C0259E307D00033F0B /* Footer.swift */; };
 		EAD0B6CC259CED1C00FA2F67 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6CB259CED1C00FA2F67 /* AppDelegate.swift */; };
 		EAD0B6D0259CED1D00FA2F67 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EAD0B6CF259CED1D00FA2F67 /* Assets.xcassets */; };
 		EAD0B6D3259CED1D00FA2F67 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EAD0B6D2259CED1D00FA2F67 /* Preview Assets.xcassets */; };
@@ -29,27 +33,31 @@
 		EAD0B6F7259CF29300FA2F67 /* Eyedropper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6F1259CF29300FA2F67 /* Eyedropper.swift */; };
 		EAD0B6F8259CF29300FA2F67 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6F3259CF29300FA2F67 /* AboutView.swift */; };
 		EAD0B6F9259CF29300FA2F67 /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6F4259CF29300FA2F67 /* PreferencesView.swift */; };
-		EAD0B6FA259CF29300FA2F67 /* VersionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6F5259CF29300FA2F67 /* VersionView.swift */; };
+		EAD0B6FA259CF29300FA2F67 /* AppVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6F5259CF29300FA2F67 /* AppVersion.swift */; };
 		EAD0B6FB259CF29300FA2F67 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6F6259CF29300FA2F67 /* ContentView.swift */; };
 		EAD0B6FE259CF29C00FA2F67 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6FD259CF29C00FA2F67 /* Constants.swift */; };
 		EAD0B710259CFAC700FA2F67 /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = EAD0B70F259CFAC700FA2F67 /* Defaults */; };
 		EAD0B713259CFD2000FA2F67 /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B712259CFD2000FA2F67 /* Defaults.swift */; };
 		EAD0B718259D146200FA2F67 /* EyedropperButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B717259D146200FA2F67 /* EyedropperButtonStyle.swift */; };
-		EAD0B71C259D151400FA2F67 /* ToolbarButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B71B259D151400FA2F67 /* ToolbarButtons.swift */; };
+		EAD0B71C259D151400FA2F67 /* NavigationMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B71B259D151400FA2F67 /* NavigationMenu.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		221600F825A62E5B00B8B7D9 /* IconImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconImage.swift; sourceTree = "<group>"; };
 		221600FC25A636D600B8B7D9 /* ConditionalModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionalModifier.swift; sourceTree = "<group>"; };
-		226FD60F25A940F90021A67F /* VisualEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectView.swift; sourceTree = "<group>"; };
-		EA057886259F54B500ACCD89 /* ColorNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorNavigation.swift; sourceTree = "<group>"; };
-		EA0C524F25AA729300AFF716 /* VisualisationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualisationView.swift; sourceTree = "<group>"; };
+		226FD60F25A940F90021A67F /* VisualEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffect.swift; sourceTree = "<group>"; };
+		EA057886259F54B500ACCD89 /* ColorMenuItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorMenuItems.swift; sourceTree = "<group>"; };
+		EA0C524F25AA729300AFF716 /* Visualisation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Visualisation.swift; sourceTree = "<group>"; };
+		EA0C525F25AB5A2B00AFF716 /* NavigationMenuItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationMenuItems.swift; sourceTree = "<group>"; };
+		EA0C526325AB5D1700AFF716 /* PikaWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PikaWindow.swift; sourceTree = "<group>"; };
+		EA0C526E25AB683400AFF716 /* EyedropperButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyedropperButton.swift; sourceTree = "<group>"; };
+		EA0C527225AB6C6000AFF716 /* ColorMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorMenu.swift; sourceTree = "<group>"; };
 		EA72BB8225A5334B008205E7 /* MetalShader.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = MetalShader.metal; sourceTree = "<group>"; };
 		EA72BB8725A53750008205E7 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		EA72BB8A25A537C3008205E7 /* MetalShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalShader.swift; sourceTree = "<group>"; };
 		EA72BBA825A7CE9C008205E7 /* NSWindowFade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSWindowFade.swift; sourceTree = "<group>"; };
 		EA801284259F8F480026D5D9 /* ComplianceToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplianceToggle.swift; sourceTree = "<group>"; };
-		EA8124C0259E307D00033F0B /* FooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterView.swift; sourceTree = "<group>"; };
+		EA8124C0259E307D00033F0B /* Footer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Footer.swift; sourceTree = "<group>"; };
 		EAD0B6C8259CED1C00FA2F67 /* Pika.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pika.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAD0B6CB259CED1C00FA2F67 /* AppDelegate.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; tabWidth = 4; };
 		EAD0B6CF259CED1D00FA2F67 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -61,14 +69,14 @@
 		EAD0B6F1259CF29300FA2F67 /* Eyedropper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Eyedropper.swift; sourceTree = "<group>"; };
 		EAD0B6F3259CF29300FA2F67 /* AboutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		EAD0B6F4259CF29300FA2F67 /* PreferencesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; tabWidth = 4; };
-		EAD0B6F5259CF29300FA2F67 /* VersionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VersionView.swift; sourceTree = "<group>"; };
+		EAD0B6F5259CF29300FA2F67 /* AppVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppVersion.swift; sourceTree = "<group>"; };
 		EAD0B6F6259CF29300FA2F67 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; tabWidth = 4; };
 		EAD0B6FD259CF29C00FA2F67 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		EAD0B704259CF3BA00FA2F67 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		EAD0B705259CF3BA00FA2F67 /* LICENSE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LICENSE.md; sourceTree = "<group>"; };
 		EAD0B712259CFD2000FA2F67 /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
 		EAD0B717259D146200FA2F67 /* EyedropperButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyedropperButtonStyle.swift; sourceTree = "<group>"; };
-		EAD0B71B259D151400FA2F67 /* ToolbarButtons.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = ToolbarButtons.swift; sourceTree = "<group>"; tabWidth = 4; };
+		EAD0B71B259D151400FA2F67 /* NavigationMenu.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = NavigationMenu.swift; sourceTree = "<group>"; tabWidth = 4; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,13 +94,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		EA72BB8125A5334B008205E7 /* Splash */ = {
+		EA0C525725AB576C00AFF716 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				EAD0B6CF259CED1D00FA2F67 /* Assets.xcassets */,
+				EAD0B6D4259CED1D00FA2F67 /* Main.storyboard */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
+		EA0C525925AB57AE00AFF716 /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				EAD0B6FD259CF29C00FA2F67 /* Constants.swift */,
+				EAD0B712259CFD2000FA2F67 /* Defaults.swift */,
+			);
+			path = Constants;
+			sourceTree = "<group>";
+		};
+		EA72BB8125A5334B008205E7 /* Metal */ = {
 			isa = PBXGroup;
 			children = (
 				EA72BB8225A5334B008205E7 /* MetalShader.metal */,
 				EA72BB8A25A537C3008205E7 /* MetalShader.swift */,
 			);
-			path = Splash;
+			path = Metal;
 			sourceTree = "<group>";
 		};
 		EAD0B6BF259CED1C00FA2F67 = {
@@ -116,17 +142,16 @@
 		EAD0B6CA259CED1C00FA2F67 /* Pika */ = {
 			isa = PBXGroup;
 			children = (
-				EAD0B6CB259CED1C00FA2F67 /* AppDelegate.swift */,
-				EAD0B6CF259CED1D00FA2F67 /* Assets.xcassets */,
-				EAD0B6FD259CF29C00FA2F67 /* Constants.swift */,
-				EAD0B712259CFD2000FA2F67 /* Defaults.swift */,
-				EAD0B6EC259CF28D00FA2F67 /* Extensions */,
-				EAD0B6D7259CED1D00FA2F67 /* Info.plist */,
-				EAD0B6D4259CED1D00FA2F67 /* Main.storyboard */,
 				EAD0B6D8259CED1D00FA2F67 /* Pika.entitlements */,
+				EA0C525925AB57AE00AFF716 /* Constants */,
+				EA0C525725AB576C00AFF716 /* Assets */,
+				EAD0B6CB259CED1C00FA2F67 /* AppDelegate.swift */,
+				EAD0B6D7259CED1D00FA2F67 /* Info.plist */,
+				EAD0B6EC259CF28D00FA2F67 /* Extensions */,
 				EAD0B6D1259CED1D00FA2F67 /* Preview Content */,
 				EAD0B71A259D14C200FA2F67 /* Styles */,
 				EAD0B6F0259CF29300FA2F67 /* Utilities */,
+				EA72BB8125A5334B008205E7 /* Metal */,
 				EAD0B6F2259CF29300FA2F67 /* Views */,
 			);
 			path = Pika;
@@ -154,6 +179,7 @@
 			isa = PBXGroup;
 			children = (
 				EAD0B6F1259CF29300FA2F67 /* Eyedropper.swift */,
+				EA0C526325AB5D1700AFF716 /* PikaWindow.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -161,19 +187,21 @@
 		EAD0B6F2259CF29300FA2F67 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				221600F825A62E5B00B8B7D9 /* IconImage.swift */,
-				EA72BB8125A5334B008205E7 /* Splash */,
 				EAD0B6F3259CF29300FA2F67 /* AboutView.swift */,
-				EAD0B6F4259CF29300FA2F67 /* PreferencesView.swift */,
-				EAD0B6F5259CF29300FA2F67 /* VersionView.swift */,
-				EAD0B6F6259CF29300FA2F67 /* ContentView.swift */,
-				EAD0B71B259D151400FA2F67 /* ToolbarButtons.swift */,
-				EA8124C0259E307D00033F0B /* FooterView.swift */,
-				EA057886259F54B500ACCD89 /* ColorNavigation.swift */,
+				EA057886259F54B500ACCD89 /* ColorMenuItems.swift */,
+				EA0C527225AB6C6000AFF716 /* ColorMenu.swift */,
 				EA801284259F8F480026D5D9 /* ComplianceToggle.swift */,
-				226FD60F25A940F90021A67F /* VisualEffectView.swift */,
+				EAD0B6F6259CF29300FA2F67 /* ContentView.swift */,
+				EA8124C0259E307D00033F0B /* Footer.swift */,
+				221600F825A62E5B00B8B7D9 /* IconImage.swift */,
+				EAD0B71B259D151400FA2F67 /* NavigationMenu.swift */,
+				EA0C525F25AB5A2B00AFF716 /* NavigationMenuItems.swift */,
+				EAD0B6F4259CF29300FA2F67 /* PreferencesView.swift */,
 				EA72BB8725A53750008205E7 /* SplashView.swift */,
-				EA0C524F25AA729300AFF716 /* VisualisationView.swift */,
+				EAD0B6F5259CF29300FA2F67 /* AppVersion.swift */,
+				226FD60F25A940F90021A67F /* VisualEffect.swift */,
+				EA0C524F25AA729300AFF716 /* Visualisation.swift */,
+				EA0C526E25AB683400AFF716 /* EyedropperButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -308,27 +336,31 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA0C527325AB6C6000AFF716 /* ColorMenu.swift in Sources */,
 				EA72BB8B25A537C3008205E7 /* MetalShader.swift in Sources */,
 				EAD0B6F9259CF29300FA2F67 /* PreferencesView.swift in Sources */,
 				EA72BB8825A53750008205E7 /* SplashView.swift in Sources */,
-				EA057887259F54B500ACCD89 /* ColorNavigation.swift in Sources */,
-				EA0C525025AA729300AFF716 /* VisualisationView.swift in Sources */,
+				EA057887259F54B500ACCD89 /* ColorMenuItems.swift in Sources */,
+				EA0C525025AA729300AFF716 /* Visualisation.swift in Sources */,
 				EAD0B6FB259CF29300FA2F67 /* ContentView.swift in Sources */,
 				EAD0B6CC259CED1C00FA2F67 /* AppDelegate.swift in Sources */,
 				EAD0B6F7259CF29300FA2F67 /* Eyedropper.swift in Sources */,
+				EA0C526025AB5A2B00AFF716 /* NavigationMenuItems.swift in Sources */,
 				EAD0B6EE259CF28D00FA2F67 /* Sweetercolor.swift in Sources */,
+				EA0C526425AB5D1700AFF716 /* PikaWindow.swift in Sources */,
 				EA801285259F8F480026D5D9 /* ComplianceToggle.swift in Sources */,
 				221600FD25A636D600B8B7D9 /* ConditionalModifier.swift in Sources */,
-				EAD0B71C259D151400FA2F67 /* ToolbarButtons.swift in Sources */,
+				EAD0B71C259D151400FA2F67 /* NavigationMenu.swift in Sources */,
 				EAD0B6F8259CF29300FA2F67 /* AboutView.swift in Sources */,
+				EA0C526F25AB683400AFF716 /* EyedropperButton.swift in Sources */,
 				EA72BB8425A5334B008205E7 /* MetalShader.metal in Sources */,
 				EA72BBA925A7CE9C008205E7 /* NSWindowFade.swift in Sources */,
 				EAD0B718259D146200FA2F67 /* EyedropperButtonStyle.swift in Sources */,
 				221600F925A62E5B00B8B7D9 /* IconImage.swift in Sources */,
-				EAD0B6FA259CF29300FA2F67 /* VersionView.swift in Sources */,
-				EA8124C1259E307D00033F0B /* FooterView.swift in Sources */,
+				EAD0B6FA259CF29300FA2F67 /* AppVersion.swift in Sources */,
+				EA8124C1259E307D00033F0B /* Footer.swift in Sources */,
 				EAD0B713259CFD2000FA2F67 /* Defaults.swift in Sources */,
-				226FD61025A940F90021A67F /* VisualEffectView.swift in Sources */,
+				226FD61025A940F90021A67F /* VisualEffect.swift in Sources */,
 				EAD0B6FE259CF29C00FA2F67 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

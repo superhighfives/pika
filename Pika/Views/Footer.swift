@@ -1,15 +1,13 @@
-//
-//  FooterView.swift
-//  Pika
-//
-//  Created by Charlie Gleason on 31/12/2020.
-//
-
 import SwiftUI
 
-struct FooterView: View {
+struct Footer: View {
     @Binding var foreground: NSColor
     @Binding var background: NSColor
+
+    let AAText = "WCAG 2.0 level AA requires a contrast ratio of at least 4.5:1 for normal text."
+    let AAPlusText = "WCAG 2.0 level AA requires a contrast ratio of at least 3:1 for large text."
+    let AAAText = "WCAG 2.0 level AAA requires a contrast ratio of at least 7:1 for normal text."
+    let AAAPlusText = "WCAG 2.0 level AAA requires a contrast ratio of at least 4.5:1 for large text."
 
     var body: some View {
         let colorWCAGCompliance = foreground.WCAGCompliance(with: background)
@@ -33,22 +31,20 @@ struct FooterView: View {
                     .bold()
                     .foregroundColor(.gray)
                 HStack(spacing: 6.0) {
-                    // swiftlint:disable line_length
                     ComplianceToggle(title: "AA", isCompliant: colorWCAGCompliance.Level2A,
-                                     tooltip: "WCAG 2.0 level AA requires a contrast ratio of at least 4.5:1 for normal text.")
+                                     tooltip: AAText)
                     ComplianceToggle(title: "AA+", isCompliant: colorWCAGCompliance.Level2ALarge,
-                                     tooltip: "WCAG 2.0 level AA requires a contrast ratio of at least 3:1 for large text.")
+                                     tooltip: AAPlusText)
                     ComplianceToggle(title: "AAA", isCompliant: colorWCAGCompliance.Level3A,
-                                     tooltip: "WCAG 2.0 level AAA requires a contrast ratio of at least 7:1 for normal text.")
+                                     tooltip: AAAText)
                     ComplianceToggle(title: "AAA+", isCompliant: colorWCAGCompliance.Level3ALarge,
-                                     tooltip: "WCAG 2.0 level AAA requires a contrast ratio of at least 4.5:1 for large text.")
-                    // swiftlint:enable line_length
+                                     tooltip: AAAPlusText)
                 }
             }
         }
         .frame(maxWidth: .infinity, maxHeight: 50.0, alignment: .leading)
         .padding(.horizontal, 12.0)
-        .background(VisualEffectView(
+        .background(VisualEffect(
             material: NSVisualEffectView.Material.underWindowBackground,
             blendingMode: NSVisualEffectView.BlendingMode.behindWindow
         ))
@@ -61,7 +57,7 @@ struct FooterView_Previews: PreviewProvider {
         @ObservedObject var eyedropperBackground = Eyedropper(title: "Background", color: NSColor.random())
 
         var body: some View {
-            FooterView(foreground: self.$eyedropperForeground.color, background: self.$eyedropperBackground.color)
+            Footer(foreground: self.$eyedropperForeground.color, background: self.$eyedropperBackground.color)
         }
     }
 

@@ -1,11 +1,8 @@
-
-// File for Metal kernel and shader functions
 #include <metal_stdlib>
 #include <simd/simd.h>
 
 using namespace metal;
 
-// macros
 #define S(a,b,t) smoothstep(a,b,t)
 #define sat(x) clamp(x, 0., 1.)
 
@@ -31,7 +28,6 @@ float2 field(float2 p, float time) {
   return rz;
 }
 
-// remap in 2D
 float2 within(float2 uv, float4 rect)
 {
     return (uv-rect.xy)/(rect.zw-rect.xy);
@@ -56,20 +52,15 @@ kernel void compute(texture2d<float,access::write> output [[texture(0)]],
                     constant float2 &input [[buffer(0)]],
                     uint2 gid [[thread_position_in_grid]])
 {
-    // get the width and height of the screen texture
     uint width = output.get_width();
     uint height = output.get_height();
     
-    // set its resolution
     float2 iResolution = float2(width, height);
     
-    // compute the texture coordinates with the y-coordinate flipped
-    // because the origin of Shadertoy's and Metal's y-coordinates differ
     float2 uv = float2(gid.x,height - gid.y) / iResolution;
-    uv -= 0.5;  // -0.5 <> 0.5
+    uv -= 0.5;
     uv.x *= iResolution.x/iResolution.y;
     
-    // get time
     float time = input.x;
     
     float4 col = Main(uv, time);

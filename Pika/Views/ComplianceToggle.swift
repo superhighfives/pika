@@ -1,10 +1,3 @@
-//
-//  ComplianceToggle.swift
-//  Pika
-//
-//  Created by Charlie Gleason on 01/01/2021.
-//
-
 import SwiftUI
 
 struct ComplianceToggle: View {

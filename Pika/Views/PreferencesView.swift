@@ -1,10 +1,3 @@
-//
-//  PreferencesView.swift
-//  Pika
-//
-//  Created by Charlie Gleason on 24/12/2020.
-//
-
 import Defaults
 import KeyboardShortcuts
 import LaunchAtLogin
@@ -16,10 +9,10 @@ struct PreferencesView: View {
     var body: some View {
         HStack(spacing: 0) {
             Group {
-                VersionView()
+                AppVersion()
             }
             .frame(maxWidth: 180.0, maxHeight: .infinity)
-            .background(VisualEffectView(
+            .background(VisualEffect(
                 material: NSVisualEffectView.Material.sidebar,
                 blendingMode: NSVisualEffectView.BlendingMode.behindWindow
             ))
@@ -28,7 +21,6 @@ struct PreferencesView: View {
 
             VStack(alignment: .leading, spacing: 10.0) {
                 // Colour Format
-
                 Section(header: Text("Colour Format").font(.system(size: 16))) {
                     VStack(alignment: .leading, spacing: 15.0) {
                         Text("Set your preferred display format for colors.")
@@ -48,7 +40,6 @@ struct PreferencesView: View {
                     .padding(.vertical, 10.0)
 
                 // Global Shortcut
-
                 Section(header: Text("Global Shortcut").font(.system(size: 16))) {
                     VStack(alignment: .leading, spacing: 15.0) {
                         Text("Set a global hot key shortcut to invoke Pika.")

@@ -7,6 +7,8 @@
 //  Copyright © 2017 Ben Leggiero. All rights reserved.
 //
 
+// swiftlint:disable opening_brace
+
 import Cocoa
 
 private let defaultWindowAnimationDuration: TimeInterval = 0.25

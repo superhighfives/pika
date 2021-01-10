@@ -1,10 +1,3 @@
-//
-//  File.swift
-//  Pika
-//
-//  Created by Charlie Gleason on 06/01/2021.
-//
-
 import SwiftUI
 
 struct IconImage: View {

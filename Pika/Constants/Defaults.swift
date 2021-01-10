@@ -1,10 +1,3 @@
-//
-//  File.swift
-//  Pika
-//
-//  Created by Charlie Gleason on 30/12/2020.
-//
-
 import Defaults
 
 enum ColorFormatKeys: String, Codable, CaseIterable {

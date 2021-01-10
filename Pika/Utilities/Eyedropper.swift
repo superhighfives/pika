@@ -1,10 +1,3 @@
-//
-//  EyedropperButtonStyle.swift
-//  Pika
-//
-//  Created by Charlie Gleason on 30/12/2020.
-//
-
 import SwiftUI
 
 class Eyedropper: ObservableObject {
