@@ -37,10 +37,12 @@ Any and all contributions are welcomed. Check for [open issues](https://github.c
 
 ## Dependencies and thanks
 
-- [Sweetercolor](https://github.com/jathu/sweetercolor) colour extension library for Swift (slightly tweaked for NSColor, rather than UIColor)
-- [Sparkle](https://github.com/sparkle-project/Sparkle) software update framework.
+- [Sparkle](https://github.com/sparkle-project/Sparkle) software update framework
 - [Defaults](https://github.com/sindresorhus/Defaults)
 - [Keyboard Shortcuts](https://github.com/sindresorhus/KeyboardShortcuts)
 - [Launch At Login](https://github.com/sindresorhus/LaunchAtLogin)
+- [NSWindow+Fade](https://gist.github.com/BenLeggiero/1ec89e5979bf88ca13e2393fdab15ecc)
+- [Sweetercolor](https://github.com/jathu/sweetercolor) colour extension library for Swift (slightly tweaked for NSColor, rather than UIColor)
+- Metal shader code in part thanks to [Smiley](https://github.com/aslr/Smiley)
 
 And a huge thank you to [Stormnoid](https://twitter.com/stormoid) for the incredible [2D vector field visualisation](https://www.shadertoy.com/view/4tfSRj) on Shadertoy.
