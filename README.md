@@ -12,7 +12,7 @@ Download the latest version of the app at [superhighfives.com/pika](https://supe
 
 ### OS
 
-- macOS Big Sur (Version 11.0+)
+- macOS Catalina (Version 10.15+) and newer
 
 ### Development
 
