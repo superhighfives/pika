@@ -36,7 +36,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                    idealWidth: 380,
                    maxWidth: 500,
                    minHeight: 150,
-                   idealHeight: 150,
+                   idealHeight: 180,
                    maxHeight: 350,
                    alignment: .center)
 
