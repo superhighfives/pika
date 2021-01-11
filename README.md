@@ -2,7 +2,7 @@
 
 # Pika
 
-Pika (pronounced pi·kuh) is an easy to use, open-source, native colour picker for macOS. Pika makes it easy to quickly find colours onscreen, in the format you need, so you can get on with being a speedy, successful designer.
+Pika (pronounced pi·kuh, like picker) is an easy to use, open-source, native colour picker for macOS. Pika makes it easy to quickly find colours onscreen, in the format you need, so you can get on with being a speedy, successful designer.
 
 Download the latest version of the app at [superhighfives.com/pika](https://superhighfives.com/pika).
 
