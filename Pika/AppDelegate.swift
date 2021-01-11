@@ -41,13 +41,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
 
         // Open splash window, or main
-        if Defaults[.viewedSplash] {
-            showMainWindow()
-        } else {
+        if !Defaults[.viewedSplash] {
             openSplashWindow(nil)
+            NSApp.activate(ignoringOtherApps: true)
         }
-
-        NSApp.activate(ignoringOtherApps: true)
     }
 
     func applicationShouldHandleReopen(_: NSApplication, hasVisibleWindows: Bool) -> Bool {
@@ -81,6 +78,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             hideMainWindow()
         } else {
             showMainWindow()
+            NSApp.activate(ignoringOtherApps: true)
         }
     }
 
