@@ -173,11 +173,15 @@ extension NSColor {
      - returns: An array of four CGFloat numbers from [0, 255] representing HSBA respectively.
      */
     var HSBA: [CGFloat] {
-        var H: CGFloat = 0
-        var S: CGFloat = 0
-        var B: CGFloat = 0
-        var A: CGFloat = 0
-        getHue(&H, saturation: &S, brightness: &B, alpha: &A)
+        guard let hsbColor = usingColorSpace(NSColorSpace.deviceRGB) else {
+            return [0, 0, 0, 0]
+        }
+
+        let H: CGFloat = hsbColor.hueComponent
+        let S: CGFloat = hsbColor.saturationComponent
+        let B: CGFloat = hsbColor.brightnessComponent
+        let A: CGFloat = hsbColor.alphaComponent
+
         return [H, S, B, A]
     }
 
