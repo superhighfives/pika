@@ -5,8 +5,7 @@ import SwiftUI
 
 struct PreferencesView: View {
     @Default(.colorFormat) var colorFormat
-    @State var colorSpace = Defaults[.colorSpace]
-    var availableColorSpaces = NSColorSpace.availableColorSpaces(with: .rgb)
+    @State var colorSpace: NSColorSpace = Defaults[.colorSpace]
 
     var body: some View {
         HStack(spacing: 0) {
@@ -27,7 +26,7 @@ struct PreferencesView: View {
                     VStack(alignment: .leading, spacing: 15.0) {
                         Text("Set your preferred display format for colors.")
                         Picker("Colour Format", selection: $colorFormat) {
-                            ForEach(ColorFormatKeys.allCases, id: \.self) { value in
+                            ForEach(ColorFormat.allCases, id: \.self) { value in
                                 Text(value.rawValue)
                             }
                         }
@@ -38,9 +37,10 @@ struct PreferencesView: View {
 
                     VStack(alignment: .leading, spacing: 15.0) {
                         Text("Set your preferred display format for colors.")
-                        Picker("Color Space", selection: $colorSpace) {
-                            ForEach(availableColorSpaces, id: \.self) { value in
+                        Picker("Color Space", selection: $colorSpace.onChange(perform: { Defaults[.colorSpace] = $0 })) {
+                            ForEach(NSColorSpace.availableColorSpaces(with: .rgb), id: \.self) { value in
                                 Text(value.localizedName!)
+                                    .tag(value)
                             }
                         }
                         .labelsHidden()

@@ -751,7 +751,7 @@
 //        return hslString as String
 //    }
 //
-//    func toFormat(format: ColorFormatKeys) -> String {
+//    func toFormat(format: ColorFormat) -> String {
 //        switch format {
 //        case .hex:
 //            return toHex

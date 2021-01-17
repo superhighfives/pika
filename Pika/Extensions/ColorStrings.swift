@@ -90,7 +90,7 @@ extension NSColor {
 
      - returns: A string of the colour depending on the provided format.
      */
-    func toFormat(format: ColorFormatKeys) -> String {
+    func toFormat(format: ColorFormat) -> String {
         switch format {
         case .hex:
             return toHexString()

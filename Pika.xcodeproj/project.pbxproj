@@ -20,6 +20,8 @@
 		EA635DC925B3B2650014D91A /* ColorStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DC825B3B2650014D91A /* ColorStrings.swift */; };
 		EA635DCC25B3B42B0014D91A /* WCAGCompliance.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DCB25B3B42B0014D91A /* WCAGCompliance.swift */; };
 		EA635DCF25B3B8850014D91A /* Sweetercolor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6ED259CF28D00FA2F67 /* Sweetercolor.swift */; };
+		EA635DD925B498370014D91A /* CodableColorSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DD825B498370014D91A /* CodableColorSpace.swift */; };
+		EA635DDC25B4E90B0014D91A /* BindingOnChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DDB25B4E90B0014D91A /* BindingOnChange.swift */; };
 		EA72BB8425A5334B008205E7 /* MetalShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = EA72BB8225A5334B008205E7 /* MetalShader.metal */; };
 		EA72BB8825A53750008205E7 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA72BB8725A53750008205E7 /* SplashView.swift */; };
 		EA72BB8B25A537C3008205E7 /* MetalShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA72BB8A25A537C3008205E7 /* MetalShader.swift */; };
@@ -57,6 +59,8 @@
 		EA0C527225AB6C6000AFF716 /* ColorMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorMenu.swift; sourceTree = "<group>"; };
 		EA635DC825B3B2650014D91A /* ColorStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorStrings.swift; sourceTree = "<group>"; };
 		EA635DCB25B3B42B0014D91A /* WCAGCompliance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCAGCompliance.swift; sourceTree = "<group>"; };
+		EA635DD825B498370014D91A /* CodableColorSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableColorSpace.swift; sourceTree = "<group>"; };
+		EA635DDB25B4E90B0014D91A /* BindingOnChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingOnChange.swift; sourceTree = "<group>"; };
 		EA72BB8225A5334B008205E7 /* MetalShader.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = MetalShader.metal; sourceTree = "<group>"; };
 		EA72BB8725A53750008205E7 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		EA72BB8A25A537C3008205E7 /* MetalShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalShader.swift; sourceTree = "<group>"; };
@@ -179,6 +183,8 @@
 				EA72BBA825A7CE9C008205E7 /* NSWindowFade.swift */,
 				EA635DC825B3B2650014D91A /* ColorStrings.swift */,
 				EA635DCB25B3B42B0014D91A /* WCAGCompliance.swift */,
+				EA635DD825B498370014D91A /* CodableColorSpace.swift */,
+				EA635DDB25B4E90B0014D91A /* BindingOnChange.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -353,6 +359,7 @@
 				EA057887259F54B500ACCD89 /* ColorMenuItems.swift in Sources */,
 				EA0C525025AA729300AFF716 /* Visualisation.swift in Sources */,
 				EAD0B6FB259CF29300FA2F67 /* ContentView.swift in Sources */,
+				EA635DD925B498370014D91A /* CodableColorSpace.swift in Sources */,
 				EA635DCF25B3B8850014D91A /* Sweetercolor.swift in Sources */,
 				EAD0B6CC259CED1C00FA2F67 /* AppDelegate.swift in Sources */,
 				EA635DCC25B3B42B0014D91A /* WCAGCompliance.swift in Sources */,
@@ -371,6 +378,7 @@
 				221600F925A62E5B00B8B7D9 /* IconImage.swift in Sources */,
 				EAD0B6FA259CF29300FA2F67 /* AppVersion.swift in Sources */,
 				EA8124C1259E307D00033F0B /* Footer.swift in Sources */,
+				EA635DDC25B4E90B0014D91A /* BindingOnChange.swift in Sources */,
 				EAD0B713259CFD2000FA2F67 /* Defaults.swift in Sources */,
 				226FD61025A940F90021A67F /* VisualEffect.swift in Sources */,
 				EAD0B6FE259CF29C00FA2F67 /* Constants.swift in Sources */,
