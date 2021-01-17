@@ -1,5 +1,6 @@
 import Cocoa
 import Defaults
+import DynamicColor
 import KeyboardShortcuts
 import SwiftUI
 

@@ -31,13 +31,13 @@ struct Footer: View {
                     .bold()
                     .foregroundColor(.gray)
                 HStack(spacing: 6.0) {
-                    ComplianceToggle(title: "AA", isCompliant: colorWCAGCompliance.Level2A,
+                    ComplianceToggle(title: "AA", isCompliant: colorWCAGCompliance.level2A,
                                      tooltip: AAText)
-                    ComplianceToggle(title: "AA+", isCompliant: colorWCAGCompliance.Level2ALarge,
+                    ComplianceToggle(title: "AA+", isCompliant: colorWCAGCompliance.level2ALarge,
                                      tooltip: AAPlusText)
-                    ComplianceToggle(title: "AAA", isCompliant: colorWCAGCompliance.Level3A,
+                    ComplianceToggle(title: "AAA", isCompliant: colorWCAGCompliance.level3A,
                                      tooltip: AAAText)
-                    ComplianceToggle(title: "AAA+", isCompliant: colorWCAGCompliance.Level3ALarge,
+                    ComplianceToggle(title: "AAA+", isCompliant: colorWCAGCompliance.level3ALarge,
                                      tooltip: AAAPlusText)
                 }
             }
@@ -53,8 +53,8 @@ struct Footer: View {
 
 struct FooterView_Previews: PreviewProvider {
     private struct ViewWrapper: View {
-        @ObservedObject var eyedropperForeground = Eyedropper(title: "Foreground", color: NSColor.random())
-        @ObservedObject var eyedropperBackground = Eyedropper(title: "Background", color: NSColor.random())
+        @ObservedObject var eyedropperForeground = Eyedropper(title: "Foreground", color: NSColor.white)
+        @ObservedObject var eyedropperBackground = Eyedropper(title: "Background", color: NSColor.black)
 
         var body: some View {
             Footer(foreground: self.$eyedropperForeground.color, background: self.$eyedropperBackground.color)

@@ -12,7 +12,7 @@ struct EyedropperButton: View {
             ZStack {
                 Group {
                     Rectangle()
-                        .fill(Color(eyedropper.color.overlayBlack))
+                        .fill(Color(eyedropper.color.darkened(amount: 0.5)))
                         .frame(height: 55.0)
                 }
                 .opacity(0.2)
@@ -46,7 +46,7 @@ struct EyedropperButton: View {
 
 struct EyedropperButton_Previews: PreviewProvider {
     private struct ViewWrapper: View {
-        var eyedropper = Eyedropper(title: "Foreground", color: NSColor.random())
+        var eyedropper = Eyedropper(title: "Foreground", color: NSColor.white)
 
         var body: some View {
             EyedropperButton(eyedropper: self.eyedropper, uiColor: Color.white)

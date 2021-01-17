@@ -5,6 +5,8 @@ import SwiftUI
 
 struct PreferencesView: View {
     @Default(.colorFormat) var colorFormat
+    @State var colorSpace = Defaults[.colorSpace]
+    var availableColorSpaces = NSColorSpace.availableColorSpaces(with: .rgb)
 
     var body: some View {
         HStack(spacing: 0) {
@@ -31,6 +33,16 @@ struct PreferencesView: View {
                         }
                         .pickerStyle(RadioGroupPickerStyle())
                         .horizontalRadioGroupLayout()
+                        .labelsHidden()
+                    }
+
+                    VStack(alignment: .leading, spacing: 15.0) {
+                        Text("Set your preferred display format for colors.")
+                        Picker("Color Space", selection: $colorSpace) {
+                            ForEach(availableColorSpaces, id: \.self) { value in
+                                Text(value.localizedName!)
+                            }
+                        }
                         .labelsHidden()
                     }
                 }

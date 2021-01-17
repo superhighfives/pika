@@ -11,22 +11,22 @@ struct ColorMenuItems: View {
         }
         Button(action: {
             pasteboard.clearContents()
-            pasteboard.setString(eyedropper.color.toHex, forType: .string)
+            pasteboard.setString(eyedropper.color.toHexString(), forType: .string)
         }, label: { Text("Copy color hex") })
         Button(action: {
             pasteboard.clearContents()
-            pasteboard.setString(eyedropper.color.toRGB, forType: .string)
+            pasteboard.setString(eyedropper.color.toRGBString(), forType: .string)
         }, label: { Text("Copy RGB values") })
         Button(action: {
             pasteboard.clearContents()
-            pasteboard.setString(eyedropper.color.toHSB, forType: .string)
+            pasteboard.setString(eyedropper.color.toHSBString(), forType: .string)
         }, label: { Text("Copy HSB values") })
     }
 }
 
 struct ColorMenuItems_Previews: PreviewProvider {
     static var previews: some View {
-        let eyedropper = Eyedropper(title: "Foreground", color: NSColor.random())
+        let eyedropper = Eyedropper(title: "Foreground", color: NSColor.white)
         ColorMenuItems(eyedropper: eyedropper)
     }
 }

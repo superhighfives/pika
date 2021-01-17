@@ -22,7 +22,7 @@ struct ColorMenu: View {
 
 struct ColorMenu_Previews: PreviewProvider {
     static var previews: some View {
-        let eyedropper = Eyedropper(title: "Foreground", color: NSColor.random())
+        let eyedropper = Eyedropper(title: "Foreground", color: NSColor.white)
         ColorMenu(eyedropper: eyedropper)
     }
 }
