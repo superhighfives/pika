@@ -1,6 +1,7 @@
 import Cocoa
 import Defaults
 import KeyboardShortcuts
+import Sparkle
 import SwiftUI
 
 @main
@@ -107,7 +108,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if preferencesWindow == nil {
             preferencesWindow = PikaWindow.createSecondaryWindow(
                 title: "Preferences",
-                size: NSRect(x: 0, y: 0, width: 550, height: 440),
+                size: NSRect(x: 0, y: 0, width: 550, height: 480),
                 styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView]
             )
             preferencesWindow.contentView = NSHostingView(rootView: PreferencesView())

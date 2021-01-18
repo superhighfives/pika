@@ -1,3 +1,4 @@
+import Defaults
 import KeyboardShortcuts
 import SwiftUI
 
@@ -9,7 +10,11 @@ extension KeyboardShortcuts.Name {
 
 enum PikaConstants {
     // Release URL
-    static let url = "https://superhighfives.com/releases/pika"
+    static func url() -> String {
+        Defaults[.betaUpdates]
+            ? "https://superhighfives.com/releases/pika/betas"
+            : "https://superhighfives.com/releases/pika"
+    }
 
     // Initial colours
     static let initialColors = [

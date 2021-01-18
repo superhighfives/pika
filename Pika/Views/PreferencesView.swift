@@ -6,6 +6,7 @@ import SwiftUI
 struct PreferencesView: View {
     @Default(.colorFormat) var colorFormat
     @Default(.hideMenuBarIcon) var hideMenuBarIcon
+    @Default(.betaUpdates) var betaUpdates
     @State var colorSpace: NSColorSpace = Defaults[.colorSpace]
 
     var body: some View {
@@ -75,6 +76,9 @@ struct PreferencesView: View {
                     }
                     Toggle(isOn: $hideMenuBarIcon) {
                         Text("Hide menu bar icon")
+                    }
+                    Toggle(isOn: $betaUpdates) {
+                        Text("Subscribe to beta releases")
                     }
                 }
                 .padding(.horizontal, 24.0)
