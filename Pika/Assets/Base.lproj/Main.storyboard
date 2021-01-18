@@ -122,7 +122,7 @@
                                     </items>
                                 </menu>
                             </menuItem>
-                            <menuItem title="Edit" hidden="YES" enabled="NO" id="5QF-Oa-p0T">
+                            <menuItem title="Edit" hidden="YES" allowsKeyEquivalentWhenHidden="YES" id="5QF-Oa-p0T">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Edit" id="W48-6f-4Dl">
                                     <items>
@@ -142,9 +142,14 @@
                                                 <action selector="cut:" target="Ady-hI-5gd" id="YJe-68-I9s"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Copy" enabled="NO" keyEquivalent="c" id="x3v-GG-iWU">
+                                        <menuItem title="Copy Foreground" keyEquivalent="c" allowsKeyEquivalentWhenHidden="YES" id="x3v-GG-iWU">
                                             <connections>
-                                                <action selector="copy:" target="Ady-hI-5gd" id="G1f-GL-Joy"/>
+                                                <action selector="triggerCopyForeground:" target="Voe-Tx-rLC" id="ipW-BX-WJz"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Copy Background" keyEquivalent="C" allowsKeyEquivalentWhenHidden="YES" id="p7U-sR-JqZ">
+                                            <connections>
+                                                <action selector="triggerCopyBackground:" target="Voe-Tx-rLC" id="x1x-3U-eq3"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Paste" enabled="NO" keyEquivalent="v" id="gVA-U4-sdL">
@@ -607,12 +612,12 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Eyedroppers" id="KHB-9b-hO2">
                                     <items>
-                                        <menuItem title="Foreground" keyEquivalent="D" allowsKeyEquivalentWhenHidden="YES" id="Nec-cr-B3a">
+                                        <menuItem title="Foreground" keyEquivalent="d" allowsKeyEquivalentWhenHidden="YES" id="Nec-cr-B3a">
                                             <connections>
                                                 <action selector="triggerForeground:" target="Ady-hI-5gd" id="kfg-aZ-8yk"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Background" keyEquivalent="F" allowsKeyEquivalentWhenHidden="YES" id="YF5-6a-ACB">
+                                        <menuItem title="Background" keyEquivalent="D" allowsKeyEquivalentWhenHidden="YES" id="YF5-6a-ACB">
                                             <connections>
                                                 <action selector="triggerBackground:" target="Ady-hI-5gd" id="p81-tf-RPo"/>
                                             </connections>

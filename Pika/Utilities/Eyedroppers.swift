@@ -18,7 +18,6 @@ class Eyedropper: ObservableObject {
 
         Defaults.observe(.colorSpace) { change in
             self.color = self.color.usingColorSpace(change.newValue)!
-            print("Color in \(change.newValue)")
         }.tieToLifetime(of: self)
     }
 

@@ -1,19 +1,29 @@
+import Defaults
 import SwiftUI
 
 struct EyedropperItem: View {
     @ObservedObject var eyedropper: Eyedropper
+    @State private var showToast: Bool = false
+    @Default(.colorFormat) var colorFormat
+    let pasteboard = NSPasteboard.general
 
     var body: some View {
-        let uiColor: Color = eyedropper.color.luminance < 0.5 ? Color.white : Color.black
-
         ZStack {
-            EyedropperButton(eyedropper: eyedropper, uiColor: uiColor)
+            EyedropperButton(eyedropper: eyedropper)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .onReceive(NotificationCenter.default.publisher(for: Notification.Name("Trigger\(eyedropper.title)"))) { _ in
+                .onReceive(NotificationCenter.default.publisher(
+                    for: Notification.Name("trigger\(eyedropper.title)"))) { _ in
                     eyedropper.start()
                 }
-
-            Text(eyedropper.color.luminance.description)
+                .onReceive(NotificationCenter.default.publisher(
+                    for: Notification.Name("triggerCopy\(eyedropper.title)"))) { _ in
+                    showToast = true
+                    pasteboard.clearContents()
+                    let contents = "\(eyedropper.color.toFormat(format: colorFormat))"
+                    pasteboard.setString(contents, forType: .string)
+                }
+                .toast(isShowing: $showToast, text:
+                    Text("Copied \(eyedropper.title)"))
 
             ColorMenu(eyedropper: eyedropper)
                 .shadow(radius: 0, x: 0, y: 1)

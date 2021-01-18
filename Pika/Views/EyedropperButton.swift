@@ -3,9 +3,11 @@ import SwiftUI
 
 struct EyedropperButton: View {
     @ObservedObject var eyedropper: Eyedropper
-    @State var uiColor: Color
-
     @Default(.colorFormat) var colorFormat
+
+    func getUIColor() -> (Color) {
+        return (eyedropper.color.luminance < 0.5 ? Color.white : Color.black)
+    }
 
     var body: some View {
         Button(action: { eyedropper.start() }, label: {
@@ -22,13 +24,13 @@ struct EyedropperButton: View {
                     Text(eyedropper.title)
                         .font(.caption)
                         .bold()
-                        .foregroundColor(uiColor.opacity(0.5))
+                        .foregroundColor(getUIColor().opacity(0.5))
                     HStack {
                         Text(eyedropper.color.toFormat(format: colorFormat))
-                            .foregroundColor(uiColor)
+                            .foregroundColor(getUIColor())
                             .font(.system(size: 18, weight: .regular))
                         IconImage(name: "eyedropper")
-                            .foregroundColor(uiColor)
+                            .foregroundColor(getUIColor())
                             .padding(.leading, 0.0)
                             .opacity(0.8)
                     }
@@ -47,8 +49,7 @@ struct EyedropperButton: View {
 struct EyedropperButton_Previews: PreviewProvider {
     static var previews: some View {
         EyedropperButton(
-            eyedropper: Eyedropper(title: "Foreground", color: NSColor.black),
-            uiColor: Color.white
+            eyedropper: Eyedropper(title: "Foreground", color: NSColor.black)
         )
     }
 }

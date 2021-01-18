@@ -15,12 +15,16 @@ struct ColorMenuItems: View {
         }, label: { Text("Copy color hex") })
         Button(action: {
             pasteboard.clearContents()
-            pasteboard.setString(eyedropper.color.toRGBString(), forType: .string)
+            pasteboard.setString(eyedropper.color.toRGB8BitString(), forType: .string)
         }, label: { Text("Copy RGB values") })
         Button(action: {
             pasteboard.clearContents()
-            pasteboard.setString(eyedropper.color.toHSBString(), forType: .string)
+            pasteboard.setString(eyedropper.color.toHSB8BitString(), forType: .string)
         }, label: { Text("Copy HSB values") })
+        Button(action: {
+            pasteboard.clearContents()
+            pasteboard.setString(eyedropper.color.toHSL8BitString(), forType: .string)
+        }, label: { Text("Copy HSL values") })
     }
 }
 

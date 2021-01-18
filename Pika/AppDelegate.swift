@@ -128,10 +128,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     @IBAction func triggerForeground(_: Any) {
-        notificationCenter.post(name: Notification.Name("TriggerForeground"), object: nil)
+        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerForeground), object: nil)
     }
 
     @IBAction func triggerBackground(_: Any) {
-        notificationCenter.post(name: Notification.Name("TriggerBackground"), object: nil)
+        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerBackground), object: nil)
+    }
+
+    @IBAction func triggerCopyForeground(_: Any) {
+        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerCopyForeground), object: nil)
+    }
+
+    @IBAction func triggerCopyBackground(_: Any) {
+        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerCopyBackground), object: nil)
     }
 }

@@ -16,11 +16,12 @@
 		EA0C526425AB5D1700AFF716 /* PikaWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C526325AB5D1700AFF716 /* PikaWindow.swift */; };
 		EA0C526F25AB683400AFF716 /* EyedropperButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C526E25AB683400AFF716 /* EyedropperButton.swift */; };
 		EA0C527325AB6C6000AFF716 /* ColorMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C527225AB6C6000AFF716 /* ColorMenu.swift */; };
-		EA635DC925B3B2650014D91A /* ColorStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DC825B3B2650014D91A /* ColorStrings.swift */; };
+		EA635DC925B3B2650014D91A /* Cula.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DC825B3B2650014D91A /* Cula.swift */; };
 		EA635DCC25B3B42B0014D91A /* WCAGCompliance.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DCB25B3B42B0014D91A /* WCAGCompliance.swift */; };
 		EA635DDC25B4E90B0014D91A /* BindingOnChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DDB25B4E90B0014D91A /* BindingOnChange.swift */; };
 		EA635DE125B4FC580014D91A /* ColorPickers.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DE025B4FC580014D91A /* ColorPickers.swift */; };
 		EA635DEA25B534C80014D91A /* EyedropperItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DE925B534C80014D91A /* EyedropperItem.swift */; };
+		EA635DF125B5A6D80014D91A /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DF025B5A6D80014D91A /* Toast.swift */; };
 		EA72BB8425A5334B008205E7 /* MetalShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = EA72BB8225A5334B008205E7 /* MetalShader.metal */; };
 		EA72BB8825A53750008205E7 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA72BB8725A53750008205E7 /* SplashView.swift */; };
 		EA72BB8B25A537C3008205E7 /* MetalShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA72BB8A25A537C3008205E7 /* MetalShader.swift */; };
@@ -56,11 +57,12 @@
 		EA0C526325AB5D1700AFF716 /* PikaWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PikaWindow.swift; sourceTree = "<group>"; };
 		EA0C526E25AB683400AFF716 /* EyedropperButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyedropperButton.swift; sourceTree = "<group>"; };
 		EA0C527225AB6C6000AFF716 /* ColorMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorMenu.swift; sourceTree = "<group>"; };
-		EA635DC825B3B2650014D91A /* ColorStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorStrings.swift; sourceTree = "<group>"; };
+		EA635DC825B3B2650014D91A /* Cula.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cula.swift; sourceTree = "<group>"; };
 		EA635DCB25B3B42B0014D91A /* WCAGCompliance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCAGCompliance.swift; sourceTree = "<group>"; };
 		EA635DDB25B4E90B0014D91A /* BindingOnChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingOnChange.swift; sourceTree = "<group>"; };
 		EA635DE025B4FC580014D91A /* ColorPickers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickers.swift; sourceTree = "<group>"; };
 		EA635DE925B534C80014D91A /* EyedropperItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyedropperItem.swift; sourceTree = "<group>"; };
+		EA635DF025B5A6D80014D91A /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		EA72BB8225A5334B008205E7 /* MetalShader.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = MetalShader.metal; sourceTree = "<group>"; };
 		EA72BB8725A53750008205E7 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		EA72BB8A25A537C3008205E7 /* MetalShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalShader.swift; sourceTree = "<group>"; };
@@ -177,7 +179,7 @@
 			isa = PBXGroup;
 			children = (
 				EA635DDB25B4E90B0014D91A /* BindingOnChange.swift */,
-				EA635DC825B3B2650014D91A /* ColorStrings.swift */,
+				EA635DC825B3B2650014D91A /* Cula.swift */,
 				221600FC25A636D600B8B7D9 /* ConditionalModifier.swift */,
 				EA72BBA825A7CE9C008205E7 /* NSWindowFade.swift */,
 				EA635DCB25B3B42B0014D91A /* WCAGCompliance.swift */,
@@ -198,22 +200,23 @@
 			isa = PBXGroup;
 			children = (
 				EAD0B6F3259CF29300FA2F67 /* AboutView.swift */,
-				EA057886259F54B500ACCD89 /* ColorMenuItems.swift */,
+				EAD0B6F5259CF29300FA2F67 /* AppVersion.swift */,
 				EA0C527225AB6C6000AFF716 /* ColorMenu.swift */,
+				EA057886259F54B500ACCD89 /* ColorMenuItems.swift */,
+				EA635DE025B4FC580014D91A /* ColorPickers.swift */,
 				EA801284259F8F480026D5D9 /* ComplianceToggle.swift */,
 				EAD0B6F6259CF29300FA2F67 /* ContentView.swift */,
+				EA0C526E25AB683400AFF716 /* EyedropperButton.swift */,
+				EA635DE925B534C80014D91A /* EyedropperItem.swift */,
 				EA8124C0259E307D00033F0B /* Footer.swift */,
 				221600F825A62E5B00B8B7D9 /* IconImage.swift */,
 				EAD0B71B259D151400FA2F67 /* NavigationMenu.swift */,
 				EA0C525F25AB5A2B00AFF716 /* NavigationMenuItems.swift */,
 				EAD0B6F4259CF29300FA2F67 /* PreferencesView.swift */,
 				EA72BB8725A53750008205E7 /* SplashView.swift */,
-				EAD0B6F5259CF29300FA2F67 /* AppVersion.swift */,
+				EA635DF025B5A6D80014D91A /* Toast.swift */,
 				226FD60F25A940F90021A67F /* VisualEffect.swift */,
 				EA0C524F25AA729300AFF716 /* Visualisation.swift */,
-				EA0C526E25AB683400AFF716 /* EyedropperButton.swift */,
-				EA635DE025B4FC580014D91A /* ColorPickers.swift */,
-				EA635DE925B534C80014D91A /* EyedropperItem.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -363,13 +366,14 @@
 				EA0C526425AB5D1700AFF716 /* PikaWindow.swift in Sources */,
 				EA801285259F8F480026D5D9 /* ComplianceToggle.swift in Sources */,
 				221600FD25A636D600B8B7D9 /* ConditionalModifier.swift in Sources */,
+				EA635DF125B5A6D80014D91A /* Toast.swift in Sources */,
 				EAD0B71C259D151400FA2F67 /* NavigationMenu.swift in Sources */,
 				EAD0B6F8259CF29300FA2F67 /* AboutView.swift in Sources */,
 				EA0C526F25AB683400AFF716 /* EyedropperButton.swift in Sources */,
 				EA72BB8425A5334B008205E7 /* MetalShader.metal in Sources */,
 				EA72BBA925A7CE9C008205E7 /* NSWindowFade.swift in Sources */,
 				EAD0B718259D146200FA2F67 /* EyedropperButtonStyle.swift in Sources */,
-				EA635DC925B3B2650014D91A /* ColorStrings.swift in Sources */,
+				EA635DC925B3B2650014D91A /* Cula.swift in Sources */,
 				EA635DE125B4FC580014D91A /* ColorPickers.swift in Sources */,
 				221600F925A62E5B00B8B7D9 /* IconImage.swift in Sources */,
 				EAD0B6FA259CF29300FA2F67 /* AppVersion.swift in Sources */,
