@@ -1,10 +1,3 @@
-//
-//  ToastView.swift
-//  Pika
-//
-//  Created by Charlie Gleason on 18/01/2021.
-//
-
 import SwiftUI
 
 extension View {
@@ -16,6 +9,7 @@ extension View {
 }
 
 struct Toast<Presenting>: View where Presenting: View {
+    @Environment(\.colorScheme) var colorScheme: ColorScheme
     /// The binding that decides the appropriate drawing in the body.
     @Binding var isShowing: Bool
     /// The view that will be "presenting" this toast
@@ -25,27 +19,30 @@ struct Toast<Presenting>: View where Presenting: View {
 
     var body: some View {
         if self.isShowing {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
                 withAnimation {
                     self.isShowing = false
                 }
             }
         }
-        return GeometryReader { geometry in
+        return GeometryReader { _ in
 
-            ZStack(alignment: .center) {
+            ZStack(alignment: .topLeading) {
                 self.presenting()
+
                 HStack {
                     IconImage(name: "doc.on.doc")
                     self.text
                 }
-                .frame(width: geometry.size.width - 20,
-                       height: 35)
-                .background(Color.black.opacity(0.4))
-                .foregroundColor(Color.white.opacity(0.75))
-                .cornerRadius(4)
+                .padding(.vertical, 5.0)
+                .padding(.horizontal, 10.0)
+                .font(.system(size: 10.0))
+                .background(Color.black.opacity(0.6))
+                .foregroundColor(Color.white.opacity(0.8))
+                .cornerRadius(100)
                 .transition(.slide)
                 .opacity(self.isShowing ? 1 : 0)
+                .offset(x: 4.0, y: 4.0)
             }
         }
     }

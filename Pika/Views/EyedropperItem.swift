@@ -12,7 +12,7 @@ struct EyedropperItem: View {
             EyedropperButton(eyedropper: eyedropper)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .onReceive(NotificationCenter.default.publisher(
-                    for: Notification.Name("trigger\(eyedropper.title)"))) { _ in
+                    for: Notification.Name("triggerPick\(eyedropper.title)"))) { _ in
                     eyedropper.start()
                 }
                 .onReceive(NotificationCenter.default.publisher(
@@ -23,7 +23,7 @@ struct EyedropperItem: View {
                     pasteboard.setString(contents, forType: .string)
                 }
                 .toast(isShowing: $showToast, text:
-                    Text("Copied \(eyedropper.title)"))
+                    Text("Copied \(eyedropper.title.lowercased())"))
 
             ColorMenu(eyedropper: eyedropper)
                 .shadow(radius: 0, x: 0, y: 1)

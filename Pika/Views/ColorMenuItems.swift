@@ -1,12 +1,17 @@
+import Defaults
 import SwiftUI
 
 struct ColorMenuItems: View {
     var eyedropper: Eyedropper
+    @Default(.colorFormat) var colorFormat
     let pasteboard = NSPasteboard.general
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0.0) {
-            Text(eyedropper.title)
+            Button(action: {
+                pasteboard.clearContents()
+                pasteboard.setString(eyedropper.color.toFormat(format: colorFormat), forType: .string)
+            }, label: { Text("Copy current format") })
             Divider()
         }
         Button(action: {

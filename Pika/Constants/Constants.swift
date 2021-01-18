@@ -28,6 +28,6 @@ enum PikaConstants {
     // Notification Center constants
     static let ncTriggerCopyForeground = "triggerCopyForeground"
     static let ncTriggerCopyBackground = "triggerCopyBackground"
-    static let ncTriggerForeground = "triggerForeground"
-    static let ncTriggerBackground = "triggerBackground"
+    static let ncTriggerPickForeground = "triggerPickForeground"
+    static let ncTriggerPickBackground = "triggerPickBackground"
 }

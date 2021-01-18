@@ -103,7 +103,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if preferencesWindow == nil {
             preferencesWindow = PikaWindow.createSecondaryWindow(
                 title: "Preferences",
-                size: NSRect(x: 0, y: 0, width: 550, height: 380),
+                size: NSRect(x: 0, y: 0, width: 550, height: 440),
                 styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView]
             )
             preferencesWindow.contentView = NSHostingView(rootView: PreferencesView())
@@ -127,12 +127,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         splashWindow.fadeIn(nil)
     }
 
-    @IBAction func triggerForeground(_: Any) {
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerForeground), object: nil)
+    @IBAction func triggerPickForeground(_: Any) {
+        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerPickForeground), object: nil)
     }
 
-    @IBAction func triggerBackground(_: Any) {
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerBackground), object: nil)
+    @IBAction func triggerPickBackground(_: Any) {
+        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerPickBackground), object: nil)
     }
 
     @IBAction func triggerCopyForeground(_: Any) {

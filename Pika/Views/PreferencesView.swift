@@ -24,7 +24,7 @@ struct PreferencesView: View {
                 // Colour Format
                 Section(header: Text("Colour Format").font(.system(size: 16))) {
                     VStack(alignment: .leading, spacing: 15.0) {
-                        Text("Set your preferred display format for colors.")
+                        Text("Set your preferred display format for colors")
                         Picker("Colour Format", selection: $colorFormat) {
                             ForEach(ColorFormat.allCases, id: \.self) { value in
                                 Text(value.rawValue)
@@ -35,9 +35,13 @@ struct PreferencesView: View {
                         .labelsHidden()
                     }
 
+                    Spacer()
+                        .frame(height: 0.0)
+
                     VStack(alignment: .leading, spacing: 15.0) {
-                        Text("Set your preferred display format for colors.")
-                        Picker("Color Space", selection: $colorSpace.onChange(perform: { Defaults[.colorSpace] = $0 })) {
+                        Text("Set your RGB color space")
+                        Picker("Color Space", selection:
+                            $colorSpace.onChange(perform: { Defaults[.colorSpace] = $0 })) {
                             ForEach(NSColorSpace.availableColorSpaces(with: .rgb), id: \.self) { value in
                                 Text(value.localizedName!)
                                     .tag(value)
@@ -54,7 +58,7 @@ struct PreferencesView: View {
                 // Global Shortcut
                 Section(header: Text("Global Shortcut").font(.system(size: 16))) {
                     VStack(alignment: .leading, spacing: 15.0) {
-                        Text("Set a global hot key shortcut to invoke Pika.")
+                        Text("Set a global hot key shortcut to invoke Pika")
                         KeyboardShortcuts.Recorder(for: .togglePika)
                     }
                 }

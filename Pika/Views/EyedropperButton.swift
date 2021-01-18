@@ -6,7 +6,7 @@ struct EyedropperButton: View {
     @Default(.colorFormat) var colorFormat
 
     func getUIColor() -> (Color) {
-        return (eyedropper.color.luminance < 0.5 ? Color.white : Color.black)
+        return (eyedropper.color.luminance < 0.3 ? Color.white : Color.black)
     }
 
     var body: some View {

@@ -614,12 +614,12 @@
                                     <items>
                                         <menuItem title="Foreground" keyEquivalent="d" allowsKeyEquivalentWhenHidden="YES" id="Nec-cr-B3a">
                                             <connections>
-                                                <action selector="triggerForeground:" target="Ady-hI-5gd" id="kfg-aZ-8yk"/>
+                                                <action selector="triggerPickForeground:" target="Ady-hI-5gd" id="mQw-SX-31J"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Background" keyEquivalent="D" allowsKeyEquivalentWhenHidden="YES" id="YF5-6a-ACB">
                                             <connections>
-                                                <action selector="triggerBackground:" target="Ady-hI-5gd" id="p81-tf-RPo"/>
+                                                <action selector="triggerPickForeground:" target="Ady-hI-5gd" id="ybq-mi-p2z"/>
                                             </connections>
                                         </menuItem>
                                     </items>
