@@ -16,17 +16,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_: Notification) {
         // Create the status item
         statusBarItem = NSStatusBar.system.statusItem(withLength: CGFloat(NSStatusItem.variableLength))
+        statusBarItem.isVisible = Defaults[.hideMenuBarIcon] == false
+        Defaults.observe(.hideMenuBarIcon) { change in
+            self.statusBarItem.isVisible = change.newValue == false
+        }.tieToLifetime(of: self)
 
         if let button = statusBarItem.button {
             button.image = NSImage(named: "StatusBarIcon")
             button.action = #selector(togglePopover(_:))
         }
-
-        statusBarItem.isVisible = Defaults[.hideMenuBarIcon] == false
-
-        Defaults.observe(.hideMenuBarIcon) { change in
-            self.statusBarItem.isVisible = change.newValue == false
-        }.tieToLifetime(of: self)
 
         let eyedroppers = Eyedroppers()
 
