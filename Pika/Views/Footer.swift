@@ -10,7 +10,8 @@ struct Footer: View {
 
     var body: some View {
         let colorWCAGCompliance = eyedroppers.foreground.color.WCAGCompliance(with: eyedroppers.background.color)
-        let colorContrastRatio = Double(round(100 * eyedroppers.foreground.color.contrastRatio(with: eyedroppers.background.color)) / 100).description
+        let colorContrastRatio = Double(round(100 * eyedroppers.foreground.color.contrastRatio(
+            with: eyedroppers.background.color)) / 100).description
 
         HStack(spacing: 16.0) {
             VStack(alignment: .leading, spacing: 0.0) {

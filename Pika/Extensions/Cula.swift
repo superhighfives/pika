@@ -90,6 +90,7 @@ extension NSColor {
     }
 
     // RGBA
+    // swiftlint:disable large_tuple
     final func toRGBAComponents() -> (r: CGFloat, g: CGFloat, b: CGFloat, a: CGFloat) {
         var r: CGFloat = 0, g: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
 
@@ -101,6 +102,8 @@ extension NSColor {
 
         return (r, g, b, a)
     }
+
+    // swiftlint:enable large_tuple
 
     /**
      Get the rgb values of this color.
@@ -131,7 +134,7 @@ extension NSColor {
     }
 
     // HSB
-
+    // swiftlint:disable large_tuple
     public final func toHSBComponents() -> (h: CGFloat, s: CGFloat, b: CGFloat) {
         var h: CGFloat = 0.0
         var s: CGFloat = 0.0
@@ -196,6 +199,8 @@ extension NSColor {
 
         return (h: h, s: s, l: l)
     }
+
+    // swiftlint:enable large_tuple
 
     /**
      Get the hsb values of this color.
