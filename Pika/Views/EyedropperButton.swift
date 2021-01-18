@@ -2,8 +2,8 @@ import Defaults
 import SwiftUI
 
 struct EyedropperButton: View {
-    var eyedropper: Eyedropper
-    var uiColor: Color
+    @ObservedObject var eyedropper: Eyedropper
+    @State var uiColor: Color
 
     @Default(.colorFormat) var colorFormat
 
@@ -12,7 +12,7 @@ struct EyedropperButton: View {
             ZStack {
                 Group {
                     Rectangle()
-                        .fill(Color(eyedropper.color.darkened(amount: 0.5)))
+                        .fill(Color(eyedropper.color.overlay(with: NSColor.black)))
                         .frame(height: 55.0)
                 }
                 .opacity(0.2)
@@ -45,15 +45,10 @@ struct EyedropperButton: View {
 }
 
 struct EyedropperButton_Previews: PreviewProvider {
-    private struct ViewWrapper: View {
-        var eyedropper = Eyedropper(title: "Foreground", color: NSColor.white)
-
-        var body: some View {
-            EyedropperButton(eyedropper: self.eyedropper, uiColor: Color.white)
-        }
-    }
-
     static var previews: some View {
-        ViewWrapper()
+        EyedropperButton(
+            eyedropper: Eyedropper(title: "Foreground", color: NSColor.black),
+            uiColor: Color.white
+        )
     }
 }

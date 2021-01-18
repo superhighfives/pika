@@ -16,12 +16,11 @@
 		EA0C526425AB5D1700AFF716 /* PikaWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C526325AB5D1700AFF716 /* PikaWindow.swift */; };
 		EA0C526F25AB683400AFF716 /* EyedropperButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C526E25AB683400AFF716 /* EyedropperButton.swift */; };
 		EA0C527325AB6C6000AFF716 /* ColorMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C527225AB6C6000AFF716 /* ColorMenu.swift */; };
-		EA635DC625B3B0300014D91A /* DynamicColor in Frameworks */ = {isa = PBXBuildFile; productRef = EA635DC525B3B0300014D91A /* DynamicColor */; };
 		EA635DC925B3B2650014D91A /* ColorStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DC825B3B2650014D91A /* ColorStrings.swift */; };
 		EA635DCC25B3B42B0014D91A /* WCAGCompliance.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DCB25B3B42B0014D91A /* WCAGCompliance.swift */; };
-		EA635DCF25B3B8850014D91A /* Sweetercolor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6ED259CF28D00FA2F67 /* Sweetercolor.swift */; };
-		EA635DD925B498370014D91A /* CodableColorSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DD825B498370014D91A /* CodableColorSpace.swift */; };
 		EA635DDC25B4E90B0014D91A /* BindingOnChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DDB25B4E90B0014D91A /* BindingOnChange.swift */; };
+		EA635DE125B4FC580014D91A /* ColorPickers.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DE025B4FC580014D91A /* ColorPickers.swift */; };
+		EA635DEA25B534C80014D91A /* EyedropperItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DE925B534C80014D91A /* EyedropperItem.swift */; };
 		EA72BB8425A5334B008205E7 /* MetalShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = EA72BB8225A5334B008205E7 /* MetalShader.metal */; };
 		EA72BB8825A53750008205E7 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA72BB8725A53750008205E7 /* SplashView.swift */; };
 		EA72BB8B25A537C3008205E7 /* MetalShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA72BB8A25A537C3008205E7 /* MetalShader.swift */; };
@@ -35,7 +34,7 @@
 		EAD0B6E1259CED3200FA2F67 /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; productRef = EAD0B6E0259CED3200FA2F67 /* LaunchAtLogin */; };
 		EAD0B6E5259CED6000FA2F67 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = EAD0B6E4259CED6000FA2F67 /* KeyboardShortcuts */; };
 		EAD0B6E9259CEF8600FA2F67 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = EAD0B6E8259CEF8600FA2F67 /* Sparkle */; };
-		EAD0B6F7259CF29300FA2F67 /* Eyedropper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6F1259CF29300FA2F67 /* Eyedropper.swift */; };
+		EAD0B6F7259CF29300FA2F67 /* Eyedroppers.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6F1259CF29300FA2F67 /* Eyedroppers.swift */; };
 		EAD0B6F8259CF29300FA2F67 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6F3259CF29300FA2F67 /* AboutView.swift */; };
 		EAD0B6F9259CF29300FA2F67 /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6F4259CF29300FA2F67 /* PreferencesView.swift */; };
 		EAD0B6FA259CF29300FA2F67 /* AppVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6F5259CF29300FA2F67 /* AppVersion.swift */; };
@@ -59,8 +58,9 @@
 		EA0C527225AB6C6000AFF716 /* ColorMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorMenu.swift; sourceTree = "<group>"; };
 		EA635DC825B3B2650014D91A /* ColorStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorStrings.swift; sourceTree = "<group>"; };
 		EA635DCB25B3B42B0014D91A /* WCAGCompliance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCAGCompliance.swift; sourceTree = "<group>"; };
-		EA635DD825B498370014D91A /* CodableColorSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableColorSpace.swift; sourceTree = "<group>"; };
 		EA635DDB25B4E90B0014D91A /* BindingOnChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingOnChange.swift; sourceTree = "<group>"; };
+		EA635DE025B4FC580014D91A /* ColorPickers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickers.swift; sourceTree = "<group>"; };
+		EA635DE925B534C80014D91A /* EyedropperItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyedropperItem.swift; sourceTree = "<group>"; };
 		EA72BB8225A5334B008205E7 /* MetalShader.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = MetalShader.metal; sourceTree = "<group>"; };
 		EA72BB8725A53750008205E7 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		EA72BB8A25A537C3008205E7 /* MetalShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalShader.swift; sourceTree = "<group>"; };
@@ -74,8 +74,7 @@
 		EAD0B6D5259CED1D00FA2F67 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		EAD0B6D7259CED1D00FA2F67 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EAD0B6D8259CED1D00FA2F67 /* Pika.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Pika.entitlements; sourceTree = "<group>"; };
-		EAD0B6ED259CF28D00FA2F67 /* Sweetercolor.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = Sweetercolor.swift; sourceTree = "<group>"; tabWidth = 4; };
-		EAD0B6F1259CF29300FA2F67 /* Eyedropper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Eyedropper.swift; sourceTree = "<group>"; };
+		EAD0B6F1259CF29300FA2F67 /* Eyedroppers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Eyedroppers.swift; sourceTree = "<group>"; };
 		EAD0B6F3259CF29300FA2F67 /* AboutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		EAD0B6F4259CF29300FA2F67 /* PreferencesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; tabWidth = 4; };
 		EAD0B6F5259CF29300FA2F67 /* AppVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppVersion.swift; sourceTree = "<group>"; };
@@ -94,7 +93,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				EAD0B710259CFAC700FA2F67 /* Defaults in Frameworks */,
-				EA635DC625B3B0300014D91A /* DynamicColor in Frameworks */,
 				EAD0B6E9259CEF8600FA2F67 /* Sparkle in Frameworks */,
 				EAD0B6E1259CED3200FA2F67 /* LaunchAtLogin in Frameworks */,
 				EAD0B6E5259CED6000FA2F67 /* KeyboardShortcuts in Frameworks */,
@@ -178,13 +176,11 @@
 		EAD0B6EC259CF28D00FA2F67 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				EAD0B6ED259CF28D00FA2F67 /* Sweetercolor.swift */,
+				EA635DDB25B4E90B0014D91A /* BindingOnChange.swift */,
+				EA635DC825B3B2650014D91A /* ColorStrings.swift */,
 				221600FC25A636D600B8B7D9 /* ConditionalModifier.swift */,
 				EA72BBA825A7CE9C008205E7 /* NSWindowFade.swift */,
-				EA635DC825B3B2650014D91A /* ColorStrings.swift */,
 				EA635DCB25B3B42B0014D91A /* WCAGCompliance.swift */,
-				EA635DD825B498370014D91A /* CodableColorSpace.swift */,
-				EA635DDB25B4E90B0014D91A /* BindingOnChange.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -192,7 +188,7 @@
 		EAD0B6F0259CF29300FA2F67 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				EAD0B6F1259CF29300FA2F67 /* Eyedropper.swift */,
+				EAD0B6F1259CF29300FA2F67 /* Eyedroppers.swift */,
 				EA0C526325AB5D1700AFF716 /* PikaWindow.swift */,
 			);
 			path = Utilities;
@@ -216,6 +212,8 @@
 				226FD60F25A940F90021A67F /* VisualEffect.swift */,
 				EA0C524F25AA729300AFF716 /* Visualisation.swift */,
 				EA0C526E25AB683400AFF716 /* EyedropperButton.swift */,
+				EA635DE025B4FC580014D91A /* ColorPickers.swift */,
+				EA635DE925B534C80014D91A /* EyedropperItem.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -251,7 +249,6 @@
 				EAD0B6E4259CED6000FA2F67 /* KeyboardShortcuts */,
 				EAD0B6E8259CEF8600FA2F67 /* Sparkle */,
 				EAD0B70F259CFAC700FA2F67 /* Defaults */,
-				EA635DC525B3B0300014D91A /* DynamicColor */,
 			);
 			productName = Pika;
 			productReference = EAD0B6C8259CED1C00FA2F67 /* Pika.app */;
@@ -285,7 +282,6 @@
 				EAD0B6E3259CED6000FA2F67 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
 				EAD0B6E7259CEF8600FA2F67 /* XCRemoteSwiftPackageReference "Sparkle" */,
 				EAD0B70E259CFAC700FA2F67 /* XCRemoteSwiftPackageReference "Defaults" */,
-				EA635DC425B3B0300014D91A /* XCRemoteSwiftPackageReference "DynamicColor" */,
 			);
 			productRefGroup = EAD0B6C9259CED1C00FA2F67 /* Products */;
 			projectDirPath = "";
@@ -359,11 +355,10 @@
 				EA057887259F54B500ACCD89 /* ColorMenuItems.swift in Sources */,
 				EA0C525025AA729300AFF716 /* Visualisation.swift in Sources */,
 				EAD0B6FB259CF29300FA2F67 /* ContentView.swift in Sources */,
-				EA635DD925B498370014D91A /* CodableColorSpace.swift in Sources */,
-				EA635DCF25B3B8850014D91A /* Sweetercolor.swift in Sources */,
 				EAD0B6CC259CED1C00FA2F67 /* AppDelegate.swift in Sources */,
 				EA635DCC25B3B42B0014D91A /* WCAGCompliance.swift in Sources */,
-				EAD0B6F7259CF29300FA2F67 /* Eyedropper.swift in Sources */,
+				EA635DEA25B534C80014D91A /* EyedropperItem.swift in Sources */,
+				EAD0B6F7259CF29300FA2F67 /* Eyedroppers.swift in Sources */,
 				EA0C526025AB5A2B00AFF716 /* NavigationMenuItems.swift in Sources */,
 				EA0C526425AB5D1700AFF716 /* PikaWindow.swift in Sources */,
 				EA801285259F8F480026D5D9 /* ComplianceToggle.swift in Sources */,
@@ -375,6 +370,7 @@
 				EA72BBA925A7CE9C008205E7 /* NSWindowFade.swift in Sources */,
 				EAD0B718259D146200FA2F67 /* EyedropperButtonStyle.swift in Sources */,
 				EA635DC925B3B2650014D91A /* ColorStrings.swift in Sources */,
+				EA635DE125B4FC580014D91A /* ColorPickers.swift in Sources */,
 				221600F925A62E5B00B8B7D9 /* IconImage.swift in Sources */,
 				EAD0B6FA259CF29300FA2F67 /* AppVersion.swift in Sources */,
 				EA8124C1259E307D00033F0B /* Footer.swift in Sources */,
@@ -592,14 +588,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		EA635DC425B3B0300014D91A /* XCRemoteSwiftPackageReference "DynamicColor" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/yannickl/DynamicColor";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.1;
-			};
-		};
 		EAD0B6DF259CED3200FA2F67 /* XCRemoteSwiftPackageReference "LaunchAtLogin" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sindresorhus/LaunchAtLogin";
@@ -635,11 +623,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		EA635DC525B3B0300014D91A /* DynamicColor */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = EA635DC425B3B0300014D91A /* XCRemoteSwiftPackageReference "DynamicColor" */;
-			productName = DynamicColor;
-		};
 		EAD0B6E0259CED3200FA2F67 /* LaunchAtLogin */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = EAD0B6DF259CED3200FA2F67 /* XCRemoteSwiftPackageReference "LaunchAtLogin" */;

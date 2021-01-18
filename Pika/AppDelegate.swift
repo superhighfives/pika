@@ -1,6 +1,5 @@
 import Cocoa
 import Defaults
-import DynamicColor
 import KeyboardShortcuts
 import SwiftUI
 
@@ -12,6 +11,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var aboutWindow: NSWindow!
     var preferencesWindow: NSWindow!
 
+    let notificationCenter = NotificationCenter.default
+
     func applicationDidFinishLaunching(_: Notification) {
         // Create the status item
         statusBarItem = NSStatusBar.system.statusItem(withLength: CGFloat(NSStatusItem.variableLength))
@@ -21,8 +22,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             button.action = #selector(togglePopover(_:))
         }
 
+        let eyedroppers = Eyedroppers()
+
         // Define content view
         let contentView = ContentView()
+            .environmentObject(eyedroppers)
             .frame(minWidth: 380,
                    idealWidth: 380,
                    maxWidth: 500,
@@ -121,5 +125,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             splashWindow.contentView = NSHostingView(rootView: SplashView().edgesIgnoringSafeArea(.all))
         }
         splashWindow.fadeIn(nil)
+    }
+
+    @IBAction func triggerForeground(_: Any) {
+        notificationCenter.post(name: Notification.Name("TriggerForeground"), object: nil)
+    }
+
+    @IBAction func triggerBackground(_: Any) {
+        notificationCenter.post(name: Notification.Name("TriggerBackground"), object: nil)
     }
 }

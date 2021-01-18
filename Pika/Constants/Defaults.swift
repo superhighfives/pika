@@ -12,6 +12,6 @@ extension Defaults.Keys {
     static let colorFormat = Key<ColorFormat>("colorFormat", default: .hex)
     static let viewedSplash = Key<Bool>("viewedSplash", default: false)
     static let colorSpace = NSSecureCodingKey<NSColorSpace>(
-        "colorSpace", default: NSColorSpace.deviceRGB
+        "colorSpace", default: NSColorSpace.sRGB
     )
 }

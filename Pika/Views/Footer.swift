@@ -1,8 +1,7 @@
 import SwiftUI
 
 struct Footer: View {
-    @Binding var foreground: NSColor
-    @Binding var background: NSColor
+    @EnvironmentObject var eyedroppers: Eyedroppers
 
     let AAText = "WCAG 2.0 level AA requires a contrast ratio of at least 4.5:1 for normal text."
     let AAPlusText = "WCAG 2.0 level AA requires a contrast ratio of at least 3:1 for large text."
@@ -10,8 +9,8 @@ struct Footer: View {
     let AAAPlusText = "WCAG 2.0 level AAA requires a contrast ratio of at least 4.5:1 for large text."
 
     var body: some View {
-        let colorWCAGCompliance = foreground.WCAGCompliance(with: background)
-        let colorContrastRatio = Double(round(100 * foreground.contrastRatio(with: background)) / 100).description
+        let colorWCAGCompliance = eyedroppers.foreground.color.WCAGCompliance(with: eyedroppers.background.color)
+        let colorContrastRatio = Double(round(100 * eyedroppers.foreground.color.contrastRatio(with: eyedroppers.background.color)) / 100).description
 
         HStack(spacing: 16.0) {
             VStack(alignment: .leading, spacing: 0.0) {
@@ -52,16 +51,8 @@ struct Footer: View {
 }
 
 struct FooterView_Previews: PreviewProvider {
-    private struct ViewWrapper: View {
-        @ObservedObject var eyedropperForeground = Eyedropper(title: "Foreground", color: NSColor.white)
-        @ObservedObject var eyedropperBackground = Eyedropper(title: "Background", color: NSColor.black)
-
-        var body: some View {
-            Footer(foreground: self.$eyedropperForeground.color, background: self.$eyedropperBackground.color)
-        }
-    }
-
     static var previews: some View {
-        ViewWrapper()
+        Footer()
+            .environmentObject(Eyedroppers())
     }
 }
