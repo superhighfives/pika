@@ -5,6 +5,7 @@ import SwiftUI
 
 struct PreferencesView: View {
     @Default(.colorFormat) var colorFormat
+    @Default(.hideMenuBarIcon) var hideMenuBarIcon
     @State var colorSpace: NSColorSpace = Defaults[.colorSpace]
 
     var body: some View {
@@ -71,6 +72,9 @@ struct PreferencesView: View {
                 Section(header: Text("Startup Settings").font(.system(size: 16))) {
                     LaunchAtLogin.Toggle {
                         Text("Launch at login")
+                    }
+                    Toggle(isOn: $hideMenuBarIcon) {
+                        Text("Hide menu bar icon")
                     }
                 }
                 .padding(.horizontal, 24.0)

@@ -22,6 +22,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             button.action = #selector(togglePopover(_:))
         }
 
+        statusBarItem.isVisible = Defaults[.hideMenuBarIcon] == false
+
+        Defaults.observe(.hideMenuBarIcon) { change in
+            self.statusBarItem.isVisible = change.newValue == false
+        }.tieToLifetime(of: self)
+
         let eyedroppers = Eyedroppers()
 
         // Define content view
