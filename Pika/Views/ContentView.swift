@@ -12,7 +12,7 @@ struct ContentView: View {
             Divider()
             ColorPickers()
             Divider()
-            Footer()
+            Footer(foreground: eyedroppers.foreground, background: eyedroppers.background)
         }
         .onAppear {
             eyedroppers.background.color = colorScheme == .light

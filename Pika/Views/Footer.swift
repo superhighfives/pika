@@ -1,17 +1,26 @@
 import SwiftUI
 
 struct Footer: View {
-    @EnvironmentObject var eyedroppers: Eyedroppers
+    @ObservedObject var foreground: Eyedropper
+    @ObservedObject var background: Eyedropper
 
     let AAText = "WCAG 2.0 level AA requires a contrast ratio of at least 4.5:1 for normal text."
     let AAPlusText = "WCAG 2.0 level AA requires a contrast ratio of at least 3:1 for large text."
     let AAAText = "WCAG 2.0 level AAA requires a contrast ratio of at least 7:1 for normal text."
     let AAAPlusText = "WCAG 2.0 level AAA requires a contrast ratio of at least 4.5:1 for large text."
 
+    func getColorContrastRatio() -> String {
+        Double(round(100 * foreground.color.contrastRatio(
+            with: background.color)) / 100).description
+    }
+
+    func getWCAGCompliance() -> (NSColor.WCAG) {
+        return foreground.color.WCAGCompliance(with: background.color)
+    }
+
     var body: some View {
-        let colorWCAGCompliance = eyedroppers.foreground.color.WCAGCompliance(with: eyedroppers.background.color)
-        let colorContrastRatio = Double(round(100 * eyedroppers.foreground.color.contrastRatio(
-            with: eyedroppers.background.color)) / 100).description
+        let colorWCAGCompliance = getWCAGCompliance()
+        let colorContrastRatio = getColorContrastRatio()
 
         HStack(spacing: 16.0) {
             VStack(alignment: .leading, spacing: 0.0) {
@@ -53,7 +62,10 @@ struct Footer: View {
 
 struct FooterView_Previews: PreviewProvider {
     static var previews: some View {
-        Footer()
-            .environmentObject(Eyedroppers())
+        let foreground = Eyedropper(
+            title: "Foreground", color: PikaConstants.initialColors.randomElement()!
+        )
+        let background = Eyedropper(title: "Background", color: NSColor.black)
+        Footer(foreground: foreground, background: background)
     }
 }
