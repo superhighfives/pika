@@ -10,11 +10,8 @@ extension View {
 
 struct Toast<Presenting>: View where Presenting: View {
     @Environment(\.colorScheme) var colorScheme: ColorScheme
-    /// The binding that decides the appropriate drawing in the body.
     @Binding var isShowing: Bool
-    /// The view that will be "presenting" this toast
     let presenting: () -> Presenting
-    /// The text to show
     let text: Text
 
     var body: some View {
@@ -39,7 +36,7 @@ struct Toast<Presenting>: View where Presenting: View {
                 .font(.system(size: 10.0))
                 .background(Color.black.opacity(0.6))
                 .foregroundColor(Color.white.opacity(0.8))
-                .cornerRadius(100)
+                .cornerRadius(12)
                 .transition(.slide)
                 .opacity(self.isShowing ? 1 : 0)
                 .offset(x: 4.0, y: 4.0)

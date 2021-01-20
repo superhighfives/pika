@@ -9,7 +9,24 @@ struct PreferencesView: View {
     @Default(.betaUpdates) var betaUpdates
     @State var colorSpace: NSColorSpace = Defaults[.colorSpace]
 
+    func getColorSpaces() -> ([NSColorSpace], [NSColorSpace]) {
+        var availableSpaces = NSColorSpace.availableColorSpaces(with: .rgb).unique()
+        var primarySpaces: [NSColorSpace] = []
+
+        for space in availableSpaces {
+            if space == NSColorSpace.sRGB || space == NSColorSpace.adobeRGB1998 || space == NSColorSpace.displayP3 {
+                guard let index = availableSpaces.firstIndex(of: space) else { continue }
+                primarySpaces.append(space)
+                availableSpaces.remove(at: index)
+            }
+        }
+
+        return (primarySpaces, availableSpaces)
+    }
+
     var body: some View {
+        let (primarySpaces, availableSpaces) = self.getColorSpaces()
+
         HStack(spacing: 0) {
             Group {
                 AppVersion()
@@ -44,7 +61,12 @@ struct PreferencesView: View {
                         Text("Set your RGB color space")
                         Picker("Color Space", selection:
                             $colorSpace.onChange(perform: { Defaults[.colorSpace] = $0 })) {
-                            ForEach(NSColorSpace.availableColorSpaces(with: .rgb), id: \.self) { value in
+                            ForEach(primarySpaces, id: \.self) { value in
+                                Text(value.localizedName!)
+                                    .tag(value)
+                            }
+                            Divider()
+                            ForEach(availableSpaces, id: \.self) { value in
                                 Text(value.localizedName!)
                                     .tag(value)
                             }

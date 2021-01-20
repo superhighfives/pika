@@ -619,7 +619,7 @@
                                         </menuItem>
                                         <menuItem title="Background" keyEquivalent="D" allowsKeyEquivalentWhenHidden="YES" id="YF5-6a-ACB">
                                             <connections>
-                                                <action selector="triggerPickForeground:" target="Ady-hI-5gd" id="ybq-mi-p2z"/>
+                                                <action selector="triggerPickBackground:" target="Ady-hI-5gd" id="gqy-M9-vRu"/>
                                             </connections>
                                         </menuItem>
                                     </items>

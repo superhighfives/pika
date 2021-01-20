@@ -7,17 +7,17 @@ struct ColorMenuItems: View {
     let pasteboard = NSPasteboard.general
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 0.0) {
-            Button(action: {
-                pasteboard.clearContents()
-                pasteboard.setString(eyedropper.color.toFormat(format: colorFormat), forType: .string)
-            }, label: { Text("Copy current format") })
+        Button(action: {
+            pasteboard.clearContents()
+            pasteboard.setString(eyedropper.color.toFormat(format: colorFormat), forType: .string)
+        }, label: { Text("Copy current format") })
+        VStack {
             Divider()
         }
         Button(action: {
             pasteboard.clearContents()
             pasteboard.setString(eyedropper.color.toHexString(), forType: .string)
-        }, label: { Text("Copy color hex") })
+        }, label: { Text("Copy HEX values") })
         Button(action: {
             pasteboard.clearContents()
             pasteboard.setString(eyedropper.color.toRGB8BitString(), forType: .string)

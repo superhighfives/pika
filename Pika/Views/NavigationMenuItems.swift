@@ -27,7 +27,9 @@ struct NavigationMenuItems: View {
                 }
         }
 
-        Divider()
+        VStack {
+            Divider()
+        }
 
         Group {
             Button("Copy foreground", action: {
@@ -53,7 +55,9 @@ struct NavigationMenuItems: View {
                 }
         }
 
-        Divider()
+        VStack {
+            Divider()
+        }
 
         Group {
             Button("About", action: {
@@ -75,7 +79,9 @@ struct NavigationMenuItems: View {
                 }
         }
 
-        Divider()
+        VStack {
+            Divider()
+        }
 
         Button("Quit", action: {
             NSApplication.shared.terminate(self)
