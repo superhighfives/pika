@@ -4,10 +4,10 @@ struct Footer: View {
     @Binding var foreground: NSColor
     @Binding var background: NSColor
 
-    let AAText = "WCAG 2.0 level AA requires a contrast ratio of at least 4.5:1 for normal text."
-    let AAPlusText = "WCAG 2.0 level AA requires a contrast ratio of at least 3:1 for large text."
-    let AAAText = "WCAG 2.0 level AAA requires a contrast ratio of at least 7:1 for normal text."
-    let AAAPlusText = "WCAG 2.0 level AAA requires a contrast ratio of at least 4.5:1 for large text."
+    let AAText = "WCAG 2 level AA requires a contrast ratio of at least 4.5:1 for normal text."
+    let AAPlusText = "WCAG 2 level AA requires a contrast ratio of at least 3:1 for bold or large text."
+    let AAAText = "WCAG 2 level AAA requires a contrast ratio of at least 7:1 for normal text."
+    let AAAPlusText = "WCAG 2 level AAA requires a contrast ratio of at least 4.5:1 for bold or large text."
 
     var body: some View {
         let colorWCAGCompliance = foreground.WCAGCompliance(with: background)
