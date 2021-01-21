@@ -1,4 +1,3 @@
-import Sparkle
 import SwiftUI
 
 struct NavigationMenuItems: View {
@@ -63,11 +62,10 @@ struct NavigationMenuItems: View {
             Button("About", action: {
                 NSApp.sendAction(#selector(AppDelegate.openAboutWindow), to: nil, from: nil)
             })
-            Button("Check for updates...", action: {
-                SUUpdater.shared().feedURL = URL(string: PikaConstants.url())
-                SUUpdater.shared()?.checkForUpdates(self)
+            Button("Check for updates", action: {
+                NSApp.sendAction(#selector(AppDelegate.checkForUpdates), to: nil, from: nil)
             })
-            Button("Preferences...", action: {
+            Button("Preferences", action: {
                 NSApp.sendAction(#selector(AppDelegate.openPreferencesWindow), to: nil, from: nil)
             })
                 .modify {

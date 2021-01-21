@@ -33,7 +33,10 @@ struct AboutView: View {
                     LinkButton(title: "GitHub", link: "https://github.com/superhighfives/pika")
                 }
 
-                Divider()
+                VStack(spacing: 0) {
+                    KeyboardShortcutGrid()
+                        .frame(height: 150.0)
+                }
 
                 HStack(spacing: 5.0) {
                     IconImage(name: "hand.thumbsup.fill")
