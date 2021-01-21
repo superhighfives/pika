@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct KeyboardKey<Content: View>: View {
+struct KeyboardShortcutKey<Content: View>: View {
     let content: Content
 
     init(@ViewBuilder content: () -> Content) {
@@ -17,16 +17,16 @@ struct KeyboardKey<Content: View>: View {
     var body: some View {
         content
             .font(.system(size: 14, weight: .semibold, design: .monospaced))
-            .padding(.vertical, 4.0)
-            .padding(.horizontal, 8.0)
+            .padding(.vertical, 3.0)
+            .padding(.horizontal, 7.0)
             .background(Color(.gray).opacity(0.25))
             .cornerRadius(4)
     }
 }
 
-struct KeyboardKey_Previews: PreviewProvider {
+struct KeyboardShortcutKey_Previews: PreviewProvider {
     static var previews: some View {
-        KeyboardKey {
+        KeyboardShortcutKey {
             Text("L")
         }
     }
