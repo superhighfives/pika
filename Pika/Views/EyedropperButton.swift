@@ -5,10 +5,6 @@ struct EyedropperButton: View {
     @ObservedObject var eyedropper: Eyedropper
     @Default(.colorFormat) var colorFormat
 
-    func getUIColor() -> (Color) {
-        return (eyedropper.color.luminance < 0.3 ? Color.white : Color.black)
-    }
-
     var body: some View {
         Button(action: { eyedropper.start() }, label: {
             ZStack {
@@ -24,13 +20,13 @@ struct EyedropperButton: View {
                     Text(eyedropper.title)
                         .font(.caption)
                         .bold()
-                        .foregroundColor(getUIColor().opacity(0.5))
+                        .foregroundColor(eyedropper.getUIColor().opacity(0.5))
                     HStack {
                         Text(eyedropper.color.toFormat(format: colorFormat))
-                            .foregroundColor(getUIColor())
+                            .foregroundColor(eyedropper.getUIColor())
                             .font(.system(size: 18, weight: .regular))
                         IconImage(name: "eyedropper")
-                            .foregroundColor(getUIColor())
+                            .foregroundColor(eyedropper.getUIColor())
                             .padding(.leading, 0.0)
                             .opacity(0.8)
                     }

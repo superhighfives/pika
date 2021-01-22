@@ -13,6 +13,8 @@ struct LinkButton: View {
 }
 
 struct AboutView: View {
+    @Environment(\.colorScheme) var colorScheme: ColorScheme
+
     var body: some View {
         VStack(spacing: 16.0) {
             ZStack(alignment: .bottom) {
@@ -35,7 +37,8 @@ struct AboutView: View {
 
                 VStack(spacing: 0) {
                     KeyboardShortcutGrid()
-                        .frame(height: 150.0)
+                        .frame(height: 140.0)
+                        .background(colorScheme == .light ? Color.black.opacity(0.05) : Color.black.opacity(0.2))
                 }
 
                 HStack(spacing: 5.0) {

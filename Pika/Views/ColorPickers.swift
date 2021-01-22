@@ -9,7 +9,6 @@ struct ColorPickers: View {
         HStack(spacing: 0.0) {
             ForEach(eyedropperArray, id: \.title) { eyedropper in
                 EyedropperItem(eyedropper: eyedropper)
-
                 Divider()
             }
         }

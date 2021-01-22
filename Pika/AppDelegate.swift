@@ -15,7 +15,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     let notificationCenter = NotificationCenter.default
 
-    func setupStatusBar() {
+    func applicationDidFinishLaunching(_: Notification) {
+        // Set up status bar and menu
         let statusBar = NSStatusBar.system
         statusBarItem = statusBar.statusItem(withLength: CGFloat(NSStatusItem.variableLength))
 
@@ -25,40 +26,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             button.sendAction(on: [.leftMouseUp, .rightMouseUp])
         }
 
-        // TODO: Refactor
-        statusBarMenu = NSMenu(title: "Status Bar Menu")
-        statusBarMenu.delegate = self
-        statusBarMenu.addItem(
-            withTitle: "About",
-            action: #selector(openAboutWindow(_:)),
-            keyEquivalent: ""
-        )
-        statusBarMenu.addItem(
-            withTitle: "Check for updates...",
-            action: #selector(AppDelegate.checkForUpdates(_:)),
-            keyEquivalent: ""
-        )
-        statusBarMenu.addItem(
-            withTitle: "Preferences",
-            action: #selector(openPreferencesWindow(_:)),
-            keyEquivalent: ""
-        )
-        statusBarMenu.addItem(NSMenuItem.separator())
-        statusBarMenu.addItem(
-            withTitle: "Quit Pika",
-            action: #selector(terminatePika(_:)),
-            keyEquivalent: ""
-        )
+        statusBarMenu = getStatusBarMenu()
 
         statusBarItem.isVisible = Defaults[.hideMenuBarIcon] == false
         Defaults.observe(.hideMenuBarIcon) { change in
             self.statusBarItem.isVisible = change.newValue == false
         }.tieToLifetime(of: self)
-    }
 
-    func applicationDidFinishLaunching(_: Notification) {
-        setupStatusBar()
-
+        // Set up eyedroppers
         let eyedroppers = Eyedroppers()
 
         // Define content view
@@ -115,6 +90,34 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         splashWindow.fadeOut(sender: nil, duration: 0.25, closeSelector: .close, completionHandler: startMainWindow)
     }
 
+    func getStatusBarMenu() -> NSMenu {
+        statusBarMenu = NSMenu(title: "Status Bar Menu")
+        statusBarMenu.delegate = self
+        statusBarMenu.addItem(
+            withTitle: "About",
+            action: #selector(openAboutWindow(_:)),
+            keyEquivalent: ""
+        )
+        statusBarMenu.addItem(
+            withTitle: "Check for updates...",
+            action: #selector(checkForUpdates(_:)),
+            keyEquivalent: ""
+        )
+        statusBarMenu.addItem(
+            withTitle: "Preferences",
+            action: #selector(openPreferencesWindow(_:)),
+            keyEquivalent: ""
+        )
+        statusBarMenu.addItem(NSMenuItem.separator())
+        statusBarMenu.addItem(
+            withTitle: "Quit Pika",
+            action: #selector(terminatePika(_:)),
+            keyEquivalent: ""
+        )
+
+        return statusBarMenu
+    }
+
     @objc func statusBarClicked(sender _: NSStatusBarButton) {
         let event = NSApp.currentEvent!
         if event.type == NSEvent.EventType.rightMouseUp || event.modifierFlags.contains(.control) {
@@ -142,7 +145,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         if aboutWindow == nil {
             aboutWindow = PikaWindow.createSecondaryWindow(
                 title: "About",
-                size: NSRect(x: 0, y: 0, width: 300, height: 500),
+                size: NSRect(x: 0, y: 0, width: 300, height: 540),
                 styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView]
             )
             aboutWindow.contentView = NSHostingView(rootView: AboutView())
@@ -179,19 +182,19 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     @IBAction func triggerPickForeground(_: Any) {
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerPickForeground), object: nil)
+        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerPickForeground), object: self)
     }
 
     @IBAction func triggerPickBackground(_: Any) {
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerPickBackground), object: nil)
+        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerPickBackground), object: self)
     }
 
     @IBAction func triggerCopyForeground(_: Any) {
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerCopyForeground), object: nil)
+        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerCopyForeground), object: self)
     }
 
     @IBAction func triggerCopyBackground(_: Any) {
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerCopyBackground), object: nil)
+        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerCopyBackground), object: self)
     }
 
     @IBAction func checkForUpdates(_: Any) {

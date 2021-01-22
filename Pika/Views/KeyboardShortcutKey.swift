@@ -1,13 +1,7 @@
-//
-//  KeyboardKey.swift
-//  Pika
-//
-//  Created by Charlie Gleason on 20/01/2021.
-//
-
 import SwiftUI
 
 struct KeyboardShortcutKey<Content: View>: View {
+    @Environment(\.colorScheme) var colorScheme: ColorScheme
     let content: Content
 
     init(@ViewBuilder content: () -> Content) {
@@ -16,11 +10,11 @@ struct KeyboardShortcutKey<Content: View>: View {
 
     var body: some View {
         content
-            .font(.system(size: 14, weight: .semibold, design: .monospaced))
+            .font(.system(size: 14, weight: .semibold, design: .rounded))
             .padding(.vertical, 3.0)
             .padding(.horizontal, 7.0)
-            .background(Color(.gray).opacity(0.25))
-            .cornerRadius(4)
+            .border(colorScheme == .light ? Color.gray.opacity(0.5) : Color.gray.opacity(0.5), width: 1)
+            .cornerRadius(2)
     }
 }
 

@@ -2,6 +2,7 @@ import Defaults
 import SwiftUI
 
 struct EyedropperItem: View {
+    @Environment(\.colorScheme) var colorScheme: ColorScheme
     @ObservedObject var eyedropper: Eyedropper
     @State private var showToast: Bool = false
     @Default(.colorFormat) var colorFormat
@@ -22,15 +23,30 @@ struct EyedropperItem: View {
                     let contents = "\(eyedropper.color.toFormat(format: colorFormat))"
                     pasteboard.setString(contents, forType: .string)
                 }
-                .toast(isShowing: $showToast, text:
-                    Text("Copied \(eyedropper.title.lowercased())"))
+                .toast(
+                    isShowing: $showToast,
+                    color: eyedropper.getUIColor(),
+                    text: Text("Copied \(eyedropper.title.lowercased())")
+                )
 
             ColorMenu(eyedropper: eyedropper)
-                .shadow(radius: 0, x: 0, y: 1)
+                .shadow(
+                    color: (colorScheme == .light ? Color.white : Color.black).opacity(0.25),
+                    radius: 0,
+                    x: 0,
+                    y: 1
+                )
                 .opacity(0.8)
                 .fixedSize()
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
                 .padding(8.0)
+                .modify {
+                    if colorScheme == .dark {
+                        $0.colorMultiply(Color.white)
+                    } else {
+                        $0
+                    }
+                }
         }
     }
 }
