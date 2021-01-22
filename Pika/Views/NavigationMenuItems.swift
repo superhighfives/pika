@@ -3,7 +3,7 @@ import SwiftUI
 struct NavigationMenuItems: View {
     var body: some View {
         Group {
-            Button("Pick foreground", action: {
+            Button("Pick foreground...", action: {
                 NSApp.sendAction(#selector(AppDelegate.triggerPickForeground), to: nil, from: nil)
             })
                 .modify {
@@ -14,7 +14,7 @@ struct NavigationMenuItems: View {
                     }
                 }
 
-            Button("Pick background", action: {
+            Button("Pick background...", action: {
                 NSApp.sendAction(#selector(AppDelegate.triggerPickBackground), to: nil, from: nil)
             })
                 .modify {
@@ -62,7 +62,7 @@ struct NavigationMenuItems: View {
             Button("About", action: {
                 NSApp.sendAction(#selector(AppDelegate.openAboutWindow), to: nil, from: nil)
             })
-            Button("Check for updates", action: {
+            Button("Check for updates...", action: {
                 NSApp.sendAction(#selector(AppDelegate.checkForUpdates), to: nil, from: nil)
             })
             Button("Preferences", action: {
