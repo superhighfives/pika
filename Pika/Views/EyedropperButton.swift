@@ -2,9 +2,7 @@ import Defaults
 import SwiftUI
 
 struct EyedropperButton: View {
-    var eyedropper: Eyedropper
-    var uiColor: Color
-
+    @ObservedObject var eyedropper: Eyedropper
     @Default(.colorFormat) var colorFormat
 
     var body: some View {
@@ -12,7 +10,7 @@ struct EyedropperButton: View {
             ZStack {
                 Group {
                     Rectangle()
-                        .fill(Color(eyedropper.color.overlayBlack))
+                        .fill(Color(eyedropper.color.overlay(with: NSColor.black)))
                         .frame(height: 55.0)
                 }
                 .opacity(0.2)
@@ -22,13 +20,13 @@ struct EyedropperButton: View {
                     Text(eyedropper.title)
                         .font(.caption)
                         .bold()
-                        .foregroundColor(uiColor.opacity(0.5))
+                        .foregroundColor(eyedropper.getUIColor().opacity(0.5))
                     HStack {
                         Text(eyedropper.color.toFormat(format: colorFormat))
-                            .foregroundColor(uiColor)
+                            .foregroundColor(eyedropper.getUIColor())
                             .font(.system(size: 18, weight: .regular))
                         IconImage(name: "eyedropper")
-                            .foregroundColor(uiColor)
+                            .foregroundColor(eyedropper.getUIColor())
                             .padding(.leading, 0.0)
                             .opacity(0.8)
                     }
@@ -45,15 +43,9 @@ struct EyedropperButton: View {
 }
 
 struct EyedropperButton_Previews: PreviewProvider {
-    private struct ViewWrapper: View {
-        var eyedropper = Eyedropper(title: "Foreground", color: NSColor.random())
-
-        var body: some View {
-            EyedropperButton(eyedropper: self.eyedropper, uiColor: Color.white)
-        }
-    }
-
     static var previews: some View {
-        ViewWrapper()
+        EyedropperButton(
+            eyedropper: Eyedropper(title: "Foreground", color: NSColor.black)
+        )
     }
 }

@@ -10,18 +10,28 @@
 		221600F925A62E5B00B8B7D9 /* IconImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221600F825A62E5B00B8B7D9 /* IconImage.swift */; };
 		221600FD25A636D600B8B7D9 /* ConditionalModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221600FC25A636D600B8B7D9 /* ConditionalModifier.swift */; };
 		226FD61025A940F90021A67F /* VisualEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226FD60F25A940F90021A67F /* VisualEffect.swift */; };
+		22EF1D9B25B7AA18001102FA /* Sequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EF1D9A25B7AA18001102FA /* Sequence.swift */; };
+		22FE80B325BA0F820063759E /* KeyboardShortcutItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FE80B225BA0F820063759E /* KeyboardShortcutItem.swift */; };
 		EA057887259F54B500ACCD89 /* ColorMenuItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA057886259F54B500ACCD89 /* ColorMenuItems.swift */; };
 		EA0C525025AA729300AFF716 /* Visualisation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C524F25AA729300AFF716 /* Visualisation.swift */; };
 		EA0C526025AB5A2B00AFF716 /* NavigationMenuItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C525F25AB5A2B00AFF716 /* NavigationMenuItems.swift */; };
 		EA0C526425AB5D1700AFF716 /* PikaWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C526325AB5D1700AFF716 /* PikaWindow.swift */; };
 		EA0C526F25AB683400AFF716 /* EyedropperButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C526E25AB683400AFF716 /* EyedropperButton.swift */; };
 		EA0C527325AB6C6000AFF716 /* ColorMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C527225AB6C6000AFF716 /* ColorMenu.swift */; };
+		EA635DC925B3B2650014D91A /* Cula.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DC825B3B2650014D91A /* Cula.swift */; };
+		EA635DCC25B3B42B0014D91A /* WCAGCompliance.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DCB25B3B42B0014D91A /* WCAGCompliance.swift */; };
+		EA635DDC25B4E90B0014D91A /* BindingOnChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DDB25B4E90B0014D91A /* BindingOnChange.swift */; };
+		EA635DE125B4FC580014D91A /* ColorPickers.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DE025B4FC580014D91A /* ColorPickers.swift */; };
+		EA635DEA25B534C80014D91A /* EyedropperItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DE925B534C80014D91A /* EyedropperItem.swift */; };
+		EA635DF125B5A6D80014D91A /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DF025B5A6D80014D91A /* Toast.swift */; };
 		EA72BB8425A5334B008205E7 /* MetalShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = EA72BB8225A5334B008205E7 /* MetalShader.metal */; };
 		EA72BB8825A53750008205E7 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA72BB8725A53750008205E7 /* SplashView.swift */; };
 		EA72BB8B25A537C3008205E7 /* MetalShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA72BB8A25A537C3008205E7 /* MetalShader.swift */; };
 		EA72BBA925A7CE9C008205E7 /* NSWindowFade.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA72BBA825A7CE9C008205E7 /* NSWindowFade.swift */; };
 		EA801285259F8F480026D5D9 /* ComplianceToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA801284259F8F480026D5D9 /* ComplianceToggle.swift */; };
 		EA8124C1259E307D00033F0B /* Footer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8124C0259E307D00033F0B /* Footer.swift */; };
+		EAA8AE1925B8EC070049299B /* KeyboardShortcutKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA8AE1825B8EC070049299B /* KeyboardShortcutKey.swift */; };
+		EAA8AE1C25B8F03B0049299B /* KeyboardShortcutGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA8AE1B25B8F03B0049299B /* KeyboardShortcutGrid.swift */; };
 		EAD0B6CC259CED1C00FA2F67 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6CB259CED1C00FA2F67 /* AppDelegate.swift */; };
 		EAD0B6D0259CED1D00FA2F67 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EAD0B6CF259CED1D00FA2F67 /* Assets.xcassets */; };
 		EAD0B6D3259CED1D00FA2F67 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EAD0B6D2259CED1D00FA2F67 /* Preview Assets.xcassets */; };
@@ -29,8 +39,7 @@
 		EAD0B6E1259CED3200FA2F67 /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; productRef = EAD0B6E0259CED3200FA2F67 /* LaunchAtLogin */; };
 		EAD0B6E5259CED6000FA2F67 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = EAD0B6E4259CED6000FA2F67 /* KeyboardShortcuts */; };
 		EAD0B6E9259CEF8600FA2F67 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = EAD0B6E8259CEF8600FA2F67 /* Sparkle */; };
-		EAD0B6EE259CF28D00FA2F67 /* Sweetercolor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6ED259CF28D00FA2F67 /* Sweetercolor.swift */; };
-		EAD0B6F7259CF29300FA2F67 /* Eyedropper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6F1259CF29300FA2F67 /* Eyedropper.swift */; };
+		EAD0B6F7259CF29300FA2F67 /* Eyedroppers.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6F1259CF29300FA2F67 /* Eyedroppers.swift */; };
 		EAD0B6F8259CF29300FA2F67 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6F3259CF29300FA2F67 /* AboutView.swift */; };
 		EAD0B6F9259CF29300FA2F67 /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6F4259CF29300FA2F67 /* PreferencesView.swift */; };
 		EAD0B6FA259CF29300FA2F67 /* AppVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6F5259CF29300FA2F67 /* AppVersion.swift */; };
@@ -46,18 +55,28 @@
 		221600F825A62E5B00B8B7D9 /* IconImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconImage.swift; sourceTree = "<group>"; };
 		221600FC25A636D600B8B7D9 /* ConditionalModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionalModifier.swift; sourceTree = "<group>"; };
 		226FD60F25A940F90021A67F /* VisualEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffect.swift; sourceTree = "<group>"; };
+		22EF1D9A25B7AA18001102FA /* Sequence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sequence.swift; sourceTree = "<group>"; };
+		22FE80B225BA0F820063759E /* KeyboardShortcutItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardShortcutItem.swift; sourceTree = "<group>"; };
 		EA057886259F54B500ACCD89 /* ColorMenuItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorMenuItems.swift; sourceTree = "<group>"; };
 		EA0C524F25AA729300AFF716 /* Visualisation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Visualisation.swift; sourceTree = "<group>"; };
 		EA0C525F25AB5A2B00AFF716 /* NavigationMenuItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationMenuItems.swift; sourceTree = "<group>"; };
 		EA0C526325AB5D1700AFF716 /* PikaWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PikaWindow.swift; sourceTree = "<group>"; };
 		EA0C526E25AB683400AFF716 /* EyedropperButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyedropperButton.swift; sourceTree = "<group>"; };
 		EA0C527225AB6C6000AFF716 /* ColorMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorMenu.swift; sourceTree = "<group>"; };
+		EA635DC825B3B2650014D91A /* Cula.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cula.swift; sourceTree = "<group>"; };
+		EA635DCB25B3B42B0014D91A /* WCAGCompliance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCAGCompliance.swift; sourceTree = "<group>"; };
+		EA635DDB25B4E90B0014D91A /* BindingOnChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingOnChange.swift; sourceTree = "<group>"; };
+		EA635DE025B4FC580014D91A /* ColorPickers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickers.swift; sourceTree = "<group>"; };
+		EA635DE925B534C80014D91A /* EyedropperItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyedropperItem.swift; sourceTree = "<group>"; };
+		EA635DF025B5A6D80014D91A /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		EA72BB8225A5334B008205E7 /* MetalShader.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = MetalShader.metal; sourceTree = "<group>"; };
 		EA72BB8725A53750008205E7 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		EA72BB8A25A537C3008205E7 /* MetalShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalShader.swift; sourceTree = "<group>"; };
 		EA72BBA825A7CE9C008205E7 /* NSWindowFade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSWindowFade.swift; sourceTree = "<group>"; };
 		EA801284259F8F480026D5D9 /* ComplianceToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplianceToggle.swift; sourceTree = "<group>"; };
 		EA8124C0259E307D00033F0B /* Footer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Footer.swift; sourceTree = "<group>"; };
+		EAA8AE1825B8EC070049299B /* KeyboardShortcutKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardShortcutKey.swift; sourceTree = "<group>"; };
+		EAA8AE1B25B8F03B0049299B /* KeyboardShortcutGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardShortcutGrid.swift; sourceTree = "<group>"; };
 		EAD0B6C8259CED1C00FA2F67 /* Pika.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pika.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAD0B6CB259CED1C00FA2F67 /* AppDelegate.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; tabWidth = 4; };
 		EAD0B6CF259CED1D00FA2F67 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -65,8 +84,7 @@
 		EAD0B6D5259CED1D00FA2F67 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		EAD0B6D7259CED1D00FA2F67 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EAD0B6D8259CED1D00FA2F67 /* Pika.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Pika.entitlements; sourceTree = "<group>"; };
-		EAD0B6ED259CF28D00FA2F67 /* Sweetercolor.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = Sweetercolor.swift; sourceTree = "<group>"; tabWidth = 4; };
-		EAD0B6F1259CF29300FA2F67 /* Eyedropper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Eyedropper.swift; sourceTree = "<group>"; };
+		EAD0B6F1259CF29300FA2F67 /* Eyedroppers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Eyedroppers.swift; sourceTree = "<group>"; };
 		EAD0B6F3259CF29300FA2F67 /* AboutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		EAD0B6F4259CF29300FA2F67 /* PreferencesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; tabWidth = 4; };
 		EAD0B6F5259CF29300FA2F67 /* AppVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppVersion.swift; sourceTree = "<group>"; };
@@ -168,9 +186,12 @@
 		EAD0B6EC259CF28D00FA2F67 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				EAD0B6ED259CF28D00FA2F67 /* Sweetercolor.swift */,
+				EA635DDB25B4E90B0014D91A /* BindingOnChange.swift */,
+				EA635DC825B3B2650014D91A /* Cula.swift */,
 				221600FC25A636D600B8B7D9 /* ConditionalModifier.swift */,
 				EA72BBA825A7CE9C008205E7 /* NSWindowFade.swift */,
+				EA635DCB25B3B42B0014D91A /* WCAGCompliance.swift */,
+				22EF1D9A25B7AA18001102FA /* Sequence.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -178,7 +199,7 @@
 		EAD0B6F0259CF29300FA2F67 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				EAD0B6F1259CF29300FA2F67 /* Eyedropper.swift */,
+				EAD0B6F1259CF29300FA2F67 /* Eyedroppers.swift */,
 				EA0C526325AB5D1700AFF716 /* PikaWindow.swift */,
 			);
 			path = Utilities;
@@ -187,21 +208,27 @@
 		EAD0B6F2259CF29300FA2F67 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				EAA8AE1B25B8F03B0049299B /* KeyboardShortcutGrid.swift */,
+				22FE80B225BA0F820063759E /* KeyboardShortcutItem.swift */,
 				EAD0B6F3259CF29300FA2F67 /* AboutView.swift */,
-				EA057886259F54B500ACCD89 /* ColorMenuItems.swift */,
+				EAD0B6F5259CF29300FA2F67 /* AppVersion.swift */,
 				EA0C527225AB6C6000AFF716 /* ColorMenu.swift */,
+				EA057886259F54B500ACCD89 /* ColorMenuItems.swift */,
+				EA635DE025B4FC580014D91A /* ColorPickers.swift */,
 				EA801284259F8F480026D5D9 /* ComplianceToggle.swift */,
 				EAD0B6F6259CF29300FA2F67 /* ContentView.swift */,
+				EA0C526E25AB683400AFF716 /* EyedropperButton.swift */,
+				EA635DE925B534C80014D91A /* EyedropperItem.swift */,
 				EA8124C0259E307D00033F0B /* Footer.swift */,
 				221600F825A62E5B00B8B7D9 /* IconImage.swift */,
 				EAD0B71B259D151400FA2F67 /* NavigationMenu.swift */,
 				EA0C525F25AB5A2B00AFF716 /* NavigationMenuItems.swift */,
 				EAD0B6F4259CF29300FA2F67 /* PreferencesView.swift */,
 				EA72BB8725A53750008205E7 /* SplashView.swift */,
-				EAD0B6F5259CF29300FA2F67 /* AppVersion.swift */,
+				EA635DF025B5A6D80014D91A /* Toast.swift */,
 				226FD60F25A940F90021A67F /* VisualEffect.swift */,
 				EA0C524F25AA729300AFF716 /* Visualisation.swift */,
-				EA0C526E25AB683400AFF716 /* EyedropperButton.swift */,
+				EAA8AE1825B8EC070049299B /* KeyboardShortcutKey.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -338,27 +365,36 @@
 			files = (
 				EA0C527325AB6C6000AFF716 /* ColorMenu.swift in Sources */,
 				EA72BB8B25A537C3008205E7 /* MetalShader.swift in Sources */,
+				22EF1D9B25B7AA18001102FA /* Sequence.swift in Sources */,
 				EAD0B6F9259CF29300FA2F67 /* PreferencesView.swift in Sources */,
 				EA72BB8825A53750008205E7 /* SplashView.swift in Sources */,
 				EA057887259F54B500ACCD89 /* ColorMenuItems.swift in Sources */,
+				EAA8AE1C25B8F03B0049299B /* KeyboardShortcutGrid.swift in Sources */,
 				EA0C525025AA729300AFF716 /* Visualisation.swift in Sources */,
 				EAD0B6FB259CF29300FA2F67 /* ContentView.swift in Sources */,
 				EAD0B6CC259CED1C00FA2F67 /* AppDelegate.swift in Sources */,
-				EAD0B6F7259CF29300FA2F67 /* Eyedropper.swift in Sources */,
+				EA635DCC25B3B42B0014D91A /* WCAGCompliance.swift in Sources */,
+				EA635DEA25B534C80014D91A /* EyedropperItem.swift in Sources */,
+				EAD0B6F7259CF29300FA2F67 /* Eyedroppers.swift in Sources */,
 				EA0C526025AB5A2B00AFF716 /* NavigationMenuItems.swift in Sources */,
-				EAD0B6EE259CF28D00FA2F67 /* Sweetercolor.swift in Sources */,
 				EA0C526425AB5D1700AFF716 /* PikaWindow.swift in Sources */,
 				EA801285259F8F480026D5D9 /* ComplianceToggle.swift in Sources */,
 				221600FD25A636D600B8B7D9 /* ConditionalModifier.swift in Sources */,
+				EA635DF125B5A6D80014D91A /* Toast.swift in Sources */,
 				EAD0B71C259D151400FA2F67 /* NavigationMenu.swift in Sources */,
+				22FE80B325BA0F820063759E /* KeyboardShortcutItem.swift in Sources */,
 				EAD0B6F8259CF29300FA2F67 /* AboutView.swift in Sources */,
+				EAA8AE1925B8EC070049299B /* KeyboardShortcutKey.swift in Sources */,
 				EA0C526F25AB683400AFF716 /* EyedropperButton.swift in Sources */,
 				EA72BB8425A5334B008205E7 /* MetalShader.metal in Sources */,
 				EA72BBA925A7CE9C008205E7 /* NSWindowFade.swift in Sources */,
 				EAD0B718259D146200FA2F67 /* EyedropperButtonStyle.swift in Sources */,
+				EA635DC925B3B2650014D91A /* Cula.swift in Sources */,
+				EA635DE125B4FC580014D91A /* ColorPickers.swift in Sources */,
 				221600F925A62E5B00B8B7D9 /* IconImage.swift in Sources */,
 				EAD0B6FA259CF29300FA2F67 /* AppVersion.swift in Sources */,
 				EA8124C1259E307D00033F0B /* Footer.swift in Sources */,
+				EA635DDC25B4E90B0014D91A /* BindingOnChange.swift in Sources */,
 				EAD0B713259CFD2000FA2F67 /* Defaults.swift in Sources */,
 				226FD61025A940F90021A67F /* VisualEffect.swift in Sources */,
 				EAD0B6FE259CF29C00FA2F67 /* Constants.swift in Sources */,
@@ -503,7 +539,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_ASSET_PATHS = "\"Pika/Preview Content\"";
 				DEVELOPMENT_TEAM = TGHU37N6EX;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -514,7 +550,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 0.0.7;
+				MARKETING_VERSION = "0.0.8-beta3";
 				PRODUCT_BUNDLE_IDENTIFIER = com.superhighfives.Pika;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -530,7 +566,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_ASSET_PATHS = "\"Pika/Preview Content\"";
 				DEVELOPMENT_TEAM = TGHU37N6EX;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -541,7 +577,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 0.0.7;
+				MARKETING_VERSION = "0.0.8-beta3";
 				PRODUCT_BUNDLE_IDENTIFIER = com.superhighfives.Pika;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

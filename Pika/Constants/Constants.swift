@@ -1,3 +1,4 @@
+import Defaults
 import KeyboardShortcuts
 import SwiftUI
 
@@ -8,8 +9,14 @@ extension KeyboardShortcuts.Name {
 }
 
 enum PikaConstants {
-    static let url = "https://superhighfives.com/releases/pika"
+    // Release URL
+    static func url() -> String {
+        Defaults[.betaUpdates]
+            ? "https://superhighfives.com/releases/pika/betas"
+            : "https://superhighfives.com/releases/pika"
+    }
 
+    // Initial colours
     static let initialColors = [
         NSColor(r: 143.0, g: 15.0, b: 208.0),
         NSColor(r: 224.0, g: 53.0, b: 139.0),
@@ -22,4 +29,10 @@ enum PikaConstants {
         NSColor(r: 14.0, g: 35.0, b: 204.0),
         NSColor(r: 188.0, g: 42.0, b: 97.0),
     ]
+
+    // Notification Center constants
+    static let ncTriggerCopyForeground = "triggerCopyForeground"
+    static let ncTriggerCopyBackground = "triggerCopyBackground"
+    static let ncTriggerPickForeground = "triggerPickForeground"
+    static let ncTriggerPickBackground = "triggerPickBackground"
 }

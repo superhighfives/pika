@@ -8,7 +8,7 @@ struct ColorMenu: View {
             Menu {
                 ColorMenuItems(eyedropper: eyedropper)
             } label: {
-                Image(systemName: "ellipsis.circle")
+                IconImage(name: "ellipsis.circle")
             }
             .menuStyle(BorderlessButtonMenuStyle(showsMenuIndicator: false))
         } else {
@@ -22,7 +22,7 @@ struct ColorMenu: View {
 
 struct ColorMenu_Previews: PreviewProvider {
     static var previews: some View {
-        let eyedropper = Eyedropper(title: "Foreground", color: NSColor.random())
+        let eyedropper = Eyedropper(title: "Foreground", color: NSColor.white)
         ColorMenu(eyedropper: eyedropper)
     }
 }

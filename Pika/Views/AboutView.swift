@@ -13,6 +13,8 @@ struct LinkButton: View {
 }
 
 struct AboutView: View {
+    @Environment(\.colorScheme) var colorScheme: ColorScheme
+
     var body: some View {
         VStack(spacing: 16.0) {
             ZStack(alignment: .bottom) {
@@ -33,7 +35,11 @@ struct AboutView: View {
                     LinkButton(title: "GitHub", link: "https://github.com/superhighfives/pika")
                 }
 
-                Divider()
+                VStack(spacing: 0) {
+                    KeyboardShortcutGrid()
+                        .frame(height: 140.0)
+                        .background(colorScheme == .light ? Color.black.opacity(0.05) : Color.black.opacity(0.2))
+                }
 
                 HStack(spacing: 5.0) {
                     IconImage(name: "hand.thumbsup.fill")
