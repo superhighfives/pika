@@ -39,8 +39,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         // Define content view
         let contentView = ContentView()
             .environmentObject(eyedroppers)
-            .frame(minWidth: 380,
-                   idealWidth: 380,
+            .frame(minWidth: 400,
+                   idealWidth: 400,
                    maxWidth: 500,
                    minHeight: 150,
                    idealHeight: 180,
