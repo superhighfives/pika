@@ -31,7 +31,7 @@ brew install mint
 mint bootstrap
 ```
 
-Open `Pika.xcodeproj` and you should be good to go. If you into my problems, please [detail them in an issue](https://github.com/superhighfives/pika/issues/new/).
+Open `Pika.xcodeproj` and you should be good to go. If you into any problems, please [detail them in an issue](https://github.com/superhighfives/pika/issues/new/).
 
 ## Contributions
 
