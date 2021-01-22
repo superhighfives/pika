@@ -119,10 +119,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     @objc func statusBarClicked(sender _: NSStatusBarButton) {
-        let event = NSApp.currentEvent!
-        if event.type == NSEvent.EventType.rightMouseUp || event.modifierFlags.contains(.control) {
-            statusBarItem.menu = statusBarMenu // add menu to button...
-            statusBarItem.button?.performClick(nil) // ...and click
+        let event = NSApp.currentEvent
+        if event != nil, event!.type == NSEvent.EventType.rightMouseUp || event!.modifierFlags.contains(.control) {
+            statusBarItem.menu = statusBarMenu
+            statusBarItem.button?.performClick(nil)
         } else {
             togglePopover(nil)
         }

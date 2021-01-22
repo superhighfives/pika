@@ -8,7 +8,7 @@ struct ColorMenu: View {
             Menu {
                 ColorMenuItems(eyedropper: eyedropper)
             } label: {
-                Image(systemName: "ellipsis.circle")
+                IconImage(name: "ellipsis.circle")
             }
             .menuStyle(BorderlessButtonMenuStyle(showsMenuIndicator: false))
         } else {

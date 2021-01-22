@@ -1,6 +1,13 @@
 import Defaults
 import SwiftUI
 
+public extension NSPopUpButtonCell {
+    override var focusRingType: NSFocusRingType {
+        get { .none }
+        set {}
+    }
+}
+
 struct EyedropperItem: View {
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     @ObservedObject var eyedropper: Eyedropper

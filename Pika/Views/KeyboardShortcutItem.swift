@@ -28,7 +28,7 @@ struct KeyboardShortcutItem: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(highlight
             ? (colorScheme == .light ? Color.white.opacity(0.25) : Color.black.opacity(0.5))
-            : nil)
+            : (colorScheme == .light ? Color.white.opacity(0) : Color.black.opacity(0)))
     }
 }
 
