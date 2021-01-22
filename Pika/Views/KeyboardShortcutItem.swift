@@ -1,10 +1,3 @@
-//
-//  KeyboardShortcutItem.swift
-//  Pika
-//
-//  Created by Charlie Gleason on 21/01/2021.
-//
-
 import SwiftUI
 
 struct KeyboardShortcutItem: View {

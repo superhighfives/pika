@@ -1,10 +1,3 @@
-//
-//  WCAGCompliance.swift
-//  Pika
-//
-//  Created by Charlie Gleason on 16/01/2021.
-//
-
 import Cocoa
 
 extension NSColor {
