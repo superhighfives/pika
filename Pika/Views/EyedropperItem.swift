@@ -40,7 +40,7 @@ struct EyedropperItem: View {
 
             ColorMenu(eyedropper: eyedropper)
                 .shadow(
-                    color: (colorScheme == .light ? Color.white : Color.black).opacity(0.25),
+                    color: (colorScheme == .light ? Color.white : Color.black).opacity(0.5),
                     radius: 0,
                     x: 0,
                     y: 1

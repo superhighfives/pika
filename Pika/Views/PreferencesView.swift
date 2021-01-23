@@ -82,7 +82,7 @@ struct PreferencesView: View {
                 // Global Shortcut
                 Section(header: Text("Global Shortcut").font(.system(size: 16))) {
                     VStack(alignment: .leading, spacing: 15.0) {
-                        Text("Set a global hot key shortcut to invoke Pika")
+                        Text("Set a global hotkey shortcut to invoke Pika")
                         KeyboardShortcuts.Recorder(for: .togglePika)
                     }
                 }
@@ -92,7 +92,7 @@ struct PreferencesView: View {
                     .padding(.vertical, 10.0)
 
                 // Launch at login
-                Section(header: Text("Startup Settings").font(.system(size: 16))) {
+                Section(header: Text("General Settings").font(.system(size: 16))) {
                     LaunchAtLogin.Toggle {
                         Text("Launch at login")
                     }
