@@ -62,6 +62,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             openSplashWindow(nil)
             NSApp.activate(ignoringOtherApps: true)
         }
+
+        // Configure color space
+        if !NSColorSpace.availableColorSpaces(with: .rgb).contains(Defaults[.colorSpace]) {
+            Defaults[.colorSpace] = Defaults.Keys.colorSpace.defaultValue
+        }
     }
 
     func applicationShouldHandleReopen(_: NSApplication, hasVisibleWindows: Bool) -> Bool {
