@@ -19,14 +19,6 @@ extension NSColor {
         max(min(v, maximum), minimum)
     }
 
-    func isEqual(toHexString hexString: String) -> Bool {
-        toHexString() == hexString
-    }
-
-    func isEqual(toHex hex: UInt32) -> Bool {
-        toHex() == hex
-    }
-
     func contrastRatio(with color: NSColor) -> CGFloat {
         let L1 = luminance
         let L2 = color.luminance
@@ -140,14 +132,14 @@ extension NSColor {
         var s: CGFloat = 0.0
         var b: CGFloat = 0.0
 
-        if isEqual(NSColor.black) {
-            return (0.0, 0.0, 0.0)
-        } else if isEqual(NSColor.white) {
-            return (0.0, 0.0, 1.0)
-        }
-
         guard let rgbaColor = usingColorSpace(Defaults[.colorSpace]) else {
             fatalError("Could not convert color to RGBA.")
+        }
+
+        if toHexString() == NSColor.black.toHexString() {
+            return (0.0, 0.0, 0.0)
+        } else if toHexString() == NSColor.white.toHexString() {
+            return (0.0, 0.0, 1.0)
         }
 
         rgbaColor.getHue(&h, saturation: &s, brightness: &b, alpha: nil)
@@ -164,6 +156,12 @@ extension NSColor {
         let r = RGB.r
         let g = RGB.g
         let b = RGB.b
+
+        if toHexString() == NSColor.black.toHexString() {
+            return (0.0, 0.0, 0.0)
+        } else if toHexString() == NSColor.white.toHexString() {
+            return (0.0, 0.0, 1.0)
+        }
 
         let min = Swift.min(Swift.min(r, g), b)
         let max = Swift.max(Swift.max(r, g), b)
