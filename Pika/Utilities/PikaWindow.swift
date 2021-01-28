@@ -15,7 +15,6 @@ class PikaWindow {
         window.isMovableByWindowBackground = true
         window.standardWindowButton(NSWindow.ButtonType.zoomButton)!.isEnabled = false
         window.titlebarAppearsTransparent = true
-        window.hasShadow = false
 
         // Set up toolbar
         window.toolbar = NSToolbar()

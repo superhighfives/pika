@@ -202,6 +202,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerCopyBackground), object: self)
     }
 
+    @IBAction func fadeOutPika(_: Any) {
+        pikaWindow.fadeOut(nil)
+    }
+
+    @IBAction func fadeInPika(_: Any) {
+        pikaWindow.fadeIn(nil)
+    }
+
     @IBAction func checkForUpdates(_: Any) {
         SUUpdater.shared().feedURL = URL(string: PikaConstants.url())
         SUUpdater.shared()?.checkForUpdates(self)
