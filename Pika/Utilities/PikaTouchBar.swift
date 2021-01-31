@@ -33,8 +33,12 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
         case NSTouchBarItem.Identifier.foreground:
             let item = NSCustomTouchBarItem(identifier: identifier)
             let button = NSButton(title: "", target: nil, action: #selector(AppDelegate.terminatePika))
-            foreground.$color.sink { button.title = $0.toFormat(format: Defaults[.colorFormat]) }
-                .store(in: &cancellables)
+            foreground.$color.sink {
+                button.title = $0.toFormat(format: Defaults[.colorFormat])
+                button.contentTintColor = foreground.getUIColor()
+                button.bezelColor = $0
+            }
+            .store(in: &cancellables)
             item.view = button
             return item
 

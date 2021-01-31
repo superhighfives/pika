@@ -13,7 +13,11 @@ class Eyedropper: ObservableObject {
     @objc @Published public var color: NSColor
 
     func getUIColor() -> (Color) {
-        return (color.luminance < 0.3 ? Color.white : Color.black)
+        return (color.luminance < 0.5 ? Color.white : Color.black)
+    }
+
+    func getUIColor() -> (NSColor) {
+        return (color.luminance < 0.5 ? NSColor.white : NSColor.black)
     }
 
     init(title: String, color: NSColor) {
