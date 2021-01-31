@@ -10,7 +10,7 @@ class Eyedroppers: ObservableObject {
 
 class Eyedropper: ObservableObject {
     var title: String
-    @Published public var color: NSColor
+    @objc @Published public var color: NSColor
 
     func getUIColor() -> (Color) {
         return (color.luminance < 0.3 ? Color.white : Color.black)

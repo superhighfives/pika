@@ -12,6 +12,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     var splashWindow: NSWindow!
     var aboutWindow: NSWindow!
     var preferencesWindow: NSWindow!
+    var eyedroppers: Eyedroppers!
+
+    var windowController: PikaTouchBarController!
 
     let notificationCenter = NotificationCenter.default
 
@@ -34,7 +37,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         }.tieToLifetime(of: self)
 
         // Set up eyedroppers
-        let eyedroppers = Eyedroppers()
+        eyedroppers = Eyedroppers()
 
         // Define content view
         let contentView = ContentView()
@@ -49,6 +52,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
         pikaWindow = PikaWindow.createPrimaryWindow()
         pikaWindow.contentView = NSHostingView(rootView: contentView)
+        windowController = PikaTouchBarController(window: pikaWindow)
 
         // Define global keyboard shortcuts
         KeyboardShortcuts.onKeyUp(for: .togglePika) { [self] in

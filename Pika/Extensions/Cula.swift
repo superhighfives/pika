@@ -30,6 +30,10 @@ extension NSColor {
         }
     }
 
+    func toContrastRatioString(with color: NSColor) -> String {
+        Double(round(100 * contrastRatio(with: color)) / 100).description as String
+    }
+
     var luminance: CGFloat {
         let rgba = toRGBAComponents()
 

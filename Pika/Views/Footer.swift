@@ -9,18 +9,9 @@ struct Footer: View {
     let AAAText = "WCAG 2 level AAA requires a contrast ratio of at least 7:1 for normal text."
     let AAAPlusText = "WCAG 2 level AAA requires a contrast ratio of at least 4.5:1 for bold or large text."
 
-    func getColorContrastRatio() -> String {
-        Double(round(100 * foreground.color.contrastRatio(
-            with: background.color)) / 100).description
-    }
-
-    func getWCAGCompliance() -> (NSColor.WCAG) {
-        return foreground.color.WCAGCompliance(with: background.color)
-    }
-
     var body: some View {
-        let colorWCAGCompliance = getWCAGCompliance()
-        let colorContrastRatio = getColorContrastRatio()
+        let colorWCAGCompliance = foreground.color.toWCAGCompliance(with: background.color)
+        let colorContrastRatio = foreground.color.toContrastRatioString(with: background.color)
 
         HStack(spacing: 16.0) {
             VStack(alignment: .leading, spacing: 0.0) {
