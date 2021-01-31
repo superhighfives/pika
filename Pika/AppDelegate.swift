@@ -15,6 +15,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     var eyedroppers: Eyedroppers!
 
     var windowController: PikaTouchBarController!
+    var splashController: SplashTouchBarController!
 
     let notificationCenter = NotificationCenter.default
 
@@ -64,6 +65,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         // Open splash window, or main
         if !Defaults[.viewedSplash] {
             openSplashWindow(nil)
+            DispatchQueue.main.asyncAfter(deadline: .now()) {
+                self.splashController = SplashTouchBarController(window: self.splashWindow)
+            }
             NSApp.activate(ignoringOtherApps: true)
         }
 

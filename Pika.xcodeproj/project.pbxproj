@@ -50,6 +50,7 @@
 		EAD0B718259D146200FA2F67 /* EyedropperButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B717259D146200FA2F67 /* EyedropperButtonStyle.swift */; };
 		EAD0B71C259D151400FA2F67 /* NavigationMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B71B259D151400FA2F67 /* NavigationMenu.swift */; };
 		EAF100C425C59EB3006E1EC3 /* PikaTouchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF100C325C59EB3006E1EC3 /* PikaTouchBar.swift */; };
+		EAF100C725C731AD006E1EC3 /* SplashTouchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF100C625C731AD006E1EC3 /* SplashTouchBar.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -97,6 +98,7 @@
 		EAD0B717259D146200FA2F67 /* EyedropperButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyedropperButtonStyle.swift; sourceTree = "<group>"; };
 		EAD0B71B259D151400FA2F67 /* NavigationMenu.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = NavigationMenu.swift; sourceTree = "<group>"; tabWidth = 4; };
 		EAF100C325C59EB3006E1EC3 /* PikaTouchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PikaTouchBar.swift; sourceTree = "<group>"; };
+		EAF100C625C731AD006E1EC3 /* SplashTouchBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashTouchBar.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -204,6 +206,7 @@
 				EAD0B6F1259CF29300FA2F67 /* Eyedroppers.swift */,
 				EA0C526325AB5D1700AFF716 /* PikaWindow.swift */,
 				EAF100C325C59EB3006E1EC3 /* PikaTouchBar.swift */,
+				EAF100C625C731AD006E1EC3 /* SplashTouchBar.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -372,6 +375,7 @@
 				EAD0B6F9259CF29300FA2F67 /* PreferencesView.swift in Sources */,
 				EA72BB8825A53750008205E7 /* SplashView.swift in Sources */,
 				EA057887259F54B500ACCD89 /* ColorMenuItems.swift in Sources */,
+				EAF100C725C731AD006E1EC3 /* SplashTouchBar.swift in Sources */,
 				EAA8AE1C25B8F03B0049299B /* KeyboardShortcutGrid.swift in Sources */,
 				EA0C525025AA729300AFF716 /* Visualisation.swift in Sources */,
 				EAD0B6FB259CF29300FA2F67 /* ContentView.swift in Sources */,

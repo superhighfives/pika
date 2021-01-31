@@ -2,8 +2,6 @@ import Cocoa
 import Combine
 import Defaults
 
-// swiftlint:disable trailing_comma
-
 extension NSTouchBarItem.Identifier {
     static let foreground = NSTouchBarItem.Identifier(rawValue: "com.superhighfives.pika.foreground")
     static let background = NSTouchBarItem.Identifier(rawValue: "com.superhighfives.pika.background")
@@ -21,10 +19,7 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
         return touchBar
     }
 
-    func touchBar(
-        _: NSTouchBar,
-        makeItemForIdentifier identifier: NSTouchBarItem.Identifier
-    ) -> NSTouchBarItem? {
+    func touchBar(_: NSTouchBar, makeItemForIdentifier identifier: NSTouchBarItem.Identifier) -> NSTouchBarItem? {
         let delegate = NSApplication.shared.delegate as? AppDelegate
         let foreground = delegate!.eyedroppers.foreground
         let background = delegate!.eyedroppers.background
