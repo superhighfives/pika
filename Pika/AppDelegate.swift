@@ -1,4 +1,5 @@
 import Cocoa
+import Combine
 import Defaults
 import KeyboardShortcuts
 import Sparkle
@@ -14,8 +15,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     var preferencesWindow: NSWindow!
     var eyedroppers: Eyedroppers!
 
-    var windowController: PikaTouchBarController!
     var splashController: SplashTouchBarController!
+    var cancellables = Set<AnyCancellable>()
 
     let notificationCenter = NotificationCenter.default
 
@@ -53,7 +54,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
         pikaWindow = PikaWindow.createPrimaryWindow()
         pikaWindow.contentView = NSHostingView(rootView: contentView)
-        windowController = PikaTouchBarController(window: pikaWindow)
 
         // Define global keyboard shortcuts
         KeyboardShortcuts.onKeyUp(for: .togglePika) { [self] in

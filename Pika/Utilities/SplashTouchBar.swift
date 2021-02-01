@@ -17,7 +17,7 @@ class SplashTouchBarController: NSWindowController, NSTouchBarDelegate {
         switch identifier {
         case NSTouchBarItem.Identifier.splash:
             let item = NSCustomTouchBarItem(identifier: identifier)
-            item.view = NSHostingView(rootView: MetalShader())
+            item.view = NSHostingView(rootView: TouchBarVisual())
             return item
         default:
             return nil
