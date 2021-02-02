@@ -28,25 +28,36 @@ extension NSApplication: NSTouchBarDelegate {
         switch identifier {
         case NSTouchBarItem.Identifier.foreground:
             let item = NSCustomTouchBarItem(identifier: identifier)
-            let button = NSButton(title: "", target: nil, action: #selector(AppDelegate.terminatePika))
+            let button = NSButton(title: "", target: nil, action: #selector(AppDelegate.triggerPickForeground))
             foreground.$color.sink {
                 button.title = $0.toFormat(format: Defaults[.colorFormat])
                 button.contentTintColor = foreground.getUIColor()
                 button.bezelColor = $0
             }
             .store(in: &delegate!.cancellables)
+            Defaults.observe(.colorFormat) { _ in
+                button.title = foreground.color.toFormat(format: Defaults[.colorFormat])
+                button.contentTintColor = foreground.getUIColor()
+                button.bezelColor = foreground.color
+            }.tieToLifetime(of: self)
             item.view = button
             return item
 
         case NSTouchBarItem.Identifier.background:
             let item = NSCustomTouchBarItem(identifier: identifier)
-            let button = NSButton(title: "", target: nil, action: #selector(AppDelegate.terminatePika))
+            let button = NSButton(title: "", target: nil, action: #selector(AppDelegate.triggerPickBackground))
             background.$color.sink {
                 button.title = $0.toFormat(format: Defaults[.colorFormat])
                 button.contentTintColor = background.getUIColor()
                 button.bezelColor = $0
             }
             .store(in: &delegate!.cancellables)
+            Defaults.observe(.colorFormat) { _ in
+                button.title = background.color.toFormat(format: Defaults[.colorFormat])
+                button.contentTintColor = background.getUIColor()
+                button.bezelColor = background.color
+            }.tieToLifetime(of: self)
+
             item.view = button
             return item
 

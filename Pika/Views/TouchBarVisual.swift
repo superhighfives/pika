@@ -5,15 +5,14 @@ struct TouchBarVisual: View {
         ZStack {
             Visualisation()
                 .frame(height: 220.0)
-
                 .clipped()
                 .frame(height: 30.0, alignment: .bottom)
                 .layoutPriority(1)
             HStack {
-                Image("AppSplash")
+                Image("StatusBarIcon")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(maxWidth: 500.0, maxHeight: 30.0)
+                    .frame(maxHeight: 25.0)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
