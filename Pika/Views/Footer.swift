@@ -4,11 +4,6 @@ struct Footer: View {
     @ObservedObject var foreground: Eyedropper
     @ObservedObject var background: Eyedropper
 
-    let AAText = "WCAG 2 level AA requires a contrast ratio of at least 4.5:1 for normal text."
-    let AAPlusText = "WCAG 2 level AA requires a contrast ratio of at least 3:1 for bold or large text."
-    let AAAText = "WCAG 2 level AAA requires a contrast ratio of at least 7:1 for normal text."
-    let AAAPlusText = "WCAG 2 level AAA requires a contrast ratio of at least 4.5:1 for bold or large text."
-
     var body: some View {
         let colorWCAGCompliance = foreground.color.toWCAGCompliance(with: background.color)
         let colorContrastRatio = foreground.color.toContrastRatioString(with: background.color)
@@ -32,13 +27,13 @@ struct Footer: View {
                     .foregroundColor(.gray)
                 HStack(spacing: 6.0) {
                     ComplianceToggle(title: "AA", isCompliant: colorWCAGCompliance.level2A,
-                                     tooltip: AAText)
+                                     tooltip: PikaConstants.AAText)
                     ComplianceToggle(title: "AA+", isCompliant: colorWCAGCompliance.level2ALarge,
-                                     tooltip: AAPlusText)
+                                     tooltip: PikaConstants.AAPlusText)
                     ComplianceToggle(title: "AAA", isCompliant: colorWCAGCompliance.level3A,
-                                     tooltip: AAAText)
+                                     tooltip: PikaConstants.AAAText)
                     ComplianceToggle(title: "AAA+", isCompliant: colorWCAGCompliance.level3ALarge,
-                                     tooltip: AAAPlusText)
+                                     tooltip: PikaConstants.AAAPlusText)
                 }
             }
         }
