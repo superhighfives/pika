@@ -15,8 +15,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     var preferencesWindow: NSWindow!
     var eyedroppers: Eyedroppers!
 
+    var aboutController: SplashTouchBarController!
     var splashController: SplashTouchBarController!
-    var cancellables = Set<AnyCancellable>()
+    var windowController: PikaTouchBarController!
 
     let notificationCenter = NotificationCenter.default
 
@@ -54,6 +55,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
         pikaWindow = PikaWindow.createPrimaryWindow()
         pikaWindow.contentView = NSHostingView(rootView: contentView)
+        windowController = PikaTouchBarController(window: pikaWindow)
 
         // Define global keyboard shortcuts
         KeyboardShortcuts.onKeyUp(for: .togglePika) { [self] in
@@ -65,9 +67,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         // Open splash window, or main
         if !Defaults[.viewedSplash] {
             openSplashWindow(nil)
-            DispatchQueue.main.asyncAfter(deadline: .now()) {
-                self.splashController = SplashTouchBarController(window: self.splashWindow)
-            }
             NSApp.activate(ignoringOtherApps: true)
         }
 
@@ -162,6 +161,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView]
             )
             aboutWindow.contentView = NSHostingView(rootView: AboutView())
+            aboutController = SplashTouchBarController(window: aboutWindow)
         }
         aboutWindow.makeKeyAndOrderFront(nil)
     }
@@ -190,6 +190,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 splashWindow.title = "Pika"
             }
             splashWindow.contentView = NSHostingView(rootView: SplashView().edgesIgnoringSafeArea(.all))
+            splashController = SplashTouchBarController(window: splashWindow)
         }
         splashWindow.fadeIn(nil)
     }

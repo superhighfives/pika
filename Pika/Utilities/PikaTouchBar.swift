@@ -10,15 +10,17 @@ extension NSTouchBarItem.Identifier {
     static let wcag = NSTouchBarItem.Identifier(rawValue: "com.superhighfives.pika.wcag")
 }
 
-extension NSApplication: NSTouchBarDelegate {
-    override open func makeTouchBar() -> NSTouchBar? {
+class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
+    var cancellables = Set<AnyCancellable>()
+
+    override func makeTouchBar() -> NSTouchBar? {
         let touchBar = NSTouchBar()
         touchBar.delegate = self
         touchBar.defaultItemIdentifiers = [.icon, .eyedroppers, .ratio, .wcag]
         return touchBar
     }
 
-    fileprivate func updateButton(button: NSButton, eyedropper: Eyedropper) {
+    func updateButton(button: NSButton, eyedropper: Eyedropper) {
         DispatchQueue.main.asyncAfter(deadline: .now()) {
             button.title = eyedropper.color.toFormat(format: Defaults[.colorFormat])
             button.contentTintColor = eyedropper.getUIColor()
@@ -28,7 +30,7 @@ extension NSApplication: NSTouchBarDelegate {
 
     func createTouchBarButton(
         _ eyedropper: Eyedropper,
-        _ delegate: AppDelegate?
+        _: AppDelegate?
     ) -> NSButton? {
         let action = eyedropper.title == "Foreground"
             ? #selector(AppDelegate.triggerPickForeground)
@@ -40,45 +42,14 @@ extension NSApplication: NSTouchBarDelegate {
         eyedropper.$color.sink { _ in
             self.updateButton(button: button, eyedropper: eyedropper)
         }
-        .store(in: &delegate!.cancellables)
+        .store(in: &cancellables)
         Defaults.observe(.colorFormat) { _ in
             self.updateButton(button: button, eyedropper: eyedropper)
         }.tieToLifetime(of: self)
         return button
     }
 
-    func getWCAGViews(
-        wcag: NSColor.WCAG
-    ) -> [NSView] {
-        [
-            NSHostingView(rootView:
-                ComplianceToggle(
-                    title: "AA",
-                    isCompliant: wcag.level2A,
-                    tooltip: PikaConstants.AAText
-                )),
-            NSHostingView(rootView:
-                ComplianceToggle(
-                    title: "AA+",
-                    isCompliant: wcag.level2ALarge,
-                    tooltip: PikaConstants.AAPlusText
-                )),
-            NSHostingView(rootView:
-                ComplianceToggle(
-                    title: "AAA",
-                    isCompliant: wcag.level3A,
-                    tooltip: PikaConstants.AAAText
-                )),
-            NSHostingView(rootView:
-                ComplianceToggle(
-                    title: "AAA+",
-                    isCompliant: wcag.level3ALarge,
-                    tooltip: PikaConstants.AAAPlusText
-                )),
-        ]
-    }
-
-    public func touchBar(
+    func touchBar(
         _: NSTouchBar,
         makeItemForIdentifier identifier: NSTouchBarItem.Identifier
     ) -> NSTouchBarItem? {
@@ -93,7 +64,7 @@ extension NSApplication: NSTouchBarDelegate {
                 rootView: Image("StatusBarIcon")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 40.0, height: 20.0)
+                    .frame(width: 30.0, height: 20.0)
             )
             return item
 
@@ -106,7 +77,7 @@ extension NSApplication: NSTouchBarDelegate {
             item.view = stackView
             let viewBindings: [String: NSView] = ["stackView": stackView]
             let hconstraints = NSLayoutConstraint.constraints(
-                withVisualFormat: "H:[stackView(300)]",
+                withVisualFormat: "H:[stackView(340)]",
                 options: [],
                 metrics: nil,
                 views: viewBindings
@@ -122,30 +93,71 @@ extension NSApplication: NSTouchBarDelegate {
 
             let stackView = NSStackView(views: [icon, textField])
             item.view = stackView
+            let viewBindings: [String: NSView] = ["stackView": stackView]
+            let hconstraints = NSLayoutConstraint.constraints(
+                withVisualFormat: "H:[stackView(60)]",
+                options: [],
+                metrics: nil,
+                views: viewBindings
+            )
+            NSLayoutConstraint.activate(hconstraints)
 
             foreground.$color.sink { textField.stringValue = $0.toContrastRatioString(with: background.color) }
-                .store(in: &delegate!.cancellables)
+                .store(in: &cancellables)
             background.$color.sink { textField.stringValue = $0.toContrastRatioString(with: foreground.color) }
-                .store(in: &delegate!.cancellables)
+                .store(in: &cancellables)
             return item
 
         case NSTouchBarItem.Identifier.wcag:
             let item = NSCustomTouchBarItem(identifier: identifier)
 
+            let wcag = foreground.color.toWCAGCompliance(with: background.color)
+
+            let AA = NSHostingView(rootView:
+                ComplianceToggle(
+                    title: "AA",
+                    isCompliant: wcag.level2A,
+                    tooltip: PikaConstants.AAText
+                ))
+            let AAPlus = NSHostingView(rootView:
+                ComplianceToggle(
+                    title: "AA+",
+                    isCompliant: wcag.level2ALarge,
+                    tooltip: PikaConstants.AAPlusText
+                ))
+            let AAA = NSHostingView(rootView:
+                ComplianceToggle(
+                    title: "AAA",
+                    isCompliant: wcag.level3A,
+                    tooltip: PikaConstants.AAAText
+                ))
+            let AAAPlus = NSHostingView(rootView:
+                ComplianceToggle(
+                    title: "AAA+",
+                    isCompliant: wcag.level3ALarge,
+                    tooltip: PikaConstants.AAAPlusText
+                ))
+
             let stackView = NSStackView(
-                views: getWCAGViews(wcag: foreground.color.toWCAGCompliance(with: background.color))
+                views: [AA, AAPlus, AAA, AAAPlus]
             )
 
-            foreground.$color.sink { _ in
-                stackView.setViews(self.getWCAGViews(wcag: foreground.color.toWCAGCompliance(with: background.color)), in: .leading)
-                stackView.layoutSubtreeIfNeeded()
+            foreground.$color.sink {
+                let wcag = $0.toWCAGCompliance(with: background.color)
+                AA.rootView.isCompliant = wcag.level2A
+                AAPlus.rootView.isCompliant = wcag.level2ALarge
+                AAA.rootView.isCompliant = wcag.level3A
+                AAAPlus.rootView.isCompliant = wcag.level3ALarge
             }
-            .store(in: &delegate!.cancellables)
-            background.$color.sink { _ in
-                stackView.setViews(self.getWCAGViews(wcag: foreground.color.toWCAGCompliance(with: background.color)), in: .leading)
-                stackView.layoutSubtreeIfNeeded()
+            .store(in: &cancellables)
+            background.$color.sink {
+                let wcag = $0.toWCAGCompliance(with: background.color)
+                AA.rootView.isCompliant = wcag.level2A
+                AAPlus.rootView.isCompliant = wcag.level2ALarge
+                AAA.rootView.isCompliant = wcag.level3A
+                AAAPlus.rootView.isCompliant = wcag.level3ALarge
             }
-            .store(in: &delegate!.cancellables)
+            .store(in: &cancellables)
 
             item.view = stackView
             return item
