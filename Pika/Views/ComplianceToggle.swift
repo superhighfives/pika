@@ -8,7 +8,6 @@ struct ComplianceToggle: View {
     var body: some View {
         HStack(spacing: 2.0) {
             IconImage(name: isCompliant ? "checkmark.circle.fill" : "xmark.circle")
-                .opacity(isCompliant ? 1.0 : 0.4)
             Text(title)
         }
         .opacity(isCompliant ? 1.0 : 0.4)

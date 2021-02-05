@@ -16,6 +16,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     var eyedroppers: Eyedroppers!
 
     var windowController: PikaTouchBarController!
+    var splashController: SplashTouchBarController!
 
     let notificationCenter = NotificationCenter.default
 
@@ -158,6 +159,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 size: NSRect(x: 0, y: 0, width: 300, height: 540),
                 styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView]
             )
+            splashController = SplashTouchBarController(window: aboutWindow)
             aboutWindow.contentView = NSHostingView(rootView: AboutView())
         }
         aboutWindow.makeKeyAndOrderFront(nil)
@@ -170,6 +172,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 size: NSRect(x: 0, y: 0, width: 550, height: 480),
                 styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView]
             )
+            splashController = SplashTouchBarController(window: preferencesWindow)
             preferencesWindow.contentView = NSHostingView(rootView: PreferencesView())
         }
         preferencesWindow.makeKeyAndOrderFront(nil)
@@ -186,6 +189,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 splashWindow.titleVisibility = .visible
                 splashWindow.title = "Pika"
             }
+            splashController = SplashTouchBarController(window: splashWindow)
             splashWindow.contentView = NSHostingView(rootView: SplashView().edgesIgnoringSafeArea(.all))
         }
         splashWindow.fadeIn(nil)

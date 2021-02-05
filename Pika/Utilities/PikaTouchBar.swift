@@ -16,7 +16,7 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
     override func makeTouchBar() -> NSTouchBar? {
         let touchBar = NSTouchBar()
         touchBar.delegate = self
-        touchBar.defaultItemIdentifiers = [.icon, .eyedroppers, .ratio, .wcag]
+        touchBar.defaultItemIdentifiers = [.eyedroppers, .ratio, .wcag]
         return touchBar
     }
 
@@ -24,7 +24,7 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
         DispatchQueue.main.asyncAfter(deadline: .now()) {
             button.title = eyedropper.color.toFormat(format: Defaults[.colorFormat])
             button.contentTintColor = eyedropper.getUIColor()
-            button.bezelColor = eyedropper.color
+            button.bezelColor = eyedropper.color == .black ? NSColor(r: 40, g: 40, b: 40, a: 1) : eyedropper.color
         }
     }
 
@@ -65,6 +65,7 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 30.0, height: 20.0)
+                    .opacity(0.8)
             )
             return item
 
@@ -88,14 +89,19 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
         case NSTouchBarItem.Identifier.ratio:
             let item = NSCustomTouchBarItem(identifier: identifier)
             let textField = NSTextField(labelWithString: "Contrast Ratio")
-            let icon = NSImageView()
-            icon.image = NSImage(named: "ellipsis.circle")
+            let icon = NSHostingView(rootView: IconImage(name: "circle.lefthalf.fill"))
 
             let stackView = NSStackView(views: [icon, textField])
-            item.view = stackView
-            let viewBindings: [String: NSView] = ["stackView": stackView]
+            let view = NSView()
+            view.addSubview(stackView)
+            stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+            stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+
+            item.view = view
+
+            let viewBindings: [String: NSView] = ["stackView": view]
             let hconstraints = NSLayoutConstraint.constraints(
-                withVisualFormat: "H:[stackView(60)]",
+                withVisualFormat: "H:[stackView(80)]",
                 options: [],
                 metrics: nil,
                 views: viewBindings
@@ -141,6 +147,7 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
             let stackView = NSStackView(
                 views: [AA, AAPlus, AAA, AAAPlus]
             )
+            stackView.spacing = 8.0
 
             foreground.$color.sink {
                 let wcag = $0.toWCAGCompliance(with: background.color)
@@ -151,7 +158,7 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
             }
             .store(in: &cancellables)
             background.$color.sink {
-                let wcag = $0.toWCAGCompliance(with: background.color)
+                let wcag = $0.toWCAGCompliance(with: foreground.color)
                 AA.rootView.isCompliant = wcag.level2A
                 AAPlus.rootView.isCompliant = wcag.level2ALarge
                 AAA.rootView.isCompliant = wcag.level3A
