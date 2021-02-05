@@ -25,16 +25,8 @@ struct Footer: View {
                     .font(.caption)
                     .bold()
                     .foregroundColor(.gray)
-                HStack(spacing: 6.0) {
-                    ComplianceToggle(title: "AA", isCompliant: colorWCAGCompliance.level2A,
-                                     tooltip: PikaConstants.AAText)
-                    ComplianceToggle(title: "AA+", isCompliant: colorWCAGCompliance.level2ALarge,
-                                     tooltip: PikaConstants.AAPlusText)
-                    ComplianceToggle(title: "AAA", isCompliant: colorWCAGCompliance.level3A,
-                                     tooltip: PikaConstants.AAAText)
-                    ComplianceToggle(title: "AAA+", isCompliant: colorWCAGCompliance.level3ALarge,
-                                     tooltip: PikaConstants.AAAPlusText)
-                }
+
+                ComplianceToggleGroup(colorWCAGCompliance: colorWCAGCompliance)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: 50.0, alignment: .leading)

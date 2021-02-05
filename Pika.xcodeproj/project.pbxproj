@@ -18,6 +18,7 @@
 		EA0C526425AB5D1700AFF716 /* PikaWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C526325AB5D1700AFF716 /* PikaWindow.swift */; };
 		EA0C526F25AB683400AFF716 /* EyedropperButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C526E25AB683400AFF716 /* EyedropperButton.swift */; };
 		EA0C527325AB6C6000AFF716 /* ColorMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C527225AB6C6000AFF716 /* ColorMenu.swift */; };
+		EA424C7D25CDEF98009056A9 /* ComplianceToggleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA424C7C25CDEF98009056A9 /* ComplianceToggleGroup.swift */; };
 		EA635DC925B3B2650014D91A /* Cula.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DC825B3B2650014D91A /* Cula.swift */; };
 		EA635DCC25B3B42B0014D91A /* WCAGCompliance.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DCB25B3B42B0014D91A /* WCAGCompliance.swift */; };
 		EA635DDC25B4E90B0014D91A /* BindingOnChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DDB25B4E90B0014D91A /* BindingOnChange.swift */; };
@@ -66,6 +67,7 @@
 		EA0C526325AB5D1700AFF716 /* PikaWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PikaWindow.swift; sourceTree = "<group>"; };
 		EA0C526E25AB683400AFF716 /* EyedropperButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyedropperButton.swift; sourceTree = "<group>"; };
 		EA0C527225AB6C6000AFF716 /* ColorMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorMenu.swift; sourceTree = "<group>"; };
+		EA424C7C25CDEF98009056A9 /* ComplianceToggleGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComplianceToggleGroup.swift; sourceTree = "<group>"; };
 		EA635DC825B3B2650014D91A /* Cula.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cula.swift; sourceTree = "<group>"; };
 		EA635DCB25B3B42B0014D91A /* WCAGCompliance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCAGCompliance.swift; sourceTree = "<group>"; };
 		EA635DDB25B4E90B0014D91A /* BindingOnChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingOnChange.swift; sourceTree = "<group>"; };
@@ -224,6 +226,7 @@
 				EA057886259F54B500ACCD89 /* ColorMenuItems.swift */,
 				EA635DE025B4FC580014D91A /* ColorPickers.swift */,
 				EA801284259F8F480026D5D9 /* ComplianceToggle.swift */,
+				EA424C7C25CDEF98009056A9 /* ComplianceToggleGroup.swift */,
 				EAD0B6F6259CF29300FA2F67 /* ContentView.swift */,
 				EA0C526E25AB683400AFF716 /* EyedropperButton.swift */,
 				EA635DE925B534C80014D91A /* EyedropperItem.swift */,
@@ -386,6 +389,7 @@
 				EAD0B6CC259CED1C00FA2F67 /* AppDelegate.swift in Sources */,
 				EA635DCC25B3B42B0014D91A /* WCAGCompliance.swift in Sources */,
 				EA635DEA25B534C80014D91A /* EyedropperItem.swift in Sources */,
+				EA424C7D25CDEF98009056A9 /* ComplianceToggleGroup.swift in Sources */,
 				EAD0B6F7259CF29300FA2F67 /* Eyedroppers.swift in Sources */,
 				EA0C526025AB5A2B00AFF716 /* NavigationMenuItems.swift in Sources */,
 				EA0C526425AB5D1700AFF716 /* PikaWindow.swift in Sources */,
