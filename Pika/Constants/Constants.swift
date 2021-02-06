@@ -31,10 +31,9 @@ enum PikaConstants {
     ]
 
     // Accessibility text constants
-    static let AAText = "WCAG 2 level AA requires a contrast ratio of at least 4.5:1 for normal text."
-    static let AAPlusText = "WCAG 2 level AA requires a contrast ratio of at least 3:1 for bold or large text."
-    static let AAAText = "WCAG 2 level AAA requires a contrast ratio of at least 7:1 for normal text."
-    static let AAAPlusText = "WCAG 2 level AAA requires a contrast ratio of at least 4.5:1 for bold or large text."
+    static let ratio30 = "WCAG 2 level AA requires a contrast ratio of at least 3:1 for bold or large text."
+    static let ratio45 = "WCAG 2 level AA requires a contrast ratio of at least 4.5:1 for normal text. WCAG 2 level AAA requires a contrast ratio of at least 4.5:1 for bold or large text."
+    static let ratio70 = "WCAG 2 level AAA requires a contrast ratio of at least 7:1 for normal text."
 
     // Notification Center constants
     static let ncTriggerCopyForeground = "triggerCopyForeground"

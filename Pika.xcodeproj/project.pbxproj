@@ -120,6 +120,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		22F23B6925CEE1E600064E62 /* TouchBar */ = {
+			isa = PBXGroup;
+			children = (
+				EAF100C325C59EB3006E1EC3 /* PikaTouchBar.swift */,
+				EAF100C625C731AD006E1EC3 /* SplashTouchBar.swift */,
+			);
+			path = TouchBar;
+			sourceTree = "<group>";
+		};
 		EA0C525725AB576C00AFF716 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
@@ -168,16 +177,17 @@
 		EAD0B6CA259CED1C00FA2F67 /* Pika */ = {
 			isa = PBXGroup;
 			children = (
-				EAD0B6D8259CED1D00FA2F67 /* Pika.entitlements */,
-				EA0C525925AB57AE00AFF716 /* Constants */,
-				EA0C525725AB576C00AFF716 /* Assets */,
 				EAD0B6CB259CED1C00FA2F67 /* AppDelegate.swift */,
-				EAD0B6D7259CED1D00FA2F67 /* Info.plist */,
+				EA0C525725AB576C00AFF716 /* Assets */,
+				EA0C525925AB57AE00AFF716 /* Constants */,
 				EAD0B6EC259CF28D00FA2F67 /* Extensions */,
+				EAD0B6D7259CED1D00FA2F67 /* Info.plist */,
+				EA72BB8125A5334B008205E7 /* Metal */,
+				EAD0B6D8259CED1D00FA2F67 /* Pika.entitlements */,
 				EAD0B6D1259CED1D00FA2F67 /* Preview Content */,
 				EAD0B71A259D14C200FA2F67 /* Styles */,
+				22F23B6925CEE1E600064E62 /* TouchBar */,
 				EAD0B6F0259CF29300FA2F67 /* Utilities */,
-				EA72BB8125A5334B008205E7 /* Metal */,
 				EAD0B6F2259CF29300FA2F67 /* Views */,
 			);
 			path = Pika;
@@ -209,8 +219,6 @@
 			children = (
 				EAD0B6F1259CF29300FA2F67 /* Eyedroppers.swift */,
 				EA0C526325AB5D1700AFF716 /* PikaWindow.swift */,
-				EAF100C325C59EB3006E1EC3 /* PikaTouchBar.swift */,
-				EAF100C625C731AD006E1EC3 /* SplashTouchBar.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -218,8 +226,6 @@
 		EAD0B6F2259CF29300FA2F67 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				EAA8AE1B25B8F03B0049299B /* KeyboardShortcutGrid.swift */,
-				22FE80B225BA0F820063759E /* KeyboardShortcutItem.swift */,
 				EAD0B6F3259CF29300FA2F67 /* AboutView.swift */,
 				EAD0B6F5259CF29300FA2F67 /* AppVersion.swift */,
 				EA0C527225AB6C6000AFF716 /* ColorMenu.swift */,
@@ -232,15 +238,17 @@
 				EA635DE925B534C80014D91A /* EyedropperItem.swift */,
 				EA8124C0259E307D00033F0B /* Footer.swift */,
 				221600F825A62E5B00B8B7D9 /* IconImage.swift */,
+				EAA8AE1B25B8F03B0049299B /* KeyboardShortcutGrid.swift */,
+				22FE80B225BA0F820063759E /* KeyboardShortcutItem.swift */,
+				EAA8AE1825B8EC070049299B /* KeyboardShortcutKey.swift */,
 				EAD0B71B259D151400FA2F67 /* NavigationMenu.swift */,
 				EA0C525F25AB5A2B00AFF716 /* NavigationMenuItems.swift */,
 				EAD0B6F4259CF29300FA2F67 /* PreferencesView.swift */,
 				EA72BB8725A53750008205E7 /* SplashView.swift */,
 				EA635DF025B5A6D80014D91A /* Toast.swift */,
+				EAF100CC25C785C4006E1EC3 /* TouchBarVisual.swift */,
 				226FD60F25A940F90021A67F /* VisualEffect.swift */,
 				EA0C524F25AA729300AFF716 /* Visualisation.swift */,
-				EAA8AE1825B8EC070049299B /* KeyboardShortcutKey.swift */,
-				EAF100CC25C785C4006E1EC3 /* TouchBarVisual.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";

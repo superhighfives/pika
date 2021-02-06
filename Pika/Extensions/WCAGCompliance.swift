@@ -2,10 +2,9 @@ import Cocoa
 
 extension NSColor {
     struct WCAG {
-        var level2A: Bool
-        var level3A: Bool
-        var level2ALarge: Bool
-        var level3ALarge: Bool
+        var ratio30: Bool
+        var ratio45: Bool
+        var ratio70: Bool
     }
 
     func WCAGCompliance(with color: NSColor) -> (WCAG) {
@@ -16,10 +15,9 @@ extension NSColor {
         // a contrast ratio of at least 7:1 for normal text and 4.5:1 for large text.
         let ratio = contrastRatio(with: color)
         let results = WCAG(
-            level2A: ratio >= 4.5,
-            level3A: ratio >= 7.0,
-            level2ALarge: ratio >= 3.0,
-            level3ALarge: ratio >= 4.5
+            ratio30: ratio >= 3.0,
+            ratio45: ratio >= 4.5,
+            ratio70: ratio >= 7.0
         )
         return results
     }

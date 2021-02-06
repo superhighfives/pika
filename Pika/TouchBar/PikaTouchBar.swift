@@ -58,8 +58,8 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
         DispatchQueue.main.asyncAfter(deadline: .now()) {
             button.title = eyedropper.color.toFormat(format: Defaults[.colorFormat])
             button.contentTintColor = eyedropper.getUIColor()
-            button.bezelColor = eyedropper.color.toHexString() == "#000000"
-                ? NSColor(r: 30, g: 30, b: 30, a: 1)
+            button.bezelColor = Int(round(eyedropper.color.toHSBComponents().b * 100)) <= 20
+                ? NSColor(r: 20, g: 20, b: 20, a: 1)
                 : eyedropper.color
         }
     }
@@ -126,7 +126,8 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
 
         let wcagViews = NSHostingView(rootView:
             ComplianceToggleGroup(
-                colorWCAGCompliance: colorWCAGCompliance
+                colorWCAGCompliance: colorWCAGCompliance,
+                size: .small
             ))
 
         foreground.$color.sink {

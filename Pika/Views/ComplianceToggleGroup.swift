@@ -2,17 +2,34 @@ import SwiftUI
 
 struct ComplianceToggleGroup: View {
     var colorWCAGCompliance: NSColor.WCAG
+    var size = Sizes.full
+    enum Sizes: String, Codable, CaseIterable {
+        case small
+        case full
+    }
 
     var body: some View {
-        HStack(spacing: 8.0) {
-            ComplianceToggle(title: "AA", isCompliant: self.colorWCAGCompliance.level2A,
-                             tooltip: PikaConstants.AAText)
-            ComplianceToggle(title: "AA+", isCompliant: self.colorWCAGCompliance.level2ALarge,
-                             tooltip: PikaConstants.AAPlusText)
-            ComplianceToggle(title: "AAA", isCompliant: self.colorWCAGCompliance.level3A,
-                             tooltip: PikaConstants.AAAText)
-            ComplianceToggle(title: "AAA+", isCompliant: self.colorWCAGCompliance.level3ALarge,
-                             tooltip: PikaConstants.AAAPlusText)
+        HStack(spacing: 10.0) {
+            ComplianceToggle(
+                title: "AA",
+                isCompliant: self.colorWCAGCompliance.ratio30,
+                tooltip: PikaConstants.ratio30,
+                large: true,
+                size: size
+            )
+            ComplianceToggle(
+                title: "AA/AAA",
+                isCompliant: self.colorWCAGCompliance.ratio45,
+                tooltip: PikaConstants.ratio45,
+                large: true,
+                size: size
+            )
+            ComplianceToggle(
+                title: "AAA",
+                isCompliant: self.colorWCAGCompliance.ratio70,
+                tooltip: PikaConstants.ratio70,
+                size: size
+            )
         }
     }
 }
