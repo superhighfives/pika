@@ -213,11 +213,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     @IBAction func fadeOutPika(_: Any) {
-        pikaWindow.fadeOut(nil)
+        pikaWindow.fadeOut(sender: nil, duration: 0.1)
     }
 
     @IBAction func fadeInPika(_: Any) {
-        pikaWindow.fadeIn(nil)
+        pikaWindow.fadeIn(sender: nil, duration: 0.1)
     }
 
     @IBAction func checkForUpdates(_: Any) {

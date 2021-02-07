@@ -30,7 +30,7 @@ class Eyedropper: ObservableObject {
     func start() {
         let sampler = NSColorSampler()
         NSApp.sendAction(#selector(AppDelegate.fadeOutPika), to: nil, from: nil)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             sampler.show { selectedColor in
                 NSApp.sendAction(#selector(AppDelegate.fadeInPika), to: nil, from: nil)
                 if let selectedColor = selectedColor {
