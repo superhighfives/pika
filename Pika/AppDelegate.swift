@@ -212,12 +212,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerCopyBackground), object: self)
     }
 
-    @IBAction func fadeOutPika(_: Any) {
-        pikaWindow.fadeOut(sender: nil, duration: 0.1)
+    @IBAction func hidePika(_: Any) {
+        hideMainWindow()
     }
 
-    @IBAction func fadeInPika(_: Any) {
-        pikaWindow.fadeIn(sender: nil, duration: 0.1)
+    @IBAction func showPika(_: Any) {
+        pikaWindow.fadeIn(sender: nil, duration: 0.2)
     }
 
     @IBAction func checkForUpdates(_: Any) {
