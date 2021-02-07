@@ -59,13 +59,13 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
             button.title = eyedropper.color.toFormat(format: Defaults[.colorFormat])
             button.contentTintColor = eyedropper.getUIColor()
             button.bezelColor = Int(round(eyedropper.color.toHSBComponents().b * 100)) <= 20
-                ? NSColor(r: 20, g: 20, b: 20, a: 1)
+                ? NSColor(r: 35, g: 35, b: 35, a: 1)
                 : eyedropper.color
         }
     }
 
     func createTouchBarButton(_ eyedropper: Eyedropper) -> NSButton? {
-        let action = eyedropper.title == "Foreground"
+        let action = eyedropper.type == .foreground
             ? #selector(AppDelegate.triggerPickForeground)
             : #selector(AppDelegate.triggerPickBackground)
         let button = NSButton(title: "", target: nil, action: action)
@@ -88,7 +88,7 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
         _ background: Eyedropper
     ) -> NSTouchBarItem? {
         let item = NSCustomTouchBarItem(identifier: identifier)
-        let textField = NSTextField(labelWithString: "Contrast Ratio")
+        let textField = NSTextField(labelWithString: "")
         let icon = NSHostingView(rootView: IconImage(name: "circle.lefthalf.fill"))
 
         let stackView = NSStackView(views: [icon, textField])

@@ -22,11 +22,11 @@ struct EyedropperItem: View {
             EyedropperButton(eyedropper: eyedropper)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .onReceive(NotificationCenter.default.publisher(
-                    for: Notification.Name("triggerPick\(eyedropper.title)"))) { _ in
+                    for: Notification.Name("triggerPick\(eyedropper.type.rawValue.capitalized)"))) { _ in
                     eyedropper.start()
                 }
                 .onReceive(NotificationCenter.default.publisher(
-                    for: Notification.Name("triggerCopy\(eyedropper.title)"))) { _ in
+                    for: Notification.Name("triggerCopy\(eyedropper.type.rawValue.capitalized)"))) { _ in
                     showToast = true
                     pasteboard.clearContents()
                     let contents = "\(eyedropper.color.toFormat(format: colorFormat))"
@@ -35,7 +35,12 @@ struct EyedropperItem: View {
                 .toast(
                     isShowing: $showToast,
                     color: eyedropper.getUIColor(),
-                    text: Text("Copied \(eyedropper.title.lowercased())")
+                    text: Text(String(
+                        format: NSLocalizedString("color.copy.toast", comment: "Copied foreground / background"),
+                        eyedropper.type == .foreground
+                            ? NSLocalizedString("color.foreground", comment: "Foreground").lowercased()
+                            : NSLocalizedString("color.background", comment: "Background").lowercased()
+                    ))
                 )
 
             ColorMenu(eyedropper: eyedropper)
@@ -62,6 +67,6 @@ struct EyedropperItem: View {
 
 struct EyedropperItem_Previews: PreviewProvider {
     static var previews: some View {
-        EyedropperItem(eyedropper: Eyedropper(title: "Foreground", color: NSColor.black))
+        EyedropperItem(eyedropper: Eyedropper(type: .foreground, color: NSColor.black))
     }
 }

@@ -3,25 +3,31 @@ import SwiftUI
 
 class Eyedroppers: ObservableObject {
     @Published var foreground = Eyedropper(
-        title: "Foreground", color: PikaConstants.initialColors.randomElement()!
+        type: .foreground, color: PikaConstants.initialColors.randomElement()!
     )
-    @Published var background = Eyedropper(title: "Background", color: NSColor.black)
+    @Published var background = Eyedropper(type: .background, color: NSColor.black)
 }
 
 class Eyedropper: ObservableObject {
-    var title: String
+    enum Types: String {
+        case foreground
+        case background
+    }
+
+    let type: Types
+
     @objc @Published public var color: NSColor
 
     func getUIColor() -> (Color) {
-        return (color.luminance < 0.4 ? Color.white : Color.black)
+        return (color.luminance < 0.3 ? Color.white : Color.black)
     }
 
     func getUIColor() -> (NSColor) {
-        return (color.luminance < 0.4 ? NSColor.white : NSColor.black)
+        return (color.luminance < 0.3 ? NSColor.white : NSColor.black)
     }
 
-    init(title: String, color: NSColor) {
-        self.title = title
+    init(type: Types, color: NSColor) {
+        self.type = type
         self.color = color
 
         Defaults.observe(.colorSpace) { change in

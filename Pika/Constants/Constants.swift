@@ -16,7 +16,7 @@ enum PikaConstants {
             : "https://superhighfives.com/releases/pika"
     }
 
-    // Initial colours
+    // Initial colors
     static let initialColors = [
         NSColor(r: 143.0, g: 15.0, b: 208.0),
         NSColor(r: 224.0, g: 53.0, b: 139.0),
@@ -29,11 +29,6 @@ enum PikaConstants {
         NSColor(r: 14.0, g: 35.0, b: 204.0),
         NSColor(r: 188.0, g: 42.0, b: 97.0),
     ]
-
-    // Accessibility text constants
-    static let ratio30 = "WCAG 2 level AA requires a contrast ratio of at least 3:1 for bold or large text."
-    static let ratio45 = "WCAG 2 level AA requires a contrast ratio of at least 4.5:1 for normal text. WCAG 2 level AAA requires a contrast ratio of at least 4.5:1 for bold or large text."
-    static let ratio70 = "WCAG 2 level AAA requires a contrast ratio of at least 7:1 for normal text."
 
     // Notification Center constants
     static let ncTriggerCopyForeground = "triggerCopyForeground"

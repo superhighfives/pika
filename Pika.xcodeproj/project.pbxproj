@@ -19,6 +19,7 @@
 		EA0C526F25AB683400AFF716 /* EyedropperButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C526E25AB683400AFF716 /* EyedropperButton.swift */; };
 		EA0C527325AB6C6000AFF716 /* ColorMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C527225AB6C6000AFF716 /* ColorMenu.swift */; };
 		EA424C7D25CDEF98009056A9 /* ComplianceToggleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA424C7C25CDEF98009056A9 /* ComplianceToggleGroup.swift */; };
+		EA424CDE25CF0328009056A9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = EA424CE025CF0328009056A9 /* Localizable.strings */; };
 		EA635DC925B3B2650014D91A /* Cula.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DC825B3B2650014D91A /* Cula.swift */; };
 		EA635DCC25B3B42B0014D91A /* WCAGCompliance.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DCB25B3B42B0014D91A /* WCAGCompliance.swift */; };
 		EA635DDC25B4E90B0014D91A /* BindingOnChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DDB25B4E90B0014D91A /* BindingOnChange.swift */; };
@@ -68,6 +69,7 @@
 		EA0C526E25AB683400AFF716 /* EyedropperButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyedropperButton.swift; sourceTree = "<group>"; };
 		EA0C527225AB6C6000AFF716 /* ColorMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorMenu.swift; sourceTree = "<group>"; };
 		EA424C7C25CDEF98009056A9 /* ComplianceToggleGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComplianceToggleGroup.swift; sourceTree = "<group>"; };
+		EA424CDF25CF0328009056A9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		EA635DC825B3B2650014D91A /* Cula.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cula.swift; sourceTree = "<group>"; };
 		EA635DCB25B3B42B0014D91A /* WCAGCompliance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCAGCompliance.swift; sourceTree = "<group>"; };
 		EA635DDB25B4E90B0014D91A /* BindingOnChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingOnChange.swift; sourceTree = "<group>"; };
@@ -132,6 +134,7 @@
 		EA0C525725AB576C00AFF716 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				EA424CE025CF0328009056A9 /* Localizable.strings */,
 				EAD0B6CF259CED1D00FA2F67 /* Assets.xcassets */,
 				EAD0B6D4259CED1D00FA2F67 /* Main.storyboard */,
 			);
@@ -333,6 +336,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EAD0B6D6259CED1D00FA2F67 /* Main.storyboard in Resources */,
+				EA424CDE25CF0328009056A9 /* Localizable.strings in Resources */,
 				EAD0B6D3259CED1D00FA2F67 /* Preview Assets.xcassets in Resources */,
 				EAD0B6D0259CED1D00FA2F67 /* Assets.xcassets in Resources */,
 			);
@@ -428,6 +432,14 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		EA424CE025CF0328009056A9 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EA424CDF25CF0328009056A9 /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		EAD0B6D4259CED1D00FA2F67 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

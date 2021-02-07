@@ -10,7 +10,7 @@ struct Footer: View {
 
         HStack(spacing: 16.0) {
             VStack(alignment: .leading, spacing: 0.0) {
-                Text("Contrast ratio")
+                Text(NSLocalizedString("color.ratio", comment: "Contrast Ratio"))
                     .font(.caption)
                     .bold()
                     .foregroundColor(.gray)
@@ -21,7 +21,7 @@ struct Footer: View {
             Divider()
 
             VStack(alignment: .leading, spacing: 3.0) {
-                Text("WCAG Compliance")
+                Text(NSLocalizedString("color.wcag", comment: "WCAG Compliance"))
                     .font(.caption)
                     .bold()
                     .foregroundColor(.gray)
@@ -40,10 +40,8 @@ struct Footer: View {
 
 struct FooterView_Previews: PreviewProvider {
     static var previews: some View {
-        let foreground = Eyedropper(
-            title: "Foreground", color: PikaConstants.initialColors.randomElement()!
-        )
-        let background = Eyedropper(title: "Background", color: NSColor.black)
+        let foreground = Eyedropper(type: .foreground, color: PikaConstants.initialColors.randomElement()!)
+        let background = Eyedropper(type: .background, color: NSColor.black)
         Footer(foreground: foreground, background: background)
     }
 }

@@ -1,5 +1,4 @@
 import Cocoa
-import Combine
 import Defaults
 import KeyboardShortcuts
 import Sparkle
@@ -107,23 +106,23 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         statusBarMenu = NSMenu(title: "Status Bar Menu")
         statusBarMenu.delegate = self
         statusBarMenu.addItem(
-            withTitle: "About",
+            withTitle: NSLocalizedString("menu.about", comment: "About"),
             action: #selector(openAboutWindow(_:)),
             keyEquivalent: ""
         )
         statusBarMenu.addItem(
-            withTitle: "Check for updates...",
+            withTitle: NSLocalizedString("menu.updates", comment: "Check for updates..."),
             action: #selector(checkForUpdates(_:)),
             keyEquivalent: ""
         )
         statusBarMenu.addItem(
-            withTitle: "Preferences",
+            withTitle: NSLocalizedString("menu.preferences", comment: "Preferences"),
             action: #selector(openPreferencesWindow(_:)),
             keyEquivalent: ""
         )
         statusBarMenu.addItem(NSMenuItem.separator())
         statusBarMenu.addItem(
-            withTitle: "Quit Pika",
+            withTitle: NSLocalizedString("menu.quit", comment: "Quit Pika"),
             action: #selector(terminatePika(_:)),
             keyEquivalent: ""
         )
@@ -188,8 +187,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 styleMask: [.titled, .fullSizeContentView]
             )
             if #available(OSX 11.0, *) {
+                splashWindow.title = NSLocalizedString("app.name", comment: "Pika")
                 splashWindow.titleVisibility = .visible
-                splashWindow.title = "Pika"
             }
             splashController = SplashTouchBarController(window: splashWindow)
             splashWindow.contentView = NSHostingView(rootView: SplashView().edgesIgnoringSafeArea(.all))

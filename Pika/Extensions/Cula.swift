@@ -263,9 +263,9 @@ extension NSColor {
     }
 
     /**
-     Returns hex and string formats of each colour
+     Returns hex and string formats of each color
 
-     - returns: A string of the colour depending on the provided format.
+     - returns: A string of the color depending on the provided format.
      */
     func toFormat(format: ColorFormat) -> String {
         switch format {
