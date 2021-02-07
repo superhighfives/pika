@@ -3,7 +3,7 @@ import SwiftUI
 struct NavigationMenuItems: View {
     var body: some View {
         Group {
-            Button(NSLocalizedString("menu.pick.foreground", comment: "Pick foreground..."), action: {
+            Button("\(NSLocalizedString("color.pick.foreground", comment: "Pick foreground"))...", action: {
                 NSApp.sendAction(#selector(AppDelegate.triggerPickForeground), to: nil, from: nil)
             })
                 .modify {
@@ -14,7 +14,7 @@ struct NavigationMenuItems: View {
                     }
                 }
 
-            Button(NSLocalizedString("menu.pick.background", comment: "Pick background..."), action: {
+            Button("\(NSLocalizedString("color.pick.background", comment: "Pick background"))...", action: {
                 NSApp.sendAction(#selector(AppDelegate.triggerPickBackground), to: nil, from: nil)
             })
                 .modify {
@@ -31,7 +31,7 @@ struct NavigationMenuItems: View {
         }
 
         Group {
-            Button(NSLocalizedString("menu.copy.foreground", comment: "Copy foreground"), action: {
+            Button(NSLocalizedString("color.copy.foreground", comment: "Copy foreground"), action: {
                 NSApp.sendAction(#selector(AppDelegate.triggerCopyForeground), to: nil, from: nil)
             })
                 .modify {
@@ -42,7 +42,7 @@ struct NavigationMenuItems: View {
                     }
                 }
 
-            Button(NSLocalizedString("menu.copy.background", comment: "Copy background"), action: {
+            Button(NSLocalizedString("color.copy.background", comment: "Copy background"), action: {
                 NSApp.sendAction(#selector(AppDelegate.triggerCopyBackground), to: nil, from: nil)
             })
                 .modify {
@@ -62,7 +62,7 @@ struct NavigationMenuItems: View {
             Button(NSLocalizedString("menu.about", comment: "About"), action: {
                 NSApp.sendAction(#selector(AppDelegate.openAboutWindow), to: nil, from: nil)
             })
-            Button(NSLocalizedString("menu.updates", comment: "Check for updates..."), action: {
+            Button("\(NSLocalizedString("menu.updates", comment: "Check for updates"))...", action: {
                 NSApp.sendAction(#selector(AppDelegate.checkForUpdates), to: nil, from: nil)
             })
             Button(NSLocalizedString("menu.preferences", comment: "Preferences"), action: {

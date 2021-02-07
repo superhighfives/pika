@@ -111,7 +111,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             keyEquivalent: ""
         )
         statusBarMenu.addItem(
-            withTitle: NSLocalizedString("menu.updates", comment: "Check for updates..."),
+            withTitle: "\(NSLocalizedString("menu.updates", comment: "Check for updates"))...",
             action: #selector(checkForUpdates(_:)),
             keyEquivalent: ""
         )
