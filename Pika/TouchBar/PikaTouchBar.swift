@@ -54,14 +54,11 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
         return item
     }
 
-    func updateButton(button: NSButton, eyedropper: Eyedropper) {
-        DispatchQueue.main.asyncAfter(deadline: .now()) {
-            button.title = eyedropper.color.toFormat(format: Defaults[.colorFormat])
-            button.contentTintColor = eyedropper.getUIColor()
-            button.bezelColor = Int(round(eyedropper.color.toHSBComponents().b * 100)) <= 20
-                ? NSColor(r: 35, g: 35, b: 35, a: 1)
-                : eyedropper.color
-        }
+    func updateButton(button: NSButton, color: NSColor) {
+        button.title = color.toFormat(format: Defaults[.colorFormat])
+        button.bezelColor = Int(round(color.toHSBComponents().b * 100)) <= 20
+            ? NSColor(r: 35, g: 35, b: 35, a: 1)
+            : color
     }
 
     func createTouchBarButton(_ eyedropper: Eyedropper) -> NSButton? {
@@ -72,12 +69,12 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
         button.image = NSImage(named: "eyedropper")
         button.imagePosition = .imageLeft
         button.setButtonType(NSButton.ButtonType.toggle)
-        eyedropper.$color.sink { _ in
-            self.updateButton(button: button, eyedropper: eyedropper)
+        eyedropper.$color.sink { color in
+            self.updateButton(button: button, color: color)
         }
         .store(in: &cancellables)
         Defaults.observe(.colorFormat) { _ in
-            self.updateButton(button: button, eyedropper: eyedropper)
+            self.updateButton(button: button, color: eyedropper.color)
         }.tieToLifetime(of: self)
         return button
     }

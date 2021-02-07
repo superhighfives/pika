@@ -1,5 +1,6 @@
 import Cocoa
 import Defaults
+import SwiftUI
 
 // swiftlint:disable identifier_name
 
@@ -278,5 +279,13 @@ extension NSColor {
         case .hsl:
             return toHSL8BitString()
         }
+    }
+
+    func getUIColor() -> (Color) {
+        return luminance < 0.5 ? Color.white : Color.black
+    }
+
+    func getUIColor() -> (NSColor) {
+        return luminance < 0.5 ? NSColor.white : NSColor.black
     }
 }

@@ -34,7 +34,7 @@ struct EyedropperItem: View {
                 }
                 .toast(
                     isShowing: $showToast,
-                    color: eyedropper.getUIColor(),
+                    color: eyedropper.color.getUIColor(),
                     text: Text(String(
                         format: NSLocalizedString("color.copy.toast", comment: "Copied foreground / background"),
                         eyedropper.type == .foreground

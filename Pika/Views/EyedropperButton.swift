@@ -22,13 +22,13 @@ struct EyedropperButton: View {
                         : NSLocalizedString("color.background", comment: "Background"))
                         .font(.caption)
                         .bold()
-                        .foregroundColor(eyedropper.getUIColor().opacity(0.5))
+                        .foregroundColor(eyedropper.color.getUIColor().opacity(0.5))
                     HStack {
                         Text(eyedropper.color.toFormat(format: colorFormat))
-                            .foregroundColor(eyedropper.getUIColor())
+                            .foregroundColor(eyedropper.color.getUIColor())
                             .font(.system(size: 18, weight: .regular))
                         IconImage(name: "eyedropper")
-                            .foregroundColor(eyedropper.getUIColor())
+                            .foregroundColor(eyedropper.color.getUIColor())
                             .padding(.leading, 0.0)
                             .opacity(0.8)
                     }
