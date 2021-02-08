@@ -28,12 +28,14 @@ class Eyedropper: ObservableObject {
     }
 
     func start() {
-        let sampler = NSColorSampler()
         NSApp.sendAction(#selector(AppDelegate.hidePika), to: nil, from: nil)
-        sampler.show { selectedColor in
-            NSApp.sendAction(#selector(AppDelegate.showPika), to: nil, from: nil)
-            if let selectedColor = selectedColor {
-                self.color = selectedColor.usingColorSpace(Defaults[.colorSpace])!
+        DispatchQueue.main.asyncAfter(deadline: .now()) {
+            let sampler = NSColorSampler()
+            sampler.show { selectedColor in
+                NSApp.sendAction(#selector(AppDelegate.showPika), to: nil, from: nil)
+                if let selectedColor = selectedColor {
+                    self.color = selectedColor.usingColorSpace(Defaults[.colorSpace])!
+                }
             }
         }
     }

@@ -17,7 +17,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     var windowController: PikaTouchBarController!
     var splashController: SplashTouchBarController!
     var aboutController: SplashTouchBarController!
-    var preferencesController: SplashTouchBarController!
 
     let notificationCenter = NotificationCenter.default
 
@@ -173,7 +172,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 size: NSRect(x: 0, y: 0, width: 550, height: 480),
                 styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView]
             )
-            preferencesController = SplashTouchBarController(window: preferencesWindow)
             preferencesWindow.contentView = NSHostingView(rootView: PreferencesView())
         }
         preferencesWindow.makeKeyAndOrderFront(nil)
