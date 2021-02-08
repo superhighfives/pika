@@ -1,8 +1,6 @@
 import SwiftUI
 
 struct TouchBarVisual: View {
-    @Environment(\.colorScheme) var colorScheme: ColorScheme
-
     var body: some View {
         ZStack {
             Visualisation()
@@ -10,13 +8,7 @@ struct TouchBarVisual: View {
                 .clipped()
                 .frame(height: 30.0, alignment: .bottom)
                 .layoutPriority(1)
-                .modify {
-                    if colorScheme == .dark {
-                        $0.opacity(0.75)
-                    } else {
-                        $0
-                    }
-                }
+                .opacity(0.8)
             HStack {
                 Image("StatusBarIcon")
                     .resizable()
