@@ -1,7 +1,19 @@
+import Defaults
 import SwiftUI
 
 struct NavigationMenuItems: View {
+    @Default(.hidePikaWhilePicking) var hidePikaWhilePicking
+
     var body: some View {
+        Group {
+            Toggle(isOn: $hidePikaWhilePicking) {
+                Text(NSLocalizedString("color.pick.hide", comment: "Hide Pika while picking"))
+            }
+        }
+        VStack {
+            Divider()
+        }
+
         Group {
             Button("\(NSLocalizedString("color.pick.foreground", comment: "Pick foreground"))...", action: {
                 NSApp.sendAction(#selector(AppDelegate.triggerPickForeground), to: nil, from: nil)

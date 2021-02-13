@@ -14,9 +14,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     var preferencesWindow: NSWindow!
     var eyedroppers: Eyedroppers!
 
-    var windowController: PikaTouchBarController!
-    var splashController: SplashTouchBarController!
-    var aboutController: SplashTouchBarController!
+    var pikaTouchBarController: PikaTouchBarController!
+    var splashTouchBarController: SplashTouchBarController!
+    var aboutTouchBarController: SplashTouchBarController!
 
     let notificationCenter = NotificationCenter.default
 
@@ -54,7 +54,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
         pikaWindow = PikaWindow.createPrimaryWindow()
         pikaWindow.contentView = NSHostingView(rootView: contentView)
-        windowController = PikaTouchBarController(window: pikaWindow)
+        pikaTouchBarController = PikaTouchBarController(window: pikaWindow)
 
         // Define global keyboard shortcuts
         KeyboardShortcuts.onKeyUp(for: .togglePika) { [self] in
@@ -159,7 +159,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 size: NSRect(x: 0, y: 0, width: 300, height: 540),
                 styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView]
             )
-            aboutController = SplashTouchBarController(window: aboutWindow)
+            aboutTouchBarController = SplashTouchBarController(window: aboutWindow)
             aboutWindow.contentView = NSHostingView(rootView: AboutView())
         }
         aboutWindow.makeKeyAndOrderFront(nil)
@@ -188,7 +188,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 splashWindow.title = NSLocalizedString("app.name", comment: "Pika")
                 splashWindow.titleVisibility = .visible
             }
-            splashController = SplashTouchBarController(window: splashWindow)
+            splashTouchBarController = SplashTouchBarController(window: splashWindow)
             splashWindow.contentView = NSHostingView(rootView: SplashView().edgesIgnoringSafeArea(.all))
         }
         splashWindow.fadeIn(nil)
