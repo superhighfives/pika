@@ -38,14 +38,25 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
         _ background: Eyedropper
     ) -> NSTouchBarItem? {
         let item = NSCustomTouchBarItem(identifier: identifier)
-        let foreground: NSButton = createTouchBarButton(foreground)!
-        let background: NSButton = createTouchBarButton(background)!
-        let stackView = NSStackView(views: [foreground, background])
+
+        let colorForeground: NSButton = createTouchBarColorButton(foreground)!
+        let copyForeground: NSButton = createTouchBarCopyButton(action: #selector(AppDelegate.triggerCopyForeground))!
+        let foregroundStackView = NSStackView(views: [colorForeground, copyForeground])
+        foregroundStackView.distribution = .fillProportionally
+        foregroundStackView.spacing = 1
+
+        let colorBackground: NSButton = createTouchBarColorButton(background)!
+        let copyBackground: NSButton = createTouchBarCopyButton(action: #selector(AppDelegate.triggerCopyBackground))!
+        let backgroundStackView = NSStackView(views: [colorBackground, copyBackground])
+        backgroundStackView.distribution = .fillProportionally
+        backgroundStackView.spacing = 1
+
+        let stackView = NSStackView(views: [foregroundStackView, backgroundStackView])
         stackView.distribution = .fillEqually
         item.view = stackView
         let viewBindings: [String: NSView] = ["stackView": stackView]
         let hconstraints = NSLayoutConstraint.constraints(
-            withVisualFormat: "H:[stackView(340)]",
+            withVisualFormat: "H:[stackView(370)]",
             options: [],
             metrics: nil,
             views: viewBindings
@@ -61,13 +72,11 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
             : color
     }
 
-    func createTouchBarButton(_ eyedropper: Eyedropper) -> NSButton? {
+    func createTouchBarColorButton(_ eyedropper: Eyedropper) -> NSButton? {
         let action = eyedropper.type == .foreground
             ? #selector(AppDelegate.triggerPickForeground)
             : #selector(AppDelegate.triggerPickBackground)
         let button = NSButton(title: "", target: nil, action: action)
-        button.image = NSImage(named: "eyedropper")
-        button.imagePosition = .imageLeft
         button.setButtonType(NSButton.ButtonType.toggle)
         eyedropper.$color.sink { color in
             self.updateButton(button: button, color: color)
@@ -76,6 +85,23 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
         Defaults.observe(.colorFormat) { _ in
             self.updateButton(button: button, color: eyedropper.color)
         }.tieToLifetime(of: self)
+        return button
+    }
+
+    func createTouchBarCopyButton(action: Selector) -> NSButton? {
+        let button = NSButton(
+            image: NSImage(named: "doc.on.doc")!,
+            target: nil,
+            action: action
+        )
+        let viewBindings: [String: NSView] = ["button": button]
+        let hconstraints = NSLayoutConstraint.constraints(
+            withVisualFormat: "H:[button(40)]",
+            options: [],
+            metrics: nil,
+            views: viewBindings
+        )
+        NSLayoutConstraint.activate(hconstraints)
         return button
     }
 
