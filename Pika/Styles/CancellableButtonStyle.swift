@@ -29,28 +29,28 @@ struct CancellableButtonStyle: PrimitiveButtonStyle {
                 } else {
                     self.cancelTimer()
                 }
-            }) {
+            }, label: {
                 if timerSubscription == nil {
                     configuration.label
 
                 } else {
                     Text("Cancel? \(countDown)")
                 }
-            }
-            .buttonStyle(CancellableButtonButtonStyle(
-                isVisible: isVisible,
-                isHovered: isHovered,
-                fgColor: fgColor,
-                bgColor: bgColor
-            ))
-            .onReceive(timer) { _ in
-                if self.countDown > 1 {
-                    self.countDown -= 1
-                } else {
-                    self.configuration.trigger()
-                    self.cancelTimer()
+            })
+                .buttonStyle(CancellableButtonButtonStyle(
+                    isVisible: isVisible,
+                    isHovered: isHovered,
+                    fgColor: fgColor,
+                    bgColor: bgColor
+                ))
+                .onReceive(timer) { _ in
+                    if self.countDown > 1 {
+                        self.countDown -= 1
+                    } else {
+                        self.configuration.trigger()
+                        self.cancelTimer()
+                    }
                 }
-            }
         }
 
         func cancelTimer() {
