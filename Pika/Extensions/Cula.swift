@@ -1,5 +1,6 @@
 import Cocoa
 import Defaults
+import SwiftUI
 
 // swiftlint:disable identifier_name
 
@@ -28,6 +29,10 @@ extension NSColor {
         } else {
             return (L1 + 0.05) / (L2 + 0.05)
         }
+    }
+
+    func toContrastRatioString(with color: NSColor) -> String {
+        Double(round(100 * contrastRatio(with: color)) / 100).description as String
     }
 
     var luminance: CGFloat {
@@ -259,9 +264,9 @@ extension NSColor {
     }
 
     /**
-     Returns hex and string formats of each colour
+     Returns hex and string formats of each color
 
-     - returns: A string of the colour depending on the provided format.
+     - returns: A string of the color depending on the provided format.
      */
     func toFormat(format: ColorFormat) -> String {
         switch format {
@@ -274,5 +279,13 @@ extension NSColor {
         case .hsl:
             return toHSL8BitString()
         }
+    }
+
+    func getUIColor() -> (Color) {
+        return luminance < 0.5 ? Color.white : Color.black
+    }
+
+    func getUIColor() -> (NSColor) {
+        return luminance < 0.5 ? NSColor.white : NSColor.black
     }
 }

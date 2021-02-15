@@ -18,6 +18,8 @@
 		EA0C526425AB5D1700AFF716 /* PikaWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C526325AB5D1700AFF716 /* PikaWindow.swift */; };
 		EA0C526F25AB683400AFF716 /* EyedropperButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C526E25AB683400AFF716 /* EyedropperButton.swift */; };
 		EA0C527325AB6C6000AFF716 /* ColorMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C527225AB6C6000AFF716 /* ColorMenu.swift */; };
+		EA424C7D25CDEF98009056A9 /* ComplianceToggleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA424C7C25CDEF98009056A9 /* ComplianceToggleGroup.swift */; };
+		EA424CDE25CF0328009056A9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = EA424CE025CF0328009056A9 /* Localizable.strings */; };
 		EA257BD125D8629300C3FC54 /* SwapButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA257BD025D8629300C3FC54 /* SwapButtonStyle.swift */; };
 		EA257BD525D8AC2800C3FC54 /* CancellableButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA257BD425D8AC2800C3FC54 /* CancellableButtonStyle.swift */; };
 		EA635DC925B3B2650014D91A /* Cula.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DC825B3B2650014D91A /* Cula.swift */; };
@@ -51,6 +53,9 @@
 		EAD0B713259CFD2000FA2F67 /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B712259CFD2000FA2F67 /* Defaults.swift */; };
 		EAD0B718259D146200FA2F67 /* EyedropperButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B717259D146200FA2F67 /* EyedropperButtonStyle.swift */; };
 		EAD0B71C259D151400FA2F67 /* NavigationMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B71B259D151400FA2F67 /* NavigationMenu.swift */; };
+		EAF100C725C731AD006E1EC3 /* SplashTouchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF100C625C731AD006E1EC3 /* SplashTouchBar.swift */; };
+		EAF100CA25C75218006E1EC3 /* PikaTouchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF100C325C59EB3006E1EC3 /* PikaTouchBar.swift */; };
+		EAF100CD25C785C4006E1EC3 /* TouchBarVisual.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF100CC25C785C4006E1EC3 /* TouchBarVisual.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -65,6 +70,8 @@
 		EA0C526325AB5D1700AFF716 /* PikaWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PikaWindow.swift; sourceTree = "<group>"; };
 		EA0C526E25AB683400AFF716 /* EyedropperButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyedropperButton.swift; sourceTree = "<group>"; };
 		EA0C527225AB6C6000AFF716 /* ColorMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorMenu.swift; sourceTree = "<group>"; };
+		EA424C7C25CDEF98009056A9 /* ComplianceToggleGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComplianceToggleGroup.swift; sourceTree = "<group>"; };
+		EA424CDF25CF0328009056A9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		EA257BD025D8629300C3FC54 /* SwapButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapButtonStyle.swift; sourceTree = "<group>"; };
 		EA257BD425D8AC2800C3FC54 /* CancellableButtonStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CancellableButtonStyle.swift; sourceTree = "<group>"; };
 		EA635DC825B3B2650014D91A /* Cula.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cula.swift; sourceTree = "<group>"; };
@@ -99,6 +106,9 @@
 		EAD0B712259CFD2000FA2F67 /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
 		EAD0B717259D146200FA2F67 /* EyedropperButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyedropperButtonStyle.swift; sourceTree = "<group>"; };
 		EAD0B71B259D151400FA2F67 /* NavigationMenu.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = NavigationMenu.swift; sourceTree = "<group>"; tabWidth = 4; };
+		EAF100C325C59EB3006E1EC3 /* PikaTouchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PikaTouchBar.swift; sourceTree = "<group>"; };
+		EAF100C625C731AD006E1EC3 /* SplashTouchBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashTouchBar.swift; sourceTree = "<group>"; };
+		EAF100CC25C785C4006E1EC3 /* TouchBarVisual.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchBarVisual.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,9 +126,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		22F23B6925CEE1E600064E62 /* TouchBar */ = {
+			isa = PBXGroup;
+			children = (
+				EAF100C325C59EB3006E1EC3 /* PikaTouchBar.swift */,
+				EAF100C625C731AD006E1EC3 /* SplashTouchBar.swift */,
+			);
+			path = TouchBar;
+			sourceTree = "<group>";
+		};
 		EA0C525725AB576C00AFF716 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				EA424CE025CF0328009056A9 /* Localizable.strings */,
 				EAD0B6CF259CED1D00FA2F67 /* Assets.xcassets */,
 				EAD0B6D4259CED1D00FA2F67 /* Main.storyboard */,
 			);
@@ -164,16 +184,17 @@
 		EAD0B6CA259CED1C00FA2F67 /* Pika */ = {
 			isa = PBXGroup;
 			children = (
-				EAD0B6D8259CED1D00FA2F67 /* Pika.entitlements */,
-				EA0C525925AB57AE00AFF716 /* Constants */,
-				EA0C525725AB576C00AFF716 /* Assets */,
 				EAD0B6CB259CED1C00FA2F67 /* AppDelegate.swift */,
-				EAD0B6D7259CED1D00FA2F67 /* Info.plist */,
+				EA0C525725AB576C00AFF716 /* Assets */,
+				EA0C525925AB57AE00AFF716 /* Constants */,
 				EAD0B6EC259CF28D00FA2F67 /* Extensions */,
+				EAD0B6D7259CED1D00FA2F67 /* Info.plist */,
+				EA72BB8125A5334B008205E7 /* Metal */,
+				EAD0B6D8259CED1D00FA2F67 /* Pika.entitlements */,
 				EAD0B6D1259CED1D00FA2F67 /* Preview Content */,
 				EAD0B71A259D14C200FA2F67 /* Styles */,
+				22F23B6925CEE1E600064E62 /* TouchBar */,
 				EAD0B6F0259CF29300FA2F67 /* Utilities */,
-				EA72BB8125A5334B008205E7 /* Metal */,
 				EAD0B6F2259CF29300FA2F67 /* Views */,
 			);
 			path = Pika;
@@ -212,27 +233,29 @@
 		EAD0B6F2259CF29300FA2F67 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				EAA8AE1B25B8F03B0049299B /* KeyboardShortcutGrid.swift */,
-				22FE80B225BA0F820063759E /* KeyboardShortcutItem.swift */,
 				EAD0B6F3259CF29300FA2F67 /* AboutView.swift */,
 				EAD0B6F5259CF29300FA2F67 /* AppVersion.swift */,
 				EA0C527225AB6C6000AFF716 /* ColorMenu.swift */,
 				EA057886259F54B500ACCD89 /* ColorMenuItems.swift */,
 				EA635DE025B4FC580014D91A /* ColorPickers.swift */,
 				EA801284259F8F480026D5D9 /* ComplianceToggle.swift */,
+				EA424C7C25CDEF98009056A9 /* ComplianceToggleGroup.swift */,
 				EAD0B6F6259CF29300FA2F67 /* ContentView.swift */,
 				EA0C526E25AB683400AFF716 /* EyedropperButton.swift */,
 				EA635DE925B534C80014D91A /* EyedropperItem.swift */,
 				EA8124C0259E307D00033F0B /* Footer.swift */,
 				221600F825A62E5B00B8B7D9 /* IconImage.swift */,
+				EAA8AE1B25B8F03B0049299B /* KeyboardShortcutGrid.swift */,
+				22FE80B225BA0F820063759E /* KeyboardShortcutItem.swift */,
+				EAA8AE1825B8EC070049299B /* KeyboardShortcutKey.swift */,
 				EAD0B71B259D151400FA2F67 /* NavigationMenu.swift */,
 				EA0C525F25AB5A2B00AFF716 /* NavigationMenuItems.swift */,
 				EAD0B6F4259CF29300FA2F67 /* PreferencesView.swift */,
 				EA72BB8725A53750008205E7 /* SplashView.swift */,
 				EA635DF025B5A6D80014D91A /* Toast.swift */,
+				EAF100CC25C785C4006E1EC3 /* TouchBarVisual.swift */,
 				226FD60F25A940F90021A67F /* VisualEffect.swift */,
 				EA0C524F25AA729300AFF716 /* Visualisation.swift */,
-				EAA8AE1825B8EC070049299B /* KeyboardShortcutKey.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -319,6 +342,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EAD0B6D6259CED1D00FA2F67 /* Main.storyboard in Resources */,
+				EA424CDE25CF0328009056A9 /* Localizable.strings in Resources */,
 				EAD0B6D3259CED1D00FA2F67 /* Preview Assets.xcassets in Resources */,
 				EAD0B6D0259CED1D00FA2F67 /* Assets.xcassets in Resources */,
 			);
@@ -374,17 +398,21 @@
 				22EF1D9B25B7AA18001102FA /* Sequence.swift in Sources */,
 				EAD0B6F9259CF29300FA2F67 /* PreferencesView.swift in Sources */,
 				EA72BB8825A53750008205E7 /* SplashView.swift in Sources */,
+				EAF100CA25C75218006E1EC3 /* PikaTouchBar.swift in Sources */,
 				EA057887259F54B500ACCD89 /* ColorMenuItems.swift in Sources */,
+				EAF100C725C731AD006E1EC3 /* SplashTouchBar.swift in Sources */,
 				EAA8AE1C25B8F03B0049299B /* KeyboardShortcutGrid.swift in Sources */,
 				EA0C525025AA729300AFF716 /* Visualisation.swift in Sources */,
 				EAD0B6FB259CF29300FA2F67 /* ContentView.swift in Sources */,
 				EAD0B6CC259CED1C00FA2F67 /* AppDelegate.swift in Sources */,
 				EA635DCC25B3B42B0014D91A /* WCAGCompliance.swift in Sources */,
 				EA635DEA25B534C80014D91A /* EyedropperItem.swift in Sources */,
+				EA424C7D25CDEF98009056A9 /* ComplianceToggleGroup.swift in Sources */,
 				EAD0B6F7259CF29300FA2F67 /* Eyedroppers.swift in Sources */,
 				EA0C526025AB5A2B00AFF716 /* NavigationMenuItems.swift in Sources */,
 				EA257BD525D8AC2800C3FC54 /* CancellableButtonStyle.swift in Sources */,
 				EA0C526425AB5D1700AFF716 /* PikaWindow.swift in Sources */,
+				EAF100CD25C785C4006E1EC3 /* TouchBarVisual.swift in Sources */,
 				EA801285259F8F480026D5D9 /* ComplianceToggle.swift in Sources */,
 				221600FD25A636D600B8B7D9 /* ConditionalModifier.swift in Sources */,
 				EA635DF125B5A6D80014D91A /* Toast.swift in Sources */,
@@ -412,6 +440,14 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		EA424CE025CF0328009056A9 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EA424CDF25CF0328009056A9 /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		EAD0B6D4259CED1D00FA2F67 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -547,7 +583,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_ASSET_PATHS = "\"Pika/Preview Content\"";
 				DEVELOPMENT_TEAM = TGHU37N6EX;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -558,7 +594,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 0.0.8;
+				MARKETING_VERSION = "0.0.9-beta1";
 				PRODUCT_BUNDLE_IDENTIFIER = com.superhighfives.Pika;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -574,7 +610,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_ASSET_PATHS = "\"Pika/Preview Content\"";
 				DEVELOPMENT_TEAM = TGHU37N6EX;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -585,7 +621,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 0.0.8;
+				MARKETING_VERSION = "0.0.9-beta1";
 				PRODUCT_BUNDLE_IDENTIFIER = com.superhighfives.Pika;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

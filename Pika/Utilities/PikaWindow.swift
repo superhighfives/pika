@@ -10,7 +10,7 @@ class PikaWindow {
         )
         window.isReleasedWhenClosed = false
         window.center()
-        window.title = "Pika"
+        window.title = NSLocalizedString("app.name", comment: "App name")
         window.level = .floating
         window.isMovableByWindowBackground = true
         window.standardWindowButton(NSWindow.ButtonType.zoomButton)!.isEnabled = false

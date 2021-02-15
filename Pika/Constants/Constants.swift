@@ -16,7 +16,7 @@ enum PikaConstants {
             : "https://superhighfives.com/releases/pika"
     }
 
-    // Initial colours
+    // Initial colors
     static let initialColors = [
         NSColor(r: 143.0, g: 15.0, b: 208.0),
         NSColor(r: 224.0, g: 53.0, b: 139.0),

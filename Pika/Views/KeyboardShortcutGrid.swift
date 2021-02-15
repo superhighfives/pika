@@ -11,7 +11,7 @@ struct KeyboardShortcutGrid: View {
                 VStack(spacing: 0.0) {
                     HStack(spacing: 0.0) {
                         KeyboardShortcutItem(
-                            title: "Pick foreground",
+                            title: NSLocalizedString("color.pick.foreground", comment: "Pick foreground"),
                             event: PikaConstants.ncTriggerPickForeground,
                             keys: ["⌘", "D"]
                         )
@@ -21,7 +21,7 @@ struct KeyboardShortcutGrid: View {
                             .frame(height: height / 2)
 
                         KeyboardShortcutItem(
-                            title: "Pick background",
+                            title: NSLocalizedString("color.pick.background", comment: "Pick background"),
                             event: PikaConstants.ncTriggerPickBackground,
                             keys: ["⇧", "⌘", "D"]
                         )
@@ -33,7 +33,7 @@ struct KeyboardShortcutGrid: View {
 
                     HStack(spacing: 0) {
                         KeyboardShortcutItem(
-                            title: "Copy foreground",
+                            title: NSLocalizedString("color.copy.foreground", comment: "Copy foreground"),
                             event: PikaConstants.ncTriggerCopyForeground,
                             keys: ["⌘", "C"]
                         )
@@ -43,7 +43,7 @@ struct KeyboardShortcutGrid: View {
                             .frame(height: height / 2)
 
                         KeyboardShortcutItem(
-                            title: "Copy background",
+                            title: NSLocalizedString("color.copy.background", comment: "Copy background"),
                             event: PikaConstants.ncTriggerCopyBackground,
                             keys: ["⇧", "⌘", "C"]
                         )

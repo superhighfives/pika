@@ -40,11 +40,23 @@ struct PreferencesView: View {
             Divider()
 
             VStack(alignment: .leading, spacing: 10.0) {
-                // Colour Format
-                Section(header: Text("Colour Format").font(.system(size: 16))) {
+                // Color Format
+                let textFormatTitle = NSLocalizedString("preferences.format.title", comment: "Color Format")
+                let textFormatDescription = NSLocalizedString(
+                    "preferences.format.description",
+                    comment: "Set your preferred display format for colors"
+                )
+
+                let textSpaceTitle = NSLocalizedString("preferences.space.title", comment: "Color Space")
+                let textSpaceDescription = NSLocalizedString(
+                    "preferences.space.description",
+                    comment: "Set your RGB color space"
+                )
+
+                Section(header: Text(textFormatTitle).font(.system(size: 16))) {
                     VStack(alignment: .leading, spacing: 15.0) {
-                        Text("Set your preferred display format for colors")
-                        Picker("Colour Format", selection: $colorFormat) {
+                        Text(textFormatDescription)
+                        Picker(textFormatTitle, selection: $colorFormat) {
                             ForEach(ColorFormat.allCases, id: \.self) { value in
                                 Text(value.rawValue)
                             }
@@ -58,8 +70,8 @@ struct PreferencesView: View {
                         .frame(height: 0.0)
 
                     VStack(alignment: .leading, spacing: 15.0) {
-                        Text("Set your RGB color space")
-                        Picker("Color Space", selection:
+                        Text(textSpaceDescription)
+                        Picker(textSpaceTitle, selection:
                             $colorSpace.onChange(perform: { Defaults[.colorSpace] = $0 })) {
                             ForEach(primarySpaces, id: \.self) { value in
                                 Text(value.localizedName!)
@@ -80,9 +92,15 @@ struct PreferencesView: View {
                     .padding(.vertical, 10.0)
 
                 // Global Shortcut
-                Section(header: Text("Global Shortcut").font(.system(size: 16))) {
+                let textHotkeyTitle = NSLocalizedString("preferences.hotkey.title", comment: "Global Shortcut")
+                let textHotkeyDescription = NSLocalizedString(
+                    "preferences.hotkey.description",
+                    comment: "Set a global hotkey shortcut to invoke Pika"
+                )
+
+                Section(header: Text(textHotkeyTitle).font(.system(size: 16))) {
                     VStack(alignment: .leading, spacing: 15.0) {
-                        Text("Set a global hotkey shortcut to invoke Pika")
+                        Text(textHotkeyDescription)
                         KeyboardShortcuts.Recorder(for: .togglePika)
                     }
                 }
@@ -92,15 +110,29 @@ struct PreferencesView: View {
                     .padding(.vertical, 10.0)
 
                 // Launch at login
-                Section(header: Text("General Settings").font(.system(size: 16))) {
+                let textGeneralTitle = NSLocalizedString("preferences.general.title", comment: "General Settings")
+                let textLaunchDescription = NSLocalizedString(
+                    "preferences.launch.description",
+                    comment: "Launch at login"
+                )
+                let textIconDescription = NSLocalizedString(
+                    "preferences.icon.description",
+                    comment: "Hide menu bar icon"
+                )
+                let textBetaDescription = NSLocalizedString(
+                    "preferences.beta.description",
+                    comment: "Subscribe to beta releases"
+                )
+
+                Section(header: Text(textGeneralTitle).font(.system(size: 16))) {
                     LaunchAtLogin.Toggle {
-                        Text("Launch at login")
+                        Text(textLaunchDescription)
                     }
                     Toggle(isOn: $hideMenuBarIcon) {
-                        Text("Hide menu bar icon")
+                        Text(textIconDescription)
                     }
                     Toggle(isOn: $betaUpdates) {
-                        Text("Subscribe to beta releases")
+                        Text(textBetaDescription)
                     }
                 }
                 .padding(.horizontal, 24.0)

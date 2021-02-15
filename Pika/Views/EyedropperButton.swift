@@ -17,16 +17,18 @@ struct EyedropperButton: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
 
                 VStack(alignment: .leading, spacing: 0.0) {
-                    Text(eyedropper.title)
+                    Text(eyedropper.type == .foreground
+                        ? NSLocalizedString("color.foreground", comment: "Foreground")
+                        : NSLocalizedString("color.background", comment: "Background"))
                         .font(.caption)
                         .bold()
-                        .foregroundColor(eyedropper.getUIColor().opacity(0.5))
+                        .foregroundColor(eyedropper.color.getUIColor().opacity(0.5))
                     HStack {
                         Text(eyedropper.color.toFormat(format: colorFormat))
-                            .foregroundColor(eyedropper.getUIColor())
+                            .foregroundColor(eyedropper.color.getUIColor())
                             .font(.system(size: 18, weight: .regular))
                         IconImage(name: "eyedropper")
-                            .foregroundColor(eyedropper.getUIColor())
+                            .foregroundColor(eyedropper.color.getUIColor())
                             .padding(.leading, 0.0)
                             .opacity(0.8)
                     }
@@ -45,7 +47,7 @@ struct EyedropperButton: View {
 struct EyedropperButton_Previews: PreviewProvider {
     static var previews: some View {
         EyedropperButton(
-            eyedropper: Eyedropper(title: "Foreground", color: NSColor.black)
+            eyedropper: Eyedropper(type: .foreground, color: NSColor.black)
         )
     }
 }
