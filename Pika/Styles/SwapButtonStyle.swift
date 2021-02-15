@@ -8,9 +8,9 @@ struct SwapButtonStyle: ButtonStyle {
     private struct SwapButtonStyleView: View {
         @Environment(\.colorScheme) var colorScheme: ColorScheme
 
+        @State private var isHovered: Bool = false
         let configuration: Configuration
         let isVisible: Bool
-        @State private var isHovered: Bool = false
 
         var body: some View {
             let fgColor = colorScheme == .dark ? Color.white : .black
@@ -47,8 +47,7 @@ struct SwapButtonStyle: ButtonStyle {
             .onHover { hover in
                 self.isHovered = hover
             }
-            .scaleEffect(self.isHovered ? 1.1 : 1.0)
-            .scaleEffect(configuration.isPressed ? 0.9 : 1.0)
+            .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
             .opacity(isVisible ? 1.0 : 0.0)
             .foregroundColor(fgColor.opacity(0.8))
             .animation(.spring())
