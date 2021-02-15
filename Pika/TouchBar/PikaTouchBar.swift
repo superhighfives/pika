@@ -66,10 +66,12 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
     }
 
     func updateButton(button: NSButton, color: NSColor) {
-        button.title = color.toFormat(format: Defaults[.colorFormat])
-        button.bezelColor = Int(round(color.toHSBComponents().b * 100)) <= 20
-            ? NSColor(r: 35, g: 35, b: 35, a: 1)
-            : color
+        DispatchQueue.main.asyncAfter(deadline: .now()) {
+            button.title = color.toFormat(format: Defaults[.colorFormat])
+            button.bezelColor = Int(round(color.toHSBComponents().b * 100)) <= 20
+                ? NSColor(r: 35, g: 35, b: 35, a: 1)
+                : color
+        }
     }
 
     func createTouchBarColorButton(_ eyedropper: Eyedropper) -> NSButton? {
