@@ -13,6 +13,7 @@ struct ContentView: View {
     @State private var timerSubscription: Cancellable?
     @State private var timer = Timer.publish(every: 0.25, on: .main, in: .common)
     @State private var countDown = 0
+    @State private var angle: Double = 0
 
     var body: some View {
         VStack(alignment: .trailing, spacing: 0) {
@@ -38,8 +39,11 @@ struct ContentView: View {
                 .overlay(
                     Button(action: {
                         swap(&eyedroppers.foreground.color, &eyedroppers.background.color)
+                        angle += 180
                     }, label: {
                         IconImage(name: "arrow.triangle.swap")
+                            .rotationEffect(.degrees(angle))
+                            .animation(.easeInOut)
                     })
                         .buttonStyle(SwapButtonStyle(isVisible: swapVisible))
                 )

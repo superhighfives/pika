@@ -14,31 +14,25 @@ struct SwapButtonStyle: ButtonStyle {
 
         var body: some View {
             let fgColor = colorScheme == .dark ? Color.white : .black
-            let bgColor = colorScheme == .dark ? Color.black : .white
+            let bgColor = colorScheme == .dark
+                ? Color(red: 0.1, green: 0.1, blue: 0.1)
+                : Color(red: 0.95, green: 0.95, blue: 0.95)
 
             configuration.label
                 .padding(8)
                 .background(
                     ZStack {
-                        RoundedRectangle(cornerRadius: 4, style: .continuous)
-                            .shadow(
-                                color: Color.white.opacity(0.5),
-                                radius: configuration.isPressed ? 3 : 8,
-                                x: configuration.isPressed ? -4 : -12,
-                                y: configuration.isPressed ? -4 : -12
-                            )
-                            .shadow(
-                                color: Color.black.opacity(0.5),
-                                radius: configuration.isPressed ? 3 : 8,
-                                x: configuration.isPressed ? 4 : 12,
-                                y: configuration.isPressed ? 4 : 12
-                            )
-                            .blendMode(.overlay)
-                        RoundedRectangle(cornerRadius: 4, style: .continuous)
+                        Circle()
                             .fill(bgColor)
+                            .shadow(
+                                color: Color.black.opacity(0.2),
+                                radius: configuration.isPressed ? 1 : 2,
+                                x: 0,
+                                y: configuration.isPressed ? 1 : 2
+                            )
                             .overlay(
-                                RoundedRectangle(cornerRadius: 4, style: .continuous)
-                                    .stroke(Color.white.opacity(0.2))
+                                Circle()
+                                    .stroke(fgColor.opacity(0.1))
                             )
                     }
                 )
@@ -46,9 +40,9 @@ struct SwapButtonStyle: ButtonStyle {
                     self.isHovered = hover
                 }
                 .scaleEffect(self.isHovered ? 1.1 : 1.0)
-                .scaleEffect(configuration.isPressed ? 0.95 : 1)
+                .scaleEffect(configuration.isPressed ? 0.9 : 1.0)
                 .opacity(isVisible ? 1.0 : 0.0)
-                .foregroundColor(fgColor)
+                .foregroundColor(fgColor.opacity(0.8))
                 .animation(.spring())
         }
     }
