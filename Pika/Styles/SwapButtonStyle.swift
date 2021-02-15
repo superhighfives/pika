@@ -21,7 +21,7 @@ struct SwapButtonStyle: ButtonStyle {
             HStack {
                 configuration.label
                 if isHovered {
-                    Text("Swap")
+                    Text(NSLocalizedString("color.pick.swap", comment: "Swap"))
                         .font(.system(size: 12.0))
                 }
             }
