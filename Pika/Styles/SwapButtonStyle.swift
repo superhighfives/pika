@@ -12,11 +12,21 @@ struct SwapButtonStyle: ButtonStyle {
         let configuration: Configuration
         let isVisible: Bool
 
+        func getBackgroundColor(colorScheme: ColorScheme) -> Color {
+            if #available(OSX 11.0, *) {
+                return colorScheme == .dark
+                    ? Color(red: 27 / 255, green: 27 / 255, blue: 27 / 255)
+                    : Color(red: 233 / 255, green: 233 / 255, blue: 233 / 255)
+            } else {
+                return colorScheme == .dark
+                    ? Color(red: 50 / 255, green: 52 / 255, blue: 59 / 255)
+                    : Color(red: 236 / 255, green: 236 / 255, blue: 236 / 255)
+            }
+        }
+
         var body: some View {
             let fgColor = colorScheme == .dark ? Color.white : .black
-            let bgColor = colorScheme == .dark
-                ? Color(red: 0.1, green: 0.1, blue: 0.1)
-                : Color(red: 0.95, green: 0.95, blue: 0.95)
+            let bgColor: Color = getBackgroundColor(colorScheme: colorScheme)
 
             HStack {
                 configuration.label
@@ -47,10 +57,9 @@ struct SwapButtonStyle: ButtonStyle {
             .onHover { hover in
                 self.isHovered = hover
             }
-            .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
-            .opacity(isVisible ? 1.0 : 0.0)
+            .opacity(isVisible ? (configuration.isPressed ? 0.8 : 1.0) : 0.0)
             .foregroundColor(fgColor.opacity(0.8))
-            .animation(.spring())
+            .animation(.easeInOut)
         }
     }
 

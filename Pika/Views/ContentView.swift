@@ -39,7 +39,7 @@ struct ContentView: View {
                 .overlay(
                     Button(action: {
                         swap(&eyedroppers.foreground.color, &eyedroppers.background.color)
-                        angle += 180
+                        angle -= 180
                     }, label: {
                         IconImage(name: "arrow.triangle.swap")
                             .rotationEffect(.degrees(angle))
