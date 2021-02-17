@@ -12,6 +12,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     var splashWindow: NSWindow!
     var aboutWindow: NSWindow!
     var preferencesWindow: NSWindow!
+    var eyedroppers: Eyedroppers!
+
+    var pikaTouchBarController: PikaTouchBarController!
+    var splashTouchBarController: SplashTouchBarController!
+    var aboutTouchBarController: SplashTouchBarController!
 
     let notificationCenter = NotificationCenter.default
 
@@ -34,7 +39,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         }.tieToLifetime(of: self)
 
         // Set up eyedroppers
-        let eyedroppers = Eyedroppers()
+        eyedroppers = Eyedroppers()
 
         // Define content view
         let contentView = ContentView()
@@ -42,13 +47,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             .frame(minWidth: 400,
                    idealWidth: 400,
                    maxWidth: 500,
-                   minHeight: 150,
-                   idealHeight: 180,
+                   minHeight: 180,
+                   idealHeight: 200,
                    maxHeight: 350,
                    alignment: .center)
 
         pikaWindow = PikaWindow.createPrimaryWindow()
         pikaWindow.contentView = NSHostingView(rootView: contentView)
+        pikaTouchBarController = PikaTouchBarController(window: pikaWindow)
 
         // Define global keyboard shortcuts
         KeyboardShortcuts.onKeyUp(for: .togglePika) { [self] in
@@ -99,23 +105,23 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         statusBarMenu = NSMenu(title: "Status Bar Menu")
         statusBarMenu.delegate = self
         statusBarMenu.addItem(
-            withTitle: "About",
+            withTitle: NSLocalizedString("menu.about", comment: "About"),
             action: #selector(openAboutWindow(_:)),
             keyEquivalent: ""
         )
         statusBarMenu.addItem(
-            withTitle: "Check for updates...",
+            withTitle: "\(NSLocalizedString("menu.updates", comment: "Check for updates"))...",
             action: #selector(checkForUpdates(_:)),
             keyEquivalent: ""
         )
         statusBarMenu.addItem(
-            withTitle: "Preferences",
+            withTitle: NSLocalizedString("menu.preferences", comment: "Preferences"),
             action: #selector(openPreferencesWindow(_:)),
             keyEquivalent: ""
         )
         statusBarMenu.addItem(NSMenuItem.separator())
         statusBarMenu.addItem(
-            withTitle: "Quit Pika",
+            withTitle: NSLocalizedString("menu.quit", comment: "Quit Pika"),
             action: #selector(terminatePika(_:)),
             keyEquivalent: ""
         )
@@ -153,6 +159,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 size: NSRect(x: 0, y: 0, width: 300, height: 540),
                 styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView]
             )
+            aboutTouchBarController = SplashTouchBarController(window: aboutWindow)
             aboutWindow.contentView = NSHostingView(rootView: AboutView())
         }
         aboutWindow.makeKeyAndOrderFront(nil)
@@ -178,9 +185,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 styleMask: [.titled, .fullSizeContentView]
             )
             if #available(OSX 11.0, *) {
+                splashWindow.title = NSLocalizedString("app.name", comment: "Pika")
                 splashWindow.titleVisibility = .visible
-                splashWindow.title = "Pika"
             }
+            splashTouchBarController = SplashTouchBarController(window: splashWindow)
             splashWindow.contentView = NSHostingView(rootView: SplashView().edgesIgnoringSafeArea(.all))
         }
         splashWindow.fadeIn(nil)
@@ -200,6 +208,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     @IBAction func triggerCopyBackground(_: Any) {
         notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerCopyBackground), object: self)
+    }
+
+    @IBAction func hidePika(_: Any) {
+        hideMainWindow()
+    }
+
+    @IBAction func showPika(_: Any) {
+        pikaWindow.fadeIn(sender: nil, duration: 0.2)
     }
 
     @IBAction func checkForUpdates(_: Any) {

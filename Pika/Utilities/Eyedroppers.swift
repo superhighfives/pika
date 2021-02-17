@@ -3,21 +3,23 @@ import SwiftUI
 
 class Eyedroppers: ObservableObject {
     @Published var foreground = Eyedropper(
-        title: "Foreground", color: PikaConstants.initialColors.randomElement()!
+        type: .foreground, color: PikaConstants.initialColors.randomElement()!
     )
-    @Published var background = Eyedropper(title: "Background", color: NSColor.black)
+    @Published var background = Eyedropper(type: .background, color: NSColor.black)
 }
 
 class Eyedropper: ObservableObject {
-    var title: String
-    @Published public var color: NSColor
-
-    func getUIColor() -> (Color) {
-        return (color.luminance < 0.3 ? Color.white : Color.black)
+    enum Types: String {
+        case foreground
+        case background
     }
 
-    init(title: String, color: NSColor) {
-        self.title = title
+    let type: Types
+
+    @objc @Published public var color: NSColor
+
+    init(type: Types, color: NSColor) {
+        self.type = type
         self.color = color
 
         Defaults.observe(.colorSpace) { change in
@@ -26,10 +28,20 @@ class Eyedropper: ObservableObject {
     }
 
     func start() {
-        let sampler = NSColorSampler()
-        sampler.show { selectedColor in
-            if let selectedColor = selectedColor {
-                self.color = selectedColor.usingColorSpace(Defaults[.colorSpace])!
+        if Defaults[.hidePikaWhilePicking] {
+            NSApp.sendAction(#selector(AppDelegate.hidePika), to: nil, from: nil)
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now()) {
+            let sampler = NSColorSampler()
+            sampler.show { selectedColor in
+                if Defaults[.hidePikaWhilePicking] {
+                    NSApp.sendAction(#selector(AppDelegate.showPika), to: nil, from: nil)
+                }
+
+                if let selectedColor = selectedColor {
+                    self.color = selectedColor.usingColorSpace(Defaults[.colorSpace])!
+                }
             }
         }
     }

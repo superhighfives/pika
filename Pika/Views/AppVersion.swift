@@ -7,13 +7,16 @@ struct AppVersion: View {
         VStack(spacing: 10.0) {
             VStack(spacing: 5.0) {
                 Image("AboutIcon")
-                Text("Pika")
+                Text(NSLocalizedString("app.name", comment: "Pika"))
                     .font(.title)
             }
             VStack(spacing: 2.0) {
-                Text("Version \(appVersion ?? "Unknown")")
+                let textVersion = NSLocalizedString("app.version", comment: "Version")
+                let textBuild = NSLocalizedString("app.build", comment: "Build")
+                let textUnknown = NSLocalizedString("app.unknown", comment: "Unknown")
+                Text("\(textVersion) \(appVersion ?? textUnknown)")
                     .bold()
-                Text("(Build \(buildNumber ?? "Unknown"))")
+                Text("(\(textBuild) \(buildNumber ?? textUnknown))")
                     .foregroundColor(.gray)
             }
         }

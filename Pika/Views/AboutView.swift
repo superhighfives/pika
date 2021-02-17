@@ -31,8 +31,14 @@ struct AboutView: View {
                 .padding(EdgeInsets(top: -50, leading: 0, bottom: 0, trailing: 0))
             VStack(spacing: 20.0) {
                 HStack(spacing: 20.0) {
-                    LinkButton(title: "Website", link: "https://superhighfives.com/pika")
-                    LinkButton(title: "GitHub", link: "https://github.com/superhighfives/pika")
+                    LinkButton(
+                        title: NSLocalizedString("app.website", comment: "Website"),
+                        link: "https://superhighfives.com/pika"
+                    )
+                    LinkButton(
+                        title: NSLocalizedString("app.github", comment: "GitHub"),
+                        link: "https://github.com/superhighfives/pika"
+                    )
                 }
 
                 VStack(spacing: 0) {
@@ -43,7 +49,7 @@ struct AboutView: View {
 
                 HStack(spacing: 5.0) {
                     IconImage(name: "hand.thumbsup.fill")
-                    Text("Designed by")
+                    Text(NSLocalizedString("app.designed", comment: "Designed by"))
                     LinkButton(title: "Charlie Gleason", link: "https://charliegleason.com")
                 }
             }
