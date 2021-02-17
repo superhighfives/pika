@@ -98,7 +98,7 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
         )
         let viewBindings: [String: NSView] = ["button": button]
         let hconstraints = NSLayoutConstraint.constraints(
-            withVisualFormat: "H:[button(40)]",
+            withVisualFormat: "H:[button(35)]",
             options: [],
             metrics: nil,
             views: viewBindings
