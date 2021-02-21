@@ -1,6 +1,9 @@
 import SwiftUI
 
 struct NavigationMenu: View {
+    var colors = ["Red", "Green", "Blue", "Tartan"]
+    @State private var selectedColor = "Red"
+
     // These are a hack to trigger a redraw on OSX 11.0 - otherwise the
     // button displays wtih 50% opacity until you interract with it. If
     // anyone knows of a better way to do this, let me know.
@@ -42,6 +45,12 @@ struct NavigationMenu: View {
 
     var body: some View {
         HStack {
+            Picker("Please choose a color", selection: $selectedColor) {
+                ForEach(colors, id: \.self) {
+                    Text($0)
+                }
+            }.labelsHidden()
+
             getMenu()
                 .frame(alignment: .leading)
                 .padding(.horizontal, 16.0)
