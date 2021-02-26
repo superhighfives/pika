@@ -4,13 +4,18 @@ import SwiftUI
 struct SwapButtonStyle: ButtonStyle {
     @State private var isHovered: Bool = false
     let isVisible: Bool
+    let alt: String
 
     private struct SwapButtonStyleView: View {
         @Environment(\.colorScheme) var colorScheme: ColorScheme
 
         @State private var isHovered: Bool = false
+        @State private var timerSubscription: Cancellable?
+        @State private var timer = Timer.publish(every: 0.25, on: .main, in: .common)
+
         let configuration: Configuration
         let isVisible: Bool
+        let alt: String
 
         func getBackgroundColor(colorScheme: ColorScheme) -> Color {
             if #available(OSX 11.0, *) {
@@ -31,7 +36,7 @@ struct SwapButtonStyle: ButtonStyle {
             HStack {
                 configuration.label
                 if isHovered {
-                    Text(NSLocalizedString("color.pick.swap", comment: "Swap"))
+                    Text(alt)
                         .font(.system(size: 12.0))
                 }
             }
@@ -55,7 +60,21 @@ struct SwapButtonStyle: ButtonStyle {
                 }
             )
             .onHover { hover in
-                self.isHovered = hover
+                if hover {
+                    if self.timerSubscription == nil {
+                        self.timer = Timer.publish(every: 0.3, on: .main, in: .common)
+                        self.timerSubscription = self.timer.connect()
+                    }
+                } else {
+                    timerSubscription?.cancel()
+                    timerSubscription = nil
+                    self.isHovered = false
+                }
+            }
+            .onReceive(timer) { _ in
+                self.isHovered = true
+                timerSubscription?.cancel()
+                timerSubscription = nil
             }
             .opacity(isVisible ? (configuration.isPressed ? 0.8 : 1.0) : 0.0)
             .foregroundColor(fgColor.opacity(0.8))
@@ -64,6 +83,6 @@ struct SwapButtonStyle: ButtonStyle {
     }
 
     func makeBody(configuration: Self.Configuration) -> some View {
-        SwapButtonStyleView(configuration: configuration, isVisible: isVisible)
+        SwapButtonStyleView(configuration: configuration, isVisible: isVisible, alt: alt)
     }
 }
