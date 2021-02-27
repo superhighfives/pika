@@ -149,6 +149,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         } else {
             showMainWindow()
             NSApp.activate(ignoringOtherApps: true)
+            
+            // Trigger picker on open
+            NSApp.sendAction(#selector(AppDelegate.triggerPickForeground), to: nil, from: nil)
         }
     }
 
