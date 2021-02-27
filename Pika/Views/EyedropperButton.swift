@@ -62,7 +62,7 @@ struct EyedropperButton: View {
             }, label: {
                 IconImage(name: "doc.on.doc", resizable: true)
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 16, height: 16)
+                    .frame(width: 14, height: 14)
             })
                 .buttonStyle(SwapButtonStyle(
                     isVisible: copyVisible,

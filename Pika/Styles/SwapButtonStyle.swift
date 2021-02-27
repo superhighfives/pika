@@ -62,7 +62,7 @@ struct SwapButtonStyle: ButtonStyle {
             .onHover { hover in
                 if hover {
                     if self.timerSubscription == nil {
-                        self.timer = Timer.publish(every: 0.3, on: .main, in: .common)
+                        self.timer = Timer.publish(every: 1, on: .main, in: .common)
                         self.timerSubscription = self.timer.connect()
                     }
                 } else {
