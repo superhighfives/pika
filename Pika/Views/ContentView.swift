@@ -9,10 +9,8 @@ struct ContentView: View {
     @Environment(\.colorScheme) var colorScheme: ColorScheme
 
     @State var swapVisible: Bool = false
-
     @State private var timerSubscription: Cancellable?
     @State private var timer = Timer.publish(every: 0.25, on: .main, in: .common)
-    @State private var countDown = 0
     @State private var angle: Double = 0
 
     var body: some View {
@@ -45,7 +43,10 @@ struct ContentView: View {
                             .rotationEffect(.degrees(angle))
                             .animation(.easeInOut)
                     })
-                        .buttonStyle(SwapButtonStyle(isVisible: swapVisible))
+                        .buttonStyle(SwapButtonStyle(
+                            isVisible: swapVisible,
+                            alt: NSLocalizedString("color.swap", comment: "Swap")
+                        ))
                 )
             Divider()
             Footer(foreground: eyedroppers.foreground, background: eyedroppers.background)

@@ -44,12 +44,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         // Define content view
         let contentView = ContentView()
             .environmentObject(eyedroppers)
-            .frame(minWidth: 400,
-                   idealWidth: 400,
-                   maxWidth: 500,
-                   minHeight: 180,
-                   idealHeight: 200,
-                   maxHeight: 350,
+            .frame(minWidth: 450,
+                   idealWidth: 450,
+                   maxWidth: 550,
+                   minHeight: 200,
+                   idealHeight: 220,
+                   maxHeight: 360,
                    alignment: .center)
 
         pikaWindow = PikaWindow.createPrimaryWindow()

@@ -1,6 +1,9 @@
+import Defaults
 import SwiftUI
 
 struct NavigationMenu: View {
+    @Default(.colorFormat) var colorFormat
+
     // These are a hack to trigger a redraw on OSX 11.0 - otherwise the
     // button displays wtih 50% opacity until you interract with it. If
     // anyone knows of a better way to do this, let me know.
@@ -41,10 +44,20 @@ struct NavigationMenu: View {
     }
 
     var body: some View {
-        HStack {
+        HStack(spacing: 0) {
+            Picker(NSLocalizedString("preferences.format.title", comment: "Color Format"), selection: $colorFormat) {
+                ForEach(ColorFormat.allCases, id: \.self) { value in
+                    Text(value.rawValue)
+                }
+            }
+            .pickerStyle(SegmentedPickerStyle())
+            .offset(y: 1.0)
+            .labelsHidden()
+
             getMenu()
                 .frame(alignment: .leading)
-                .padding(.horizontal, 16.0)
+                .padding(.trailing, 10.0)
+                .padding(.leading, 5.0)
                 .fixedSize()
         }
     }
