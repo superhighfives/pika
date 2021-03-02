@@ -37,7 +37,7 @@ struct NavigationMenu: View {
                 NavigationMenuItems()
             })
                 .menuButtonStyle(BorderlessPullDownMenuButtonStyle())
-                .padding(EdgeInsets(top: 40, leading: 0, bottom: 0, trailing: 0))
+                .padding(EdgeInsets(top: 40, leading: 5, bottom: 0, trailing: 20))
                 .edgesIgnoringSafeArea(.all)
                 .fixedSize()
         }
@@ -50,14 +50,27 @@ struct NavigationMenu: View {
                     Text(value.rawValue)
                 }
             }
+            .modify {
+                if #available(OSX 11.0, *) {
+                    $0.offset(y: 1.0)
+                } else {
+                    $0.offset(x: 6.0, y: -18.0)
+                }
+            }
             .pickerStyle(SegmentedPickerStyle())
-            .offset(y: 1.0)
             .labelsHidden()
 
             getMenu()
                 .frame(alignment: .leading)
-                .padding(.trailing, 10.0)
-                .padding(.leading, 5.0)
+                .modify {
+                    if #available(OSX 11.0, *) {
+                        $0
+                            .padding(.trailing, 10.0)
+                            .padding(.leading, 5.0)
+                    } else {
+                        $0
+                    }
+                }
                 .fixedSize()
         }
     }

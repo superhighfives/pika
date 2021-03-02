@@ -28,13 +28,6 @@ struct EyedropperButton: View {
                     .opacity(0.2)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
 
-                    IconImage(name: "eyedropper")
-                        .foregroundColor(eyedropper.color.getUIColor())
-                        .padding(.all, 12.0)
-                        .opacity(copyVisible ? 0.8 : 0)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
-                        .animation(.easeInOut)
-
                     VStack(alignment: .leading, spacing: 0.0) {
                         Text(eyedropper.type == .foreground
                             ? NSLocalizedString("color.foreground", comment: "Foreground")
