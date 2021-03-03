@@ -8,11 +8,31 @@ class Eyedroppers: ObservableObject {
     @Published var background = Eyedropper(type: .background, color: NSColor.black)
 
     func toText() -> String {
-        "Text"
+        """
+        Foreground: #XXXXXX
+        Background: #XXXXXX
+        The contrast ratio is: X:1
+        Large text passed at Level AA
+        Text passed at Level AA / Level AAA Large
+        Text failed at Level AAA
+        """
     }
 
     func toJSON() -> String {
-        "JSON"
+        """
+        {
+          "colors": {
+            "foreground": "#XXXXXX",
+            "background": "#XXXXXX"
+          },
+          "ratio": "XYZ",
+          "wcag": {
+            "ratio30": true,
+            "ratio45": true,
+            "ratio70": true
+          }
+        }
+        """
     }
 }
 
