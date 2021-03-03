@@ -59,7 +59,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         // Define global keyboard shortcuts
         KeyboardShortcuts.onKeyUp(for: .togglePika) { [self] in
             if Defaults[.viewedSplash] {
-                togglePopover(nil)
+                NSApp.sendAction(#selector(AppDelegate.triggerPickForeground), to: nil, from: nil)
             }
         }
 
@@ -219,7 +219,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     @IBAction func showPika(_: Any) {
-        pikaWindow.fadeIn(sender: nil, duration: 0.2)
+        if pikaWindow.isVisible {
+            pikaWindow.makeKeyAndOrderFront(self)
+        } else {
+            pikaWindow.fadeIn(sender: nil, duration: 0.2)
+        }
+        NSApp.activate(ignoringOtherApps: true)
     }
 
     @IBAction func checkForUpdates(_: Any) {

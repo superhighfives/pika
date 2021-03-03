@@ -35,11 +35,9 @@ class Eyedropper: ObservableObject {
         DispatchQueue.main.asyncAfter(deadline: .now()) {
             let sampler = NSColorSampler()
             sampler.show { selectedColor in
-                if Defaults[.hidePikaWhilePicking] {
-                    NSApp.sendAction(#selector(AppDelegate.showPika), to: nil, from: nil)
-                }
 
                 if let selectedColor = selectedColor {
+                    NSApp.sendAction(#selector(AppDelegate.showPika), to: nil, from: nil)
                     self.color = selectedColor.usingColorSpace(Defaults[.colorSpace])!
                 }
             }

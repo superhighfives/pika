@@ -37,12 +37,12 @@ struct EyedropperButton: View {
                     .modify {
                         if eyedropper.color.getUIColor() == .white {
                             $0
-                                .shadow(color: Color.black.opacity(0.30), radius: 1, x: 0, y: 1)
+                                .shadow(color: Color.black.opacity(0.30), radius: 0, x: 0, y: 1)
                                 .shadow(color: Color.black.opacity(0.15), radius: 3, x: 0, y: 0)
                         } else {
                             $0
                                 .shadow(color: Color.white.opacity(0.50), radius: 0, x: 0, y: 1)
-                                .shadow(color: Color.white.opacity(0.15), radius: 3, x: 0, y: 1)
+                                .shadow(color: Color.white.opacity(0.15), radius: 3, x: 0, y: 0)
                         }
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
