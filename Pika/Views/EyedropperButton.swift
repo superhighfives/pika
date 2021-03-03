@@ -20,14 +20,6 @@ struct EyedropperButton: View {
                 NSApp.sendAction(action, to: nil, from: nil)
             }, label: {
                 ZStack {
-                    Group {
-                        Rectangle()
-                            .fill(Color(eyedropper.color.overlay(with: NSColor.black)))
-                            .frame(height: 55.0)
-                    }
-                    .opacity(0.2)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
-
                     VStack(alignment: .leading, spacing: 0.0) {
                         Text(eyedropper.type == .foreground
                             ? NSLocalizedString("color.foreground", comment: "Foreground")
@@ -42,6 +34,17 @@ struct EyedropperButton: View {
                         }
                     }
                     .padding(.all, 10.0)
+                    .modify {
+                        if eyedropper.color.getUIColor() == .white {
+                            $0
+                                .shadow(color: Color.black.opacity(0.30), radius: 1, x: 0, y: 1)
+                                .shadow(color: Color.black.opacity(0.15), radius: 3, x: 0, y: 0)
+                        } else {
+                            $0
+                                .shadow(color: Color.white.opacity(0.50), radius: 0, x: 0, y: 1)
+                                .shadow(color: Color.white.opacity(0.15), radius: 3, x: 0, y: 1)
+                        }
+                    }
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
                 }
             })
