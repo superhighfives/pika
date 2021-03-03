@@ -6,6 +6,14 @@ class Eyedroppers: ObservableObject {
         type: .foreground, color: PikaConstants.initialColors.randomElement()!
     )
     @Published var background = Eyedropper(type: .background, color: NSColor.black)
+
+    func toText() -> String {
+        "Text"
+    }
+
+    func toJSON() -> String {
+        "JSON"
+    }
 }
 
 class Eyedropper: ObservableObject {

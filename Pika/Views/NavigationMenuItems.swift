@@ -1,6 +1,26 @@
 import Defaults
 import SwiftUI
 
+struct MenuGroup<Content>: View where Content: View {
+    let title: String
+    let content: () -> Content
+
+    init(title: String, @ViewBuilder content: @escaping () -> Content) {
+        self.title = title
+        self.content = content
+    }
+
+    var body: some View {
+        if #available(macOS 11.0, *) {
+            Menu(title) {
+                content()
+            }
+        } else {
+            MenuButton(label: Text(title), content: content)
+        }
+    }
+}
+
 struct NavigationMenuItems: View {
     @Default(.hidePikaWhilePicking) var hidePikaWhilePicking
 
@@ -14,7 +34,7 @@ struct NavigationMenuItems: View {
             Divider()
         }
 
-        Group {
+        MenuGroup(title: NSLocalizedString("color.pick", comment: "Pick")) {
             Button("\(NSLocalizedString("color.pick.foreground", comment: "Pick foreground"))...", action: {
                 NSApp.sendAction(#selector(AppDelegate.triggerPickForeground), to: nil, from: nil)
             })
@@ -38,11 +58,7 @@ struct NavigationMenuItems: View {
                 }
         }
 
-        VStack {
-            Divider()
-        }
-
-        Group {
+        MenuGroup(title: NSLocalizedString("color.copy", comment: "Copy")) {
             Button(NSLocalizedString("color.copy.foreground", comment: "Copy foreground"), action: {
                 NSApp.sendAction(#selector(AppDelegate.triggerCopyForeground), to: nil, from: nil)
             })
@@ -64,6 +80,14 @@ struct NavigationMenuItems: View {
                         $0
                     }
                 }
+
+            Button(NSLocalizedString("color.copy.text", comment: "Copy all as text"), action: {
+                NSApp.sendAction(#selector(AppDelegate.triggerCopyText), to: nil, from: nil)
+            })
+
+            Button(NSLocalizedString("color.copy.data", comment: "Copy all as JSON"), action: {
+                NSApp.sendAction(#selector(AppDelegate.triggerCopyData), to: nil, from: nil)
+            })
         }
 
         VStack {
