@@ -11,7 +11,7 @@ struct PreferencesView: View {
 
     func getColorSpaces() -> ([NSColorSpace], [NSColorSpace]) {
         var availableSpaces = NSColorSpace.availableColorSpaces(with: .rgb).unique()
-        var primarySpaces: [NSColorSpace] = []
+        var primarySpaces: [NSColorSpace] = [NSScreen.main!.colorSpace!]
 
         for space in availableSpaces {
             if space == NSColorSpace.sRGB || space == NSColorSpace.adobeRGB1998 || space == NSColorSpace.displayP3 {
@@ -74,8 +74,13 @@ struct PreferencesView: View {
                         Picker(textSpaceTitle, selection:
                             $colorSpace.onChange(perform: { Defaults[.colorSpace] = $0 })) {
                             ForEach(primarySpaces, id: \.self) { value in
-                                Text(value.localizedName!)
-                                    .tag(value)
+                                if value === primarySpaces[0] {
+                                    Text("System Default (\(value.localizedName!))")
+                                        .tag(value)
+                                } else {
+                                    Text(value.localizedName!)
+                                        .tag(value)
+                                }
                             }
                             Divider()
                             ForEach(availableSpaces, id: \.self) { value in
