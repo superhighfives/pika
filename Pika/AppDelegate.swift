@@ -114,11 +114,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             action: #selector(checkForUpdates(_:)),
             keyEquivalent: ""
         )
-        statusBarMenu.addItem(
-            withTitle: NSLocalizedString("menu.preferences", comment: "Preferences"),
+
+        let preferences = NSMenuItem(
+            title: NSLocalizedString("menu.preferences", comment: "Preferences"),
             action: #selector(openPreferencesWindow(_:)),
-            keyEquivalent: ""
+            keyEquivalent: ","
         )
+        preferences.keyEquivalentModifierMask = NSEvent.ModifierFlags.command
+        statusBarMenu.addItem(preferences)
+
         statusBarMenu.addItem(NSMenuItem.separator())
         statusBarMenu.addItem(
             withTitle: NSLocalizedString("menu.quit", comment: "Quit Pika"),
