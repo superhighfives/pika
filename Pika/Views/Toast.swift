@@ -37,14 +37,14 @@ struct Toast<Presenting>: View where Presenting: View {
                 .padding(.horizontal, 10.0)
                 .font(.system(size: 10.0))
                 .foregroundColor(color)
-                .cornerRadius(12)
+                .cornerRadius(4)
                 .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .stroke(color.opacity(0.25), lineWidth: 1)
+                    RoundedRectangle(cornerRadius: 4)
+                        .stroke(color.opacity(0.4), lineWidth: 1)
                 )
                 .transition(.slide)
                 .opacity(self.isShowing ? 1 : 0)
-                .offset(x: 4.0, y: 4.0)
+                .offset(x: 8.0, y: 8.0)
             }
         }
     }
