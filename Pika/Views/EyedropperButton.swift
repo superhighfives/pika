@@ -26,7 +26,7 @@ struct EyedropperButton: View {
                             : NSLocalizedString("color.background", comment: "Background"))
                             .font(.caption)
                             .bold()
-                            .foregroundColor(eyedropper.color.getUIColor().opacity(0.5))
+                            .foregroundColor(eyedropper.color.getUIColor().opacity(0.75))
                         HStack {
                             Text(eyedropper.color.toFormat(format: colorFormat))
                                 .foregroundColor(eyedropper.color.getUIColor())

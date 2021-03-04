@@ -18,7 +18,7 @@ struct Toast<Presenting>: View where Presenting: View {
 
     var body: some View {
         if self.isShowing {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 withAnimation {
                     self.isShowing = false
                 }
@@ -35,7 +35,7 @@ struct Toast<Presenting>: View where Presenting: View {
                 }
                 .padding(.vertical, 5.0)
                 .padding(.horizontal, 10.0)
-                .font(.system(size: 10.0))
+                .font(.system(size: 11.0))
                 .foregroundColor(color)
                 .cornerRadius(4)
                 .overlay(
