@@ -57,7 +57,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         pikaTouchBarController = PikaTouchBarController(window: pikaWindow)
 
         // Define global keyboard shortcuts
-        KeyboardShortcuts.onKeyUp(for: .togglePika) { [self] in
+        KeyboardShortcuts.onKeyUp(for: .togglePika) { [] in
             if Defaults[.viewedSplash] {
                 NSApp.sendAction(#selector(AppDelegate.triggerPickForeground), to: nil, from: nil)
             }
