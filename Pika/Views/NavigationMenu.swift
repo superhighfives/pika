@@ -5,7 +5,7 @@ struct NavigationMenu: View {
     @Default(.colorFormat) var colorFormat
 
     // These are a hack to trigger a redraw on OSX 11.0 - otherwise the
-    // button displays wtih 50% opacity until you interract with it. If
+    // button displays wtih 50% opacity until you interact with it. If
     // anyone knows of a better way to do this, let me know.
     @State var once: Bool = false
     @State var showMenu: Bool = true
