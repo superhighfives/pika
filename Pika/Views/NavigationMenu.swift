@@ -24,10 +24,10 @@ struct NavigationMenu: View {
                 .menuStyle(BorderlessButtonMenuStyle(showsMenuIndicator: true))
                 .onAppear {
                     if !once {
+                        self.showMenu.toggle()
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                             self.showMenu.toggle()
                         }
-                        self.showMenu.toggle()
                     }
                     once = true
                 }

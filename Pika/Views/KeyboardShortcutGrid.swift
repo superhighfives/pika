@@ -10,7 +10,7 @@ struct KeyboardShortcutGrid: View {
                 let height = geometry.size.height
 
                 let horizontalUnit = width / 2
-                let verticalUnit = height / 3
+                let verticalUnit = floor(height / 3)
 
                 VStack(spacing: 0.0) {
                     HStack(spacing: 0.0) {
@@ -80,6 +80,7 @@ struct KeyboardShortcutGrid: View {
             }
 
             Divider()
+                .offset(y: 1)
         }
     }
 }
