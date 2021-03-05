@@ -8,6 +8,10 @@ struct KeyboardShortcutGrid: View {
             GeometryReader { geometry in
                 let width = geometry.size.width
                 let height = geometry.size.height
+
+                let horizontalUnit = width / 2
+                let verticalUnit = height / 3
+
                 VStack(spacing: 0.0) {
                     HStack(spacing: 0.0) {
                         KeyboardShortcutItem(
@@ -15,17 +19,17 @@ struct KeyboardShortcutGrid: View {
                             event: PikaConstants.ncTriggerPickForeground,
                             keys: ["⌘", "D"]
                         )
-                        .frame(width: width / 2, height: height / 2)
+                        .frame(width: horizontalUnit, height: verticalUnit)
 
                         Divider()
-                            .frame(height: height / 2)
+                            .frame(height: verticalUnit)
 
                         KeyboardShortcutItem(
                             title: NSLocalizedString("color.pick.background", comment: "Pick background"),
                             event: PikaConstants.ncTriggerPickBackground,
                             keys: ["⇧", "⌘", "D"]
                         )
-                        .frame(width: width / 2, height: height / 2)
+                        .frame(width: horizontalUnit, height: verticalUnit)
                     }
 
                     Divider()
@@ -37,17 +41,39 @@ struct KeyboardShortcutGrid: View {
                             event: PikaConstants.ncTriggerCopyForeground,
                             keys: ["⌘", "C"]
                         )
-                        .frame(width: width / 2, height: height / 2)
+                        .frame(width: horizontalUnit, height: verticalUnit)
 
                         Divider()
-                            .frame(height: height / 2)
+                            .frame(height: verticalUnit)
 
                         KeyboardShortcutItem(
                             title: NSLocalizedString("color.copy.background", comment: "Copy background"),
                             event: PikaConstants.ncTriggerCopyBackground,
                             keys: ["⇧", "⌘", "C"]
                         )
-                        .frame(width: width / 2, height: height / 2)
+                        .frame(width: horizontalUnit, height: verticalUnit)
+                    }
+
+                    Divider()
+                        .frame(maxWidth: .infinity)
+
+                    HStack(spacing: 0) {
+                        KeyboardShortcutItem(
+                            title: NSLocalizedString("menu.preferences", comment: "Preferences"),
+                            event: PikaConstants.ncTriggerPreferences,
+                            keys: ["⌘", ","]
+                        )
+                        .frame(width: horizontalUnit, height: verticalUnit)
+
+                        Divider()
+                            .frame(height: verticalUnit)
+
+                        KeyboardShortcutItem(
+                            title: NSLocalizedString("color.swap.detail", comment: "Swap colors"),
+                            event: PikaConstants.ncTriggerSwap,
+                            keys: ["⇧", "⌘", "X"]
+                        )
+                        .frame(width: horizontalUnit, height: verticalUnit)
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)

@@ -160,7 +160,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         if aboutWindow == nil {
             aboutWindow = PikaWindow.createSecondaryWindow(
                 title: "About",
-                size: NSRect(x: 0, y: 0, width: 300, height: 540),
+                size: NSRect(x: 0, y: 0, width: 300, height: 610),
                 styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView]
             )
             aboutTouchBarController = SplashTouchBarController(window: aboutWindow)
@@ -179,6 +179,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             preferencesWindow.contentView = NSHostingView(rootView: PreferencesView())
         }
         preferencesWindow.makeKeyAndOrderFront(nil)
+        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerPreferences), object: self)
     }
 
     @IBAction func openSplashWindow(_: Any?) {
@@ -212,6 +213,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     @IBAction func triggerCopyBackground(_: Any) {
         notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerCopyBackground), object: self)
+    }
+
+    @IBAction func triggerSwap(_: Any) {
+        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerSwap), object: self)
     }
 
     @IBAction func hidePika(_: Any) {

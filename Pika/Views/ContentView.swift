@@ -36,7 +36,7 @@ struct ContentView: View {
                 }
                 .overlay(
                     Button(action: {
-                        swap(&eyedroppers.foreground.color, &eyedroppers.background.color)
+                        NSApp.sendAction(#selector(AppDelegate.triggerSwap), to: nil, from: nil)
                         angle -= 180
                     }, label: {
                         IconImage(name: "arrow.triangle.swap")
@@ -47,6 +47,10 @@ struct ContentView: View {
                             isVisible: swapVisible,
                             alt: NSLocalizedString("color.swap", comment: "Swap")
                         ))
+                        .onReceive(NotificationCenter.default.publisher(
+                            for: Notification.Name(PikaConstants.ncTriggerSwap))) { _ in
+                            swap(&eyedroppers.foreground.color, &eyedroppers.background.color)
+                        }
                 )
             Divider()
             Footer(foreground: eyedroppers.foreground, background: eyedroppers.background)
