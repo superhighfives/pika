@@ -15,6 +15,7 @@ class Eyedropper: ObservableObject {
     }
 
     let type: Types
+    var forceShow = false
 
     @objc @Published public var color: NSColor
 
@@ -29,6 +30,9 @@ class Eyedropper: ObservableObject {
 
     func start() {
         if Defaults[.hidePikaWhilePicking] {
+            if NSApp.mainWindow?.isVisible == true {
+                forceShow = true
+            }
             NSApp.sendAction(#selector(AppDelegate.hidePika), to: nil, from: nil)
         }
 
@@ -37,8 +41,11 @@ class Eyedropper: ObservableObject {
             sampler.show { selectedColor in
 
                 if let selectedColor = selectedColor {
-                    NSApp.sendAction(#selector(AppDelegate.showPika), to: nil, from: nil)
                     self.color = selectedColor.usingColorSpace(Defaults[.colorSpace])!
+                    NSApp.sendAction(#selector(AppDelegate.showPika), to: nil, from: nil)
+                } else if self.forceShow {
+                    self.forceShow = false
+                    NSApp.sendAction(#selector(AppDelegate.showPika), to: nil, from: nil)
                 }
             }
         }
