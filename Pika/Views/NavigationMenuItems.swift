@@ -36,13 +36,11 @@ struct NavigationMenuItems: View {
                         $0
                     }
                 }
-        }
 
-        VStack {
-            Divider()
-        }
+            VStack {
+                Divider()
+            }
 
-        Group {
             Button(NSLocalizedString("color.copy.foreground", comment: "Copy foreground"), action: {
                 NSApp.sendAction(#selector(AppDelegate.triggerCopyForeground), to: nil, from: nil)
             })
@@ -60,6 +58,21 @@ struct NavigationMenuItems: View {
                 .modify {
                     if #available(OSX 11.0, *) {
                         $0.keyboardShortcut("C", modifiers: .command)
+                    } else {
+                        $0
+                    }
+                }
+
+            VStack {
+                Divider()
+            }
+
+            Button(NSLocalizedString("color.swap.detail", comment: "Swap Colors"), action: {
+                NSApp.sendAction(#selector(AppDelegate.triggerSwap), to: nil, from: nil)
+            })
+                .modify {
+                    if #available(OSX 11.0, *) {
+                        $0.keyboardShortcut("X", modifiers: .command)
                     } else {
                         $0
                     }

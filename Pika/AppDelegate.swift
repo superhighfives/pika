@@ -44,12 +44,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         // Define content view
         let contentView = ContentView()
             .environmentObject(eyedroppers)
-            .frame(minWidth: 400,
-                   idealWidth: 400,
-                   maxWidth: 500,
-                   minHeight: 180,
-                   idealHeight: 200,
-                   maxHeight: 350,
+            .frame(minWidth: 450,
+                   idealWidth: 450,
+                   maxWidth: 550,
+                   minHeight: 200,
+                   idealHeight: 220,
+                   maxHeight: 360,
                    alignment: .center)
 
         pikaWindow = PikaWindow.createPrimaryWindow()
@@ -57,9 +57,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         pikaTouchBarController = PikaTouchBarController(window: pikaWindow)
 
         // Define global keyboard shortcuts
-        KeyboardShortcuts.onKeyUp(for: .togglePika) { [self] in
+        KeyboardShortcuts.onKeyUp(for: .togglePika) { [] in
             if Defaults[.viewedSplash] {
-                togglePopover(nil)
+                NSApp.sendAction(#selector(AppDelegate.triggerPickForeground), to: nil, from: nil)
             }
         }
 
@@ -114,11 +114,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             action: #selector(checkForUpdates(_:)),
             keyEquivalent: ""
         )
-        statusBarMenu.addItem(
-            withTitle: NSLocalizedString("menu.preferences", comment: "Preferences"),
+
+        let preferences = NSMenuItem(
+            title: NSLocalizedString("menu.preferences", comment: "Preferences"),
             action: #selector(openPreferencesWindow(_:)),
-            keyEquivalent: ""
+            keyEquivalent: ","
         )
+        preferences.keyEquivalentModifierMask = NSEvent.ModifierFlags.command
+        statusBarMenu.addItem(preferences)
+
         statusBarMenu.addItem(NSMenuItem.separator())
         statusBarMenu.addItem(
             withTitle: NSLocalizedString("menu.quit", comment: "Quit Pika"),
@@ -156,7 +160,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         if aboutWindow == nil {
             aboutWindow = PikaWindow.createSecondaryWindow(
                 title: "About",
-                size: NSRect(x: 0, y: 0, width: 300, height: 540),
+                size: NSRect(x: 0, y: 0, width: 300, height: 610),
                 styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView]
             )
             aboutTouchBarController = SplashTouchBarController(window: aboutWindow)
@@ -169,12 +173,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         if preferencesWindow == nil {
             preferencesWindow = PikaWindow.createSecondaryWindow(
                 title: "Preferences",
-                size: NSRect(x: 0, y: 0, width: 550, height: 480),
+                size: NSRect(x: 0, y: 0, width: 550, height: 420),
                 styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView]
             )
             preferencesWindow.contentView = NSHostingView(rootView: PreferencesView())
         }
         preferencesWindow.makeKeyAndOrderFront(nil)
+        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerPreferences), object: self)
     }
 
     @IBAction func openSplashWindow(_: Any?) {
@@ -210,12 +215,21 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerCopyBackground), object: self)
     }
 
+    @IBAction func triggerSwap(_: Any) {
+        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerSwap), object: self)
+    }
+
     @IBAction func hidePika(_: Any) {
         hideMainWindow()
     }
 
     @IBAction func showPika(_: Any) {
-        pikaWindow.fadeIn(sender: nil, duration: 0.2)
+        if pikaWindow.isVisible {
+            pikaWindow.makeKeyAndOrderFront(self)
+        } else {
+            pikaWindow.fadeIn(sender: nil, duration: 0.2)
+        }
+        NSApp.activate(ignoringOtherApps: true)
     }
 
     @IBAction func checkForUpdates(_: Any) {

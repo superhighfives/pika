@@ -42,25 +42,6 @@ struct EyedropperItem: View {
                             : NSLocalizedString("color.background", comment: "Background").lowercased()
                     ))
                 )
-
-            ColorMenu(eyedropper: eyedropper)
-                .shadow(
-                    color: (colorScheme == .light ? Color.white : Color.black).opacity(0.5),
-                    radius: 0,
-                    x: 0,
-                    y: 1
-                )
-                .opacity(0.8)
-                .fixedSize()
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
-                .padding(8.0)
-                .modify {
-                    if colorScheme == .dark {
-                        $0.colorMultiply(Color.white)
-                    } else {
-                        $0
-                    }
-                }
         }
     }
 }
