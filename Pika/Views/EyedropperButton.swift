@@ -28,7 +28,7 @@ struct EyedropperButton: View {
                             .bold()
                             .foregroundColor(eyedropper.color.getUIColor().opacity(0.75))
 
-                        VStack {
+                        VStack(alignment: .leading, spacing: 4.0) {
                             Text(eyedropper.color.toFormat(format: colorFormat))
                                 .foregroundColor(eyedropper.color.getUIColor())
                                 .font(.system(size: 18, weight: .regular))
