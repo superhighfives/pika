@@ -9,7 +9,9 @@ struct KeyboardShortcutItem: View {
 
     var body: some View {
         VStack(spacing: 6.0) {
-            Text(title).font(.system(size: 10, weight: .medium, design: .rounded))
+            Text(title)
+                .font(.system(size: 11, design: .rounded))
+                .opacity(0.6)
             HStack(spacing: 4.0) {
                 ForEach(keys, id: \.self) { key in
                     KeyboardShortcutKey { Text(key) }

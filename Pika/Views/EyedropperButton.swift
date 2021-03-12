@@ -20,22 +20,22 @@ struct EyedropperButton: View {
                 NSApp.sendAction(action, to: nil, from: nil)
             }, label: {
                 ZStack {
-                    VStack(alignment: .leading, spacing: 0.0) {
+                    VStack(alignment: .leading, spacing: 4.0) {
                         Text(eyedropper.type == .foreground
                             ? NSLocalizedString("color.foreground", comment: "Foreground")
                             : NSLocalizedString("color.background", comment: "Background"))
                             .font(.caption)
-                            .bold()
-                            .foregroundColor(eyedropper.color.getUIColor().opacity(0.75))
+                            .fontWeight(.semibold)
+                            .foregroundColor(eyedropper.color.getUIColor().opacity(0.6))
 
-                        VStack(alignment: .leading, spacing: 4.0) {
+                        VStack(alignment: .leading, spacing: 2.0) {
                             Text(eyedropper.color.toFormat(format: colorFormat))
                                 .foregroundColor(eyedropper.color.getUIColor())
                                 .font(.system(size: 18, weight: .regular))
 
                             Text(eyedropper.getClosestColor())
-                                .foregroundColor(eyedropper.color.getUIColor().opacity(0.75))
-                                .font(.caption)
+                                .font(.system(size: 12, weight: .medium))
+                                .foregroundColor(eyedropper.color.getUIColor())
                         }
                     }
                     .padding(.all, 10.0)
