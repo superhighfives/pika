@@ -27,10 +27,15 @@ struct EyedropperButton: View {
                             .font(.caption)
                             .bold()
                             .foregroundColor(eyedropper.color.getUIColor().opacity(0.75))
-                        HStack {
+
+                        VStack {
                             Text(eyedropper.color.toFormat(format: colorFormat))
                                 .foregroundColor(eyedropper.color.getUIColor())
                                 .font(.system(size: 18, weight: .regular))
+
+                            Text(eyedropper.getClosestColor())
+                                .foregroundColor(eyedropper.color.getUIColor().opacity(0.75))
+                                .font(.caption)
                         }
                     }
                     .padding(.all, 10.0)

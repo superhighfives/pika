@@ -29,6 +29,9 @@
 		EA72BB8825A53750008205E7 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA72BB8725A53750008205E7 /* SplashView.swift */; };
 		EA72BB8B25A537C3008205E7 /* MetalShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA72BB8A25A537C3008205E7 /* MetalShader.swift */; };
 		EA72BBA925A7CE9C008205E7 /* NSWindowFade.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA72BBA825A7CE9C008205E7 /* NSWindowFade.swift */; };
+		EA7B199625FBA08100E06D9D /* LoadColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7B199525FBA08100E06D9D /* LoadColors.swift */; };
+		EA7B199925FBA09300E06D9D /* ColorNames.json in Resources */ = {isa = PBXBuildFile; fileRef = EA7B199825FBA09300E06D9D /* ColorNames.json */; };
+		EA7B199C25FBA0E600E06D9D /* ClosestVector.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7B199B25FBA0E600E06D9D /* ClosestVector.swift */; };
 		EA801285259F8F480026D5D9 /* ComplianceToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA801284259F8F480026D5D9 /* ComplianceToggle.swift */; };
 		EA8124C1259E307D00033F0B /* Footer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8124C0259E307D00033F0B /* Footer.swift */; };
 		EAA8AE1925B8EC070049299B /* KeyboardShortcutKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA8AE1825B8EC070049299B /* KeyboardShortcutKey.swift */; };
@@ -79,6 +82,9 @@
 		EA72BB8725A53750008205E7 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		EA72BB8A25A537C3008205E7 /* MetalShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalShader.swift; sourceTree = "<group>"; };
 		EA72BBA825A7CE9C008205E7 /* NSWindowFade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSWindowFade.swift; sourceTree = "<group>"; };
+		EA7B199525FBA08100E06D9D /* LoadColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadColors.swift; sourceTree = "<group>"; };
+		EA7B199825FBA09300E06D9D /* ColorNames.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ColorNames.json; sourceTree = "<group>"; };
+		EA7B199B25FBA0E600E06D9D /* ClosestVector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClosestVector.swift; sourceTree = "<group>"; };
 		EA801284259F8F480026D5D9 /* ComplianceToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplianceToggle.swift; sourceTree = "<group>"; };
 		EA8124C0259E307D00033F0B /* Footer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Footer.swift; sourceTree = "<group>"; };
 		EAA8AE1825B8EC070049299B /* KeyboardShortcutKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardShortcutKey.swift; sourceTree = "<group>"; };
@@ -137,6 +143,7 @@
 				EA424CE025CF0328009056A9 /* Localizable.strings */,
 				EAD0B6CF259CED1D00FA2F67 /* Assets.xcassets */,
 				EAD0B6D4259CED1D00FA2F67 /* Main.storyboard */,
+				EA7B199825FBA09300E06D9D /* ColorNames.json */,
 			);
 			path = Assets;
 			sourceTree = "<group>";
@@ -220,8 +227,10 @@
 		EAD0B6F0259CF29300FA2F67 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				EA7B199B25FBA0E600E06D9D /* ClosestVector.swift */,
 				EAD0B6F1259CF29300FA2F67 /* Eyedroppers.swift */,
 				EA0C526325AB5D1700AFF716 /* PikaWindow.swift */,
+				EA7B199525FBA08100E06D9D /* LoadColors.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -338,6 +347,7 @@
 				EAD0B6D6259CED1D00FA2F67 /* Main.storyboard in Resources */,
 				EA424CDE25CF0328009056A9 /* Localizable.strings in Resources */,
 				EAD0B6D3259CED1D00FA2F67 /* Preview Assets.xcassets in Resources */,
+				EA7B199925FBA09300E06D9D /* ColorNames.json in Resources */,
 				EAD0B6D0259CED1D00FA2F67 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -392,6 +402,7 @@
 				EAD0B6F9259CF29300FA2F67 /* PreferencesView.swift in Sources */,
 				EA72BB8825A53750008205E7 /* SplashView.swift in Sources */,
 				EAF100CA25C75218006E1EC3 /* PikaTouchBar.swift in Sources */,
+				EA7B199625FBA08100E06D9D /* LoadColors.swift in Sources */,
 				EAF100C725C731AD006E1EC3 /* SplashTouchBar.swift in Sources */,
 				EAA8AE1C25B8F03B0049299B /* KeyboardShortcutGrid.swift in Sources */,
 				EA0C525025AA729300AFF716 /* Visualisation.swift in Sources */,
@@ -400,6 +411,7 @@
 				EA635DCC25B3B42B0014D91A /* WCAGCompliance.swift in Sources */,
 				EA635DEA25B534C80014D91A /* EyedropperItem.swift in Sources */,
 				EA424C7D25CDEF98009056A9 /* ComplianceToggleGroup.swift in Sources */,
+				EA7B199C25FBA0E600E06D9D /* ClosestVector.swift in Sources */,
 				EAD0B6F7259CF29300FA2F67 /* Eyedroppers.swift in Sources */,
 				EA0C526025AB5A2B00AFF716 /* NavigationMenuItems.swift in Sources */,
 				EA0C526425AB5D1700AFF716 /* PikaWindow.swift in Sources */,

@@ -17,15 +17,25 @@ class Eyedropper: ObservableObject {
     let type: Types
     var forceShow = false
 
+    let colorNames: [ColorName] = loadColors()!
+    var closestVector: ClosestVector!
+
     @objc @Published public var color: NSColor
 
     init(type: Types, color: NSColor) {
         self.type = type
         self.color = color
 
+        // Load colors
+        closestVector = ClosestVector(colorNames.map { $0.color.toRGB8BitArray() })
+
         Defaults.observe(.colorSpace) { change in
             self.color = self.color.usingColorSpace(change.newValue)!
         }.tieToLifetime(of: self)
+    }
+
+    func getClosestColor() -> String {
+        colorNames[closestVector.compare(color)].name
     }
 
     func start() {
