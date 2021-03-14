@@ -2,34 +2,42 @@ import Defaults
 import SwiftUI
 
 class Eyedroppers: ObservableObject {
+    @Default(.colorFormat) var colorFormat
+
     @Published var foreground = Eyedropper(
         type: .foreground, color: PikaConstants.initialColors.randomElement()!
     )
     @Published var background = Eyedropper(type: .background, color: NSColor.black)
 
     func toText() -> String {
-        """
-        Foreground: #XXXXXX
-        Background: #XXXXXX
-        The contrast ratio is: X:1
-        Large text passed at Level AA
-        Text passed at Level AA / Level AAA Large
-        Text failed at Level AAA
+        let colorWCAGCompliance = foreground.color.toWCAGCompliance(with: background.color)
+        let colorContrastRatio = foreground.color.toContrastRatioString(with: background.color)
+
+        return """
+        Foreground: \(foreground.color.toFormat(format: colorFormat))
+        Background: \(background.color.toFormat(format: colorFormat))
+        The contrast ratio is: \(colorContrastRatio):1
+        \(colorWCAGCompliance.ratio30 ? "Passed" : "Failed") at Level AA
+        \(colorWCAGCompliance.ratio45 ? "Passed" : "Failed") at Level AA / Level AAA Large
+        \(colorWCAGCompliance.ratio70 ? "Passed" : "Failed") at Level AAA
         """
     }
 
     func toJSON() -> String {
-        """
+        let colorWCAGCompliance = foreground.color.toWCAGCompliance(with: background.color)
+        let colorContrastRatio = foreground.color.toContrastRatioString(with: background.color)
+
+        return """
         {
           "colors": {
-            "foreground": "#XXXXXX",
-            "background": "#XXXXXX"
+            "foreground": "\(foreground.color.toFormat(format: colorFormat))",
+            "background": "\(background.color.toFormat(format: colorFormat))"
           },
-          "ratio": "XYZ",
+          "ratio": "\(colorContrastRatio)",
           "wcag": {
-            "ratio30": true,
-            "ratio45": true,
-            "ratio70": true
+            "ratio30": \(colorWCAGCompliance.ratio30),
+            "ratio45": \(colorWCAGCompliance.ratio45),
+            "ratio70": \(colorWCAGCompliance.ratio70)
           }
         }
         """

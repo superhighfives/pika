@@ -33,8 +33,7 @@ struct NavigationMenuItems: View {
         VStack {
             Divider()
         }
-
-        MenuGroup(title: NSLocalizedString("color.pick", comment: "Pick")) {
+        Group {
             Button("\(NSLocalizedString("color.pick.foreground", comment: "Pick foreground"))...", action: {
                 NSApp.sendAction(#selector(AppDelegate.triggerPickForeground), to: nil, from: nil)
             })
@@ -56,9 +55,11 @@ struct NavigationMenuItems: View {
                         $0
                     }
                 }
-        }
 
-        MenuGroup(title: NSLocalizedString("color.copy", comment: "Copy")) {
+            VStack {
+                Divider()
+            }
+
             Button(NSLocalizedString("color.copy.foreground", comment: "Copy foreground"), action: {
                 NSApp.sendAction(#selector(AppDelegate.triggerCopyForeground), to: nil, from: nil)
             })
@@ -80,7 +81,24 @@ struct NavigationMenuItems: View {
                         $0
                     }
                 }
+        }
 
+        VStack {
+            Divider()
+        }
+
+        Button(NSLocalizedString("color.swap.detail", comment: "Swap Colors"), action: {
+            NSApp.sendAction(#selector(AppDelegate.triggerSwap), to: nil, from: nil)
+        })
+            .modify {
+                if #available(OSX 11.0, *) {
+                    $0.keyboardShortcut("X", modifiers: .command)
+                } else {
+                    $0
+                }
+            }
+
+        MenuGroup(title: NSLocalizedString("menu.export", comment: "Export")) {
             Button(NSLocalizedString("color.copy.text", comment: "Copy all as text"), action: {
                 NSApp.sendAction(#selector(AppDelegate.triggerCopyText), to: nil, from: nil)
             })
@@ -92,21 +110,6 @@ struct NavigationMenuItems: View {
 
         VStack {
             Divider()
-        }
-      
-        Button(NSLocalizedString("color.swap.detail", comment: "Swap Colors"), action: {
-          NSApp.sendAction(#selector(AppDelegate.triggerSwap), to: nil, from: nil)
-        })
-        .modify {
-          if #available(OSX 11.0, *) {
-            $0.keyboardShortcut("X", modifiers: .command)
-          } else {
-            $0
-          }
-        }
-      
-        VStack {
-          Divider()
         }
 
         Group {
