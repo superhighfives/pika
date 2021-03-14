@@ -93,6 +93,21 @@ struct NavigationMenuItems: View {
         VStack {
             Divider()
         }
+      
+        Button(NSLocalizedString("color.swap.detail", comment: "Swap Colors"), action: {
+          NSApp.sendAction(#selector(AppDelegate.triggerSwap), to: nil, from: nil)
+        })
+        .modify {
+          if #available(OSX 11.0, *) {
+            $0.keyboardShortcut("X", modifiers: .command)
+          } else {
+            $0
+          }
+        }
+      
+        VStack {
+          Divider()
+        }
 
         Group {
             Button(NSLocalizedString("menu.about", comment: "About"), action: {

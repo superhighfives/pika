@@ -622,6 +622,12 @@
                                                 <action selector="triggerPickBackground:" target="Ady-hI-5gd" id="gqy-M9-vRu"/>
                                             </connections>
                                         </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="DMb-e0-vJg"/>
+                                        <menuItem title="Swap Colors" keyEquivalent="X" allowsKeyEquivalentWhenHidden="YES" id="6j0-AT-P3M">
+                                            <connections>
+                                                <action selector="triggerSwap:" target="Ady-hI-5gd" id="Gu5-Cw-s7r"/>
+                                            </connections>
+                                        </menuItem>
                                     </items>
                                 </menu>
                             </menuItem>

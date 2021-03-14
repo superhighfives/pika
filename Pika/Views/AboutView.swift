@@ -43,7 +43,7 @@ struct AboutView: View {
 
                 VStack(spacing: 0) {
                     KeyboardShortcutGrid()
-                        .frame(height: 140.0)
+                        .frame(height: 210.0)
                         .background(colorScheme == .light ? Color.black.opacity(0.05) : Color.black.opacity(0.2))
                 }
 

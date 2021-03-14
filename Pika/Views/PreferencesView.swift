@@ -4,7 +4,6 @@ import LaunchAtLogin
 import SwiftUI
 
 struct PreferencesView: View {
-    @Default(.colorFormat) var colorFormat
     @Default(.hideMenuBarIcon) var hideMenuBarIcon
     @Default(.betaUpdates) var betaUpdates
     @State var colorSpace: NSColorSpace = Defaults[.colorSpace]
@@ -42,11 +41,6 @@ struct PreferencesView: View {
             VStack(alignment: .leading, spacing: 10.0) {
                 // Color Format
                 let textFormatTitle = NSLocalizedString("preferences.format.title", comment: "Color Format")
-                let textFormatDescription = NSLocalizedString(
-                    "preferences.format.description",
-                    comment: "Set your preferred display format for colors"
-                )
-
                 let textSpaceTitle = NSLocalizedString("preferences.space.title", comment: "Color Space")
                 let textSpaceDescription = NSLocalizedString(
                     "preferences.space.description",
@@ -54,21 +48,6 @@ struct PreferencesView: View {
                 )
 
                 Section(header: Text(textFormatTitle).font(.system(size: 16))) {
-                    VStack(alignment: .leading, spacing: 15.0) {
-                        Text(textFormatDescription)
-                        Picker(textFormatTitle, selection: $colorFormat) {
-                            ForEach(ColorFormat.allCases, id: \.self) { value in
-                                Text(value.rawValue)
-                            }
-                        }
-                        .pickerStyle(RadioGroupPickerStyle())
-                        .horizontalRadioGroupLayout()
-                        .labelsHidden()
-                    }
-
-                    Spacer()
-                        .frame(height: 0.0)
-
                     VStack(alignment: .leading, spacing: 15.0) {
                         Text(textSpaceDescription)
                         Picker(textSpaceTitle, selection:
