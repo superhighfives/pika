@@ -35,12 +35,7 @@ struct EyedropperItem: View {
                 .toast(
                     isShowing: $showToast,
                     color: eyedropper.color.getUIColor(),
-                    text: Text(String(
-                        format: NSLocalizedString("color.copy.toast", comment: "Copied foreground / background"),
-                        eyedropper.type == .foreground
-                            ? NSLocalizedString("color.foreground", comment: "Foreground").lowercased()
-                            : NSLocalizedString("color.background", comment: "Background").lowercased()
-                    ))
+                    text: Text(String(NSLocalizedString("color.copy.toast", comment: "Copied")))
                 )
         }
     }

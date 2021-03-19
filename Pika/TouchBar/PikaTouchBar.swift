@@ -75,10 +75,7 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
     }
 
     func createTouchBarColorButton(_ eyedropper: Eyedropper) -> NSButton? {
-        let action = eyedropper.type == .foreground
-            ? #selector(AppDelegate.triggerPickForeground)
-            : #selector(AppDelegate.triggerPickBackground)
-        let button = NSButton(title: "", target: nil, action: action)
+        let button = NSButton(title: "", target: nil, action: eyedropper.type.pickSelector)
         button.setButtonType(NSButton.ButtonType.toggle)
         eyedropper.$color.sink { color in
             self.updateButton(button: button, color: color)
