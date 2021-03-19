@@ -9,9 +9,7 @@ class Eyedroppers: ObservableObject {
 }
 
 class Eyedropper: ObservableObject {
-    
     enum Types: String, CustomStringConvertible {
-        
         case foreground
         case background
 
@@ -21,23 +19,27 @@ class Eyedropper: ObservableObject {
             case .background: return NSLocalizedString("color.background", comment: "Background")
             }
         }
+
         var copySelector: Selector {
             switch self {
             case .foreground: return #selector(AppDelegate.triggerCopyForeground)
             case .background: return #selector(AppDelegate.triggerCopyBackground)
             }
         }
+
         var pickSelector: Selector {
             switch self {
             case .foreground: return #selector(AppDelegate.triggerPickForeground)
             case .background: return #selector(AppDelegate.triggerPickBackground)
             }
         }
-        
     }
 
     let type: Types
     var forceShow = false
+
+    let colorNames: [ColorName] = loadColors()!
+    var closestVector: ClosestVector!
 
     @objc @Published public var color: NSColor
 
@@ -45,9 +47,16 @@ class Eyedropper: ObservableObject {
         self.type = type
         self.color = color
 
+        // Load colors
+        closestVector = ClosestVector(colorNames.map { $0.color.toRGB8BitArray() })
+
         Defaults.observe(.colorSpace) { change in
             self.color = self.color.usingColorSpace(change.newValue)!
         }.tieToLifetime(of: self)
+    }
+
+    func getClosestColor() -> String {
+        colorNames[closestVector.compare(color)].name
     }
 
     func start() {

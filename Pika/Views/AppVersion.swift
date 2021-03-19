@@ -15,7 +15,7 @@ struct AppVersion: View {
                 let textBuild = NSLocalizedString("app.build", comment: "Build")
                 let textUnknown = NSLocalizedString("app.unknown", comment: "Unknown")
                 Text("\(textVersion) \(appVersion ?? textUnknown)")
-                    .bold()
+                    .fontWeight(.semibold)
                 Text("(\(textBuild) \(buildNumber ?? textUnknown))")
                     .foregroundColor(.gray)
             }

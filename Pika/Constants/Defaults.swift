@@ -17,4 +17,5 @@ extension Defaults.Keys {
     static let colorSpace = NSSecureCodingKey<NSColorSpace>(
         "colorSpace", default: NSColorSpace.sRGB
     )
+    static let hideColorNames = Key<Bool>("hideColorNames", default: false)
 }
