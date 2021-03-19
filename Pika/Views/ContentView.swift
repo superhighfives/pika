@@ -64,13 +64,13 @@ struct ContentView: View {
         .onReceive(NotificationCenter.default.publisher(
             for: Notification.Name(PikaConstants.ncTriggerCopyText))) { _ in
             pasteboard.clearContents()
-            let contents = "\(eyedroppers.toText())"
+            let contents = "\(Exporter.toText(eyedroppers.foreground, eyedroppers.background))"
             pasteboard.setString(contents, forType: .string)
         }
         .onReceive(NotificationCenter.default.publisher(
             for: Notification.Name(PikaConstants.ncTriggerCopyData))) { _ in
             pasteboard.clearContents()
-            let contents = "\(eyedroppers.toJSON())"
+            let contents = "\(Exporter.toJSON(eyedroppers.foreground, eyedroppers.background))"
             pasteboard.setString(contents, forType: .string)
         }
     }
