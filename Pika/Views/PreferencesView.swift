@@ -5,6 +5,7 @@ import SwiftUI
 
 struct PreferencesView: View {
     @Default(.hideMenuBarIcon) var hideMenuBarIcon
+    @Default(.hideColorNames) var hideColorNames
     @Default(.betaUpdates) var betaUpdates
     @State var colorSpace: NSColorSpace = Defaults[.colorSpace]
 
@@ -98,6 +99,10 @@ struct PreferencesView: View {
                     "preferences.icon.description",
                     comment: "Hide menu bar icon"
                 )
+                let textColorNamesDescription = NSLocalizedString(
+                    "preferences.names.description",
+                    comment: "Hide color names"
+                )
                 let textBetaDescription = NSLocalizedString(
                     "preferences.beta.description",
                     comment: "Subscribe to beta releases"
@@ -109,6 +114,9 @@ struct PreferencesView: View {
                     }
                     Toggle(isOn: $hideMenuBarIcon) {
                         Text(textIconDescription)
+                    }
+                    Toggle(isOn: $hideColorNames) {
+                        Text(textColorNamesDescription)
                     }
                     Toggle(isOn: $betaUpdates) {
                         Text(textBetaDescription)

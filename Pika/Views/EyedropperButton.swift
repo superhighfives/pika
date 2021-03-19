@@ -5,6 +5,7 @@ import SwiftUI
 struct EyedropperButton: View {
     @ObservedObject var eyedropper: Eyedropper
     @Default(.colorFormat) var colorFormat
+    @Default(.hideColorNames) var hideColorNames
     let pasteboard = NSPasteboard.general
 
     @State var copyVisible: Bool = false
@@ -28,9 +29,11 @@ struct EyedropperButton: View {
                                 .foregroundColor(eyedropper.color.getUIColor())
                                 .font(.system(size: 18, weight: .regular))
 
-                            Text(eyedropper.getClosestColor())
-                                .font(.system(size: 12, weight: .medium))
-                                .foregroundColor(eyedropper.color.getUIColor())
+                            if !hideColorNames {
+                                Text(eyedropper.getClosestColor())
+                                    .font(.system(size: 12, weight: .medium))
+                                    .foregroundColor(eyedropper.color.getUIColor())
+                            }
                         }
                     }
                     .padding(.all, 10.0)
