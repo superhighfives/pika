@@ -2,6 +2,8 @@ import Defaults
 import SwiftUI
 
 class Eyedroppers: ObservableObject {
+    @Default(.colorFormat) var colorFormat
+
     @Published var foreground = Eyedropper(
         type: .foreground, color: PikaConstants.initialColors.randomElement()!
     )

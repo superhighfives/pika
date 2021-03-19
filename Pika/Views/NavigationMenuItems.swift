@@ -1,6 +1,26 @@
 import Defaults
 import SwiftUI
 
+struct MenuGroup<Content>: View where Content: View {
+    let title: String
+    let content: () -> Content
+
+    init(title: String, @ViewBuilder content: @escaping () -> Content) {
+        self.title = title
+        self.content = content
+    }
+
+    var body: some View {
+        if #available(macOS 11.0, *) {
+            Menu(title) {
+                content()
+            }
+        } else {
+            MenuButton(label: Text(title), content: content)
+        }
+    }
+}
+
 struct NavigationMenuItems: View {
     @Default(.hidePikaWhilePicking) var hidePikaWhilePicking
 
@@ -13,7 +33,6 @@ struct NavigationMenuItems: View {
         VStack {
             Divider()
         }
-
         Group {
             Button("\(NSLocalizedString("color.pick.foreground", comment: "Pick foreground"))...", action: {
                 NSApp.sendAction(#selector(AppDelegate.triggerPickForeground), to: nil, from: nil)
@@ -62,21 +81,31 @@ struct NavigationMenuItems: View {
                         $0
                     }
                 }
+        }
 
-            VStack {
-                Divider()
+        VStack {
+            Divider()
+        }
+
+        Button(NSLocalizedString("color.swap.detail", comment: "Swap Colors"), action: {
+            NSApp.sendAction(#selector(AppDelegate.triggerSwap), to: nil, from: nil)
+        })
+            .modify {
+                if #available(OSX 11.0, *) {
+                    $0.keyboardShortcut("X", modifiers: .command)
+                } else {
+                    $0
+                }
             }
 
-            Button(NSLocalizedString("color.swap.detail", comment: "Swap Colors"), action: {
-                NSApp.sendAction(#selector(AppDelegate.triggerSwap), to: nil, from: nil)
+        MenuGroup(title: NSLocalizedString("menu.export", comment: "Export")) {
+            Button(NSLocalizedString("color.copy.text", comment: "Copy all as text"), action: {
+                NSApp.sendAction(#selector(AppDelegate.triggerCopyText), to: nil, from: nil)
             })
-                .modify {
-                    if #available(OSX 11.0, *) {
-                        $0.keyboardShortcut("X", modifiers: .command)
-                    } else {
-                        $0
-                    }
-                }
+
+            Button(NSLocalizedString("color.copy.data", comment: "Copy all as JSON"), action: {
+                NSApp.sendAction(#selector(AppDelegate.triggerCopyData), to: nil, from: nil)
+            })
         }
 
         VStack {

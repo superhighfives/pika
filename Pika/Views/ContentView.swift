@@ -7,6 +7,7 @@ struct ContentView: View {
 
     @Default(.colorFormat) var colorFormat
     @Environment(\.colorScheme) var colorScheme: ColorScheme
+    let pasteboard = NSPasteboard.general
 
     @State var swapVisible: Bool = false
     @State private var timerSubscription: Cancellable?
@@ -59,6 +60,18 @@ struct ContentView: View {
             eyedroppers.background.color = colorScheme == .light
                 ? NSColor.white
                 : NSColor.black
+        }
+        .onReceive(NotificationCenter.default.publisher(
+            for: Notification.Name(PikaConstants.ncTriggerCopyText))) { _ in
+            pasteboard.clearContents()
+            let contents = "\(Exporter.toText(eyedroppers.foreground, eyedroppers.background))"
+            pasteboard.setString(contents, forType: .string)
+        }
+        .onReceive(NotificationCenter.default.publisher(
+            for: Notification.Name(PikaConstants.ncTriggerCopyData))) { _ in
+            pasteboard.clearContents()
+            let contents = "\(Exporter.toJSON(eyedroppers.foreground, eyedroppers.background))"
+            pasteboard.setString(contents, forType: .string)
         }
     }
 }

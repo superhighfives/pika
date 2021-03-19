@@ -219,6 +219,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerSwap), object: self)
     }
 
+    @IBAction func triggerCopyText(_: Any) {
+        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerCopyText), object: self)
+    }
+
+    @IBAction func triggerCopyData(_: Any) {
+        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerCopyData), object: self)
+    }
+
     @IBAction func hidePika(_: Any) {
         hideMainWindow()
     }
