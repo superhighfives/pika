@@ -15,7 +15,7 @@ extension Defaults.Keys {
     static let hideMenuBarIcon = Key<Bool>("hideMenuBarIcon", default: false)
     static let betaUpdates = Key<Bool>("betaUpdates", default: false)
     static let colorSpace = NSSecureCodingKey<NSColorSpace>(
-        "colorSpace", default: NSColorSpace.sRGB
+        "colorSpace", default: NSScreen.main!.colorSpace!
     )
     static let hideColorNames = Key<Bool>("hideColorNames", default: false)
 }
