@@ -14,24 +14,19 @@ struct EyedropperButton: View {
     var body: some View {
         ZStack {
             Button(action: {
-                let action = eyedropper.type == .foreground
-                    ? #selector(AppDelegate.triggerPickForeground)
-                    : #selector(AppDelegate.triggerPickBackground)
-                NSApp.sendAction(action, to: nil, from: nil)
+                NSApp.sendAction(eyedropper.type.pickSelector, to: nil, from: nil)
             }, label: {
                 ZStack {
-                    VStack(alignment: .leading, spacing: 4.0) {
-                        Text(eyedropper.type == .foreground
-                            ? NSLocalizedString("color.foreground", comment: "Foreground")
-                            : NSLocalizedString("color.background", comment: "Background"))
+                    VStack(alignment: .leading, spacing: 0.0) {
+                        Text(eyedropper.type.description)
                             .font(.caption)
                             .fontWeight(.semibold)
                             .foregroundColor(eyedropper.color.getUIColor().opacity(0.6))
 
                         VStack(alignment: .leading, spacing: 2.0) {
-                            Text(eyedropper.color.toFormat(format: colorFormat))
-                                .foregroundColor(eyedropper.color.getUIColor())
-                                .font(.system(size: 18, weight: .regular))
+                        Text(eyedropper.color.toFormat(format: colorFormat))
+                            .foregroundColor(eyedropper.color.getUIColor())
+                            .font(.system(size: 18, weight: .regular))
 
                             Text(eyedropper.getClosestColor())
                                 .font(.system(size: 12, weight: .medium))
@@ -40,15 +35,10 @@ struct EyedropperButton: View {
                     }
                     .padding(.all, 10.0)
                     .modify {
-                        if eyedropper.color.getUIColor() == .white {
-                            $0
-                                .shadow(color: Color.black.opacity(0.40), radius: 0, x: 0, y: 1)
-                                .shadow(color: Color.black.opacity(0.15), radius: 3, x: 0, y: 0)
-                        } else {
-                            $0
-                                .shadow(color: Color.white.opacity(0.20), radius: 0, x: 0, y: 1)
-                                .shadow(color: Color.white.opacity(0.30), radius: 5, x: 0, y: 0)
-                        }
+                        let shadowColor: Color = eyedropper.color.getUIColor() == .white ? .black : .white
+                        $0
+                            .shadow(color: shadowColor.opacity(0.40), radius: 0, x: 0, y: 1)
+                            .shadow(color: shadowColor.opacity(0.15), radius: 3, x: 0, y: 0)
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
                 }
@@ -56,10 +46,7 @@ struct EyedropperButton: View {
                 .buttonStyle(EyedropperButtonStyle(color: Color(eyedropper.color)))
 
             Button(action: {
-                let action = eyedropper.type == .foreground
-                    ? #selector(AppDelegate.triggerCopyForeground)
-                    : #selector(AppDelegate.triggerCopyBackground)
-                NSApp.sendAction(action, to: nil, from: nil)
+                NSApp.sendAction(eyedropper.type.copySelector, to: nil, from: nil)
             }, label: {
                 IconImage(name: "doc.on.doc", resizable: true)
                     .aspectRatio(contentMode: .fit)
