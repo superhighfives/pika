@@ -5,26 +5,43 @@ import SwiftUI
 
 struct PreferencesView: View {
     @Default(.hideMenuBarIcon) var hideMenuBarIcon
+    @Default(.hideColorNames) var hideColorNames
     @Default(.betaUpdates) var betaUpdates
     @State var colorSpace: NSColorSpace = Defaults[.colorSpace]
 
-    func getColorSpaces() -> ([NSColorSpace], [NSColorSpace]) {
+    // swiftlint:disable large_tuple opening_brace
+    func getColorSpaces() -> ([NSColorSpace], [NSColorSpace], NSColorSpace) {
+        let systemDefaultSpace: NSColorSpace = NSScreen.main!.colorSpace!
         var availableSpaces = NSColorSpace.availableColorSpaces(with: .rgb).unique()
+        if !availableSpaces.contains(systemDefaultSpace) {
+            availableSpaces.append(systemDefaultSpace)
+        }
         var primarySpaces: [NSColorSpace] = []
 
         for space in availableSpaces {
-            if space == NSColorSpace.sRGB || space == NSColorSpace.adobeRGB1998 || space == NSColorSpace.displayP3 {
+            if space == NSColorSpace.sRGB ||
+                space == NSColorSpace.adobeRGB1998 ||
+                space == NSColorSpace.displayP3 ||
+                space == systemDefaultSpace
+            {
                 guard let index = availableSpaces.firstIndex(of: space) else { continue }
-                primarySpaces.append(space)
                 availableSpaces.remove(at: index)
+
+                if space == systemDefaultSpace {
+                    primarySpaces.insert(space, at: 0)
+                } else {
+                    primarySpaces.append(space)
+                }
             }
         }
 
-        return (primarySpaces, availableSpaces)
+        return (primarySpaces, availableSpaces, systemDefaultSpace)
     }
 
+    // swiftlint:enable large_tuple opening_brace
+
     var body: some View {
-        let (primarySpaces, availableSpaces) = self.getColorSpaces()
+        let (primarySpaces, availableSpaces, systemDefaultSpace) = self.getColorSpaces()
 
         HStack(spacing: 0) {
             Group {
@@ -53,8 +70,13 @@ struct PreferencesView: View {
                         Picker(textSpaceTitle, selection:
                             $colorSpace.onChange(perform: { Defaults[.colorSpace] = $0 })) {
                             ForEach(primarySpaces, id: \.self) { value in
-                                Text(value.localizedName!)
-                                    .tag(value)
+                                if value == systemDefaultSpace {
+                                    Text("System Default (\(value.localizedName!))")
+                                        .tag(value)
+                                } else {
+                                    Text(value.localizedName!)
+                                        .tag(value)
+                                }
                             }
                             Divider()
                             ForEach(availableSpaces, id: \.self) { value in
@@ -98,6 +120,10 @@ struct PreferencesView: View {
                     "preferences.icon.description",
                     comment: "Hide menu bar icon"
                 )
+                let textColorNamesDescription = NSLocalizedString(
+                    "preferences.names.description",
+                    comment: "Hide color names"
+                )
                 let textBetaDescription = NSLocalizedString(
                     "preferences.beta.description",
                     comment: "Subscribe to beta releases"
@@ -109,6 +135,9 @@ struct PreferencesView: View {
                     }
                     Toggle(isOn: $hideMenuBarIcon) {
                         Text(textIconDescription)
+                    }
+                    Toggle(isOn: $hideColorNames) {
+                        Text(textColorNamesDescription)
                     }
                     Toggle(isOn: $betaUpdates) {
                         Text(textBetaDescription)

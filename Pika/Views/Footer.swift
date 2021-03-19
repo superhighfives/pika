@@ -12,7 +12,7 @@ struct Footer: View {
             VStack(alignment: .leading, spacing: 0.0) {
                 Text(NSLocalizedString("color.ratio", comment: "Contrast Ratio"))
                     .font(.caption)
-                    .bold()
+                    .fontWeight(.semibold)
                     .foregroundColor(.gray)
                 Text("\(colorContrastRatio)")
                     .font(.system(size: 18))
@@ -23,7 +23,7 @@ struct Footer: View {
             VStack(alignment: .leading, spacing: 3.0) {
                 Text(NSLocalizedString("color.wcag", comment: "WCAG Compliance"))
                     .font(.caption)
-                    .bold()
+                    .fontWeight(.semibold)
                     .foregroundColor(.gray)
 
                 ComplianceToggleGroup(colorWCAGCompliance: colorWCAGCompliance)
