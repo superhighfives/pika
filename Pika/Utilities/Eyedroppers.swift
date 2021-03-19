@@ -9,9 +9,7 @@ class Eyedroppers: ObservableObject {
 }
 
 class Eyedropper: ObservableObject {
-    
     enum Types: String, CustomStringConvertible {
-        
         case foreground
         case background
 
@@ -21,19 +19,20 @@ class Eyedropper: ObservableObject {
             case .background: return NSLocalizedString("color.background", comment: "Background")
             }
         }
+
         var copySelector: Selector {
             switch self {
             case .foreground: return #selector(AppDelegate.triggerCopyForeground)
             case .background: return #selector(AppDelegate.triggerCopyBackground)
             }
         }
+
         var pickSelector: Selector {
             switch self {
             case .foreground: return #selector(AppDelegate.triggerPickForeground)
             case .background: return #selector(AppDelegate.triggerPickBackground)
             }
         }
-        
     }
 
     let type: Types
