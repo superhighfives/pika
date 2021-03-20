@@ -63,6 +63,7 @@ struct PreferencesView: View {
                     "preferences.space.description",
                     comment: "Set your RGB color space"
                 )
+                let textSystemDefault = NSLocalizedString("preferences.space.default", comment: "System Default")
 
                 Section(header: Text(textFormatTitle).font(.system(size: 16))) {
                     VStack(alignment: .leading, spacing: 15.0) {
@@ -71,7 +72,7 @@ struct PreferencesView: View {
                             $colorSpace.onChange(perform: { Defaults[.colorSpace] = $0 })) {
                             ForEach(primarySpaces, id: \.self) { value in
                                 if value == systemDefaultSpace {
-                                    Text("System Default (\(value.localizedName!))")
+                                    Text("\(textSystemDefault) (\(value.localizedName!))")
                                         .tag(value)
                                 } else {
                                     Text(value.localizedName!)
