@@ -14,15 +14,17 @@ class Exporter {
         let backgroundRgb = background.color.toFormat(format: ColorFormat.rgb)
         let backgroundHsb = background.color.toFormat(format: ColorFormat.hsb)
         let backgroundHsl = background.color.toFormat(format: ColorFormat.hsl)
+        let passMessage = NSLocalizedString("color.wcag.pass", comment: "Pass")
+        let failMessage = NSLocalizedString("color.wcag.fail", comment: "Fail")
 
         // swiftlint:disable line_length
         return """
         \(NSLocalizedString("color.foreground", comment: "Foreground")): \(foregroundHex) / \(foregroundRgb) / \(foregroundHsb) / \(foregroundHsl)
         \(NSLocalizedString("color.background", comment: "Background")): \(backgroundHex) / \(backgroundRgb) / \(backgroundHsb) / \(backgroundHsl)
         \(NSLocalizedString("color.ratio", comment: "Contrast Ratio")): \(colorContrastRatio):1
-        WCAG AA: \(colorWCAGCompliance.ratio30 ? "Pass" : "Fail")
-        WCAG AA / AAA Large: \(colorWCAGCompliance.ratio45 ? "Pass" : "Fail")
-        WCAG AAA: \(colorWCAGCompliance.ratio70 ? "Pass" : "Fail")
+        WCAG AA: \(colorWCAGCompliance.ratio30 ? passMessage : failMessage)
+        WCAG AA / AAA Large: \(colorWCAGCompliance.ratio45 ? passMessage : failMessage)
+        WCAG AAA: \(colorWCAGCompliance.ratio70 ? passMessage : failMessage)
         """
         // swiftlint:enable  line_length
     }
