@@ -81,6 +81,18 @@ struct NavigationMenuItems: View {
                         $0
                     }
                 }
+
+            VStack {
+                Divider()
+            }
+
+            Button(NSLocalizedString("color.copy.text", comment: "Copy all as text"), action: {
+                NSApp.sendAction(#selector(AppDelegate.triggerCopyText), to: nil, from: nil)
+            })
+
+            Button(NSLocalizedString("color.copy.data", comment: "Copy all as JSON"), action: {
+                NSApp.sendAction(#selector(AppDelegate.triggerCopyData), to: nil, from: nil)
+            })
         }
 
         VStack {
@@ -97,16 +109,6 @@ struct NavigationMenuItems: View {
                     $0
                 }
             }
-
-        MenuGroup(title: NSLocalizedString("menu.export", comment: "Export")) {
-            Button(NSLocalizedString("color.copy.text", comment: "Copy all as text"), action: {
-                NSApp.sendAction(#selector(AppDelegate.triggerCopyText), to: nil, from: nil)
-            })
-
-            Button(NSLocalizedString("color.copy.data", comment: "Copy all as JSON"), action: {
-                NSApp.sendAction(#selector(AppDelegate.triggerCopyData), to: nil, from: nil)
-            })
-        }
 
         VStack {
             Divider()
