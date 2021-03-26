@@ -186,7 +186,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         if splashWindow == nil {
             splashWindow = PikaWindow.createSecondaryWindow(
                 title: "Splash",
-                size: NSRect(x: 0, y: 0, width: 600, height: 260),
+                size: NSRect(x: 0, y: 0, width: 650, height: 260),
                 styleMask: [.titled, .fullSizeContentView]
             )
             if #available(OSX 11.0, *) {
