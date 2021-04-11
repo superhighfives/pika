@@ -47,8 +47,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             .frame(minWidth: 450,
                    idealWidth: 450,
                    maxWidth: 550,
-                   minHeight: 200,
-                   idealHeight: 220,
+                   minHeight: 230,
+                   idealHeight: 230,
                    maxHeight: 360,
                    alignment: .center)
 

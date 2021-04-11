@@ -6,7 +6,8 @@ class PikaWindow {
         let window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 380, height: 150),
             styleMask: [.titled, .closable, .miniaturizable, .resizable],
-            backing: .buffered, defer: false
+            backing: .buffered,
+            defer: false
         )
         window.isReleasedWhenClosed = false
         window.center()
