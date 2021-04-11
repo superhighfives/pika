@@ -31,7 +31,6 @@ public class ClosestVector {
         }
         // swiftlint:enable identifier_name
 
-        // return and save in cache
         return index
     }
 }
