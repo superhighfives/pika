@@ -18,4 +18,5 @@ extension Defaults.Keys {
         "colorSpace", default: NSScreen.main!.colorSpace!
     )
     static let hideColorNames = Key<Bool>("hideColorNames", default: false)
+    static let hideFormatOnCopy = Key<Bool>("hideFormatOnCopy", default: false)
 }

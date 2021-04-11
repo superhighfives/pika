@@ -29,7 +29,8 @@ struct EyedropperItem: View {
                     for: Notification.Name("triggerCopy\(eyedropper.type.rawValue.capitalized)"))) { _ in
                     showToast = true
                     pasteboard.clearContents()
-                    let contents = "\(eyedropper.color.toFormat(format: colorFormat))"
+                    let contents
+                        = "\(eyedropper.color.toFormat(format: colorFormat, hideFormat: Defaults[.hideFormatOnCopy]))"
                     pasteboard.setString(contents, forType: .string)
                 }
                 .toast(
