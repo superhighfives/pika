@@ -22,7 +22,7 @@ class Exporter {
         \(NSLocalizedString("color.foreground", comment: "Foreground")): \(foregroundHex) · \(foregroundRgb) · \(foregroundHsb) · \(foregroundHsl)
         \(NSLocalizedString("color.background", comment: "Background")): \(backgroundHex) · \(backgroundRgb) · \(backgroundHsb) · \(backgroundHsl)
         \(NSLocalizedString("color.ratio", comment: "Contrast Ratio")): \(colorContrastRatio):1
-        \(NSLocalizedString("color.wcag", comment: "WCAG Compliance")): Non-text (\(colorWCAGCompliance.ratio30 ? passMessage : failMessage)) · AA Large (\(colorWCAGCompliance.ratio30 ? passMessage : failMessage)) · AA / AAA Large (\(colorWCAGCompliance.ratio45 ? passMessage : failMessage)) · AAA (\(colorWCAGCompliance.ratio70 ? passMessage : failMessage))
+        \(NSLocalizedString("color.wcag", comment: "WCAG Compliance")): AA Large (\(colorWCAGCompliance.ratio30 ? passMessage : failMessage)) · AA / AAA Large (\(colorWCAGCompliance.ratio45 ? passMessage : failMessage)) · AAA (\(colorWCAGCompliance.ratio70 ? passMessage : failMessage)) · Non-text (\(colorWCAGCompliance.ratio30 ? passMessage : failMessage))
         """
         // swiftlint:enable  line_length
     }
