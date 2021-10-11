@@ -4,12 +4,12 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var eyedroppers: Eyedroppers
+    @StateObject var activeUI = ActiveUI()
 
     @Default(.colorFormat) var colorFormat
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     let pasteboard = NSPasteboard.general
 
-    @State var swapVisible: Bool = false
     @State private var timerSubscription: Cancellable?
     @State private var timer = Timer.publish(every: 0.25, on: .main, in: .common)
     @State private var angle: Double = 0
@@ -20,7 +20,7 @@ struct ContentView: View {
             ColorPickers()
                 .onHover { hover in
                     if hover {
-                        swapVisible = true
+                        activeUI.visible = true
                         timerSubscription?.cancel()
                         timerSubscription = nil
                     } else {
@@ -31,7 +31,7 @@ struct ContentView: View {
                     }
                 }
                 .onReceive(timer) { _ in
-                    swapVisible = false
+                    activeUI.visible = false
                     timerSubscription?.cancel()
                     timerSubscription = nil
                 }
@@ -45,7 +45,7 @@ struct ContentView: View {
                             .animation(.easeInOut)
                     })
                         .buttonStyle(SwapButtonStyle(
-                            isVisible: swapVisible,
+                            isVisible: activeUI.visible,
                             alt: NSLocalizedString("color.swap", comment: "Swap")
                         ))
                         .onReceive(NotificationCenter.default.publisher(
@@ -56,6 +56,7 @@ struct ContentView: View {
             Divider()
             Footer(foreground: eyedroppers.foreground, background: eyedroppers.background)
         }
+        .environmentObject(activeUI)
         .onAppear {
             eyedroppers.background.color = colorScheme == .light
                 ? NSColor.white

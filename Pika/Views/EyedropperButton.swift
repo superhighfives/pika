@@ -3,14 +3,11 @@ import Defaults
 import SwiftUI
 
 struct EyedropperButton: View {
+    @EnvironmentObject var activeUI: ActiveUI
     @ObservedObject var eyedropper: Eyedropper
     @Default(.colorFormat) var colorFormat
     @Default(.hideColorNames) var hideColorNames
     let pasteboard = NSPasteboard.general
-
-    @State var copyVisible: Bool = false
-    @State private var timerSubscription: Cancellable?
-    @State private var timer = Timer.publish(every: 0.25, on: .main, in: .common)
 
     var body: some View {
         ZStack {
@@ -56,28 +53,11 @@ struct EyedropperButton: View {
                     .frame(width: 14, height: 14)
             })
                 .buttonStyle(SwapButtonStyle(
-                    isVisible: copyVisible,
+                    isVisible: activeUI.visible,
                     alt: NSLocalizedString("color.copy", comment: "Copy")
                 ))
                 .padding(.all, 8.0)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
-        }
-        .onHover { hover in
-            if hover {
-                copyVisible = true
-                timerSubscription?.cancel()
-                timerSubscription = nil
-            } else {
-                if self.timerSubscription == nil {
-                    self.timer = Timer.publish(every: 0.25, on: .main, in: .common)
-                    self.timerSubscription = self.timer.connect()
-                }
-            }
-        }
-        .onReceive(timer) { _ in
-            copyVisible = false
-            timerSubscription?.cancel()
-            timerSubscription = nil
         }
     }
 }
