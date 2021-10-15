@@ -48,7 +48,8 @@ struct EyedropperButton: View {
             Button(action: {
                 NSApp.sendAction(eyedropper.type.copySelector, to: nil, from: nil)
             }, label: {
-                IconImage(name: "doc.on.doc", resizable: true)
+                Image(systemName: "doc.on.doc")
+                    .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 14, height: 14)
             })

@@ -30,7 +30,7 @@ struct Toast<Presenting>: View where Presenting: View {
                 self.presenting()
 
                 HStack {
-                    IconImage(name: "doc.on.doc")
+                    Image(systemName: "doc.on.doc")
                     self.text
                 }
                 .padding(.vertical, 5.0)

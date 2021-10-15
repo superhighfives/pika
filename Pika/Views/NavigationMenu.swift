@@ -12,34 +12,22 @@ struct NavigationMenu: View {
 
     @ViewBuilder
     func getMenu() -> some View {
-        let icon = "gearshape"
-
-        if #available(OSX 11.0, *) {
-            if showMenu {
-                Menu {
-                    NavigationMenuItems()
-                } label: {
-                    IconImage(name: icon)
-                }
-                .menuStyle(BorderlessButtonMenuStyle(showsMenuIndicator: true))
-                .onAppear {
-                    if !once {
-                        self.showMenu.toggle()
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                            self.showMenu.toggle()
-                        }
-                    }
-                    once = true
-                }
-            }
-        } else {
-            MenuButton(label: HStack { Spacer(); IconImage(name: icon) }, content: {
+        if showMenu {
+            Menu {
                 NavigationMenuItems()
-            })
-                .menuButtonStyle(BorderlessPullDownMenuButtonStyle())
-                .padding(EdgeInsets(top: 40, leading: 5, bottom: 0, trailing: 20))
-                .edgesIgnoringSafeArea(.all)
-                .fixedSize()
+            } label: {
+                Image(systemName: "gearshape")
+            }
+            .menuStyle(BorderlessButtonMenuStyle(showsMenuIndicator: true))
+            .onAppear {
+                if !once {
+                    self.showMenu.toggle()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        self.showMenu.toggle()
+                    }
+                }
+                once = true
+            }
         }
     }
 
@@ -50,27 +38,14 @@ struct NavigationMenu: View {
                     Text(value.rawValue)
                 }
             }
-            .modify {
-                if #available(OSX 11.0, *) {
-                    $0.offset(y: 1.0)
-                } else {
-                    $0.offset(x: 6.0, y: -18.0)
-                }
-            }
+            .offset(y: 1.0)
             .pickerStyle(SegmentedPickerStyle())
             .labelsHidden()
 
             getMenu()
                 .frame(alignment: .leading)
-                .modify {
-                    if #available(OSX 11.0, *) {
-                        $0
-                            .padding(.trailing, 10.0)
-                            .padding(.leading, 5.0)
-                    } else {
-                        $0
-                    }
-                }
+                .padding(.trailing, 10.0)
+                .padding(.leading, 5.0)
                 .fixedSize()
         }
     }

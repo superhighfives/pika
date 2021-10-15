@@ -18,9 +18,7 @@ class SplashTouchBarController: NSWindowController, NSTouchBarDelegate {
         case NSTouchBarItem.Identifier.splash:
             let item = NSCustomTouchBarItem(identifier: identifier)
             DispatchQueue.main.asyncAfter(deadline: .now()) {
-                if #available(OSX 11.0, *) {
-                    item.view = NSHostingView(rootView: TouchBarVisual())
-                }
+                item.view = NSHostingView(rootView: TouchBarVisual())
             }
             return item
         default:

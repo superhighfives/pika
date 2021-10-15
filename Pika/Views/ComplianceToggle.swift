@@ -9,7 +9,7 @@ struct ComplianceToggle: View {
 
     var body: some View {
         HStack(spacing: 2.0) {
-            IconImage(name: isCompliant ? "checkmark.circle.fill" : "xmark.circle")
+            Image(systemName: isCompliant ? "checkmark.circle.fill" : "xmark.circle")
             Text(title)
 
             if large {
@@ -27,13 +27,7 @@ struct ComplianceToggle: View {
             }
         }
         .opacity(isCompliant ? 1.0 : 0.5)
-        .modify {
-            if #available(OSX 11.0, *) {
-                $0.help(tooltip)
-            } else {
-                $0
-            }
-        }
+        .help(tooltip)
     }
 }
 

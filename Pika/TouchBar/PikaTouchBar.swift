@@ -111,7 +111,7 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
     ) -> NSTouchBarItem? {
         let item = NSCustomTouchBarItem(identifier: identifier)
         let textField = NSTextField(labelWithString: "")
-        let icon = NSHostingView(rootView: IconImage(name: "circle.lefthalf.fill"))
+        let icon = NSHostingView(rootView: Image(systemName: "circle.lefthalf.fill"))
 
         let stackView = NSStackView(views: [icon, textField])
         let view = NSView()

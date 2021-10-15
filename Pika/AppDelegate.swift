@@ -189,10 +189,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 size: NSRect(x: 0, y: 0, width: 650, height: 260),
                 styleMask: [.titled, .fullSizeContentView]
             )
-            if #available(OSX 11.0, *) {
-                splashWindow.title = NSLocalizedString("app.name", comment: "Pika")
-                splashWindow.titleVisibility = .visible
-            }
+            splashWindow.title = NSLocalizedString("app.name", comment: "Pika")
+            splashWindow.titleVisibility = .visible
             splashTouchBarController = SplashTouchBarController(window: splashWindow)
             splashWindow.contentView = NSHostingView(rootView: SplashView().edgesIgnoringSafeArea(.all))
         }

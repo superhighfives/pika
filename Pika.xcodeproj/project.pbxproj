@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		221600F925A62E5B00B8B7D9 /* IconImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221600F825A62E5B00B8B7D9 /* IconImage.swift */; };
 		221600FD25A636D600B8B7D9 /* ConditionalModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221600FC25A636D600B8B7D9 /* ConditionalModifier.swift */; };
 		221759332714B63D000F3F22 /* ActiveUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221759322714B63D000F3F22 /* ActiveUI.swift */; };
 		226FD61025A940F90021A67F /* VisualEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226FD60F25A940F90021A67F /* VisualEffect.swift */; };
@@ -62,7 +61,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		221600F825A62E5B00B8B7D9 /* IconImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconImage.swift; sourceTree = "<group>"; };
 		221600FC25A636D600B8B7D9 /* ConditionalModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionalModifier.swift; sourceTree = "<group>"; };
 		221759322714B63D000F3F22 /* ActiveUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveUI.swift; sourceTree = "<group>"; };
 		226FD60F25A940F90021A67F /* VisualEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffect.swift; sourceTree = "<group>"; };
@@ -254,7 +252,6 @@
 				EA0C526E25AB683400AFF716 /* EyedropperButton.swift */,
 				EA635DE925B534C80014D91A /* EyedropperItem.swift */,
 				EA8124C0259E307D00033F0B /* Footer.swift */,
-				221600F825A62E5B00B8B7D9 /* IconImage.swift */,
 				EAA8AE1B25B8F03B0049299B /* KeyboardShortcutGrid.swift */,
 				22FE80B225BA0F820063759E /* KeyboardShortcutItem.swift */,
 				EAA8AE1825B8EC070049299B /* KeyboardShortcutKey.swift */,
@@ -441,7 +438,6 @@
 				EAEBF64725E878A5002999D1 /* CircleButtonStyle.swift in Sources */,
 				EA635DE125B4FC580014D91A /* ColorPickers.swift in Sources */,
 				EACA8A45260501210064035C /* Exporter.swift in Sources */,
-				221600F925A62E5B00B8B7D9 /* IconImage.swift in Sources */,
 				EAD0B6FA259CF29300FA2F67 /* AppVersion.swift in Sources */,
 				EA8124C1259E307D00033F0B /* Footer.swift in Sources */,
 				EA635DDC25B4E90B0014D91A /* BindingOnChange.swift in Sources */,

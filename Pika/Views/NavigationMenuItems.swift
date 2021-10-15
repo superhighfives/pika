@@ -11,12 +11,8 @@ struct MenuGroup<Content>: View where Content: View {
     }
 
     var body: some View {
-        if #available(macOS 11.0, *) {
-            Menu(title) {
-                content()
-            }
-        } else {
-            MenuButton(label: Text(title), content: content)
+        Menu(title) {
+            content()
         }
     }
 }
@@ -38,24 +34,12 @@ struct NavigationMenuItems: View {
             Button("\(NSLocalizedString("color.pick.foreground", comment: "Pick foreground"))...", action: {
                 NSApp.sendAction(#selector(AppDelegate.triggerPickForeground), to: nil, from: nil)
             })
-                .modify {
-                    if #available(OSX 11.0, *) {
-                        $0.keyboardShortcut("d", modifiers: .command)
-                    } else {
-                        $0
-                    }
-                }
+                .keyboardShortcut("d", modifiers: .command)
 
             Button("\(NSLocalizedString("color.pick.background", comment: "Pick background"))...", action: {
                 NSApp.sendAction(#selector(AppDelegate.triggerPickBackground), to: nil, from: nil)
             })
-                .modify {
-                    if #available(OSX 11.0, *) {
-                        $0.keyboardShortcut("D", modifiers: .command)
-                    } else {
-                        $0
-                    }
-                }
+                .keyboardShortcut("D", modifiers: .command)
 
             VStack {
                 Divider()
@@ -64,24 +48,12 @@ struct NavigationMenuItems: View {
             Button(NSLocalizedString("color.copy.foreground", comment: "Copy foreground"), action: {
                 NSApp.sendAction(#selector(AppDelegate.triggerCopyForeground), to: nil, from: nil)
             })
-                .modify {
-                    if #available(OSX 11.0, *) {
-                        $0.keyboardShortcut("c", modifiers: .command)
-                    } else {
-                        $0
-                    }
-                }
+                .keyboardShortcut("c", modifiers: .command)
 
             Button(NSLocalizedString("color.copy.background", comment: "Copy background"), action: {
                 NSApp.sendAction(#selector(AppDelegate.triggerCopyBackground), to: nil, from: nil)
             })
-                .modify {
-                    if #available(OSX 11.0, *) {
-                        $0.keyboardShortcut("C", modifiers: .command)
-                    } else {
-                        $0
-                    }
-                }
+                .keyboardShortcut("C", modifiers: .command)
 
             Toggle(isOn: $hideFormatOnCopy) {
                 Text(NSLocalizedString("color.copy.format", comment: "Hide format when copying"))
@@ -107,13 +79,7 @@ struct NavigationMenuItems: View {
         Button(NSLocalizedString("color.swap.detail", comment: "Swap Colors"), action: {
             NSApp.sendAction(#selector(AppDelegate.triggerSwap), to: nil, from: nil)
         })
-            .modify {
-                if #available(OSX 11.0, *) {
-                    $0.keyboardShortcut("X", modifiers: .command)
-                } else {
-                    $0
-                }
-            }
+            .keyboardShortcut("X", modifiers: .command)
 
         VStack {
             Divider()
@@ -129,13 +95,7 @@ struct NavigationMenuItems: View {
             Button(NSLocalizedString("menu.preferences", comment: "Preferences"), action: {
                 NSApp.sendAction(#selector(AppDelegate.openPreferencesWindow), to: nil, from: nil)
             })
-                .modify {
-                    if #available(OSX 11.0, *) {
-                        $0.keyboardShortcut(",", modifiers: .command)
-                    } else {
-                        $0
-                    }
-                }
+                .keyboardShortcut(",", modifiers: .command)
         }
 
         VStack {
@@ -145,13 +105,7 @@ struct NavigationMenuItems: View {
         Button(NSLocalizedString("menu.quit", comment: "Quit"), action: {
             NSApplication.shared.terminate(self)
         })
-            .modify {
-                if #available(OSX 11.0, *) {
-                    $0.keyboardShortcut("q", modifiers: .command)
-                } else {
-                    $0
-                }
-            }
+            .keyboardShortcut("q", modifiers: .command)
     }
 }
 

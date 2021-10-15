@@ -40,7 +40,7 @@ struct ContentView: View {
                         NSApp.sendAction(#selector(AppDelegate.triggerSwap), to: nil, from: nil)
                         angle -= 180
                     }, label: {
-                        IconImage(name: "arrow.triangle.swap")
+                        Image(systemName: "arrow.triangle.swap")
                             .rotationEffect(.degrees(angle))
                             .animation(.easeInOut)
                     })

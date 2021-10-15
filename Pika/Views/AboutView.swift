@@ -48,7 +48,7 @@ struct AboutView: View {
                 }
 
                 HStack(spacing: 5.0) {
-                    IconImage(name: "hand.thumbsup.fill")
+                    Image(systemName: "hand.thumbsup.fill")
                     Text(NSLocalizedString("app.designed", comment: "Designed by"))
                     LinkButton(title: "Charlie Gleason", link: "https://charliegleason.com")
                 }
