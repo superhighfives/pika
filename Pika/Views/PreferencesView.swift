@@ -6,7 +6,6 @@ import SwiftUI
 struct PreferencesView: View {
     @Default(.hideMenuBarIcon) var hideMenuBarIcon
     @Default(.hideColorNames) var hideColorNames
-    @Default(.copyColorOnPick) var copyColorOnPick
     @Default(.betaUpdates) var betaUpdates
     @State var colorSpace: NSColorSpace = Defaults[.colorSpace]
 
@@ -118,10 +117,6 @@ struct PreferencesView: View {
                     "preferences.launch.description",
                     comment: "Launch at login"
                 )
-                let textCopyDescription = NSLocalizedString(
-                    "preferences.copy.description",
-                    comment: "Copy value when picking"
-                )
                 let textIconDescription = NSLocalizedString(
                     "preferences.icon.description",
                     comment: "Hide menu bar icon"
@@ -138,9 +133,6 @@ struct PreferencesView: View {
                 Section(header: Text(textGeneralTitle).font(.system(size: 16))) {
                     LaunchAtLogin.Toggle {
                         Text(textLaunchDescription)
-                    }
-                    Toggle(isOn: $copyColorOnPick) {
-                        Text(textCopyDescription)
                     }
                     Toggle(isOn: $hideMenuBarIcon) {
                         Text(textIconDescription)

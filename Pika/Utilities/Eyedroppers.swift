@@ -75,7 +75,12 @@ class Eyedropper: ObservableObject {
 
                 if let selectedColor = selectedColor {
                     self.color = selectedColor.usingColorSpace(Defaults[.colorSpace])!
-                    NSApp.sendAction(#selector(AppDelegate.showPika), to: nil, from: nil)
+
+                    if Defaults[.copyColorOnPick] {
+                        NSApp.sendAction(self.type.copySelector, to: nil, from: nil)
+                    } else {
+                        NSApp.sendAction(#selector(AppDelegate.showPika), to: nil, from: nil)
+                    }
                 } else if self.forceShow {
                     self.forceShow = false
                     NSApp.sendAction(#selector(AppDelegate.showPika), to: nil, from: nil)
