@@ -81,7 +81,9 @@ class Eyedropper: ObservableObject {
                     } else {
                         NSApp.sendAction(#selector(AppDelegate.showPika), to: nil, from: nil)
                     }
-                } else if self.forceShow {
+                }
+
+                if self.forceShow {
                     self.forceShow = false
                     NSApp.sendAction(#selector(AppDelegate.showPika), to: nil, from: nil)
                 }
