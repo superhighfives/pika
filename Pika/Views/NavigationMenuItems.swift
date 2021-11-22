@@ -32,7 +32,7 @@ struct NavigationMenuItems: View {
                 Text(NSLocalizedString("color.pick.hide", comment: "Hide Pika while picking"))
             }
             Toggle(isOn: $copyColorOnPick) {
-                Text(NSLocalizedString("preferences.copy.description", comment: "Copy color when picking"))
+                Text(NSLocalizedString("color.pick.copy", comment: "Copy color when picking"))
             }
         }
         VStack {
