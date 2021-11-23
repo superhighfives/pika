@@ -173,7 +173,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         if preferencesWindow == nil {
             preferencesWindow = PikaWindow.createSecondaryWindow(
                 title: "Preferences",
-                size: NSRect(x: 0, y: 0, width: 550, height: 420),
+                size: NSRect(x: 0, y: 0, width: 550, height: 450),
                 styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView]
             )
             preferencesWindow.contentView = NSHostingView(rootView: PreferencesView())

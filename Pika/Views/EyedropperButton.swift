@@ -7,7 +7,6 @@ struct EyedropperButton: View {
     @ObservedObject var eyedropper: Eyedropper
     @Default(.colorFormat) var colorFormat
     @Default(.hideColorNames) var hideColorNames
-    let pasteboard = NSPasteboard.general
 
     var body: some View {
         ZStack {
