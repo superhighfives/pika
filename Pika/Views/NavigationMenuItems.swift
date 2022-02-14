@@ -22,19 +22,7 @@ struct MenuGroup<Content>: View where Content: View {
 }
 
 struct NavigationMenuItems: View {
-    @Default(.hidePikaWhilePicking) var hidePikaWhilePicking
-    @Default(.copyColorOnPick) var copyColorOnPick
-    @Default(.hideFormatOnCopy) var hideFormatOnCopy
-
     var body: some View {
-        Group {
-            Toggle(isOn: $hidePikaWhilePicking) {
-                Text(NSLocalizedString("color.pick.hide", comment: "Hide Pika while picking"))
-            }
-            Toggle(isOn: $copyColorOnPick) {
-                Text(NSLocalizedString("color.pick.copy", comment: "Copy color when picking"))
-            }
-        }
         VStack {
             Divider()
         }
@@ -86,10 +74,6 @@ struct NavigationMenuItems: View {
                         $0
                     }
                 }
-
-            Toggle(isOn: $hideFormatOnCopy) {
-                Text(NSLocalizedString("color.copy.format", comment: "Hide format when copying"))
-            }
 
             VStack {
                 Divider()

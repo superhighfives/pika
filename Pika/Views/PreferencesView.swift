@@ -7,6 +7,9 @@ struct PreferencesView: View {
     @Default(.hideMenuBarIcon) var hideMenuBarIcon
     @Default(.hideColorNames) var hideColorNames
     @Default(.betaUpdates) var betaUpdates
+    @Default(.hidePikaWhilePicking) var hidePikaWhilePicking
+    @Default(.copyColorOnPick) var copyColorOnPick
+    @Default(.hideFormatOnCopy) var hideFormatOnCopy
     @State var colorSpace: NSColorSpace = Defaults[.colorSpace]
 
     // swiftlint:disable large_tuple opening_brace
@@ -47,7 +50,7 @@ struct PreferencesView: View {
             Group {
                 AppVersion()
             }
-            .frame(maxWidth: 180.0, maxHeight: .infinity)
+            .frame(maxWidth: 220.0, maxHeight: .infinity)
             .background(VisualEffect(
                 material: NSVisualEffectView.Material.sidebar,
                 blendingMode: NSVisualEffectView.BlendingMode.behindWindow
@@ -64,28 +67,46 @@ struct PreferencesView: View {
                     comment: "Set your RGB color space"
                 )
                 let textSystemDefault = NSLocalizedString("preferences.space.default", comment: "System Default")
+                let textPickDescription = NSLocalizedString(
+                    "preferences.pick.description",
+                    comment: "Set your picking preferences"
+                )
 
                 Section(header: Text(textFormatTitle).font(.system(size: 16))) {
                     VStack(alignment: .leading, spacing: 15.0) {
-                        Text(textSpaceDescription)
-                        Picker(textSpaceTitle, selection:
-                            $colorSpace.onChange(perform: { Defaults[.colorSpace] = $0 })) {
-                            ForEach(primarySpaces, id: \.self) { value in
-                                if value == systemDefaultSpace {
-                                    Text("\(textSystemDefault) (\(value.localizedName!))")
-                                        .tag(value)
-                                } else {
+                        Section(header: Text(textSpaceDescription)) {
+                            Picker(textSpaceTitle, selection:
+                                $colorSpace.onChange(perform: { Defaults[.colorSpace] = $0 })) {
+                                ForEach(primarySpaces, id: \.self) { value in
+                                    if value == systemDefaultSpace {
+                                        Text("\(textSystemDefault) (\(value.localizedName!))")
+                                            .tag(value)
+                                    } else {
+                                        Text(value.localizedName!)
+                                            .tag(value)
+                                    }
+                                }
+                                Divider()
+                                ForEach(availableSpaces, id: \.self) { value in
                                     Text(value.localizedName!)
                                         .tag(value)
                                 }
                             }
-                            Divider()
-                            ForEach(availableSpaces, id: \.self) { value in
-                                Text(value.localizedName!)
-                                    .tag(value)
-                            }
+                            .labelsHidden()
                         }
-                        .labelsHidden()
+                    }
+                    .padding(.bottom, 16.0)
+
+                    Section(header: Text(textPickDescription)) {
+                        Toggle(isOn: $hidePikaWhilePicking) {
+                            Text(NSLocalizedString("preferences.pick.hide", comment: "Hide Pika while picking"))
+                        }
+                        Toggle(isOn: $copyColorOnPick) {
+                            Text(NSLocalizedString("preferences.pick.copy", comment: "Copy color when picking"))
+                        }
+                        Toggle(isOn: $hideFormatOnCopy) {
+                            Text(NSLocalizedString("preferences.pick.format", comment: "Hide format when copying"))
+                        }
                     }
                 }
                 .padding(.horizontal, 24.0)
