@@ -107,8 +107,8 @@ extension NSColor {
         return UInt32(rounded)
     }
 
-    func toHexString(hideFormat: Bool = false) -> String {
-        String(format: hideFormat ? "%06x" : "#%06x", toHex())
+    func toHexString(style: CopyFormat = .css) -> String {
+        String(format: style == .none ? "%06x" : "#%06x", toHex())
     }
 
     func toHex() -> UInt32 {
@@ -138,12 +138,12 @@ extension NSColor {
 
      - returns: An NSColor as an rgb string.
      */
-    func toRGBString(hideFormat: Bool) -> String {
+    func toRGBString(style: CopyFormat = .css) -> String {
         let RGB = toRGBAComponents()
         let red = RGB.r
         let green = RGB.g
         let blue = RGB.b
-        let rgbString = NSString(format: hideFormat ? "%f, %f, %f" : "rgb(%f, %f, %f)", red, green, blue)
+        let rgbString = NSString(format: style == .none ? "%f, %f, %f" : "rgb(%f, %f, %f)", red, green, blue)
         return rgbString as String
     }
 
@@ -152,12 +152,12 @@ extension NSColor {
 
      - returns: An NSColor as an 8-bit rgb string.
      */
-    func toRGB8BitString(hideFormat: Bool) -> String {
+    func toRGB8BitString(style: CopyFormat = .css) -> String {
         let RGB = toRGBAComponents()
         let red = Int(round(RGB.r * 255))
         let green = Int(round(RGB.g * 255))
         let blue = Int(round(RGB.b * 255))
-        let rgbString = NSString(format: hideFormat ? "%d, %d, %d" : "rgb(%d, %d, %d)", red, green, blue)
+        let rgbString = NSString(format: style == .none ? "%d, %d, %d" : "rgb(%d, %d, %d)", red, green, blue)
         return rgbString as String
     }
 
@@ -254,12 +254,12 @@ extension NSColor {
 
      - returns: An NSColor as an hsb string.
      */
-    func toHSBString(hideFormat: Bool) -> String {
+    func toHSBString(style: CopyFormat = .css) -> String {
         let HSB = toHSBComponents()
         let hue = HSB.h
         let saturation = HSB.s
         let brightness = HSB.b
-        let hsbString = NSString(format: hideFormat ? "%f, %f, %f" : "hsb(%f, %f, %f)", hue, saturation, brightness)
+        let hsbString = NSString(format: style == .none ? "%f, %f, %f" : "hsb(%f, %f, %f)", hue, saturation, brightness)
         return hsbString as String
     }
 
@@ -268,12 +268,12 @@ extension NSColor {
 
      - returns: An NSColor as an 8-bit hsb string.
      */
-    func toHSB8BitString(hideFormat: Bool) -> String {
+    func toHSB8BitString(style: CopyFormat = .css) -> String {
         let HSB = toHSBComponents()
         let hue = Int(round(HSB.h * 360))
         let saturation = Int(round(HSB.s * 100))
         let brightness = Int(round(HSB.b * 100))
-        let hsbString = NSString(format: hideFormat ? "%d, %d, %d" : "hsb(%d, %d, %d)", hue, saturation, brightness)
+        let hsbString = NSString(format: style == .none ? "%d, %d, %d" : "hsb(%d, %d, %d)", hue, saturation, brightness)
         return hsbString as String
     }
 
@@ -284,12 +284,12 @@ extension NSColor {
 
      - returns: An NSColor as an hsl string.
      */
-    func toHSLString(hideFormat: Bool) -> String {
+    func toHSLString(style: CopyFormat = .css) -> String {
         let HSL = toHSLComponents()
         let hue = HSL.h
         let saturation = HSL.s
         let lightness = HSL.l
-        let hslString = NSString(format: hideFormat ? "%f, %f, %f" : "hsl(%f, %f, %f)", hue, saturation, lightness)
+        let hslString = NSString(format: style == .none ? "%f, %f, %f" : "hsl(%f, %f, %f)", hue, saturation, lightness)
         return hslString as String
     }
 
@@ -298,12 +298,12 @@ extension NSColor {
 
      - returns: An NSColor as an 8-bit hsl string.
      */
-    func toHSL8BitString(hideFormat: Bool) -> String {
+    func toHSL8BitString(style: CopyFormat = .css) -> String {
         let HSL = toHSLComponents()
         let hue = Int(round(HSL.h * 360))
         let saturation = Int(round(HSL.s * 100))
         let lightness = Int(round(HSL.l * 100))
-        let hslString = NSString(format: hideFormat ? "%d, %d, %d" : "hsl(%d, %d, %d)", hue, saturation, lightness)
+        let hslString = NSString(format: style == .none ? "%d, %d, %d" : "hsl(%d, %d, %d)", hue, saturation, lightness)
         return hslString as String
     }
 
@@ -312,16 +312,16 @@ extension NSColor {
 
      - returns: A string of the color depending on the provided format.
      */
-    func toFormat(format: ColorFormat, hideFormat: Bool = false) -> String {
+    func toFormat(format: ColorFormat, style: CopyFormat = .none) -> String {
         switch format {
         case .hex:
-            return toHexString(hideFormat: hideFormat)
+            return toHexString(style: style)
         case .rgb:
-            return toRGB8BitString(hideFormat: hideFormat)
+            return toRGB8BitString(style: style)
         case .hsb:
-            return toHSB8BitString(hideFormat: hideFormat)
+            return toHSB8BitString(style: style)
         case .hsl:
-            return toHSL8BitString(hideFormat: hideFormat)
+            return toHSL8BitString(style: style)
         }
     }
 

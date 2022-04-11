@@ -8,6 +8,12 @@ enum ColorFormat: String, Codable, CaseIterable {
     case hsl = "HSL"
 }
 
+enum CopyFormat: String, Codable, CaseIterable {
+    case none = "None"
+    case print = "Print"
+    case css = "CSS"
+}
+
 extension Defaults.Keys {
     static let colorFormat = Key<ColorFormat>("colorFormat", default: .hex)
     static let viewedSplash = Key<Bool>("viewedSplash", default: false)
@@ -19,5 +25,6 @@ extension Defaults.Keys {
         "colorSpace", default: NSScreen.main!.colorSpace!
     )
     static let hideColorNames = Key<Bool>("hideColorNames", default: false)
-    static let hideFormatOnCopy = Key<Bool>("hideFormatOnCopy", default: false)
+    static let formatColorsForCSS = Key<Bool>("formatColorsForCSS", default: false)
+    static let copyFormat = Key<CopyFormat>("copyFormat", default: .css)
 }

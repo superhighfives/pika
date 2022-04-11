@@ -9,7 +9,7 @@ struct PreferencesView: View {
     @Default(.betaUpdates) var betaUpdates
     @Default(.hidePikaWhilePicking) var hidePikaWhilePicking
     @Default(.copyColorOnPick) var copyColorOnPick
-    @Default(.hideFormatOnCopy) var hideFormatOnCopy
+    @Default(.copyFormat) var copyFormat
     @State var colorSpace: NSColorSpace = Defaults[.colorSpace]
 
     // swiftlint:disable large_tuple opening_brace
@@ -74,14 +74,17 @@ struct PreferencesView: View {
                     "preferences.names.description",
                     comment: "Hide color names"
                 )
+                let textColorCSSFormatDescription = NSLocalizedString(
+                    "preferences.css.description",
+                    comment: "Format colors for CSS"
+                )
                 let textBetaDescription = NSLocalizedString(
                     "preferences.beta.description",
                     comment: "Subscribe to beta releases"
                 )
 
                 let textPickHide = NSLocalizedString("preferences.pick.hide", comment: "Hide Pika while picking")
-                let textPickCopy = NSLocalizedString("preferences.pick.copy", comment: "Copy color when picking")
-                let textPickFormat = NSLocalizedString("preferences.pick.format", comment: "Hide format when copying")
+                let textPickCopy = NSLocalizedString("preferences.pick.copy", comment: "Copy color on pick")
 
                 Section(header: Text(textGeneralTitle).font(.system(size: 16))) {
                     HStack(alignment: .top, spacing: 16.0) {
@@ -91,9 +94,6 @@ struct PreferencesView: View {
                             }
                             Toggle(isOn: $hideMenuBarIcon) {
                                 Text(textIconDescription)
-                            }
-                            Toggle(isOn: $hideColorNames) {
-                                Text(textColorNamesDescription)
                             }
                             Toggle(isOn: $betaUpdates) {
                                 Text(textBetaDescription)
@@ -105,21 +105,36 @@ struct PreferencesView: View {
                             Toggle(isOn: $hidePikaWhilePicking) {
                                 Text(textPickHide)
                             }
+                            Toggle(isOn: $hideColorNames) {
+                                Text(textColorNamesDescription)
+                            }
                             Toggle(isOn: $copyColorOnPick) {
                                 Text(textPickCopy)
-                            }
-                            Toggle(isOn: $hideFormatOnCopy) {
-                                Text(textPickFormat)
                             }
                         }
                         .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
                     }
+
+                    HStack(alignment: .firstTextBaseline, spacing: 8.0) {
+                        // TODO: Move this over to locale
+                        Text("On copy, format color for")
+                            .fixedSize()
+                        Picker("On copy, format color for", selection: $copyFormat) {
+                            ForEach(CopyFormat.allCases, id: \.self) { value in
+                                Text(value.rawValue)
+                            }
+                        }
+                        .pickerStyle(SegmentedPickerStyle())
+                        .fixedSize()
+                        .labelsHidden()
+                    }
+                    .padding(.top, 4.0)
                 }
                 .padding(.horizontal, 24.0)
-                
+
                 Divider()
                     .padding(.vertical, 10.0)
-                
+
                 // Color Format
                 let textFormatTitle = NSLocalizedString("preferences.format.title", comment: "Color Format")
                 let textFormatDescription = NSLocalizedString(
@@ -128,12 +143,12 @@ struct PreferencesView: View {
                 )
                 let textSpaceTitle = NSLocalizedString("preferences.space.title", comment: "Color Space")
                 let textSystemDefault = NSLocalizedString("preferences.space.default", comment: "System Default")
-                
+
                 Section(header: Text(textFormatTitle).font(.system(size: 16))) {
                     VStack(alignment: .leading, spacing: 16.0) {
                         Section(header: Text(textFormatDescription).font(.system(size: 13, weight: .medium))) {
                             Picker(textSpaceTitle, selection:
-                                    $colorSpace.onChange(perform: { Defaults[.colorSpace] = $0 })) {
+                                $colorSpace.onChange(perform: { Defaults[.colorSpace] = $0 })) {
                                 ForEach(primarySpaces, id: \.self) { value in
                                     if value == systemDefaultSpace {
                                         Text("\(textSystemDefault) (\(value.localizedName!))")
@@ -149,7 +164,7 @@ struct PreferencesView: View {
                                         .tag(value)
                                 }
                             }
-                                    .labelsHidden()
+                            .labelsHidden()
                         }
                     }
                 }
@@ -183,6 +198,6 @@ struct PreferencesView: View {
 struct PreferencesView_Previews: PreviewProvider {
     static var previews: some View {
         PreferencesView()
-            .frame(width: 680, height: 450)
+            .frame(width: 660, height: 450)
     }
 }
