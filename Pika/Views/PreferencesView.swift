@@ -46,7 +46,7 @@ struct PreferencesView: View {
     var body: some View {
         let (primarySpaces, availableSpaces, systemDefaultSpace) = self.getColorSpaces()
 
-        HStack(spacing: 0) {
+        HStack(alignment: .top, spacing: 0) {
             Group {
                 AppVersion()
             }
@@ -58,10 +58,9 @@ struct PreferencesView: View {
 
             Divider()
 
-            VStack(alignment: .leading, spacing: 10.0) {
+            VStack(alignment: .leading, spacing: 0) {
                 // General Settings
                 let textGeneralTitle = NSLocalizedString("preferences.general.title", comment: "General Settings")
-
                 let textLaunchDescription = NSLocalizedString(
                     "preferences.launch.description",
                     comment: "Launch at login"
@@ -70,56 +69,62 @@ struct PreferencesView: View {
                     "preferences.icon.description",
                     comment: "Hide menu bar icon"
                 )
-                let textColorNamesDescription = NSLocalizedString(
-                    "preferences.names.description",
-                    comment: "Hide color names"
-                )
-                let textColorCSSFormatDescription = NSLocalizedString(
-                    "preferences.css.description",
-                    comment: "Format colors for CSS"
-                )
                 let textBetaDescription = NSLocalizedString(
                     "preferences.beta.description",
                     comment: "Subscribe to beta releases"
                 )
 
+                let textSelectionTitle = NSLocalizedString("preferences.selection.title", comment: "Selection Settings")
                 let textPickHide = NSLocalizedString("preferences.pick.hide", comment: "Hide Pika while picking")
+                let textColorNamesDescription = NSLocalizedString(
+                    "preferences.names.description",
+                    comment: "Hide color names"
+                )
+                //TODO: Update this
                 let textPickCopy = NSLocalizedString("preferences.pick.copy", comment: "Copy color on pick")
 
-                Section(header: Text(textGeneralTitle).font(.system(size: 16))) {
-                    HStack(alignment: .top, spacing: 16.0) {
-                        VStack(alignment: .leading, spacing: 10.0) {
-                            LaunchAtLogin.Toggle {
-                                Text(textLaunchDescription)
-                            }
-                            Toggle(isOn: $hideMenuBarIcon) {
-                                Text(textIconDescription)
-                            }
-                            Toggle(isOn: $betaUpdates) {
-                                Text(textBetaDescription)
-                            }
+                HStack(alignment: .top, spacing: 0) {
+                    VStack(alignment: .leading, spacing: 10.0) {
+                        Text(textGeneralTitle).font(.system(size: 16))
+                        LaunchAtLogin.Toggle {
+                            Text(textLaunchDescription)
                         }
-                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-
-                        VStack(alignment: .leading, spacing: 10.0) {
-                            Toggle(isOn: $hidePikaWhilePicking) {
-                                Text(textPickHide)
-                            }
-                            Toggle(isOn: $hideColorNames) {
-                                Text(textColorNamesDescription)
-                            }
-                            Toggle(isOn: $copyColorOnPick) {
-                                Text(textPickCopy)
-                            }
+                        Toggle(isOn: $hideMenuBarIcon) {
+                            Text(textIconDescription)
                         }
-                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                        Toggle(isOn: $betaUpdates) {
+                            Text(textBetaDescription)
+                        }
                     }
+                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                    .padding(.all, 24.0)
 
+                    Divider()
+
+                    VStack(alignment: .leading, spacing: 10.0) {
+                        Text(textSelectionTitle).font(.system(size: 16))
+                        Toggle(isOn: $hidePikaWhilePicking) {
+                            Text(textPickHide)
+                        }
+                        Toggle(isOn: $hideColorNames) {
+                            Text(textColorNamesDescription)
+                        }
+                    }
+                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                    .padding(.all, 24.0)
+                }
+                .fixedSize(horizontal: false, vertical: true)
+
+                Divider()
+                    .padding(.bottom, 16.0)
+
+                VStack(alignment: .leading, spacing: 8.0) {
+                    Text("Copy Settings").font(.system(size: 16))
                     HStack(alignment: .firstTextBaseline, spacing: 8.0) {
                         // TODO: Move this over to locale
-                        Text("On copy, format color for")
+                        Text("Export color for")
                             .fixedSize()
-                        Picker("On copy, format color for", selection: $copyFormat) {
+                        Picker("Format color for", selection: $copyFormat) {
                             ForEach(CopyFormat.allCases, id: \.self) { value in
                                 Text(value.rawValue)
                             }
@@ -128,12 +133,16 @@ struct PreferencesView: View {
                         .fixedSize()
                         .labelsHidden()
                     }
-                    .padding(.top, 4.0)
+
+                    Toggle(isOn: $copyColorOnPick) {
+                        // TODO: Move this over to locale
+                        Text("Automatically copy color to clipboard on pick")
+                    }
                 }
                 .padding(.horizontal, 24.0)
 
                 Divider()
-                    .padding(.vertical, 10.0)
+                    .padding(.vertical, 16.0)
 
                 // Color Format
                 let textFormatTitle = NSLocalizedString("preferences.format.title", comment: "Color Format")
@@ -144,34 +153,36 @@ struct PreferencesView: View {
                 let textSpaceTitle = NSLocalizedString("preferences.space.title", comment: "Color Space")
                 let textSystemDefault = NSLocalizedString("preferences.space.default", comment: "System Default")
 
-                Section(header: Text(textFormatTitle).font(.system(size: 16))) {
-                    VStack(alignment: .leading, spacing: 16.0) {
-                        Section(header: Text(textFormatDescription).font(.system(size: 13, weight: .medium))) {
-                            Picker(textSpaceTitle, selection:
-                                $colorSpace.onChange(perform: { Defaults[.colorSpace] = $0 })) {
-                                ForEach(primarySpaces, id: \.self) { value in
-                                    if value == systemDefaultSpace {
-                                        Text("\(textSystemDefault) (\(value.localizedName!))")
-                                            .tag(value)
-                                    } else {
+                VStack(alignment: .leading, spacing: 8.0) {
+                    Section(header: Text(textFormatTitle).font(.system(size: 16))) {
+                        VStack(alignment: .leading, spacing: 12.0) {
+                            Section(header: Text(textFormatDescription).font(.system(size: 13, weight: .medium))) {
+                                Picker(textSpaceTitle, selection:
+                                    $colorSpace.onChange(perform: { Defaults[.colorSpace] = $0 })) {
+                                    ForEach(primarySpaces, id: \.self) { value in
+                                        if value == systemDefaultSpace {
+                                            Text("\(textSystemDefault) (\(value.localizedName!))")
+                                                .tag(value)
+                                        } else {
+                                            Text(value.localizedName!)
+                                                .tag(value)
+                                        }
+                                    }
+                                    Divider()
+                                    ForEach(availableSpaces, id: \.self) { value in
                                         Text(value.localizedName!)
                                             .tag(value)
                                     }
                                 }
-                                Divider()
-                                ForEach(availableSpaces, id: \.self) { value in
-                                    Text(value.localizedName!)
-                                        .tag(value)
-                                }
+                                .labelsHidden()
                             }
-                            .labelsHidden()
                         }
                     }
+                    .padding(.horizontal, 24.0)
                 }
-                .padding(.horizontal, 24.0)
 
                 Divider()
-                    .padding(.vertical, 10.0)
+                    .padding(.vertical, 16.0)
 
                 // Global Shortcut
                 let textHotkeyTitle = NSLocalizedString("preferences.hotkey.title", comment: "Global Shortcut")
@@ -180,16 +191,18 @@ struct PreferencesView: View {
                     comment: "Set a global hotkey shortcut to invoke Pika"
                 )
 
-                Section(header: Text(textHotkeyTitle).font(.system(size: 16))) {
-                    VStack(alignment: .leading, spacing: 16.0) {
-                        Text(textHotkeyDescription).font(.system(size: 13, weight: .medium))
-                        KeyboardShortcuts.Recorder(for: .togglePika)
+                VStack(alignment: .leading, spacing: 8.0) {
+                    Section(header: Text(textHotkeyTitle).font(.system(size: 16))) {
+                        VStack(alignment: .leading, spacing: 12.0) {
+                            Text(textHotkeyDescription).font(.system(size: 13, weight: .medium))
+                            KeyboardShortcuts.Recorder(for: .togglePika)
+                        }
                     }
+                    .padding(.horizontal, 24.0)
                 }
-                .padding(.horizontal, 24.0)
             }
             .padding(.all, 0.0)
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
         }
         .edgesIgnoringSafeArea(.all)
     }
@@ -198,6 +211,6 @@ struct PreferencesView: View {
 struct PreferencesView_Previews: PreviewProvider {
     static var previews: some View {
         PreferencesView()
-            .frame(width: 660, height: 450)
+            .frame(width: 720, height: 500)
     }
 }
