@@ -50,7 +50,7 @@ struct PreferencesView: View {
             Group {
                 AppVersion()
             }
-            .frame(maxWidth: 220.0, maxHeight: .infinity)
+            .frame(maxWidth: 240.0, maxHeight: .infinity)
             .background(VisualEffect(
                 material: NSVisualEffectView.Material.sidebar,
                 blendingMode: NSVisualEffectView.BlendingMode.behindWindow
@@ -80,7 +80,7 @@ struct PreferencesView: View {
                     "preferences.names.description",
                     comment: "Hide color names"
                 )
-                //TODO: Update this
+                // TODO: Update this
                 let textPickCopy = NSLocalizedString("preferences.pick.copy", comment: "Copy color on pick")
 
                 HStack(alignment: .top, spacing: 0) {
@@ -201,7 +201,7 @@ struct PreferencesView: View {
                     .padding(.horizontal, 24.0)
                 }
             }
-            .padding(.all, 0.0)
+            .padding(.bottom, 24.0)
             .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
         }
         .edgesIgnoringSafeArea(.all)
