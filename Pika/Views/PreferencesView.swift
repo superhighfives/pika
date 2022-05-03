@@ -135,7 +135,7 @@ struct PreferencesView: View {
                     }
 
                     Toggle(isOn: $copyColorOnPick) {
-                        // TODO: Move this over to locale
+                        // TODO: Move this over to locale from preferences.pick.copy
                         Text("Automatically copy color to clipboard on pick")
                     }
                 }
