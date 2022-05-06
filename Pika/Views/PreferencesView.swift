@@ -80,8 +80,11 @@ struct PreferencesView: View {
                     "preferences.names.description",
                     comment: "Hide color names"
                 )
-                // TODO: Update this
-                let textPickCopy = NSLocalizedString("preferences.pick.copy", comment: "Copy color on pick")
+
+                let textCopyTitle = NSLocalizedString("preferences.copy.title", comment: "Copy Settings")
+                let textCopyExport = NSLocalizedString("preferences.copy.export", comment: "Export color for")
+                let textCopyFormat = NSLocalizedString("preferences.copy.format", comment: "Export Format")
+                let textCopyAutomatic = NSLocalizedString("preferences.copy.automatic", comment: "Automatically copy color to clipboard on pick")
 
                 HStack(alignment: .top, spacing: 0) {
                     VStack(alignment: .leading, spacing: 10.0) {
@@ -119,12 +122,11 @@ struct PreferencesView: View {
                     .padding(.bottom, 16.0)
 
                 VStack(alignment: .leading, spacing: 8.0) {
-                    Text("Copy Settings").font(.system(size: 16))
+                    Text(textCopyTitle).font(.system(size: 16))
                     HStack(alignment: .firstTextBaseline, spacing: 8.0) {
-                        // TODO: Move this over to locale
-                        Text("Export color for")
+                        Text(textCopyExport)
                             .fixedSize()
-                        Picker("Format color for", selection: $copyFormat) {
+                        Picker(textCopyFormat, selection: $copyFormat) {
                             ForEach(CopyFormat.allCases, id: \.self) { value in
                                 Text(value.rawValue)
                             }
@@ -135,8 +137,7 @@ struct PreferencesView: View {
                     }
 
                     Toggle(isOn: $copyColorOnPick) {
-                        // TODO: Move this over to locale from preferences.pick.copy
-                        Text("Automatically copy color to clipboard on pick")
+                        Text(textCopyAutomatic)
                     }
                 }
                 .padding(.horizontal, 24.0)
