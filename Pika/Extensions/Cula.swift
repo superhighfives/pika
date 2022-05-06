@@ -312,7 +312,7 @@ extension NSColor {
 
      - returns: A string of the color depending on the provided format.
      */
-    func toFormat(format: ColorFormat, style: CopyFormat = .none) -> String {
+    func toFormat(format: ColorFormat, style: CopyFormat = .css) -> String {
         switch format {
         case .hex:
             return toHexString(style: style)

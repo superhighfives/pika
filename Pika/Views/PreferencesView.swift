@@ -84,7 +84,10 @@ struct PreferencesView: View {
                 let textCopyTitle = NSLocalizedString("preferences.copy.title", comment: "Copy Settings")
                 let textCopyExport = NSLocalizedString("preferences.copy.export", comment: "Export color for")
                 let textCopyFormat = NSLocalizedString("preferences.copy.format", comment: "Export Format")
-                let textCopyAutomatic = NSLocalizedString("preferences.copy.automatic", comment: "Automatically copy color to clipboard on pick")
+                let textCopyAutomatic = NSLocalizedString(
+                    "preferences.copy.automatic",
+                    comment: "Automatically copy color to clipboard on pick"
+                )
 
                 HStack(alignment: .top, spacing: 0) {
                     VStack(alignment: .leading, spacing: 10.0) {
@@ -128,10 +131,11 @@ struct PreferencesView: View {
                             .fixedSize()
                         Picker(textCopyFormat, selection: $copyFormat) {
                             ForEach(CopyFormat.allCases, id: \.self) { value in
-                                Text(value.rawValue)
+                                Text(value.localizedString())
                             }
                         }
-                        .pickerStyle(SegmentedPickerStyle())
+                        .pickerStyle(RadioGroupPickerStyle())
+                        .horizontalRadioGroupLayout()
                         .fixedSize()
                         .labelsHidden()
                     }

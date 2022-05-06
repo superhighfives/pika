@@ -9,9 +9,13 @@ enum ColorFormat: String, Codable, CaseIterable {
 }
 
 enum CopyFormat: String, Codable, CaseIterable {
-    case none = "None"
-    case print = "Print"
-    case css = "CSS"
+    case css = "preferences.copy.options.css"
+    case design = "preferences.copy.options.design"
+    case unformatted = "preferences.copy.options.unformatted"
+
+    func localizedString() -> String {
+        NSLocalizedString(rawValue, comment: "Copy Format")
+    }
 }
 
 extension Defaults.Keys {
