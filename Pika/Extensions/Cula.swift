@@ -25,7 +25,7 @@ extension NSColor {
         var hex = hex.replacingOccurrences(of: "#", with: "")
 
         guard hex.count == 3 || hex.count == 6 else {
-            fatalError("fatalError(Sweetercolor): Hex characters must be either 3 or 6 characters.")
+            fatalError("Hex characters must be either 3 or 6 characters.")
         }
 
         if hex.count == 3 {
@@ -76,28 +76,6 @@ extension NSColor {
         return 0.2126 * lumHelper(c: rgba.r) + 0.7152 * lumHelper(c: rgba.g) + 0.0722 * lumHelper(c: rgba.b)
     }
 
-    // Color modification
-
-    func overlay(with color: NSColor) -> NSColor {
-        let mainRGBA = toRGBAComponents()
-        let maskRGBA = color.toRGBAComponents()
-
-        func masker(a: CGFloat, b: CGFloat) -> CGFloat {
-            if a < 0.5 {
-                return 2 * a * b
-            } else {
-                return 1 - (2 * (1 - a) * (1 - b))
-            }
-        }
-
-        return NSColor(
-            r: masker(a: mainRGBA.r, b: maskRGBA.r),
-            g: masker(a: mainRGBA.g, b: maskRGBA.g),
-            b: masker(a: mainRGBA.b, b: maskRGBA.b),
-            a: masker(a: mainRGBA.a, b: maskRGBA.a)
-        )
-    }
-
     //  Hex
 
     internal func roundToHex(_ x: CGFloat) -> UInt32 {
@@ -129,22 +107,6 @@ extension NSColor {
         rgbaColor.getRed(&r, green: &g, blue: &b, alpha: &a)
 
         return (r, g, b, a)
-    }
-
-    // swiftlint:enable large_tuple
-
-    /**
-     Get the rgb values of this color.
-
-     - returns: An NSColor as an rgb string.
-     */
-    func toRGBString(style: CopyFormat = .css) -> String {
-        let RGB = toRGBAComponents()
-        let red = RGB.r
-        let green = RGB.g
-        let blue = RGB.b
-        let rgbString = NSString(format: style == .none ? "%f, %f, %f" : "rgb(%f, %f, %f)", red, green, blue)
-        return rgbString as String
     }
 
     /**
