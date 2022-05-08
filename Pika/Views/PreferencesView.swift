@@ -114,16 +114,16 @@ struct PreferencesView: View {
                             .labelsHidden()
                         }
 
-                        HStack(alignment: .bottom) {
-                            Text(PikaText.textCopyExample)
-                                .font(.system(size: 12))
-
+                        HStack(alignment: .bottom, spacing: 6.0) {
                             ForEach(ColorFormat.allCases, id: \.self) { value in
-                                Text(value.rawValue)
-                                    .font(.system(size: 12, design: .monospaced))
+                                HStack(alignment: .bottom, spacing: 2.0) {
+                                    Text(value.rawValue)
+                                        .font(.system(size: 10, weight: .semibold, design: .monospaced))
+                                        .opacity(0.65)
 
-                                Text("#fff")
-                                    .font(.system(size: 12))
+                                    Text(value.getExample(style: copyFormat))
+                                        .font(.system(size: 10))
+                                }
                             }
                         }
                         .foregroundColor(.gray)
@@ -143,7 +143,9 @@ struct PreferencesView: View {
                 VStack(alignment: .leading, spacing: 8.0) {
                     Section(header: Text(PikaText.textFormatTitle).font(.system(size: 16))) {
                         VStack(alignment: .leading, spacing: 12.0) {
-                            Section(header: Text(PikaText.textFormatDescription).font(.system(size: 13, weight: .medium))) {
+                            Section(header:
+                                Text(PikaText.textFormatDescription).font(.system(size: 13, weight: .medium))
+                            ) {
                                 Picker(PikaText.textSpaceTitle, selection:
                                     $colorSpace.onChange(perform: { Defaults[.colorSpace] = $0 })) {
                                     ForEach(primarySpaces, id: \.self) { value in

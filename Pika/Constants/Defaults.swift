@@ -6,6 +6,12 @@ enum ColorFormat: String, Codable, CaseIterable {
     case rgb = "RGB"
     case hsb = "HSB"
     case hsl = "HSL"
+
+    func getExample(style: CopyFormat) -> String {
+        let delegate = NSApplication.shared.delegate as? AppDelegate
+        let color = delegate!.eyedroppers.foreground.color
+        return color.toFormat(format: self, style: style)
+    }
 }
 
 enum CopyFormat: String, Codable, CaseIterable {
