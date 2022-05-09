@@ -1,16 +1,15 @@
 import Cocoa
 import Defaults
+import SwiftUI
 
-enum ColorFormat: String, Codable, CaseIterable {
+enum ColorFormat: String, Codable, CaseIterable, Equatable {
     case hex = "Hex"
     case rgb = "RGB"
     case hsb = "HSB"
     case hsl = "HSL"
 
-    func getExample(style: CopyFormat) -> String {
-        let delegate = NSApplication.shared.delegate as? AppDelegate
-        let color = delegate!.eyedroppers.foreground.color
-        return color.toFormat(format: self, style: style)
+    func getExample(color: NSColor, style: CopyFormat) -> String {
+        color.toFormat(format: self, style: style)
     }
 }
 

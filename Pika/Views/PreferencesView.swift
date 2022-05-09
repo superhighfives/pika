@@ -12,6 +12,8 @@ struct PreferencesView: View {
     @Default(.copyFormat) var copyFormat
     @State var colorSpace: NSColorSpace = Defaults[.colorSpace]
 
+    @EnvironmentObject var eyedroppers: Eyedroppers
+
     // swiftlint:disable large_tuple opening_brace
     func getColorSpaces() -> ([NSColorSpace], [NSColorSpace], NSColorSpace) {
         let systemDefaultSpace: NSColorSpace = NSScreen.main!.colorSpace!
@@ -114,19 +116,7 @@ struct PreferencesView: View {
                             .labelsHidden()
                         }
 
-                        HStack(alignment: .bottom, spacing: 6.0) {
-                            ForEach(ColorFormat.allCases, id: \.self) { value in
-                                HStack(alignment: .bottom, spacing: 2.0) {
-                                    Text(value.rawValue)
-                                        .font(.system(size: 10, weight: .semibold, design: .monospaced))
-                                        .opacity(0.65)
-
-                                    Text(value.getExample(style: copyFormat))
-                                        .font(.system(size: 10))
-                                }
-                            }
-                        }
-                        .foregroundColor(.gray)
+                        ColorExampleRow(copyFormat: copyFormat, eyedropper: eyedroppers.foreground)
                     }
 
                     Toggle(isOn: $copyColorOnPick) {
@@ -195,6 +185,7 @@ struct PreferencesView: View {
 struct PreferencesView_Previews: PreviewProvider {
     static var previews: some View {
         PreferencesView()
+            .environmentObject(Eyedroppers())
             .frame(width: 720, height: 500)
     }
 }
