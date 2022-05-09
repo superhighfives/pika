@@ -30,7 +30,7 @@ struct EyedropperItem: View {
                     showToast = true
                     pasteboard.clearContents()
                     let contents
-                        = "\(eyedropper.color.toFormat(format: colorFormat, hideFormat: Defaults[.hideFormatOnCopy]))"
+                        = "\(eyedropper.color.toFormat(format: colorFormat, style: Defaults[.copyFormat]))"
                     pasteboard.setString(contents, forType: .string)
                 }
                 .toast(

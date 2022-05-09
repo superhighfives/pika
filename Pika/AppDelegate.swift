@@ -171,12 +171,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     @IBAction func openPreferencesWindow(_: Any?) {
         if preferencesWindow == nil {
+            let view = NSHostingView(rootView: PreferencesView().environmentObject(eyedroppers))
             preferencesWindow = PikaWindow.createSecondaryWindow(
                 title: "Preferences",
-                size: NSRect(x: 0, y: 0, width: 550, height: 450),
+                size: NSRect(x: 0, y: 0, width: 720, height: view.fittingSize.height),
                 styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView]
             )
-            preferencesWindow.contentView = NSHostingView(rootView: PreferencesView())
+            preferencesWindow.contentView = view
         }
         preferencesWindow.makeKeyAndOrderFront(nil)
         notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerPreferences), object: self)
