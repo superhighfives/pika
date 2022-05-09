@@ -121,6 +121,7 @@ struct PreferencesView: View {
 
                     Toggle(isOn: $copyColorOnPick) {
                         Text(PikaText.textCopyAutomatic)
+                            .fixedSize(horizontal: false, vertical: true)
                     }
                 }
                 .padding(.horizontal, 24.0)
@@ -186,6 +187,6 @@ struct PreferencesView_Previews: PreviewProvider {
     static var previews: some View {
         PreferencesView()
             .environmentObject(Eyedroppers())
-            .frame(width: 720, height: 500)
+            .frame(width: 720, height: 550)
     }
 }
