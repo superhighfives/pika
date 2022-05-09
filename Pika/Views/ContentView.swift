@@ -5,6 +5,7 @@ import SwiftUI
 struct ContentView: View {
     @EnvironmentObject var eyedroppers: Eyedroppers
 
+    @Default(.copyFormat) var copyFormat
     @Default(.colorFormat) var colorFormat
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     let pasteboard = NSPasteboard.general
@@ -64,13 +65,17 @@ struct ContentView: View {
         .onReceive(NotificationCenter.default.publisher(
             for: Notification.Name(PikaConstants.ncTriggerCopyText))) { _ in
             pasteboard.clearContents()
-            let contents = "\(Exporter.toText(eyedroppers.foreground, eyedroppers.background))"
+            // swiftlint:disable line_length
+            let contents = "\(Exporter.toText(foreground: eyedroppers.foreground, background: eyedroppers.background, style: copyFormat))"
+            // swiftlint:enable line_length
             pasteboard.setString(contents, forType: .string)
         }
         .onReceive(NotificationCenter.default.publisher(
             for: Notification.Name(PikaConstants.ncTriggerCopyData))) { _ in
             pasteboard.clearContents()
-            let contents = "\(Exporter.toJSON(eyedroppers.foreground, eyedroppers.background))"
+            // swiftlint:disable line_length
+            let contents = "\(Exporter.toJSON(foreground: eyedroppers.foreground, background: eyedroppers.background, style: copyFormat))"
+            // swiftlint:enable line_length
             pasteboard.setString(contents, forType: .string)
         }
     }
