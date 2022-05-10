@@ -16,21 +16,21 @@ struct SplashView: View {
             Divider()
             HStack(spacing: 16.0) {
                 HStack {
-                    Text(NSLocalizedString("splash.hotkey", comment: "Global shortcut"))
+                  Text(PikaText.textSplashLaunch)
                     KeyboardShortcuts.Recorder(for: .togglePika)
                 }
 
                 Divider()
 
                 LaunchAtLogin.Toggle {
-                    Text(NSLocalizedString("splash.launch", comment: "Launch at login"))
+                    Text(PikaText.textSplashHotkey)
                 }
 
                 Divider()
 
                 Button(action: {
                     NSApp.sendAction(#selector(AppDelegate.closeSplashWindow), to: nil, from: nil)
-                }, label: { Text(NSLocalizedString("splash.start", comment: "Get started")) })
+                }, label: { Text(PikaText.textSplashStart) })
                     .modify {
                         if #available(OSX 11.0, *) {
                             $0.keyboardShortcut(.defaultAction)

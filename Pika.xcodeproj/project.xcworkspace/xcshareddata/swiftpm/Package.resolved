@@ -1,40 +1,43 @@
 {
-  "pins" : [
-    {
-      "identity" : "defaults",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/sindresorhus/Defaults",
-      "state" : {
-        "revision" : "d98119fee49c893fae553103a8659ffe003b6cfe",
-        "version" : "4.1.0"
+  "object": {
+    "pins": [
+      {
+        "package": "Defaults",
+        "repositoryURL": "https://github.com/sindresorhus/Defaults",
+        "state": {
+          "branch": null,
+          "revision": "229dea452fee8d2205f56a12e5c21dfec00948f2",
+          "version": "4.2.2"
+        }
+      },
+      {
+        "package": "KeyboardShortcuts",
+        "repositoryURL": "https://github.com/sindresorhus/KeyboardShortcuts",
+        "state": {
+          "branch": null,
+          "revision": "f09de800a4f05d66fe2a9924c81a932454a9f39a",
+          "version": "0.7.1"
+        }
+      },
+      {
+        "package": "LaunchAtLogin",
+        "repositoryURL": "https://github.com/sindresorhus/LaunchAtLogin",
+        "state": {
+          "branch": null,
+          "revision": "e8171b3e38a2816f579f58f3dac1522aa39efe41",
+          "version": "4.2.0"
+        }
+      },
+      {
+        "package": "Sparkle",
+        "repositoryURL": "https://github.com/sparkle-project/Sparkle",
+        "state": {
+          "branch": null,
+          "revision": "891afd44c7075e699924ed9b81d8dc94a5111dfd",
+          "version": null
+        }
       }
-    },
-    {
-      "identity" : "keyboardshortcuts",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/sindresorhus/KeyboardShortcuts",
-      "state" : {
-        "revision" : "81e72f4787f2d642d788594834f42431f079e505",
-        "version" : "0.6.0"
-      }
-    },
-    {
-      "identity" : "launchatlogin",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/sindresorhus/LaunchAtLogin",
-      "state" : {
-        "revision" : "0f39982b9d6993eef253b81219d3c39ba1e680f3",
-        "version" : "4.0.0"
-      }
-    },
-    {
-      "identity" : "sparkle",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/sparkle-project/Sparkle",
-      "state" : {
-        "revision" : "891afd44c7075e699924ed9b81d8dc94a5111dfd"
-      }
-    }
-  ],
-  "version" : 2
+    ]
+  },
+  "version": 1
 }

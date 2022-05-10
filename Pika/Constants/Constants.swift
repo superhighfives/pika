@@ -42,8 +42,21 @@ enum PikaConstants {
 }
 
 enum PikaText {
+    
+    /*
+     * Splash
+     */
+    
+    static let textSplashLaunch = NSLocalizedString("splash.hotkey", comment: "Global shortcut")
+    static let textSplashHotkey = NSLocalizedString("splash.launch", comment: "Launch at login")
+    static let textSplashStart = NSLocalizedString("splash.start", comment: "Get started")
+  
+    /*
+     * Preferences
+     */
+  
+    // General Settings
     static let textGeneralTitle = NSLocalizedString("preferences.general.title", comment: "General Settings")
-
     static let textLaunchDescription = NSLocalizedString(
         "preferences.launch.description",
         comment: "Launch at login"
@@ -56,7 +69,6 @@ enum PikaText {
         "preferences.beta.description",
         comment: "Subscribe to beta releases"
     )
-
     static let textSelectionTitle = NSLocalizedString("preferences.selection.title", comment: "Selection Settings")
     static let textPickHide = NSLocalizedString("preferences.pick.hide", comment: "Hide Pika while picking")
     static let textColorNamesDescription = NSLocalizedString(
@@ -64,6 +76,7 @@ enum PikaText {
         comment: "Hide color names"
     )
 
+    // Copy Settings
     static let textCopyTitle = NSLocalizedString("preferences.copy.title", comment: "Copy Settings")
     static let textCopyExport = NSLocalizedString("preferences.copy.export", comment: "Export color for")
     static let textCopyFormat = NSLocalizedString("preferences.copy.format", comment: "Export Format")
@@ -72,6 +85,7 @@ enum PikaText {
         comment: "Automatically copy color to clipboard on pick"
     )
 
+    // Color Format
     static let textFormatTitle = NSLocalizedString("preferences.format.title", comment: "Color Format")
     static let textFormatDescription = NSLocalizedString(
         "preferences.space.description",
@@ -80,6 +94,7 @@ enum PikaText {
     static let textSpaceTitle = NSLocalizedString("preferences.space.title", comment: "Color Space")
     static let textSystemDefault = NSLocalizedString("preferences.space.default", comment: "System Default")
 
+    // Global Shortcut
     static let textHotkeyTitle = NSLocalizedString("preferences.hotkey.title", comment: "Global Shortcut")
     static let textHotkeyDescription = NSLocalizedString(
         "preferences.hotkey.description",
