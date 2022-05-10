@@ -32,11 +32,11 @@ struct AboutView: View {
             VStack(spacing: 20.0) {
                 HStack(spacing: 20.0) {
                     LinkButton(
-                        title: NSLocalizedString("app.website", comment: "Website"),
+                        title: PikaText.textAboutWebsite,
                         link: "https://superhighfives.com/pika"
                     )
                     LinkButton(
-                        title: NSLocalizedString("app.github", comment: "GitHub"),
+                        title: PikaText.textAboutGitHub,
                         link: "https://github.com/superhighfives/pika"
                     )
                 }
@@ -49,7 +49,7 @@ struct AboutView: View {
 
                 HStack(spacing: 5.0) {
                     IconImage(name: "hand.thumbsup.fill")
-                    Text(NSLocalizedString("app.designed", comment: "Designed by"))
+                    Text(PikaText.textAboutBy)
                     LinkButton(title: "Charlie Gleason", link: "https://charliegleason.com")
                 }
             }

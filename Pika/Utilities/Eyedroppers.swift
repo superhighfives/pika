@@ -17,8 +17,8 @@ class Eyedropper: ObservableObject {
 
         var description: String {
             switch self {
-            case .foreground: return NSLocalizedString("color.foreground", comment: "Foreground")
-            case .background: return NSLocalizedString("color.background", comment: "Background")
+            case .foreground: return PikaText.textColorForeground
+            case .background: return PikaText.textColorBackground
             }
         }
 

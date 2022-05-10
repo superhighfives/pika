@@ -13,17 +13,15 @@ struct ComplianceToggle: View {
             Text(title)
 
             if large {
-                Text(size == .small
-                    ? NSLocalizedString("touchbar.wcag.large.abbr", comment: "LG")
-                    : NSLocalizedString("touchbar.wcag.large", comment: "Large")
-                ).modify {
-                    if size == .small {
-                        $0.font(.system(size: 10.0))
-                            .baselineOffset(4.0)
-                    } else {
-                        $0
+                Text(size == .small ? PikaText.textTouchbarLargeAbbr : PikaText.textTouchbarLarge)
+                    .modify {
+                        if size == .small {
+                            $0.font(.system(size: 10.0))
+                                .baselineOffset(4.0)
+                        } else {
+                            $0
+                        }
                     }
-                }
             }
         }
         .opacity(isCompliant ? 1.0 : 0.5)

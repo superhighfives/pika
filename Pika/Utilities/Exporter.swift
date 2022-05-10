@@ -14,15 +14,15 @@ class Exporter {
         let backgroundRgb = background.color.toFormat(format: ColorFormat.rgb, style: style)
         let backgroundHsb = background.color.toFormat(format: ColorFormat.hsb, style: style)
         let backgroundHsl = background.color.toFormat(format: ColorFormat.hsl, style: style)
-        let passMessage = NSLocalizedString("color.wcag.pass", comment: "Pass")
-        let failMessage = NSLocalizedString("color.wcag.fail", comment: "Fail")
+        let passMessage = PikaText.textColorPass
+        let failMessage = PikaText.textColorFail
 
         // swiftlint:disable line_length
         return """
-        \(NSLocalizedString("color.foreground", comment: "Foreground")): Hex \(foregroundHex) · RGB \(foregroundRgb) · HSB \(foregroundHsb) · HSL \(foregroundHsl)
-        \(NSLocalizedString("color.background", comment: "Background")): Hex \(backgroundHex) · RGB \(backgroundRgb) · HSB \(backgroundHsb) · HSL \(backgroundHsl)
-        \(NSLocalizedString("color.ratio", comment: "Contrast Ratio")): \(colorContrastRatio):1
-        \(NSLocalizedString("color.wcag", comment: "WCAG Compliance")): AA Large (\(colorWCAGCompliance.ratio30 ? passMessage : failMessage)) · AA / AAA Large (\(colorWCAGCompliance.ratio45 ? passMessage : failMessage)) · AAA (\(colorWCAGCompliance.ratio70 ? passMessage : failMessage)) · Non-text (\(colorWCAGCompliance.ratio30 ? passMessage : failMessage))
+        \(PikaText.textColorForeground): Hex \(foregroundHex) · RGB \(foregroundRgb) · HSB \(foregroundHsb) · HSL \(foregroundHsl)
+        \(PikaText.textColorBackground): Hex \(backgroundHex) · RGB \(backgroundRgb) · HSB \(backgroundHsb) · HSL \(backgroundHsl)
+        \(PikaText.textColorRatio): \(colorContrastRatio):1
+        \(PikaText.textColorWCAG): AA Large (\(colorWCAGCompliance.ratio30 ? passMessage : failMessage)) · AA / AAA Large (\(colorWCAGCompliance.ratio45 ? passMessage : failMessage)) · AAA (\(colorWCAGCompliance.ratio70 ? passMessage : failMessage)) · Non-text (\(colorWCAGCompliance.ratio30 ? passMessage : failMessage))
         """
         // swiftlint:enable  line_length
     }

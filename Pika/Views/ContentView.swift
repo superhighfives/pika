@@ -47,7 +47,7 @@ struct ContentView: View {
                     })
                         .buttonStyle(SwapButtonStyle(
                             isVisible: swapVisible,
-                            alt: NSLocalizedString("color.swap", comment: "Swap")
+                            alt: PikaText.textColorSwap
                         ))
                         .onReceive(NotificationCenter.default.publisher(
                             for: Notification.Name(PikaConstants.ncTriggerSwap))) { _ in

@@ -42,19 +42,75 @@ enum PikaConstants {
 }
 
 enum PikaText {
-    
+    static let textAppName = NSLocalizedString("app.name", comment: "Pika")
+
+    /*
+     * Colors
+     */
+
+    static let textColorForeground = NSLocalizedString("color.foreground", comment: "Foreground")
+    static let textColorBackground = NSLocalizedString("color.background", comment: "Background")
+    static let textColorPass = NSLocalizedString("color.wcag.pass", comment: "Pass")
+    static let textColorFail = NSLocalizedString("color.wcag.fail", comment: "Fail")
+    static let textColorRatio = NSLocalizedString("color.ratio", comment: "Contrast Ratio")
+    static let textColorWCAG = NSLocalizedString("color.wcag", comment: "WCAG Compliance")
+    static let textColorWCAG30 = NSLocalizedString("color.wcag.30", comment: "WCAG 3:1")
+    static let textColorWCAG45 = NSLocalizedString("color.wcag.45", comment: "WCAG 4.5:1")
+    static let textColorWCAG70 = NSLocalizedString("color.wcag.70", comment: "WCAG 7:1")
+    static let textColorSwap = NSLocalizedString("color.swap", comment: "Swap")
+    static let textColorSwapDetail = NSLocalizedString("color.swap.detail", comment: "Swap colors")
+    static let textColorCopy = NSLocalizedString("color.copy", comment: "Copy")
+    static let textColorCopied = NSLocalizedString("color.copy.toast", comment: "Copied")
+
+    /*
+     * Menu
+     */
+
+    static let textMenuAbout = NSLocalizedString("menu.about", comment: "About")
+    static let textMenuUpdates = NSLocalizedString("menu.updates", comment: "Check for updates")
+    static let textMenuPreferences = NSLocalizedString("menu.preferences", comment: "Preferences")
+    static let textMenuQuit = NSLocalizedString("menu.quit", comment: "Quit Pika")
+
+    // Navigation
+    static let textMenuCopyAllAsText = NSLocalizedString("color.copy.text", comment: "Copy all as text")
+    static let textMenuCopyAllAsJSON = NSLocalizedString("color.copy.data", comment: "Copy all as JSON")
+
+    /*
+     * Touchbar
+     */
+
+    static let textTouchbarLargeAbbr = NSLocalizedString("touchbar.wcag.large.abbr", comment: "LG")
+    static let textTouchbarLarge = NSLocalizedString("touchbar.wcag.large", comment: "Large")
+
     /*
      * Splash
      */
-    
+
     static let textSplashLaunch = NSLocalizedString("splash.hotkey", comment: "Global shortcut")
     static let textSplashHotkey = NSLocalizedString("splash.launch", comment: "Launch at login")
     static let textSplashStart = NSLocalizedString("splash.start", comment: "Get started")
-  
+
+    /*
+     * About
+     */
+
+    static let textAboutWebsite = NSLocalizedString("app.website", comment: "Website")
+    static let textAboutGitHub = NSLocalizedString("app.github", comment: "GitHub")
+    static let textAboutBy = NSLocalizedString("app.designed", comment: "Designed by")
+    static let textAboutVersion = NSLocalizedString("app.version", comment: "Version")
+    static let textAboutBuild = NSLocalizedString("app.build", comment: "Build")
+    static let textAboutUnknown = NSLocalizedString("app.unknown", comment: "Unknown")
+
+    // Keyboard shortcuts
+    static let textPickForeground = NSLocalizedString("color.pick.foreground", comment: "Pick foreground")
+    static let textPickBackground = NSLocalizedString("color.pick.background", comment: "Pick background")
+    static let textCopyForeground = NSLocalizedString("color.copy.foreground", comment: "Copy foreground")
+    static let textCopyBackground = NSLocalizedString("color.copy.background", comment: "Copy background")
+
     /*
      * Preferences
      */
-  
+
     // General Settings
     static let textGeneralTitle = NSLocalizedString("preferences.general.title", comment: "General Settings")
     static let textLaunchDescription = NSLocalizedString(

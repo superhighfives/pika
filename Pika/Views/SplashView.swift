@@ -16,7 +16,7 @@ struct SplashView: View {
             Divider()
             HStack(spacing: 16.0) {
                 HStack {
-                  Text(PikaText.textSplashLaunch)
+                    Text(PikaText.textSplashLaunch)
                     KeyboardShortcuts.Recorder(for: .togglePika)
                 }
 

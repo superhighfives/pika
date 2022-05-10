@@ -36,7 +36,7 @@ struct EyedropperItem: View {
                 .toast(
                     isShowing: $showToast,
                     color: eyedropper.color.getUIColor(),
-                    text: Text(String(NSLocalizedString("color.copy.toast", comment: "Copied")))
+                    text: Text(String(PikaText.textColorCopied))
                 )
         }
     }

@@ -10,7 +10,7 @@ struct Footer: View {
 
         HStack(spacing: 16.0) {
             VStack(alignment: .leading, spacing: 0.0) {
-                Text(NSLocalizedString("color.ratio", comment: "Contrast Ratio"))
+                Text(PikaText.textColorRatio)
                     .font(.caption)
                     .fontWeight(.semibold)
                     .foregroundColor(.gray)
@@ -21,7 +21,7 @@ struct Footer: View {
             Divider()
 
             VStack(alignment: .leading, spacing: 3.0) {
-                Text(NSLocalizedString("color.wcag", comment: "WCAG Compliance"))
+                Text(PikaText.textColorWCAG)
                     .font(.caption)
                     .fontWeight(.semibold)
                     .foregroundColor(.gray)

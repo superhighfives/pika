@@ -57,7 +57,7 @@ struct EyedropperButton: View {
             })
                 .buttonStyle(SwapButtonStyle(
                     isVisible: copyVisible,
-                    alt: NSLocalizedString("color.copy", comment: "Copy")
+                    alt: PikaText.textColorCopy
                 ))
                 .padding(.all, 8.0)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)

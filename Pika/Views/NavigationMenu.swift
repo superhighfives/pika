@@ -45,7 +45,7 @@ struct NavigationMenu: View {
 
     var body: some View {
         HStack(spacing: 0) {
-            Picker(NSLocalizedString("preferences.format.title", comment: "Color Format"), selection: $colorFormat) {
+            Picker(PikaText.textFormatTitle, selection: $colorFormat) {
                 ForEach(ColorFormat.allCases, id: \.self) { value in
                     Text(value.rawValue)
                 }

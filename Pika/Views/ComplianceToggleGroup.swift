@@ -13,21 +13,21 @@ struct ComplianceToggleGroup: View {
             ComplianceToggle(
                 title: "AA",
                 isCompliant: self.colorWCAGCompliance.ratio30,
-                tooltip: NSLocalizedString("color.wcag.30", comment: "WCAG 3:1"),
+                tooltip: PikaText.textColorWCAG30,
                 large: true,
                 size: size
             )
             ComplianceToggle(
                 title: "AA/AAA",
                 isCompliant: self.colorWCAGCompliance.ratio45,
-                tooltip: NSLocalizedString("color.wcag.45", comment: "WCAG 4.5:1"),
+                tooltip: PikaText.textColorWCAG45,
                 large: true,
                 size: size
             )
             ComplianceToggle(
                 title: "AAA",
                 isCompliant: self.colorWCAGCompliance.ratio70,
-                tooltip: NSLocalizedString("color.wcag.70", comment: "WCAG 7:1"),
+                tooltip: PikaText.textColorWCAG70,
                 size: size
             )
         }

@@ -105,18 +105,18 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         statusBarMenu = NSMenu(title: "Status Bar Menu")
         statusBarMenu.delegate = self
         statusBarMenu.addItem(
-            withTitle: NSLocalizedString("menu.about", comment: "About"),
+            withTitle: PikaText.textMenuAbout,
             action: #selector(openAboutWindow(_:)),
             keyEquivalent: ""
         )
         statusBarMenu.addItem(
-            withTitle: "\(NSLocalizedString("menu.updates", comment: "Check for updates"))...",
+            withTitle: "\(PikaText.textMenuUpdates)...",
             action: #selector(checkForUpdates(_:)),
             keyEquivalent: ""
         )
 
         let preferences = NSMenuItem(
-            title: NSLocalizedString("menu.preferences", comment: "Preferences"),
+            title: PikaText.textMenuPreferences,
             action: #selector(openPreferencesWindow(_:)),
             keyEquivalent: ","
         )
@@ -125,7 +125,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
         statusBarMenu.addItem(NSMenuItem.separator())
         statusBarMenu.addItem(
-            withTitle: NSLocalizedString("menu.quit", comment: "Quit Pika"),
+            withTitle: PikaText.textMenuQuit,
             action: #selector(terminatePika(_:)),
             keyEquivalent: ""
         )
@@ -191,7 +191,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 styleMask: [.titled, .fullSizeContentView]
             )
             if #available(OSX 11.0, *) {
-                splashWindow.title = NSLocalizedString("app.name", comment: "Pika")
+                splashWindow.title = PikaText.textAppName
                 splashWindow.titleVisibility = .visible
             }
             splashTouchBarController = SplashTouchBarController(window: splashWindow)

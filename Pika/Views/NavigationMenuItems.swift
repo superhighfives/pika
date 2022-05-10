@@ -27,7 +27,7 @@ struct NavigationMenuItems: View {
             Divider()
         }
         Group {
-            Button("\(NSLocalizedString("color.pick.foreground", comment: "Pick foreground"))...", action: {
+            Button("\(PikaText.textPickForeground)...", action: {
                 NSApp.sendAction(#selector(AppDelegate.triggerPickForeground), to: nil, from: nil)
             })
                 .modify {
@@ -38,7 +38,7 @@ struct NavigationMenuItems: View {
                     }
                 }
 
-            Button("\(NSLocalizedString("color.pick.background", comment: "Pick background"))...", action: {
+            Button("\(PikaText.textPickBackground)...", action: {
                 NSApp.sendAction(#selector(AppDelegate.triggerPickBackground), to: nil, from: nil)
             })
                 .modify {
@@ -53,7 +53,7 @@ struct NavigationMenuItems: View {
                 Divider()
             }
 
-            Button(NSLocalizedString("color.copy.foreground", comment: "Copy foreground"), action: {
+            Button(PikaText.textCopyForeground, action: {
                 NSApp.sendAction(#selector(AppDelegate.triggerCopyForeground), to: nil, from: nil)
             })
                 .modify {
@@ -64,7 +64,7 @@ struct NavigationMenuItems: View {
                     }
                 }
 
-            Button(NSLocalizedString("color.copy.background", comment: "Copy background"), action: {
+            Button(PikaText.textCopyBackground, action: {
                 NSApp.sendAction(#selector(AppDelegate.triggerCopyBackground), to: nil, from: nil)
             })
                 .modify {
@@ -79,11 +79,11 @@ struct NavigationMenuItems: View {
                 Divider()
             }
 
-            Button(NSLocalizedString("color.copy.text", comment: "Copy all as text"), action: {
+            Button(PikaText.textMenuCopyAllAsText, action: {
                 NSApp.sendAction(#selector(AppDelegate.triggerCopyText), to: nil, from: nil)
             })
 
-            Button(NSLocalizedString("color.copy.data", comment: "Copy all as JSON"), action: {
+            Button(PikaText.textMenuCopyAllAsJSON, action: {
                 NSApp.sendAction(#selector(AppDelegate.triggerCopyData), to: nil, from: nil)
             })
         }
@@ -92,7 +92,7 @@ struct NavigationMenuItems: View {
             Divider()
         }
 
-        Button(NSLocalizedString("color.swap.detail", comment: "Swap Colors"), action: {
+        Button(PikaText.textColorSwapDetail, action: {
             NSApp.sendAction(#selector(AppDelegate.triggerSwap), to: nil, from: nil)
         })
             .modify {
@@ -108,13 +108,13 @@ struct NavigationMenuItems: View {
         }
 
         Group {
-            Button(NSLocalizedString("menu.about", comment: "About"), action: {
+            Button(PikaText.textMenuAbout, action: {
                 NSApp.sendAction(#selector(AppDelegate.openAboutWindow), to: nil, from: nil)
             })
-            Button("\(NSLocalizedString("menu.updates", comment: "Check for updates"))...", action: {
+            Button("\(PikaText.textMenuUpdates)...", action: {
                 NSApp.sendAction(#selector(AppDelegate.checkForUpdates), to: nil, from: nil)
             })
-            Button(NSLocalizedString("menu.preferences", comment: "Preferences"), action: {
+            Button(PikaText.textMenuPreferences, action: {
                 NSApp.sendAction(#selector(AppDelegate.openPreferencesWindow), to: nil, from: nil)
             })
                 .modify {
@@ -130,7 +130,7 @@ struct NavigationMenuItems: View {
             Divider()
         }
 
-        Button(NSLocalizedString("menu.quit", comment: "Quit"), action: {
+        Button(PikaText.textMenuQuit, action: {
             NSApplication.shared.terminate(self)
         })
             .modify {
