@@ -24,6 +24,7 @@ struct ColorExampleRow: View {
                 }
             }
         }
+//      TODO: Fix this on light mode
         .foregroundColor(.gray)
     }
 }

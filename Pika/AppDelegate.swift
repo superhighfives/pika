@@ -171,6 +171,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     @IBAction func openPreferencesWindow(_: Any?) {
         if preferencesWindow == nil {
+//          TODO: Fix issues with French display
             let view = NSHostingView(rootView: PreferencesView().environmentObject(eyedroppers))
             preferencesWindow = PikaWindow.createSecondaryWindow(
                 title: "Preferences",

@@ -175,11 +175,12 @@ struct PreferencesView: View {
                     }
                     .padding(.horizontal, 24.0)
                 }
+                .padding(.bottom, 24.0)
             }
-            .padding(.bottom, 24.0)
-            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
         }
-        .edgesIgnoringSafeArea(.all)
+        .edgesIgnoringSafeArea(.vertical)
+        .frame(minWidth: 720, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
+        .fixedSize(horizontal: false, vertical: true)
     }
 }
 
@@ -187,6 +188,6 @@ struct PreferencesView_Previews: PreviewProvider {
     static var previews: some View {
         PreferencesView()
             .environmentObject(Eyedroppers())
-            .frame(width: 720, height: 550)
+            .previewLayout(PreviewLayout.sizeThatFits)
     }
 }
