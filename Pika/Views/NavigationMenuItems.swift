@@ -23,9 +23,6 @@ struct MenuGroup<Content>: View where Content: View {
 
 struct NavigationMenuItems: View {
     var body: some View {
-        VStack {
-            Divider()
-        }
         Group {
             Button("\(PikaText.textPickForeground)...", action: {
                 NSApp.sendAction(#selector(AppDelegate.triggerPickForeground), to: nil, from: nil)
