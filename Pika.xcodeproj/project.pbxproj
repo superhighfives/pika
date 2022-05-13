@@ -17,6 +17,7 @@
 		EA0C526025AB5A2B00AFF716 /* NavigationMenuItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C525F25AB5A2B00AFF716 /* NavigationMenuItems.swift */; };
 		EA0C526425AB5D1700AFF716 /* PikaWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C526325AB5D1700AFF716 /* PikaWindow.swift */; };
 		EA0C526F25AB683400AFF716 /* EyedropperButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C526E25AB683400AFF716 /* EyedropperButton.swift */; };
+		EA1D669F282EAE8700816F99 /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1D669E282EAE8700816F99 /* WindowManager.swift */; };
 		EA257BD125D8629300C3FC54 /* SwapButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA257BD025D8629300C3FC54 /* SwapButtonStyle.swift */; };
 		EA424C7D25CDEF98009056A9 /* ComplianceToggleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA424C7C25CDEF98009056A9 /* ComplianceToggleGroup.swift */; };
 		EA424CDE25CF0328009056A9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = EA424CE025CF0328009056A9 /* Localizable.strings */; };
@@ -73,6 +74,7 @@
 		EA0C525F25AB5A2B00AFF716 /* NavigationMenuItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationMenuItems.swift; sourceTree = "<group>"; };
 		EA0C526325AB5D1700AFF716 /* PikaWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PikaWindow.swift; sourceTree = "<group>"; };
 		EA0C526E25AB683400AFF716 /* EyedropperButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyedropperButton.swift; sourceTree = "<group>"; };
+		EA1D669E282EAE8700816F99 /* WindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
 		EA257BD025D8629300C3FC54 /* SwapButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapButtonStyle.swift; sourceTree = "<group>"; };
 		EA424C7C25CDEF98009056A9 /* ComplianceToggleGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComplianceToggleGroup.swift; sourceTree = "<group>"; };
 		EA424CDF25CF0328009056A9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -233,10 +235,11 @@
 			isa = PBXGroup;
 			children = (
 				EA7B199B25FBA0E600E06D9D /* ClosestVector.swift */,
-				EAD0B6F1259CF29300FA2F67 /* Eyedroppers.swift */,
-				EA0C526325AB5D1700AFF716 /* PikaWindow.swift */,
-				EA7B199525FBA08100E06D9D /* LoadColors.swift */,
 				EACA8A44260501210064035C /* Exporter.swift */,
+				EAD0B6F1259CF29300FA2F67 /* Eyedroppers.swift */,
+				EA7B199525FBA08100E06D9D /* LoadColors.swift */,
+				EA0C526325AB5D1700AFF716 /* PikaWindow.swift */,
+				EA1D669E282EAE8700816F99 /* WindowManager.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -419,6 +422,7 @@
 				EA635DCC25B3B42B0014D91A /* WCAGCompliance.swift in Sources */,
 				EA635DEA25B534C80014D91A /* EyedropperItem.swift in Sources */,
 				EA424C7D25CDEF98009056A9 /* ComplianceToggleGroup.swift in Sources */,
+				EA1D669F282EAE8700816F99 /* WindowManager.swift in Sources */,
 				EA7B199C25FBA0E600E06D9D /* ClosestVector.swift in Sources */,
 				EAD0B6F7259CF29300FA2F67 /* Eyedroppers.swift in Sources */,
 				EA0C526025AB5A2B00AFF716 /* NavigationMenuItems.swift in Sources */,

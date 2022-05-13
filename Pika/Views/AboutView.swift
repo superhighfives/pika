@@ -56,7 +56,6 @@ struct AboutView: View {
             .padding(.bottom, 20.0)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .edgesIgnoringSafeArea(.all)
     }
 }
 

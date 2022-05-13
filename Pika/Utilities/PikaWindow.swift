@@ -51,6 +51,7 @@ class PikaWindow {
         window.center()
         window.setFrameAutosaveName("\(title) Window")
         window.isReleasedWhenClosed = false
+
         return window
     }
 }

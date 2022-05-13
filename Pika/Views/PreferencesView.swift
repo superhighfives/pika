@@ -13,6 +13,7 @@ struct PreferencesView: View {
     @State var colorSpace: NSColorSpace = Defaults[.colorSpace]
 
     @EnvironmentObject var eyedroppers: Eyedroppers
+    @EnvironmentObject var windowManager: WindowManager
 
     // swiftlint:disable large_tuple opening_brace
     func getColorSpaces() -> ([NSColorSpace], [NSColorSpace], NSColorSpace) {
@@ -178,9 +179,7 @@ struct PreferencesView: View {
                 .padding(.bottom, 24.0)
             }
         }
-        .edgesIgnoringSafeArea(.vertical)
-        .frame(minWidth: 720, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
-        .fixedSize(horizontal: false, vertical: true)
+        .padding(.bottom, -windowManager.toolbarPadding)
     }
 }
 
