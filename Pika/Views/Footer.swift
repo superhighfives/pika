@@ -13,7 +13,7 @@ struct Footer: View {
                 Text(PikaText.textColorRatio)
                     .font(.caption)
                     .fontWeight(.semibold)
-                    .foregroundColor(.gray)
+                    .foregroundColor(.secondary)
                 Text("\(colorContrastRatio)")
                     .font(.system(size: 18))
             }
@@ -24,7 +24,7 @@ struct Footer: View {
                 Text(PikaText.textColorWCAG)
                     .font(.caption)
                     .fontWeight(.semibold)
-                    .foregroundColor(.gray)
+                    .foregroundColor(.secondary)
 
                 ComplianceToggleGroup(colorWCAGCompliance: colorWCAGCompliance)
             }

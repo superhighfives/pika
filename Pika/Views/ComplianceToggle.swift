@@ -11,18 +11,7 @@ struct ComplianceToggle: View {
         HStack(spacing: 2.0) {
             IconImage(name: isCompliant ? "checkmark.circle.fill" : "xmark.circle")
             Text(title)
-
-            if large {
-                Text(size == .small ? PikaText.textTouchbarLargeAbbr : PikaText.textTouchbarLarge)
-                    .modify {
-                        if size == .small {
-                            $0.font(.system(size: 10.0))
-                                .baselineOffset(4.0)
-                        } else {
-                            $0
-                        }
-                    }
-            }
+//                .fontWeight(.medium)
         }
         .opacity(isCompliant ? 1.0 : 0.5)
         .modify {

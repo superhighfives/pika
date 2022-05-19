@@ -187,6 +187,7 @@ struct PreferencesView_Previews: PreviewProvider {
     static var previews: some View {
         PreferencesView()
             .environmentObject(Eyedroppers())
-            .previewLayout(PreviewLayout.sizeThatFits)
+            .environmentObject(WindowManager())
+            .previewLayout(.sizeThatFits)
     }
 }

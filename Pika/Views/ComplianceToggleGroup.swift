@@ -9,34 +9,61 @@ struct ComplianceToggleGroup: View {
     }
 
     var body: some View {
-        HStack(spacing: 12.0) {
-            ComplianceToggle(
-                title: "AA",
-                isCompliant: self.colorWCAGCompliance.ratio30,
-                tooltip: PikaText.textColorWCAG30,
-                large: true,
-                size: size
-            )
-            ComplianceToggle(
-                title: "AA/AAA",
-                isCompliant: self.colorWCAGCompliance.ratio45,
-                tooltip: PikaText.textColorWCAG45,
-                large: true,
-                size: size
-            )
-            ComplianceToggle(
-                title: "AAA",
-                isCompliant: self.colorWCAGCompliance.ratio70,
-                tooltip: PikaText.textColorWCAG70,
-                size: size
-            )
+        HStack(spacing: 16.0) {
+            HStack(alignment: .center, spacing: 8.0) {
+                Text("Normal")
+                    .foregroundColor(
+                        (self.colorWCAGCompliance.ratio45 && self.colorWCAGCompliance.ratio70)
+                            ? .primary
+                            : .secondary)
+
+                HStack(alignment: .firstTextBaseline, spacing: 8.0) {
+                    ComplianceToggle(
+                        title: "AA",
+                        isCompliant: self.colorWCAGCompliance.ratio45,
+                        tooltip: PikaText.textColorWCAG45,
+                        size: size
+                    )
+                    ComplianceToggle(
+                        title: "AAA",
+                        isCompliant: self.colorWCAGCompliance.ratio70,
+                        tooltip: PikaText.textColorWCAG70,
+                        size: size
+                    )
+                }
+            }
+
+            HStack(alignment: .center, spacing: 8.0) {
+                Text("Large")
+                    .foregroundColor(
+                        (self.colorWCAGCompliance.ratio30 && self.colorWCAGCompliance.ratio45)
+                            ? .primary
+                            : .secondary)
+
+                HStack(alignment: .firstTextBaseline, spacing: 8.0) {
+                    ComplianceToggle(
+                        title: "AA",
+                        isCompliant: self.colorWCAGCompliance.ratio30,
+                        tooltip: PikaText.textColorWCAG30,
+                        size: size
+                    )
+                    ComplianceToggle(
+                        title: "AAA",
+                        isCompliant: self.colorWCAGCompliance.ratio45,
+                        tooltip: PikaText.textColorWCAG45,
+
+                        size: size
+                    )
+                }
+            }
         }
     }
 }
 
 struct ComplianceToggleGroup_Previews: PreviewProvider {
     static var previews: some View {
-        let colorWCAGCompliance = NSColor.white.WCAGCompliance(with: NSColor.black)
+        let colorWCAGCompliance = NSColor.white.WCAGCompliance(with: NSColor.red)
         ComplianceToggleGroup(colorWCAGCompliance: colorWCAGCompliance)
+            .frame(width: 500, height: 18)
     }
 }
