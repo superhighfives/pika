@@ -11,7 +11,6 @@ struct ComplianceToggle: View {
         HStack(spacing: 2.0) {
             IconImage(name: isCompliant ? "checkmark.circle.fill" : "xmark.circle")
             Text(title)
-//                .fontWeight(.medium)
         }
         .opacity(isCompliant ? 1.0 : 0.5)
         .modify {
