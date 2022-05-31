@@ -14,8 +14,10 @@ struct Footer: View {
                     .font(.caption)
                     .fontWeight(.semibold)
                     .foregroundColor(.secondary)
+                    .fixedSize()
                 Text("\(colorContrastRatio)")
                     .font(.system(size: 18))
+                    .fixedSize()
             }
 
             Divider()
@@ -43,5 +45,6 @@ struct FooterView_Previews: PreviewProvider {
         let foreground = Eyedropper(type: .foreground, color: PikaConstants.initialColors.randomElement()!)
         let background = Eyedropper(type: .background, color: NSColor.black)
         Footer(foreground: foreground, background: background)
+            .frame(width: 420.0)
     }
 }

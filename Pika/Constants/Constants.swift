@@ -79,8 +79,9 @@ enum PikaText {
      * Touchbar
      */
 
-    static let textTouchbarLargeAbbr = NSLocalizedString("touchbar.wcag.large.abbr", comment: "LG")
-    static let textTouchbarLarge = NSLocalizedString("touchbar.wcag.large", comment: "Large")
+    static let textColorNormal = NSLocalizedString("color.wcag.normal", comment: "Normal")
+    static let textColorLargeAbbr = NSLocalizedString("color.wcag.large.abbr", comment: "LG")
+    static let textColorLarge = NSLocalizedString("color.wcag.large", comment: "Large")
 
     /*
      * Splash
@@ -124,6 +125,10 @@ enum PikaText {
     static let textBetaDescription = NSLocalizedString(
         "preferences.beta.description",
         comment: "Subscribe to beta releases"
+    )
+    static let textCombineDescription = NSLocalizedString(
+        "preferences.combine.description",
+        comment: "Combine compliance"
     )
     static let textSelectionTitle = NSLocalizedString("preferences.selection.title", comment: "Selection Settings")
     static let textPickHide = NSLocalizedString("preferences.pick.hide", comment: "Hide Pika while picking")

@@ -7,6 +7,7 @@ struct PreferencesView: View {
     @Default(.hideMenuBarIcon) var hideMenuBarIcon
     @Default(.hideColorNames) var hideColorNames
     @Default(.betaUpdates) var betaUpdates
+    @Default(.combineCompliance) var combineCompliance
     @Default(.hidePikaWhilePicking) var hidePikaWhilePicking
     @Default(.copyColorOnPick) var copyColorOnPick
     @Default(.copyFormat) var copyFormat
@@ -75,6 +76,9 @@ struct PreferencesView: View {
                         }
                         Toggle(isOn: $betaUpdates) {
                             Text(PikaText.textBetaDescription)
+                        }
+                        Toggle(isOn: $combineCompliance) {
+                            Text(PikaText.textCombineDescription)
                         }
                     }
                     .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
