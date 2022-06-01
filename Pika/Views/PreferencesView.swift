@@ -104,18 +104,29 @@ struct PreferencesView: View {
                 VStack(alignment: .leading, spacing: 10.0) {
                     Text("Appearance").font(.system(size: 16))
 
-                    VStack {
+                    HStack {
 //                        Toggle(isOn: $combineCompliance) {
 //                            Text(PikaText.textCombineDescription)
 //                        }
-                        let colorWCAGCompliance = eyedroppers.foreground.color.toWCAGCompliance(with: eyedroppers.background.color)
-                        ComplianceToggleGroup(colorWCAGCompliance: colorWCAGCompliance)
-                        
-                        Button("Legacy") { combineCompliance = false }
+                        let colorWCAGCompliance = eyedroppers.foreground.color.toWCAGCompliance(
+                            with: eyedroppers.background.color
+                        )
+
+                        Button(action: {
+                            combineCompliance = false
+                        }, label: {
+                            ComplianceToggleGroup(colorWCAGCompliance: colorWCAGCompliance, theme: .extended)
+                        })
                             .buttonStyle(.bordered)
-                        Button("Expanded") { combineCompliance = true }
+                            .frame(width: .infinity)
+
+                        Button(action: {
+                            combineCompliance = true
+                        }, label: {
+                            ComplianceToggleGroup(colorWCAGCompliance: colorWCAGCompliance, theme: .legacy)
+                        })
                             .buttonStyle(.bordered)
-                        
+                            .frame(width: .infinity)
                     }
                 }
                 .padding(.horizontal, 24.0)

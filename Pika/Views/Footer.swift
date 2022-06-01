@@ -1,6 +1,8 @@
+import Defaults
 import SwiftUI
 
 struct Footer: View {
+    @Default(.combineCompliance) var combineCompliance
     @ObservedObject var foreground: Eyedropper
     @ObservedObject var background: Eyedropper
 
@@ -28,7 +30,7 @@ struct Footer: View {
                     .fontWeight(.semibold)
                     .foregroundColor(.secondary)
 
-                ComplianceToggleGroup(colorWCAGCompliance: colorWCAGCompliance)
+                ComplianceToggleGroup(colorWCAGCompliance: colorWCAGCompliance, theme: combineCompliance ? .legacy : .extended)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: 50.0, alignment: .leading)

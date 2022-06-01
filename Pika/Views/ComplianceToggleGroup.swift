@@ -2,16 +2,22 @@ import Defaults
 import SwiftUI
 
 struct ComplianceToggleGroup: View {
-    @Default(.combineCompliance) var combineCompliance
     var colorWCAGCompliance: NSColor.WCAG
     var size = Sizes.full
+    var theme: Themes
+
+    enum Themes: String, Codable, CaseIterable {
+        case extended
+        case legacy
+    }
+
     enum Sizes: String, Codable, CaseIterable {
         case small
         case full
     }
 
     var body: some View {
-        if !combineCompliance {
+        if theme == .extended {
             HStack(spacing: 16.0) {
                 HStack(alignment: .center, spacing: 8.0) {
                     if size == .full {
@@ -64,7 +70,9 @@ struct ComplianceToggleGroup: View {
                     )
                 }
             }
-        } else {
+        }
+
+        if theme == .legacy {
             HStack(spacing: 12.0) {
                 ComplianceToggle(
                     title: "AA",
@@ -98,7 +106,7 @@ struct ComplianceToggleGroup: View {
 struct ComplianceToggleGroup_Previews: PreviewProvider {
     static var previews: some View {
         let colorWCAGCompliance = NSColor.white.WCAGCompliance(with: NSColor.red)
-        ComplianceToggleGroup(colorWCAGCompliance: colorWCAGCompliance)
+        ComplianceToggleGroup(colorWCAGCompliance: colorWCAGCompliance, theme: .extended)
             .frame(width: 500, height: 18)
     }
 }
