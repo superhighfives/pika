@@ -77,9 +77,6 @@ struct PreferencesView: View {
                         Toggle(isOn: $betaUpdates) {
                             Text(PikaText.textBetaDescription)
                         }
-                        Toggle(isOn: $combineCompliance) {
-                            Text(PikaText.textCombineDescription)
-                        }
                     }
                     .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
                     .padding(.all, 24.0)
@@ -102,6 +99,29 @@ struct PreferencesView: View {
 
                 Divider()
                     .padding(.bottom, 16.0)
+
+                // TOOD: Build appearance panel
+                VStack(alignment: .leading, spacing: 10.0) {
+                    Text("Appearance").font(.system(size: 16))
+
+                    VStack {
+//                        Toggle(isOn: $combineCompliance) {
+//                            Text(PikaText.textCombineDescription)
+//                        }
+                        let colorWCAGCompliance = eyedroppers.foreground.color.toWCAGCompliance(with: eyedroppers.background.color)
+                        ComplianceToggleGroup(colorWCAGCompliance: colorWCAGCompliance)
+                        
+                        Button("Legacy") { combineCompliance = false }
+                            .buttonStyle(.bordered)
+                        Button("Expanded") { combineCompliance = true }
+                            .buttonStyle(.bordered)
+                        
+                    }
+                }
+                .padding(.horizontal, 24.0)
+
+                Divider()
+                    .padding(.vertical, 16.0)
 
                 VStack(alignment: .leading, spacing: 10.0) {
                     Text(PikaText.textCopyTitle).font(.system(size: 16))
@@ -192,6 +212,6 @@ struct PreferencesView_Previews: PreviewProvider {
         PreferencesView()
             .environmentObject(Eyedroppers())
             .environmentObject(WindowManager())
-            .previewLayout(.sizeThatFits)
+            .frame(width: 750, height: 600)
     }
 }
