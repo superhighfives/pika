@@ -104,30 +104,33 @@ struct PreferencesView: View {
                 VStack(alignment: .leading, spacing: 10.0) {
                     Text("Appearance").font(.system(size: 16))
 
-                    HStack {
-//                        Toggle(isOn: $combineCompliance) {
-//                            Text(PikaText.textCombineDescription)
-//                        }
-                        let colorWCAGCompliance = eyedroppers.foreground.color.toWCAGCompliance(
-                            with: eyedroppers.background.color
-                        )
+                    GeometryReader { geometry in
+                        let width = geometry.size.width
+                        let horizontalUnit = width / 2
 
-                        Button(action: {
-                            combineCompliance = false
-                        }, label: {
-                            ComplianceToggleGroup(colorWCAGCompliance: colorWCAGCompliance, theme: .extended)
-                        })
-                            .buttonStyle(.bordered)
-                            .frame(width: .infinity)
+                        HStack {
+                            let colorWCAGCompliance = eyedroppers.foreground.color.toWCAGCompliance(
+                                with: eyedroppers.background.color
+                            )
 
-                        Button(action: {
-                            combineCompliance = true
-                        }, label: {
-                            ComplianceToggleGroup(colorWCAGCompliance: colorWCAGCompliance, theme: .legacy)
-                        })
-                            .buttonStyle(.bordered)
-                            .frame(width: .infinity)
+                            Button(action: {
+                                combineCompliance = false
+                            }, label: {
+                                ComplianceToggleGroup(colorWCAGCompliance: colorWCAGCompliance, theme: .extended)
+                                    .frame(maxWidth: horizontalUnit, maxHeight: .infinity)
+                            })
+                                .buttonStyle(AppearanceButtonStyle(text: "Expanded", selected: combineCompliance == false))
+
+                            Button(action: {
+                                combineCompliance = true
+                            }, label: {
+                                ComplianceToggleGroup(colorWCAGCompliance: colorWCAGCompliance, theme: .legacy)
+                                    .frame(maxWidth: horizontalUnit, maxHeight: .infinity)
+                            })
+                                .buttonStyle(AppearanceButtonStyle(text: "Legacy", selected: combineCompliance == true))
+                        }
                     }
+                    .frame(height: 120)
                 }
                 .padding(.horizontal, 24.0)
 
@@ -223,6 +226,6 @@ struct PreferencesView_Previews: PreviewProvider {
         PreferencesView()
             .environmentObject(Eyedroppers())
             .environmentObject(WindowManager())
-            .frame(width: 750, height: 600)
+            .frame(width: 750, height: 700)
     }
 }

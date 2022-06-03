@@ -17,6 +17,7 @@
 		EA0C526025AB5A2B00AFF716 /* NavigationMenuItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C525F25AB5A2B00AFF716 /* NavigationMenuItems.swift */; };
 		EA0C526425AB5D1700AFF716 /* PikaWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C526325AB5D1700AFF716 /* PikaWindow.swift */; };
 		EA0C526F25AB683400AFF716 /* EyedropperButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C526E25AB683400AFF716 /* EyedropperButton.swift */; };
+		EA136072284887E9004F1630 /* AppearanceButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA136071284887E9004F1630 /* AppearanceButtonStyle.swift */; };
 		EA1D669F282EAE8700816F99 /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1D669E282EAE8700816F99 /* WindowManager.swift */; };
 		EA257BD125D8629300C3FC54 /* SwapButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA257BD025D8629300C3FC54 /* SwapButtonStyle.swift */; };
 		EA424C7D25CDEF98009056A9 /* ComplianceToggleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA424C7C25CDEF98009056A9 /* ComplianceToggleGroup.swift */; };
@@ -74,6 +75,7 @@
 		EA0C525F25AB5A2B00AFF716 /* NavigationMenuItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationMenuItems.swift; sourceTree = "<group>"; };
 		EA0C526325AB5D1700AFF716 /* PikaWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PikaWindow.swift; sourceTree = "<group>"; };
 		EA0C526E25AB683400AFF716 /* EyedropperButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyedropperButton.swift; sourceTree = "<group>"; };
+		EA136071284887E9004F1630 /* AppearanceButtonStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppearanceButtonStyle.swift; sourceTree = "<group>"; };
 		EA1D669E282EAE8700816F99 /* WindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
 		EA257BD025D8629300C3FC54 /* SwapButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapButtonStyle.swift; sourceTree = "<group>"; };
 		EA424C7C25CDEF98009056A9 /* ComplianceToggleGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComplianceToggleGroup.swift; sourceTree = "<group>"; };
@@ -277,6 +279,7 @@
 			isa = PBXGroup;
 			children = (
 				EAD0B717259D146200FA2F67 /* EyedropperButtonStyle.swift */,
+				EA136071284887E9004F1630 /* AppearanceButtonStyle.swift */,
 				EA257BD025D8629300C3FC54 /* SwapButtonStyle.swift */,
 				EAEBF64625E878A5002999D1 /* CircleButtonStyle.swift */,
 			);
@@ -412,6 +415,7 @@
 				22EF1D9B25B7AA18001102FA /* Sequence.swift in Sources */,
 				EAD0B6F9259CF29300FA2F67 /* PreferencesView.swift in Sources */,
 				EA72BB8825A53750008205E7 /* SplashView.swift in Sources */,
+				EA136072284887E9004F1630 /* AppearanceButtonStyle.swift in Sources */,
 				EAF100CA25C75218006E1EC3 /* PikaTouchBar.swift in Sources */,
 				EA7B199625FBA08100E06D9D /* LoadColors.swift in Sources */,
 				EAF100C725C731AD006E1EC3 /* SplashTouchBar.swift in Sources */,
