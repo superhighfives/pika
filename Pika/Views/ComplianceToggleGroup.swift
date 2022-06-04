@@ -106,7 +106,7 @@ struct ComplianceToggleGroup: View {
 struct ComplianceToggleGroup_Previews: PreviewProvider {
     static var previews: some View {
         let colorWCAGCompliance = NSColor.white.WCAGCompliance(with: NSColor.red)
-        ComplianceToggleGroup(colorWCAGCompliance: colorWCAGCompliance, theme: .extended)
-            .frame(width: 500, height: 18)
+        ComplianceToggleGroup(colorWCAGCompliance: colorWCAGCompliance, theme: .legacy)
+            .frame(width: 200, height: 18)
     }
 }

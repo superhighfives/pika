@@ -108,7 +108,7 @@ struct PreferencesView: View {
                         let width = geometry.size.width
                         let horizontalUnit = width / 2
 
-                        HStack {
+                        HStack(spacing: 20.0) {
                             let colorWCAGCompliance = eyedroppers.foreground.color.toWCAGCompliance(
                                 with: eyedroppers.background.color
                             )
@@ -117,7 +117,8 @@ struct PreferencesView: View {
                                 combineCompliance = false
                             }, label: {
                                 ComplianceToggleGroup(colorWCAGCompliance: colorWCAGCompliance, theme: .extended)
-                                    .frame(maxWidth: horizontalUnit, maxHeight: .infinity)
+                                    .padding(20.0)
+                                    .frame(maxWidth: horizontalUnit - 10, maxHeight: .infinity, alignment: .leading)
                             })
                                 .buttonStyle(AppearanceButtonStyle(text: "Expanded", selected: combineCompliance == false))
 
@@ -125,10 +126,12 @@ struct PreferencesView: View {
                                 combineCompliance = true
                             }, label: {
                                 ComplianceToggleGroup(colorWCAGCompliance: colorWCAGCompliance, theme: .legacy)
-                                    .frame(maxWidth: horizontalUnit, maxHeight: .infinity)
+                                    .padding(20.0)
+                                    .frame(maxWidth: horizontalUnit - 10, maxHeight: .infinity, alignment: .leading)
                             })
                                 .buttonStyle(AppearanceButtonStyle(text: "Legacy", selected: combineCompliance == true))
                         }
+                        .frame(maxWidth: width)
                     }
                     .frame(height: 120)
                 }

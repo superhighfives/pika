@@ -45,6 +45,7 @@ struct ComplianceToggle: View {
                 $0
             }
         }
+        .fixedSize()
     }
 }
 
