@@ -39,6 +39,7 @@
 		EA8124C1259E307D00033F0B /* Footer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8124C0259E307D00033F0B /* Footer.swift */; };
 		EAA8AE1925B8EC070049299B /* KeyboardShortcutKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA8AE1825B8EC070049299B /* KeyboardShortcutKey.swift */; };
 		EAA8AE1C25B8F03B0049299B /* KeyboardShortcutGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA8AE1B25B8F03B0049299B /* KeyboardShortcutGrid.swift */; };
+		EABAEAE0284D50D1000716AE /* ComplianceButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = EABAEADF284D50D1000716AE /* ComplianceButtons.swift */; };
 		EACA8A45260501210064035C /* Exporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EACA8A44260501210064035C /* Exporter.swift */; };
 		EAD0B6CC259CED1C00FA2F67 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6CB259CED1C00FA2F67 /* AppDelegate.swift */; };
 		EAD0B6D0259CED1D00FA2F67 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EAD0B6CF259CED1D00FA2F67 /* Assets.xcassets */; };
@@ -97,6 +98,7 @@
 		EA8124C0259E307D00033F0B /* Footer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Footer.swift; sourceTree = "<group>"; };
 		EAA8AE1825B8EC070049299B /* KeyboardShortcutKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardShortcutKey.swift; sourceTree = "<group>"; };
 		EAA8AE1B25B8F03B0049299B /* KeyboardShortcutGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardShortcutGrid.swift; sourceTree = "<group>"; };
+		EABAEADF284D50D1000716AE /* ComplianceButtons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComplianceButtons.swift; sourceTree = "<group>"; };
 		EACA8A44260501210064035C /* Exporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exporter.swift; sourceTree = "<group>"; };
 		EAD0B6C8259CED1C00FA2F67 /* Pika.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pika.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAD0B6CB259CED1C00FA2F67 /* AppDelegate.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; tabWidth = 4; };
@@ -271,6 +273,7 @@
 				226FD60F25A940F90021A67F /* VisualEffect.swift */,
 				EA0C524F25AA729300AFF716 /* Visualisation.swift */,
 				22903B0228294F49004BB9F0 /* ColorExampleRow.swift */,
+				EABAEADF284D50D1000716AE /* ComplianceButtons.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -431,6 +434,7 @@
 				EAD0B6F7259CF29300FA2F67 /* Eyedroppers.swift in Sources */,
 				EA0C526025AB5A2B00AFF716 /* NavigationMenuItems.swift in Sources */,
 				EA0C526425AB5D1700AFF716 /* PikaWindow.swift in Sources */,
+				EABAEAE0284D50D1000716AE /* ComplianceButtons.swift in Sources */,
 				EAF100CD25C785C4006E1EC3 /* TouchBarVisual.swift in Sources */,
 				EA801285259F8F480026D5D9 /* ComplianceToggle.swift in Sources */,
 				221600FD25A636D600B8B7D9 /* ConditionalModifier.swift in Sources */,

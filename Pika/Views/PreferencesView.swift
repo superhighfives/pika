@@ -7,7 +7,6 @@ struct PreferencesView: View {
     @Default(.hideMenuBarIcon) var hideMenuBarIcon
     @Default(.hideColorNames) var hideColorNames
     @Default(.betaUpdates) var betaUpdates
-    @Default(.combineCompliance) var combineCompliance
     @Default(.hidePikaWhilePicking) var hidePikaWhilePicking
     @Default(.copyColorOnPick) var copyColorOnPick
     @Default(.copyFormat) var copyFormat
@@ -108,34 +107,11 @@ struct PreferencesView: View {
                         let horizontalUnit = width / 2
 
                         HStack(spacing: 20.0) {
-                            let colorWCAGCompliance = eyedroppers.foreground.color.toWCAGCompliance(
-                                with: eyedroppers.background.color
+                            ComplianceButtons(
+                                width: horizontalUnit - 10,
+                                foreground: eyedroppers.foreground,
+                                background: eyedroppers.background
                             )
-                            Button(action: {
-                                combineCompliance = false
-                            }, label: {
-                                ComplianceToggleGroup(colorWCAGCompliance: colorWCAGCompliance, theme: .weight)
-                                    .padding(20.0)
-                                    .frame(maxWidth: horizontalUnit - 10, maxHeight: .infinity, alignment: .leading)
-                            })
-                                .buttonStyle(AppearanceButtonStyle(
-                                    title: PikaText.textAppearanceWeightTitle,
-                                    description: PikaText.textAppearanceWeightDescription,
-                                    selected: combineCompliance == false
-                                ))
-
-                            Button(action: {
-                                combineCompliance = true
-                            }, label: {
-                                ComplianceToggleGroup(colorWCAGCompliance: colorWCAGCompliance, theme: .contrast)
-                                    .padding(20.0)
-                                    .frame(maxWidth: horizontalUnit - 10, maxHeight: .infinity, alignment: .leading)
-                            })
-                                .buttonStyle(AppearanceButtonStyle(
-                                    title: PikaText.textAppearanceContrastTitle,
-                                    description: PikaText.textAppearanceContrastDescription,
-                                    selected: combineCompliance == true
-                                ))
                         }
                         .frame(maxWidth: width)
                     }
