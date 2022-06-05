@@ -30,7 +30,10 @@ struct Footer: View {
                     .fontWeight(.semibold)
                     .foregroundColor(.secondary)
 
-                ComplianceToggleGroup(colorWCAGCompliance: colorWCAGCompliance, theme: combineCompliance ? .legacy : .extended)
+                ComplianceToggleGroup(
+                    colorWCAGCompliance: colorWCAGCompliance,
+                    theme: combineCompliance ? .contrast : .weight
+                )
             }
         }
         .frame(maxWidth: .infinity, maxHeight: 50.0, alignment: .leading)

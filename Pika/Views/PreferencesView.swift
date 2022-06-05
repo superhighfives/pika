@@ -112,24 +112,31 @@ struct PreferencesView: View {
                             let colorWCAGCompliance = eyedroppers.foreground.color.toWCAGCompliance(
                                 with: eyedroppers.background.color
                             )
-
                             Button(action: {
                                 combineCompliance = false
                             }, label: {
-                                ComplianceToggleGroup(colorWCAGCompliance: colorWCAGCompliance, theme: .extended)
+                                ComplianceToggleGroup(colorWCAGCompliance: colorWCAGCompliance, theme: .weight)
                                     .padding(20.0)
                                     .frame(maxWidth: horizontalUnit - 10, maxHeight: .infinity, alignment: .leading)
                             })
-                                .buttonStyle(AppearanceButtonStyle(title: "Expanded", description: "View WCAG compliance by weight, from normal to large", selected: combineCompliance == false))
+                                .buttonStyle(AppearanceButtonStyle(
+                                    title: PikaText.textAppearanceWeightTitle,
+                                    description: PikaText.textAppearanceWeightDescription,
+                                    selected: combineCompliance == false
+                                ))
 
                             Button(action: {
                                 combineCompliance = true
                             }, label: {
-                                ComplianceToggleGroup(colorWCAGCompliance: colorWCAGCompliance, theme: .legacy)
+                                ComplianceToggleGroup(colorWCAGCompliance: colorWCAGCompliance, theme: .contrast)
                                     .padding(20.0)
                                     .frame(maxWidth: horizontalUnit - 10, maxHeight: .infinity, alignment: .leading)
                             })
-                                .buttonStyle(AppearanceButtonStyle(title: "Legacy", description: "View WCAG compliance by contrast, from 3:1 to 7:1", selected: combineCompliance == true))
+                                .buttonStyle(AppearanceButtonStyle(
+                                    title: PikaText.textAppearanceContrastTitle,
+                                    description: PikaText.textAppearanceContrastDescription,
+                                    selected: combineCompliance == true
+                                ))
                         }
                         .frame(maxWidth: width)
                     }

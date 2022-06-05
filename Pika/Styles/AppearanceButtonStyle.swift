@@ -9,10 +9,9 @@ struct AppearanceButtonStyle: ButtonStyle {
         VStack {
             configuration.label
                 .background(LinearGradient(
-                    gradient: .init(colors: [
-                        Color(red: 0.1, green: 0.1, blue: 0.1),
-                        Color(red: 0.0, green: 0.0, blue: 0.0)
-                    ]),
+                    gradient: .init(colors:
+                        [Color(red: 0.1, green: 0.1, blue: 0.1), Color(red: 0.0, green: 0.0, blue: 0.0)]
+                    ),
                     startPoint: .init(x: 0, y: 0),
                     endPoint: .init(x: 0, y: 1)
                 ))

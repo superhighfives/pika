@@ -150,7 +150,7 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
             ComplianceToggleGroup(
                 colorWCAGCompliance: colorWCAGCompliance,
                 size: .small,
-                theme: Defaults[.combineCompliance] ? .legacy : .extended
+                theme: Defaults[.combineCompliance] ? .contrast : .weight
             ))
 
         foreground.$color.sink {
