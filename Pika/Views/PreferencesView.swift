@@ -120,7 +120,7 @@ struct PreferencesView: View {
                                     .padding(20.0)
                                     .frame(maxWidth: horizontalUnit - 10, maxHeight: .infinity, alignment: .leading)
                             })
-                                .buttonStyle(AppearanceButtonStyle(text: "Expanded", selected: combineCompliance == false))
+                                .buttonStyle(AppearanceButtonStyle(title: "Expanded", description: "View WCAG compliance by weight, from normal to large", selected: combineCompliance == false))
 
                             Button(action: {
                                 combineCompliance = true
@@ -129,7 +129,7 @@ struct PreferencesView: View {
                                     .padding(20.0)
                                     .frame(maxWidth: horizontalUnit - 10, maxHeight: .infinity, alignment: .leading)
                             })
-                                .buttonStyle(AppearanceButtonStyle(text: "Legacy", selected: combineCompliance == true))
+                                .buttonStyle(AppearanceButtonStyle(title: "Legacy", description: "View WCAG compliance by contrast, from 3:1 to 7:1", selected: combineCompliance == true))
                         }
                         .frame(maxWidth: width)
                     }
