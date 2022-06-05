@@ -155,6 +155,10 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
                 theme: Defaults[.combineCompliance] ? .contrast : .weight
             ))
 
+        Defaults.publisher(keys: .combineCompliance).sink {
+            wcagViews.rootView.theme = Defaults[.combineCompliance] ? .contrast : .weight
+        }
+        .store(in: &cancellables)
         foreground.$color.sink {
             let colorWCAGCompliance = $0.toWCAGCompliance(with: background.color)
             wcagViews.rootView.colorWCAGCompliance = colorWCAGCompliance
