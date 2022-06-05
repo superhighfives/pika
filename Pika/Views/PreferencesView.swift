@@ -7,6 +7,7 @@ struct PreferencesView: View {
     @Default(.hideMenuBarIcon) var hideMenuBarIcon
     @Default(.hideColorNames) var hideColorNames
     @Default(.betaUpdates) var betaUpdates
+    @Default(.combineCompliance) var combineCompliance
     @Default(.hidePikaWhilePicking) var hidePikaWhilePicking
     @Default(.copyColorOnPick) var copyColorOnPick
     @Default(.copyFormat) var copyFormat
@@ -99,6 +100,53 @@ struct PreferencesView: View {
                 Divider()
                     .padding(.bottom, 16.0)
 
+                // TOOD: Build appearance panel
+                VStack(alignment: .leading, spacing: 10.0) {
+                    Text("Appearance").font(.system(size: 16))
+
+                    GeometryReader { geometry in
+                        let width = geometry.size.width
+                        let horizontalUnit = width / 2
+
+                        HStack(spacing: 20.0) {
+                            let colorWCAGCompliance = eyedroppers.foreground.color.toWCAGCompliance(
+                                with: eyedroppers.background.color
+                            )
+                            Button(action: {
+                                combineCompliance = false
+                            }, label: {
+                                ComplianceToggleGroup(colorWCAGCompliance: colorWCAGCompliance, theme: .weight)
+                                    .padding(20.0)
+                                    .frame(maxWidth: horizontalUnit - 10, maxHeight: .infinity, alignment: .leading)
+                            })
+                                .buttonStyle(AppearanceButtonStyle(
+                                    title: PikaText.textAppearanceWeightTitle,
+                                    description: PikaText.textAppearanceWeightDescription,
+                                    selected: combineCompliance == false
+                                ))
+
+                            Button(action: {
+                                combineCompliance = true
+                            }, label: {
+                                ComplianceToggleGroup(colorWCAGCompliance: colorWCAGCompliance, theme: .contrast)
+                                    .padding(20.0)
+                                    .frame(maxWidth: horizontalUnit - 10, maxHeight: .infinity, alignment: .leading)
+                            })
+                                .buttonStyle(AppearanceButtonStyle(
+                                    title: PikaText.textAppearanceContrastTitle,
+                                    description: PikaText.textAppearanceContrastDescription,
+                                    selected: combineCompliance == true
+                                ))
+                        }
+                        .frame(maxWidth: width)
+                    }
+                    .frame(height: 120)
+                }
+                .padding(.horizontal, 24.0)
+
+                Divider()
+                    .padding(.vertical, 16.0)
+
                 VStack(alignment: .leading, spacing: 10.0) {
                     Text(PikaText.textCopyTitle).font(.system(size: 16))
 
@@ -187,6 +235,7 @@ struct PreferencesView_Previews: PreviewProvider {
     static var previews: some View {
         PreferencesView()
             .environmentObject(Eyedroppers())
-            .previewLayout(PreviewLayout.sizeThatFits)
+            .environmentObject(WindowManager())
+            .frame(width: 750, height: 700)
     }
 }

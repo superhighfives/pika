@@ -5,16 +5,21 @@ struct ComplianceToggle: View {
     var isCompliant: Bool
     var tooltip: String
     var large: Bool = false
+    var combined: Bool = false
     var size: ComplianceToggleGroup.Sizes
 
     var body: some View {
         HStack(spacing: 2.0) {
             IconImage(name: isCompliant ? "checkmark.circle.fill" : "xmark.circle")
             Text(title)
+                .fixedSize()
 
-            if large {
-                Text(size == .small ? PikaText.textTouchbarLargeAbbr : PikaText.textTouchbarLarge)
-                    .modify {
+            if combined {
+                if large {
+                    Text(size == .small
+                        ? NSLocalizedString("color.wcag.large.abbr", comment: "LG")
+                        : NSLocalizedString("color.wcag.large", comment: "Large")
+                    ).modify {
                         if size == .small {
                             $0.font(.system(size: 10.0))
                                 .baselineOffset(4.0)
@@ -22,9 +27,17 @@ struct ComplianceToggle: View {
                             $0
                         }
                     }
+                }
+            } else {
+                if large && size == .small {
+                    Text(PikaText.textColorLargeAbbr)
+                        .font(.system(size: 10.0))
+                        .baselineOffset(4.0)
+                }
             }
         }
-        .opacity(isCompliant ? 1.0 : 0.5)
+        .foregroundColor(isCompliant ? .primary
+            : .secondary)
         .modify {
             if #available(OSX 11.0, *) {
                 $0.help(tooltip)
@@ -32,6 +45,7 @@ struct ComplianceToggle: View {
                 $0
             }
         }
+        .fixedSize()
     }
 }
 

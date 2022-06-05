@@ -79,8 +79,9 @@ enum PikaText {
      * Touchbar
      */
 
-    static let textTouchbarLargeAbbr = NSLocalizedString("touchbar.wcag.large.abbr", comment: "LG")
-    static let textTouchbarLarge = NSLocalizedString("touchbar.wcag.large", comment: "Large")
+    static let textColorNormal = NSLocalizedString("color.wcag.normal", comment: "Normal")
+    static let textColorLargeAbbr = NSLocalizedString("color.wcag.large.abbr", comment: "LG")
+    static let textColorLarge = NSLocalizedString("color.wcag.large", comment: "Large")
 
     /*
      * Splash
@@ -130,6 +131,22 @@ enum PikaText {
     static let textColorNamesDescription = NSLocalizedString(
         "preferences.names.description",
         comment: "Hide color names"
+    )
+
+    // Appearance Settings
+    static let textAppearanceTitle = NSLocalizedString("preferences.appearance.title", comment: "Appearance")
+    static let textAppearanceWeightTitle = NSLocalizedString("preferences.appearance.weight.title", comment: "Weight")
+    static let textAppearanceWeightDescription = NSLocalizedString(
+        "preferences.appearance.weight.description",
+        comment: "View WCAG compliance by weight, from normal to large"
+    )
+    static let textAppearanceContrastTitle = NSLocalizedString(
+        "preferences.appearance.contrast.title",
+        comment: "Contrast"
+    )
+    static let textAppearanceContrastDescription = NSLocalizedString(
+        "preferences.appearance.contrast.description",
+        comment: "View WCAG compliance by contrast, from 3:1 to 7:1"
     )
 
     // Copy Settings
