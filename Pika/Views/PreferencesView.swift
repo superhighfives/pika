@@ -100,9 +100,8 @@ struct PreferencesView: View {
                 Divider()
                     .padding(.bottom, 16.0)
 
-                // TOOD: Build appearance panel
                 VStack(alignment: .leading, spacing: 10.0) {
-                    Text("Appearance").font(.system(size: 16))
+                    Text(PikaText.textAppearanceTitle).font(.system(size: 16))
 
                     GeometryReader { geometry in
                         let width = geometry.size.width
@@ -147,10 +146,11 @@ struct PreferencesView: View {
                 Divider()
                     .padding(.vertical, 16.0)
 
-                VStack(alignment: .leading, spacing: 10.0) {
+                // Copy Settings
+                VStack(alignment: .leading, spacing: 16.0) {
                     Text(PikaText.textCopyTitle).font(.system(size: 16))
 
-                    VStack(alignment: .leading, spacing: 6.0) {
+                    VStack(alignment: .leading, spacing: 12.0) {
                         HStack(alignment: .firstTextBaseline, spacing: 8.0) {
                             Text(PikaText.textCopyExport)
                                 .fixedSize()

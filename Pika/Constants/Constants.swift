@@ -152,6 +152,7 @@ enum PikaText {
     // Copy Settings
     static let textCopyTitle = NSLocalizedString("preferences.copy.title", comment: "Copy Settings")
     static let textCopyExport = NSLocalizedString("preferences.copy.export", comment: "Export color for")
+    static let textCopyExportExample = NSLocalizedString("preferences.copy.export.example", comment: "Export example")
     static let textCopyFormat = NSLocalizedString("preferences.copy.format", comment: "Export Format")
     static let textCopyAutomatic = NSLocalizedString(
         "preferences.copy.automatic",
