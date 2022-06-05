@@ -9,8 +9,9 @@ struct ComplianceToggle: View {
     var size: ComplianceToggleGroup.Sizes
 
     var body: some View {
-        HStack(spacing: 2.0) {
-            IconImage(name: isCompliant ? "checkmark.circle.fill" : "xmark.circle")
+        HStack(alignment: .center, spacing: 2.0) {
+            IconImage(name: isCompliant ? "checkmark.circle.fill" : "xmark.circle", resizable: true)
+                .frame(width: size == .small ? 13.0 : 14.0, height: size == .small ? 13.0 : 14.0)
             Text(title)
                 .fixedSize()
 
