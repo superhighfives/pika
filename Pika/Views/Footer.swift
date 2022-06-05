@@ -1,6 +1,8 @@
+import Defaults
 import SwiftUI
 
 struct Footer: View {
+    @Default(.combineCompliance) var combineCompliance
     @ObservedObject var foreground: Eyedropper
     @ObservedObject var background: Eyedropper
 
@@ -13,9 +15,11 @@ struct Footer: View {
                 Text(PikaText.textColorRatio)
                     .font(.caption)
                     .fontWeight(.semibold)
-                    .foregroundColor(.gray)
+                    .foregroundColor(.secondary)
+                    .fixedSize()
                 Text("\(colorContrastRatio)")
                     .font(.system(size: 18))
+                    .fixedSize()
             }
 
             Divider()
@@ -24,9 +28,12 @@ struct Footer: View {
                 Text(PikaText.textColorWCAG)
                     .font(.caption)
                     .fontWeight(.semibold)
-                    .foregroundColor(.gray)
+                    .foregroundColor(.secondary)
 
-                ComplianceToggleGroup(colorWCAGCompliance: colorWCAGCompliance)
+                ComplianceToggleGroup(
+                    colorWCAGCompliance: colorWCAGCompliance,
+                    theme: combineCompliance ? .contrast : .weight
+                )
             }
         }
         .frame(maxWidth: .infinity, maxHeight: 50.0, alignment: .leading)
@@ -43,5 +50,6 @@ struct FooterView_Previews: PreviewProvider {
         let foreground = Eyedropper(type: .foreground, color: PikaConstants.initialColors.randomElement()!)
         let background = Eyedropper(type: .background, color: NSColor.black)
         Footer(foreground: foreground, background: background)
+            .frame(width: 420.0)
     }
 }

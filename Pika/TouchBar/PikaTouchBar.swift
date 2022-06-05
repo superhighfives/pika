@@ -149,7 +149,8 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
         let wcagViews = NSHostingView(rootView:
             ComplianceToggleGroup(
                 colorWCAGCompliance: colorWCAGCompliance,
-                size: .small
+                size: .small,
+                theme: Defaults[.combineCompliance] ? .contrast : .weight
             ))
 
         foreground.$color.sink {

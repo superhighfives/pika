@@ -30,6 +30,7 @@ extension Defaults.Keys {
     static let copyColorOnPick = Key<Bool>("copyColorOnPick", default: false)
     static let hideMenuBarIcon = Key<Bool>("hideMenuBarIcon", default: false)
     static let betaUpdates = Key<Bool>("betaUpdates", default: false)
+    static let combineCompliance = Key<Bool>("combineCompliance", default: false)
     static let colorSpace = NSSecureCodingKey<NSColorSpace>(
         "colorSpace", default: NSScreen.main!.colorSpace!
     )
