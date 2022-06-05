@@ -123,7 +123,7 @@ struct PreferencesView: View {
                     .padding(.vertical, 16.0)
 
                 // Copy Settings
-                VStack(alignment: .leading, spacing: 16.0) {
+                VStack(alignment: .leading, spacing: 10.0) {
                     Text(PikaText.textCopyTitle).font(.system(size: 16))
 
                     VStack(alignment: .leading, spacing: 12.0) {
