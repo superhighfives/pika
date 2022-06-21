@@ -11,6 +11,7 @@
 		221600FD25A636D600B8B7D9 /* ConditionalModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221600FC25A636D600B8B7D9 /* ConditionalModifier.swift */; };
 		226FD61025A940F90021A67F /* VisualEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226FD60F25A940F90021A67F /* VisualEffect.swift */; };
 		22903B0328294F4A004BB9F0 /* ColorExampleRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22903B0228294F49004BB9F0 /* ColorExampleRow.swift */; };
+		22D28DB72862377F00FC7DD4 /* OverflowContentViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D28DB62862377F00FC7DD4 /* OverflowContentViewModifier.swift */; };
 		22EF1D9B25B7AA18001102FA /* Sequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EF1D9A25B7AA18001102FA /* Sequence.swift */; };
 		22FE80B325BA0F820063759E /* KeyboardShortcutItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FE80B225BA0F820063759E /* KeyboardShortcutItem.swift */; };
 		EA0C525025AA729300AFF716 /* Visualisation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C524F25AA729300AFF716 /* Visualisation.swift */; };
@@ -69,6 +70,7 @@
 		221600FC25A636D600B8B7D9 /* ConditionalModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionalModifier.swift; sourceTree = "<group>"; };
 		226FD60F25A940F90021A67F /* VisualEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffect.swift; sourceTree = "<group>"; };
 		22903B0228294F49004BB9F0 /* ColorExampleRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExampleRow.swift; sourceTree = "<group>"; };
+		22D28DB62862377F00FC7DD4 /* OverflowContentViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverflowContentViewModifier.swift; sourceTree = "<group>"; };
 		22EF1D9A25B7AA18001102FA /* Sequence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sequence.swift; sourceTree = "<group>"; };
 		22FE80B225BA0F820063759E /* KeyboardShortcutItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardShortcutItem.swift; sourceTree = "<group>"; };
 		92D97C2125FF7A5A007CCDE4 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -244,6 +246,7 @@
 				EA7B199525FBA08100E06D9D /* LoadColors.swift */,
 				EA0C526325AB5D1700AFF716 /* PikaWindow.swift */,
 				EA1D669E282EAE8700816F99 /* WindowManager.swift */,
+				22D28DB62862377F00FC7DD4 /* OverflowContentViewModifier.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -422,6 +425,7 @@
 				EAF100CA25C75218006E1EC3 /* PikaTouchBar.swift in Sources */,
 				EA7B199625FBA08100E06D9D /* LoadColors.swift in Sources */,
 				EAF100C725C731AD006E1EC3 /* SplashTouchBar.swift in Sources */,
+				22D28DB72862377F00FC7DD4 /* OverflowContentViewModifier.swift in Sources */,
 				EAA8AE1C25B8F03B0049299B /* KeyboardShortcutGrid.swift in Sources */,
 				EA0C525025AA729300AFF716 /* Visualisation.swift in Sources */,
 				EAD0B6FB259CF29300FA2F67 /* ContentView.swift in Sources */,
