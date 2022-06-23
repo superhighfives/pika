@@ -209,9 +209,9 @@ struct PreferencesView: View {
                     }
                 }
             )
-            .useScrollView(when: viewHeight > NSScreen.main!.frame.height, showsIndicators: false)
+            .useScrollView(when: viewHeight > windowManager.screenHeight, showsIndicators: false)
         }
-        .padding(.bottom, viewHeight > NSScreen.main!.frame.height ? 0 : -windowManager.toolbarPadding)
+        .padding(.bottom, viewHeight > windowManager.screenHeight ? 0 : -windowManager.toolbarPadding)
     }
 }
 
