@@ -177,7 +177,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         if preferencesWindow == nil {
             let view = NSHostingView(rootView: PreferencesView()
                 .edgesIgnoringSafeArea(.all)
-                .frame(minWidth: 750, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
+                .frame(
+                    minWidth: 750,
+                    maxWidth: .infinity,
+                    minHeight: 0,
+                    maxHeight: windowManager.screenHeight,
+                    alignment: .topLeading
+                )
                 .fixedSize(horizontal: false, vertical: true)
                 .environmentObject(eyedroppers)
                 .environmentObject(windowManager))

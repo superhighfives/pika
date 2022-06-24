@@ -11,6 +11,7 @@ struct PreferencesView: View {
     @Default(.copyColorOnPick) var copyColorOnPick
     @Default(.copyFormat) var copyFormat
     @State var colorSpace: NSColorSpace = Defaults[.colorSpace]
+    @State private var viewHeight: CGFloat = 0.0
 
     @EnvironmentObject var eyedroppers: Eyedroppers
     @EnvironmentObject var windowManager: WindowManager
@@ -60,7 +61,6 @@ struct PreferencesView: View {
             ))
 
             Divider()
-
             VStack(alignment: .leading, spacing: 0) {
                 // General Settings
 
@@ -202,8 +202,16 @@ struct PreferencesView: View {
                 }
                 .padding(.bottom, 24.0)
             }
+            .background(
+                GeometryReader { contentGeometry in
+                    Color.clear.onAppear {
+                        viewHeight = contentGeometry.size.height
+                    }
+                }
+            )
+            .useScrollView(when: viewHeight > windowManager.screenHeight, showsIndicators: false)
         }
-        .padding(.bottom, -windowManager.toolbarPadding)
+        .padding(.bottom, viewHeight > windowManager.screenHeight ? 0 : -windowManager.toolbarPadding)
     }
 }
 
