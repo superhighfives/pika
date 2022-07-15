@@ -100,6 +100,28 @@ struct NavigationMenuItems: View {
                 }
             }
 
+        Button("Undo", action: {
+            NSApp.sendAction(#selector(AppDelegate.triggerUndo), to: nil, from: nil)
+        })
+            .modify {
+                if #available(OSX 11.0, *) {
+                    $0.keyboardShortcut("z", modifiers: .command)
+                } else {
+                    $0
+                }
+            }
+
+        Button("Redo", action: {
+            NSApp.sendAction(#selector(AppDelegate.triggerRedo), to: nil, from: nil)
+        })
+            .modify {
+                if #available(OSX 11.0, *) {
+                    $0.keyboardShortcut("Z", modifiers: .command)
+                } else {
+                    $0
+                }
+            }
+
         VStack {
             Divider()
         }

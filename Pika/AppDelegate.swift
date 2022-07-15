@@ -15,6 +15,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     var eyedroppers: Eyedroppers!
     var windowManager: WindowManager!
 
+    var undoManager = UndoManager()
+
     var pikaTouchBarController: PikaTouchBarController!
     var splashTouchBarController: SplashTouchBarController!
     var aboutTouchBarController: SplashTouchBarController!
@@ -41,6 +43,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
         // Set up eyedroppers
         eyedroppers = Eyedroppers()
+        eyedroppers.foreground.undoManager = undoManager
+        eyedroppers.background.undoManager = undoManager
 
         // Set up window manager
         windowManager = WindowManager()
@@ -238,6 +242,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     @IBAction func triggerSwap(_: Any) {
         notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerSwap), object: self)
+    }
+
+    @IBAction func triggerUndo(_: Any) {
+        undoManager.undo()
+    }
+
+    @IBAction func triggerRedo(_: Any) {
+        undoManager.redo()
     }
 
     @IBAction func triggerCopyText(_: Any) {

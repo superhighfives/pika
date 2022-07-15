@@ -38,6 +38,8 @@ enum PikaConstants {
     static let ncTriggerPickForeground = "triggerPickForeground"
     static let ncTriggerPickBackground = "triggerPickBackground"
     static let ncTriggerSwap = "triggerSwap"
+    static let ncTriggerUndo = "triggerUndo"
+    static let ncTriggerRedo = "triggerRedo"
     static let ncTriggerPreferences = "triggerPreferences"
 }
 
