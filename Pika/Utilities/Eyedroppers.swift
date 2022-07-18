@@ -66,7 +66,6 @@ class Eyedropper: ObservableObject {
     func set(_ selectedColor: NSColor) {
         let previousColor = color
         undoManager?.registerUndo(withTarget: self) { _ in
-            print("Undoing to \(previousColor.toRGBString())")
             self.set(previousColor)
         }
 
