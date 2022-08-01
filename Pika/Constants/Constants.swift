@@ -61,6 +61,8 @@ enum PikaText {
     static let textColorWCAG70 = NSLocalizedString("color.wcag.70", comment: "WCAG 7:1")
     static let textColorSwap = NSLocalizedString("color.swap", comment: "Swap")
     static let textColorSwapDetail = NSLocalizedString("color.swap.detail", comment: "Swap colors")
+    static let textColorUndo = NSLocalizedString("color.undo", comment: "Undo")
+    static let textColorRedo = NSLocalizedString("color.redo", comment: "Redo")
     static let textColorCopy = NSLocalizedString("color.copy", comment: "Copy")
     static let textColorCopied = NSLocalizedString("color.copy.toast", comment: "Copied")
 

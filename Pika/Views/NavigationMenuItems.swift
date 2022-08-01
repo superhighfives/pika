@@ -100,7 +100,7 @@ struct NavigationMenuItems: View {
                 }
             }
 
-        Button("Undo", action: {
+        Button(PikaText.textColorUndo, action: {
             NSApp.sendAction(#selector(AppDelegate.triggerUndo), to: nil, from: nil)
         })
             .modify {
@@ -111,7 +111,7 @@ struct NavigationMenuItems: View {
                 }
             }
 
-        Button("Redo", action: {
+        Button(PikaText.textColorRedo, action: {
             NSApp.sendAction(#selector(AppDelegate.triggerRedo), to: nil, from: nil)
         })
             .modify {
