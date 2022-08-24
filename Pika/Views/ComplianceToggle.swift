@@ -22,8 +22,10 @@ struct ComplianceToggle: View {
                         : NSLocalizedString("color.wcag.large", comment: "Large")
                     ).modify {
                         if size == .small {
-                            $0.font(.system(size: 10.0))
-                                .baselineOffset(4.0)
+                            $0
+                                .fixedSize()
+                                .font(.system(size: 10.0))
+                                .padding(.bottom, 2.0)
                         } else {
                             $0
                         }
@@ -32,8 +34,9 @@ struct ComplianceToggle: View {
             } else {
                 if large && size == .small {
                     Text(PikaText.textColorLargeAbbr)
+                        .fixedSize()
                         .font(.system(size: 10.0))
-                        .baselineOffset(4.0)
+                        .padding(.bottom, 2.0)
                 }
             }
         }
