@@ -111,7 +111,9 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
     ) -> NSTouchBarItem? {
         let item = NSCustomTouchBarItem(identifier: identifier)
         let textField = NSTextField(labelWithString: "")
-        let icon = NSHostingView(rootView: IconImage(name: "circle.lefthalf.fill"))
+        let icon = NSHostingView(rootView:
+            IconImage(name: "circle.lefthalf.fill", resizable: true).frame(width: 13.0, height: 13.0)
+        )
 
         let stackView = NSStackView(views: [icon, textField])
         let view = NSView()
@@ -123,7 +125,7 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
 
         let viewBindings: [String: NSView] = ["stackView": view]
         let hconstraints = NSLayoutConstraint.constraints(
-            withVisualFormat: "H:[stackView(80)]",
+            withVisualFormat: "H:[stackView(70)]",
             options: [],
             metrics: nil,
             views: viewBindings
@@ -149,9 +151,14 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
         let wcagViews = NSHostingView(rootView:
             ComplianceToggleGroup(
                 colorWCAGCompliance: colorWCAGCompliance,
-                size: .small
+                size: .small,
+                theme: Defaults[.combineCompliance] ? .contrast : .weight
             ))
 
+        Defaults.publisher(keys: .combineCompliance).sink {
+            wcagViews.rootView.theme = Defaults[.combineCompliance] ? .contrast : .weight
+        }
+        .store(in: &cancellables)
         foreground.$color.sink {
             let colorWCAGCompliance = $0.toWCAGCompliance(with: background.color)
             wcagViews.rootView.colorWCAGCompliance = colorWCAGCompliance

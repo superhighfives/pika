@@ -17,8 +17,8 @@ class Eyedropper: ObservableObject {
 
         var description: String {
             switch self {
-            case .foreground: return NSLocalizedString("color.foreground", comment: "Foreground")
-            case .background: return NSLocalizedString("color.background", comment: "Background")
+            case .foreground: return PikaText.textColorForeground
+            case .background: return PikaText.textColorBackground
             }
         }
 
@@ -45,6 +45,8 @@ class Eyedropper: ObservableObject {
 
     @objc @Published public var color: NSColor
 
+    var undoManager: UndoManager?
+
     init(type: Types, color: NSColor) {
         self.type = type
         self.color = color
@@ -61,6 +63,15 @@ class Eyedropper: ObservableObject {
         colorNames[closestVector.compare(color)].name
     }
 
+    func set(_ selectedColor: NSColor) {
+        let previousColor = color
+        undoManager?.registerUndo(withTarget: self) { _ in
+            self.set(previousColor)
+        }
+
+        color = selectedColor.usingColorSpace(Defaults[.colorSpace])!
+    }
+
     func start() {
         if Defaults[.hidePikaWhilePicking] {
             if NSApp.mainWindow?.isVisible == true {
@@ -74,7 +85,7 @@ class Eyedropper: ObservableObject {
             sampler.show { selectedColor in
 
                 if let selectedColor = selectedColor {
-                    self.color = selectedColor.usingColorSpace(Defaults[.colorSpace])!
+                    self.set(selectedColor)
 
                     if Defaults[.copyColorOnPick] {
                         NSApp.sendAction(self.type.copySelector, to: nil, from: nil)

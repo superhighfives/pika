@@ -15,7 +15,7 @@ struct KeyboardShortcutGrid: View {
                 VStack(spacing: 0.0) {
                     HStack(spacing: 0.0) {
                         KeyboardShortcutItem(
-                            title: NSLocalizedString("color.pick.foreground", comment: "Pick foreground"),
+                            title: PikaText.textPickForeground,
                             event: PikaConstants.ncTriggerPickForeground,
                             keys: ["⌘", "D"]
                         )
@@ -25,7 +25,7 @@ struct KeyboardShortcutGrid: View {
                             .frame(height: verticalUnit)
 
                         KeyboardShortcutItem(
-                            title: NSLocalizedString("color.pick.background", comment: "Pick background"),
+                            title: PikaText.textPickBackground,
                             event: PikaConstants.ncTriggerPickBackground,
                             keys: ["⇧", "⌘", "D"]
                         )
@@ -37,7 +37,7 @@ struct KeyboardShortcutGrid: View {
 
                     HStack(spacing: 0) {
                         KeyboardShortcutItem(
-                            title: NSLocalizedString("color.copy.foreground", comment: "Copy foreground"),
+                            title: PikaText.textCopyForeground,
                             event: PikaConstants.ncTriggerCopyForeground,
                             keys: ["⌘", "C"]
                         )
@@ -47,7 +47,7 @@ struct KeyboardShortcutGrid: View {
                             .frame(height: verticalUnit)
 
                         KeyboardShortcutItem(
-                            title: NSLocalizedString("color.copy.background", comment: "Copy background"),
+                            title: PikaText.textCopyBackground,
                             event: PikaConstants.ncTriggerCopyBackground,
                             keys: ["⇧", "⌘", "C"]
                         )
@@ -59,7 +59,7 @@ struct KeyboardShortcutGrid: View {
 
                     HStack(spacing: 0) {
                         KeyboardShortcutItem(
-                            title: NSLocalizedString("menu.preferences", comment: "Preferences"),
+                            title: PikaText.textMenuPreferences,
                             event: PikaConstants.ncTriggerPreferences,
                             keys: ["⌘", ","]
                         )
@@ -69,7 +69,7 @@ struct KeyboardShortcutGrid: View {
                             .frame(height: verticalUnit)
 
                         KeyboardShortcutItem(
-                            title: NSLocalizedString("color.swap.detail", comment: "Swap colors"),
+                            title: PikaText.textColorSwapDetail,
                             event: PikaConstants.ncTriggerSwap,
                             keys: ["⇧", "⌘", "X"]
                         )

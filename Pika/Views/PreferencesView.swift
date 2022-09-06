@@ -7,7 +7,14 @@ struct PreferencesView: View {
     @Default(.hideMenuBarIcon) var hideMenuBarIcon
     @Default(.hideColorNames) var hideColorNames
     @Default(.betaUpdates) var betaUpdates
+    @Default(.hidePikaWhilePicking) var hidePikaWhilePicking
+    @Default(.copyColorOnPick) var copyColorOnPick
+    @Default(.copyFormat) var copyFormat
     @State var colorSpace: NSColorSpace = Defaults[.colorSpace]
+    @State private var viewHeight: CGFloat = 0.0
+
+    @EnvironmentObject var eyedroppers: Eyedroppers
+    @EnvironmentObject var windowManager: WindowManager
 
     // swiftlint:disable large_tuple opening_brace
     func getColorSpaces() -> ([NSColorSpace], [NSColorSpace], NSColorSpace) {
@@ -43,118 +50,176 @@ struct PreferencesView: View {
     var body: some View {
         let (primarySpaces, availableSpaces, systemDefaultSpace) = self.getColorSpaces()
 
-        HStack(spacing: 0) {
+        HStack(alignment: .top, spacing: 0) {
             Group {
                 AppVersion()
             }
-            .frame(maxWidth: 180.0, maxHeight: .infinity)
+            .frame(maxWidth: 240.0, maxHeight: .infinity)
             .background(VisualEffect(
                 material: NSVisualEffectView.Material.sidebar,
                 blendingMode: NSVisualEffectView.BlendingMode.behindWindow
             ))
 
             Divider()
+            VStack(alignment: .leading, spacing: 0) {
+                // General Settings
 
-            VStack(alignment: .leading, spacing: 10.0) {
-                // Color Format
-                let textFormatTitle = NSLocalizedString("preferences.format.title", comment: "Color Format")
-                let textSpaceTitle = NSLocalizedString("preferences.space.title", comment: "Color Space")
-                let textSpaceDescription = NSLocalizedString(
-                    "preferences.space.description",
-                    comment: "Set your RGB color space"
-                )
-                let textSystemDefault = NSLocalizedString("preferences.space.default", comment: "System Default")
+                HStack(alignment: .top, spacing: 0) {
+                    VStack(alignment: .leading, spacing: 10.0) {
+                        Text(PikaText.textGeneralTitle).font(.system(size: 16))
+                        LaunchAtLogin.Toggle {
+                            Text(PikaText.textLaunchDescription)
+                        }
+                        Toggle(isOn: $hideMenuBarIcon) {
+                            Text(PikaText.textIconDescription)
+                        }
+                        Toggle(isOn: $betaUpdates) {
+                            Text(PikaText.textBetaDescription)
+                        }
+                    }
+                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                    .padding(.all, 24.0)
 
-                Section(header: Text(textFormatTitle).font(.system(size: 16))) {
-                    VStack(alignment: .leading, spacing: 15.0) {
-                        Text(textSpaceDescription)
-                        Picker(textSpaceTitle, selection:
-                            $colorSpace.onChange(perform: { Defaults[.colorSpace] = $0 })) {
-                            ForEach(primarySpaces, id: \.self) { value in
-                                if value == systemDefaultSpace {
-                                    Text("\(textSystemDefault) (\(value.localizedName!))")
-                                        .tag(value)
-                                } else {
-                                    Text(value.localizedName!)
-                                        .tag(value)
+                    Divider()
+
+                    VStack(alignment: .leading, spacing: 10.0) {
+                        Text(PikaText.textSelectionTitle).font(.system(size: 16))
+                        Toggle(isOn: $hidePikaWhilePicking) {
+                            Text(PikaText.textPickHide)
+                        }
+                        Toggle(isOn: $hideColorNames) {
+                            Text(PikaText.textColorNamesDescription)
+                        }
+                    }
+                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                    .padding(.all, 24.0)
+                }
+                .fixedSize(horizontal: false, vertical: true)
+
+                Divider()
+                    .padding(.bottom, 16.0)
+
+                VStack(alignment: .leading, spacing: 10.0) {
+                    Text(PikaText.textAppearanceTitle).font(.system(size: 16))
+
+                    GeometryReader { geometry in
+                        let width = geometry.size.width
+                        let horizontalUnit = width / 2
+
+                        HStack(spacing: 20.0) {
+                            ComplianceButtons(
+                                width: horizontalUnit - 10,
+                                foreground: eyedroppers.foreground,
+                                background: eyedroppers.background
+                            )
+                        }
+                        .frame(maxWidth: width)
+                    }
+                    .frame(height: 120)
+                }
+                .padding(.horizontal, 24.0)
+
+                Divider()
+                    .padding(.vertical, 16.0)
+
+                // Copy Settings
+                VStack(alignment: .leading, spacing: 10.0) {
+                    Text(PikaText.textCopyTitle).font(.system(size: 16))
+
+                    VStack(alignment: .leading, spacing: 12.0) {
+                        HStack(alignment: .firstTextBaseline, spacing: 8.0) {
+                            Text(PikaText.textCopyExport)
+                                .fixedSize()
+                            Picker(PikaText.textCopyFormat, selection: $copyFormat) {
+                                ForEach(CopyFormat.allCases, id: \.self) { value in
+                                    Text(value.localizedString())
                                 }
                             }
-                            Divider()
-                            ForEach(availableSpaces, id: \.self) { value in
-                                Text(value.localizedName!)
-                                    .tag(value)
+                            .pickerStyle(RadioGroupPickerStyle())
+                            .horizontalRadioGroupLayout()
+                            .fixedSize()
+                            .labelsHidden()
+                        }
+
+                        ColorExampleRow(copyFormat: copyFormat, eyedropper: eyedroppers.foreground)
+                    }
+
+                    Toggle(isOn: $copyColorOnPick) {
+                        Text(PikaText.textCopyAutomatic)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+                .padding(.horizontal, 24.0)
+
+                Divider()
+                    .padding(.vertical, 16.0)
+
+                // Color Format
+
+                VStack(alignment: .leading, spacing: 8.0) {
+                    Section(header: Text(PikaText.textFormatTitle).font(.system(size: 16))) {
+                        VStack(alignment: .leading, spacing: 12.0) {
+                            Section(header:
+                                Text(PikaText.textFormatDescription).font(.system(size: 13, weight: .medium))
+                            ) {
+                                Picker(PikaText.textSpaceTitle, selection:
+                                    $colorSpace.onChange(perform: { Defaults[.colorSpace] = $0 })) {
+                                    ForEach(primarySpaces, id: \.self) { value in
+                                        if value == systemDefaultSpace {
+                                            Text("\(PikaText.textSystemDefault) (\(value.localizedName!))")
+                                                .tag(value)
+                                        } else {
+                                            Text(value.localizedName!)
+                                                .tag(value)
+                                        }
+                                    }
+                                    Divider()
+                                    ForEach(availableSpaces, id: \.self) { value in
+                                        Text(value.localizedName!)
+                                            .tag(value)
+                                    }
+                                }
+                                .labelsHidden()
                             }
                         }
-                        .labelsHidden()
                     }
+                    .padding(.horizontal, 24.0)
                 }
-                .padding(.horizontal, 24.0)
 
                 Divider()
-                    .padding(.vertical, 10.0)
+                    .padding(.vertical, 16.0)
 
                 // Global Shortcut
-                let textHotkeyTitle = NSLocalizedString("preferences.hotkey.title", comment: "Global Shortcut")
-                let textHotkeyDescription = NSLocalizedString(
-                    "preferences.hotkey.description",
-                    comment: "Set a global hotkey shortcut to invoke Pika"
-                )
 
-                Section(header: Text(textHotkeyTitle).font(.system(size: 16))) {
-                    VStack(alignment: .leading, spacing: 15.0) {
-                        Text(textHotkeyDescription)
-                        KeyboardShortcuts.Recorder(for: .togglePika)
+                VStack(alignment: .leading, spacing: 8.0) {
+                    Section(header: Text(PikaText.textHotkeyTitle).font(.system(size: 16))) {
+                        VStack(alignment: .leading, spacing: 12.0) {
+                            Text(PikaText.textHotkeyDescription).font(.system(size: 13, weight: .medium))
+                            KeyboardShortcuts.Recorder(for: .togglePika)
+                        }
                     }
+                    .padding(.horizontal, 24.0)
                 }
-                .padding(.horizontal, 24.0)
-
-                Divider()
-                    .padding(.vertical, 10.0)
-
-                // Launch at login
-                let textGeneralTitle = NSLocalizedString("preferences.general.title", comment: "General Settings")
-                let textLaunchDescription = NSLocalizedString(
-                    "preferences.launch.description",
-                    comment: "Launch at login"
-                )
-                let textIconDescription = NSLocalizedString(
-                    "preferences.icon.description",
-                    comment: "Hide menu bar icon"
-                )
-                let textColorNamesDescription = NSLocalizedString(
-                    "preferences.names.description",
-                    comment: "Hide color names"
-                )
-                let textBetaDescription = NSLocalizedString(
-                    "preferences.beta.description",
-                    comment: "Subscribe to beta releases"
-                )
-
-                Section(header: Text(textGeneralTitle).font(.system(size: 16))) {
-                    LaunchAtLogin.Toggle {
-                        Text(textLaunchDescription)
-                    }
-                    Toggle(isOn: $hideMenuBarIcon) {
-                        Text(textIconDescription)
-                    }
-                    Toggle(isOn: $hideColorNames) {
-                        Text(textColorNamesDescription)
-                    }
-                    Toggle(isOn: $betaUpdates) {
-                        Text(textBetaDescription)
-                    }
-                }
-                .padding(.horizontal, 24.0)
+                .padding(.bottom, 24.0)
             }
-            .padding(.all, 0.0)
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+            .background(
+                GeometryReader { contentGeometry in
+                    Color.clear.onAppear {
+                        viewHeight = contentGeometry.size.height
+                    }
+                }
+            )
+            .useScrollView(when: viewHeight > windowManager.screenHeight, showsIndicators: false)
         }
-        .edgesIgnoringSafeArea(.all)
+        .padding(.bottom, viewHeight > windowManager.screenHeight ? 0 : -windowManager.toolbarPadding)
     }
 }
 
 struct PreferencesView_Previews: PreviewProvider {
     static var previews: some View {
         PreferencesView()
+            .environmentObject(Eyedroppers())
+            .environmentObject(WindowManager())
+            .frame(width: 750, height: 700)
     }
 }

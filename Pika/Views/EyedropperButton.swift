@@ -5,6 +5,7 @@ import SwiftUI
 struct EyedropperButton: View {
     @ObservedObject var eyedropper: Eyedropper
     @Default(.colorFormat) var colorFormat
+    @Default(.copyFormat) var copyFormat
     @Default(.hideColorNames) var hideColorNames
 
     @State var copyVisible: Bool = false
@@ -24,7 +25,7 @@ struct EyedropperButton: View {
                             .foregroundColor(eyedropper.color.getUIColor().opacity(0.75))
 
                         VStack(alignment: .leading, spacing: 6.0) {
-                            Text(eyedropper.color.toFormat(format: colorFormat))
+                            Text(eyedropper.color.toFormat(format: colorFormat, style: copyFormat))
                                 .foregroundColor(eyedropper.color.getUIColor())
                                 .font(.system(size: 18, weight: .regular))
 
@@ -56,7 +57,7 @@ struct EyedropperButton: View {
             })
                 .buttonStyle(SwapButtonStyle(
                     isVisible: copyVisible,
-                    alt: NSLocalizedString("color.copy", comment: "Copy")
+                    alt: PikaText.textColorCopy
                 ))
                 .padding(.all, 8.0)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)

@@ -13,6 +13,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     var aboutWindow: NSWindow!
     var preferencesWindow: NSWindow!
     var eyedroppers: Eyedroppers!
+    var windowManager: WindowManager!
+
+    var undoManager = UndoManager()
 
     var pikaTouchBarController: PikaTouchBarController!
     var splashTouchBarController: SplashTouchBarController!
@@ -40,6 +43,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
         // Set up eyedroppers
         eyedroppers = Eyedroppers()
+        eyedroppers.foreground.undoManager = undoManager
+        eyedroppers.background.undoManager = undoManager
+
+        // Set up window manager
+        windowManager = WindowManager()
 
         // Define content view
         let contentView = ContentView()
@@ -105,18 +113,18 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         statusBarMenu = NSMenu(title: "Status Bar Menu")
         statusBarMenu.delegate = self
         statusBarMenu.addItem(
-            withTitle: NSLocalizedString("menu.about", comment: "About"),
+            withTitle: PikaText.textMenuAbout,
             action: #selector(openAboutWindow(_:)),
             keyEquivalent: ""
         )
         statusBarMenu.addItem(
-            withTitle: "\(NSLocalizedString("menu.updates", comment: "Check for updates"))...",
+            withTitle: "\(PikaText.textMenuUpdates)...",
             action: #selector(checkForUpdates(_:)),
             keyEquivalent: ""
         )
 
         let preferences = NSMenuItem(
-            title: NSLocalizedString("menu.preferences", comment: "Preferences"),
+            title: PikaText.textMenuPreferences,
             action: #selector(openPreferencesWindow(_:)),
             keyEquivalent: ","
         )
@@ -125,7 +133,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
         statusBarMenu.addItem(NSMenuItem.separator())
         statusBarMenu.addItem(
-            withTitle: NSLocalizedString("menu.quit", comment: "Quit Pika"),
+            withTitle: PikaText.textMenuQuit,
             action: #selector(terminatePika(_:)),
             keyEquivalent: ""
         )
@@ -164,20 +172,37 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView]
             )
             aboutTouchBarController = SplashTouchBarController(window: aboutWindow)
-            aboutWindow.contentView = NSHostingView(rootView: AboutView())
+            aboutWindow.contentView = NSHostingView(rootView: AboutView().edgesIgnoringSafeArea(.all))
         }
         aboutWindow.makeKeyAndOrderFront(nil)
     }
 
     @IBAction func openPreferencesWindow(_: Any?) {
         if preferencesWindow == nil {
+            let view = NSHostingView(rootView: PreferencesView()
+                .edgesIgnoringSafeArea(.all)
+                .frame(
+                    minWidth: 750,
+                    maxWidth: .infinity,
+                    minHeight: 0,
+                    maxHeight: windowManager.screenHeight,
+                    alignment: .topLeading
+                )
+                .fixedSize(horizontal: false, vertical: true)
+                .environmentObject(eyedroppers)
+                .environmentObject(windowManager))
             preferencesWindow = PikaWindow.createSecondaryWindow(
                 title: "Preferences",
-                size: NSRect(x: 0, y: 0, width: 550, height: 450),
+                size: NSRect(x: 0, y: 0, width: 750, height: view.fittingSize.height),
                 styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView]
             )
-            preferencesWindow.contentView = NSHostingView(rootView: PreferencesView())
+
+            let toolbarHeight: CGFloat = preferencesWindow.frame.height - preferencesWindow.contentLayoutRect.height
+            windowManager.toolbarPadding = toolbarHeight
+
+            preferencesWindow.contentView = view
         }
+
         preferencesWindow.makeKeyAndOrderFront(nil)
         notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerPreferences), object: self)
     }
@@ -190,7 +215,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 styleMask: [.titled, .fullSizeContentView]
             )
             if #available(OSX 11.0, *) {
-                splashWindow.title = NSLocalizedString("app.name", comment: "Pika")
+                splashWindow.title = PikaText.textAppName
                 splashWindow.titleVisibility = .visible
             }
             splashTouchBarController = SplashTouchBarController(window: splashWindow)
@@ -217,6 +242,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     @IBAction func triggerSwap(_: Any) {
         notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerSwap), object: self)
+    }
+
+    @IBAction func triggerUndo(_: Any) {
+        undoManager.undo()
+    }
+
+    @IBAction func triggerRedo(_: Any) {
+        undoManager.redo()
     }
 
     @IBAction func triggerCopyText(_: Any) {

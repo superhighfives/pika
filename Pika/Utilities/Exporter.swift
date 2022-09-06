@@ -1,33 +1,33 @@
 import Foundation
 
 class Exporter {
-    static func toText(_ foreground: Eyedropper, _ background: Eyedropper) -> String {
+    static func toText(foreground: Eyedropper, background: Eyedropper, style: CopyFormat) -> String {
         let colorWCAGCompliance = foreground.color.toWCAGCompliance(with: background.color)
         let colorContrastRatio = foreground.color.toContrastRatioString(with: background.color)
 
-        let foregroundHex = foreground.color.toFormat(format: ColorFormat.hex)
-        let foregroundRgb = foreground.color.toFormat(format: ColorFormat.rgb)
-        let foregroundHsb = foreground.color.toFormat(format: ColorFormat.hsb)
-        let foregroundHsl = foreground.color.toFormat(format: ColorFormat.hsl)
+        let foregroundHex = foreground.color.toFormat(format: ColorFormat.hex, style: style)
+        let foregroundRgb = foreground.color.toFormat(format: ColorFormat.rgb, style: style)
+        let foregroundHsb = foreground.color.toFormat(format: ColorFormat.hsb, style: style)
+        let foregroundHsl = foreground.color.toFormat(format: ColorFormat.hsl, style: style)
 
-        let backgroundHex = background.color.toFormat(format: ColorFormat.hex)
-        let backgroundRgb = background.color.toFormat(format: ColorFormat.rgb)
-        let backgroundHsb = background.color.toFormat(format: ColorFormat.hsb)
-        let backgroundHsl = background.color.toFormat(format: ColorFormat.hsl)
-        let passMessage = NSLocalizedString("color.wcag.pass", comment: "Pass")
-        let failMessage = NSLocalizedString("color.wcag.fail", comment: "Fail")
+        let backgroundHex = background.color.toFormat(format: ColorFormat.hex, style: style)
+        let backgroundRgb = background.color.toFormat(format: ColorFormat.rgb, style: style)
+        let backgroundHsb = background.color.toFormat(format: ColorFormat.hsb, style: style)
+        let backgroundHsl = background.color.toFormat(format: ColorFormat.hsl, style: style)
+        let passMessage = PikaText.textColorPass
+        let failMessage = PikaText.textColorFail
 
         // swiftlint:disable line_length
         return """
-        \(NSLocalizedString("color.foreground", comment: "Foreground")): \(foregroundHex) · \(foregroundRgb) · \(foregroundHsb) · \(foregroundHsl)
-        \(NSLocalizedString("color.background", comment: "Background")): \(backgroundHex) · \(backgroundRgb) · \(backgroundHsb) · \(backgroundHsl)
-        \(NSLocalizedString("color.ratio", comment: "Contrast Ratio")): \(colorContrastRatio):1
-        \(NSLocalizedString("color.wcag", comment: "WCAG Compliance")): AA Large (\(colorWCAGCompliance.ratio30 ? passMessage : failMessage)) · AA / AAA Large (\(colorWCAGCompliance.ratio45 ? passMessage : failMessage)) · AAA (\(colorWCAGCompliance.ratio70 ? passMessage : failMessage)) · Non-text (\(colorWCAGCompliance.ratio30 ? passMessage : failMessage))
+        \(PikaText.textColorForeground): Hex \(foregroundHex) · RGB \(foregroundRgb) · HSB \(foregroundHsb) · HSL \(foregroundHsl)
+        \(PikaText.textColorBackground): Hex \(backgroundHex) · RGB \(backgroundRgb) · HSB \(backgroundHsb) · HSL \(backgroundHsl)
+        \(PikaText.textColorRatio): \(colorContrastRatio):1
+        \(PikaText.textColorWCAG): AA Large (\(colorWCAGCompliance.ratio30 ? passMessage : failMessage)) · AA / AAA Large (\(colorWCAGCompliance.ratio45 ? passMessage : failMessage)) · AAA (\(colorWCAGCompliance.ratio70 ? passMessage : failMessage)) · Non-text (\(colorWCAGCompliance.ratio30 ? passMessage : failMessage))
         """
         // swiftlint:enable  line_length
     }
 
-    static func toJSON(_ foreground: Eyedropper, _ background: Eyedropper) -> String {
+    static func toJSON(foreground: Eyedropper, background: Eyedropper, style: CopyFormat) -> String {
         let colorWCAGCompliance = foreground.color.toWCAGCompliance(with: background.color)
         let colorContrastRatio = foreground.color.toContrastRatioString(with: background.color)
 
@@ -35,17 +35,17 @@ class Exporter {
         {
           "colors": {
             "foreground": {
-              "hex": "\(foreground.color.toFormat(format: ColorFormat.hex))",
-              "rgb": "\(foreground.color.toFormat(format: ColorFormat.rgb))",
-              "hsb": "\(foreground.color.toFormat(format: ColorFormat.hsb))",
-              "hsl": "\(foreground.color.toFormat(format: ColorFormat.hsl))",
+              "hex": "\(foreground.color.toFormat(format: ColorFormat.hex, style: style))",
+              "rgb": "\(foreground.color.toFormat(format: ColorFormat.rgb, style: style))",
+              "hsb": "\(foreground.color.toFormat(format: ColorFormat.hsb, style: style))",
+              "hsl": "\(foreground.color.toFormat(format: ColorFormat.hsl, style: style))",
               "name": "\(foreground.getClosestColor())"
             },
             "background": {
-              "hex": "\(background.color.toFormat(format: ColorFormat.hex))",
-              "rgb": "\(background.color.toFormat(format: ColorFormat.rgb))",
-              "hsb": "\(background.color.toFormat(format: ColorFormat.hsb))",
-              "hsl": "\(background.color.toFormat(format: ColorFormat.hsl))",
+              "hex": "\(background.color.toFormat(format: ColorFormat.hex, style: style))",
+              "rgb": "\(background.color.toFormat(format: ColorFormat.rgb, style: style))",
+              "hsb": "\(background.color.toFormat(format: ColorFormat.hsb, style: style))",
+              "hsl": "\(background.color.toFormat(format: ColorFormat.hsl, style: style))",
               "name": "\(background.getClosestColor())"
             }
           },

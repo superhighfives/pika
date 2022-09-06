@@ -38,5 +38,144 @@ enum PikaConstants {
     static let ncTriggerPickForeground = "triggerPickForeground"
     static let ncTriggerPickBackground = "triggerPickBackground"
     static let ncTriggerSwap = "triggerSwap"
+    static let ncTriggerUndo = "triggerUndo"
+    static let ncTriggerRedo = "triggerRedo"
     static let ncTriggerPreferences = "triggerPreferences"
+}
+
+enum PikaText {
+    static let textAppName = NSLocalizedString("app.name", comment: "Pika")
+
+    /*
+     * Colors
+     */
+
+    static let textColorForeground = NSLocalizedString("color.foreground", comment: "Foreground")
+    static let textColorBackground = NSLocalizedString("color.background", comment: "Background")
+    static let textColorPass = NSLocalizedString("color.wcag.pass", comment: "Pass")
+    static let textColorFail = NSLocalizedString("color.wcag.fail", comment: "Fail")
+    static let textColorRatio = NSLocalizedString("color.ratio", comment: "Contrast Ratio")
+    static let textColorWCAG = NSLocalizedString("color.wcag", comment: "WCAG Compliance")
+    static let textColorWCAG30 = NSLocalizedString("color.wcag.30", comment: "WCAG 3:1")
+    static let textColorWCAG45 = NSLocalizedString("color.wcag.45", comment: "WCAG 4.5:1")
+    static let textColorWCAG70 = NSLocalizedString("color.wcag.70", comment: "WCAG 7:1")
+    static let textColorSwap = NSLocalizedString("color.swap", comment: "Swap")
+    static let textColorSwapDetail = NSLocalizedString("color.swap.detail", comment: "Swap colors")
+    static let textColorUndo = NSLocalizedString("color.undo", comment: "Undo")
+    static let textColorRedo = NSLocalizedString("color.redo", comment: "Redo")
+    static let textColorCopy = NSLocalizedString("color.copy", comment: "Copy")
+    static let textColorCopied = NSLocalizedString("color.copy.toast", comment: "Copied")
+
+    /*
+     * Menu
+     */
+
+    static let textMenuAbout = NSLocalizedString("menu.about", comment: "About")
+    static let textMenuUpdates = NSLocalizedString("menu.updates", comment: "Check for updates")
+    static let textMenuPreferences = NSLocalizedString("menu.preferences", comment: "Preferences")
+    static let textMenuQuit = NSLocalizedString("menu.quit", comment: "Quit Pika")
+
+    // Navigation
+    static let textMenuCopyAllAsText = NSLocalizedString("color.copy.text", comment: "Copy all as text")
+    static let textMenuCopyAllAsJSON = NSLocalizedString("color.copy.data", comment: "Copy all as JSON")
+
+    /*
+     * Touchbar
+     */
+
+    static let textColorNormal = NSLocalizedString("color.wcag.normal", comment: "Normal")
+    static let textColorLargeAbbr = NSLocalizedString("color.wcag.large.abbr", comment: "LG")
+    static let textColorLarge = NSLocalizedString("color.wcag.large", comment: "Large")
+
+    /*
+     * Splash
+     */
+
+    static let textSplashLaunch = NSLocalizedString("splash.hotkey", comment: "Global shortcut")
+    static let textSplashHotkey = NSLocalizedString("splash.launch", comment: "Launch at login")
+    static let textSplashStart = NSLocalizedString("splash.start", comment: "Get started")
+
+    /*
+     * About
+     */
+
+    static let textAboutWebsite = NSLocalizedString("app.website", comment: "Website")
+    static let textAboutGitHub = NSLocalizedString("app.github", comment: "GitHub")
+    static let textAboutBy = NSLocalizedString("app.designed", comment: "Designed by")
+    static let textAboutVersion = NSLocalizedString("app.version", comment: "Version")
+    static let textAboutBuild = NSLocalizedString("app.build", comment: "Build")
+    static let textAboutUnknown = NSLocalizedString("app.unknown", comment: "Unknown")
+
+    // Keyboard shortcuts
+    static let textPickForeground = NSLocalizedString("color.pick.foreground", comment: "Pick foreground")
+    static let textPickBackground = NSLocalizedString("color.pick.background", comment: "Pick background")
+    static let textCopyForeground = NSLocalizedString("color.copy.foreground", comment: "Copy foreground")
+    static let textCopyBackground = NSLocalizedString("color.copy.background", comment: "Copy background")
+
+    /*
+     * Preferences
+     */
+
+    // General Settings
+    static let textGeneralTitle = NSLocalizedString("preferences.general.title", comment: "General Settings")
+    static let textLaunchDescription = NSLocalizedString(
+        "preferences.launch.description",
+        comment: "Launch at login"
+    )
+    static let textIconDescription = NSLocalizedString(
+        "preferences.icon.description",
+        comment: "Hide menu bar icon"
+    )
+    static let textBetaDescription = NSLocalizedString(
+        "preferences.beta.description",
+        comment: "Subscribe to beta releases"
+    )
+    static let textSelectionTitle = NSLocalizedString("preferences.selection.title", comment: "Selection Settings")
+    static let textPickHide = NSLocalizedString("preferences.pick.hide", comment: "Hide Pika while picking")
+    static let textColorNamesDescription = NSLocalizedString(
+        "preferences.names.description",
+        comment: "Hide color names"
+    )
+
+    // Appearance Settings
+    static let textAppearanceTitle = NSLocalizedString("preferences.appearance.title", comment: "Appearance")
+    static let textAppearanceWeightTitle = NSLocalizedString("preferences.appearance.weight.title", comment: "Weight")
+    static let textAppearanceWeightDescription = NSLocalizedString(
+        "preferences.appearance.weight.description",
+        comment: "View WCAG compliance by weight, from normal to large"
+    )
+    static let textAppearanceContrastTitle = NSLocalizedString(
+        "preferences.appearance.contrast.title",
+        comment: "Contrast"
+    )
+    static let textAppearanceContrastDescription = NSLocalizedString(
+        "preferences.appearance.contrast.description",
+        comment: "View WCAG compliance by contrast, from 3:1 to 7:1"
+    )
+
+    // Copy Settings
+    static let textCopyTitle = NSLocalizedString("preferences.copy.title", comment: "Copy Settings")
+    static let textCopyExport = NSLocalizedString("preferences.copy.export", comment: "Export color for")
+    static let textCopyExportExample = NSLocalizedString("preferences.copy.export.example", comment: "Export example")
+    static let textCopyFormat = NSLocalizedString("preferences.copy.format", comment: "Export Format")
+    static let textCopyAutomatic = NSLocalizedString(
+        "preferences.copy.automatic",
+        comment: "Automatically copy color to clipboard on pick"
+    )
+
+    // Color Format
+    static let textFormatTitle = NSLocalizedString("preferences.format.title", comment: "Color Format")
+    static let textFormatDescription = NSLocalizedString(
+        "preferences.space.description",
+        comment: "Set your RGB color space"
+    )
+    static let textSpaceTitle = NSLocalizedString("preferences.space.title", comment: "Color Space")
+    static let textSystemDefault = NSLocalizedString("preferences.space.default", comment: "System Default")
+
+    // Global Shortcut
+    static let textHotkeyTitle = NSLocalizedString("preferences.hotkey.title", comment: "Global Shortcut")
+    static let textHotkeyDescription = NSLocalizedString(
+        "preferences.hotkey.description",
+        comment: "Set a global hotkey shortcut to invoke Pika"
+    )
 }

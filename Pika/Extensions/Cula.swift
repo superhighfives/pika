@@ -5,7 +5,9 @@ import SwiftUI
 // swiftlint:disable identifier_name
 
 extension NSColor {
-    // Initialisers
+    /*
+     * Initialisers
+     */
 
     convenience init(r: CGFloat, g: CGFloat, b: CGFloat, a: CGFloat = 1) {
         if (r > 1) || (g > 1) || (b > 1) {
@@ -25,7 +27,7 @@ extension NSColor {
         var hex = hex.replacingOccurrences(of: "#", with: "")
 
         guard hex.count == 3 || hex.count == 6 else {
-            fatalError("fatalError(Sweetercolor): Hex characters must be either 3 or 6 characters.")
+            fatalError("Hex characters must be either 3 or 6 characters.")
         }
 
         if hex.count == 3 {
@@ -46,7 +48,10 @@ extension NSColor {
         self.init(red: R, green: G, blue: B, alpha: alpha)
     }
 
-    // Utils
+    /*
+     * Utilities
+     */
+
     internal func clip<T: Comparable>(_ v: T, _ minimum: T, _ maximum: T) -> T {
         max(min(v, maximum), minimum)
     }
@@ -76,29 +81,9 @@ extension NSColor {
         return 0.2126 * lumHelper(c: rgba.r) + 0.7152 * lumHelper(c: rgba.g) + 0.0722 * lumHelper(c: rgba.b)
     }
 
-    // Color modification
-
-    func overlay(with color: NSColor) -> NSColor {
-        let mainRGBA = toRGBAComponents()
-        let maskRGBA = color.toRGBAComponents()
-
-        func masker(a: CGFloat, b: CGFloat) -> CGFloat {
-            if a < 0.5 {
-                return 2 * a * b
-            } else {
-                return 1 - (2 * (1 - a) * (1 - b))
-            }
-        }
-
-        return NSColor(
-            r: masker(a: mainRGBA.r, b: maskRGBA.r),
-            g: masker(a: mainRGBA.g, b: maskRGBA.g),
-            b: masker(a: mainRGBA.b, b: maskRGBA.b),
-            a: masker(a: mainRGBA.a, b: maskRGBA.a)
-        )
-    }
-
-    //  Hex
+    /*
+     * Hex
+     */
 
     internal func roundToHex(_ x: CGFloat) -> UInt32 {
         guard x > 0 else { return 0 }
@@ -107,23 +92,26 @@ extension NSColor {
         return UInt32(rounded)
     }
 
-    func toHexString(hideFormat: Bool = false) -> String {
-        String(format: hideFormat ? "%06x" : "#%06x", toHex())
-    }
-
     func toHex() -> UInt32 {
         let rgba = toRGBAComponents()
 
         return roundToHex(rgba.r) << 16 | roundToHex(rgba.g) << 8 | roundToHex(rgba.b)
     }
 
-    // RGBA
+    func toHexString(style: CopyFormat = .css) -> String {
+        String(format: style == .css ? "#%06x" : "%06x", toHex())
+    }
+
+    /*
+     * RGBA
+     */
+
     // swiftlint:disable large_tuple
     final func toRGBAComponents() -> (r: CGFloat, g: CGFloat, b: CGFloat, a: CGFloat) {
         var r: CGFloat = 0, g: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
 
         guard let rgbaColor = usingColorSpace(Defaults[.colorSpace]) else {
-            fatalError("Could not convert color to RGBA.")
+            fatalError("Could not convert color to RGBA")
         }
 
         rgbaColor.getRed(&r, green: &g, blue: &b, alpha: &a)
@@ -131,33 +119,26 @@ extension NSColor {
         return (r, g, b, a)
     }
 
-    // swiftlint:enable large_tuple
-
-    /**
-     Get the rgb values of this color.
-
-     - returns: An NSColor as an rgb string.
-     */
-    func toRGBString(hideFormat: Bool) -> String {
-        let RGB = toRGBAComponents()
-        let red = RGB.r
-        let green = RGB.g
-        let blue = RGB.b
-        let rgbString = NSString(format: hideFormat ? "%f, %f, %f" : "rgb(%f, %f, %f)", red, green, blue)
-        return rgbString as String
-    }
-
     /**
      Get the rgb values of this color in 8-bit format.
 
      - returns: An NSColor as an 8-bit rgb string.
      */
-    func toRGB8BitString(hideFormat: Bool) -> String {
+    func toRGBString(style: CopyFormat = .css) -> String {
         let RGB = toRGBAComponents()
         let red = Int(round(RGB.r * 255))
         let green = Int(round(RGB.g * 255))
         let blue = Int(round(RGB.b * 255))
-        let rgbString = NSString(format: hideFormat ? "%d, %d, %d" : "rgb(%d, %d, %d)", red, green, blue)
+
+        let formatString: NSString
+        switch style {
+        case .css, .design:
+            formatString = "rgb(%d, %d, %d)"
+        case .unformatted:
+            formatString = "%d, %d, %d"
+        }
+
+        let rgbString = NSString(format: formatString, red, green, blue)
         return rgbString as String
     }
 
@@ -174,7 +155,10 @@ extension NSColor {
         return [red, green, blue]
     }
 
-    // HSB
+    /*
+     * HSB
+     */
+
     // swiftlint:disable large_tuple
     public final func toHSBComponents() -> (h: CGFloat, s: CGFloat, b: CGFloat) {
         var h: CGFloat = 0.0
@@ -195,6 +179,35 @@ extension NSColor {
 
         return (h: h, s: s, b: b)
     }
+
+    /**
+     Get the hsb values of this color in 8-bit format.
+
+     - returns: An NSColor as an 8-bit hsb string.
+     */
+    func toHSBString(style: CopyFormat = .css) -> String {
+        let HSB = toHSBComponents()
+        let hue = Int(round(HSB.h * 360))
+        let saturation = Int(round(HSB.s * 100))
+        let brightness = Int(round(HSB.b * 100))
+
+        let formatString: NSString
+        switch style {
+        case .css:
+            formatString = "hsb(%d, %d%%, %d%%)"
+        case .design:
+            formatString = "hsb(%d, %d, %d)"
+        case .unformatted:
+            formatString = "%d, %d, %d"
+        }
+
+        let hsbString = NSString(format: formatString, hue, saturation, brightness)
+        return hsbString as String
+    }
+
+    /*
+     * HSL
+     */
 
     public final func toHSLComponents() -> (h: CGFloat, s: CGFloat, l: CGFloat) {
         var h: CGFloat = 0.0
@@ -247,81 +260,50 @@ extension NSColor {
         return (h: h, s: s, l: l)
     }
 
-    // swiftlint:enable large_tuple
-
-    /**
-     Get the hsb values of this color.
-
-     - returns: An NSColor as an hsb string.
-     */
-    func toHSBString(hideFormat: Bool) -> String {
-        let HSB = toHSBComponents()
-        let hue = HSB.h
-        let saturation = HSB.s
-        let brightness = HSB.b
-        let hsbString = NSString(format: hideFormat ? "%f, %f, %f" : "hsb(%f, %f, %f)", hue, saturation, brightness)
-        return hsbString as String
-    }
-
-    /**
-     Get the hsb values of this color in 8-bit format.
-
-     - returns: An NSColor as an 8-bit hsb string.
-     */
-    func toHSB8BitString(hideFormat: Bool) -> String {
-        let HSB = toHSBComponents()
-        let hue = Int(round(HSB.h * 360))
-        let saturation = Int(round(HSB.s * 100))
-        let brightness = Int(round(HSB.b * 100))
-        let hsbString = NSString(format: hideFormat ? "%d, %d, %d" : "hsb(%d, %d, %d)", hue, saturation, brightness)
-        return hsbString as String
-    }
-
-    // HSL
-
-    /**
-     Get the hsl values of this color.
-
-     - returns: An NSColor as an hsl string.
-     */
-    func toHSLString(hideFormat: Bool) -> String {
-        let HSL = toHSLComponents()
-        let hue = HSL.h
-        let saturation = HSL.s
-        let lightness = HSL.l
-        let hslString = NSString(format: hideFormat ? "%f, %f, %f" : "hsl(%f, %f, %f)", hue, saturation, lightness)
-        return hslString as String
-    }
-
     /**
      Get the hsl values of this color in 8-bit format.
 
      - returns: An NSColor as an 8-bit hsl string.
      */
-    func toHSL8BitString(hideFormat: Bool) -> String {
+    func toHSLString(style: CopyFormat = .css) -> String {
         let HSL = toHSLComponents()
         let hue = Int(round(HSL.h * 360))
         let saturation = Int(round(HSL.s * 100))
         let lightness = Int(round(HSL.l * 100))
-        let hslString = NSString(format: hideFormat ? "%d, %d, %d" : "hsl(%d, %d, %d)", hue, saturation, lightness)
+
+        let formatString: NSString
+        switch style {
+        case .css:
+            formatString = "hsl(%d, %d%%, %d%%)"
+        case .design:
+            formatString = "hsl(%d, %d, %d)"
+        case .unformatted:
+            formatString = "%d, %d, %d"
+        }
+
+        let hslString = NSString(format: formatString, hue, saturation, lightness)
         return hslString as String
     }
+
+    /*
+     * Helpers
+     */
 
     /**
      Returns hex and string formats of each color
 
      - returns: A string of the color depending on the provided format.
      */
-    func toFormat(format: ColorFormat, hideFormat: Bool = false) -> String {
+    func toFormat(format: ColorFormat, style: CopyFormat = .css) -> String {
         switch format {
         case .hex:
-            return toHexString(hideFormat: hideFormat)
+            return toHexString(style: style)
         case .rgb:
-            return toRGB8BitString(hideFormat: hideFormat)
+            return toRGBString(style: style)
         case .hsb:
-            return toHSB8BitString(hideFormat: hideFormat)
+            return toHSBString(style: style)
         case .hsl:
-            return toHSL8BitString(hideFormat: hideFormat)
+            return toHSLString(style: style)
         }
     }
 
