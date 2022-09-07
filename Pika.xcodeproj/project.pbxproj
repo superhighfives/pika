@@ -68,6 +68,7 @@
 /* Begin PBXFileReference section */
 		221600F825A62E5B00B8B7D9 /* IconImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconImage.swift; sourceTree = "<group>"; };
 		221600FC25A636D600B8B7D9 /* ConditionalModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionalModifier.swift; sourceTree = "<group>"; };
+		2252655D28C8F048009E48FC /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		226FD60F25A940F90021A67F /* VisualEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffect.swift; sourceTree = "<group>"; };
 		22903B0228294F49004BB9F0 /* ColorExampleRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExampleRow.swift; sourceTree = "<group>"; };
 		22D28DB62862377F00FC7DD4 /* OverflowContentViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverflowContentViewModifier.swift; sourceTree = "<group>"; };
@@ -342,6 +343,7 @@
 				en,
 				Base,
 				fr,
+				nl,
 			);
 			mainGroup = EAD0B6BF259CED1C00FA2F67;
 			packageReferences = (
@@ -475,6 +477,7 @@
 			children = (
 				EA424CDF25CF0328009056A9 /* en */,
 				92D97C2125FF7A5A007CCDE4 /* fr */,
+				2252655D28C8F048009E48FC /* nl */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
