@@ -33,12 +33,12 @@
                                             <menu key="submenu" title="Services" systemMenu="services" id="hz9-B4-Xy5"/>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" hidden="YES" id="4je-JR-u6R"/>
-                                        <menuItem title="Hide Pika" hidden="YES" enabled="NO" keyEquivalent="h" id="Olw-nP-bQN">
+                                        <menuItem title="Hide Pika" hidden="YES" enabled="NO" keyEquivalent="h" allowsKeyEquivalentWhenHidden="YES" id="Olw-nP-bQN">
                                             <connections>
                                                 <action selector="hide:" target="Ady-hI-5gd" id="PnN-Uc-m68"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Hide Others" hidden="YES" enabled="NO" keyEquivalent="h" id="Vdr-fp-XzO">
+                                        <menuItem title="Hide Others" hidden="YES" enabled="NO" keyEquivalent="h" allowsKeyEquivalentWhenHidden="YES" id="Vdr-fp-XzO">
                                             <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
                                             <connections>
                                                 <action selector="hideOtherApplications:" target="Ady-hI-5gd" id="VT4-aY-XCT"/>

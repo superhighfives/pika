@@ -37,4 +37,7 @@ extension Defaults.Keys {
     static let hideColorNames = Key<Bool>("hideColorNames", default: false)
     static let formatColorsForCSS = Key<Bool>("formatColorsForCSS", default: false)
     static let copyFormat = Key<CopyFormat>("copyFormat", default: .css)
+    static let appInDock = Key<Bool>("appInDock", default: false)
+    static let appInMenuBar = Key<Bool>("appInMenuBar", default: true)
+    static let appFloating = Key<Bool>("appFloating", default: true)
 }

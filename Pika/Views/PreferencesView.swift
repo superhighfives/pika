@@ -10,6 +10,9 @@ struct PreferencesView: View {
     @Default(.hidePikaWhilePicking) var hidePikaWhilePicking
     @Default(.copyColorOnPick) var copyColorOnPick
     @Default(.copyFormat) var copyFormat
+    @Default(.appInDock) var appInDock
+    @Default(.appInMenuBar) var appInMenuBar
+    @Default(.appFloating) var appFloating
     @State var colorSpace: NSColorSpace = Defaults[.colorSpace]
     @State private var viewHeight: CGFloat = 0.0
 
@@ -75,6 +78,18 @@ struct PreferencesView: View {
                         }
                         Toggle(isOn: $betaUpdates) {
                             Text(PikaText.textBetaDescription)
+                        }
+                        Toggle(isOn: $appInDock) {
+                            Text("App In Dock")
+                            // TODO: Fix
+                        }
+                        Toggle(isOn: $appInMenuBar) {
+                            Text("App In Menu Bar")
+                            // TODO: Fix
+                        }
+                        Toggle(isOn: $appFloating) {
+                            Text("App Floating")
+                            // TODO: Fix
                         }
                     }
                     .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)

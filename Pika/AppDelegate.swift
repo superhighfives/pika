@@ -24,22 +24,28 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     let notificationCenter = NotificationCenter.default
 
     func applicationDidFinishLaunching(_: Notification) {
-        // Set up status bar and menu
-        let statusBar = NSStatusBar.system
-        statusBarItem = statusBar.statusItem(withLength: CGFloat(NSStatusItem.variableLength))
-
-        if let button = statusBarItem.button {
-            button.image = NSImage(named: "StatusBarIcon")
-            button.action = #selector(statusBarClicked(sender:))
-            button.sendAction(on: [.leftMouseUp, .rightMouseUp])
+        if Defaults[.appInDock] == false {
+            NSApp.setActivationPolicy(.accessory)
         }
 
-        statusBarMenu = getStatusBarMenu()
+        if Defaults[.appInMenuBar] {
+            // Set up status bar and menu
+            let statusBar = NSStatusBar.system
+            statusBarItem = statusBar.statusItem(withLength: CGFloat(NSStatusItem.variableLength))
 
-        statusBarItem.isVisible = Defaults[.hideMenuBarIcon] == false
-        Defaults.observe(.hideMenuBarIcon) { change in
-            self.statusBarItem.isVisible = change.newValue == false
-        }.tieToLifetime(of: self)
+            if let button = statusBarItem.button {
+                button.image = NSImage(named: "StatusBarIcon")
+                button.action = #selector(statusBarClicked(sender:))
+                button.sendAction(on: [.leftMouseUp, .rightMouseUp])
+            }
+
+            statusBarMenu = getStatusBarMenu()
+
+            statusBarItem.isVisible = Defaults[.hideMenuBarIcon] == false
+            Defaults.observe(.hideMenuBarIcon) { change in
+                self.statusBarItem.isVisible = change.newValue == false
+            }.tieToLifetime(of: self)
+        }
 
         // Set up eyedroppers
         eyedroppers = Eyedroppers()

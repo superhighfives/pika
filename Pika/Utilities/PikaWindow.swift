@@ -1,4 +1,5 @@
 import Cocoa
+import Defaults
 import SwiftUI
 
 class PikaWindow {
@@ -12,7 +13,7 @@ class PikaWindow {
         window.isReleasedWhenClosed = false
         window.center()
         window.title = PikaText.textAppName
-        window.level = .floating
+        window.level = Defaults[.appFloating] ? .floating : .normal
         window.isMovableByWindowBackground = true
         window.standardWindowButton(NSWindow.ButtonType.zoomButton)!.isEnabled = false
         window.titlebarAppearsTransparent = true
@@ -46,7 +47,7 @@ class PikaWindow {
         )
         window.titleVisibility = .hidden
         window.titlebarAppearsTransparent = true
-        window.level = .floating
+        window.level = Defaults[.appFloating] ? .floating : .normal
         window.isMovableByWindowBackground = true
         window.center()
         window.setFrameAutosaveName("\(title) Window")
