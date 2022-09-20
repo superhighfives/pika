@@ -62,10 +62,10 @@
 "color.pick" = "Auswählen";
 
 /* Pick background */
-"color.pick.background" = "Hintergrund auswählen";
+"color.pick.background" = "Hintergrund auswählen ";
 
 /* Pick foreground */
-"color.pick.foreground" = "Vordergrund auswählen";
+"color.pick.foreground" = "Vordergrund auswählen ";
 
 /* Contrast ratio */
 "color.ratio" = "Kontrastverhältnis";
@@ -131,7 +131,7 @@
 "menu.quit" = "Beenden";
 
 /* Check for updates */
-"menu.updates" = "Updates überprüfen ...";
+"menu.updates" = "Updates überprüfen ";
 
 /* View WCAG compliance by contrast, from 3:1 to 7:1 */
 "preferences.appearance.contrast.description" = "WCAG-Konformität ansehen, von 3:1 bis 7:1";
