@@ -4,14 +4,12 @@ import LaunchAtLogin
 import SwiftUI
 
 struct PreferencesView: View {
-    @Default(.hideMenuBarIcon) var hideMenuBarIcon
     @Default(.hideColorNames) var hideColorNames
     @Default(.betaUpdates) var betaUpdates
     @Default(.hidePikaWhilePicking) var hidePikaWhilePicking
     @Default(.copyColorOnPick) var copyColorOnPick
     @Default(.copyFormat) var copyFormat
-    @Default(.appInDock) var appInDock
-    @Default(.appInMenuBar) var appInMenuBar
+    @Default(.appMode) var appMode
     @Default(.appFloating) var appFloating
     @State var colorSpace: NSColorSpace = Defaults[.colorSpace]
     @State private var viewHeight: CGFloat = 0.0
@@ -64,55 +62,69 @@ struct PreferencesView: View {
             ))
 
             Divider()
+
             VStack(alignment: .leading, spacing: 0) {
                 // General Settings
 
-                HStack(alignment: .top, spacing: 0) {
-                    VStack(alignment: .leading, spacing: 10.0) {
-                        Text(PikaText.textGeneralTitle).font(.system(size: 16))
-                        LaunchAtLogin.Toggle {
-                            Text(PikaText.textLaunchDescription)
+                VStack(alignment: .leading, spacing: 0) {
+                    HStack(alignment: .top, spacing: 0) {
+                        VStack(alignment: .leading, spacing: 10.0) {
+                            Text(PikaText.textGeneralTitle).font(.system(size: 16))
+                            LaunchAtLogin.Toggle {
+                                Text(PikaText.textLaunchDescription)
+                            }
+                            Toggle(isOn: $betaUpdates) {
+                                Text(PikaText.textBetaDescription)
+                            }
                         }
-                        Toggle(isOn: $hideMenuBarIcon) {
-                            Text(PikaText.textIconDescription)
+                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                        .padding(.all, 24.0)
+
+                        Divider()
+
+                        VStack(alignment: .leading, spacing: 10.0) {
+                            Text(PikaText.textSelectionTitle).font(.system(size: 16))
+                            Toggle(isOn: $hidePikaWhilePicking) {
+                                Text(PikaText.textPickHide)
+                            }
+                            Toggle(isOn: $hideColorNames) {
+                                Text(PikaText.textColorNamesDescription)
+                            }
+                            Toggle(isOn: $appFloating) {
+                                // TODO: Fix
+                                Text("Float above windows")
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            }
                         }
-                        Toggle(isOn: $betaUpdates) {
-                            Text(PikaText.textBetaDescription)
-                        }
-                        Toggle(isOn: $appInDock) {
-                            Text("App In Dock")
-                            // TODO: Fix
-                        }
-                        Toggle(isOn: $appInMenuBar) {
-                            Text("App In Menu Bar")
-                            // TODO: Fix
-                        }
-                        Toggle(isOn: $appFloating) {
-                            Text("App Floating")
-                            // TODO: Fix
-                        }
+                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                        .padding(.all, 24.0)
                     }
-                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-                    .padding(.all, 24.0)
+                    .fixedSize(horizontal: false, vertical: true)
 
                     Divider()
+                        .padding(.bottom, 16.0)
 
                     VStack(alignment: .leading, spacing: 10.0) {
-                        Text(PikaText.textSelectionTitle).font(.system(size: 16))
-                        Toggle(isOn: $hidePikaWhilePicking) {
-                            Text(PikaText.textPickHide)
+                        HStack(alignment: .center, spacing: 8.0) {
+                            Text("App Settings").font(.system(size: 16))
+                            Text("Requires restart to take effect").font(.system(size: 12))
+                                .foregroundColor(.secondary)
                         }
-                        Toggle(isOn: $hideColorNames) {
-                            Text(PikaText.textColorNamesDescription)
+
+                        HStack(alignment: .top) {
+                            Picker("App Mode", selection: $appMode.onChange(perform: { Defaults[.appMode] = $0 })) {
+                                ForEach(AppMode.allCases, id: \.self) { value in
+                                    Text(value.localizedString())
+                                }
+                            }
                         }
+                        .frame(maxWidth: .infinity)
                     }
-                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-                    .padding(.all, 24.0)
+                    .padding(.horizontal, 24.0)
                 }
-                .fixedSize(horizontal: false, vertical: true)
 
                 Divider()
-                    .padding(.bottom, 16.0)
+                    .padding(.vertical, 16.0)
 
                 VStack(alignment: .leading, spacing: 10.0) {
                     Text(PikaText.textAppearanceTitle).font(.system(size: 16))
@@ -235,6 +247,6 @@ struct PreferencesView_Previews: PreviewProvider {
         PreferencesView()
             .environmentObject(Eyedroppers())
             .environmentObject(WindowManager())
-            .frame(width: 750, height: 700)
+            .frame(width: 750, height: 850)
     }
 }

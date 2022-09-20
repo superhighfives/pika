@@ -18,6 +18,10 @@ class PikaWindow {
         window.standardWindowButton(NSWindow.ButtonType.zoomButton)!.isEnabled = false
         window.titlebarAppearsTransparent = true
 
+        Defaults.observe(.appFloating) { change in
+            window.level = change.newValue == true ? .floating : .normal
+        }.tieToLifetime(of: self)
+
         // Set up toolbar
         window.toolbar = NSToolbar()
         if #available(OSX 11.0, *) {
@@ -47,7 +51,7 @@ class PikaWindow {
         )
         window.titleVisibility = .hidden
         window.titlebarAppearsTransparent = true
-        window.level = Defaults[.appFloating] ? .floating : .normal
+        window.level = .normal
         window.isMovableByWindowBackground = true
         window.center()
         window.setFrameAutosaveName("\(title) Window")

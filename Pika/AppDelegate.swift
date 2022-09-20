@@ -24,28 +24,27 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     let notificationCenter = NotificationCenter.default
 
     func applicationDidFinishLaunching(_: Notification) {
-        if Defaults[.appInDock] == false {
-            NSApp.setActivationPolicy(.accessory)
+        NSApp.setActivationPolicy(Defaults[.appMode] == .regular ? .regular : .accessory)
+        Defaults.observe(.appMode) { change in
+            NSApp.setActivationPolicy(change.newValue == .regular ? .regular : .accessory)
+        }.tieToLifetime(of: self)
+
+        // Set up status bar and menu
+        let statusBar = NSStatusBar.system
+        statusBarItem = statusBar.statusItem(withLength: CGFloat(NSStatusItem.variableLength))
+
+        if let button = statusBarItem.button {
+            button.image = NSImage(named: "StatusBarIcon")
+            button.action = #selector(statusBarClicked(sender:))
+            button.sendAction(on: [.leftMouseUp, .rightMouseUp])
         }
 
-        if Defaults[.appInMenuBar] {
-            // Set up status bar and menu
-            let statusBar = NSStatusBar.system
-            statusBarItem = statusBar.statusItem(withLength: CGFloat(NSStatusItem.variableLength))
+        statusBarMenu = getStatusBarMenu()
 
-            if let button = statusBarItem.button {
-                button.image = NSImage(named: "StatusBarIcon")
-                button.action = #selector(statusBarClicked(sender:))
-                button.sendAction(on: [.leftMouseUp, .rightMouseUp])
-            }
-
-            statusBarMenu = getStatusBarMenu()
-
-            statusBarItem.isVisible = Defaults[.hideMenuBarIcon] == false
-            Defaults.observe(.hideMenuBarIcon) { change in
-                self.statusBarItem.isVisible = change.newValue == false
-            }.tieToLifetime(of: self)
-        }
+        statusBarItem.isVisible = Defaults[.appMode] == .menubar
+        Defaults.observe(.appMode) { change in
+            self.statusBarItem.isVisible = change.newValue == .menubar
+        }.tieToLifetime(of: self)
 
         // Set up eyedroppers
         eyedroppers = Eyedroppers()
