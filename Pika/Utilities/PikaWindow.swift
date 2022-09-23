@@ -42,7 +42,12 @@ class PikaWindow {
         return window
     }
 
-    static func createSecondaryWindow(title: String, size: NSRect, styleMask: NSWindow.StyleMask) -> NSWindow {
+    static func createSecondaryWindow(
+        title: String,
+        size: NSRect,
+        styleMask: NSWindow.StyleMask,
+        maxHeight _: Int? = nil
+    ) -> NSWindow {
         let window = NSWindow(
             contentRect: size,
             styleMask: styleMask,

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		220D5E9428DB154300B6285E /* AppModeButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220D5E9328DB154300B6285E /* AppModeButtons.swift */; };
+		220D5E9828DB158400B6285E /* AppModeToggleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220D5E9728DB158400B6285E /* AppModeToggleGroup.swift */; };
 		221600F925A62E5B00B8B7D9 /* IconImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221600F825A62E5B00B8B7D9 /* IconImage.swift */; };
 		221600FD25A636D600B8B7D9 /* ConditionalModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221600FC25A636D600B8B7D9 /* ConditionalModifier.swift */; };
 		226FD61025A940F90021A67F /* VisualEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226FD60F25A940F90021A67F /* VisualEffect.swift */; };
@@ -66,6 +68,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		220D5E9328DB154300B6285E /* AppModeButtons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppModeButtons.swift; sourceTree = "<group>"; };
+		220D5E9728DB158400B6285E /* AppModeToggleGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppModeToggleGroup.swift; sourceTree = "<group>"; };
 		221600F825A62E5B00B8B7D9 /* IconImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconImage.swift; sourceTree = "<group>"; };
 		221600FC25A636D600B8B7D9 /* ConditionalModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionalModifier.swift; sourceTree = "<group>"; };
 		226FD60F25A940F90021A67F /* VisualEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffect.swift; sourceTree = "<group>"; };
@@ -255,8 +259,12 @@
 			isa = PBXGroup;
 			children = (
 				EAD0B6F3259CF29300FA2F67 /* AboutView.swift */,
+				220D5E9328DB154300B6285E /* AppModeButtons.swift */,
+				220D5E9728DB158400B6285E /* AppModeToggleGroup.swift */,
 				EAD0B6F5259CF29300FA2F67 /* AppVersion.swift */,
+				22903B0228294F49004BB9F0 /* ColorExampleRow.swift */,
 				EA635DE025B4FC580014D91A /* ColorPickers.swift */,
+				EABAEADF284D50D1000716AE /* ComplianceButtons.swift */,
 				EA801284259F8F480026D5D9 /* ComplianceToggle.swift */,
 				EA424C7C25CDEF98009056A9 /* ComplianceToggleGroup.swift */,
 				EAD0B6F6259CF29300FA2F67 /* ContentView.swift */,
@@ -275,8 +283,6 @@
 				EAF100CC25C785C4006E1EC3 /* TouchBarVisual.swift */,
 				226FD60F25A940F90021A67F /* VisualEffect.swift */,
 				EA0C524F25AA729300AFF716 /* Visualisation.swift */,
-				22903B0228294F49004BB9F0 /* ColorExampleRow.swift */,
-				EABAEADF284D50D1000716AE /* ComplianceButtons.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -427,6 +433,7 @@
 				EAF100C725C731AD006E1EC3 /* SplashTouchBar.swift in Sources */,
 				22D28DB72862377F00FC7DD4 /* OverflowContentViewModifier.swift in Sources */,
 				EAA8AE1C25B8F03B0049299B /* KeyboardShortcutGrid.swift in Sources */,
+				220D5E9828DB158400B6285E /* AppModeToggleGroup.swift in Sources */,
 				EA0C525025AA729300AFF716 /* Visualisation.swift in Sources */,
 				EAD0B6FB259CF29300FA2F67 /* ContentView.swift in Sources */,
 				EAD0B6CC259CED1C00FA2F67 /* AppDelegate.swift in Sources */,
@@ -437,6 +444,7 @@
 				EA7B199C25FBA0E600E06D9D /* ClosestVector.swift in Sources */,
 				EAD0B6F7259CF29300FA2F67 /* Eyedroppers.swift in Sources */,
 				EA0C526025AB5A2B00AFF716 /* NavigationMenuItems.swift in Sources */,
+				220D5E9428DB154300B6285E /* AppModeButtons.swift in Sources */,
 				EA0C526425AB5D1700AFF716 /* PikaWindow.swift in Sources */,
 				EABAEAE0284D50D1000716AE /* ComplianceButtons.swift in Sources */,
 				EAF100CD25C785C4006E1EC3 /* TouchBarVisual.swift in Sources */,

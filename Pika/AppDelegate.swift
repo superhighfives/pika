@@ -199,7 +199,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             preferencesWindow = PikaWindow.createSecondaryWindow(
                 title: "Preferences",
                 size: NSRect(x: 0, y: 0, width: 750, height: view.fittingSize.height),
-                styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView]
+                styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView],
+                maxHeight: 500
             )
 
             let toolbarHeight: CGFloat = preferencesWindow.frame.height - preferencesWindow.contentLayoutRect.height

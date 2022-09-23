@@ -105,20 +105,21 @@ struct PreferencesView: View {
                         .padding(.bottom, 16.0)
 
                     VStack(alignment: .leading, spacing: 10.0) {
-                        HStack(alignment: .center, spacing: 8.0) {
-                            Text("App Settings").font(.system(size: 16))
-                            Text("Requires restart to take effect").font(.system(size: 12))
-                                .foregroundColor(.secondary)
-                        }
+                        // TODO: Fix title
+                        Text("App Settings").font(.system(size: 16))
 
-                        HStack(alignment: .top) {
-                            Picker("App Mode", selection: $appMode.onChange(perform: { Defaults[.appMode] = $0 })) {
-                                ForEach(AppMode.allCases, id: \.self) { value in
-                                    Text(value.localizedString())
-                                }
+                        GeometryReader { geometry in
+                            let width = geometry.size.width
+                            let horizontalUnit = width / 2
+
+                            HStack(spacing: 20.0) {
+                                AppModeButtons(
+                                    width: horizontalUnit - 10
+                                )
                             }
+                            .frame(maxWidth: width)
                         }
-                        .frame(maxWidth: .infinity)
+                        .frame(height: 120)
                     }
                     .padding(.horizontal, 24.0)
                 }
