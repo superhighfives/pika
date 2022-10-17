@@ -27,6 +27,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         NSApp.setActivationPolicy(Defaults[.appMode] == .regular ? .regular : .accessory)
         Defaults.observe(.appMode) { change in
             NSApp.setActivationPolicy(change.newValue == .regular ? .regular : .accessory)
+            NSApp.activate(ignoringOtherApps: true)
         }.tieToLifetime(of: self)
 
         // Set up status bar and menu

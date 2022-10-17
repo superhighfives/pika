@@ -10,12 +10,11 @@ struct AppModeButtons: View {
             appMode = .menubar
         }, label: {
             AppModeToggleGroup(theme: .menubar)
-                .padding(20.0)
                 .frame(maxWidth: width, maxHeight: .infinity, alignment: .leading)
         })
             .buttonStyle(AppearanceButtonStyle(
-                title: PikaText.textAppearanceWeightTitle,
-                description: PikaText.textAppearanceWeightDescription,
+                title: "Menu Bar",
+                description: "Show in menu bar",
                 selected: appMode == .menubar
             ))
 
@@ -23,12 +22,11 @@ struct AppModeButtons: View {
             appMode = .regular
         }, label: {
             AppModeToggleGroup(theme: .regular)
-                .padding(20.0)
                 .frame(maxWidth: width, maxHeight: .infinity, alignment: .leading)
         })
             .buttonStyle(AppearanceButtonStyle(
-                title: PikaText.textAppearanceWeightTitle,
-                description: PikaText.textAppearanceWeightDescription,
+                title: "Dock",
+                description: "Show in dock",
                 selected: appMode == .regular
             ))
 
@@ -36,12 +34,11 @@ struct AppModeButtons: View {
             appMode = .hidden
         }, label: {
             AppModeToggleGroup(theme: .hidden)
-                .padding(20.0)
                 .frame(maxWidth: width, maxHeight: .infinity, alignment: .leading)
         })
             .buttonStyle(AppearanceButtonStyle(
-                title: PikaText.textAppearanceContrastTitle,
-                description: PikaText.textAppearanceContrastDescription,
+                title: "Hidden",
+                description: "Hide app",
                 selected: appMode == .hidden
             ))
     }

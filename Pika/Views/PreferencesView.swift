@@ -112,9 +112,9 @@ struct PreferencesView: View {
                             let width = geometry.size.width
                             let horizontalUnit = width / 2
 
-                            HStack(spacing: 20.0) {
+                            HStack(spacing: 16.0) {
                                 AppModeButtons(
-                                    width: horizontalUnit - 10
+                                    width: horizontalUnit - 8
                                 )
                             }
                             .frame(maxWidth: width)
@@ -134,16 +134,16 @@ struct PreferencesView: View {
                         let width = geometry.size.width
                         let horizontalUnit = width / 2
 
-                        HStack(spacing: 20.0) {
+                        HStack(spacing: 16.0) {
                             ComplianceButtons(
-                                width: horizontalUnit - 10,
+                                width: horizontalUnit - 8,
                                 foreground: eyedroppers.foreground,
                                 background: eyedroppers.background
                             )
                         }
                         .frame(maxWidth: width)
                     }
-                    .frame(height: 120)
+                    .frame(height: 100)
                 }
                 .padding(.horizontal, 24.0)
 

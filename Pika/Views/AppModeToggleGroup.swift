@@ -12,15 +12,15 @@ struct AppModeToggleGroup: View {
 
     var body: some View {
         if theme == .menubar {
-            HStack(spacing: 16.0) {}
+            Image("menubar")
         }
 
         if theme == .regular {
-            HStack(spacing: 12.0) {}
+            Image("dock")
         }
 
         if theme == .hidden {
-            HStack(spacing: 12.0) {}
+            Image("hidden")
         }
     }
 }
