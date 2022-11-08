@@ -21,6 +21,16 @@ struct AppearanceButtonStyle: ButtonStyle {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .overlay(
                     HStack {
+                        Rectangle()
+                            .fill(LinearGradient(
+                                gradient: .init(colors: colorScheme == .dark
+                                    ? [darkBaseColor.opacity(0.5), darkBaseColor.opacity(0)]
+                                    : [lightBaseColor.opacity(0.9), lightBaseColor.opacity(0)]
+                                ),
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            ))
+                            .frame(maxWidth: 25, maxHeight: .infinity)
                         Spacer()
                         Rectangle()
                             .fill(LinearGradient(
