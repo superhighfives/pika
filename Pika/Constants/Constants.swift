@@ -136,7 +136,20 @@ enum PikaText {
         "preferences.names.description",
         comment: "Hide color names"
     )
+    static let textFloatDescription = NSLocalizedString(
+      "preferences.float.description",
+      comment: "Float above windows"
+    )
 
+    // App Settings
+    static let textAppTitle = NSLocalizedString("preferences.app.title", comment: "App Settings")
+    static let textAppMenubarTitle = NSLocalizedString("preferences.app.menubar.title", comment: "Menu bar")
+    static let textAppMenubarDescription = NSLocalizedString("preferences.app.menubar.description", comment: "Show in menu bar")
+    static let textAppDockTitle = NSLocalizedString("preferences.app.dock.title", comment: "Dock")
+    static let textAppDockDescription = NSLocalizedString("preferences.app.dock.description", comment: "Show in dock")
+    static let textAppHiddenTitle = NSLocalizedString("preferences.app.hidden.title", comment: "Hidden")
+    static let textAppHiddenDescription = NSLocalizedString("preferences.app.hidden.description", comment: "Hide app")
+  
     // Appearance Settings
     static let textAppearanceTitle = NSLocalizedString("preferences.appearance.title", comment: "Appearance")
     static let textAppearanceWeightTitle = NSLocalizedString("preferences.appearance.weight.title", comment: "Weight")

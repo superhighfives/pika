@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="21225" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21225"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21507"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -22,9 +22,15 @@
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="VOq-y0-SEH"/>
-                                        <menuItem title="Preferences…" keyEquivalent="," allowsKeyEquivalentWhenHidden="YES" id="BOF-NM-1cW">
+                                        <menuItem title="Check for updates…" allowsKeyEquivalentWhenHidden="YES" id="BOF-NM-1cW">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="openPreferencesWindow:" target="Voe-Tx-rLC" id="GSl-43-Ntb"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Preferences…" keyEquivalent="," allowsKeyEquivalentWhenHidden="YES" id="NQA-cg-qc7">
+                                            <connections>
+                                                <action selector="openPreferencesWindow:" target="Voe-Tx-rLC" id="hP4-NV-Q37"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="wFC-TO-SCJ"/>
@@ -74,14 +80,27 @@
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="WRV-NI-Exz"/>
-                                        <menuItem title="Copy Foreground" keyEquivalent="c" allowsKeyEquivalentWhenHidden="YES" id="x3v-GG-iWU">
+                                        <menuItem title="Copy foreground" keyEquivalent="c" allowsKeyEquivalentWhenHidden="YES" id="x3v-GG-iWU">
                                             <connections>
                                                 <action selector="triggerCopyForeground:" target="Voe-Tx-rLC" id="ipW-BX-WJz"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Copy Background" keyEquivalent="C" allowsKeyEquivalentWhenHidden="YES" id="p7U-sR-JqZ">
+                                        <menuItem title="Copy background" keyEquivalent="C" allowsKeyEquivalentWhenHidden="YES" id="p7U-sR-JqZ">
                                             <connections>
                                                 <action selector="triggerCopyBackground:" target="Voe-Tx-rLC" id="x1x-3U-eq3"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="qXi-VF-aR5"/>
+                                        <menuItem title="Copy all as text" allowsKeyEquivalentWhenHidden="YES" id="D8e-06-QFY">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="triggerCopyBackground:" target="Voe-Tx-rLC" id="gum-gU-6N8"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Copy all as JSON" allowsKeyEquivalentWhenHidden="YES" id="U40-Ip-3Uj">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="triggerCopyBackground:" target="Voe-Tx-rLC" id="C9Z-dn-Ddu"/>
                                             </connections>
                                         </menuItem>
                                     </items>
@@ -102,7 +121,7 @@
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="DMb-e0-vJg"/>
-                                        <menuItem title="Swap Colors" keyEquivalent="X" allowsKeyEquivalentWhenHidden="YES" id="6j0-AT-P3M">
+                                        <menuItem title="Swap colors" keyEquivalent="X" allowsKeyEquivalentWhenHidden="YES" id="6j0-AT-P3M">
                                             <connections>
                                                 <action selector="triggerSwap:" target="Ady-hI-5gd" id="Gu5-Cw-s7r"/>
                                             </connections>

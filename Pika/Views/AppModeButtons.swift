@@ -6,6 +6,7 @@ struct AppModeButtons: View {
     var width: CGFloat
 
     var body: some View {
+        // TODO: Fix title
         Button(action: {
             appMode = .menubar
         }, label: {
@@ -17,7 +18,7 @@ struct AppModeButtons: View {
                 description: "Show in menu bar",
                 selected: appMode == .menubar
             ))
-
+        // TODO: Fix title
         Button(action: {
             appMode = .regular
         }, label: {
@@ -29,7 +30,7 @@ struct AppModeButtons: View {
                 description: "Show in dock",
                 selected: appMode == .regular
             ))
-
+        // TODO: Fix title
         Button(action: {
             appMode = .hidden
         }, label: {

@@ -7,9 +7,36 @@ struct AppearanceButtonStyle: ButtonStyle {
     var description: String
     var selected = false
 
+    let darkBaseColor = Color(red: 0.1, green: 0.1, blue: 0.1)
+    let lightBaseColor = Color(red: 0.975, green: 0.975, blue: 0.975)
+
+    func makeOverlay() -> some View {
+        HStack {
+            Rectangle()
+                .fill(LinearGradient(
+                    gradient: .init(colors: colorScheme == .dark
+                        ? [darkBaseColor.opacity(0.5), darkBaseColor.opacity(0)]
+                        : [lightBaseColor.opacity(0.9), lightBaseColor.opacity(0)]
+                    ),
+                    startPoint: .leading,
+                    endPoint: .trailing
+                ))
+                .frame(maxWidth: 25, maxHeight: .infinity)
+            Spacer()
+            Rectangle()
+                .fill(LinearGradient(
+                    gradient: .init(colors: colorScheme == .dark
+                        ? [darkBaseColor.opacity(0), darkBaseColor.opacity(0.5)]
+                        : [lightBaseColor.opacity(0), lightBaseColor.opacity(0.9)]
+                    ),
+                    startPoint: .leading,
+                    endPoint: .trailing
+                ))
+                .frame(maxWidth: 25, maxHeight: .infinity)
+        }
+    }
+
     func makeBody(configuration: Self.Configuration) -> some View {
-        let darkBaseColor = Color(red: 0.1, green: 0.1, blue: 0.1)
-        let lightBaseColor = Color(red: 0.975, green: 0.975, blue: 0.975)
         VStack {
             configuration.label
                 .background(LinearGradient(
@@ -20,29 +47,7 @@ struct AppearanceButtonStyle: ButtonStyle {
                 .animation(.easeInOut(duration: 0.1), value: configuration.isPressed)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .overlay(
-                    HStack {
-                        Rectangle()
-                            .fill(LinearGradient(
-                                gradient: .init(colors: colorScheme == .dark
-                                    ? [darkBaseColor.opacity(0.5), darkBaseColor.opacity(0)]
-                                    : [lightBaseColor.opacity(0.9), lightBaseColor.opacity(0)]
-                                ),
-                                startPoint: .leading,
-                                endPoint: .trailing
-                            ))
-                            .frame(maxWidth: 25, maxHeight: .infinity)
-                        Spacer()
-                        Rectangle()
-                            .fill(LinearGradient(
-                                gradient: .init(colors: colorScheme == .dark
-                                    ? [darkBaseColor.opacity(0), darkBaseColor.opacity(0.5)]
-                                    : [lightBaseColor.opacity(0), lightBaseColor.opacity(0.9)]
-                                ),
-                                startPoint: .leading,
-                                endPoint: .trailing
-                            ))
-                            .frame(maxWidth: 25, maxHeight: .infinity)
-                    }
+                    makeOverlay()
                 )
                 .clipShape(RoundedRectangle(cornerRadius: 10.0, style: .continuous))
                 .shadow(color: .black.opacity(colorScheme == .dark ? 0.25 : 0.1), radius: 2, x: 0, y: 2)
