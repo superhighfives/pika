@@ -3,82 +3,82 @@
 "1Xt-HY-uBw.title" = "Pika";
 
 /* Class = "NSMenuItem"; title = "Quit Pika"; ObjectID = "4sb-4s-VLi"; */
-"4sb-4s-VLi.title" = "Quit Pika";
+"4sb-4s-VLi.title" = "Quitter";
 
 /* Class = "NSMenuItem"; title = "Edit"; ObjectID = "5QF-Oa-p0T"; */
-"5QF-Oa-p0T.title" = "Edit";
+"5QF-Oa-p0T.title" = "Éditer";
 
 /* Class = "NSMenuItem"; title = "About Pika"; ObjectID = "5kV-Vb-QxS"; */
-"5kV-Vb-QxS.title" = "About Pika";
+"5kV-Vb-QxS.title" = "À propos";
 
 /* Class = "NSMenuItem"; title = "Redo"; ObjectID = "6dh-zS-Vam"; */
-"6dh-zS-Vam.title" = "Redo";
+"6dh-zS-Vam.title" = "Refaire";
 
 /* Class = "NSMenuItem"; title = "Swap colors"; ObjectID = "6j0-AT-P3M"; */
-"6j0-AT-P3M.title" = "Swap colors";
+"6j0-AT-P3M.title" = "Permuter les couleurs";
 
 /* Class = "NSMenu"; title = "Main Menu"; ObjectID = "AYu-sK-qS6"; */
-"AYu-sK-qS6.title" = "Main Menu";
+"AYu-sK-qS6.title" = "Menu principal";
 
 /* Class = "NSMenuItem"; title = "Check for updates…"; ObjectID = "BOF-NM-1cW"; */
-"BOF-NM-1cW.title" = "Check for updates…";
+"BOF-NM-1cW.title" = "Rechercher des mises à jour…";
 
 /* Class = "NSMenuItem"; title = "Copy all as text"; ObjectID = "D8e-06-QFY"; */
-"D8e-06-QFY.title" = "Copy all as text";
+"D8e-06-QFY.title" = "Tout copier sous forme de texte";
 
 /* Class = "NSMenu"; title = "Help"; ObjectID = "F2S-fz-NVQ"; */
-"F2S-fz-NVQ.title" = "Help";
+"F2S-fz-NVQ.title" = "Aider";
 
 /* Class = "NSMenuItem"; title = "Pika Website"; ObjectID = "FKE-Sm-Kum"; */
-"FKE-Sm-Kum.title" = "Pika Website";
+"FKE-Sm-Kum.title" = "Site web";
 
 /* Class = "NSMenu"; title = "Eyedroppers"; ObjectID = "KHB-9b-hO2"; */
-"KHB-9b-hO2.title" = "Eyedroppers";
+"KHB-9b-hO2.title" = "Sélection";
 
 /* Class = "NSMenuItem"; title = "Show All"; ObjectID = "Kd2-mp-pUS"; */
-"Kd2-mp-pUS.title" = "Show All";
+"Kd2-mp-pUS.title" = "Afficher tout";
 
 /* Class = "NSMenuItem"; title = "Services"; ObjectID = "NMo-om-nkz"; */
 "NMo-om-nkz.title" = "Services";
 
 /* Class = "NSMenuItem"; title = "Preferences…"; ObjectID = "NQA-cg-qc7"; */
-"NQA-cg-qc7.title" = "Preferences…";
+"NQA-cg-qc7.title" = "Préférences…";
 
 /* Class = "NSMenuItem"; title = "Pick foreground..."; ObjectID = "Nec-cr-B3a"; */
-"Nec-cr-B3a.title" = "Pick foreground...";
+"Nec-cr-B3a.title" = "Sélectionner un premier plan...";
 
 /* Class = "NSMenuItem"; title = "Hide Pika"; ObjectID = "Olw-nP-bQN"; */
-"Olw-nP-bQN.title" = "Hide Pika";
+"Olw-nP-bQN.title" = "Masquer Pika";
 
 /* Class = "NSMenuItem"; title = "Copy all as JSON"; ObjectID = "U40-Ip-3Uj"; */
-"U40-Ip-3Uj.title" = "Copy all as JSON";
+"U40-Ip-3Uj.title" = "Tout copier sous forme de JSON";
 
 /* Class = "NSMenuItem"; title = "Hide Others"; ObjectID = "Vdr-fp-XzO"; */
-"Vdr-fp-XzO.title" = "Hide Others";
+"Vdr-fp-XzO.title" = "Masquer les autres";
 
 /* Class = "NSMenu"; title = "Edit"; ObjectID = "W48-6f-4Dl"; */
-"W48-6f-4Dl.title" = "Edit";
+"W48-6f-4Dl.title" = "Éditer";
 
 /* Class = "NSMenuItem"; title = "Pick background..."; ObjectID = "YF5-6a-ACB"; */
-"YF5-6a-ACB.title" = "Pick background...";
+"YF5-6a-ACB.title" = "Sélectionner un arrière-plan...";
 
 /* Class = "NSMenuItem"; title = "Eyedroppers"; ObjectID = "dNS-BC-3MB"; */
-"dNS-BC-3MB.title" = "Eyedroppers";
+"dNS-BC-3MB.title" = "Sélection";
 
 /* Class = "NSMenuItem"; title = "Undo"; ObjectID = "dRJ-4n-Yzg"; */
-"dRJ-4n-Yzg.title" = "Undo";
+"dRJ-4n-Yzg.title" = "Annuler";
 
 /* Class = "NSMenu"; title = "Services"; ObjectID = "hz9-B4-Xy5"; */
-"hz9-B4-Xy5.title" = "Services";
+"hz9-B4-Xy5.title" = "Prestations de service";
 
 /* Class = "NSMenuItem"; title = "Copy background"; ObjectID = "p7U-sR-JqZ"; */
-"p7U-sR-JqZ.title" = "Copy background";
+"p7U-sR-JqZ.title" = "Copier l'arrière-plan";
 
 /* Class = "NSMenu"; title = "Pika"; ObjectID = "uQy-DD-JDr"; */
 "uQy-DD-JDr.title" = "Pika";
 
 /* Class = "NSMenuItem"; title = "Help"; ObjectID = "wpr-3q-Mcd"; */
-"wpr-3q-Mcd.title" = "Help";
+"wpr-3q-Mcd.title" = "Aider";
 
 /* Class = "NSMenuItem"; title = "Copy foreground"; ObjectID = "x3v-GG-iWU"; */
-"x3v-GG-iWU.title" = "Copy foreground";
+"x3v-GG-iWU.title" = "Copier le premier plan";
