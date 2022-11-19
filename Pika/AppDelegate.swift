@@ -31,9 +31,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 NSApp.unhide(self)
 
-                if let wnd = NSApp.windows.first {
-                    wnd.makeKeyAndOrderFront(self)
-                    wnd.setIsVisible(true)
+                if let window = NSApp.windows.first {
+                    window.makeKeyAndOrderFront(self)
+                    window.setIsVisible(true)
                 }
             }
         }.tieToLifetime(of: self)

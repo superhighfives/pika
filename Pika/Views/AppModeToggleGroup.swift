@@ -7,21 +7,21 @@ struct AppModeToggleGroup: View {
     enum Themes: String, Codable, CaseIterable {
         case menubar
         case regular
-        case hidden
+//        case hidden
     }
 
     var body: some View {
         if theme == .menubar {
-            Image("menubar")
+            Image("menubar-wide")
         }
 
         if theme == .regular {
-            Image("dock")
+            Image("dock-wide")
         }
 
-        if theme == .hidden {
-            Image("hidden")
-        }
+//        if theme == .hidden {
+//            Image("hidden")
+//        }
     }
 }
 

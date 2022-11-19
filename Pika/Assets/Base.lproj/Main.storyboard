@@ -103,6 +103,12 @@
                                                 <action selector="triggerCopyBackground:" target="Voe-Tx-rLC" id="C9Z-dn-Ddu"/>
                                             </connections>
                                         </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="myp-6O-wWD"/>
+                                        <menuItem title="Close window" keyEquivalent="w" allowsKeyEquivalentWhenHidden="YES" id="VpE-fH-2gc">
+                                            <connections>
+                                                <action selector="performClose:" target="Ady-hI-5gd" id="rJH-vS-Moe"/>
+                                            </connections>
+                                        </menuItem>
                                     </items>
                                 </menu>
                             </menuItem>

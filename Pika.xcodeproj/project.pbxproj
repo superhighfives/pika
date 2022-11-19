@@ -84,6 +84,8 @@
 		EA0C525F25AB5A2B00AFF716 /* NavigationMenuItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationMenuItems.swift; sourceTree = "<group>"; };
 		EA0C526325AB5D1700AFF716 /* PikaWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PikaWindow.swift; sourceTree = "<group>"; };
 		EA0C526E25AB683400AFF716 /* EyedropperButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyedropperButton.swift; sourceTree = "<group>"; };
+		EA0F36AE2929138E00BFC7EB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
+		EA0F36B02929139000BFC7EB /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
 		EA136071284887E9004F1630 /* AppearanceButtonStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppearanceButtonStyle.swift; sourceTree = "<group>"; };
 		EA1D669E282EAE8700816F99 /* WindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
 		EA257BD025D8629300C3FC54 /* SwapButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapButtonStyle.swift; sourceTree = "<group>"; };
@@ -498,6 +500,8 @@
 			children = (
 				EAD0B6D5259CED1D00FA2F67 /* Base */,
 				23EE8C0A28DA3FF00042090A /* de */,
+				EA0F36AE2929138E00BFC7EB /* en */,
+				EA0F36B02929139000BFC7EB /* fr */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";

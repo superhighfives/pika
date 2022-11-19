@@ -117,7 +117,7 @@ struct PreferencesView: View {
                             }
                             .frame(maxWidth: width)
                         }
-                        .frame(height: 120)
+                        .frame(height: 96)
                     }
                     .padding(.horizontal, 24.0)
                 }
