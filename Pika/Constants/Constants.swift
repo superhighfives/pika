@@ -144,7 +144,9 @@ enum PikaText {
     // App Settings
     static let textAppTitle = NSLocalizedString("preferences.app.title", comment: "App Settings")
     static let textAppMenubarTitle = NSLocalizedString("preferences.app.menubar.title", comment: "Menu bar")
-    static let textAppMenubarDescription = NSLocalizedString("preferences.app.menubar.description", comment: "Show in menu bar")
+    static let textAppMenubarDescription = NSLocalizedString(
+        "preferences.app.menubar.description", comment: "Show in menu bar"
+    )
     static let textAppDockTitle = NSLocalizedString("preferences.app.dock.title", comment: "Dock")
     static let textAppDockDescription = NSLocalizedString("preferences.app.dock.description", comment: "Show in dock")
     static let textAppHiddenTitle = NSLocalizedString("preferences.app.hidden.title", comment: "Hidden")

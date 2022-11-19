@@ -23,13 +23,23 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     let notificationCenter = NotificationCenter.default
 
-    func applicationDidFinishLaunching(_: Notification) {
+    func setupAppMode() {
         NSApp.setActivationPolicy(Defaults[.appMode] == .regular ? .regular : .accessory)
         Defaults.observe(.appMode) { change in
             NSApp.setActivationPolicy(change.newValue == .regular ? .regular : .accessory)
             NSApp.activate(ignoringOtherApps: true)
-        }.tieToLifetime(of: self)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                NSApp.unhide(self)
 
+                if let wnd = NSApp.windows.first {
+                    wnd.makeKeyAndOrderFront(self)
+                    wnd.setIsVisible(true)
+                }
+            }
+        }.tieToLifetime(of: self)
+    }
+
+    func setupStatusBar() {
         // Set up status bar and menu
         let statusBar = NSStatusBar.system
         statusBarItem = statusBar.statusItem(withLength: CGFloat(NSStatusItem.variableLength))
@@ -44,8 +54,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
         statusBarItem.isVisible = Defaults[.appMode] == .menubar
         Defaults.observe(.appMode) { change in
-            self.statusBarItem.isVisible = change.newValue == .menubar
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                self.statusBarItem.isVisible = change.newValue == .menubar
+            }
         }.tieToLifetime(of: self)
+    }
+
+    func applicationDidFinishLaunching(_: Notification) {
+        setupAppMode()
+        setupStatusBar()
 
         // Set up eyedroppers
         eyedroppers = Eyedroppers()
