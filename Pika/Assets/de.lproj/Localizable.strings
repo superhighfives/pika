@@ -151,6 +151,30 @@
 /* Subscribe to beta releases */
 "preferences.beta.description" = "Beta-Veröffentlichungen abonnieren";
 
+/* Float above windows */
+"preferences.float.description" = "Über den Fenstern schweben";
+
+/* App Settings */
+"preferences.app.title" = "App Einstellungen";
+
+/* Menu bar */
+"preferences.app.menubar.title" = "Menüleiste";
+
+/* Show in menu bar */
+"preferences.app.menubar.description" = "In Menüleiste anzeigen";
+
+/* Dock */
+"preferences.app.dock.title" = "Dock";
+
+/* Show in dock */
+"preferences.app.dock.description" = "Im Dock anzeigen";
+
+/* Hidden */
+"preferences.app.hidden.title" = "Versteckt";
+
+/* Hide app */
+"preferences.app.hidden.description" = "App verstecken";
+
 /* Automatically copy color to clipboard on pick */
 "preferences.copy.automatic" = "Automatisches Kopieren in die Zwischenablage nach dem Auswählen einer Farbe";
 

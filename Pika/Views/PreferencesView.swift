@@ -91,8 +91,7 @@ struct PreferencesView: View {
                                 Text(PikaText.textColorNamesDescription)
                             }
                             Toggle(isOn: $appFloating) {
-                                // TODO: Fix
-                                Text("Float above windows")
+                                Text(PikaText.textFloatDescription)
                                     .frame(maxWidth: .infinity, alignment: .leading)
                             }
                         }
@@ -105,8 +104,7 @@ struct PreferencesView: View {
                         .padding(.bottom, 16.0)
 
                     VStack(alignment: .leading, spacing: 10.0) {
-                        // TODO: Fix title
-                        Text("App Settings").font(.system(size: 16))
+                        Text(PikaText.textAppTitle).font(.system(size: 16))
 
                         GeometryReader { geometry in
                             let width = geometry.size.width

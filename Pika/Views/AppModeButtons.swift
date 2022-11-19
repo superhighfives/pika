@@ -6,7 +6,6 @@ struct AppModeButtons: View {
     var width: CGFloat
 
     var body: some View {
-        // TODO: Fix title
         Button(action: {
             appMode = .menubar
         }, label: {
@@ -14,11 +13,10 @@ struct AppModeButtons: View {
                 .frame(maxWidth: width, maxHeight: .infinity, alignment: .leading)
         })
             .buttonStyle(AppearanceButtonStyle(
-                title: "Menu Bar",
-                description: "Show in menu bar",
+                title: PikaText.textAppMenubarTitle,
+                description: PikaText.textAppMenubarDescription,
                 selected: appMode == .menubar
             ))
-        // TODO: Fix title
         Button(action: {
             appMode = .regular
         }, label: {
@@ -26,11 +24,10 @@ struct AppModeButtons: View {
                 .frame(maxWidth: width, maxHeight: .infinity, alignment: .leading)
         })
             .buttonStyle(AppearanceButtonStyle(
-                title: "Dock",
-                description: "Show in dock",
+                title: PikaText.textAppDockTitle,
+                description: PikaText.textAppDockDescription,
                 selected: appMode == .regular
             ))
-        // TODO: Fix title
         Button(action: {
             appMode = .hidden
         }, label: {
@@ -38,8 +35,8 @@ struct AppModeButtons: View {
                 .frame(maxWidth: width, maxHeight: .infinity, alignment: .leading)
         })
             .buttonStyle(AppearanceButtonStyle(
-                title: "Hidden",
-                description: "Hide app",
+                title: PikaText.textAppHiddenTitle,
+                description: PikaText.textAppHiddenDescription,
                 selected: appMode == .hidden
             ))
     }
