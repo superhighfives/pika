@@ -28,13 +28,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         Defaults.observe(.appMode) { change in
             NSApp.setActivationPolicy(change.newValue == .regular ? .regular : .accessory)
             NSApp.activate(ignoringOtherApps: true)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            DispatchQueue.main.asyncAfter(deadline: .now()) {
                 NSApp.unhide(self)
 
                 if let window = NSApp.windows.first {
                     window.makeKeyAndOrderFront(self)
                     window.setIsVisible(true)
                 }
+
+                self.statusBarItem.isVisible = Defaults[.hideMenuBarIcon] == false && change.newValue == .menubar
             }
         }.tieToLifetime(of: self)
     }
@@ -52,11 +54,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
         statusBarMenu = getStatusBarMenu()
 
-        statusBarItem.isVisible = Defaults[.appMode] == .menubar
-        Defaults.observe(.appMode) { change in
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                self.statusBarItem.isVisible = change.newValue == .menubar
-            }
+        statusBarItem.isVisible = Defaults[.hideMenuBarIcon] == false && Defaults[.appMode] == .menubar
+        Defaults.observe(.hideMenuBarIcon) { change in
+            self.statusBarItem.isVisible = change.newValue == false && Defaults[.appMode] == .menubar
         }.tieToLifetime(of: self)
     }
 
