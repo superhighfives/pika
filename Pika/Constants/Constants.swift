@@ -122,16 +122,16 @@ enum PikaText {
         "preferences.launch.description",
         comment: "Launch at login"
     )
-    static let textIconDescription = NSLocalizedString(
-        "preferences.icon.description",
-        comment: "Hide menu bar icon"
-    )
     static let textBetaDescription = NSLocalizedString(
         "preferences.beta.description",
         comment: "Subscribe to beta releases"
     )
     static let textSelectionTitle = NSLocalizedString("preferences.selection.title", comment: "Selection Settings")
     static let textPickHide = NSLocalizedString("preferences.pick.hide", comment: "Hide Pika while picking")
+    static let textIconDescription = NSLocalizedString(
+        "preferences.icon.description",
+        comment: "Hide menu bar icon"
+    )
     static let textColorNamesDescription = NSLocalizedString(
         "preferences.names.description",
         comment: "Hide color names"

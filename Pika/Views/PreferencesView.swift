@@ -4,6 +4,7 @@ import LaunchAtLogin
 import SwiftUI
 
 struct PreferencesView: View {
+    @Default(.hideMenuBarIcon) var hideMenuBarIcon
     @Default(.hideColorNames) var hideColorNames
     @Default(.betaUpdates) var betaUpdates
     @Default(.hidePikaWhilePicking) var hidePikaWhilePicking
@@ -75,6 +76,11 @@ struct PreferencesView: View {
                             }
                             Toggle(isOn: $betaUpdates) {
                                 Text(PikaText.textBetaDescription)
+                            }
+                            if appMode == .menubar {
+                                Toggle(isOn: $hideMenuBarIcon) {
+                                    Text(PikaText.textIconDescription)
+                                }
                             }
                         }
                         .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
