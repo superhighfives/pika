@@ -122,20 +122,35 @@ enum PikaText {
         "preferences.launch.description",
         comment: "Launch at login"
     )
-    static let textIconDescription = NSLocalizedString(
-        "preferences.icon.description",
-        comment: "Hide menu bar icon"
-    )
     static let textBetaDescription = NSLocalizedString(
         "preferences.beta.description",
         comment: "Subscribe to beta releases"
     )
     static let textSelectionTitle = NSLocalizedString("preferences.selection.title", comment: "Selection Settings")
     static let textPickHide = NSLocalizedString("preferences.pick.hide", comment: "Hide Pika while picking")
+    static let textIconDescription = NSLocalizedString(
+        "preferences.icon.description",
+        comment: "Hide menu bar icon"
+    )
     static let textColorNamesDescription = NSLocalizedString(
         "preferences.names.description",
         comment: "Hide color names"
     )
+    static let textFloatDescription = NSLocalizedString(
+        "preferences.float.description",
+        comment: "Float above windows"
+    )
+
+    // App Settings
+    static let textAppTitle = NSLocalizedString("preferences.app.title", comment: "App Settings")
+    static let textAppMenubarTitle = NSLocalizedString("preferences.app.menubar.title", comment: "Menu bar")
+    static let textAppMenubarDescription = NSLocalizedString(
+        "preferences.app.menubar.description", comment: "Show in menu bar"
+    )
+    static let textAppDockTitle = NSLocalizedString("preferences.app.dock.title", comment: "Dock")
+    static let textAppDockDescription = NSLocalizedString("preferences.app.dock.description", comment: "Show in dock")
+    static let textAppHiddenTitle = NSLocalizedString("preferences.app.hidden.title", comment: "Hidden")
+    static let textAppHiddenDescription = NSLocalizedString("preferences.app.hidden.description", comment: "Hide app")
 
     // Appearance Settings
     static let textAppearanceTitle = NSLocalizedString("preferences.appearance.title", comment: "Appearance")

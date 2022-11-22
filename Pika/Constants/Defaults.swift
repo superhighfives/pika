@@ -23,6 +23,16 @@ enum CopyFormat: String, Codable, CaseIterable {
     }
 }
 
+enum AppMode: String, Codable, CaseIterable {
+    case menubar = "preferences.app.mode.menubar"
+    case regular = "preferences.app.mode.regular"
+    case hidden = "preferences.app.mode.hidden"
+
+    func localizedString() -> String {
+        NSLocalizedString(rawValue, comment: "App Mode")
+    }
+}
+
 extension Defaults.Keys {
     static let colorFormat = Key<ColorFormat>("colorFormat", default: .hex)
     static let viewedSplash = Key<Bool>("viewedSplash", default: false)
@@ -37,4 +47,6 @@ extension Defaults.Keys {
     static let hideColorNames = Key<Bool>("hideColorNames", default: false)
     static let formatColorsForCSS = Key<Bool>("formatColorsForCSS", default: false)
     static let copyFormat = Key<CopyFormat>("copyFormat", default: .css)
+    static let appMode = Key<AppMode>("appMode", default: .menubar)
+    static let appFloating = Key<Bool>("appFloating", default: true)
 }

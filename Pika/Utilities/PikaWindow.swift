@@ -1,4 +1,5 @@
 import Cocoa
+import Defaults
 import SwiftUI
 
 class PikaWindow {
@@ -12,10 +13,14 @@ class PikaWindow {
         window.isReleasedWhenClosed = false
         window.center()
         window.title = PikaText.textAppName
-        window.level = .floating
+        window.level = Defaults[.appFloating] ? .floating : .normal
         window.isMovableByWindowBackground = true
         window.standardWindowButton(NSWindow.ButtonType.zoomButton)!.isEnabled = false
         window.titlebarAppearsTransparent = true
+
+        Defaults.observe(.appFloating) { change in
+            window.level = change.newValue == true ? .floating : .normal
+        }.tieToLifetime(of: self)
 
         // Set up toolbar
         window.toolbar = NSToolbar()
@@ -37,7 +42,12 @@ class PikaWindow {
         return window
     }
 
-    static func createSecondaryWindow(title: String, size: NSRect, styleMask: NSWindow.StyleMask) -> NSWindow {
+    static func createSecondaryWindow(
+        title: String,
+        size: NSRect,
+        styleMask: NSWindow.StyleMask,
+        maxHeight _: Int? = nil
+    ) -> NSWindow {
         let window = NSWindow(
             contentRect: size,
             styleMask: styleMask,
@@ -46,7 +56,7 @@ class PikaWindow {
         )
         window.titleVisibility = .hidden
         window.titlebarAppearsTransparent = true
-        window.level = .floating
+        window.level = .normal
         window.isMovableByWindowBackground = true
         window.center()
         window.setFrameAutosaveName("\(title) Window")
