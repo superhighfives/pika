@@ -18,14 +18,14 @@
                                         <menuItem title="About Pika" id="5kV-Vb-QxS">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="orderFrontStandardAboutPanel:" target="Ady-hI-5gd" id="Exp-CZ-Vem"/>
+                                                <action selector="openAboutWindow:" target="Voe-Tx-rLC" id="7Y6-u1-ecJ"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="VOq-y0-SEH"/>
                                         <menuItem title="Check for updates…" allowsKeyEquivalentWhenHidden="YES" id="BOF-NM-1cW">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="openPreferencesWindow:" target="Voe-Tx-rLC" id="GSl-43-Ntb"/>
+                                                <action selector="checkForUpdates:" target="Voe-Tx-rLC" id="v8O-zO-w9O"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Preferences…" keyEquivalent="," allowsKeyEquivalentWhenHidden="YES" id="NQA-cg-qc7">
