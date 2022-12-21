@@ -1,6 +1,7 @@
 import Cocoa
 import Defaults
 import KeyboardShortcuts
+import LaunchAtLogin
 import Sparkle
 import SwiftUI
 
@@ -61,6 +62,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     func applicationDidFinishLaunching(_: Notification) {
+        LaunchAtLogin.migrateIfNeeded()
+
         setupAppMode()
         setupStatusBar()
 

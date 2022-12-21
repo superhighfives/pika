@@ -713,7 +713,7 @@
 			repositoryURL = "https://github.com/sindresorhus/LaunchAtLogin";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 4.0.0;
+				minimumVersion = 5.0.0;
 			};
 		};
 		EAD0B6E3259CED6000FA2F67 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */ = {
