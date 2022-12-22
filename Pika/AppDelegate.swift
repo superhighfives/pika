@@ -1,6 +1,7 @@
 import Cocoa
 import Defaults
 import KeyboardShortcuts
+import LaunchAtLogin
 import Sparkle
 import SwiftUI
 
@@ -23,7 +24,25 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     let notificationCenter = NotificationCenter.default
 
-    func applicationDidFinishLaunching(_: Notification) {
+    func setupAppMode() {
+        NSApp.setActivationPolicy(Defaults[.appMode] == .regular ? .regular : .accessory)
+        Defaults.observe(.appMode) { change in
+            NSApp.setActivationPolicy(change.newValue == .regular ? .regular : .accessory)
+            NSApp.activate(ignoringOtherApps: true)
+            DispatchQueue.main.asyncAfter(deadline: .now()) {
+                NSApp.unhide(self)
+
+                if let window = NSApp.windows.first {
+                    window.makeKeyAndOrderFront(self)
+                    window.setIsVisible(true)
+                }
+
+                self.statusBarItem.isVisible = Defaults[.hideMenuBarIcon] == false && change.newValue == .menubar
+            }
+        }.tieToLifetime(of: self)
+    }
+
+    func setupStatusBar() {
         // Set up status bar and menu
         let statusBar = NSStatusBar.system
         statusBarItem = statusBar.statusItem(withLength: CGFloat(NSStatusItem.variableLength))
@@ -36,10 +55,17 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
         statusBarMenu = getStatusBarMenu()
 
-        statusBarItem.isVisible = Defaults[.hideMenuBarIcon] == false
+        statusBarItem.isVisible = Defaults[.hideMenuBarIcon] == false && Defaults[.appMode] == .menubar
         Defaults.observe(.hideMenuBarIcon) { change in
-            self.statusBarItem.isVisible = change.newValue == false
+            self.statusBarItem.isVisible = change.newValue == false && Defaults[.appMode] == .menubar
         }.tieToLifetime(of: self)
+    }
+
+    func applicationDidFinishLaunching(_: Notification) {
+        LaunchAtLogin.migrateIfNeeded()
+
+        setupAppMode()
+        setupStatusBar()
 
         // Set up eyedroppers
         eyedroppers = Eyedroppers()
@@ -194,7 +220,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             preferencesWindow = PikaWindow.createSecondaryWindow(
                 title: "Preferences",
                 size: NSRect(x: 0, y: 0, width: 750, height: view.fittingSize.height),
-                styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView]
+                styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView],
+                maxHeight: 500
             )
 
             let toolbarHeight: CGFloat = preferencesWindow.frame.height - preferencesWindow.contentLayoutRect.height

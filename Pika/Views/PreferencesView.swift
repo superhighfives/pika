@@ -10,6 +10,8 @@ struct PreferencesView: View {
     @Default(.hidePikaWhilePicking) var hidePikaWhilePicking
     @Default(.copyColorOnPick) var copyColorOnPick
     @Default(.copyFormat) var copyFormat
+    @Default(.appMode) var appMode
+    @Default(.appFloating) var appFloating
     @State var colorSpace: NSColorSpace = Defaults[.colorSpace]
     @State private var viewHeight: CGFloat = 0.0
 
@@ -61,43 +63,73 @@ struct PreferencesView: View {
             ))
 
             Divider()
+
             VStack(alignment: .leading, spacing: 0) {
                 // General Settings
 
-                HStack(alignment: .top, spacing: 0) {
-                    VStack(alignment: .leading, spacing: 10.0) {
-                        Text(PikaText.textGeneralTitle).font(.system(size: 16))
-                        LaunchAtLogin.Toggle {
-                            Text(PikaText.textLaunchDescription)
+                VStack(alignment: .leading, spacing: 0) {
+                    HStack(alignment: .top, spacing: 0) {
+                        VStack(alignment: .leading, spacing: 10.0) {
+                            Text(PikaText.textGeneralTitle).font(.system(size: 16))
+                            LaunchAtLogin.Toggle {
+                                Text(PikaText.textLaunchDescription)
+                            }
+                            Toggle(isOn: $betaUpdates) {
+                                Text(PikaText.textBetaDescription)
+                            }
+                            if appMode == .menubar {
+                                Toggle(isOn: $hideMenuBarIcon) {
+                                    Text(PikaText.textIconDescription)
+                                }
+                            }
                         }
-                        Toggle(isOn: $hideMenuBarIcon) {
-                            Text(PikaText.textIconDescription)
+                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                        .padding(.all, 24.0)
+
+                        Divider()
+
+                        VStack(alignment: .leading, spacing: 10.0) {
+                            Text(PikaText.textSelectionTitle).font(.system(size: 16))
+                            Toggle(isOn: $hidePikaWhilePicking) {
+                                Text(PikaText.textPickHide)
+                            }
+                            Toggle(isOn: $hideColorNames) {
+                                Text(PikaText.textColorNamesDescription)
+                            }
+                            Toggle(isOn: $appFloating) {
+                                Text(PikaText.textFloatDescription)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            }
                         }
-                        Toggle(isOn: $betaUpdates) {
-                            Text(PikaText.textBetaDescription)
-                        }
+                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                        .padding(.all, 24.0)
                     }
-                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-                    .padding(.all, 24.0)
+                    .fixedSize(horizontal: false, vertical: true)
 
                     Divider()
+                        .padding(.bottom, 16.0)
 
                     VStack(alignment: .leading, spacing: 10.0) {
-                        Text(PikaText.textSelectionTitle).font(.system(size: 16))
-                        Toggle(isOn: $hidePikaWhilePicking) {
-                            Text(PikaText.textPickHide)
+                        Text(PikaText.textAppTitle).font(.system(size: 16))
+
+                        GeometryReader { geometry in
+                            let width = geometry.size.width
+                            let horizontalUnit = width / 2
+
+                            HStack(spacing: 16.0) {
+                                AppModeButtons(
+                                    width: horizontalUnit - 8
+                                )
+                            }
+                            .frame(maxWidth: width)
                         }
-                        Toggle(isOn: $hideColorNames) {
-                            Text(PikaText.textColorNamesDescription)
-                        }
+                        .frame(height: 96)
                     }
-                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-                    .padding(.all, 24.0)
+                    .padding(.horizontal, 24.0)
                 }
-                .fixedSize(horizontal: false, vertical: true)
 
                 Divider()
-                    .padding(.bottom, 16.0)
+                    .padding(.vertical, 16.0)
 
                 VStack(alignment: .leading, spacing: 10.0) {
                     Text(PikaText.textAppearanceTitle).font(.system(size: 16))
@@ -106,16 +138,16 @@ struct PreferencesView: View {
                         let width = geometry.size.width
                         let horizontalUnit = width / 2
 
-                        HStack(spacing: 20.0) {
+                        HStack(spacing: 16.0) {
                             ComplianceButtons(
-                                width: horizontalUnit - 10,
+                                width: horizontalUnit - 8,
                                 foreground: eyedroppers.foreground,
                                 background: eyedroppers.background
                             )
                         }
                         .frame(maxWidth: width)
                     }
-                    .frame(height: 120)
+                    .frame(height: 100)
                 }
                 .padding(.horizontal, 24.0)
 
@@ -220,6 +252,6 @@ struct PreferencesView_Previews: PreviewProvider {
         PreferencesView()
             .environmentObject(Eyedroppers())
             .environmentObject(WindowManager())
-            .frame(width: 750, height: 700)
+            .frame(width: 750, height: 850)
     }
 }
