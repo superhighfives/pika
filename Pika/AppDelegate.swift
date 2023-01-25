@@ -305,6 +305,16 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         SUUpdater.shared()?.checkForUpdates(self)
     }
 
+    @IBAction func openWebsite(_: Any) {
+        // TODO: Translate, add link
+        print("Open website")
+    }
+
+    @IBAction func openGitHubIssue(_: Any) {
+        // TODO: Translate, add link
+        print("Open GitHub issue")
+    }
+
     @IBAction func terminatePika(_: Any) {
         NSApplication.shared.terminate(self)
     }

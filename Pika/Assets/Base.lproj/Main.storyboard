@@ -139,9 +139,15 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Help" systemMenu="help" id="F2S-fz-NVQ">
                                     <items>
-                                        <menuItem title="Pika Website" enabled="NO" keyEquivalent="?" id="FKE-Sm-Kum">
+                                        <menuItem title="Pika Website" keyEquivalent="?" id="FKE-Sm-Kum">
                                             <connections>
-                                                <action selector="openPreferencesWindow:" target="Voe-Tx-rLC" id="eot-8W-K41"/>
+                                                <action selector="openWebsite:" target="Voe-Tx-rLC" id="vQG-LA-1ix"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Report Bugs or Feedback" id="hxD-2G-mEq">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="openGitHubIssue:" target="Voe-Tx-rLC" id="7Ag-IO-qo8"/>
                                             </connections>
                                         </menuItem>
                                     </items>
