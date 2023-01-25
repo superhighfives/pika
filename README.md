@@ -31,7 +31,9 @@ brew install mint
 mint bootstrap
 ```
 
-Open `Pika.xcodeproj` and you should be good to go. If you run into any problems, please [detail them in an issue](https://github.com/superhighfives/pika/issues/new/).
+Open `Pika.xcodeproj` and to run the project. [Sparkle](https://github.com/sparkle-project/Sparkle) requires that you have a [team and signing profile set](https://github.com/MonitorControl/MonitorControl/discussions/638) for the project, or it will crash with a dyld / signal SIGABRT error. 
+
+If you run into any problems, please [detail them in an issue](https://github.com/superhighfives/pika/issues/new/).
 
 ## Contributions
 
