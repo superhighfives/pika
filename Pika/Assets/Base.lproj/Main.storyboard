@@ -144,7 +144,7 @@
                                                 <action selector="openWebsite:" target="Voe-Tx-rLC" id="vQG-LA-1ix"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Report Bugs or Feedback" id="hxD-2G-mEq">
+                                        <menuItem title="Report Bug or Feedback" id="hxD-2G-mEq">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="openGitHubIssue:" target="Voe-Tx-rLC" id="7Ag-IO-qo8"/>

@@ -143,8 +143,7 @@ struct NavigationMenuItems: View {
                         $0
                     }
                 }
-            // TODO: Translate
-            Button("Report Bugs or Feedback", action: {
+            Button(PikaText.textMenuGitHubIssue, action: {
                 NSApp.sendAction(#selector(AppDelegate.openGitHubIssue), to: nil, from: nil)
             })
         }

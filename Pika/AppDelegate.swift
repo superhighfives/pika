@@ -306,13 +306,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     @IBAction func openWebsite(_: Any) {
-        // TODO: Translate, add link
-        print("Open website")
+        let url = URL(string: PikaConstants.pikaWebsiteURL)!
+        NSWorkspace.shared.open(url)
     }
 
     @IBAction func openGitHubIssue(_: Any) {
-        // TODO: Translate, add link
-        print("Open GitHub issue")
+        let url = URL(string: PikaConstants.gitHubIssueURL)!
+        NSWorkspace.shared.open(url)
     }
 
     @IBAction func terminatePika(_: Any) {

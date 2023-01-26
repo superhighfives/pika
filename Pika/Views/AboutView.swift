@@ -33,11 +33,11 @@ struct AboutView: View {
                 HStack(spacing: 20.0) {
                     LinkButton(
                         title: PikaText.textAboutWebsite,
-                        link: "https://superhighfives.com/pika"
+                        link: PikaConstants.pikaWebsiteURL
                     )
                     LinkButton(
                         title: PikaText.textAboutGitHub,
-                        link: "https://github.com/superhighfives/pika"
+                        link: PikaConstants.gitHubRepoURL
                     )
                 }
 
@@ -50,7 +50,7 @@ struct AboutView: View {
                 HStack(spacing: 5.0) {
                     IconImage(name: "hand.thumbsup.fill")
                     Text(PikaText.textAboutBy)
-                    LinkButton(title: "Charlie Gleason", link: "https://charliegleason.com")
+                    LinkButton(title: "Charlie Gleason", link: PikaConstants.charlieGleasonWebsiteURL)
                 }
             }
             .padding(.bottom, 20.0)
