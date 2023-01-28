@@ -82,3 +82,6 @@
 
 /* Class = "NSMenuItem"; title = "Copy foreground"; ObjectID = "x3v-GG-iWU"; */
 "x3v-GG-iWU.title" = "Vordergrund kopieren";
+
+/* Class = "NSMenuItem"; title = "Report Bug or Feedback"; ObjectID = "hxD-2G-mEq.title"; */
+"hxD-2G-mEq.title" = "Fehler oder Feedback melden";

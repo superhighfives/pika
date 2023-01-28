@@ -305,6 +305,16 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         SUUpdater.shared()?.checkForUpdates(self)
     }
 
+    @IBAction func openWebsite(_: Any) {
+        let url = URL(string: PikaConstants.pikaWebsiteURL)!
+        NSWorkspace.shared.open(url)
+    }
+
+    @IBAction func openGitHubIssue(_: Any) {
+        let url = URL(string: PikaConstants.gitHubIssueURL)!
+        NSWorkspace.shared.open(url)
+    }
+
     @IBAction func terminatePika(_: Any) {
         NSApplication.shared.terminate(self)
     }
