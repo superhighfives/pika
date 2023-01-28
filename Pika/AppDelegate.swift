@@ -53,7 +53,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             button.sendAction(on: [.leftMouseUp, .rightMouseUp])
         }
 
-        statusBarMenu = getStatusBarMenu()
+        statusBarMenu = getStatusBarMenu(delegate: self)
 
         statusBarItem.isVisible = Defaults[.hideMenuBarIcon] == false && Defaults[.appMode] == .menubar
         Defaults.observe(.hideMenuBarIcon) { change in
@@ -133,45 +133,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     @objc func closeSplashWindow() {
         splashWindow.fadeOut(sender: nil, duration: 0.25, closeSelector: .close, completionHandler: startMainWindow)
-    }
-
-    func getStatusBarMenu() -> NSMenu {
-        statusBarMenu = NSMenu(title: "Status Bar Menu")
-        statusBarMenu.delegate = self
-        statusBarMenu.addItem(
-            withTitle: PikaText.textMenuAbout,
-            action: #selector(openAboutWindow(_:)),
-            keyEquivalent: ""
-        )
-
-        statusBarMenu.addItem(
-            withTitle: "\(PikaText.textMenuUpdates)...",
-            action: #selector(checkForUpdates(_:)),
-            keyEquivalent: ""
-        )
-
-        statusBarMenu.addItem(
-            withTitle: PikaText.textMenuGitHubIssue,
-            action: #selector(openGitHubIssue(_:)),
-            keyEquivalent: ""
-        )
-
-        let preferences = NSMenuItem(
-            title: PikaText.textMenuPreferences,
-            action: #selector(openPreferencesWindow(_:)),
-            keyEquivalent: ","
-        )
-        preferences.keyEquivalentModifierMask = NSEvent.ModifierFlags.command
-        statusBarMenu.addItem(preferences)
-
-        statusBarMenu.addItem(NSMenuItem.separator())
-        statusBarMenu.addItem(
-            withTitle: PikaText.textMenuQuit,
-            action: #selector(terminatePika(_:)),
-            keyEquivalent: ""
-        )
-
-        return statusBarMenu
     }
 
     @objc func statusBarClicked(sender _: NSStatusBarButton) {
@@ -308,8 +269,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     @IBAction func checkForUpdates(_: Any) {
-        SUUpdater.shared().feedURL = URL(string: PikaConstants.url())
-        SUUpdater.shared()?.checkForUpdates(self)
+        #if MAC_APP_STORE
+            print("Handle Mac App Store")
+        #else
+            SUUpdater.shared().feedURL = URL(string: PikaConstants.url())
+            SUUpdater.shared()?.checkForUpdates(self)
+        #endif
     }
 
     @IBAction func openWebsite(_: Any) {

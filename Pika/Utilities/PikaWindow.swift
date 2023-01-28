@@ -12,7 +12,11 @@ class PikaWindow {
         )
         window.isReleasedWhenClosed = false
         window.center()
-        window.title = PikaText.textAppName
+        #if MAC_APP_STORE
+            window.title = "\(PikaText.textAppName) (Mac App Store)"
+        #else
+            window.title = "\(PikaText.textAppName) (Sparkle)"
+        #endif
         window.level = Defaults[.appFloating] ? .floating : .normal
         window.isMovableByWindowBackground = true
         window.standardWindowButton(NSWindow.ButtonType.zoomButton)!.isEnabled = false
