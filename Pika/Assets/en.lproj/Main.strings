@@ -29,8 +29,8 @@
 /* Class = "NSMenu"; title = "Help"; ObjectID = "F2S-fz-NVQ"; */
 "F2S-fz-NVQ.title" = "Help";
 
-/* Class = "NSMenuItem"; title = "Pika Website"; ObjectID = "FKE-Sm-Kum"; */
-"FKE-Sm-Kum.title" = "Pika Website";
+/* Class = "NSMenuItem"; title = "Pika website"; ObjectID = "FKE-Sm-Kum"; */
+"FKE-Sm-Kum.title" = "Pika website";
 
 /* Class = "NSMenu"; title = "Eyedroppers"; ObjectID = "KHB-9b-hO2"; */
 "KHB-9b-hO2.title" = "Eyedroppers";
@@ -83,5 +83,5 @@
 /* Class = "NSMenuItem"; title = "Copy foreground"; ObjectID = "x3v-GG-iWU"; */
 "x3v-GG-iWU.title" = "Copy foreground";
 
-/* Class = "NSMenuItem"; title = "Report Bug or Feedback"; ObjectID = "hxD-2G-mEq.title"; */
-"hxD-2G-mEq.title" = "Report Bug or Feedback";
+/* Class = "NSMenuItem"; title = "Report feedback"; ObjectID = "hxD-2G-mEq.title"; */
+"hxD-2G-mEq.title" = "Report feedback";

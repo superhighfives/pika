@@ -133,6 +133,9 @@ struct NavigationMenuItems: View {
             Button("\(PikaText.textMenuUpdates)...", action: {
                 NSApp.sendAction(#selector(AppDelegate.checkForUpdates), to: nil, from: nil)
             })
+            Button(PikaText.textMenuGitHubIssue, action: {
+                NSApp.sendAction(#selector(AppDelegate.openGitHubIssue), to: nil, from: nil)
+            })
             Button(PikaText.textMenuPreferences, action: {
                 NSApp.sendAction(#selector(AppDelegate.openPreferencesWindow), to: nil, from: nil)
             })
@@ -143,9 +146,6 @@ struct NavigationMenuItems: View {
                         $0
                     }
                 }
-            Button(PikaText.textMenuGitHubIssue, action: {
-                NSApp.sendAction(#selector(AppDelegate.openGitHubIssue), to: nil, from: nil)
-            })
         }
 
         VStack {

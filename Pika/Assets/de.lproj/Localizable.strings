@@ -127,11 +127,11 @@
 /* Preferences */
 "menu.preferences" = "Einstellungen";
 
-/* Pika Website */
-"menu.website" = "Pika-Website";
+/* Pika website */
+"menu.website" = "Pika-website";
 
-/* Report Bug or Feedback */
-"menu.issue" = "Fehler oder Feedback melden";
+/* Report feedback */
+"menu.issue" = "Feedback melden";
 
 /* Quit */
 "menu.quit" = "Beenden";

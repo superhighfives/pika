@@ -139,12 +139,12 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Help" systemMenu="help" id="F2S-fz-NVQ">
                                     <items>
-                                        <menuItem title="Pika Website" keyEquivalent="?" id="FKE-Sm-Kum">
+                                        <menuItem title="Pika website" keyEquivalent="?" id="FKE-Sm-Kum">
                                             <connections>
                                                 <action selector="openWebsite:" target="Voe-Tx-rLC" id="vQG-LA-1ix"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Report Bug or Feedback" id="hxD-2G-mEq">
+                                        <menuItem title="Report feedback" id="hxD-2G-mEq">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="openGitHubIssue:" target="Voe-Tx-rLC" id="7Ag-IO-qo8"/>

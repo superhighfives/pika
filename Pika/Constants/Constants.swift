@@ -78,8 +78,8 @@ enum PikaText {
     static let textMenuAbout = NSLocalizedString("menu.about", comment: "About")
     static let textMenuUpdates = NSLocalizedString("menu.updates", comment: "Check for updates")
     static let textMenuPreferences = NSLocalizedString("menu.preferences", comment: "Preferences")
-    static let textMenuWebsite = NSLocalizedString("menu.website", comment: "Pika Website")
-    static let textMenuGitHubIssue = NSLocalizedString("menu.issue", comment: "Report Bug or Feedback")
+    static let textMenuWebsite = NSLocalizedString("menu.website", comment: "Pika website")
+    static let textMenuGitHubIssue = NSLocalizedString("menu.issue", comment: "Report feedback")
     static let textMenuQuit = NSLocalizedString("menu.quit", comment: "Quit Pika")
 
     // Navigation

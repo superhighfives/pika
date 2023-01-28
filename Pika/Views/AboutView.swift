@@ -39,6 +39,10 @@ struct AboutView: View {
                         title: PikaText.textAboutGitHub,
                         link: PikaConstants.gitHubRepoURL
                     )
+                    LinkButton(
+                        title: PikaText.textMenuGitHubIssue,
+                        link: PikaConstants.gitHubIssueURL
+                    )
                 }
 
                 VStack(spacing: 0) {

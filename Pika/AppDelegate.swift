@@ -143,9 +143,16 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             action: #selector(openAboutWindow(_:)),
             keyEquivalent: ""
         )
+
         statusBarMenu.addItem(
             withTitle: "\(PikaText.textMenuUpdates)...",
             action: #selector(checkForUpdates(_:)),
+            keyEquivalent: ""
+        )
+
+        statusBarMenu.addItem(
+            withTitle: PikaText.textMenuGitHubIssue,
+            action: #selector(openGitHubIssue(_:)),
             keyEquivalent: ""
         )
 
@@ -306,13 +313,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     @IBAction func openWebsite(_: Any) {
-        let url = URL(string: PikaConstants.pikaWebsiteURL)!
-        NSWorkspace.shared.open(url)
+        NSWorkspace.shared.open(URL(string: PikaConstants.pikaWebsiteURL)!)
     }
 
     @IBAction func openGitHubIssue(_: Any) {
-        let url = URL(string: PikaConstants.gitHubIssueURL)!
-        NSWorkspace.shared.open(url)
+        NSWorkspace.shared.open(URL(string: PikaConstants.gitHubIssueURL)!)
     }
 
     @IBAction func terminatePika(_: Any) {
