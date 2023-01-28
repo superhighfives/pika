@@ -4,11 +4,21 @@
 
 Pika (pronounced pi·kuh, like picker) is an easy to use, open-source, native colour picker for macOS. Pika makes it easy to quickly find colours onscreen, in the format you need, so you can get on with being a speedy, successful designer.
 
-**Download the latest version of the app at [superhighfives.com/pika](https://superhighfives.com/pika).**
+<img width="768" alt="Screenshots of the dark and light Pika interface" src="https://user-images.githubusercontent.com/449385/103492507-4e55cd80-4e23-11eb-9366-d31c2bb74030.png">
+
+**Download the latest version of the app at:<br />
+[superhighfives.com/pika](https://superhighfives.com/pika)**
 
 Learn more about the [motivations behind the project](https://medium.com/superhighfives/introducing-pika-d7725c397585), and the [product vision](https://github.com/superhighfives/pika/wiki).
 
-<img width="768" alt="Screenshots of the dark and light Pika interface" src="https://user-images.githubusercontent.com/449385/103492507-4e55cd80-4e23-11eb-9366-d31c2bb74030.png">
+<a href="https://www.producthunt.com/golden-kitty-awards/hall-of-fame?year=2022">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/449385/215260970-a3c37e86-7d2c-458e-84f8-32a6e24b0cc7.png">
+    <img width="250" alt="Golden Kitty Awards 2022 Finalist" src="https://user-images.githubusercontent.com/449385/215260971-e09cdbea-588a-45a9-955c-cbfd1822c2b9.png">
+  </picture>
+</a>
+
+---
 
 ## Requirements
 
