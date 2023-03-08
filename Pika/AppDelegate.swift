@@ -63,6 +63,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     func applicationDidFinishLaunching(_: Notification) {
         LaunchAtLogin.migrateIfNeeded()
+        
+        #if !MAC_APP_STORE
+            SUUpdater.shared().feedURL = URL(string: PikaConstants.url())
+        #endif
 
         setupAppMode()
         setupStatusBar()
@@ -272,7 +276,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         #if MAC_APP_STORE
             print("Handle Mac App Store")
         #else
-            SUUpdater.shared().feedURL = URL(string: PikaConstants.url())
             SUUpdater.shared()?.checkForUpdates(self)
         #endif
     }
