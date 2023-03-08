@@ -77,6 +77,9 @@ struct PreferencesView: View {
                             Toggle(isOn: $betaUpdates) {
                                 Text(PikaText.textBetaDescription)
                             }
+                            .onReceive([self.betaUpdates].publisher.first()) { _ in
+                                NSApp.sendAction(#selector(AppDelegate.updateFeedURL), to: nil, from: nil)
+                            }
                             if appMode == .menubar {
                                 Toggle(isOn: $hideMenuBarIcon) {
                                     Text(PikaText.textIconDescription)

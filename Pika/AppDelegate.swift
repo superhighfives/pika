@@ -307,6 +307,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         NSApp.activate(ignoringOtherApps: true)
     }
 
+    @IBAction func updateFeedURL(_: Any) {
+        SUUpdater.shared().feedURL = URL(string: PikaConstants.url())
+    }
+
     @IBAction func checkForUpdates(_: Any) {
         SUUpdater.shared().feedURL = URL(string: PikaConstants.url())
         SUUpdater.shared()?.checkForUpdates(self)

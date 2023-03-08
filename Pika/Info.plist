@@ -34,6 +34,8 @@
 	<string>NSApplication</string>
 	<key>SUEnableAutomaticChecks</key>
 	<true/>
+	<key>SUFeedURL</key>
+	<string>https://superhighfives.com/releases/pika</string>
 	<key>SUPublicEDKey</key>
 	<string>+hHTCW8zfGxSQeowmFxlZzE4N/fxolLQRpA7zLlzBvk=</string>
 </dict>
