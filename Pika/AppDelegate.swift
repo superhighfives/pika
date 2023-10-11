@@ -6,6 +6,7 @@ import Sparkle
 import SwiftUI
 
 @main
+// swiftlint:disable type_body_length
 class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     var statusBarItem: NSStatusItem!
     var statusBarMenu: NSMenu!
