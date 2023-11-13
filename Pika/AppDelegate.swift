@@ -34,7 +34,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 NSApp.unhide(self)
 
                 if let window = NSApp.windows.first {
-                    window.makeKeyAndOrderFront(self)
+                    // Verify window can become key before making it key and moving it to front
+                    if window.canBecomeKey {
+                        window.makeKeyAndOrderFront(self)
+                    }
                     window.setIsVisible(true)
                 }
 
