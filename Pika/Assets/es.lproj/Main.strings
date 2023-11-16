@@ -3,85 +3,88 @@
 "1Xt-HY-uBw.title" = "Pika";
 
 /* Class = "NSMenuItem"; title = "Quit Pika"; ObjectID = "4sb-4s-VLi"; */
-"4sb-4s-VLi.title" = "Forzar salida de Pika";
+"4sb-4s-VLi.title" = "Quit Pika";
 
 /* Class = "NSMenuItem"; title = "Edit"; ObjectID = "5QF-Oa-p0T"; */
-"5QF-Oa-p0T.title" = "Editar";
+"5QF-Oa-p0T.title" = "Edit";
 
 /* Class = "NSMenuItem"; title = "About Pika"; ObjectID = "5kV-Vb-QxS"; */
-"5kV-Vb-QxS.title" = "Acerca de Pika";
+"5kV-Vb-QxS.title" = "About Pika";
 
 /* Class = "NSMenuItem"; title = "Redo"; ObjectID = "6dh-zS-Vam"; */
-"6dh-zS-Vam.title" = "Rehacer";
+"6dh-zS-Vam.title" = "Redo";
 
 /* Class = "NSMenuItem"; title = "Swap colors"; ObjectID = "6j0-AT-P3M"; */
-"6j0-AT-P3M.title" = "Intercambiar colores";
+"6j0-AT-P3M.title" = "Swap colors";
 
 /* Class = "NSMenu"; title = "Main Menu"; ObjectID = "AYu-sK-qS6"; */
-"AYu-sK-qS6.title" = "Menu Principal";
+"AYu-sK-qS6.title" = "Main Menu";
 
 /* Class = "NSMenuItem"; title = "Check for updates…"; ObjectID = "BOF-NM-1cW"; */
-"BOF-NM-1cW.title" = "Comprobar actualizaciones…";
+"BOF-NM-1cW.title" = "Check for updates…";
 
 /* Class = "NSMenuItem"; title = "Copy all as text"; ObjectID = "D8e-06-QFY"; */
-"D8e-06-QFY.title" = "Copiar todo como texto";
+"D8e-06-QFY.title" = "Copy all as text";
 
 /* Class = "NSMenu"; title = "Help"; ObjectID = "F2S-fz-NVQ"; */
-"F2S-fz-NVQ.title" = "Ayuda";
+"F2S-fz-NVQ.title" = "Help";
 
 /* Class = "NSMenuItem"; title = "Pika website"; ObjectID = "FKE-Sm-Kum"; */
-"FKE-Sm-Kum.title" = "Sitio web de Pika";
+"FKE-Sm-Kum.title" = "Pika website";
 
 /* Class = "NSMenu"; title = "Eyedroppers"; ObjectID = "KHB-9b-hO2"; */
-"KHB-9b-hO2.title" = "Cuentagotas";
+"KHB-9b-hO2.title" = "Eyedroppers";
 
 /* Class = "NSMenuItem"; title = "Show All"; ObjectID = "Kd2-mp-pUS"; */
-"Kd2-mp-pUS.title" = "Mostar Todo";
+"Kd2-mp-pUS.title" = "Show All";
 
 /* Class = "NSMenuItem"; title = "Services"; ObjectID = "NMo-om-nkz"; */
-"NMo-om-nkz.title" = "Servicios";
+"NMo-om-nkz.title" = "Services";
 
 /* Class = "NSMenuItem"; title = "Preferences…"; ObjectID = "NQA-cg-qc7"; */
-"NQA-cg-qc7.title" = "Preferencias…";
+"NQA-cg-qc7.title" = "Preferences…";
 
 /* Class = "NSMenuItem"; title = "Pick foreground..."; ObjectID = "Nec-cr-B3a"; */
-"Nec-cr-B3a.title" = "Seleccionar primer plano...";
+"Nec-cr-B3a.title" = "Pick foreground...";
 
 /* Class = "NSMenuItem"; title = "Hide Pika"; ObjectID = "Olw-nP-bQN"; */
-"Olw-nP-bQN.title" = "Ocultar Pika";
+"Olw-nP-bQN.title" = "Hide Pika";
 
 /* Class = "NSMenuItem"; title = "Copy all as JSON"; ObjectID = "U40-Ip-3Uj"; */
-"U40-Ip-3Uj.title" = "Copiar todo como JSON";
+"U40-Ip-3Uj.title" = "Copy all as JSON";
 
 /* Class = "NSMenuItem"; title = "Hide Others"; ObjectID = "Vdr-fp-XzO"; */
-"Vdr-fp-XzO.title" = "Ocultar Otros";
+"Vdr-fp-XzO.title" = "Hide Others";
+
+/* Class = "NSMenuItem"; title = "Close window"; ObjectID = "VpE-fH-2gc"; */
+"VpE-fH-2gc.title" = "Close window";
 
 /* Class = "NSMenu"; title = "Edit"; ObjectID = "W48-6f-4Dl"; */
-"W48-6f-4Dl.title" = "Editar";
+"W48-6f-4Dl.title" = "Edit";
 
 /* Class = "NSMenuItem"; title = "Pick background..."; ObjectID = "YF5-6a-ACB"; */
-"YF5-6a-ACB.title" = "Seleccionar primer plano...";
+"YF5-6a-ACB.title" = "Pick background...";
 
 /* Class = "NSMenuItem"; title = "Eyedroppers"; ObjectID = "dNS-BC-3MB"; */
-"dNS-BC-3MB.title" = "Cuentagotas";
+"dNS-BC-3MB.title" = "Eyedroppers";
 
 /* Class = "NSMenuItem"; title = "Undo"; ObjectID = "dRJ-4n-Yzg"; */
-"dRJ-4n-Yzg.title" = "Deshacer";
+"dRJ-4n-Yzg.title" = "Undo";
+
+/* Class = "NSMenuItem"; title = "Report feedback"; ObjectID = "hxD-2G-mEq"; */
+"hxD-2G-mEq.title" = "Report feedback";
 
 /* Class = "NSMenu"; title = "Services"; ObjectID = "hz9-B4-Xy5"; */
-"hz9-B4-Xy5.title" = "Servicios";
+"hz9-B4-Xy5.title" = "Services";
 
 /* Class = "NSMenuItem"; title = "Copy background"; ObjectID = "p7U-sR-JqZ"; */
-"p7U-sR-JqZ.title" = "Copiar segundo plano";
+"p7U-sR-JqZ.title" = "Copy background";
 
 /* Class = "NSMenu"; title = "Pika"; ObjectID = "uQy-DD-JDr"; */
 "uQy-DD-JDr.title" = "Pika";
 
 /* Class = "NSMenuItem"; title = "Help"; ObjectID = "wpr-3q-Mcd"; */
-"wpr-3q-Mcd.title" = "Ayuda";
+"wpr-3q-Mcd.title" = "Help";
 
 /* Class = "NSMenuItem"; title = "Copy foreground"; ObjectID = "x3v-GG-iWU"; */
-"x3v-GG-iWU.title" = "Copiar primer plano";
-
-/* Class = "NSMenuItem"; title = "Report feedback"; ObjectID = "hxD-2G-mEq.title"; */
-"hxD-2G-mEq.title" = "Reportar comentarios";
+"x3v-GG-iWU.title" = "Copy foreground";

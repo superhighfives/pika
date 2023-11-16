@@ -72,6 +72,8 @@
 		220D5E9728DB158400B6285E /* AppModeToggleGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppModeToggleGroup.swift; sourceTree = "<group>"; };
 		221600F825A62E5B00B8B7D9 /* IconImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconImage.swift; sourceTree = "<group>"; };
 		221600FC25A636D600B8B7D9 /* ConditionalModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionalModifier.swift; sourceTree = "<group>"; };
+		223FDEEE2B038A9B000F89A0 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Main.strings; sourceTree = "<group>"; };
+		223FDEEF2B038A9B000F89A0 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		226FD60F25A940F90021A67F /* VisualEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffect.swift; sourceTree = "<group>"; };
 		22903B0228294F49004BB9F0 /* ColorExampleRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExampleRow.swift; sourceTree = "<group>"; };
 		22D28DB62862377F00FC7DD4 /* OverflowContentViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverflowContentViewModifier.swift; sourceTree = "<group>"; };
@@ -338,7 +340,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1230;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					EAD0B6C7259CED1C00FA2F67 = {
 						CreatedOnToolsVersion = 12.3;
@@ -354,6 +356,7 @@
 				Base,
 				fr,
 				de,
+				es,
 			);
 			mainGroup = EAD0B6BF259CED1C00FA2F67;
 			packageReferences = (
@@ -492,6 +495,7 @@
 				EA424CDF25CF0328009056A9 /* en */,
 				92D97C2125FF7A5A007CCDE4 /* fr */,
 				23EE8C0928DA24AE0042090A /* de */,
+				223FDEEF2B038A9B000F89A0 /* es */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -503,6 +507,7 @@
 				23EE8C0A28DA3FF00042090A /* de */,
 				EA0F36AE2929138E00BFC7EB /* en */,
 				EA0F36B02929139000BFC7EB /* fr */,
+				223FDEEE2B038A9B000F89A0 /* es */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
