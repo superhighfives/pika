@@ -59,7 +59,7 @@ struct KeyboardShortcutGrid: View {
 
                     HStack(spacing: 0) {
                         KeyboardShortcutItem(
-                            title: PikaText.textMenuPreferences,
+                            title: "\(PikaText.textMenuPreferences)...",
                             event: PikaConstants.ncTriggerPreferences,
                             keys: ["⌘", ","]
                         )

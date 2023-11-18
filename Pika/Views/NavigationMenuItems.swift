@@ -136,7 +136,7 @@ struct NavigationMenuItems: View {
             Button(PikaText.textMenuGitHubIssue, action: {
                 NSApp.sendAction(#selector(AppDelegate.openGitHubIssue), to: nil, from: nil)
             })
-            Button(PikaText.textMenuPreferences, action: {
+            Button("\(PikaText.textMenuPreferences)...", action: {
                 NSApp.sendAction(#selector(AppDelegate.openPreferencesWindow), to: nil, from: nil)
             })
                 .modify {

@@ -161,7 +161,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         )
 
         let preferences = NSMenuItem(
-            title: PikaText.textMenuPreferences,
+            title: "\(PikaText.textMenuPreferences)...",
             action: #selector(openPreferencesWindow(_:)),
             keyEquivalent: ","
         )
