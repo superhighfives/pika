@@ -47,6 +47,7 @@ struct EyedropperButton: View {
                 }
             })
                 .buttonStyle(EyedropperButtonStyle(color: Color(eyedropper.color)))
+                .focusable(false)
 
             Button(action: {
                 NSApp.sendAction(eyedropper.type.copySelector, to: nil, from: nil)
@@ -61,6 +62,7 @@ struct EyedropperButton: View {
                 ))
                 .padding(.all, 8.0)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+                .focusable(false)
         }
         .onHover { hover in
             if hover {

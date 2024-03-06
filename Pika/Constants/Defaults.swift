@@ -11,6 +11,10 @@ enum ColorFormat: String, Codable, CaseIterable, Equatable {
     func getExample(color: NSColor, style: CopyFormat) -> String {
         color.toFormat(format: self, style: style)
     }
+
+    static func withLabel(_ label: String) -> ColorFormat? {
+        allCases.first { label == "\($0)" }
+    }
 }
 
 enum CopyFormat: String, Codable, CaseIterable {
@@ -49,4 +53,5 @@ extension Defaults.Keys {
     static let copyFormat = Key<CopyFormat>("copyFormat", default: .css)
     static let appMode = Key<AppMode>("appMode", default: .menubar)
     static let appFloating = Key<Bool>("appFloating", default: true)
+    static let alwaysShowOnLaunch = Key<Bool>("alwaysShowOnLaunch", default: false)
 }

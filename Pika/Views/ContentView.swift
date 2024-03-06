@@ -53,6 +53,7 @@ struct ContentView: View {
                             for: Notification.Name(PikaConstants.ncTriggerSwap))) { _ in
                             swap(&eyedroppers.foreground.color, &eyedroppers.background.color)
                         }
+                        .focusable(false)
                 )
             Divider()
             Footer(foreground: eyedroppers.foreground, background: eyedroppers.background)

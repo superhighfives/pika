@@ -160,6 +160,9 @@
 /* Float above windows */
 "preferences.float.description" = "Über den Fenstern schweben";
 
+/* Always show Pika on launch */
+"preferences.show.description" = "Pika immer beim Start anzeigen";
+
 /* App Settings */
 "preferences.app.title" = "App Einstellungen";
 

@@ -5,9 +5,11 @@ struct Visualisation: View {
     var device: MTLDevice!
 
     init() {
-        if let device = MTLCreateSystemDefaultDevice() {
-            self.device = device
+        guard let device = MTLCreateSystemDefaultDevice() else {
+            fatalError("GPU not available")
         }
+
+        self.device = device
     }
 
     var body: some View {

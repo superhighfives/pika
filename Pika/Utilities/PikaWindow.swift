@@ -56,7 +56,7 @@ class PikaWindow {
         )
         window.titleVisibility = .hidden
         window.titlebarAppearsTransparent = true
-        window.level = .normal
+        window.level = (Defaults[.appFloating] ? .floating : .normal) + 1
         window.isMovableByWindowBackground = true
         window.center()
         window.setFrameAutosaveName("\(title) Window")

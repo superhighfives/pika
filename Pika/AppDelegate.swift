@@ -111,6 +111,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         if !NSColorSpace.availableColorSpaces(with: .rgb).contains(Defaults[.colorSpace]) {
             Defaults[.colorSpace] = Defaults.Keys.colorSpace.defaultValue
         }
+
+        if Defaults[.alwaysShowOnLaunch] {
+            showPika(true)
+        }
     }
 
     func applicationShouldHandleReopen(_: NSApplication, hasVisibleWindows: Bool) -> Bool {
@@ -118,6 +122,30 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             pikaWindow.makeKeyAndOrderFront(self)
         }
         return true
+    }
+
+    func applicationWillFinishLaunching(_: Notification) {
+        let appleEventManager = NSAppleEventManager.shared()
+        appleEventManager.setEventHandler(self, andSelector: #selector(handleGetURLEvent(_:withReplyEvent:)),
+                                          forEventClass: AEEventClass(kInternetEventClass),
+                                          andEventID: AEEventID(kAEGetURL))
+    }
+
+    @objc func handleGetURLEvent(_ event: NSAppleEventDescriptor, withReplyEvent _: NSAppleEventDescriptor) {
+        if let urlString = event.forKeyword(AEKeyword(keyDirectObject))?.stringValue {
+            let url = URL(string: urlString)
+            guard url != nil, let scheme = url!.scheme, let action = url!.host else {
+                // some error
+                return
+            }
+            if scheme.caseInsensitiveCompare("pika") == .orderedSame {
+                if let format = ColorFormat.withLabel(url!.lastPathComponent) {
+                    print("URL Command Found: \(scheme)/\(action)/\(format)")
+                } else {
+                    print("Command not found")
+                }
+            }
+        }
     }
 
     func startMainWindow() {
@@ -209,8 +237,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView]
             )
             aboutTouchBarController = SplashTouchBarController(window: aboutWindow)
-            aboutWindow.contentView = NSHostingView(rootView: AboutView().edgesIgnoringSafeArea(.all))
         }
+        aboutWindow.contentView = NSHostingView(rootView: AboutView().edgesIgnoringSafeArea(.all))
         aboutWindow.makeKeyAndOrderFront(nil)
     }
 
@@ -242,6 +270,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         }
 
         preferencesWindow.makeKeyAndOrderFront(nil)
+        preferencesWindow.makeFirstResponder(nil)
         notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerPreferences), object: self)
     }
 

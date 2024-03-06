@@ -147,6 +147,10 @@ enum PikaText {
         "preferences.float.description",
         comment: "Float above windows"
     )
+    static let textAlwaysShowOnLaunch = NSLocalizedString(
+        "preferences.show.description",
+        comment: "Always show Pika on launch"
+    )
 
     // App Settings
     static let textAppTitle = NSLocalizedString("preferences.app.title", comment: "App Settings")

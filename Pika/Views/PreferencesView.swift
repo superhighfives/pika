@@ -12,6 +12,7 @@ struct PreferencesView: View {
     @Default(.copyFormat) var copyFormat
     @Default(.appMode) var appMode
     @Default(.appFloating) var appFloating
+    @Default(.alwaysShowOnLaunch) var alwaysShowOnLaunch
     @State var colorSpace: NSColorSpace = Defaults[.colorSpace]
     @State private var viewHeight: CGFloat = 0.0
 
@@ -76,6 +77,9 @@ struct PreferencesView: View {
                             }
                             Toggle(isOn: $betaUpdates) {
                                 Text(PikaText.textBetaDescription)
+                            }
+                            Toggle(isOn: $alwaysShowOnLaunch) {
+                                Text(PikaText.textAlwaysShowOnLaunch)
                             }
                             .onReceive([self.betaUpdates].publisher.first()) { _ in
                                 NSApp.sendAction(#selector(AppDelegate.updateFeedURL), to: nil, from: nil)

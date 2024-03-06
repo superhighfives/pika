@@ -72,6 +72,24 @@ struct NavigationMenu: View {
                     }
                 }
                 .fixedSize()
+
+            if #available(OSX 11.0, *) {
+                let values = ColorFormat.allCases.map { $0 }
+                HStack {
+                    ForEach(ColorFormat.allCases, id: \.self) { value in
+                        Button(value.rawValue, action: {
+                            colorFormat = value
+                        }).keyboardShortcut(
+                            KeyEquivalent(
+                                Character("\(values.firstIndex(of: value)! + 1)")
+                            ), modifiers: .command
+                        )
+                    }
+                }
+                .opacity(0)
+                .frame(width: 0, height: 0)
+                .padding(0)
+            }
         }
     }
 }
