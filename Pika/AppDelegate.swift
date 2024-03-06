@@ -140,9 +140,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             }
             if scheme.caseInsensitiveCompare("pika") == .orderedSame {
                 if let format = ColorFormat.withLabel(url!.lastPathComponent) {
-                    print("URL Command Found: \(scheme)/\(action)/\(format)")
+                    print("URL Command: \(scheme)/\(action)/\(format)")
+                    Defaults[.colorFormat] = format
+                    NSApp.sendAction(#selector(AppDelegate.triggerPickForeground), to: nil, from: nil)
                 } else {
-                    print("Command not found")
+                    print("URL Command: Not found")
                 }
             }
         }
