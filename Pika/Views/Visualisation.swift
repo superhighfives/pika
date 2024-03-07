@@ -19,10 +19,11 @@ struct Visualisation: View {
             GeometryReader { geo in
                 Image("AppBackground")
                     .resizable()
-                    .scaledToFill()
+                    
                     .frame(maxWidth: geo.size.width,
                            maxHeight: geo.size.height,
                            alignment: .center)
+                    .scaledToFill()
                     .clipped()
             }
         }

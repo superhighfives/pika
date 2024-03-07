@@ -33,6 +33,22 @@ struct EyedropperItem: View {
                         = "\(eyedropper.color.toFormat(format: colorFormat, style: Defaults[.copyFormat]))"
                     pasteboard.setString(contents, forType: .string)
                 }
+                .onReceive(NotificationCenter.default.publisher(
+                    for: Notification.Name("triggerFormatHex"))) { _ in
+                    colorFormat = ColorFormat.hex
+                }
+                .onReceive(NotificationCenter.default.publisher(
+                    for: Notification.Name("triggerFormatRGB"))) { _ in
+                    colorFormat = ColorFormat.rgb
+                }
+                .onReceive(NotificationCenter.default.publisher(
+                    for: Notification.Name("triggerFormatHSB"))) { _ in
+                    colorFormat = ColorFormat.hsb
+                }
+                .onReceive(NotificationCenter.default.publisher(
+                    for: Notification.Name("triggerFormatHSL"))) { _ in
+                    colorFormat = ColorFormat.hsl
+                }
                 .toast(
                     isShowing: $showToast,
                     color: eyedropper.color.getUIColor(),

@@ -46,6 +46,10 @@ enum PikaConstants {
     static let ncTriggerUndo = "triggerUndo"
     static let ncTriggerRedo = "triggerRedo"
     static let ncTriggerPreferences = "triggerPreferences"
+    static let ncTriggerFormatHex = "triggerFormatHex"
+    static let ncTriggerFormatRGB = "triggerFormatRGB"
+    static let ncTriggerFormatHSB = "triggerFormatHSB"
+    static let ncTriggerFormatHSL = "triggerFormatHSL"
 }
 
 enum PikaText {

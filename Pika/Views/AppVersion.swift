@@ -9,6 +9,10 @@ struct AppVersion: View {
                 Image("AboutIcon")
                 Text(PikaText.textAppName)
                     .font(.title)
+                    .shadow(color: Color.black.opacity(0.3),
+                            radius: 0,
+                            x: 0,
+                            y: 2)
             }
             VStack(spacing: 2.0) {
                 let textVersion = PikaText.textAboutVersion
@@ -16,8 +20,16 @@ struct AppVersion: View {
                 let textUnknown = PikaText.textAboutUnknown
                 Text("\(textVersion) \(appVersion ?? textUnknown)")
                     .fontWeight(.semibold)
+                    .shadow(color: Color.black.opacity(0.3),
+                            radius: 0,
+                            x: 0,
+                            y: 2)
                 Text("(\(textBuild) \(buildNumber ?? textUnknown))")
-                    .foregroundColor(.gray)
+                    .foregroundColor(.white).opacity(0.5)
+                    .shadow(color: Color.black.opacity(0.3),
+                            radius: 0,
+                            x: 0,
+                            y: 2)
             }
         }
     }

@@ -54,10 +54,11 @@ struct PreferencesView: View {
         let (primarySpaces, availableSpaces, systemDefaultSpace) = self.getColorSpaces()
 
         HStack(alignment: .top, spacing: 0) {
-            Group {
+            ZStack {
+                Visualisation()
                 AppVersion()
             }
-            .frame(maxWidth: 240.0, maxHeight: .infinity)
+            .frame(maxWidth: 200.0, maxHeight: .infinity)
             .background(VisualEffect(
                 material: NSVisualEffectView.Material.sidebar,
                 blendingMode: NSVisualEffectView.BlendingMode.behindWindow

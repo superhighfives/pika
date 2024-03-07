@@ -232,44 +232,41 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     @IBAction func openAboutWindow(_: Any?) {
-        if aboutWindow == nil {
-            aboutWindow = PikaWindow.createSecondaryWindow(
-                title: "About",
-                size: NSRect(x: 0, y: 0, width: 340, height: 610),
-                styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView]
-            )
-            aboutTouchBarController = SplashTouchBarController(window: aboutWindow)
-        }
+        aboutWindow = PikaWindow.createSecondaryWindow(
+            title: "About",
+            size: NSRect(x: 0, y: 0, width: 340, height: 610),
+            styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView]
+        )
+        aboutTouchBarController = SplashTouchBarController(window: aboutWindow)
+
         aboutWindow.contentView = NSHostingView(rootView: AboutView().edgesIgnoringSafeArea(.all))
         aboutWindow.makeKeyAndOrderFront(nil)
     }
 
     @IBAction func openPreferencesWindow(_: Any?) {
-        if preferencesWindow == nil {
-            let view = NSHostingView(rootView: PreferencesView()
-                .edgesIgnoringSafeArea(.all)
-                .frame(
-                    minWidth: 750,
-                    maxWidth: .infinity,
-                    minHeight: 0,
-                    maxHeight: windowManager.screenHeight,
-                    alignment: .topLeading
-                )
-                .fixedSize(horizontal: false, vertical: true)
-                .environmentObject(eyedroppers)
-                .environmentObject(windowManager))
-            preferencesWindow = PikaWindow.createSecondaryWindow(
-                title: "Preferences",
-                size: NSRect(x: 0, y: 0, width: 750, height: view.fittingSize.height),
-                styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView],
-                maxHeight: 500
+        let view = NSHostingView(rootView: PreferencesView()
+            .edgesIgnoringSafeArea(.all)
+            .frame(
+                minWidth: 750,
+                maxWidth: .infinity,
+                minHeight: 0,
+                maxHeight: windowManager.screenHeight,
+                alignment: .topLeading
             )
+            .fixedSize(horizontal: false, vertical: true)
+            .environmentObject(eyedroppers)
+            .environmentObject(windowManager))
+        preferencesWindow = PikaWindow.createSecondaryWindow(
+            title: "Preferences",
+            size: NSRect(x: 0, y: 0, width: 750, height: view.fittingSize.height),
+            styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView],
+            maxHeight: 500
+        )
 
-            let toolbarHeight: CGFloat = preferencesWindow.frame.height - preferencesWindow.contentLayoutRect.height
-            windowManager.toolbarPadding = toolbarHeight
+        let toolbarHeight: CGFloat = preferencesWindow.frame.height - preferencesWindow.contentLayoutRect.height
+        windowManager.toolbarPadding = toolbarHeight
 
-            preferencesWindow.contentView = view
-        }
+        preferencesWindow.contentView = view
 
         preferencesWindow.makeKeyAndOrderFront(nil)
         preferencesWindow.makeFirstResponder(nil)
@@ -277,19 +274,18 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     @IBAction func openSplashWindow(_: Any?) {
-        if splashWindow == nil {
-            splashWindow = PikaWindow.createSecondaryWindow(
-                title: "Splash",
-                size: NSRect(x: 0, y: 0, width: 650, height: 260),
-                styleMask: [.titled, .fullSizeContentView]
-            )
-            if #available(OSX 11.0, *) {
-                splashWindow.title = PikaText.textAppName
-                splashWindow.titleVisibility = .visible
-            }
-            splashTouchBarController = SplashTouchBarController(window: splashWindow)
-            splashWindow.contentView = NSHostingView(rootView: SplashView().edgesIgnoringSafeArea(.all))
+        splashWindow = PikaWindow.createSecondaryWindow(
+            title: "Splash",
+            size: NSRect(x: 0, y: 0, width: 650, height: 260),
+            styleMask: [.titled, .fullSizeContentView]
+        )
+        if #available(OSX 11.0, *) {
+            splashWindow.title = PikaText.textAppName
+            splashWindow.titleVisibility = .visible
         }
+        splashTouchBarController = SplashTouchBarController(window: splashWindow)
+        splashWindow.contentView = NSHostingView(rootView: SplashView().edgesIgnoringSafeArea(.all))
+
         splashWindow.fadeIn(nil)
     }
 
@@ -327,6 +323,22 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     @IBAction func triggerCopyData(_: Any) {
         notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerCopyData), object: self)
+    }
+
+    @IBAction func triggerFormatHex(_: Any) {
+        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerFormatHex), object: self)
+    }
+
+    @IBAction func triggerFormatRGB(_: Any) {
+        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerFormatRGB), object: self)
+    }
+
+    @IBAction func triggerFormatHSB(_: Any) {
+        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerFormatHSB), object: self)
+    }
+
+    @IBAction func triggerFormatHSL(_: Any) {
+        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerFormatHSL), object: self)
     }
 
     @IBAction func hidePika(_: Any) {
