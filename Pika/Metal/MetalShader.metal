@@ -33,10 +33,10 @@ float2 within(float2 uv, float4 rect)
     return (uv-rect.xy)/(rect.zw-rect.xy);
 }
 
-float4 Main(float2 uv, float time)
+float4 Main(float2 uv, float time, float2 iResolution)
 {
     float2 p = uv.xy;
-    p *= 6;
+    p *= iResolution.y / 200.0;
   
     float3 foreground = float3(143, 15, 208) / 255.0;
     float3 background = float3(188, 42, 97) / 255.0;
@@ -63,6 +63,6 @@ kernel void compute(texture2d<float,access::write> output [[texture(0)]],
     
     float time = input.x;
     
-    float4 col = Main(uv, time);
+    float4 col = Main(uv, time, iResolution);
     output.write(col, gid);
 }

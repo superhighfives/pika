@@ -19,11 +19,9 @@ struct Visualisation: View {
             GeometryReader { geo in
                 Image("AppBackground")
                     .resizable()
-                    
                     .frame(maxWidth: geo.size.width,
                            maxHeight: geo.size.height,
                            alignment: .center)
-                    .scaledToFill()
                     .clipped()
             }
         }
@@ -33,5 +31,6 @@ struct Visualisation: View {
 struct VisualisationView_Previews: PreviewProvider {
     static var previews: some View {
         Visualisation()
+            .frame(width: 400, height: 400)
     }
 }

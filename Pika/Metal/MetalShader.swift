@@ -25,7 +25,7 @@ struct MetalShader: NSViewRepresentable {
     func updateNSView(_: MTKView, context _: NSViewRepresentableContext<MetalShader>) {}
 
     class Coordinator: NSObject, MTKViewDelegate {
-        let timeStep = Float(1.0 / 60.0)
+        let timeStep = Float(1.0 / 30.0)
         var time = Float(0)
 
         var parent: MetalShader

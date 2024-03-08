@@ -127,7 +127,7 @@
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="DMb-e0-vJg"/>
-                                        <menuItem title="Swap colors" keyEquivalent="d" allowsKeyEquivalentWhenHidden="YES" id="6j0-AT-P3M">
+                                        <menuItem title="Swap colors" keyEquivalent="x" allowsKeyEquivalentWhenHidden="YES" id="6j0-AT-P3M">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="triggerSwap:" target="Ady-hI-5gd" id="Gu5-Cw-s7r"/>

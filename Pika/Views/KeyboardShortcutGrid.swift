@@ -71,7 +71,7 @@ struct KeyboardShortcutGrid: View {
                         KeyboardShortcutItem(
                             title: PikaText.textColorSwapDetail,
                             event: PikaConstants.ncTriggerSwap,
-                            keys: ["⇧", "⌘", "X"]
+                            keys: ["X"]
                         )
                         .frame(width: horizontalUnit, height: verticalUnit)
                     }

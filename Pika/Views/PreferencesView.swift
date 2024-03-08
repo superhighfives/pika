@@ -58,7 +58,7 @@ struct PreferencesView: View {
                 Visualisation()
                 AppVersion()
             }
-            .frame(maxWidth: 200.0, maxHeight: .infinity)
+            .frame(maxWidth: 240.0, maxHeight: .infinity)
             .background(VisualEffect(
                 material: NSVisualEffectView.Material.sidebar,
                 blendingMode: NSVisualEffectView.BlendingMode.behindWindow
