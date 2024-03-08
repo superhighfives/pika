@@ -47,7 +47,7 @@ struct AboutView: View {
 
                 VStack(spacing: 0) {
                     KeyboardShortcutGrid()
-                        .frame(height: 210.0)
+                        .frame(height: 250.0)
                         .background(colorScheme == .light ? Color.black.opacity(0.05) : Color.black.opacity(0.2))
                 }
 
@@ -66,5 +66,6 @@ struct AboutView: View {
 struct AboutView_Previews: PreviewProvider {
     static var previews: some View {
         AboutView()
+            .frame(width: 550, height: 700)
     }
 }

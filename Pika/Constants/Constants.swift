@@ -202,6 +202,11 @@ enum PikaText {
     static let textSpaceTitle = NSLocalizedString("preferences.space.title", comment: "Color Space")
     static let textSystemDefault = NSLocalizedString("preferences.space.default", comment: "System Default")
 
+    static let textFormatHex = NSLocalizedString("color.format.hex", comment: "Hex format")
+    static let textFormatRGB = NSLocalizedString("color.format.rgb", comment: "RGB format")
+    static let textFormatHSL = NSLocalizedString("color.format.hsl", comment: "HSL format")
+    static let textFormatHSB = NSLocalizedString("color.format.hsb", comment: "HSB format")
+
     // Global Shortcut
     static let textHotkeyTitle = NSLocalizedString("preferences.hotkey.title", comment: "Global Shortcut")
     static let textHotkeyDescription = NSLocalizedString(

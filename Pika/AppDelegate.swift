@@ -234,7 +234,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     @IBAction func openAboutWindow(_: Any?) {
         aboutWindow = PikaWindow.createSecondaryWindow(
             title: "About",
-            size: NSRect(x: 0, y: 0, width: 340, height: 610),
+            size: NSRect(x: 0, y: 0, width: 550, height: 700),
             styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView]
         )
         aboutTouchBarController = SplashTouchBarController(window: aboutWindow)

@@ -49,6 +49,18 @@
 /* Copy RGB values */
 "color.copy.rgb" = "RGB-Werte kopieren";
 
+/* HEX format */
+"color.format.hex" = "Hex-Format";
+
+/* HSB format */
+"color.format.hsb" = "HSB-Format";
+
+/* HSL format */
+"color.format.hsl" = "HSL-Format";
+
+/* RGB format */
+"color.format.rgb" = "RGB-Format";
+
 /* Copy all as text */
 "color.copy.text" = "Als Text kopieren";
 
