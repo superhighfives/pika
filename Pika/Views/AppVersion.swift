@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct AppVersion: View {
+    @Environment(\.colorScheme) var colorScheme: ColorScheme
     let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
     let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String
     var body: some View {
@@ -9,10 +10,16 @@ struct AppVersion: View {
                 Image("AboutIcon")
                 Text(PikaText.textAppName)
                     .font(.title)
-                    .shadow(color: Color.black.opacity(0.3),
-                            radius: 0,
-                            x: 0,
-                            y: 2)
+                    .modify {
+                        if colorScheme == .dark {
+                            $0.shadow(color: Color.black.opacity(0.3),
+                                      radius: 0,
+                                      x: 0,
+                                      y: 2)
+                        } else {
+                            $0
+                        }
+                    }
             }
             VStack(spacing: 2.0) {
                 let textVersion = PikaText.textAboutVersion
@@ -20,16 +27,29 @@ struct AppVersion: View {
                 let textUnknown = PikaText.textAboutUnknown
                 Text("\(textVersion) \(appVersion ?? textUnknown)")
                     .fontWeight(.semibold)
-                    .shadow(color: Color.black.opacity(0.3),
-                            radius: 0,
-                            x: 0,
-                            y: 2)
+                    .modify {
+                        if colorScheme == .dark {
+                            $0.shadow(color: Color.black.opacity(0.3),
+                                      radius: 0,
+                                      x: 0,
+                                      y: 2)
+                        } else {
+                            $0
+                        }
+                    }
+
                 Text("(\(textBuild) \(buildNumber ?? textUnknown))")
-                    .foregroundColor(.white).opacity(0.5)
-                    .shadow(color: Color.black.opacity(0.3),
-                            radius: 0,
-                            x: 0,
-                            y: 2)
+                    .foregroundColor(colorScheme == .light ? .black : .white).opacity(0.5)
+                    .modify {
+                        if colorScheme == .dark {
+                            $0.shadow(color: Color.black.opacity(0.3),
+                                      radius: 0,
+                                      x: 0,
+                                      y: 2)
+                        } else {
+                            $0
+                        }
+                    }
             }
         }
     }

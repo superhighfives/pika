@@ -139,12 +139,47 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 return
             }
             if scheme.caseInsensitiveCompare("pika") == .orderedSame {
-                if let format = ColorFormat.withLabel(url!.lastPathComponent) {
-                    print("URL Command: \(scheme)/\(action)/\(format)")
-                    Defaults[.colorFormat] = format
-                    NSApp.sendAction(#selector(AppDelegate.triggerPickForeground), to: nil, from: nil)
-                } else {
-                    print("URL Command: Not found")
+                if action == "pick" {
+                    if let format = ColorFormat.withLabel(url!.lastPathComponent) {
+                        print("URL Command: \(scheme)/\(action)/\(format)")
+                        Defaults[.colorFormat] = format
+                        NSApp.sendAction(#selector(AppDelegate.triggerPickForeground), to: nil, from: nil)
+                    }
+                }
+
+                if action == "copy", url!.lastPathComponent == "foreground" {
+                    print("URL Command: \(scheme)/\(action)/foreground")
+                    NSApp.sendAction(#selector(AppDelegate.triggerCopyForeground(_:)), to: nil, from: nil)
+                }
+
+                if action == "copy", url!.lastPathComponent == "background" {
+                    print("URL Command: \(scheme)/\(action)/background")
+                    NSApp.sendAction(#selector(AppDelegate.triggerCopyBackground(_:)), to: nil, from: nil)
+                }
+
+                if action == "copy", url!.lastPathComponent == "text" {
+                    print("URL Command: \(scheme)/\(action)/text")
+                    NSApp.sendAction(#selector(AppDelegate.triggerCopyText(_:)), to: nil, from: nil)
+                }
+
+                if action == "copy", url!.lastPathComponent == "json" {
+                    print("URL Command: \(scheme)/\(action)/json")
+                    NSApp.sendAction(#selector(AppDelegate.triggerCopyData(_:)), to: nil, from: nil)
+                }
+
+                if action == "swap" {
+                    print("URL Command: \(scheme)/\(action)")
+                    NSApp.sendAction(#selector(AppDelegate.triggerSwap(_:)), to: nil, from: nil)
+                }
+
+                if action == "undo" {
+                    print("URL Command: \(scheme)/\(action)")
+                    NSApp.sendAction(#selector(AppDelegate.triggerUndo(_:)), to: nil, from: nil)
+                }
+
+                if action == "redo" {
+                    print("URL Command: \(scheme)/\(action)")
+                    NSApp.sendAction(#selector(AppDelegate.triggerRedo(_:)), to: nil, from: nil)
                 }
             }
         }
