@@ -85,11 +85,10 @@ struct PreferencesView: View {
                             .onReceive([self.betaUpdates].publisher.first()) { _ in
                                 NSApp.sendAction(#selector(AppDelegate.updateFeedURL), to: nil, from: nil)
                             }
-                            if appMode == .menubar {
-                                Toggle(isOn: $hideMenuBarIcon) {
-                                    Text(PikaText.textIconDescription)
-                                }
+                            Toggle(isOn: $hideMenuBarIcon) {
+                                Text(PikaText.textIconDescription)
                             }
+                            .disabled(appMode != .menubar)
                         }
                         .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
                         .padding(.all, 24.0)
