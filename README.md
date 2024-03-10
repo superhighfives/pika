@@ -26,7 +26,68 @@ Learn more about the [motivations behind the project](https://medium.com/superhi
 
 - macOS Catalina (Version 10.15+) and newer
 
-### Development
+## Keyboard Shortcuts
+
+As of version `0.0.17`, Pika supports the following keyboard shortcuts:
+
+### Pick colors
+- <kbd>⌘ D</kbd>: Pick foreground
+- <kbd>⌘ ⇧ D</kbd>: Pick background
+
+### Copy colors
+- <kbd>⌘ C</kbd>: Copy foreground
+- <kbd>⌘ ⇧ C</kbd>: Copy background
+
+### Change formats
+- <kbd>⌘ 1</kbd>: Format Hex
+- <kbd>⌘ 2</kbd>: Format RGB
+- <kbd>⌘ 3</kbd>: Format HSB
+- <kbd>⌘ 4</kbd>: Format HSL
+
+### Change colors
+- <kbd>⌘ Z</kbd>: Undo last pick
+- <kbd>⌘ ⇧ Z</kbd>: Redo last pick
+- <kbd>X</kbd>: Swap colors
+
+## URL Triggers
+
+As of version `0.0.17`, you can trigger Pika using the `pika://` URL scheme.
+
+### Pick colors
+- Pick foreground:
+  - `pika://pick/foreground`
+- Pick background:
+  - `pika://pick/background`
+
+### Copy colors
+- Copy foreground:
+  - `pika://copy/foreground`
+- Copy background:
+  - `pika://copy/background`
+- Copy text
+  - `pika://copy/text`
+- Copy JSON
+  - `pika://copy/json`
+
+### Change formats
+- Format Hex
+  - `pika://format/hex`
+- Format RGB
+  - `pika://format/rgb`
+- Format HSB
+  - `pika://format/hsb`
+- Format HSL
+  - `pika://format/hsl`
+
+### Change colors
+- Undo last pick
+  - `pika://undo`
+- Redo last pick
+  - `pika://redo`
+- Swap colors
+  - `pika://swap`
+
+## Development
 
 - [Xcode](https://developer.apple.com/xcode/) 12.3
 - Swift Package Manager

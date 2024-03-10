@@ -14,6 +14,7 @@ struct PreferencesView: View {
     @Default(.appFloating) var appFloating
     @Default(.alwaysShowOnLaunch) var alwaysShowOnLaunch
     @State var colorSpace: NSColorSpace = Defaults[.colorSpace]
+    @State var disableHideMenuBarIcon = true
     @State private var viewHeight: CGFloat = 0.0
 
     @EnvironmentObject var eyedroppers: Eyedroppers
@@ -85,10 +86,15 @@ struct PreferencesView: View {
                             .onReceive([self.betaUpdates].publisher.first()) { _ in
                                 NSApp.sendAction(#selector(AppDelegate.updateFeedURL), to: nil, from: nil)
                             }
-                            Toggle(isOn: $hideMenuBarIcon) {
-                                Text(PikaText.textIconDescription)
+                            if appMode != .menubar {
+                                Toggle(isOn: $disableHideMenuBarIcon) {
+                                    Text(PikaText.textIconDescription)
+                                }.disabled(true)
+                            } else {
+                                Toggle(isOn: $hideMenuBarIcon) {
+                                    Text(PikaText.textIconDescription)
+                                }
                             }
-                            .disabled(appMode != .menubar)
                         }
                         .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
                         .padding(.all, 24.0)
