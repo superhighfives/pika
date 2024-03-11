@@ -9,6 +9,7 @@
 
 // swiftlint:disable opening_brace
 
+import AppKit
 import Cocoa
 
 private let defaultWindowAnimationDuration: TimeInterval = 0.25

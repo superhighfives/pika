@@ -7,6 +7,7 @@ import SwiftUI
 
 @main
 // swiftlint:disable type_body_length
+// swiftlint:disable file_length
 class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     var statusBarItem: NSStatusItem!
     var statusBarMenu: NSMenu!
@@ -131,6 +132,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                                           andEventID: AEEventID(kAEGetURL))
     }
 
+    // swiftlint:disable cyclomatic_complexity
     @objc func handleGetURLEvent(_ event: NSAppleEventDescriptor, withReplyEvent _: NSAppleEventDescriptor) {
         if let urlString = event.forKeyword(AEKeyword(keyDirectObject))?.stringValue {
             let url = URL(string: urlString)
