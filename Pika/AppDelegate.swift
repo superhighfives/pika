@@ -140,36 +140,47 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 // some error
                 return
             }
-            if scheme.caseInsensitiveCompare("pika") == .orderedSame {
-                if action == "pick" {
-                    if url!.lastPathComponent == "foreground" {
-                        NSApp.sendAction(#selector(AppDelegate.triggerPickForeground(_:)), to: nil, from: nil)
-                    }
 
-                    if url!.lastPathComponent == "background" {
-                        NSApp.sendAction(#selector(AppDelegate.triggerPickBackground(_:)), to: nil, from: nil)
+            var list = url!.pathComponents.dropFirst()
+            let task = list.popFirst()
+            let colorFormat = list.popFirst()
+
+            if scheme.caseInsensitiveCompare("pika") == .orderedSame {
+                if colorFormat != nil {
+                    if let format = ColorFormat.withLabel(colorFormat!) {
+                        Defaults[.colorFormat] = format
                     }
                 }
-
+                
                 if action == "format" {
-                    if let format = ColorFormat.withLabel(url!.lastPathComponent) {
+                    if let format = ColorFormat.withLabel(task!) {
                         Defaults[.colorFormat] = format
                     }
                 }
 
-                if action == "copy", url!.lastPathComponent == "foreground" {
+                if action == "pick" {
+                    if task == "foreground" {
+                        NSApp.sendAction(#selector(AppDelegate.triggerPickForeground(_:)), to: nil, from: nil)
+                    }
+
+                    if task == "background" {
+                        NSApp.sendAction(#selector(AppDelegate.triggerPickBackground(_:)), to: nil, from: nil)
+                    }
+                }
+
+                if action == "copy", task == "foreground" {
                     NSApp.sendAction(#selector(AppDelegate.triggerCopyForeground(_:)), to: nil, from: nil)
                 }
 
-                if action == "copy", url!.lastPathComponent == "background" {
+                if action == "copy", task == "background" {
                     NSApp.sendAction(#selector(AppDelegate.triggerCopyBackground(_:)), to: nil, from: nil)
                 }
 
-                if action == "copy", url!.lastPathComponent == "text" {
+                if action == "copy", task == "text" {
                     NSApp.sendAction(#selector(AppDelegate.triggerCopyText(_:)), to: nil, from: nil)
                 }
 
-                if action == "copy", url!.lastPathComponent == "json" {
+                if action == "copy", task == "json" {
                     NSApp.sendAction(#selector(AppDelegate.triggerCopyData(_:)), to: nil, from: nil)
                 }
 
