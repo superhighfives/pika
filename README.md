@@ -53,17 +53,25 @@ As of version `0.0.17`, Pika supports the following keyboard shortcuts:
 
 As of version `0.0.17`, you can trigger Pika using the `pika://` URL scheme.
 
+You can also change the format by appending it to the URL when picking or copying. For example, `pika://pick/foreground/hex` (or rgb, hsl, hsb).
+
 ### Pick colors
 - Pick foreground:
   - `pika://pick/foreground`
 - Pick background:
   - `pika://pick/background`
+- Pick colour with specific format:
+  - `pika://pick/foreground/hex` (or rgb, hsl, hsb)
+  - `pika://pick/background/hex` (or rgb, hsl, hsb)
 
 ### Copy colors
 - Copy foreground:
   - `pika://copy/foreground`
 - Copy background:
   - `pika://copy/background`
+- Copy colour with specific format:
+  - `pika://copy/foreground/hex` (or rgb, hsl, hsb)
+  - `pika://copy/background/hex` (or rgb, hsl, hsb)
 - Copy text
   - `pika://copy/text`
 - Copy JSON
