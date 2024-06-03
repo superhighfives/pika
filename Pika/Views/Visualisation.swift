@@ -28,16 +28,13 @@ struct Visualisation: View {
                                    maxHeight: geo.size.height,
                                    alignment: .center)
                             .clipped()
-                            .transition(.opacity)
                     }
                 }
             }
         }
-        .animation(Animation.easeInOut(duration: 1)) // delay is optional, for demo
         .onAppear {
             self.isShown.toggle()
         }
-        .background(Color(PikaConstants.initialColors.randomElement()!))
     }
 }
 

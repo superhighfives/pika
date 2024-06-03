@@ -151,7 +151,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                         Defaults[.colorFormat] = format
                     }
                 }
-                
+
                 if action == "format" {
                     if let format = ColorFormat.withLabel(task!) {
                         Defaults[.colorFormat] = format
@@ -281,11 +281,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     @IBAction func openAboutWindow(_: Any?) {
-        aboutWindow = PikaWindow.createSecondaryWindow(
-            title: "About",
-            size: NSRect(x: 0, y: 0, width: 550, height: 700),
-            styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView]
-        )
+        if aboutWindow == nil {
+            aboutWindow = PikaWindow.createSecondaryWindow(
+                title: "About",
+                size: NSRect(x: 0, y: 0, width: 550, height: 700),
+                styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView]
+            )
+        }
         aboutTouchBarController = SplashTouchBarController(window: aboutWindow)
 
         aboutWindow.contentView = NSHostingView(rootView: AboutView().edgesIgnoringSafeArea(.all))
@@ -305,18 +307,20 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             .fixedSize(horizontal: false, vertical: true)
             .environmentObject(eyedroppers)
             .environmentObject(windowManager))
-        preferencesWindow = PikaWindow.createSecondaryWindow(
-            title: "Preferences",
-            size: NSRect(x: 0, y: 0, width: 750, height: view.fittingSize.height),
-            styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView],
-            maxHeight: 500
-        )
+
+        if preferencesWindow == nil {
+            preferencesWindow = PikaWindow.createSecondaryWindow(
+                title: "Preferences",
+                size: NSRect(x: 0, y: 0, width: 750, height: view.fittingSize.height),
+                styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView],
+                maxHeight: 500
+            )
+        }
 
         let toolbarHeight: CGFloat = preferencesWindow.frame.height - preferencesWindow.contentLayoutRect.height
         windowManager.toolbarPadding = toolbarHeight
 
         preferencesWindow.contentView = view
-
         preferencesWindow.makeKeyAndOrderFront(nil)
         preferencesWindow.makeFirstResponder(nil)
         notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerPreferences), object: self)
