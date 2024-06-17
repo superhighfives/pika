@@ -9,6 +9,11 @@ Pika (pronounced pi·kuh, like picker) is an easy to use, open-source, native co
 **Download the latest version of the app at:<br />
 [superhighfives.com/pika](https://superhighfives.com/pika)**
 
+Or you can install it with Homebrew:
+```bash
+brew install --cask pika
+```
+
 Learn more about the [motivations behind the project](https://medium.com/superhighfives/introducing-pika-d7725c397585), and the [product vision](https://github.com/superhighfives/pika/wiki).
 
 <a href="https://www.producthunt.com/golden-kitty-awards/hall-of-fame?year=2022">
@@ -110,7 +115,7 @@ brew install mint
 mint bootstrap
 ```
 
-Open `Pika.xcodeproj` and to run the project. [Sparkle](https://github.com/sparkle-project/Sparkle) requires that you have a [team and signing profile set](https://github.com/MonitorControl/MonitorControl/discussions/638) for the project, or it will crash with a dyld / signal SIGABRT error. 
+Open `Pika.xcodeproj` and to run the project. [Sparkle](https://github.com/sparkle-project/Sparkle) requires that you have a [team and signing profile set](https://github.com/MonitorControl/MonitorControl/discussions/638) for the project, or it will crash with a dyld / signal SIGABRT error.
 
 If you run into any problems, please [detail them in an issue](https://github.com/superhighfives/pika/issues/new/).
 
