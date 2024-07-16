@@ -49,6 +49,10 @@ struct EyedropperItem: View {
                     for: Notification.Name("triggerFormatHSL"))) { _ in
                     colorFormat = ColorFormat.hsl
                 }
+                .onReceive(NotificationCenter.default.publisher(
+                    for: Notification.Name("triggerFormatOpenGL"))) { _ in
+                    colorFormat = ColorFormat.opengl
+                }
                 .toast(
                     isShowing: $showToast,
                     color: eyedropper.color.getUIColor(),

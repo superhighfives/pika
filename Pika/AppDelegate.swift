@@ -329,7 +329,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     @IBAction func openSplashWindow(_: Any?) {
         splashWindow = PikaWindow.createSecondaryWindow(
             title: "Splash",
-            size: NSRect(x: 0, y: 0, width: 650, height: 260),
+            size: NSRect(x: 0, y: 0, width: 650, height: 380),
             styleMask: [.titled, .fullSizeContentView]
         )
         if #available(OSX 11.0, *) {
@@ -392,6 +392,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     @IBAction func triggerFormatHSL(_: Any) {
         notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerFormatHSL), object: self)
+    }
+
+    @IBAction func triggerFormatOpenGL(_: Any) {
+        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerFormatOpenGL), object: self)
     }
 
     @IBAction func hidePika(_: Any) {

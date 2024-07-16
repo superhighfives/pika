@@ -136,6 +136,16 @@ struct KeyboardShortcutGrid: View {
                             keys: ["⌘", "4"]
                         )
                         .frame(width: quarterHorizontalUnit, height: verticalUnit)
+
+                        Divider()
+                            .frame(height: verticalUnit)
+
+                        KeyboardShortcutItem(
+                            title: PikaText.textFormatOpenGL,
+                            event: PikaConstants.ncTriggerFormatOpenGL,
+                            keys: ["⌘", "5"]
+                        )
+                        .frame(width: quarterHorizontalUnit, height: verticalUnit)
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
