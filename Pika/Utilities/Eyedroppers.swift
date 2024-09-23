@@ -128,6 +128,11 @@ class Eyedropper: ObservableObject {
                     self.forceShow = false
                     NSApp.sendAction(#selector(AppDelegate.showPika), to: nil, from: nil)
                 }
+
+                let panel = NSColorPanel.shared
+                if panel.isVisible {
+                    self.picker()
+                }
             }
         }
     }
