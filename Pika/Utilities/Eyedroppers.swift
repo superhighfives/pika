@@ -35,6 +35,13 @@ class Eyedropper: ObservableObject {
             case .background: return #selector(AppDelegate.triggerPickBackground)
             }
         }
+
+        var systemPickerSelector: Selector {
+            switch self {
+            case .foreground: return #selector(AppDelegate.triggerSystemPickerForeground)
+            case .background: return #selector(AppDelegate.triggerSystemPickerBackground)
+            }
+        }
     }
 
     let type: Types
@@ -70,6 +77,29 @@ class Eyedropper: ObservableObject {
         }
 
         color = selectedColor.usingColorSpace(Defaults[.colorSpace])!
+    }
+
+    @objc func colorDidChange(sender: AnyObject) {
+        if let picker = sender as? NSColorPanel {
+            let previousColor = color
+            undoManager?.registerUndo(withTarget: self) { _ in
+                self.set(previousColor)
+            }
+
+            color = picker.color.usingColorSpace(Defaults[.colorSpace])!
+        }
+    }
+
+    func picker() {
+        let panel = NSColorPanel.shared
+        panel.title = "\(type.rawValue.capitalized)"
+        panel.titleVisibility = .visible
+        panel.setTarget(self)
+        panel.color = color
+        panel.showsAlpha = true
+        panel.orderFrontRegardless()
+        panel.setAction(#selector(colorDidChange))
+        panel.isContinuous = true
     }
 
     func start() {

@@ -42,6 +42,8 @@ enum PikaConstants {
     static let ncTriggerCopyData = "triggerCopyData"
     static let ncTriggerPickForeground = "triggerPickForeground"
     static let ncTriggerPickBackground = "triggerPickBackground"
+    static let ncTriggerSystemPickerForeground = "triggerSystemPickerForeground"
+    static let ncTriggerSystemPickerBackground = "triggerSystemPickerBackground"
     static let ncTriggerSwap = "triggerSwap"
     static let ncTriggerUndo = "triggerUndo"
     static let ncTriggerRedo = "triggerRedo"
@@ -73,6 +75,7 @@ enum PikaText {
     static let textColorUndo = NSLocalizedString("color.undo", comment: "Undo")
     static let textColorRedo = NSLocalizedString("color.redo", comment: "Redo")
     static let textColorCopy = NSLocalizedString("color.copy", comment: "Copy")
+    static let textColorSystemPicker = NSLocalizedString("color.system", comment: "System picker")
     static let textColorCopied = NSLocalizedString("color.copy.toast", comment: "Copied")
 
     /*

@@ -25,6 +25,9 @@
 /* Copy */
 "color.copy" = "Kopieren";
 
+/* System color picker */
+"color.system" = "Systemfarbwähler";
+
 /* Copy background */
 "color.copy.background" = "Hintergrund kopieren";
 

@@ -11,7 +11,7 @@ struct SwapButtonStyle: ButtonStyle {
 
         @State private var isHovered: Bool = false
         @State private var timerSubscription: Cancellable?
-        @State private var timer = Timer.publish(every: 0.25, on: .main, in: .common)
+        @State private var timer = Timer.publish(every: 0.1, on: .main, in: .common)
 
         let configuration: Configuration
         let isVisible: Bool
@@ -34,13 +34,13 @@ struct SwapButtonStyle: ButtonStyle {
             let bgColor: Color = getBackgroundColor(colorScheme: colorScheme)
 
             HStack {
-                configuration.label
                 if isHovered {
                     Text(alt)
                         .font(.system(size: 12.0))
                 }
+                configuration.label
             }
-            .padding(.horizontal, isHovered ? 12 : 8)
+            .padding(.horizontal, 8)
             .padding(.vertical, 8)
             .mask(RoundedRectangle(cornerRadius: 100.0, style: .continuous))
             .background(
@@ -62,7 +62,7 @@ struct SwapButtonStyle: ButtonStyle {
             .onHover { hover in
                 if hover {
                     if self.timerSubscription == nil {
-                        self.timer = Timer.publish(every: 1, on: .main, in: .common)
+                        self.timer = Timer.publish(every: 0.1, on: .main, in: .common)
                         self.timerSubscription = self.timer.connect()
                     }
                 } else {
@@ -78,7 +78,8 @@ struct SwapButtonStyle: ButtonStyle {
             }
             .opacity(isVisible ? (configuration.isPressed ? 0.8 : 1.0) : 0.0)
             .foregroundColor(fgColor.opacity(0.8))
-            .animation(.easeInOut)
+            .frame(height: 32.0)
+            .animation(.easeOut)
         }
     }
 
