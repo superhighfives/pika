@@ -173,9 +173,9 @@ extension NSColor {
         let formatString: NSString
         switch style {
         case .css, .design:
-            formatString = "rgba(%1.2f, %1.2f, %1.2f, 1.0)"
+            formatString = "rgba(%.5g, %.5g, %.5g, 1.0)"
         case .unformatted:
-            formatString = "%1.2f, %1.2f, %1.2f, 1.0"
+            formatString = "%.5g, %.5g, %.5g, 1.0"
         }
 
         let openGLString = NSString(format: formatString, red, green, blue)
