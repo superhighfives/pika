@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="23094" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="23094"/>
@@ -167,6 +167,11 @@
                                                     <menuItem title="HSL" keyEquivalent="4" allowsKeyEquivalentWhenHidden="YES" id="t7X-bM-FAM" userLabel="Format">
                                                         <connections>
                                                             <action selector="triggerFormatHSL:" target="Voe-Tx-rLC" id="u6q-Ow-iJq"/>
+                                                        </connections>
+                                                    </menuItem>
+                                                    <menuItem title="OpenGL" keyEquivalent="5" allowsKeyEquivalentWhenHidden="YES" id="caq-wZ-Zn0" userLabel="Format">
+                                                        <connections>
+                                                            <action selector="triggerFormatHSL:" target="Voe-Tx-rLC" id="aIc-Ec-3GJ"/>
                                                         </connections>
                                                     </menuItem>
                                                 </items>

@@ -156,6 +156,33 @@ extension NSColor {
     }
 
     /*
+     * OpenGL
+     */
+
+    /**
+     Get the rgb values of this color in opengl format.
+
+     - returns: An NSColor as an opengl string.
+     */
+    func toOpenGLString(style: CopyFormat = .css) -> String {
+        let RGB = toRGBAComponents()
+        let red = RGB.r
+        let green = RGB.g
+        let blue = RGB.b
+
+        let formatString: NSString
+        switch style {
+        case .css, .design:
+            formatString = "rgba(%.5g, %.5g, %.5g, 1.0)"
+        case .unformatted:
+            formatString = "%.5g, %.5g, %.5g, 1.0"
+        }
+
+        let openGLString = NSString(format: formatString, red, green, blue)
+        return openGLString as String
+    }
+
+    /*
      * HSB
      */
 
@@ -304,6 +331,8 @@ extension NSColor {
             return toHSBString(style: style)
         case .hsl:
             return toHSLString(style: style)
+        case .opengl:
+            return toOpenGLString(style: style)
         }
     }
 

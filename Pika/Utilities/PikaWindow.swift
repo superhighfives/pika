@@ -13,6 +13,7 @@ class PikaWindow {
         window.isReleasedWhenClosed = false
         window.center()
         window.title = PikaText.textAppName
+        window.titleVisibility = .hidden
         window.level = Defaults[.appFloating] ? .floating : .normal
         window.isMovableByWindowBackground = true
         window.standardWindowButton(NSWindow.ButtonType.zoomButton)!.isEnabled = false
@@ -31,7 +32,7 @@ class PikaWindow {
             window.titleVisibility = .hidden
         }
         let toolbarButtons = NSHostingView(rootView: NavigationMenu())
-        toolbarButtons.frame.size = toolbarButtons.fittingSize
+        toolbarButtons.frame.size = toolbarButtons.intrinsicContentSize
         let titlebarAccessory = NSTitlebarAccessoryViewController()
         titlebarAccessory.view = toolbarButtons
         titlebarAccessory.layoutAttribute = .trailing

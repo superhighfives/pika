@@ -12,6 +12,7 @@ struct SplashView: View {
                     .scaledToFit()
                     .frame(maxWidth: 140.0)
                     .offset(x: 0.0, y: 5.0)
+                    .padding(.vertical, 48.0)
             }
             Divider()
             HStack(spacing: 16.0) {

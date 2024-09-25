@@ -49,6 +49,9 @@
 /* Copy RGB values */
 "color.copy.rgb" = "RGB-Werte kopieren";
 
+/* Copy OpenGL values */
+"color.copy.opengl" = "OpenGL-Werte kopieren";
+
 /* System color picker */
 "color.system" = "Systemfarbwähler";
 
@@ -69,6 +72,9 @@
 
 /* RGB format */
 "color.format.rgb" = "RGB-Format";
+
+/* OpenGL format */
+"color.format.opengl" = "OpenGL-Format";
 
 /* Copy all as text */
 "color.copy.text" = "Als Text kopieren";
