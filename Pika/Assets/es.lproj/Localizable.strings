@@ -223,6 +223,9 @@
 /* Copy RGB values */
 "color.copy.rgb" = "Copiar valores RGB";
 
+/* Copy OpenGL values */
+"color.copy.opengl" = "Copiar valores OpenGL";
+
 /* System color picker */
 "color.system" = "Selector de color del sistema";
 
@@ -243,6 +246,9 @@
 
 /* RGB format */
 "color.format.rgb" = "Formato RGB";
+
+/* OpenGL format */
+"color.format.opengl" = "Formato OpenGL";
 
 /* Copy foreground */
 "menu.copy.foreground" = "Copiar primer plano";
