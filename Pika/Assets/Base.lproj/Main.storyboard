@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="22155" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="23094" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22155"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="23094"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -91,7 +91,7 @@
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="qXi-VF-aR5"/>
-                                        <menuItem title="Copy all as textt" allowsKeyEquivalentWhenHidden="YES" id="D8e-06-QFY">
+                                        <menuItem title="Copy all as text" allowsKeyEquivalentWhenHidden="YES" id="D8e-06-QFY">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="triggerCopyBackground:" target="Voe-Tx-rLC" id="gum-gU-6N8"/>
@@ -127,6 +127,17 @@
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="DMb-e0-vJg"/>
+                                        <menuItem title="Use system picker for foreground" keyEquivalent="s" allowsKeyEquivalentWhenHidden="YES" id="hMH-To-rZ9">
+                                            <connections>
+                                                <action selector="triggerSystemPickerForeground:" target="Ady-hI-5gd" id="PCg-9B-kjb"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Use system picker for background" keyEquivalent="S" allowsKeyEquivalentWhenHidden="YES" id="CnG-MW-7x1">
+                                            <connections>
+                                                <action selector="triggerSystemPickerBackground:" target="Ady-hI-5gd" id="ND4-YV-SIu"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="dxL-CK-7Ia"/>
                                         <menuItem title="Swap colors" keyEquivalent="x" allowsKeyEquivalentWhenHidden="YES" id="6j0-AT-P3M">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>

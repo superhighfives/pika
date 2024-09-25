@@ -49,6 +49,15 @@
 /* Copy RGB values */
 "color.copy.rgb" = "RGB-Werte kopieren";
 
+/* System color picker */
+"color.system" = "Systemfarbwähler";
+
+/* Use foreground system color picker */
+"color.system.foreground" = "Vordergrund-Systemfarbauswahl";
+
+/* Use background system color picker */
+"color.system.background" = "Hintergrund-Systemfarbauswahl";
+
 /* HEX format */
 "color.format.hex" = "Hex-Format";
 

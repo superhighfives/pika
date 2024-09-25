@@ -9,6 +9,11 @@ Pika (pronounced pi·kuh, like picker) is an easy to use, open-source, native co
 **Download the latest version of the app at:<br />
 [superhighfives.com/pika](https://superhighfives.com/pika)**
 
+Or you can install it with Homebrew:
+```bash
+brew install --cask pika
+```
+
 Learn more about the [motivations behind the project](https://medium.com/superhighfives/introducing-pika-d7725c397585), and the [product vision](https://github.com/superhighfives/pika/wiki).
 
 <a href="https://www.producthunt.com/golden-kitty-awards/hall-of-fame?year=2022">
@@ -28,7 +33,7 @@ Learn more about the [motivations behind the project](https://medium.com/superhi
 
 ## Keyboard Shortcuts
 
-As of version `0.0.17`, Pika supports the following keyboard shortcuts:
+As of version `0.0.18`, Pika supports the following keyboard shortcuts:
 
 ### Pick colors
 - <kbd>⌘ D</kbd>: Pick foreground
@@ -37,6 +42,10 @@ As of version `0.0.17`, Pika supports the following keyboard shortcuts:
 ### Copy colors
 - <kbd>⌘ C</kbd>: Copy foreground
 - <kbd>⌘ ⇧ C</kbd>: Copy background
+
+### Use the system colour picker
+- <kbd>⌘ S</kbd>: Use for foreground
+- <kbd>⌘ ⇧ S</kbd>: Use for background
 
 ### Change formats
 - <kbd>⌘ 1</kbd>: Format Hex
@@ -63,6 +72,10 @@ You can also change the format by appending it to the URL when picking or copyin
 - Pick colour with specific format:
   - `pika://pick/foreground/hex` (or rgb, hsl, hsb)
   - `pika://pick/background/hex` (or rgb, hsl, hsb)
+- Use the system color picker for forground:
+  - `pika://system/foreground`
+- Use the system color picker for background:
+  - `pika://system/background`
 
 ### Copy colors
 - Copy foreground:
@@ -110,7 +123,7 @@ brew install mint
 mint bootstrap
 ```
 
-Open `Pika.xcodeproj` and to run the project. [Sparkle](https://github.com/sparkle-project/Sparkle) requires that you have a [team and signing profile set](https://github.com/MonitorControl/MonitorControl/discussions/638) for the project, or it will crash with a dyld / signal SIGABRT error. 
+Open `Pika.xcodeproj` and to run the project. [Sparkle](https://github.com/sparkle-project/Sparkle) requires that you have a [team and signing profile set](https://github.com/MonitorControl/MonitorControl/discussions/638) for the project, or it will crash with a dyld / signal SIGABRT error.
 
 If you run into any problems, please [detail them in an issue](https://github.com/superhighfives/pika/issues/new/).
 
