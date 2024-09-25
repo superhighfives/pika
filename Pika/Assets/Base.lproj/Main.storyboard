@@ -2,7 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22690"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="23094"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -127,6 +127,17 @@
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="DMb-e0-vJg"/>
+                                        <menuItem title="Use system picker for foreground" keyEquivalent="s" allowsKeyEquivalentWhenHidden="YES" id="hMH-To-rZ9">
+                                            <connections>
+                                                <action selector="triggerSystemPickerForeground:" target="Ady-hI-5gd" id="PCg-9B-kjb"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Use system picker for background" keyEquivalent="S" allowsKeyEquivalentWhenHidden="YES" id="CnG-MW-7x1">
+                                            <connections>
+                                                <action selector="triggerSystemPickerBackground:" target="Ady-hI-5gd" id="ND4-YV-SIu"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="dxL-CK-7Ia"/>
                                         <menuItem title="Swap colors" keyEquivalent="x" allowsKeyEquivalentWhenHidden="YES" id="6j0-AT-P3M">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>

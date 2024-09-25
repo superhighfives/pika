@@ -34,6 +34,10 @@ struct EyedropperItem: View {
                     pasteboard.setString(contents, forType: .string)
                 }
                 .onReceive(NotificationCenter.default.publisher(
+                    for: Notification.Name("triggerSystemPicker\(eyedropper.type.rawValue.capitalized)"))) { _ in
+                    eyedropper.picker()
+                }
+                .onReceive(NotificationCenter.default.publisher(
                     for: Notification.Name("triggerFormatHex"))) { _ in
                     colorFormat = ColorFormat.hex
                 }
@@ -65,5 +69,6 @@ struct EyedropperItem: View {
 struct EyedropperItem_Previews: PreviewProvider {
     static var previews: some View {
         EyedropperItem(eyedropper: Eyedropper(type: .foreground, color: NSColor.black))
+            .frame(width: 180.0)
     }
 }

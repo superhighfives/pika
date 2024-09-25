@@ -54,6 +54,8 @@ struct ContentView: View {
                             swap(&eyedroppers.foreground.color, &eyedroppers.background.color)
                         }
                         .focusable(false)
+                        .padding(16.0)
+                        .frame(maxHeight: .infinity, alignment: .top)
                 )
             Divider()
             Footer(foreground: eyedroppers.foreground, background: eyedroppers.background)

@@ -33,7 +33,7 @@ Learn more about the [motivations behind the project](https://medium.com/superhi
 
 ## Keyboard Shortcuts
 
-As of version `0.0.17`, Pika supports the following keyboard shortcuts:
+As of version `0.0.18`, Pika supports the following keyboard shortcuts:
 
 ### Pick colors
 - <kbd>⌘ D</kbd>: Pick foreground
@@ -42,6 +42,10 @@ As of version `0.0.17`, Pika supports the following keyboard shortcuts:
 ### Copy colors
 - <kbd>⌘ C</kbd>: Copy foreground
 - <kbd>⌘ ⇧ C</kbd>: Copy background
+
+### Use the system colour picker
+- <kbd>⌘ S</kbd>: Use for foreground
+- <kbd>⌘ ⇧ S</kbd>: Use for background
 
 ### Change formats
 - <kbd>⌘ 1</kbd>: Format Hex
@@ -68,6 +72,10 @@ You can also change the format by appending it to the URL when picking or copyin
 - Pick colour with specific format:
   - `pika://pick/foreground/hex` (or rgb, hsl, hsb)
   - `pika://pick/background/hex` (or rgb, hsl, hsb)
+- Use the system color picker for forground:
+  - `pika://system/foreground`
+- Use the system color picker for background:
+  - `pika://system/background`
 
 ### Copy colors
 - Copy foreground:

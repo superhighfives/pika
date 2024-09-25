@@ -8,7 +8,7 @@ struct EyedropperButton: View {
     @Default(.copyFormat) var copyFormat
     @Default(.hideColorNames) var hideColorNames
 
-    @State var copyVisible: Bool = false
+    @State var hoverVisible: Bool = false
     @State private var timerSubscription: Cancellable?
     @State private var timer = Timer.publish(every: 0.25, on: .main, in: .common)
 
@@ -28,6 +28,7 @@ struct EyedropperButton: View {
                             Text(eyedropper.color.toFormat(format: colorFormat, style: copyFormat))
                                 .foregroundColor(eyedropper.color.getUIColor())
                                 .font(.system(size: 18, weight: .regular))
+                                .padding(.trailing, 32.0)
 
                             if !hideColorNames {
                                 Text(eyedropper.getClosestColor())
@@ -49,24 +50,41 @@ struct EyedropperButton: View {
                 .buttonStyle(EyedropperButtonStyle(color: Color(eyedropper.color)))
                 .focusable(false)
 
-            Button(action: {
-                NSApp.sendAction(eyedropper.type.copySelector, to: nil, from: nil)
-            }, label: {
-                IconImage(name: "doc.on.doc", resizable: true)
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 14, height: 14)
-            })
-                .buttonStyle(SwapButtonStyle(
-                    isVisible: copyVisible,
-                    alt: PikaText.textColorCopy
-                ))
-                .padding(.all, 8.0)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
-                .focusable(false)
+            VStack(spacing: 4.0) {
+                Button(action: {
+                    NSApp.sendAction(eyedropper.type.copySelector, to: nil, from: nil)
+                }, label: {
+                    IconImage(name: "doc.on.doc", resizable: true)
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 14, height: 14)
+                })
+                    .buttonStyle(SwapButtonStyle(
+                        isVisible: hoverVisible,
+                        alt: PikaText.textColorCopy
+                    ))
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+                    .focusable(false)
+
+                Button(action: {
+                    NSApp.sendAction(eyedropper.type.systemPickerSelector, to: nil, from: nil)
+                }, label: {
+                    IconImage(name: "paintpalette", resizable: true)
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 14, height: 14)
+                })
+                    .buttonStyle(SwapButtonStyle(
+                        isVisible: hoverVisible,
+                        alt: PikaText.textColorSystemPicker
+                    ))
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+                    .focusable(false)
+            }
+            .padding(.all, 8.0)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
         }
         .onHover { hover in
             if hover {
-                copyVisible = true
+                hoverVisible = true
                 timerSubscription?.cancel()
                 timerSubscription = nil
             } else {
@@ -77,7 +95,7 @@ struct EyedropperButton: View {
             }
         }
         .onReceive(timer) { _ in
-            copyVisible = false
+            hoverVisible = false
             timerSubscription?.cancel()
             timerSubscription = nil
         }
@@ -87,7 +105,8 @@ struct EyedropperButton: View {
 struct EyedropperButton_Previews: PreviewProvider {
     static var previews: some View {
         EyedropperButton(
-            eyedropper: Eyedropper(type: .foreground, color: NSColor.black)
+            eyedropper: Eyedropper(type: .foreground, color: PikaConstants.initialColors.randomElement()!)
         )
+        .frame(width: 170.0)
     }
 }

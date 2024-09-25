@@ -48,6 +48,18 @@ struct NavigationMenuItems: View {
                 Divider()
             }
 
+            Button(PikaText.textColorSystemPickerForeground, action: {
+                NSApp.sendAction(#selector(AppDelegate.triggerSystemPickerForeground), to: nil, from: nil)
+            })
+
+            Button(PikaText.textColorSystemPickerBackground, action: {
+                NSApp.sendAction(#selector(AppDelegate.triggerSystemPickerBackground), to: nil, from: nil)
+            })
+
+            VStack {
+                Divider()
+            }
+
             Button(PikaText.textMenuCopyAllAsText, action: {
                 NSApp.sendAction(#selector(AppDelegate.triggerCopyText), to: nil, from: nil)
             })
