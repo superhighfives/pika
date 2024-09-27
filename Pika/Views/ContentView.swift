@@ -30,7 +30,8 @@ struct ContentView: View {
                     })
                         .buttonStyle(SwapButtonStyle(
                             isVisible: swapVisible,
-                            alt: PikaText.textColorSwap
+                            alt: PikaText.textColorSwap,
+                            ltr: true
                         ))
                         .onReceive(NotificationCenter.default.publisher(
                             for: Notification.Name(PikaConstants.ncTriggerSwap))) { _ in

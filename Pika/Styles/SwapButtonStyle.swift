@@ -5,9 +5,11 @@ struct SwapButtonStyle: ButtonStyle {
     @State private var isHovered: Bool = false
     let isVisible: Bool
     let alt: String
+    var ltr = false
 
     private struct SwapButtonStyleView: View {
         @Environment(\.colorScheme) var colorScheme: ColorScheme
+        
 
         @State private var isHovered: Bool = false
         @State private var timerSubscription: Cancellable?
@@ -16,6 +18,7 @@ struct SwapButtonStyle: ButtonStyle {
         let configuration: Configuration
         let isVisible: Bool
         let alt: String
+        let ltr: Bool
 
         func getBackgroundColor(colorScheme: ColorScheme) -> Color {
             if #available(OSX 11.0, *) {
@@ -34,11 +37,21 @@ struct SwapButtonStyle: ButtonStyle {
             let bgColor: Color = getBackgroundColor(colorScheme: colorScheme)
 
             HStack {
-                if isHovered {
-                    Text(alt)
-                        .font(.system(size: 12.0))
+                if ltr {
+                    configuration.label
+                    if isHovered {
+                        Text(alt)
+                            .font(.system(size: 12.0))
+                            .padding(.trailing, 2)
+                    }
+                } else {
+                    if isHovered {
+                        Text(alt)
+                            .font(.system(size: 12.0))
+                            .padding(.leading, 6)
+                    }
+                    configuration.label
                 }
-                configuration.label
             }
             .padding(.horizontal, 8)
             .padding(.vertical, 8)
@@ -79,11 +92,11 @@ struct SwapButtonStyle: ButtonStyle {
             .opacity(isVisible ? (configuration.isPressed ? 0.8 : 1.0) : 0.0)
             .foregroundColor(fgColor.opacity(0.8))
             .frame(height: 32.0)
-            .animation(.easeOut)
+            .animation(.easeInOut)
         }
     }
 
     func makeBody(configuration: Self.Configuration) -> some View {
-        SwapButtonStyleView(configuration: configuration, isVisible: isVisible, alt: alt)
+        SwapButtonStyleView(configuration: configuration, isVisible: isVisible, alt: alt, ltr: ltr)
     }
 }
