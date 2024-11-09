@@ -65,6 +65,7 @@
 		EAF100C725C731AD006E1EC3 /* SplashTouchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF100C625C731AD006E1EC3 /* SplashTouchBar.swift */; };
 		EAF100CA25C75218006E1EC3 /* PikaTouchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF100C325C59EB3006E1EC3 /* PikaTouchBar.swift */; };
 		EAF100CD25C785C4006E1EC3 /* TouchBarVisual.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF100CC25C785C4006E1EC3 /* TouchBarVisual.swift */; };
+		F1B4CCC22CDED4AC00DF1593 /* FormatExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B4CCC12CDED4A100DF1593 /* FormatExampleView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -134,6 +135,7 @@
 		EAF100C325C59EB3006E1EC3 /* PikaTouchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PikaTouchBar.swift; sourceTree = "<group>"; };
 		EAF100C625C731AD006E1EC3 /* SplashTouchBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashTouchBar.swift; sourceTree = "<group>"; };
 		EAF100CC25C785C4006E1EC3 /* TouchBarVisual.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchBarVisual.swift; sourceTree = "<group>"; };
+		F1B4CCC12CDED4A100DF1593 /* FormatExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatExampleView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -264,6 +266,7 @@
 		EAD0B6F2259CF29300FA2F67 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F1B4CCC12CDED4A100DF1593 /* FormatExampleView.swift */,
 				EAD0B6F3259CF29300FA2F67 /* AboutView.swift */,
 				220D5E9328DB154300B6285E /* AppModeButtons.swift */,
 				220D5E9728DB158400B6285E /* AppModeToggleGroup.swift */,
@@ -445,6 +448,7 @@
 				22D28DB72862377F00FC7DD4 /* OverflowContentViewModifier.swift in Sources */,
 				EAA8AE1C25B8F03B0049299B /* KeyboardShortcutGrid.swift in Sources */,
 				220D5E9828DB158400B6285E /* AppModeToggleGroup.swift in Sources */,
+				F1B4CCC22CDED4AC00DF1593 /* FormatExampleView.swift in Sources */,
 				EA0C525025AA729300AFF716 /* Visualisation.swift in Sources */,
 				EAD0B6FB259CF29300FA2F67 /* ContentView.swift in Sources */,
 				EAD0B6CC259CED1C00FA2F67 /* AppDelegate.swift in Sources */,
