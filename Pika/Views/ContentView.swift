@@ -20,16 +20,10 @@ struct ContentView: View {
             Divider()
             ColorPickers()
                 .onHover { hover in
-                    if hover {
-                        swapVisible = true
-                        timerSubscription?.cancel()
-                        timerSubscription = nil
-                    } else {
-                        if self.timerSubscription == nil {
-                            self.timer = Timer.publish(every: 0.25, on: .main, in: .common)
-                            self.timerSubscription = self.timer.connect()
-                        }
-                    }
+                    guard hover else { return }
+                    swapVisible = true
+                    timerSubscription?.cancel()
+                    timerSubscription = nil
                 }
                 .onReceive(timer) { _ in
                     swapVisible = false
@@ -54,7 +48,13 @@ struct ContentView: View {
                             swap(&eyedroppers.foreground.color, &eyedroppers.background.color)
                         }
                         .focusable(false)
-                )
+                ).onHover { hover in
+                    guard !hover, self.timerSubscription == nil else {
+                        return
+                    }
+                    self.timer = Timer.publish(every: 0.25, on: .main, in: .common)
+                    self.timerSubscription = self.timer.connect()
+                }
             Divider()
             Footer(foreground: eyedroppers.foreground, background: eyedroppers.background)
         }
