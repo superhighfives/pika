@@ -1,20 +1,20 @@
-import Foundation
 import Defaults
+import Foundation
 class Exporter {
     static func toText(foreground: Eyedropper, background: Eyedropper, style: CopyFormat) -> String {
         let colorWCAGCompliance = foreground.color.toWCAGCompliance(with: background.color)
         let colorContrastRatio = foreground.color.toContrastRatioString(with: background.color)
-		
+
         let foregroundHex = foreground.color.toFormat(format: ColorFormat.hex, style: style)
         let foregroundRgb = foreground.color.toFormat(format: ColorFormat.rgb, style: style)
         let foregroundHsb = foreground.color.toFormat(format: ColorFormat.hsb, style: style)
         let foregroundHsl = foreground.color.toFormat(format: ColorFormat.hsl, style: style)
-		
+
         let backgroundHex = background.color.toFormat(format: ColorFormat.hex, style: style)
         let backgroundRgb = background.color.toFormat(format: ColorFormat.rgb, style: style)
         let backgroundHsb = background.color.toFormat(format: ColorFormat.hsb, style: style)
         let backgroundHsl = background.color.toFormat(format: ColorFormat.hsl, style: style)
-		
+
         let passMessage = PikaText.textColorPass
         let failMessage = PikaText.textColorFail
 
@@ -32,8 +32,8 @@ class Exporter {
         let colorWCAGCompliance = foreground.color.toWCAGCompliance(with: background.color)
         let colorContrastRatio = foreground.color.toContrastRatioString(with: background.color)
 
-		let customFormat = Defaults[.customCopyFormat]
-		
+        let customFormat = Defaults[.customCopyFormat]
+
         return """
         {
           "colors": {

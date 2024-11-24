@@ -50,7 +50,7 @@ enum PikaConstants {
     static let ncTriggerFormatRGB = "triggerFormatRGB"
     static let ncTriggerFormatHSB = "triggerFormatHSB"
     static let ncTriggerFormatHSL = "triggerFormatHSL"
-	static let ncTriggerFormatCustom = "triggerFormatCustom"
+    static let ncTriggerFormatCustom = "triggerFormatCustom"
 }
 
 enum PikaText {
@@ -193,9 +193,9 @@ enum PikaText {
         "preferences.copy.automatic",
         comment: "Automatically copy color to clipboard on pick"
     )
-	
-	// Custom Copy Format
-	static let customCopyFormatTitle = NSLocalizedString("preferences.copyFormat.title", comment: "Custom Copy Format")
+
+    // Custom Copy Format
+    static let customCopyFormatTitle = NSLocalizedString("preferences.copyFormat.title", comment: "Custom Copy Format")
 
     // Color Format
     static let textFormatTitle = NSLocalizedString("preferences.format.title", comment: "Color Format")

@@ -29,9 +29,9 @@ struct EyedropperItem: View {
                     for: Notification.Name("triggerCopy\(eyedropper.type.rawValue.capitalized)"))) { _ in
                     showToast = true
                     pasteboard.clearContents()
-						let customFormat = Defaults[.customCopyFormat]
+                    let customFormat = Defaults[.customCopyFormat]
                     let contents
-						= "\(eyedropper.color.toFormat(format: colorFormat, style: Defaults[.copyFormat], customFormat: customFormat))"
+                        = "\(eyedropper.color.toFormat(format: colorFormat, style: Defaults[.copyFormat], customFormat: customFormat))"
                     pasteboard.setString(contents, forType: .string)
                 }
                 .onReceive(NotificationCenter.default.publisher(
@@ -50,10 +50,10 @@ struct EyedropperItem: View {
                     for: Notification.Name("triggerFormatHSL"))) { _ in
                     colorFormat = ColorFormat.hsl
                 }
-				.onReceive(NotificationCenter.default.publisher(
-						for: Notification.Name("triggerFormatCustom"))) { _ in
-						colorFormat = ColorFormat.hsl
-				}
+                .onReceive(NotificationCenter.default.publisher(
+                    for: Notification.Name("triggerFormatCustom"))) { _ in
+                    colorFormat = ColorFormat.hsl
+                }
                 .toast(
                     isShowing: $showToast,
                     color: eyedropper.color.getUIColor(),

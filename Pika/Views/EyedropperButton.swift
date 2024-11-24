@@ -25,8 +25,8 @@ struct EyedropperButton: View {
                             .foregroundColor(eyedropper.color.getUIColor().opacity(0.75))
 
                         VStack(alignment: .leading, spacing: 6.0) {
-							let customFormat = Defaults[.customCopyFormat]
-							Text(eyedropper.color.toFormat(format: colorFormat, style: copyFormat, customFormat: customFormat))
+                            let customFormat = Defaults[.customCopyFormat]
+                            Text(eyedropper.color.toFormat(format: colorFormat, style: copyFormat, customFormat: customFormat))
                                 .foregroundColor(eyedropper.color.getUIColor())
                                 .font(.system(size: 18, weight: .regular))
 
