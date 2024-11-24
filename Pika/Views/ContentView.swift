@@ -19,6 +19,17 @@ struct ContentView: View {
         VStack(alignment: .trailing, spacing: 0) {
             Divider()
             ColorPickers()
+                .onHover { hover in
+                    guard hover else { return }
+                    swapVisible = true
+                    timerSubscription?.cancel()
+                    timerSubscription = nil
+                }
+                .onReceive(timer) { _ in
+                    swapVisible = false
+                    timerSubscription?.cancel()
+                    timerSubscription = nil
+                }
                 .overlay(
                     Button(action: {
                         NSApp.sendAction(#selector(AppDelegate.triggerSwap), to: nil, from: nil)
@@ -43,22 +54,13 @@ struct ContentView: View {
                     .frame(maxHeight: .infinity, alignment: .top)
                 )
                 .onHover { hover in
-                    if hover {
-                        swapVisible = true
-                        timerSubscription?.cancel()
-                        timerSubscription = nil
-                    } else {
-                        if timerSubscription == nil {
-                            timer = Timer.publish(every: 0.25, on: .main, in: .common)
-                            timerSubscription = timer.connect()
-                        }
+                    guard !hover, timerSubscription == nil else {
+                        return
                     }
+                    timer = Timer.publish(every: 0.25, on: .main, in: .common)
+                    timerSubscription = timer.connect()
                 }
-                .onReceive(timer) { _ in
-                    swapVisible = false
-                    timerSubscription?.cancel()
-                    timerSubscription = nil
-                }
+
             Divider()
             Footer(foreground: eyedroppers.foreground, background: eyedroppers.background)
         }

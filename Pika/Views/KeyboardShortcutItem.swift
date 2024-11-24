@@ -39,7 +39,8 @@ struct KeyboardShortcutItem: View {
 
 struct KeyboardShortcutItem_Previews: PreviewProvider {
     static var previews: some View {
-        KeyboardShortcutItem(title: "Copy example but with a much longer text", event: PikaConstants.ncTriggerPickForeground, keys: ["A", "B"])
+        KeyboardShortcutItem(title: "Copy example but with a much longer text",
+                             event: PikaConstants.ncTriggerPickForeground, keys: ["A", "B"])
             .frame(width: 100.0, height: 100.0)
     }
 }
