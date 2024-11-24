@@ -393,6 +393,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     @IBAction func triggerFormatHSL(_: Any) {
         notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerFormatHSL), object: self)
     }
+	
+	@IBAction func triggerFormatCustom(_: Any) {
+		notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerFormatCustom), object: self)
+	}
 
     @IBAction func hidePika(_: Any) {
         hideMainWindow()
