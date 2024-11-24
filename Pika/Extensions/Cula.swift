@@ -52,7 +52,7 @@ extension NSColor {
      * Utilities
      */
 
-    internal func clip<T: Comparable>(_ v: T, _ minimum: T, _ maximum: T) -> T {
+    func clip<T: Comparable>(_ v: T, _ minimum: T, _ maximum: T) -> T {
         max(min(v, maximum), minimum)
     }
 
@@ -85,7 +85,7 @@ extension NSColor {
      * Hex
      */
 
-    internal func roundToHex(_ x: CGFloat) -> UInt32 {
+    func roundToHex(_ x: CGFloat) -> UInt32 {
         guard x > 0 else { return 0 }
         let rounded: CGFloat = round(x * 255.0)
 
@@ -153,6 +153,33 @@ extension NSColor {
         let green = Int(round(RGB.g * 255))
         let blue = Int(round(RGB.b * 255))
         return [red, green, blue]
+    }
+
+    /*
+     * OpenGL
+     */
+
+    /**
+     Get the rgb values of this color in opengl format.
+
+     - returns: An NSColor as an opengl string.
+     */
+    func toOpenGLString(style: CopyFormat = .css) -> String {
+        let RGB = toRGBAComponents()
+        let red = RGB.r
+        let green = RGB.g
+        let blue = RGB.b
+
+        let formatString: NSString
+        switch style {
+        case .css, .design:
+            formatString = "rgba(%.5g, %.5g, %.5g, 1.0)"
+        case .unformatted:
+            formatString = "%.5g, %.5g, %.5g, 1.0"
+        }
+
+        let openGLString = NSString(format: formatString, red, green, blue)
+        return openGLString as String
     }
 
     /*
@@ -304,8 +331,9 @@ extension NSColor {
             return toHSBString(style: style)
         case .hsl:
             return toHSLString(style: style)
+        case .opengl:
+            return toOpenGLString(style: style)
         case .custom:
-
             guard let customFormat = customFormat else { return "" }
             let rgba = toRGBAComponents()
             let red = Int(round(rgba.r * 255))
@@ -323,10 +351,10 @@ extension NSColor {
     }
 
     func getUIColor() -> (Color) {
-        return luminance < 0.5 ? Color.white : Color.black
+        luminance < 0.5 ? Color.white : Color.black
     }
 
     func getUIColor() -> (NSColor) {
-        return luminance < 0.5 ? NSColor.white : NSColor.black
+        luminance < 0.5 ? NSColor.white : NSColor.black
     }
 }

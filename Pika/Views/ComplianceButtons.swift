@@ -19,11 +19,11 @@ struct ComplianceButtons: View {
                 .padding(20.0)
                 .frame(maxWidth: width, maxHeight: .infinity, alignment: .leading)
         })
-            .buttonStyle(AppearanceButtonStyle(
-                title: PikaText.textAppearanceWeightTitle,
-                description: PikaText.textAppearanceWeightDescription,
-                selected: combineCompliance == false
-            ))
+        .buttonStyle(AppearanceButtonStyle(
+            title: PikaText.textAppearanceWeightTitle,
+            description: PikaText.textAppearanceWeightDescription,
+            selected: combineCompliance == false
+        ))
 
         Button(action: {
             combineCompliance = true
@@ -32,11 +32,11 @@ struct ComplianceButtons: View {
                 .padding(20.0)
                 .frame(maxWidth: width, maxHeight: .infinity, alignment: .leading)
         })
-            .buttonStyle(AppearanceButtonStyle(
-                title: PikaText.textAppearanceContrastTitle,
-                description: PikaText.textAppearanceContrastDescription,
-                selected: combineCompliance == true
-            ))
+        .buttonStyle(AppearanceButtonStyle(
+            title: PikaText.textAppearanceContrastTitle,
+            description: PikaText.textAppearanceContrastDescription,
+            selected: combineCompliance == true
+        ))
     }
 }
 

@@ -12,6 +12,8 @@ struct KeyboardShortcutItem: View {
             Text(title)
                 .font(.system(size: 11, design: .rounded))
                 .opacity(0.6)
+                .padding(10.0)
+                .multilineTextAlignment(.center)
             HStack(spacing: 4.0) {
                 ForEach(keys, id: \.self) { key in
                     KeyboardShortcutKey { Text(key) }
@@ -19,11 +21,12 @@ struct KeyboardShortcutItem: View {
             }
         }
         .onReceive(NotificationCenter.default.publisher(
-            for: Notification.Name(event))) { _ in
-            self.highlight = true
+            for: Notification.Name(event)))
+        { _ in
+            highlight = true
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
                 withAnimation {
-                    self.highlight = false
+                    highlight = false
                 }
             }
         }
@@ -36,6 +39,7 @@ struct KeyboardShortcutItem: View {
 
 struct KeyboardShortcutItem_Previews: PreviewProvider {
     static var previews: some View {
-        KeyboardShortcutItem(title: "Copy Example", event: PikaConstants.ncTriggerPickForeground, keys: ["A", "B"])
+        KeyboardShortcutItem(title: "Copy example but with a much longer text", event: PikaConstants.ncTriggerPickForeground, keys: ["A", "B"])
+            .frame(width: 100.0, height: 100.0)
     }
 }

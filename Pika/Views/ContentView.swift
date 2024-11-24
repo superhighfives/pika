@@ -19,23 +19,6 @@ struct ContentView: View {
         VStack(alignment: .trailing, spacing: 0) {
             Divider()
             ColorPickers()
-                .onHover { hover in
-                    if hover {
-                        swapVisible = true
-                        timerSubscription?.cancel()
-                        timerSubscription = nil
-                    } else {
-                        if self.timerSubscription == nil {
-                            self.timer = Timer.publish(every: 0.25, on: .main, in: .common)
-                            self.timerSubscription = self.timer.connect()
-                        }
-                    }
-                }
-                .onReceive(timer) { _ in
-                    swapVisible = false
-                    timerSubscription?.cancel()
-                    timerSubscription = nil
-                }
                 .overlay(
                     Button(action: {
                         NSApp.sendAction(#selector(AppDelegate.triggerSwap), to: nil, from: nil)
@@ -45,16 +28,37 @@ struct ContentView: View {
                             .rotationEffect(.degrees(angle))
                             .animation(.easeInOut)
                     })
-                        .buttonStyle(SwapButtonStyle(
-                            isVisible: swapVisible,
-                            alt: PikaText.textColorSwap
-                        ))
-                        .onReceive(NotificationCenter.default.publisher(
-                            for: Notification.Name(PikaConstants.ncTriggerSwap))) { _ in
-                            swap(&eyedroppers.foreground.color, &eyedroppers.background.color)
-                        }
-                        .focusable(false)
+                    .buttonStyle(SwapButtonStyle(
+                        isVisible: swapVisible,
+                        alt: PikaText.textColorSwap,
+                        ltr: true
+                    ))
+                    .onReceive(NotificationCenter.default.publisher(
+                        for: Notification.Name(PikaConstants.ncTriggerSwap)))
+                    { _ in
+                        swap(&eyedroppers.foreground.color, &eyedroppers.background.color)
+                    }
+                    .focusable(false)
+                    .padding(16.0)
+                    .frame(maxHeight: .infinity, alignment: .top)
                 )
+                .onHover { hover in
+                    if hover {
+                        swapVisible = true
+                        timerSubscription?.cancel()
+                        timerSubscription = nil
+                    } else {
+                        if timerSubscription == nil {
+                            timer = Timer.publish(every: 0.25, on: .main, in: .common)
+                            timerSubscription = timer.connect()
+                        }
+                    }
+                }
+                .onReceive(timer) { _ in
+                    swapVisible = false
+                    timerSubscription?.cancel()
+                    timerSubscription = nil
+                }
             Divider()
             Footer(foreground: eyedroppers.foreground, background: eyedroppers.background)
         }
@@ -64,7 +68,8 @@ struct ContentView: View {
                 : NSColor.black
         }
         .onReceive(NotificationCenter.default.publisher(
-            for: Notification.Name(PikaConstants.ncTriggerCopyText))) { _ in
+            for: Notification.Name(PikaConstants.ncTriggerCopyText)))
+        { _ in
             pasteboard.clearContents()
             // swiftlint:disable line_length
             let contents = "\(Exporter.toText(foreground: eyedroppers.foreground, background: eyedroppers.background, style: copyFormat))"
@@ -72,7 +77,8 @@ struct ContentView: View {
             pasteboard.setString(contents, forType: .string)
         }
         .onReceive(NotificationCenter.default.publisher(
-            for: Notification.Name(PikaConstants.ncTriggerCopyData))) { _ in
+            for: Notification.Name(PikaConstants.ncTriggerCopyData)))
+        { _ in
             pasteboard.clearContents()
             // swiftlint:disable line_length
             let contents = "\(Exporter.toJSON(foreground: eyedroppers.foreground, background: eyedroppers.background, style: copyFormat))"
