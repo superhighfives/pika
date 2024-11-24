@@ -31,7 +31,7 @@ struct EyedropperItem: View {
             { _ in
                 showToast = true
                 pasteboard.clearContents()
-                    let customFormat = Defaults[.customCopyFormat]
+                let customFormat = Defaults[.customCopyFormat]
                 let contents
                     = "\(eyedropper.color.toFormat(format: colorFormat, style: Defaults[.copyFormat], customFormat: customFormat))"
                 pasteboard.setString(contents, forType: .string)
@@ -66,10 +66,11 @@ struct EyedropperItem: View {
             { _ in
                 colorFormat = ColorFormat.opengl
             }
-                .onReceive(NotificationCenter.default.publisher(
-                    for: Notification.Name("triggerFormatCustom"))) { _ in
-                    colorFormat = ColorFormat.custom
-                }
+            .onReceive(NotificationCenter.default.publisher(
+                for: Notification.Name("triggerFormatCustom")))
+            { _ in
+                colorFormat = ColorFormat.custom
+            }
             .toast(
                 isShowing: $showToast,
                 color: eyedropper.color.getUIColor(),

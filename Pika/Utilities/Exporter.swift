@@ -1,5 +1,6 @@
 import Defaults
 import Foundation
+
 class Exporter {
     static func toText(foreground: Eyedropper, background: Eyedropper, style: CopyFormat) -> String {
         let colorWCAGCompliance = foreground.color.toWCAGCompliance(with: background.color)
