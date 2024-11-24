@@ -9,7 +9,6 @@ struct SwapButtonStyle: ButtonStyle {
 
     private struct SwapButtonStyleView: View {
         @Environment(\.colorScheme) var colorScheme: ColorScheme
-        
 
         @State private var isHovered: Bool = false
         @State private var timerSubscription: Cancellable?
@@ -74,18 +73,18 @@ struct SwapButtonStyle: ButtonStyle {
             )
             .onHover { hover in
                 if hover {
-                    if self.timerSubscription == nil {
-                        self.timer = Timer.publish(every: 0.1, on: .main, in: .common)
-                        self.timerSubscription = self.timer.connect()
+                    if timerSubscription == nil {
+                        timer = Timer.publish(every: 0.1, on: .main, in: .common)
+                        timerSubscription = timer.connect()
                     }
                 } else {
                     timerSubscription?.cancel()
                     timerSubscription = nil
-                    self.isHovered = false
+                    isHovered = false
                 }
             }
             .onReceive(timer) { _ in
-                self.isHovered = true
+                isHovered = true
                 timerSubscription?.cancel()
                 timerSubscription = nil
             }

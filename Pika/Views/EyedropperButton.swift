@@ -47,8 +47,8 @@ struct EyedropperButton: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
                 }
             })
-                .buttonStyle(EyedropperButtonStyle(color: Color(eyedropper.color)))
-                .focusable(false)
+            .buttonStyle(EyedropperButtonStyle(color: Color(eyedropper.color)))
+            .focusable(false)
 
             VStack(spacing: 4.0) {
                 Button(action: {
@@ -58,12 +58,12 @@ struct EyedropperButton: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 14, height: 14)
                 })
-                    .buttonStyle(SwapButtonStyle(
-                        isVisible: hoverVisible,
-                        alt: PikaText.textColorCopy
-                    ))
-                    .frame(maxWidth: .infinity, alignment: .trailing)
-                    .focusable(false)
+                .buttonStyle(SwapButtonStyle(
+                    isVisible: hoverVisible,
+                    alt: PikaText.textColorCopy
+                ))
+                .frame(maxWidth: .infinity, alignment: .trailing)
+                .focusable(false)
 
                 Button(action: {
                     NSApp.sendAction(eyedropper.type.systemPickerSelector, to: nil, from: nil)
@@ -72,12 +72,12 @@ struct EyedropperButton: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 14, height: 14)
                 })
-                    .buttonStyle(SwapButtonStyle(
-                        isVisible: hoverVisible,
-                        alt: PikaText.textColorSystemPicker
-                    ))
-                    .frame(maxWidth: .infinity, alignment: .trailing)
-                    .focusable(false)
+                .buttonStyle(SwapButtonStyle(
+                    isVisible: hoverVisible,
+                    alt: PikaText.textColorSystemPicker
+                ))
+                .frame(maxWidth: .infinity, alignment: .trailing)
+                .focusable(false)
             }
             .padding(.all, 8.0)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
@@ -88,9 +88,9 @@ struct EyedropperButton: View {
                 timerSubscription?.cancel()
                 timerSubscription = nil
             } else {
-                if self.timerSubscription == nil {
-                    self.timer = Timer.publish(every: 0.25, on: .main, in: .common)
-                    self.timerSubscription = self.timer.connect()
+                if timerSubscription == nil {
+                    timer = Timer.publish(every: 0.25, on: .main, in: .common)
+                    timerSubscription = timer.connect()
                 }
             }
         }

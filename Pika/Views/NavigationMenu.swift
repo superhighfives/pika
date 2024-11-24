@@ -36,10 +36,10 @@ struct NavigationMenu: View {
             MenuButton(label: HStack { Spacer(); IconImage(name: icon) }, content: {
                 NavigationMenuItems()
             })
-                .menuButtonStyle(BorderlessPullDownMenuButtonStyle())
-                .padding(EdgeInsets(top: 40, leading: 5, bottom: 0, trailing: 20))
-                .edgesIgnoringSafeArea(.all)
-                .fixedSize()
+            .menuButtonStyle(BorderlessPullDownMenuButtonStyle())
+            .padding(EdgeInsets(top: 40, leading: 5, bottom: 0, trailing: 20))
+            .edgesIgnoringSafeArea(.all)
+            .fixedSize()
         }
     }
 

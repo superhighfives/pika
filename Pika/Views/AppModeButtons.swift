@@ -12,22 +12,22 @@ struct AppModeButtons: View {
             AppModeToggleGroup(theme: .menubar)
                 .frame(maxWidth: width, maxHeight: .infinity, alignment: .leading)
         })
-            .buttonStyle(AppearanceButtonStyle(
-                title: PikaText.textAppMenubarTitle,
-                description: PikaText.textAppMenubarDescription,
-                selected: appMode == .menubar
-            ))
+        .buttonStyle(AppearanceButtonStyle(
+            title: PikaText.textAppMenubarTitle,
+            description: PikaText.textAppMenubarDescription,
+            selected: appMode == .menubar
+        ))
         Button(action: {
             appMode = .regular
         }, label: {
             AppModeToggleGroup(theme: .regular)
                 .frame(maxWidth: width, maxHeight: .infinity, alignment: .leading)
         })
-            .buttonStyle(AppearanceButtonStyle(
-                title: PikaText.textAppDockTitle,
-                description: PikaText.textAppDockDescription,
-                selected: appMode == .regular
-            ))
+        .buttonStyle(AppearanceButtonStyle(
+            title: PikaText.textAppDockTitle,
+            description: PikaText.textAppDockDescription,
+            selected: appMode == .regular
+        ))
 //        Button(action: {
 //            appMode = .hidden
 //        }, label: {

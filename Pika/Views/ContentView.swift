@@ -28,18 +28,19 @@ struct ContentView: View {
                             .rotationEffect(.degrees(angle))
                             .animation(.easeInOut)
                     })
-                        .buttonStyle(SwapButtonStyle(
-                            isVisible: swapVisible,
-                            alt: PikaText.textColorSwap,
-                            ltr: true
-                        ))
-                        .onReceive(NotificationCenter.default.publisher(
-                            for: Notification.Name(PikaConstants.ncTriggerSwap))) { _ in
-                            swap(&eyedroppers.foreground.color, &eyedroppers.background.color)
-                        }
-                        .focusable(false)
-                        .padding(16.0)
-                        .frame(maxHeight: .infinity, alignment: .top)
+                    .buttonStyle(SwapButtonStyle(
+                        isVisible: swapVisible,
+                        alt: PikaText.textColorSwap,
+                        ltr: true
+                    ))
+                    .onReceive(NotificationCenter.default.publisher(
+                        for: Notification.Name(PikaConstants.ncTriggerSwap)))
+                    { _ in
+                        swap(&eyedroppers.foreground.color, &eyedroppers.background.color)
+                    }
+                    .focusable(false)
+                    .padding(16.0)
+                    .frame(maxHeight: .infinity, alignment: .top)
                 )
                 .onHover { hover in
                     if hover {
@@ -47,9 +48,9 @@ struct ContentView: View {
                         timerSubscription?.cancel()
                         timerSubscription = nil
                     } else {
-                        if self.timerSubscription == nil {
-                            self.timer = Timer.publish(every: 0.25, on: .main, in: .common)
-                            self.timerSubscription = self.timer.connect()
+                        if timerSubscription == nil {
+                            timer = Timer.publish(every: 0.25, on: .main, in: .common)
+                            timerSubscription = timer.connect()
                         }
                     }
                 }
@@ -67,7 +68,8 @@ struct ContentView: View {
                 : NSColor.black
         }
         .onReceive(NotificationCenter.default.publisher(
-            for: Notification.Name(PikaConstants.ncTriggerCopyText))) { _ in
+            for: Notification.Name(PikaConstants.ncTriggerCopyText)))
+        { _ in
             pasteboard.clearContents()
             // swiftlint:disable line_length
             let contents = "\(Exporter.toText(foreground: eyedroppers.foreground, background: eyedroppers.background, style: copyFormat))"
@@ -75,7 +77,8 @@ struct ContentView: View {
             pasteboard.setString(contents, forType: .string)
         }
         .onReceive(NotificationCenter.default.publisher(
-            for: Notification.Name(PikaConstants.ncTriggerCopyData))) { _ in
+            for: Notification.Name(PikaConstants.ncTriggerCopyData)))
+        { _ in
             pasteboard.clearContents()
             // swiftlint:disable line_length
             let contents = "\(Exporter.toJSON(foreground: eyedroppers.foreground, background: eyedroppers.background, style: copyFormat))"

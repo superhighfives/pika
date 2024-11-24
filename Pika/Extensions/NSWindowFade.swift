@@ -1,5 +1,5 @@
 //
-//  NSWindow+Fade.swift
+//  NSWindowFade.swift
 //  BH Bezel Notification
 //
 //  Created by Ben Leggiero on 2017-11-09.

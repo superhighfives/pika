@@ -21,11 +21,12 @@ struct KeyboardShortcutItem: View {
             }
         }
         .onReceive(NotificationCenter.default.publisher(
-            for: Notification.Name(event))) { _ in
-            self.highlight = true
+            for: Notification.Name(event)))
+        { _ in
+            highlight = true
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
                 withAnimation {
-                    self.highlight = false
+                    highlight = false
                 }
             }
         }

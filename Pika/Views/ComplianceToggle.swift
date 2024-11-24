@@ -32,7 +32,7 @@ struct ComplianceToggle: View {
                     }
                 }
             } else {
-                if large && size == .small {
+                if large, size == .small {
                     Text(PikaText.textColorLargeAbbr)
                         .fixedSize()
                         .font(.system(size: 10.0))

@@ -52,7 +52,7 @@ struct PreferencesView: View {
     // swiftlint:enable large_tuple opening_brace
 
     var body: some View {
-        let (primarySpaces, availableSpaces, systemDefaultSpace) = self.getColorSpaces()
+        let (primarySpaces, availableSpaces, systemDefaultSpace) = getColorSpaces()
 
         HStack(alignment: .top, spacing: 0) {
             ZStack {
@@ -83,7 +83,7 @@ struct PreferencesView: View {
                             Toggle(isOn: $alwaysShowOnLaunch) {
                                 Text(PikaText.textAlwaysShowOnLaunch)
                             }
-                            .onReceive([self.betaUpdates].publisher.first()) { _ in
+                            .onReceive([betaUpdates].publisher.first()) { _ in
                                 NSApp.sendAction(#selector(AppDelegate.updateFeedURL), to: nil, from: nil)
                             }
                             if appMode != .menubar {
@@ -208,7 +208,8 @@ struct PreferencesView: View {
                                 Text(PikaText.textFormatDescription).font(.system(size: 13, weight: .medium))
                             ) {
                                 Picker(PikaText.textSpaceTitle, selection:
-                                    $colorSpace.onChange(perform: { Defaults[.colorSpace] = $0 })) {
+                                    $colorSpace.onChange(perform: { Defaults[.colorSpace] = $0 }))
+                                {
                                     ForEach(primarySpaces, id: \.self) { value in
                                         if value == systemDefaultSpace {
                                             Text("\(PikaText.textSystemDefault) (\(value.localizedName!))")

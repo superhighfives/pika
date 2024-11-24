@@ -33,7 +33,7 @@ struct Visualisation: View {
             }
         }
         .onAppear {
-            self.isShown.toggle()
+            isShown.toggle()
         }
     }
 }

@@ -12,7 +12,6 @@ struct ColorExampleRow: View {
             RoundedRectangle(cornerRadius: 2.0)
                 .fill(Color(eyedropper.color))
                 .shadow(color: Color(eyedropper.color).opacity(0.15), radius: 1, x: 0, y: 1)
-
                 .overlay(
                     RoundedRectangle(cornerRadius: 4.0)
                         .stroke(colorScheme == .dark ? .black : .white, lineWidth: 1)

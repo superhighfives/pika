@@ -52,7 +52,7 @@ extension NSColor {
      * Utilities
      */
 
-    internal func clip<T: Comparable>(_ v: T, _ minimum: T, _ maximum: T) -> T {
+    func clip<T: Comparable>(_ v: T, _ minimum: T, _ maximum: T) -> T {
         max(min(v, maximum), minimum)
     }
 
@@ -85,7 +85,7 @@ extension NSColor {
      * Hex
      */
 
-    internal func roundToHex(_ x: CGFloat) -> UInt32 {
+    func roundToHex(_ x: CGFloat) -> UInt32 {
         guard x > 0 else { return 0 }
         let rounded: CGFloat = round(x * 255.0)
 
@@ -337,10 +337,10 @@ extension NSColor {
     }
 
     func getUIColor() -> (Color) {
-        return luminance < 0.5 ? Color.white : Color.black
+        luminance < 0.5 ? Color.white : Color.black
     }
 
     func getUIColor() -> (NSColor) {
-        return luminance < 0.5 ? NSColor.white : NSColor.black
+        luminance < 0.5 ? NSColor.white : NSColor.black
     }
 }
