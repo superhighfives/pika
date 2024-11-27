@@ -7,6 +7,7 @@ enum ColorFormat: String, Codable, CaseIterable, Equatable {
     case rgb = "RGB"
     case hsb = "HSB"
     case hsl = "HSL"
+    case custom = "Custom"
     case opengl = "OpenGL"
 
     func getExample(color: NSColor, style: CopyFormat) -> String {
@@ -55,4 +56,6 @@ extension Defaults.Keys {
     static let appMode = Key<AppMode>("appMode", default: .menubar)
     static let appFloating = Key<Bool>("appFloating", default: true)
     static let alwaysShowOnLaunch = Key<Bool>("alwaysShowOnLaunch", default: false)
+
+    static let customCopyFormat = Key<String>("customCopyFormat", default: "rgb({r}, {g}, {b})")
 }

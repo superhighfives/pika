@@ -321,7 +321,7 @@ extension NSColor {
 
      - returns: A string of the color depending on the provided format.
      */
-    func toFormat(format: ColorFormat, style: CopyFormat = .css) -> String {
+    func toFormat(format: ColorFormat, style: CopyFormat = .css, customFormat: String? = nil) -> String {
         switch format {
         case .hex:
             return toHexString(style: style)
@@ -333,6 +333,20 @@ extension NSColor {
             return toHSLString(style: style)
         case .opengl:
             return toOpenGLString(style: style)
+        case .custom:
+            guard let customFormat = customFormat else { return "" }
+            let rgba = toRGBAComponents()
+            let red = Int(round(rgba.r * 255))
+            let green = Int(round(rgba.g * 255))
+            let blue = Int(round(rgba.b * 255))
+            let alpha = rgba.a
+
+            // Replacing placeholders
+            return customFormat
+                .replacingOccurrences(of: "{r}", with: "\(red)")
+                .replacingOccurrences(of: "{g}", with: "\(green)")
+                .replacingOccurrences(of: "{b}", with: "\(blue)")
+                .replacingOccurrences(of: "{a}", with: "\(alpha)")
         }
     }
 

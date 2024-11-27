@@ -10,6 +10,8 @@ struct PreferencesView: View {
     @Default(.hidePikaWhilePicking) var hidePikaWhilePicking
     @Default(.copyColorOnPick) var copyColorOnPick
     @Default(.copyFormat) var copyFormat
+    @Default(.colorFormat) var colorFormat
+    @Default(.customCopyFormat) var customColorFormat
     @Default(.appMode) var appMode
     @Default(.appFloating) var appFloating
     @Default(.alwaysShowOnLaunch) var alwaysShowOnLaunch
@@ -192,6 +194,27 @@ struct PreferencesView: View {
                     Toggle(isOn: $copyColorOnPick) {
                         Text(PikaText.textCopyAutomatic)
                             .fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+                .padding(.horizontal, 24.0)
+
+                Divider()
+                    .padding(.vertical, 16.0)
+
+                // Custom Copy Format
+
+                VStack(alignment: .leading, spacing: 8.0) {
+                    Section(header: Text(PikaText.customCopyFormatTitle).font(.system(size: 16))) {}
+
+                    FormatExampleView(copyFormat: copyFormat, eyedropper: eyedroppers.foreground)
+
+                    if #available(macOS 11.0, *) {
+                        TextField("Enter custom format", text: $customColorFormat)
+                            .padding(.top, 8)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .onChange(of: customColorFormat) { newValue in
+                                Defaults[.customCopyFormat] = newValue
+                            }
                     }
                 }
                 .padding(.horizontal, 24.0)

@@ -416,6 +416,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerFormatOpenGL), object: self)
     }
 
+    @IBAction func triggerFormatCustom(_: Any) {
+        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerFormatCustom), object: self)
+    }
+
     @IBAction func hidePika(_: Any) {
         hideMainWindow()
     }
