@@ -196,6 +196,7 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
 
         case NSTouchBarItem.Identifier.wcag:
             return createWCAGComplianceGroup(identifier, foreground, background)
+
         default:
             return nil
         }

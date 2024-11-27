@@ -42,6 +42,8 @@ enum PikaConstants {
     static let ncTriggerCopyData = "triggerCopyData"
     static let ncTriggerPickForeground = "triggerPickForeground"
     static let ncTriggerPickBackground = "triggerPickBackground"
+    static let ncTriggerSystemPickerForeground = "triggerSystemPickerForeground"
+    static let ncTriggerSystemPickerBackground = "triggerSystemPickerBackground"
     static let ncTriggerSwap = "triggerSwap"
     static let ncTriggerUndo = "triggerUndo"
     static let ncTriggerRedo = "triggerRedo"
@@ -50,6 +52,7 @@ enum PikaConstants {
     static let ncTriggerFormatRGB = "triggerFormatRGB"
     static let ncTriggerFormatHSB = "triggerFormatHSB"
     static let ncTriggerFormatHSL = "triggerFormatHSL"
+    static let ncTriggerFormatOpenGL = "triggerFormatOpenGL"
 }
 
 enum PikaText {
@@ -73,6 +76,7 @@ enum PikaText {
     static let textColorUndo = NSLocalizedString("color.undo", comment: "Undo")
     static let textColorRedo = NSLocalizedString("color.redo", comment: "Redo")
     static let textColorCopy = NSLocalizedString("color.copy", comment: "Copy")
+    static let textColorSystemPicker = NSLocalizedString("color.system", comment: "System picker")
     static let textColorCopied = NSLocalizedString("color.copy.toast", comment: "Copied")
 
     /*
@@ -122,6 +126,8 @@ enum PikaText {
     static let textPickBackground = NSLocalizedString("color.pick.background", comment: "Pick background")
     static let textCopyForeground = NSLocalizedString("color.copy.foreground", comment: "Copy foreground")
     static let textCopyBackground = NSLocalizedString("color.copy.background", comment: "Copy background")
+    static let textColorSystemPickerForeground = NSLocalizedString("color.system.foreground", comment: "Use foreground system color picker")
+    static let textColorSystemPickerBackground = NSLocalizedString("color.system.background", comment: "Use background system color picker")
 
     /*
      * Preferences
@@ -206,6 +212,7 @@ enum PikaText {
     static let textFormatRGB = NSLocalizedString("color.format.rgb", comment: "RGB format")
     static let textFormatHSL = NSLocalizedString("color.format.hsl", comment: "HSL format")
     static let textFormatHSB = NSLocalizedString("color.format.hsb", comment: "HSB format")
+    static let textFormatOpenGL = NSLocalizedString("color.format.opengl", comment: "OpenGL format")
 
     // Global Shortcut
     static let textHotkeyTitle = NSLocalizedString("preferences.hotkey.title", comment: "Global Shortcut")

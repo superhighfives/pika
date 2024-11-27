@@ -1,0 +1,93 @@
+
+/* Class = "NSMenuItem"; title = "Pika"; ObjectID = "1Xt-HY-uBw"; */
+"1Xt-HY-uBw.title" = "Pika";
+
+/* Class = "NSMenuItem"; title = "Quit Pika"; ObjectID = "4sb-4s-VLi"; */
+"4sb-4s-VLi.title" = "退出 Pika";
+
+/* Class = "NSMenuItem"; title = "Edit"; ObjectID = "5QF-Oa-p0T"; */
+"5QF-Oa-p0T.title" = "编辑";
+
+/* Class = "NSMenuItem"; title = "About Pika"; ObjectID = "5kV-Vb-QxS"; */
+"5kV-Vb-QxS.title" = "关于 Pika";
+
+/* Class = "NSMenuItem"; title = "Redo"; ObjectID = "6dh-zS-Vam"; */
+"6dh-zS-Vam.title" = "重做";
+
+/* Class = "NSMenuItem"; title = "Swap colors"; ObjectID = "6j0-AT-P3M"; */
+"6j0-AT-P3M.title" = "交换颜色";
+
+/* Class = "NSMenu"; title = "Main Menu"; ObjectID = "AYu-sK-qS6"; */
+"AYu-sK-qS6.title" = "主菜单";
+
+/* Class = "NSMenuItem"; title = "Check for updates…"; ObjectID = "BOF-NM-1cW"; */
+"BOF-NM-1cW.title" = "检查更新…";
+
+/* Class = "NSMenuItem"; title = "Copy all as text"; ObjectID = "D8e-06-QFY"; */
+"D8e-06-QFY.title" = "复制全部为文本";
+
+/* Class = "NSMenu"; title = "Help"; ObjectID = "F2S-fz-NVQ"; */
+"F2S-fz-NVQ.title" = "帮助";
+
+/* Class = "NSMenuItem"; title = "Pika website"; ObjectID = "FKE-Sm-Kum"; */
+"FKE-Sm-Kum.title" = "Pika 网站";
+
+/* Class = "NSMenu"; title = "Eyedroppers"; ObjectID = "KHB-9b-hO2"; */
+"KHB-9b-hO2.title" = "吸管工具";
+
+/* Class = "NSMenuItem"; title = "Show All"; ObjectID = "Kd2-mp-pUS"; */
+"Kd2-mp-pUS.title" = "显示全部";
+
+/* Class = "NSMenuItem"; title = "Services"; ObjectID = "NMo-om-nkz"; */
+"NMo-om-nkz.title" = "服务";
+
+/* Class = "NSMenuItem"; title = "Preferences…"; ObjectID = "NQA-cg-qc7"; */
+"NQA-cg-qc7.title" = "首选项…";
+
+/* Class = "NSMenuItem"; title = "Pick foreground..."; ObjectID = "Nec-cr-B3a"; */
+"Nec-cr-B3a.title" = "选择前景色...";
+
+/* Class = "NSMenuItem"; title = "Hide Pika"; ObjectID = "Olw-nP-bQN"; */
+"Olw-nP-bQN.title" = "隐藏 Pika";
+
+/* Class = "NSMenuItem"; title = "Copy all as JSON"; ObjectID = "U40-Ip-3Uj"; */
+"U40-Ip-3Uj.title" = "复制全部为 JSON";
+
+/* Class = "NSMenuItem"; title = "Close window"; ObjectID = "VpE-fH-2gc"; */
+"VpE-fH-2gc.title" = "关闭窗口";
+
+/* Class = "NSMenuItem"; title = "Hide Others"; ObjectID = "Vdr-fp-XzO"; */
+"Vdr-fp-XzO.title" = "隐藏其他";
+
+/* Class = "NSMenu"; title = "Edit"; ObjectID = "W48-6f-4Dl"; */
+"W48-6f-4Dl.title" = "编辑";
+
+/* Class = "NSMenuItem"; title = "Pick background..."; ObjectID = "YF5-6a-ACB"; */
+"YF5-6a-ACB.title" = "选择背景色...";
+
+/* Class = "NSMenuItem"; title = "Eyedroppers"; ObjectID = "dNS-BC-3MB"; */
+"dNS-BC-3MB.title" = "吸管工具";
+
+/* Class = "NSMenuItem"* title = "Format"; ObjectId = "jQ5-Ak-Ocb"; */
+"jQ5-Ak-Ocb.title" = "格式";
+
+/* Class = "NSMenuItem"; title = "Undo"; ObjectID = "dRJ-4n-Yzg"; */
+"dRJ-4n-Yzg.title" = "撤销";
+
+/* Class = "NSMenu"; title = "Services"; ObjectID = "hz9-B4-Xy5"; */
+"hz9-B4-Xy5.title" = "服务";
+
+/* Class = "NSMenuItem"; title = "Copy background"; ObjectID = "p7U-sR-JqZ"; */
+"p7U-sR-JqZ.title" = "复制背景色";
+
+/* Class = "NSMenu"; title = "Pika"; ObjectID = "uQy-DD-JDr"; */
+"uQy-DD-JDr.title" = "Pika";
+
+/* Class = "NSMenuItem"; title = "Help"; ObjectID = "wpr-3q-Mcd"; */
+"wpr-3q-Mcd.title" = "帮助";
+
+/* Class = "NSMenuItem"; title = "Copy foreground"; ObjectID = "x3v-GG-iWU"; */
+"x3v-GG-iWU.title" = "复制前景色";
+
+/* Class = "NSMenuItem"; title = "Report feedback"; ObjectID = "hxD-2G-mEq.title"; */
+"hxD-2G-mEq.title" = "报告反馈";

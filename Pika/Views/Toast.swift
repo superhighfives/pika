@@ -17,21 +17,21 @@ struct Toast<Presenting>: View where Presenting: View {
     let color: Color
 
     var body: some View {
-        if self.isShowing {
+        if isShowing {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 withAnimation {
-                    self.isShowing = false
+                    isShowing = false
                 }
             }
         }
         return GeometryReader { _ in
 
             ZStack(alignment: .topLeading) {
-                self.presenting()
+                presenting()
 
                 HStack {
                     IconImage(name: "doc.on.doc")
-                    self.text
+                    text
                 }
                 .padding(.vertical, 5.0)
                 .padding(.horizontal, 10.0)
@@ -43,7 +43,7 @@ struct Toast<Presenting>: View where Presenting: View {
                         .stroke(color.opacity(0.4), lineWidth: 1)
                 )
                 .transition(.slide)
-                .opacity(self.isShowing ? 1 : 0)
+                .opacity(isShowing ? 1 : 0)
                 .offset(x: 8.0, y: 8.0)
             }
         }

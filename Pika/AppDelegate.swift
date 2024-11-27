@@ -168,6 +168,16 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                     }
                 }
 
+                if action == "system" {
+                    if task == "foreground" {
+                        NSApp.sendAction(#selector(AppDelegate.triggerSystemPickerForeground(_:)), to: nil, from: nil)
+                    }
+
+                    if task == "background" {
+                        NSApp.sendAction(#selector(AppDelegate.triggerSystemPickerBackground(_:)), to: nil, from: nil)
+                    }
+                }
+
                 if action == "copy", task == "foreground" {
                     NSApp.sendAction(#selector(AppDelegate.triggerCopyForeground(_:)), to: nil, from: nil)
                 }
@@ -329,7 +339,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     @IBAction func openSplashWindow(_: Any?) {
         splashWindow = PikaWindow.createSecondaryWindow(
             title: "Splash",
-            size: NSRect(x: 0, y: 0, width: 650, height: 260),
+            size: NSRect(x: 0, y: 0, width: 650, height: 380),
             styleMask: [.titled, .fullSizeContentView]
         )
         if #available(OSX 11.0, *) {
@@ -356,6 +366,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     @IBAction func triggerCopyBackground(_: Any) {
         notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerCopyBackground), object: self)
+    }
+
+    @IBAction func triggerSystemPickerForeground(_: Any) {
+        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerSystemPickerForeground), object: self)
+    }
+
+    @IBAction func triggerSystemPickerBackground(_: Any) {
+        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerSystemPickerBackground), object: self)
     }
 
     @IBAction func triggerSwap(_: Any) {
@@ -392,6 +410,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     @IBAction func triggerFormatHSL(_: Any) {
         notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerFormatHSL), object: self)
+    }
+
+    @IBAction func triggerFormatOpenGL(_: Any) {
+        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerFormatOpenGL), object: self)
     }
 
     @IBAction func hidePika(_: Any) {

@@ -82,6 +82,10 @@
 		23EE8C0928DA24AE0042090A /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		23EE8C0A28DA3FF00042090A /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Main.strings; sourceTree = "<group>"; };
 		92D97C2125FF7A5A007CCDE4 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		C1BF641E2C1AE533004D33DD /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		C1BF641F2C1AE533004D33DD /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
+		C1BF64202C1AE53C004D33DD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		C1BF64212C1AE53C004D33DD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Main.strings"; sourceTree = "<group>"; };
 		EA0C524F25AA729300AFF716 /* Visualisation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Visualisation.swift; sourceTree = "<group>"; };
 		EA0C525F25AB5A2B00AFF716 /* NavigationMenuItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationMenuItems.swift; sourceTree = "<group>"; };
 		EA0C526325AB5D1700AFF716 /* PikaWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PikaWindow.swift; sourceTree = "<group>"; };
@@ -89,6 +93,7 @@
 		EA0F36AE2929138E00BFC7EB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
 		EA0F36B02929139000BFC7EB /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
 		EA136071284887E9004F1630 /* AppearanceButtonStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppearanceButtonStyle.swift; sourceTree = "<group>"; };
+		EA16C6562CF3301500FBC93E /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		EA1D669E282EAE8700816F99 /* WindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
 		EA257BD025D8629300C3FC54 /* SwapButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapButtonStyle.swift; sourceTree = "<group>"; };
 		EA424C7C25CDEF98009056A9 /* ComplianceToggleGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComplianceToggleGroup.swift; sourceTree = "<group>"; };
@@ -192,6 +197,7 @@
 		EAD0B6BF259CED1C00FA2F67 = {
 			isa = PBXGroup;
 			children = (
+				EA16C6562CF3301500FBC93E /* .swiftlint.yml */,
 				EAD0B705259CF3BA00FA2F67 /* LICENSE.md */,
 				EAD0B704259CF3BA00FA2F67 /* README.md */,
 				EAD0B6CA259CED1C00FA2F67 /* Pika */,
@@ -357,6 +363,8 @@
 				fr,
 				de,
 				es,
+				"zh-Hans",
+				"zh-Hant",
 			);
 			mainGroup = EAD0B6BF259CED1C00FA2F67;
 			packageReferences = (
@@ -496,6 +504,8 @@
 				92D97C2125FF7A5A007CCDE4 /* fr */,
 				23EE8C0928DA24AE0042090A /* de */,
 				223FDEEF2B038A9B000F89A0 /* es */,
+				C1BF641E2C1AE533004D33DD /* zh-Hans */,
+				C1BF64202C1AE53C004D33DD /* zh-Hant */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -508,6 +518,8 @@
 				EA0F36AE2929138E00BFC7EB /* en */,
 				EA0F36B02929139000BFC7EB /* fr */,
 				223FDEEE2B038A9B000F89A0 /* es */,
+				C1BF641F2C1AE533004D33DD /* zh-Hans */,
+				C1BF64212C1AE53C004D33DD /* zh-Hant */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -644,7 +656,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 39;
+				CURRENT_PROJECT_VERSION = 43;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Pika/Preview Content\"";
 				DEVELOPMENT_TEAM = TGHU37N6EX;
@@ -658,7 +670,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 0.0.17;
+				MARKETING_VERSION = 0.0.18;
 				PRODUCT_BUNDLE_IDENTIFIER = com.superhighfives.Pika;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -675,7 +687,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 39;
+				CURRENT_PROJECT_VERSION = 43;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Pika/Preview Content\"";
 				DEVELOPMENT_TEAM = TGHU37N6EX;
@@ -689,7 +701,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 0.0.17;
+				MARKETING_VERSION = 0.0.18;
 				PRODUCT_BUNDLE_IDENTIFIER = com.superhighfives.Pika;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

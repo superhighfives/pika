@@ -23,6 +23,6 @@ extension NSColor {
     }
 
     func toWCAGCompliance(with color: NSColor) -> (NSColor.WCAG) {
-        return WCAGCompliance(with: color)
+        WCAGCompliance(with: color)
     }
 }
