@@ -92,11 +92,11 @@ class Eyedropper: ObservableObject {
 
     func picker() {
         let panel = NSColorPanel.shared
+        panel.showsAlpha = false
         panel.title = "\(type.rawValue.capitalized)"
         panel.titleVisibility = .visible
         panel.setTarget(self)
         panel.color = color
-        panel.showsAlpha = true
         panel.orderFrontRegardless()
         panel.setAction(#selector(colorDidChange))
         panel.isContinuous = true
