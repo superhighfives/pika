@@ -118,6 +118,8 @@
 		EAE23DE02D032A38005BB270 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EAD0B6D2259CED1D00FA2F67 /* Preview Assets.xcassets */; };
 		EAE23DE12D032A38005BB270 /* ColorNames.json in Resources */ = {isa = PBXBuildFile; fileRef = EA7B199825FBA09300E06D9D /* ColorNames.json */; };
 		EAE23DE22D032A38005BB270 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EAD0B6CF259CED1D00FA2F67 /* Assets.xcassets */; };
+		EAE2EB9A2D0368E800FA9BC9 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = EAE23DA22D032A38005BB270 /* Sparkle */; };
+		EAE2EB9C2D03697600FA9BC9 /* Info (Mac App Store).plist in Resources */ = {isa = PBXBuildFile; fileRef = EAE2EB9B2D03697600FA9BC9 /* Info (Mac App Store).plist */; };
 		EAEBF64725E878A5002999D1 /* CircleButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAEBF64625E878A5002999D1 /* CircleButtonStyle.swift */; };
 		EAF100C725C731AD006E1EC3 /* SplashTouchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF100C625C731AD006E1EC3 /* SplashTouchBar.swift */; };
 		EAF100CA25C75218006E1EC3 /* PikaTouchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF100C325C59EB3006E1EC3 /* PikaTouchBar.swift */; };
@@ -193,7 +195,7 @@
 		EAD0B717259D146200FA2F67 /* EyedropperButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyedropperButtonStyle.swift; sourceTree = "<group>"; };
 		EAD0B71B259D151400FA2F67 /* NavigationMenu.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = NavigationMenu.swift; sourceTree = "<group>"; tabWidth = 4; };
 		EAE23DE82D032A38005BB270 /* Pika (Mac App Store).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pika (Mac App Store).app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		EAE23DE92D032A38005BB270 /* Info (Mac App Store).plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Info (Mac App Store).plist"; path = "/Users/superhighfives/Development/superhighfives/pika/Pika/Info (Mac App Store).plist"; sourceTree = "<absolute>"; };
+		EAE2EB9B2D03697600FA9BC9 /* Info (Mac App Store).plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info (Mac App Store).plist"; sourceTree = "<group>"; };
 		EAEBF64625E878A5002999D1 /* CircleButtonStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleButtonStyle.swift; sourceTree = "<group>"; };
 		EAF100C325C59EB3006E1EC3 /* PikaTouchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PikaTouchBar.swift; sourceTree = "<group>"; };
 		EAF100C625C731AD006E1EC3 /* SplashTouchBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashTouchBar.swift; sourceTree = "<group>"; };
@@ -216,6 +218,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EAE2EB9A2D0368E800FA9BC9 /* Sparkle in Frameworks */,
 				EAE23DD92D032A38005BB270 /* Defaults in Frameworks */,
 				EAE23DDB2D032A38005BB270 /* LaunchAtLogin in Frameworks */,
 				EAE23DDC2D032A38005BB270 /* KeyboardShortcuts in Frameworks */,
@@ -291,7 +294,7 @@
 				EA0C525925AB57AE00AFF716 /* Constants */,
 				EAD0B6EC259CF28D00FA2F67 /* Extensions */,
 				EAD0B6D7259CED1D00FA2F67 /* Info.plist */,
-				EAE23DE92D032A38005BB270 /* Info (Mac App Store).plist */,
+				EAE2EB9B2D03697600FA9BC9 /* Info (Mac App Store).plist */,
 				EA72BB8125A5334B008205E7 /* Metal */,
 				EAD0B6D8259CED1D00FA2F67 /* Pika.entitlements */,
 				EAD0B6D1259CED1D00FA2F67 /* Preview Content */,
@@ -496,6 +499,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EAE2EB9C2D03697600FA9BC9 /* Info (Mac App Store).plist in Resources */,
 				EAE23DDE2D032A38005BB270 /* Main.storyboard in Resources */,
 				EAE23DDF2D032A38005BB270 /* Localizable.strings in Resources */,
 				EAE23DE02D032A38005BB270 /* Preview Assets.xcassets in Resources */,
