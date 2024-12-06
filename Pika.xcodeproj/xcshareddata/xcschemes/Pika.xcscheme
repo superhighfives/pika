@@ -20,6 +20,20 @@
                ReferencedContainer = "container:Pika.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "EAE23D9D2D032A38005BB270"
+               BuildableName = "Pika (Mac App Store).app"
+               BlueprintName = "Pika (Mac App Store)"
+               ReferencedContainer = "container:Pika.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -44,12 +58,21 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
+            BlueprintIdentifier = "EAE23D9D2D032A38005BB270"
+            BuildableName = "Pika (Mac App Store).app"
+            BlueprintName = "Pika (Mac App Store)"
+            ReferencedContainer = "container:Pika.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
             BlueprintIdentifier = "EAD0B6C7259CED1C00FA2F67"
             BuildableName = "Pika.app"
             BlueprintName = "Pika"
             ReferencedContainer = "container:Pika.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

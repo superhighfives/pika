@@ -61,6 +61,63 @@
 		EAD0B713259CFD2000FA2F67 /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B712259CFD2000FA2F67 /* Defaults.swift */; };
 		EAD0B718259D146200FA2F67 /* EyedropperButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B717259D146200FA2F67 /* EyedropperButtonStyle.swift */; };
 		EAD0B71C259D151400FA2F67 /* NavigationMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B71B259D151400FA2F67 /* NavigationMenu.swift */; };
+		EAE23DA72D032A38005BB270 /* MetalShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA72BB8A25A537C3008205E7 /* MetalShader.swift */; };
+		EAE23DA82D032A38005BB270 /* Sequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EF1D9A25B7AA18001102FA /* Sequence.swift */; };
+		EAE23DA92D032A38005BB270 /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6F4259CF29300FA2F67 /* PreferencesView.swift */; };
+		EAE23DAA2D032A38005BB270 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA72BB8725A53750008205E7 /* SplashView.swift */; };
+		EAE23DAB2D032A38005BB270 /* AppearanceButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA136071284887E9004F1630 /* AppearanceButtonStyle.swift */; };
+		EAE23DAC2D032A38005BB270 /* PikaTouchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF100C325C59EB3006E1EC3 /* PikaTouchBar.swift */; };
+		EAE23DAD2D032A38005BB270 /* LoadColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7B199525FBA08100E06D9D /* LoadColors.swift */; };
+		EAE23DAE2D032A38005BB270 /* SplashTouchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF100C625C731AD006E1EC3 /* SplashTouchBar.swift */; };
+		EAE23DAF2D032A38005BB270 /* OverflowContentViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D28DB62862377F00FC7DD4 /* OverflowContentViewModifier.swift */; };
+		EAE23DB02D032A38005BB270 /* KeyboardShortcutGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA8AE1B25B8F03B0049299B /* KeyboardShortcutGrid.swift */; };
+		EAE23DB12D032A38005BB270 /* AppModeToggleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220D5E9728DB158400B6285E /* AppModeToggleGroup.swift */; };
+		EAE23DB22D032A38005BB270 /* Visualisation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C524F25AA729300AFF716 /* Visualisation.swift */; };
+		EAE23DB32D032A38005BB270 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6F6259CF29300FA2F67 /* ContentView.swift */; };
+		EAE23DB42D032A38005BB270 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6CB259CED1C00FA2F67 /* AppDelegate.swift */; };
+		EAE23DB52D032A38005BB270 /* WCAGCompliance.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DCB25B3B42B0014D91A /* WCAGCompliance.swift */; };
+		EAE23DB62D032A38005BB270 /* EyedropperItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DE925B534C80014D91A /* EyedropperItem.swift */; };
+		EAE23DB72D032A38005BB270 /* ComplianceToggleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA424C7C25CDEF98009056A9 /* ComplianceToggleGroup.swift */; };
+		EAE23DB82D032A38005BB270 /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1D669E282EAE8700816F99 /* WindowManager.swift */; };
+		EAE23DB92D032A38005BB270 /* ClosestVector.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7B199B25FBA0E600E06D9D /* ClosestVector.swift */; };
+		EAE23DBA2D032A38005BB270 /* Eyedroppers.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6F1259CF29300FA2F67 /* Eyedroppers.swift */; };
+		EAE23DBB2D032A38005BB270 /* NavigationMenuItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C525F25AB5A2B00AFF716 /* NavigationMenuItems.swift */; };
+		EAE23DBC2D032A38005BB270 /* AppModeButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220D5E9328DB154300B6285E /* AppModeButtons.swift */; };
+		EAE23DBD2D032A38005BB270 /* PikaWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C526325AB5D1700AFF716 /* PikaWindow.swift */; };
+		EAE23DBE2D032A38005BB270 /* ComplianceButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = EABAEADF284D50D1000716AE /* ComplianceButtons.swift */; };
+		EAE23DBF2D032A38005BB270 /* TouchBarVisual.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF100CC25C785C4006E1EC3 /* TouchBarVisual.swift */; };
+		EAE23DC02D032A38005BB270 /* ComplianceToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA801284259F8F480026D5D9 /* ComplianceToggle.swift */; };
+		EAE23DC12D032A38005BB270 /* ConditionalModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221600FC25A636D600B8B7D9 /* ConditionalModifier.swift */; };
+		EAE23DC22D032A38005BB270 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DF025B5A6D80014D91A /* Toast.swift */; };
+		EAE23DC32D032A38005BB270 /* NavigationMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B71B259D151400FA2F67 /* NavigationMenu.swift */; };
+		EAE23DC42D032A38005BB270 /* KeyboardShortcutItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FE80B225BA0F820063759E /* KeyboardShortcutItem.swift */; };
+		EAE23DC52D032A38005BB270 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6F3259CF29300FA2F67 /* AboutView.swift */; };
+		EAE23DC62D032A38005BB270 /* KeyboardShortcutKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA8AE1825B8EC070049299B /* KeyboardShortcutKey.swift */; };
+		EAE23DC72D032A38005BB270 /* EyedropperButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C526E25AB683400AFF716 /* EyedropperButton.swift */; };
+		EAE23DC82D032A38005BB270 /* MetalShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = EA72BB8225A5334B008205E7 /* MetalShader.metal */; };
+		EAE23DC92D032A38005BB270 /* SwapButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA257BD025D8629300C3FC54 /* SwapButtonStyle.swift */; };
+		EAE23DCA2D032A38005BB270 /* NSWindowFade.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA72BBA825A7CE9C008205E7 /* NSWindowFade.swift */; };
+		EAE23DCB2D032A38005BB270 /* EyedropperButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B717259D146200FA2F67 /* EyedropperButtonStyle.swift */; };
+		EAE23DCC2D032A38005BB270 /* Cula.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DC825B3B2650014D91A /* Cula.swift */; };
+		EAE23DCD2D032A38005BB270 /* CircleButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAEBF64625E878A5002999D1 /* CircleButtonStyle.swift */; };
+		EAE23DCE2D032A38005BB270 /* ColorPickers.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DE025B4FC580014D91A /* ColorPickers.swift */; };
+		EAE23DCF2D032A38005BB270 /* Exporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EACA8A44260501210064035C /* Exporter.swift */; };
+		EAE23DD02D032A38005BB270 /* IconImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221600F825A62E5B00B8B7D9 /* IconImage.swift */; };
+		EAE23DD12D032A38005BB270 /* AppVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6F5259CF29300FA2F67 /* AppVersion.swift */; };
+		EAE23DD22D032A38005BB270 /* Footer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8124C0259E307D00033F0B /* Footer.swift */; };
+		EAE23DD32D032A38005BB270 /* ColorExampleRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22903B0228294F49004BB9F0 /* ColorExampleRow.swift */; };
+		EAE23DD42D032A38005BB270 /* BindingOnChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DDB25B4E90B0014D91A /* BindingOnChange.swift */; };
+		EAE23DD52D032A38005BB270 /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B712259CFD2000FA2F67 /* Defaults.swift */; };
+		EAE23DD62D032A38005BB270 /* VisualEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226FD60F25A940F90021A67F /* VisualEffect.swift */; };
+		EAE23DD72D032A38005BB270 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6FD259CF29C00FA2F67 /* Constants.swift */; };
+		EAE23DD92D032A38005BB270 /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = EAE23DA42D032A38005BB270 /* Defaults */; };
+		EAE23DDB2D032A38005BB270 /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; productRef = EAE23D9E2D032A38005BB270 /* LaunchAtLogin */; };
+		EAE23DDC2D032A38005BB270 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = EAE23DA02D032A38005BB270 /* KeyboardShortcuts */; };
+		EAE23DDE2D032A38005BB270 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EAD0B6D4259CED1D00FA2F67 /* Main.storyboard */; };
+		EAE23DDF2D032A38005BB270 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = EA424CE025CF0328009056A9 /* Localizable.strings */; };
+		EAE23DE02D032A38005BB270 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EAD0B6D2259CED1D00FA2F67 /* Preview Assets.xcassets */; };
+		EAE23DE12D032A38005BB270 /* ColorNames.json in Resources */ = {isa = PBXBuildFile; fileRef = EA7B199825FBA09300E06D9D /* ColorNames.json */; };
+		EAE23DE22D032A38005BB270 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EAD0B6CF259CED1D00FA2F67 /* Assets.xcassets */; };
 		EAEBF64725E878A5002999D1 /* CircleButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAEBF64625E878A5002999D1 /* CircleButtonStyle.swift */; };
 		EAF100C725C731AD006E1EC3 /* SplashTouchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF100C625C731AD006E1EC3 /* SplashTouchBar.swift */; };
 		EAF100CA25C75218006E1EC3 /* PikaTouchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF100C325C59EB3006E1EC3 /* PikaTouchBar.swift */; };
@@ -135,6 +192,8 @@
 		EAD0B712259CFD2000FA2F67 /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
 		EAD0B717259D146200FA2F67 /* EyedropperButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyedropperButtonStyle.swift; sourceTree = "<group>"; };
 		EAD0B71B259D151400FA2F67 /* NavigationMenu.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = NavigationMenu.swift; sourceTree = "<group>"; tabWidth = 4; };
+		EAE23DE82D032A38005BB270 /* Pika (Mac App Store).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pika (Mac App Store).app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EAE23DE92D032A38005BB270 /* Info (Mac App Store).plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Info (Mac App Store).plist"; path = "/Users/superhighfives/Development/superhighfives/pika/Pika/Info (Mac App Store).plist"; sourceTree = "<absolute>"; };
 		EAEBF64625E878A5002999D1 /* CircleButtonStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleButtonStyle.swift; sourceTree = "<group>"; };
 		EAF100C325C59EB3006E1EC3 /* PikaTouchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PikaTouchBar.swift; sourceTree = "<group>"; };
 		EAF100C625C731AD006E1EC3 /* SplashTouchBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashTouchBar.swift; sourceTree = "<group>"; };
@@ -150,6 +209,16 @@
 				EAD0B6E9259CEF8600FA2F67 /* Sparkle in Frameworks */,
 				EAD0B6E1259CED3200FA2F67 /* LaunchAtLogin in Frameworks */,
 				EAD0B6E5259CED6000FA2F67 /* KeyboardShortcuts in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EAE23DD82D032A38005BB270 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EAE23DD92D032A38005BB270 /* Defaults in Frameworks */,
+				EAE23DDB2D032A38005BB270 /* LaunchAtLogin in Frameworks */,
+				EAE23DDC2D032A38005BB270 /* KeyboardShortcuts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -209,6 +278,7 @@
 			isa = PBXGroup;
 			children = (
 				EAD0B6C8259CED1C00FA2F67 /* Pika.app */,
+				EAE23DE82D032A38005BB270 /* Pika (Mac App Store).app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -221,6 +291,7 @@
 				EA0C525925AB57AE00AFF716 /* Constants */,
 				EAD0B6EC259CF28D00FA2F67 /* Extensions */,
 				EAD0B6D7259CED1D00FA2F67 /* Info.plist */,
+				EAE23DE92D032A38005BB270 /* Info (Mac App Store).plist */,
 				EA72BB8125A5334B008205E7 /* Metal */,
 				EAD0B6D8259CED1D00FA2F67 /* Pika.entitlements */,
 				EAD0B6D1259CED1D00FA2F67 /* Preview Content */,
@@ -338,6 +409,31 @@
 			productReference = EAD0B6C8259CED1C00FA2F67 /* Pika.app */;
 			productType = "com.apple.product-type.application";
 		};
+		EAE23D9D2D032A38005BB270 /* Pika (Mac App Store) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EAE23DE52D032A38005BB270 /* Build configuration list for PBXNativeTarget "Pika (Mac App Store)" */;
+			buildPhases = (
+				EAE23DA62D032A38005BB270 /* Sources */,
+				EAE23DD82D032A38005BB270 /* Frameworks */,
+				EAE23DDD2D032A38005BB270 /* Resources */,
+				EAE23DE32D032A38005BB270 /* Run Script */,
+				EAE23DE42D032A38005BB270 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pika (Mac App Store)";
+			packageProductDependencies = (
+				EAE23D9E2D032A38005BB270 /* LaunchAtLogin */,
+				EAE23DA02D032A38005BB270 /* KeyboardShortcuts */,
+				EAE23DA22D032A38005BB270 /* Sparkle */,
+				EAE23DA42D032A38005BB270 /* Defaults */,
+			);
+			productName = Pika;
+			productReference = EAE23DE82D032A38005BB270 /* Pika (Mac App Store).app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -378,6 +474,7 @@
 			projectRoot = "";
 			targets = (
 				EAD0B6C7259CED1C00FA2F67 /* Pika */,
+				EAE23D9D2D032A38005BB270 /* Pika (Mac App Store) */,
 			);
 		};
 /* End PBXProject section */
@@ -392,6 +489,18 @@
 				EAD0B6D3259CED1D00FA2F67 /* Preview Assets.xcassets in Resources */,
 				EA7B199925FBA09300E06D9D /* ColorNames.json in Resources */,
 				EAD0B6D0259CED1D00FA2F67 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EAE23DDD2D032A38005BB270 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EAE23DDE2D032A38005BB270 /* Main.storyboard in Resources */,
+				EAE23DDF2D032A38005BB270 /* Localizable.strings in Resources */,
+				EAE23DE02D032A38005BB270 /* Preview Assets.xcassets in Resources */,
+				EAE23DE12D032A38005BB270 /* ColorNames.json in Resources */,
+				EAE23DE22D032A38005BB270 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -434,6 +543,43 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if test -d \"/opt/homebrew/bin/\"; then\n  PATH=\"/opt/homebrew/bin/:${PATH}\"\nfi\n\nexport PATH\n\nif which mint >/dev/null; then\n  mint run swiftlint\n  mint run swiftformat .\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+		EAE23DE32D032A38005BB270 /* Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 12;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if test -d \"/opt/homebrew/bin/\"; then\n  PATH=\"/opt/homebrew/bin/:${PATH}\"\nfi\n\nexport PATH\n\nif which mint >/dev/null; then\n  mint run swiftlint\n  mint run swiftformat .\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+		EAE23DE42D032A38005BB270 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${BUILT_PRODUCTS_DIR}/LaunchAtLogin_LaunchAtLogin.bundle/Contents/Resources/copy-helper-swiftpm.sh\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -491,6 +637,62 @@
 				EAD0B713259CFD2000FA2F67 /* Defaults.swift in Sources */,
 				226FD61025A940F90021A67F /* VisualEffect.swift in Sources */,
 				EAD0B6FE259CF29C00FA2F67 /* Constants.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EAE23DA62D032A38005BB270 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EAE23DA72D032A38005BB270 /* MetalShader.swift in Sources */,
+				EAE23DA82D032A38005BB270 /* Sequence.swift in Sources */,
+				EAE23DA92D032A38005BB270 /* PreferencesView.swift in Sources */,
+				EAE23DAA2D032A38005BB270 /* SplashView.swift in Sources */,
+				EAE23DAB2D032A38005BB270 /* AppearanceButtonStyle.swift in Sources */,
+				EAE23DAC2D032A38005BB270 /* PikaTouchBar.swift in Sources */,
+				EAE23DAD2D032A38005BB270 /* LoadColors.swift in Sources */,
+				EAE23DAE2D032A38005BB270 /* SplashTouchBar.swift in Sources */,
+				EAE23DAF2D032A38005BB270 /* OverflowContentViewModifier.swift in Sources */,
+				EAE23DB02D032A38005BB270 /* KeyboardShortcutGrid.swift in Sources */,
+				EAE23DB12D032A38005BB270 /* AppModeToggleGroup.swift in Sources */,
+				EAE23DB22D032A38005BB270 /* Visualisation.swift in Sources */,
+				EAE23DB32D032A38005BB270 /* ContentView.swift in Sources */,
+				EAE23DB42D032A38005BB270 /* AppDelegate.swift in Sources */,
+				EAE23DB52D032A38005BB270 /* WCAGCompliance.swift in Sources */,
+				EAE23DB62D032A38005BB270 /* EyedropperItem.swift in Sources */,
+				EAE23DB72D032A38005BB270 /* ComplianceToggleGroup.swift in Sources */,
+				EAE23DB82D032A38005BB270 /* WindowManager.swift in Sources */,
+				EAE23DB92D032A38005BB270 /* ClosestVector.swift in Sources */,
+				EAE23DBA2D032A38005BB270 /* Eyedroppers.swift in Sources */,
+				EAE23DBB2D032A38005BB270 /* NavigationMenuItems.swift in Sources */,
+				EAE23DBC2D032A38005BB270 /* AppModeButtons.swift in Sources */,
+				EAE23DBD2D032A38005BB270 /* PikaWindow.swift in Sources */,
+				EAE23DBE2D032A38005BB270 /* ComplianceButtons.swift in Sources */,
+				EAE23DBF2D032A38005BB270 /* TouchBarVisual.swift in Sources */,
+				EAE23DC02D032A38005BB270 /* ComplianceToggle.swift in Sources */,
+				EAE23DC12D032A38005BB270 /* ConditionalModifier.swift in Sources */,
+				EAE23DC22D032A38005BB270 /* Toast.swift in Sources */,
+				EAE23DC32D032A38005BB270 /* NavigationMenu.swift in Sources */,
+				EAE23DC42D032A38005BB270 /* KeyboardShortcutItem.swift in Sources */,
+				EAE23DC52D032A38005BB270 /* AboutView.swift in Sources */,
+				EAE23DC62D032A38005BB270 /* KeyboardShortcutKey.swift in Sources */,
+				EAE23DC72D032A38005BB270 /* EyedropperButton.swift in Sources */,
+				EAE23DC82D032A38005BB270 /* MetalShader.metal in Sources */,
+				EAE23DC92D032A38005BB270 /* SwapButtonStyle.swift in Sources */,
+				EAE23DCA2D032A38005BB270 /* NSWindowFade.swift in Sources */,
+				EAE23DCB2D032A38005BB270 /* EyedropperButtonStyle.swift in Sources */,
+				EAE23DCC2D032A38005BB270 /* Cula.swift in Sources */,
+				EAE23DCD2D032A38005BB270 /* CircleButtonStyle.swift in Sources */,
+				EAE23DCE2D032A38005BB270 /* ColorPickers.swift in Sources */,
+				EAE23DCF2D032A38005BB270 /* Exporter.swift in Sources */,
+				EAE23DD02D032A38005BB270 /* IconImage.swift in Sources */,
+				EAE23DD12D032A38005BB270 /* AppVersion.swift in Sources */,
+				EAE23DD22D032A38005BB270 /* Footer.swift in Sources */,
+				EAE23DD32D032A38005BB270 /* ColorExampleRow.swift in Sources */,
+				EAE23DD42D032A38005BB270 /* BindingOnChange.swift in Sources */,
+				EAE23DD52D032A38005BB270 /* Defaults.swift in Sources */,
+				EAE23DD62D032A38005BB270 /* VisualEffect.swift in Sources */,
+				EAE23DD72D032A38005BB270 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -708,6 +910,68 @@
 			};
 			name = Release;
 		};
+		EAE23DE62D032A38005BB270 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Pika/Pika.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 43;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"Pika/Preview Content\"";
+				DEVELOPMENT_TEAM = TGHU37N6EX;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = "Pika/Info (Mac App Store).plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Pika;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MARKETING_VERSION = 0.0.18;
+				PRODUCT_BUNDLE_IDENTIFIER = com.superhighfives.Pika;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		EAE23DE72D032A38005BB270 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Pika/Pika.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 43;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"Pika/Preview Content\"";
+				DEVELOPMENT_TEAM = TGHU37N6EX;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = "Pika/Info (Mac App Store).plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Pika;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MARKETING_VERSION = 0.0.18;
+				PRODUCT_BUNDLE_IDENTIFIER = com.superhighfives.Pika;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -725,6 +989,15 @@
 			buildConfigurations = (
 				EAD0B6DC259CED1D00FA2F67 /* Debug */,
 				EAD0B6DD259CED1D00FA2F67 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EAE23DE52D032A38005BB270 /* Build configuration list for PBXNativeTarget "Pika (Mac App Store)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EAE23DE62D032A38005BB270 /* Debug */,
+				EAE23DE72D032A38005BB270 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -764,6 +1037,38 @@
 				minimumVersion = 4.0.0;
 			};
 		};
+		EAE23D9F2D032A38005BB270 /* XCRemoteSwiftPackageReference "LaunchAtLogin" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sindresorhus/LaunchAtLogin";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+		EAE23DA12D032A38005BB270 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sindresorhus/KeyboardShortcuts";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+		EAE23DA32D032A38005BB270 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparkle-project/Sparkle";
+			requirement = {
+				kind = revision;
+				revision = 891afd44c7075e699924ed9b81d8dc94a5111dfd;
+			};
+		};
+		EAE23DA52D032A38005BB270 /* XCRemoteSwiftPackageReference "Defaults" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sindresorhus/Defaults";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -785,6 +1090,26 @@
 		EAD0B70F259CFAC700FA2F67 /* Defaults */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = EAD0B70E259CFAC700FA2F67 /* XCRemoteSwiftPackageReference "Defaults" */;
+			productName = Defaults;
+		};
+		EAE23D9E2D032A38005BB270 /* LaunchAtLogin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EAE23D9F2D032A38005BB270 /* XCRemoteSwiftPackageReference "LaunchAtLogin" */;
+			productName = LaunchAtLogin;
+		};
+		EAE23DA02D032A38005BB270 /* KeyboardShortcuts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EAE23DA12D032A38005BB270 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */;
+			productName = KeyboardShortcuts;
+		};
+		EAE23DA22D032A38005BB270 /* Sparkle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EAE23DA32D032A38005BB270 /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = Sparkle;
+		};
+		EAE23DA42D032A38005BB270 /* Defaults */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EAE23DA52D032A38005BB270 /* XCRemoteSwiftPackageReference "Defaults" */;
 			productName = Defaults;
 		};
 /* End XCSwiftPackageProductDependency section */

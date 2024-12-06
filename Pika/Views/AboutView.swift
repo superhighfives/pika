@@ -52,10 +52,35 @@ struct AboutView: View {
                 }
 
                 HStack(spacing: 5.0) {
-                    IconImage(name: "hand.thumbsup.fill")
-                    Text(PikaText.textAboutBy)
-                    LinkButton(title: "Charlie Gleason", link: PikaConstants.charlieGleasonWebsiteURL)
+                    HStack(spacing: 5.0) {
+                        IconImage(name: "hand.thumbsup.fill")
+                        Text(PikaText.textAboutBy)
+                        LinkButton(title: "Charlie Gleason", link: PikaConstants.charlieGleasonWebsiteURL)
+                    }
+                    Spacer()
+                    if let target = Bundle.main.infoDictionary?["ENVTarget"] as? String {
+                        if target == "mas" {
+                            HStack(spacing: 5.0) {
+                                IconImage(name: "storefront.circle", resizable: true)
+                                    .foregroundColor(Color.secondary)
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 14, height: 14)
+                                Text("Mac App Store")
+                                    .foregroundColor(Color.secondary)
+                            }
+                        } else {
+                            HStack(spacing: 5.0) {
+                                IconImage(name: "arrow.down.circle", resizable: true)
+                                    .foregroundColor(Color.secondary)
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 14, height: 14)
+                                Text("Downloaded from the internet")
+                                    .foregroundColor(Color.secondary)
+                            }
+                        }
+                    }
                 }
+                .padding(.horizontal, 20.0)
             }
             .padding(.bottom, 20.0)
         }

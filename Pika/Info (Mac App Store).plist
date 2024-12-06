@@ -47,17 +47,7 @@
 	<string>Main</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
-	<key>CFBundleGetInfoString</key>
-	<string></string>
-	<key>CFBundleDisplayName</key>
-	<string></string>
-	<key>SUFeedURL</key>
-	<string>https://superhighfives.com/releases/pika</string>
-	<key>SUEnableAutomaticChecks</key>
-	<true/>
-	<key>SUPublicEDKey</key>
-	<string>+hHTCW8zfGxSQeowmFxlZzE4N/fxolLQRpA7zLlzBvk=</string>
 	<key>ENVTarget</key>
-	<string>sparkle</string>
+	<string>mas</string>
 </dict>
 </plist>
