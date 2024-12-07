@@ -67,6 +67,11 @@
 			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
+		<key>Pika (Mac App Store).xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 		<key>Pika copy.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
@@ -81,6 +86,11 @@
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>EAD0B6C7259CED1C00FA2F67</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>EAE23D9D2D032A38005BB270</key>
 		<dict>
 			<key>primary</key>
 			<true/>
