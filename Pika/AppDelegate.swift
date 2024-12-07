@@ -305,32 +305,25 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     @IBAction func openPreferencesWindow(_: Any?) {
-        let view = NSHostingView(rootView: PreferencesView()
-            .edgesIgnoringSafeArea(.all)
-            .frame(
-                minWidth: 750,
-                maxWidth: .infinity,
-                minHeight: 0,
-                maxHeight: windowManager.screenHeight,
-                alignment: .topLeading
-            )
-            .fixedSize(horizontal: false, vertical: true)
-            .environmentObject(eyedroppers)
-            .environmentObject(windowManager))
-
         if preferencesWindow == nil {
+            let view = NSHostingView(rootView: PreferencesView()
+                .edgesIgnoringSafeArea(.all)
+                .frame(minWidth: 750, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
+                .fixedSize(horizontal: false, vertical: true)
+                .environmentObject(eyedroppers)
+                .environmentObject(windowManager))
             preferencesWindow = PikaWindow.createSecondaryWindow(
                 title: "Preferences",
                 size: NSRect(x: 0, y: 0, width: 750, height: view.fittingSize.height),
-                styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView],
-                maxHeight: 500
+                styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView]
             )
+
+            let toolbarHeight: CGFloat = preferencesWindow.frame.height - preferencesWindow.contentLayoutRect.height
+            windowManager.toolbarPadding = toolbarHeight
+
+            preferencesWindow.contentView = view
         }
 
-        let toolbarHeight: CGFloat = preferencesWindow.frame.height - preferencesWindow.contentLayoutRect.height
-        windowManager.toolbarPadding = toolbarHeight
-
-        preferencesWindow.contentView = view
         preferencesWindow.makeKeyAndOrderFront(nil)
         preferencesWindow.makeFirstResponder(nil)
         notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerPreferences), object: self)
