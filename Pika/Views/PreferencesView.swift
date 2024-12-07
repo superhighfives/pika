@@ -20,7 +20,6 @@ struct PreferencesView: View {
     @State private var viewHeight: CGFloat = 0.0
 
     @EnvironmentObject var eyedroppers: Eyedroppers
-    @EnvironmentObject var windowManager: WindowManager
 
     // swiftlint:disable large_tuple opening_brace
     func getColorSpaces() -> ([NSColorSpace], [NSColorSpace], NSColorSpace) {
@@ -261,9 +260,8 @@ struct PreferencesView: View {
                     }
                 }
             )
-            .useScrollView(when: viewHeight > windowManager.screenHeight, showsIndicators: false)
+            .useScrollView(when: viewHeight > 750, showsIndicators: true)
         }
-        .padding(.bottom, viewHeight > windowManager.screenHeight ? 0 : -windowManager.toolbarPadding)
     }
 }
 
@@ -271,7 +269,6 @@ struct PreferencesView_Previews: PreviewProvider {
     static var previews: some View {
         PreferencesView()
             .environmentObject(Eyedroppers())
-            .environmentObject(WindowManager())
-            .frame(width: 750, height: 850)
+            .frame(width: 750, height: 750)
     }
 }

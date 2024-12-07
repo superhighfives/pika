@@ -27,26 +27,11 @@ struct AboutView: View {
                         startPoint: .top,
                         endPoint: .bottom
                     ))
-                    .frame(maxWidth: .infinity, maxHeight: 100.0)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
             AppVersion()
                 .padding(EdgeInsets(top: -50, leading: 0, bottom: 0, trailing: 0))
             VStack(spacing: 20.0) {
-                HStack(spacing: 20.0) {
-                    LinkButton(
-                        title: PikaText.textAboutWebsite,
-                        link: PikaConstants.pikaWebsiteURL
-                    )
-                    LinkButton(
-                        title: PikaText.textAboutGitHub,
-                        link: PikaConstants.gitHubRepoURL
-                    )
-                    LinkButton(
-                        title: PikaText.textMenuGitHubIssue,
-                        link: PikaConstants.gitHubIssueURL
-                    )
-                }
-
                 VStack(spacing: 0) {
                     KeyboardShortcutGrid()
                         .frame(height: 250.0)
@@ -58,6 +43,21 @@ struct AboutView: View {
                         IconImage(name: "hand.thumbsup.fill")
                         Text(PikaText.textAboutBy)
                         LinkButton(title: "Charlie Gleason", link: PikaConstants.charlieGleasonWebsiteURL)
+                    }
+                    Spacer()
+                    HStack(spacing: 20.0) {
+                        LinkButton(
+                            title: PikaText.textAboutWebsite,
+                            link: PikaConstants.pikaWebsiteURL
+                        )
+                        LinkButton(
+                            title: PikaText.textAboutGitHub,
+                            link: PikaConstants.gitHubRepoURL
+                        )
+                        LinkButton(
+                            title: PikaText.textMenuGitHubIssue,
+                            link: PikaConstants.gitHubIssueURL
+                        )
                     }
                     Spacer()
                     #if TARGET_MAS

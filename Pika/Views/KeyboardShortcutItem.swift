@@ -8,11 +8,12 @@ struct KeyboardShortcutItem: View {
     @State private var highlight: Bool = false
 
     var body: some View {
-        VStack(spacing: 6.0) {
+        VStack(spacing: 2.0) {
             Text(title)
                 .font(.system(size: 11, design: .rounded))
                 .opacity(0.6)
-                .padding(10.0)
+                .padding([.bottom, .leading, .trailing], 6.0)
+                .padding(.top, 0.0)
                 .multilineTextAlignment(.center)
             HStack(spacing: 4.0) {
                 ForEach(keys, id: \.self) { key in

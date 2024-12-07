@@ -16,7 +16,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     var aboutWindow: NSWindow!
     var preferencesWindow: NSWindow!
     var eyedroppers: Eyedroppers!
-    var windowManager: WindowManager!
 
     var undoManager = UndoManager()
 
@@ -84,9 +83,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         eyedroppers = Eyedroppers()
         eyedroppers.foreground.undoManager = undoManager
         eyedroppers.background.undoManager = undoManager
-
-        // Set up window manager
-        windowManager = WindowManager()
 
         // Define content view
         let contentView = ContentView()
@@ -303,7 +299,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             let view = NSHostingView(rootView: AboutView().edgesIgnoringSafeArea(.all))
             aboutWindow = PikaWindow.createSecondaryWindow(
                 title: "About",
-                size: NSRect(x: 0, y: 0, width: 550, height: 700),
+                size: NSRect(x: 0, y: 0, width: 750, height: 650),
                 styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView]
             )
             aboutWindow.contentView = view
@@ -319,24 +315,19 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 .frame(minWidth: 750,
                        maxWidth: .infinity,
                        minHeight: 0,
-                       maxHeight: windowManager.screenHeight,
+                       maxHeight: 750,
                        alignment: .topLeading)
                 .fixedSize(horizontal: false, vertical: true)
-                .environmentObject(eyedroppers)
-                .environmentObject(windowManager))
+                .environmentObject(eyedroppers))
+
             preferencesWindow = PikaWindow.createSecondaryWindow(
                 title: "Preferences",
-                size: NSRect(x: 0, y: 0, width: 750, height: view.fittingSize.height),
+                size: NSRect(x: 0, y: 0, width: 750, height: 750),
                 styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView],
-                maxHeight: 500
+                maxHeight: 750
             )
-
-            let toolbarHeight: CGFloat = preferencesWindow.frame.height - preferencesWindow.contentLayoutRect.height
-            windowManager.toolbarPadding = toolbarHeight
-
             preferencesWindow.contentView = view
         }
-
         preferencesWindow.makeKeyAndOrderFront(nil)
         preferencesWindow.makeFirstResponder(nil)
         notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerPreferences), object: self)

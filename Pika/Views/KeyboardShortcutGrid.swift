@@ -56,7 +56,7 @@ struct KeyboardShortcutGrid: View {
                             .frame(height: verticalUnit)
 
                         KeyboardShortcutItem(
-                            title: PikaText.textColorSystemPickerForeground,
+                            title: PikaText.textColorSystemPickerForegroundSimple,
                             event: PikaConstants.ncTriggerSystemPickerForeground,
                             keys: ["⌘", "S"]
                         )
@@ -69,7 +69,7 @@ struct KeyboardShortcutGrid: View {
                     // Copy
                     HStack(spacing: 0) {
                         KeyboardShortcutItem(
-                            title: PikaText.textColorSystemPickerBackground,
+                            title: PikaText.textColorSystemPickerBackgroundSimple,
                             event: PikaConstants.ncTriggerSystemPickerBackground,
                             keys: ["⇧", "⌘", "S"]
                         )

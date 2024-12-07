@@ -59,7 +59,7 @@
 "preferences.space.description" = "Set your RGB color space";
 
 /* System Default */
-"preferences.space.default" = "System Default";
+"preferences.space.default" = "System default";
 
 /* Hide Pika while picking */
 "preferences.pick.hide" = "Hide Pika while picking";
@@ -234,6 +234,12 @@
 
 /* Use background system color picker */
 "color.system.background" = "Use background system color picker";
+
+/* System foreground */
+"color.system.foreground.simple" = "System foreground";
+
+/* System background */
+"color.system.background.simple" = "System background";
 
 /* HEX format */
 "color.format.hex" = "Hex format";
