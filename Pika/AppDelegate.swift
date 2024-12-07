@@ -429,14 +429,36 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         NSApp.activate(ignoringOtherApps: true)
     }
 
-    @IBAction func updateFeedURL(_: Any) {
-        SUUpdater.shared().feedURL = URL(string: PikaConstants.url())
-    }
+    #if TARGET_SPARKLE
+        @IBAction func updateFeedURL(_: Any) {
+            SUUpdater.shared().feedURL = URL(string: PikaConstants.url())
+        }
 
-    @IBAction func checkForUpdates(_: Any) {
-        SUUpdater.shared().feedURL = URL(string: PikaConstants.url())
-        SUUpdater.shared()?.checkForUpdates(self)
-    }
+        @IBAction func checkForUpdates(_: Any) {
+            SUUpdater.shared().feedURL = URL(string: PikaConstants.url())
+            SUUpdater.shared()?.checkForUpdates(self)
+        }
+    #endif
+
+    #if TARGET_MAS
+        @IBAction func checkForUpdates(_: Any) {
+            Task {
+                do {
+                    let api = LookUpAPI()
+                    if let available = try await api.getLatestAvailableVersion(
+                        for: "YOUR_ACTUAL_APP_ID"
+                    ) {
+                        // Handle the version info here
+                        print("Latest version available: \(available)")
+                    } else {
+                        print("Lookup failed")
+                    }
+                } catch {
+                    print("Error checking for updates: \(error)")
+                }
+            }
+        }
+    #endif
 
     @IBAction func openWebsite(_: Any) {
         NSWorkspace.shared.open(URL(string: PikaConstants.pikaWebsiteURL)!)

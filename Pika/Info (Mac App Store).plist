@@ -47,7 +47,5 @@
 	<string>Main</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
-	<key>ENVTarget</key>
-	<string>mas</string>
 </dict>
 </plist>

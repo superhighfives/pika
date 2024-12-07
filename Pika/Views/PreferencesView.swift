@@ -6,7 +6,9 @@ import SwiftUI
 struct PreferencesView: View {
     @Default(.hideMenuBarIcon) var hideMenuBarIcon
     @Default(.hideColorNames) var hideColorNames
-    @Default(.betaUpdates) var betaUpdates
+    #if TARGET_SPARKLE
+        @Default(.betaUpdates) var betaUpdates
+    #endif
     @Default(.hidePikaWhilePicking) var hidePikaWhilePicking
     @Default(.copyColorOnPick) var copyColorOnPick
     @Default(.copyFormat) var copyFormat
@@ -77,15 +79,19 @@ struct PreferencesView: View {
                             LaunchAtLogin.Toggle {
                                 Text(PikaText.textLaunchDescription)
                             }
-                            Toggle(isOn: $betaUpdates) {
-                                Text(PikaText.textBetaDescription)
-                            }
+                            #if TARGET_SPARKLE
+                                Toggle(isOn: $betaUpdates) {
+                                    Text(PikaText.textBetaDescription)
+                                }
+                            #endif
                             Toggle(isOn: $alwaysShowOnLaunch) {
                                 Text(PikaText.textAlwaysShowOnLaunch)
                             }
+                            #if TARGET_SPARKLE
                             .onReceive([betaUpdates].publisher.first()) { _ in
-                                NSApp.sendAction(#selector(AppDelegate.updateFeedURL), to: nil, from: nil)
-                            }
+                                    NSApp.sendAction(#selector(AppDelegate.updateFeedURL), to: nil, from: nil)
+                                }
+                            #endif
                             if appMode != .menubar {
                                 Toggle(isOn: $disableHideMenuBarIcon) {
                                     Text(PikaText.textIconDescription)

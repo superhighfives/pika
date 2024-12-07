@@ -6,7 +6,9 @@ struct LinkButton: View {
 
     var body: some View {
         Button(title) {
-            NSWorkspace.shared.open(URL(string: link)!)
+            if let url = URL(string: link) {
+                NSWorkspace.shared.open(url)
+            }
         }
         .buttonStyle(LinkButtonStyle())
     }
@@ -58,27 +60,26 @@ struct AboutView: View {
                         LinkButton(title: "Charlie Gleason", link: PikaConstants.charlieGleasonWebsiteURL)
                     }
                     Spacer()
-                    if let target = Bundle.main.infoDictionary?["ENVTarget"] as? String {
-                        if target == "mas" {
-                            HStack(spacing: 5.0) {
-                                IconImage(name: "storefront.circle", resizable: true)
-                                    .foregroundColor(Color.secondary)
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 14, height: 14)
-                                Text("Mac App Store")
-                                    .foregroundColor(Color.secondary)
-                            }
-                        } else {
-                            HStack(spacing: 5.0) {
-                                IconImage(name: "arrow.down.circle", resizable: true)
-                                    .foregroundColor(Color.secondary)
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 14, height: 14)
-                                Text("Downloaded from the internet")
-                                    .foregroundColor(Color.secondary)
-                            }
+                    #if TARGET_MAS
+                        HStack(spacing: 5.0) {
+                            IconImage(name: "storefront.circle", resizable: true)
+                                .foregroundColor(Color.secondary)
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 14, height: 14)
+                            Text("Mac App Store")
+                                .foregroundColor(Color.secondary)
                         }
-                    }
+                    #endif
+                    #if TARGET_SPARKLE
+                        HStack(spacing: 5.0) {
+                            IconImage(name: "arrow.down.circle", resizable: true)
+                                .foregroundColor(Color.secondary)
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 14, height: 14)
+                            Text("Downloaded from the internet")
+                                .foregroundColor(Color.secondary)
+                        }
+                    #endif
                 }
                 .padding(.horizontal, 20.0)
             }

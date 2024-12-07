@@ -113,13 +113,14 @@
 		EAE23DD92D032A38005BB270 /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = EAE23DA42D032A38005BB270 /* Defaults */; };
 		EAE23DDB2D032A38005BB270 /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; productRef = EAE23D9E2D032A38005BB270 /* LaunchAtLogin */; };
 		EAE23DDC2D032A38005BB270 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = EAE23DA02D032A38005BB270 /* KeyboardShortcuts */; };
-		EAE23DDE2D032A38005BB270 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EAD0B6D4259CED1D00FA2F67 /* Main.storyboard */; };
 		EAE23DDF2D032A38005BB270 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = EA424CE025CF0328009056A9 /* Localizable.strings */; };
 		EAE23DE02D032A38005BB270 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EAD0B6D2259CED1D00FA2F67 /* Preview Assets.xcassets */; };
 		EAE23DE12D032A38005BB270 /* ColorNames.json in Resources */ = {isa = PBXBuildFile; fileRef = EA7B199825FBA09300E06D9D /* ColorNames.json */; };
 		EAE23DE22D032A38005BB270 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EAD0B6CF259CED1D00FA2F67 /* Assets.xcassets */; };
-		EAE2EB9A2D0368E800FA9BC9 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = EAE23DA22D032A38005BB270 /* Sparkle */; };
 		EAE2EB9C2D03697600FA9BC9 /* Info (Mac App Store).plist in Resources */ = {isa = PBXBuildFile; fileRef = EAE2EB9B2D03697600FA9BC9 /* Info (Mac App Store).plist */; };
+		EAE2EB9D2D03753A00FA9BC9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EAD0B6D4259CED1D00FA2F67 /* Main.storyboard */; };
+		EAE2EB9F2D03C3DE00FA9BC9 /* LookUpAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE2EB9E2D03C3DA00FA9BC9 /* LookUpAPI.swift */; };
+		EAE2EBA32D03C40000FA9BC9 /* LatestAppStoreVersion+ShouldUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE2EBA12D03C3FE00FA9BC9 /* LatestAppStoreVersion+ShouldUpdate.swift */; };
 		EAEBF64725E878A5002999D1 /* CircleButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAEBF64625E878A5002999D1 /* CircleButtonStyle.swift */; };
 		EAF100C725C731AD006E1EC3 /* SplashTouchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF100C625C731AD006E1EC3 /* SplashTouchBar.swift */; };
 		EAF100CA25C75218006E1EC3 /* PikaTouchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF100C325C59EB3006E1EC3 /* PikaTouchBar.swift */; };
@@ -196,6 +197,8 @@
 		EAD0B71B259D151400FA2F67 /* NavigationMenu.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = NavigationMenu.swift; sourceTree = "<group>"; tabWidth = 4; };
 		EAE23DE82D032A38005BB270 /* Pika (Mac App Store).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pika (Mac App Store).app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAE2EB9B2D03697600FA9BC9 /* Info (Mac App Store).plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info (Mac App Store).plist"; sourceTree = "<group>"; };
+		EAE2EB9E2D03C3DA00FA9BC9 /* LookUpAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookUpAPI.swift; sourceTree = "<group>"; };
+		EAE2EBA12D03C3FE00FA9BC9 /* LatestAppStoreVersion+ShouldUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LatestAppStoreVersion+ShouldUpdate.swift"; sourceTree = "<group>"; };
 		EAEBF64625E878A5002999D1 /* CircleButtonStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleButtonStyle.swift; sourceTree = "<group>"; };
 		EAF100C325C59EB3006E1EC3 /* PikaTouchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PikaTouchBar.swift; sourceTree = "<group>"; };
 		EAF100C625C731AD006E1EC3 /* SplashTouchBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashTouchBar.swift; sourceTree = "<group>"; };
@@ -218,7 +221,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EAE2EB9A2D0368E800FA9BC9 /* Sparkle in Frameworks */,
 				EAE23DD92D032A38005BB270 /* Defaults in Frameworks */,
 				EAE23DDB2D032A38005BB270 /* LaunchAtLogin in Frameworks */,
 				EAE23DDC2D032A38005BB270 /* KeyboardShortcuts in Frameworks */,
@@ -317,6 +319,8 @@
 		EAD0B6EC259CF28D00FA2F67 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				EAE2EBA12D03C3FE00FA9BC9 /* LatestAppStoreVersion+ShouldUpdate.swift */,
+				EAE2EB9E2D03C3DA00FA9BC9 /* LookUpAPI.swift */,
 				EA635DDB25B4E90B0014D91A /* BindingOnChange.swift */,
 				EA635DC825B3B2650014D91A /* Cula.swift */,
 				221600FC25A636D600B8B7D9 /* ConditionalModifier.swift */,
@@ -430,7 +434,6 @@
 			packageProductDependencies = (
 				EAE23D9E2D032A38005BB270 /* LaunchAtLogin */,
 				EAE23DA02D032A38005BB270 /* KeyboardShortcuts */,
-				EAE23DA22D032A38005BB270 /* Sparkle */,
 				EAE23DA42D032A38005BB270 /* Defaults */,
 			);
 			productName = Pika;
@@ -500,9 +503,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				EAE2EB9C2D03697600FA9BC9 /* Info (Mac App Store).plist in Resources */,
-				EAE23DDE2D032A38005BB270 /* Main.storyboard in Resources */,
 				EAE23DDF2D032A38005BB270 /* Localizable.strings in Resources */,
 				EAE23DE02D032A38005BB270 /* Preview Assets.xcassets in Resources */,
+				EAE2EB9D2D03753A00FA9BC9 /* Main.storyboard in Resources */,
 				EAE23DE12D032A38005BB270 /* ColorNames.json in Resources */,
 				EAE23DE22D032A38005BB270 /* Assets.xcassets in Resources */,
 			);
@@ -658,6 +661,7 @@
 				EAE23DAE2D032A38005BB270 /* SplashTouchBar.swift in Sources */,
 				EAE23DAF2D032A38005BB270 /* OverflowContentViewModifier.swift in Sources */,
 				EAE23DB02D032A38005BB270 /* KeyboardShortcutGrid.swift in Sources */,
+				EAE2EBA32D03C40000FA9BC9 /* LatestAppStoreVersion+ShouldUpdate.swift in Sources */,
 				EAE23DB12D032A38005BB270 /* AppModeToggleGroup.swift in Sources */,
 				EAE23DB22D032A38005BB270 /* Visualisation.swift in Sources */,
 				EAE23DB32D032A38005BB270 /* ContentView.swift in Sources */,
@@ -682,6 +686,7 @@
 				EAE23DC62D032A38005BB270 /* KeyboardShortcutKey.swift in Sources */,
 				EAE23DC72D032A38005BB270 /* EyedropperButton.swift in Sources */,
 				EAE23DC82D032A38005BB270 /* MetalShader.metal in Sources */,
+				EAE2EB9F2D03C3DE00FA9BC9 /* LookUpAPI.swift in Sources */,
 				EAE23DC92D032A38005BB270 /* SwapButtonStyle.swift in Sources */,
 				EAE23DCA2D032A38005BB270 /* NSWindowFade.swift in Sources */,
 				EAE23DCB2D032A38005BB270 /* EyedropperButtonStyle.swift in Sources */,
@@ -879,6 +884,7 @@
 				MARKETING_VERSION = 0.0.18;
 				PRODUCT_BUNDLE_IDENTIFIER = com.superhighfives.Pika;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG TARGET_SPARKLE";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -910,6 +916,7 @@
 				MARKETING_VERSION = 0.0.18;
 				PRODUCT_BUNDLE_IDENTIFIER = com.superhighfives.Pika;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = TARGET_SPARKLE;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -941,6 +948,7 @@
 				MARKETING_VERSION = 0.0.18;
 				PRODUCT_BUNDLE_IDENTIFIER = com.superhighfives.Pika;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG TARGET_MAS";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -972,6 +980,7 @@
 				MARKETING_VERSION = 0.0.18;
 				PRODUCT_BUNDLE_IDENTIFIER = com.superhighfives.Pika;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = TARGET_MAS;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -1057,14 +1066,6 @@
 				minimumVersion = 2.0.0;
 			};
 		};
-		EAE23DA32D032A38005BB270 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/sparkle-project/Sparkle";
-			requirement = {
-				kind = revision;
-				revision = 891afd44c7075e699924ed9b81d8dc94a5111dfd;
-			};
-		};
 		EAE23DA52D032A38005BB270 /* XCRemoteSwiftPackageReference "Defaults" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sindresorhus/Defaults";
@@ -1105,11 +1106,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = EAE23DA12D032A38005BB270 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */;
 			productName = KeyboardShortcuts;
-		};
-		EAE23DA22D032A38005BB270 /* Sparkle */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = EAE23DA32D032A38005BB270 /* XCRemoteSwiftPackageReference "Sparkle" */;
-			productName = Sparkle;
 		};
 		EAE23DA42D032A38005BB270 /* Defaults */ = {
 			isa = XCSwiftPackageProductDependency;
