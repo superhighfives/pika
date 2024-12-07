@@ -69,6 +69,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     func applicationDidFinishLaunching(_: Notification) {
         LaunchAtLogin.migrateIfNeeded()
 
+        #if TARGET_MAS
+            if let mainMenu = NSApp.mainMenu?.item(withTitle: PikaText.textAppName)?.submenu {
+                if let checkForUpdatesMenuItem = mainMenu.item(withTitle: "\(PikaText.textMenuUpdates)…") {
+                    mainMenu.removeItem(checkForUpdatesMenuItem)
+                }
+            }
+        #endif
+
         setupAppMode()
         setupStatusBar()
 
@@ -292,15 +300,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     @IBAction func openAboutWindow(_: Any?) {
         if aboutWindow == nil {
+            let view = NSHostingView(rootView: AboutView().edgesIgnoringSafeArea(.all))
             aboutWindow = PikaWindow.createSecondaryWindow(
                 title: "About",
                 size: NSRect(x: 0, y: 0, width: 550, height: 700),
                 styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView]
             )
+            aboutWindow.contentView = view
         }
         aboutTouchBarController = SplashTouchBarController(window: aboutWindow)
-
-        aboutWindow.contentView = NSHostingView(rootView: AboutView().edgesIgnoringSafeArea(.all))
         aboutWindow.makeKeyAndOrderFront(nil)
     }
 
@@ -308,14 +316,19 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         if preferencesWindow == nil {
             let view = NSHostingView(rootView: PreferencesView()
                 .edgesIgnoringSafeArea(.all)
-                .frame(minWidth: 750, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
+                .frame(minWidth: 750,
+                       maxWidth: .infinity,
+                       minHeight: 0,
+                       maxHeight: windowManager.screenHeight,
+                       alignment: .topLeading)
                 .fixedSize(horizontal: false, vertical: true)
                 .environmentObject(eyedroppers)
                 .environmentObject(windowManager))
             preferencesWindow = PikaWindow.createSecondaryWindow(
                 title: "Preferences",
                 size: NSRect(x: 0, y: 0, width: 750, height: view.fittingSize.height),
-                styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView]
+                styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView],
+                maxHeight: 500
             )
 
             let toolbarHeight: CGFloat = preferencesWindow.frame.height - preferencesWindow.contentLayoutRect.height
@@ -435,21 +448,22 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     #if TARGET_MAS
         @IBAction func checkForUpdates(_: Any) {
-            Task {
-                do {
-                    let api = LookUpAPI()
-                    if let available = try await api.getLatestAvailableVersion(
-                        for: "YOUR_ACTUAL_APP_ID"
-                    ) {
-                        // Handle the version info here
-                        print("Latest version available: \(available)")
-                    } else {
-                        print("Lookup failed")
-                    }
-                } catch {
-                    print("Error checking for updates: \(error)")
-                }
-            }
+            print("Check for updates...")
+            // Task {
+            //     do {
+            //         let api = LookUpAPI()
+            //         if let available = try await api.getLatestAvailableVersion(
+            //             for: "YOUR_ACTUAL_APP_ID"
+            //         ) {
+            //             // Handle the version info here
+            //             print("Latest version available: \(available)")
+            //         } else {
+            //             print("Lookup failed")
+            //         }
+            //     } catch {
+            //         print("Error checking for updates: \(error)")
+            //     }
+            // }
         }
     #endif
 

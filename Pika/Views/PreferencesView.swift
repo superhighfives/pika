@@ -131,11 +131,16 @@ struct PreferencesView: View {
                     VStack(alignment: .leading, spacing: 10.0) {
                         Text(PikaText.textAppTitle).font(.system(size: 16))
 
-                        // Replace GeometryReader with fixed width calculation
-                        HStack(spacing: 16.0) {
-                            AppModeButtons(
-                                width: (750 - 48 - 16) / 2 // (window width - padding - spacing) / 2
-                            )
+                        GeometryReader { geometry in
+                            let width = geometry.size.width
+                            let horizontalUnit = width / 2
+
+                            HStack(spacing: 16.0) {
+                                AppModeButtons(
+                                    width: horizontalUnit - 8
+                                )
+                            }
+                            .frame(maxWidth: width)
                         }
                         .frame(height: 96)
                     }
@@ -148,13 +153,18 @@ struct PreferencesView: View {
                 VStack(alignment: .leading, spacing: 10.0) {
                     Text(PikaText.textAppearanceTitle).font(.system(size: 16))
 
-                    HStack(spacing: 16.0) {
-                        ComplianceButtons(
-                            width: (750 - 48 - 16) / 2, // (window width - padding - spacing) / 2
-                            foreground: eyedroppers.foreground,
-                            background: eyedroppers.background
-                        )
-                        .frame(maxWidth: 750)
+                    GeometryReader { geometry in
+                        let width = geometry.size.width
+                        let horizontalUnit = width / 2
+
+                        HStack(spacing: 16.0) {
+                            ComplianceButtons(
+                                width: horizontalUnit - 8,
+                                foreground: eyedroppers.foreground,
+                                background: eyedroppers.background
+                            )
+                        }
+                        .frame(maxWidth: width)
                     }
                     .frame(height: 100)
                 }
@@ -244,7 +254,13 @@ struct PreferencesView: View {
                 }
                 .padding(.bottom, 24.0)
             }
-
+            .background(
+                GeometryReader { contentGeometry in
+                    Color.clear.onAppear {
+                        viewHeight = contentGeometry.size.height
+                    }
+                }
+            )
             .useScrollView(when: viewHeight > windowManager.screenHeight, showsIndicators: false)
         }
         .padding(.bottom, viewHeight > windowManager.screenHeight ? 0 : -windowManager.toolbarPadding)
