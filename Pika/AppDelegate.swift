@@ -2,8 +2,10 @@ import Cocoa
 import Defaults
 import KeyboardShortcuts
 import LaunchAtLogin
-import Sparkle
 import SwiftUI
+#if TARGET_SPARKLE
+    import Sparkle
+#endif
 
 @main
 // swiftlint:disable type_body_length
