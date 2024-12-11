@@ -50,7 +50,7 @@
 	<key>CFBundleGetInfoString</key>
 	<string></string>
 	<key>CFBundleDisplayName</key>
-	<string></string>
+	<string>$(PRODUCT_NAME)</string>
 	<key>SUFeedURL</key>
 	<string>https://superhighfives.com/releases/pika</string>
 	<key>SUEnableAutomaticChecks</key>
