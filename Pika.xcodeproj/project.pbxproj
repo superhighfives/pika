@@ -192,7 +192,7 @@
 		EAD0B712259CFD2000FA2F67 /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
 		EAD0B717259D146200FA2F67 /* EyedropperButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyedropperButtonStyle.swift; sourceTree = "<group>"; };
 		EAD0B71B259D151400FA2F67 /* NavigationMenu.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = NavigationMenu.swift; sourceTree = "<group>"; tabWidth = 4; };
-		EAE23DE82D032A38005BB270 /* Pika (Mac App Store).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pika (Mac App Store).app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EAE23DE82D032A38005BB270 /* Pika.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pika.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAE2EB9B2D03697600FA9BC9 /* Info (Mac App Store).plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info (Mac App Store).plist"; sourceTree = "<group>"; };
 		EAE2EB9E2D03C3DA00FA9BC9 /* LookUpAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookUpAPI.swift; sourceTree = "<group>"; };
 		EAE2EBA12D03C3FE00FA9BC9 /* LatestAppStoreVersion+ShouldUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LatestAppStoreVersion+ShouldUpdate.swift"; sourceTree = "<group>"; };
@@ -280,7 +280,7 @@
 			isa = PBXGroup;
 			children = (
 				EAD0B6C8259CED1C00FA2F67 /* Pika.app */,
-				EAE23DE82D032A38005BB270 /* Pika (Mac App Store).app */,
+				EAE23DE82D032A38005BB270 /* Pika.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -433,7 +433,7 @@
 				EAE23DA42D032A38005BB270 /* Defaults */,
 			);
 			productName = Pika;
-			productReference = EAE23DE82D032A38005BB270 /* Pika (Mac App Store).app */;
+			productReference = EAE23DE82D032A38005BB270 /* Pika.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -860,7 +860,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 44S;
+				CURRENT_PROJECT_VERSION = 48;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Pika/Preview Content\"";
 				DEVELOPMENT_TEAM = TGHU37N6EX;
@@ -876,7 +876,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.superhighfives.Pika;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Pika;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG TARGET_SPARKLE";
 				SWIFT_VERSION = 5.0;
 			};
@@ -891,7 +891,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 44S;
+				CURRENT_PROJECT_VERSION = 48;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Pika/Preview Content\"";
 				DEVELOPMENT_TEAM = TGHU37N6EX;
@@ -907,7 +907,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.superhighfives.Pika;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Pika;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = TARGET_SPARKLE;
 				SWIFT_VERSION = 5.0;
 			};
@@ -923,7 +923,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 44M;
+				CURRENT_PROJECT_VERSION = 47;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Pika/Preview Content\"";
 				DEVELOPMENT_TEAM = TGHU37N6EX;
@@ -939,7 +939,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.superhighfives.Pika;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Pika;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG TARGET_MAS";
 				SWIFT_VERSION = 5.0;
 			};
@@ -955,7 +955,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 44M;
+				CURRENT_PROJECT_VERSION = 47;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Pika/Preview Content\"";
 				DEVELOPMENT_TEAM = TGHU37N6EX;
@@ -971,7 +971,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.superhighfives.Pika;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Pika;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = TARGET_MAS;
 				SWIFT_VERSION = 5.0;
 			};

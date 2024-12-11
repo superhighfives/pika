@@ -16,7 +16,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "EAE23D9D2D032A38005BB270"
-               BuildableName = "Pika (Mac App Store).app"
+               BuildableName = "Pika.app"
                BlueprintName = "Pika (Mac App Store)"
                ReferencedContainer = "container:Pika.xcodeproj">
             </BuildableReference>
@@ -45,7 +45,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "EAE23D9D2D032A38005BB270"
-            BuildableName = "Pika (Mac App Store).app"
+            BuildableName = "Pika.app"
             BlueprintName = "Pika (Mac App Store)"
             ReferencedContainer = "container:Pika.xcodeproj">
          </BuildableReference>
@@ -62,7 +62,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "EAE23D9D2D032A38005BB270"
-            BuildableName = "Pika (Mac App Store).app"
+            BuildableName = "Pika.app"
             BlueprintName = "Pika (Mac App Store)"
             ReferencedContainer = "container:Pika.xcodeproj">
          </BuildableReference>
