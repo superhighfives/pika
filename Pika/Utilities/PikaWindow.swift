@@ -25,12 +25,8 @@ class PikaWindow {
 
         // Set up toolbar
         window.toolbar = NSToolbar()
-        if #available(OSX 11.0, *) {
-            window.toolbarStyle = .unifiedCompact
-        } else {
-            window.toolbar!.showsBaselineSeparator = false
-            window.titleVisibility = .hidden
-        }
+        window.toolbarStyle = .unifiedCompact
+
         let toolbarButtons = NSHostingView(rootView: NavigationMenu())
         toolbarButtons.frame.size = toolbarButtons.intrinsicContentSize
         let titlebarAccessory = NSTitlebarAccessoryViewController()

@@ -32,14 +32,8 @@ struct SplashView: View {
                 Button(action: {
                     NSApp.sendAction(#selector(AppDelegate.closeSplashWindow), to: nil, from: nil)
                 }, label: { Text(PikaText.textSplashStart) })
-                    .modify {
-                        if #available(OSX 11.0, *) {
-                            $0.keyboardShortcut(.defaultAction)
-                                .accentColor(.accentColor)
-                        } else {
-                            $0
-                        }
-                    }
+                    .keyboardShortcut(.defaultAction)
+                    .accentColor(.accentColor)
             }
             .frame(maxWidth: .infinity, maxHeight: 50.0)
         }

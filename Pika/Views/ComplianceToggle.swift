@@ -42,13 +42,7 @@ struct ComplianceToggle: View {
         }
         .foregroundColor(isCompliant ? .primary
             : .secondary)
-        .modify {
-            if #available(OSX 11.0, *) {
-                $0.help(tooltip)
-            } else {
-                $0
-            }
-        }
+        .help(tooltip)
         .fixedSize()
     }
 }

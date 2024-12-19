@@ -7,8 +7,6 @@
 //  Copyright © 2017 Ben Leggiero. All rights reserved.
 //
 
-// swiftlint:disable opening_brace
-
 import AppKit
 import Cocoa
 

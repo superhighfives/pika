@@ -3,6 +3,7 @@ import Defaults
 import SwiftUI
 
 // swiftlint:disable identifier_name
+// swiftlint:disable large_tuple
 
 extension NSColor {
     /*
@@ -106,7 +107,6 @@ extension NSColor {
      * RGBA
      */
 
-    // swiftlint:disable large_tuple
     final func toRGBAComponents() -> (r: CGFloat, g: CGFloat, b: CGFloat, a: CGFloat) {
         var r: CGFloat = 0, g: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
 
@@ -186,7 +186,6 @@ extension NSColor {
      * HSB
      */
 
-    // swiftlint:disable large_tuple
     public final func toHSBComponents() -> (h: CGFloat, s: CGFloat, b: CGFloat) {
         var h: CGFloat = 0.0
         var s: CGFloat = 0.0
@@ -344,3 +343,6 @@ extension NSColor {
         luminance < 0.5 ? NSColor.white : NSColor.black
     }
 }
+
+// swiftlint:enable large_tuple
+// swiftlint:enable identifier_name

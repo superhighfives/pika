@@ -20,15 +20,9 @@ struct SwapButtonStyle: ButtonStyle {
         let ltr: Bool
 
         func getBackgroundColor(colorScheme: ColorScheme) -> Color {
-            if #available(OSX 11.0, *) {
-                return colorScheme == .dark
-                    ? Color(red: 27 / 255, green: 27 / 255, blue: 27 / 255)
-                    : Color(red: 233 / 255, green: 233 / 255, blue: 233 / 255)
-            } else {
-                return colorScheme == .dark
-                    ? Color(red: 50 / 255, green: 52 / 255, blue: 59 / 255)
-                    : Color(red: 236 / 255, green: 236 / 255, blue: 236 / 255)
-            }
+            colorScheme == .dark
+                ? Color(red: 27 / 255, green: 27 / 255, blue: 27 / 255)
+                : Color(red: 233 / 255, green: 233 / 255, blue: 233 / 255)
         }
 
         var body: some View {

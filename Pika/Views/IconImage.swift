@@ -5,12 +5,7 @@ struct IconImage: View {
     var resizable: Bool = false
 
     var body: some View {
-        let image: Image
-        if #available(OSX 11.0, *) {
-            image = Image(systemName: name)
-        } else {
-            image = Image(name)
-        }
+        let image = Image(systemName: name)
 
         return image
             .modify { (image: Image) -> Image in

@@ -139,6 +139,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     // swiftlint:disable cyclomatic_complexity
+    // swiftlint:disable function_body_length
     @objc func handleGetURLEvent(_ event: NSAppleEventDescriptor, withReplyEvent _: NSAppleEventDescriptor) {
         if let urlString = event.forKeyword(AEKeyword(keyDirectObject))?.stringValue {
             let url = URL(string: urlString)
@@ -214,6 +215,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             }
         }
     }
+
+    // swiftlint:enable function_body_length
+    // swiftlint:enable cyclomatic_complexity
 
     func startMainWindow() {
         if !pikaWindow.isVisible {
@@ -341,10 +345,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             size: NSRect(x: 0, y: 0, width: 650, height: 380),
             styleMask: [.titled, .fullSizeContentView]
         )
-        if #available(OSX 11.0, *) {
-            splashWindow.title = PikaText.textAppName
-            splashWindow.titleVisibility = .visible
-        }
+        splashWindow.title = PikaText.textAppName
+        splashWindow.titleVisibility = .visible
         splashTouchBarController = SplashTouchBarController(window: splashWindow)
         splashWindow.contentView = NSHostingView(rootView: SplashView().edgesIgnoringSafeArea(.all))
 
@@ -440,24 +442,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     #endif
 
     #if TARGET_MAS
-        @IBAction func checkForUpdates(_: Any) {
-            print("Check for updates...")
-            // Task {
-            //     do {
-            //         let api = LookUpAPI()
-            //         if let available = try await api.getLatestAvailableVersion(
-            //             for: "YOUR_ACTUAL_APP_ID"
-            //         ) {
-            //             // Handle the version info here
-            //             print("Latest version available: \(available)")
-            //         } else {
-            //             print("Lookup failed")
-            //         }
-            //     } catch {
-            //         print("Error checking for updates: \(error)")
-            //     }
-            // }
-        }
+        @IBAction func checkForUpdates(_: Any) {}
     #endif
 
     @IBAction func openWebsite(_: Any) {
@@ -472,3 +457,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         NSApplication.shared.terminate(self)
     }
 }
+
+// swiftlint:enable type_body_length
+// swiftlint:enable file_length

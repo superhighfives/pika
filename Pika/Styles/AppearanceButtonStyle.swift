@@ -53,13 +53,7 @@ struct AppearanceButtonStyle: ButtonStyle {
                 .shadow(color: .black.opacity(colorScheme == .dark ? 0.25 : 0.1), radius: 2, x: 0, y: 2)
                 .overlay(
                     RoundedRectangle(cornerRadius: 10.0, style: .continuous)
-                        .modify {
-                            if #available(OSX 11.0, *) {
-                                $0.stroke(Color.accentColor.opacity(selected ? 1 : 0), lineWidth: 2)
-                            } else {
-                                $0.stroke(.blue.opacity(selected ? 1 : 0), lineWidth: 2)
-                            }
-                        }
+                        .stroke(Color.accentColor.opacity(selected ? 1 : 0), lineWidth: 2)
                         .animation(.easeInOut(duration: 0.3), value: selected)
                 )
             VStack(spacing: 4.0) {

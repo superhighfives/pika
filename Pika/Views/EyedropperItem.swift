@@ -4,9 +4,7 @@ import SwiftUI
 public extension NSPopUpButtonCell {
     override var focusRingType: NSFocusRingType {
         get { .none }
-        // swiftlint:disable unused_setter_value
         set {}
-        // swiftlint:enable unused_setter_value
     }
 }
 
