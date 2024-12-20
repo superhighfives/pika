@@ -58,7 +58,7 @@ struct PreferencesView: View {
         HStack(alignment: .top, spacing: 0) {
             ZStack {
                 Visualisation()
-                AppVersion()
+                AppVersion(displayOnTransparent: true)
             }
             .frame(maxWidth: 240.0, maxHeight: .infinity)
             .background(VisualEffect(
