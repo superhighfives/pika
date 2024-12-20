@@ -28,21 +28,31 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     let notificationCenter = NotificationCenter.default
 
     func setupAppMode() {
-        NSApp.setActivationPolicy(Defaults[.appMode] == .regular ? .regular : .accessory)
+        var currentMode = Defaults[.appMode] == .regular
+            ? NSApplication.ActivationPolicy.regular
+            : NSApplication.ActivationPolicy.accessory
+        NSApp.setActivationPolicy(currentMode)
         Defaults.observe(.appMode) { change in
-            NSApp.setActivationPolicy(change.newValue == .regular ? .regular : .accessory)
-            NSApp.activate(ignoringOtherApps: true)
-            DispatchQueue.main.asyncAfter(deadline: .now()) {
-                NSApp.unhide(self)
+            let newMode = change.newValue == .regular
+                ? NSApplication.ActivationPolicy.regular
+                : NSApplication.ActivationPolicy.accessory
+            if newMode != currentMode {
+                currentMode = newMode
+                NSApp.setActivationPolicy(newMode)
+                NSApp.activate(ignoringOtherApps: true)
+                if change.newValue == .regular {
+                    DispatchQueue.main.asyncAfter(deadline: .now()) {
+                        NSApp.unhide(self)
 
-                if let window = NSApp.windows.first {
-                    // Verify window can become key before making it key and moving it to front
-                    if window.canBecomeKey {
-                        window.makeKeyAndOrderFront(self)
+                        if let window = NSApp.windows.first {
+                            // Verify window can become key before making it key and moving it to front
+                            if window.canBecomeKey {
+                                window.makeKeyAndOrderFront(self)
+                            }
+                            window.setIsVisible(true)
+                        }
                     }
-                    window.setIsVisible(true)
                 }
-
                 self.statusBarItem.isVisible = Defaults[.hideMenuBarIcon] == false && change.newValue == .menubar
             }
         }.tieToLifetime(of: self)
@@ -65,6 +75,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         Defaults.observe(.hideMenuBarIcon) { change in
             self.statusBarItem.isVisible = change.newValue == false && Defaults[.appMode] == .menubar
         }.tieToLifetime(of: self)
+    }
+
+    func applicationWillFinishLaunching(_: Notification) {
+        NSApp.setActivationPolicy(.prohibited)
+        let appleEventManager = NSAppleEventManager.shared()
+        appleEventManager.setEventHandler(self, andSelector: #selector(handleGetURLEvent(_:withReplyEvent:)),
+                                          forEventClass: AEEventClass(kInternetEventClass),
+                                          andEventID: AEEventID(kAEGetURL))
     }
 
     func applicationDidFinishLaunching(_: Notification) {
@@ -131,11 +149,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         return true
     }
 
-    func applicationWillFinishLaunching(_: Notification) {
-        let appleEventManager = NSAppleEventManager.shared()
-        appleEventManager.setEventHandler(self, andSelector: #selector(handleGetURLEvent(_:withReplyEvent:)),
-                                          forEventClass: AEEventClass(kInternetEventClass),
-                                          andEventID: AEEventID(kAEGetURL))
+    func applicationSupportsSecureRestorableState(_: NSApplication) -> Bool {
+        true
     }
 
     // swiftlint:disable cyclomatic_complexity
