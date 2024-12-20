@@ -1,4 +1,5 @@
 import Cocoa
+import ColorComponents
 import Defaults
 import SwiftUI
 
@@ -335,12 +336,14 @@ extension NSColor {
         }
     }
 
-    func getUIColor() -> (Color) {
-        luminance < 0.5 ? Color.white : Color.black
+    func getUIColor() -> Color {
+        let rgb = RGB<Float>(self)
+        return rgb.brightness > 0.5 ? Color.black : Color.white
     }
 
-    func getUIColor() -> (NSColor) {
-        luminance < 0.5 ? NSColor.white : NSColor.black
+    func getUIColor() -> NSColor {
+        let rgb = RGB<Float>(self)
+        return rgb.brightness > 0.5 ? .black : .white
     }
 }
 

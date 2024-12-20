@@ -22,6 +22,10 @@
 		EA0C526F25AB683400AFF716 /* EyedropperButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C526E25AB683400AFF716 /* EyedropperButton.swift */; };
 		EA136072284887E9004F1630 /* AppearanceButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA136071284887E9004F1630 /* AppearanceButtonStyle.swift */; };
 		EA257BD125D8629300C3FC54 /* SwapButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA257BD025D8629300C3FC54 /* SwapButtonStyle.swift */; };
+		EA3029B12D14F185007B2232 /* ColorCalculations in Frameworks */ = {isa = PBXBuildFile; productRef = EA3029B02D14F185007B2232 /* ColorCalculations */; };
+		EA3029B32D14F185007B2232 /* ColorComponents in Frameworks */ = {isa = PBXBuildFile; productRef = EA3029B22D14F185007B2232 /* ColorComponents */; };
+		EA3029B52D14F18B007B2232 /* ColorCalculations in Frameworks */ = {isa = PBXBuildFile; productRef = EA3029B42D14F18B007B2232 /* ColorCalculations */; };
+		EA3029B72D14F18B007B2232 /* ColorComponents in Frameworks */ = {isa = PBXBuildFile; productRef = EA3029B62D14F18B007B2232 /* ColorComponents */; };
 		EA424C7D25CDEF98009056A9 /* ComplianceToggleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA424C7C25CDEF98009056A9 /* ComplianceToggleGroup.swift */; };
 		EA424CDE25CF0328009056A9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = EA424CE025CF0328009056A9 /* Localizable.strings */; };
 		EA635DC925B3B2650014D91A /* Cula.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DC825B3B2650014D91A /* Cula.swift */; };
@@ -207,9 +211,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA3029B52D14F18B007B2232 /* ColorCalculations in Frameworks */,
 				EAD0B710259CFAC700FA2F67 /* Defaults in Frameworks */,
 				EAD0B6E9259CEF8600FA2F67 /* Sparkle in Frameworks */,
 				EAD0B6E1259CED3200FA2F67 /* LaunchAtLogin in Frameworks */,
+				EA3029B72D14F18B007B2232 /* ColorComponents in Frameworks */,
 				EAD0B6E5259CED6000FA2F67 /* KeyboardShortcuts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -220,6 +226,8 @@
 			files = (
 				EAE23DD92D032A38005BB270 /* Defaults in Frameworks */,
 				EAE23DDB2D032A38005BB270 /* LaunchAtLogin in Frameworks */,
+				EA3029B12D14F185007B2232 /* ColorCalculations in Frameworks */,
+				EA3029B32D14F185007B2232 /* ColorComponents in Frameworks */,
 				EAE23DDC2D032A38005BB270 /* KeyboardShortcuts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -256,6 +264,13 @@
 			path = Constants;
 			sourceTree = "<group>";
 		};
+		EA3029AF2D14F185007B2232 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		EA72BB8125A5334B008205E7 /* Metal */ = {
 			isa = PBXGroup;
 			children = (
@@ -272,6 +287,7 @@
 				EAD0B705259CF3BA00FA2F67 /* LICENSE.md */,
 				EAD0B704259CF3BA00FA2F67 /* README.md */,
 				EAD0B6CA259CED1C00FA2F67 /* Pika */,
+				EA3029AF2D14F185007B2232 /* Frameworks */,
 				EAD0B6C9259CED1C00FA2F67 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -407,6 +423,8 @@
 				EAD0B6E4259CED6000FA2F67 /* KeyboardShortcuts */,
 				EAD0B6E8259CEF8600FA2F67 /* Sparkle */,
 				EAD0B70F259CFAC700FA2F67 /* Defaults */,
+				EA3029B42D14F18B007B2232 /* ColorCalculations */,
+				EA3029B62D14F18B007B2232 /* ColorComponents */,
 			);
 			productName = Pika;
 			productReference = EAD0B6C8259CED1C00FA2F67 /* Pika.app */;
@@ -431,6 +449,8 @@
 				EAE23D9E2D032A38005BB270 /* LaunchAtLogin */,
 				EAE23DA02D032A38005BB270 /* KeyboardShortcuts */,
 				EAE23DA42D032A38005BB270 /* Defaults */,
+				EA3029B02D14F185007B2232 /* ColorCalculations */,
+				EA3029B22D14F185007B2232 /* ColorComponents */,
 			);
 			productName = Pika;
 			productReference = EAE23DE82D032A38005BB270 /* Pika.app */;
@@ -470,6 +490,7 @@
 				EAD0B6E3259CED6000FA2F67 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
 				EAD0B6E7259CEF8600FA2F67 /* XCRemoteSwiftPackageReference "Sparkle" */,
 				EAD0B70E259CFAC700FA2F67 /* XCRemoteSwiftPackageReference "Defaults" */,
+				EA3029AE2D14F172007B2232 /* XCRemoteSwiftPackageReference "color-components" */,
 			);
 			productRefGroup = EAD0B6C9259CED1C00FA2F67 /* Products */;
 			projectDirPath = "";
@@ -1010,6 +1031,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		EA3029AE2D14F172007B2232 /* XCRemoteSwiftPackageReference "color-components" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sersoft-gmbh/color-components.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.13.0;
+			};
+		};
 		EAD0B6DF259CED3200FA2F67 /* XCRemoteSwiftPackageReference "LaunchAtLogin" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sindresorhus/LaunchAtLogin";
@@ -1069,6 +1098,26 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		EA3029B02D14F185007B2232 /* ColorCalculations */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EA3029AE2D14F172007B2232 /* XCRemoteSwiftPackageReference "color-components" */;
+			productName = ColorCalculations;
+		};
+		EA3029B22D14F185007B2232 /* ColorComponents */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EA3029AE2D14F172007B2232 /* XCRemoteSwiftPackageReference "color-components" */;
+			productName = ColorComponents;
+		};
+		EA3029B42D14F18B007B2232 /* ColorCalculations */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EA3029AE2D14F172007B2232 /* XCRemoteSwiftPackageReference "color-components" */;
+			productName = ColorCalculations;
+		};
+		EA3029B62D14F18B007B2232 /* ColorComponents */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EA3029AE2D14F172007B2232 /* XCRemoteSwiftPackageReference "color-components" */;
+			productName = ColorComponents;
+		};
 		EAD0B6E0259CED3200FA2F67 /* LaunchAtLogin */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = EAD0B6DF259CED3200FA2F67 /* XCRemoteSwiftPackageReference "LaunchAtLogin" */;
