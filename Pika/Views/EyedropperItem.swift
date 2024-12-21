@@ -36,7 +36,12 @@ struct EyedropperItem: View {
             .onReceive(NotificationCenter.default.publisher(
                 for: Notification.Name("triggerSystemPicker\(eyedropper.type.rawValue.capitalized)")))
             { _ in
-                eyedropper.picker()
+                let panel = NSColorPanel.shared
+                if panel.isVisible, panel.title == "\(eyedropper.type.rawValue.capitalized)" {
+                    panel.close()
+                } else {
+                    eyedropper.picker()
+                }
             }
             .onReceive(NotificationCenter.default.publisher(
                 for: Notification.Name("triggerFormatHex")))

@@ -97,6 +97,8 @@ class Eyedropper: ObservableObject {
         panel.titleVisibility = .visible
         panel.setTarget(self)
         panel.color = color
+        panel.mode = .RGB
+        panel.colorSpace = Defaults[.colorSpace]
         panel.orderFrontRegardless()
         panel.setAction(#selector(colorDidChange))
         panel.isContinuous = true

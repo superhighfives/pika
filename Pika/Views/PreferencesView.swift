@@ -213,24 +213,26 @@ struct PreferencesView: View {
                                 Text(PikaText.textFormatDescription).font(.system(size: 13, weight: .medium))
                             ) {
                                 Picker(PikaText.textSpaceTitle, selection:
-                                    $colorSpace.onChange(perform: { Defaults[.colorSpace] = $0 }))
-                                {
-                                    ForEach(primarySpaces, id: \.self) { value in
-                                        if value == systemDefaultSpace {
-                                            Text("\(PikaText.textSystemDefault) (\(value.localizedName!))")
-                                                .tag(value)
-                                        } else {
+                                    $colorSpace.onChange(perform: {
+                                        NSColorPanel.shared.close()
+                                        Defaults[.colorSpace] = $0
+                                    })) {
+                                        ForEach(primarySpaces, id: \.self) { value in
+                                            if value == systemDefaultSpace {
+                                                Text("\(PikaText.textSystemDefault) (\(value.localizedName!))")
+                                                    .tag(value)
+                                            } else {
+                                                Text(value.localizedName!)
+                                                    .tag(value)
+                                            }
+                                        }
+                                        Divider()
+                                        ForEach(availableSpaces, id: \.self) { value in
                                             Text(value.localizedName!)
                                                 .tag(value)
                                         }
                                     }
-                                    Divider()
-                                    ForEach(availableSpaces, id: \.self) { value in
-                                        Text(value.localizedName!)
-                                            .tag(value)
-                                    }
-                                }
-                                .labelsHidden()
+                                    .labelsHidden()
                             }
                         }
                     }
