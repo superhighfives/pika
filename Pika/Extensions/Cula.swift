@@ -73,7 +73,7 @@ extension NSColor {
     }
 
     var luminance: CGFloat {
-        let rgba = toRGBAComponents()
+        let rgba = toRGBAComponents(in: .extendedSRGB)
 
         func lumHelper(c: CGFloat) -> CGFloat {
             (c < 0.03928) ? (c / 12.92) : pow((c + 0.055) / 1.055, 2.4)
@@ -107,10 +107,12 @@ extension NSColor {
      * RGBA
      */
 
-    final func toRGBAComponents() -> (r: CGFloat, g: CGFloat, b: CGFloat, a: CGFloat) {
+    final func toRGBAComponents(in colorSpace: NSColorSpace = Defaults[.colorSpace])
+        -> (r: CGFloat, g: CGFloat, b: CGFloat, a: CGFloat)
+    {
         var r: CGFloat = 0, g: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
 
-        guard let rgbaColor = usingColorSpace(Defaults[.colorSpace]) else {
+        guard let rgbaColor = usingColorSpace(colorSpace) else {
             fatalError("Could not convert color to RGBA")
         }
 
