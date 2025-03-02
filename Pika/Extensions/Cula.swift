@@ -79,7 +79,8 @@ extension NSColor {
             (c < 0.03928) ? (c / 12.92) : pow((c + 0.055) / 1.055, 2.4)
         }
 
-        return 0.2126 * lumHelper(c: rgba.r) + 0.7152 * lumHelper(c: rgba.g) + 0.0722 * lumHelper(c: rgba.b)
+        let result = 0.2126 * lumHelper(c: rgba.r) + 0.7152 * lumHelper(c: rgba.g) + 0.0722 * lumHelper(c: rgba.b)
+        return max(.zero, result)
     }
 
     /*
