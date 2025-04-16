@@ -130,16 +130,17 @@ extension NSColor {
         let green = Int(round(RGB.g * 255))
         let blue = Int(round(RGB.b * 255))
 
-        let formatString: NSString
+        let rgbString: String
         switch style {
         case .css, .design:
-            formatString = "rgb(%d, %d, %d)"
+            rgbString = String(format: "rgb(%d, %d, %d)", red, green, blue)
+        case .swiftUI:
+            rgbString = String(format: "Color(red: %.5g, green: %.5g, blue: %.5g)", RGB.r, RGB.g, RGB.b)
         case .unformatted:
-            formatString = "%d, %d, %d"
+            rgbString = String(format: "%d, %d, %d", red, green, blue)
         }
 
-        let rgbString = NSString(format: formatString, red, green, blue)
-        return rgbString as String
+        return rgbString
     }
 
     /**
@@ -172,7 +173,7 @@ extension NSColor {
 
         let formatString: NSString
         switch style {
-        case .css, .design:
+        case .css, .design, .swiftUI:
             formatString = "rgba(%.5g, %.5g, %.5g, 1.0)"
         case .unformatted:
             formatString = "%.5g, %.5g, %.5g, 1.0"
@@ -217,17 +218,17 @@ extension NSColor {
         let saturation = Int(round(HSB.s * 100))
         let brightness = Int(round(HSB.b * 100))
 
-        let formatString: NSString
+        let hsbString: String
         switch style {
         case .css:
-            formatString = "hsb(%d, %d%%, %d%%)"
+            hsbString = String(format: "hsb(%d, %d%%, %d%%)", hue, saturation, brightness)
         case .design:
-            formatString = "hsb(%d, %d, %d)"
+            hsbString = String(format: "hsb(%d, %d, %d)", hue, saturation, brightness)
+        case .swiftUI:
+            hsbString = String(format: "Color(hue: %.5g, saturation: %.5g, brightness: %.5g)", HSB.h, HSB.s, HSB.b)
         case .unformatted:
-            formatString = "%d, %d, %d"
+            hsbString = String(format: "%d, %d, %d", hue, saturation, brightness)
         }
-
-        let hsbString = NSString(format: formatString, hue, saturation, brightness)
         return hsbString as String
     }
 
@@ -301,7 +302,7 @@ extension NSColor {
         switch style {
         case .css:
             formatString = "hsl(%d, %d%%, %d%%)"
-        case .design:
+        case .design, .swiftUI:
             formatString = "hsl(%d, %d, %d)"
         case .unformatted:
             formatString = "%d, %d, %d"

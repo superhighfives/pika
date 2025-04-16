@@ -185,10 +185,10 @@ struct PreferencesView: View {
                                     Text(value.localizedString())
                                 }
                             }
-                            .pickerStyle(RadioGroupPickerStyle())
-                            .horizontalRadioGroupLayout()
+                            .pickerStyle(.menu)
                             .fixedSize()
                             .labelsHidden()
+                            Spacer()
                         }
 
                         ColorExampleRow(copyFormat: copyFormat, eyedropper: eyedroppers.foreground)
