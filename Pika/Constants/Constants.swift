@@ -67,7 +67,9 @@ enum PikaText {
     static let textColorPass = NSLocalizedString("color.wcag.pass", comment: "Pass")
     static let textColorFail = NSLocalizedString("color.wcag.fail", comment: "Fail")
     static let textColorRatio = NSLocalizedString("color.ratio", comment: "Contrast Ratio")
+    static let textLightnessContrastValue = NSLocalizedString("color.lc", comment: "Lightness Contrast Level")
     static let textColorWCAG = NSLocalizedString("color.wcag", comment: "WCAG Compliance")
+    static let textColorAPCA = NSLocalizedString("color.apca", comment: "APCA Compliance")
     static let textColorWCAG30 = NSLocalizedString("color.wcag.30", comment: "WCAG 3:1")
     static let textColorWCAG45 = NSLocalizedString("color.wcag.45", comment: "WCAG 4.5:1")
     static let textColorWCAG70 = NSLocalizedString("color.wcag.70", comment: "WCAG 7:1")
@@ -201,6 +203,18 @@ enum PikaText {
     static let textAppearanceContrastDescription = NSLocalizedString(
         "preferences.appearance.contrast.description",
         comment: "View WCAG compliance by contrast, from 3:1 to 7:1"
+    )
+    static let textAppearanceAPCATitle = NSLocalizedString(
+        "preferences.appearance.apca.title",
+        comment: "Contrast Value"
+    )
+    static let textAppearanceAPCADescription = NSLocalizedString(
+        "preferences.appearance.apca.description",
+        comment: "View APCA contrast value (Lc) reference by usages"
+    )
+    static let textContrastStandard = NSLocalizedString(
+        "preferences.contrast.standard",
+        comment: "Contrast Standard"
     )
 
     // Copy Settings

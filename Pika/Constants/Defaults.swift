@@ -28,6 +28,11 @@ enum CopyFormat: String, Codable, CaseIterable {
     }
 }
 
+enum ContrastStandard: String, Codable, CaseIterable {
+    case wcag = "WCAG"
+    case apca = "APCA"
+}
+
 enum AppMode: String, Codable, CaseIterable {
     case menubar = "preferences.app.mode.menubar"
     case regular = "preferences.app.mode.regular"
@@ -55,4 +60,5 @@ extension Defaults.Keys {
     static let appMode = Key<AppMode>("appMode", default: .menubar)
     static let appFloating = Key<Bool>("appFloating", default: true)
     static let alwaysShowOnLaunch = Key<Bool>("alwaysShowOnLaunch", default: false)
+    static let contrastStandard = Key<ContrastStandard>("contrastStandard", default: .wcag)
 }

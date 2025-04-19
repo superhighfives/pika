@@ -11,6 +11,7 @@ extension NSTouchBarItem.Identifier {
 }
 
 class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
+    @Default(.contrastStandard) var contrastStandard
     var cancellables = Set<AnyCancellable>()
 
     override func makeTouchBar() -> NSTouchBar? {
@@ -132,44 +133,75 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
         )
         NSLayoutConstraint.activate(hconstraints)
 
-        foreground.$color.sink { textField.stringValue = $0.toContrastRatioString(with: background.color) }
+        foreground.$color.sink { textField.stringValue = self.contrastStandard == .wcag ? $0.toContrastRatioString(with: background.color) : 
+            $0.APCAcontrastValue(with: background.color) }
             .store(in: &cancellables)
-        background.$color.sink { textField.stringValue = $0.toContrastRatioString(with: foreground.color) }
+        background.$color.sink { textField.stringValue = self.contrastStandard == .wcag ? $0.toContrastRatioString(with: background.color) : 
+            $0.APCAcontrastValue(with: background.color) }
             .store(in: &cancellables)
         return item
     }
 
-    func createWCAGComplianceGroup(
+    func createComplianceGroup(
         _ identifier: NSTouchBarItem.Identifier,
         _ foreground: Eyedropper,
         _ background: Eyedropper
     ) -> NSTouchBarItem? {
         let item = NSCustomTouchBarItem(identifier: identifier)
 
-        let colorWCAGCompliance = foreground.color.toWCAGCompliance(with: background.color)
+        let complianceType = Defaults[.contrastStandard] == .wcag ? "WCAG" : "APCA"
+        let colorCompliance: Any = Defaults[.contrastStandard] == .wcag ?
+            foreground.color.toWCAGCompliance(with: background.color) as Any :
+            foreground.color.toAPCACompliance(with: background.color) as Any
 
-        let wcagViews = NSHostingView(rootView:
+        let complianceViews = NSHostingView(rootView:
             ComplianceToggleGroup(
-                colorWCAGCompliance: colorWCAGCompliance,
+                colorCompliance: colorCompliance,
+                complianceType: complianceType,
                 size: .small,
                 theme: Defaults[.combineCompliance] ? .contrast : .weight
             ))
 
-        Defaults.publisher(keys: .combineCompliance).sink {
-            wcagViews.rootView.theme = Defaults[.combineCompliance] ? .contrast : .weight
+        Defaults.publisher(keys: .combineCompliance, .contrastStandard).sink { _ in
+            let complianceType = Defaults[.contrastStandard] == .wcag ? "WCAG" : "APCA"
+            let colorCompliance: Any = Defaults[.contrastStandard] == .wcag ?
+                foreground.color.toWCAGCompliance(with: background.color) as Any :
+                foreground.color.toAPCACompliance(with: background.color) as Any
+            complianceViews.rootView = ComplianceToggleGroup(
+                colorCompliance: colorCompliance,
+                complianceType: complianceType,
+                size: .small,
+                theme: Defaults[.combineCompliance] ? .contrast : .weight
+            )
         }
         .store(in: &cancellables)
-        foreground.$color.sink {
-            let colorWCAGCompliance = $0.toWCAGCompliance(with: background.color)
-            wcagViews.rootView.colorWCAGCompliance = colorWCAGCompliance
+        foreground.$color.sink { newColor in
+            let complianceType = Defaults[.contrastStandard] == .wcag ? "WCAG" : "APCA"
+            let colorCompliance: Any = Defaults[.contrastStandard] == .wcag ?
+                newColor.toWCAGCompliance(with: background.color) as Any :
+                newColor.toAPCACompliance(with: background.color) as Any
+            complianceViews.rootView = ComplianceToggleGroup(
+                colorCompliance: colorCompliance,
+                complianceType: complianceType,
+                size: .small,
+                theme: Defaults[.combineCompliance] ? .contrast : .weight
+            )
         }
         .store(in: &cancellables)
-        background.$color.sink {
-            let colorWCAGCompliance = $0.toWCAGCompliance(with: foreground.color)
-            wcagViews.rootView.colorWCAGCompliance = colorWCAGCompliance
+        background.$color.sink { newColor in
+            let complianceType = Defaults[.contrastStandard] == .wcag ? "WCAG" : "APCA"
+            let colorCompliance: Any = Defaults[.contrastStandard] == .wcag ?
+                foreground.color.toWCAGCompliance(with: newColor) as Any :
+                foreground.color.toAPCACompliance(with: newColor) as Any
+            complianceViews.rootView = ComplianceToggleGroup(
+                colorCompliance: colorCompliance,
+                complianceType: complianceType,
+                size: .small,
+                theme: Defaults[.combineCompliance] ? .contrast : .weight
+            )
         }
         .store(in: &cancellables)
-        item.view = wcagViews
+        item.view = complianceViews
         return item
     }
 
@@ -195,7 +227,7 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
             return item
 
         case NSTouchBarItem.Identifier.wcag:
-            return createWCAGComplianceGroup(identifier, foreground, background)
+            return createComplianceGroup(identifier, foreground, background)
 
         default:
             return nil

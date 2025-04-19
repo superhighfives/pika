@@ -124,11 +124,26 @@
 /* View WCAG compliance by contrast, from 3:1 to 7:1 */
 "preferences.appearance.contrast.description" = "View WCAG compliance by contrast, from 3:1 to 7:1";
 
+/* Contrast Value */
+"preferences.appearance.apca.title" = "Contrast Value";
+
+/* View APCA value reference by usages */
+"preferences.appearance.apca.description" = "View APCA value reference by usages";
+
+/* Contrast Calculation Standard */
+"preferences.contrast.standard" = "Contrast Calculation Standard";
+
 /* Contrast ratio */
 "color.ratio" = "Contrast Ratio";
 
 /* WCAG Compliance */
 "color.wcag" = "WCAG Compliance";
+
+/* APCA Contrast Reference */
+"color.apca" = "APCA Contrast Reference";
+
+/* Contrast Value (Lc) */
+"color.lc" = "Contrast Value (Lc)";
 
 /* Foreground */
 "color.foreground" = "Foreground";
