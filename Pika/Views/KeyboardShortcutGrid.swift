@@ -167,6 +167,47 @@ struct KeyboardShortcutGrid: View {
                         )
                         .frame(width: horizontalUnit, height: verticalUnit)
                     }
+                    
+                    Divider()
+                        .frame(maxWidth: .infinity)
+                    
+                    HStack(spacing: 0) {
+                        KeyboardShortcutItem(
+                            title: PikaText.textFormatLAB,
+                            event: PikaConstants.ncTriggerFormatLAB,
+                            keys: ["⌘", "6"]
+                        )
+                        .frame(width: horizontalUnit, height: verticalUnit)
+                        
+                        // Empty dividers and frames to maintain layout consistency
+                        Divider()
+                            .frame(height: verticalUnit)
+                        
+                        Rectangle()
+                            .opacity(0)
+                            .frame(width: horizontalUnit, height: verticalUnit)
+                        
+                        Divider()
+                            .frame(height: verticalUnit)
+                        
+                        Rectangle()
+                            .opacity(0)
+                            .frame(width: horizontalUnit, height: verticalUnit)
+                        
+                        Divider()
+                            .frame(height: verticalUnit)
+                        
+                        Rectangle()
+                            .opacity(0)
+                            .frame(width: horizontalUnit, height: verticalUnit)
+                        
+                        Divider()
+                            .frame(height: verticalUnit)
+                        
+                        Rectangle()
+                            .opacity(0)
+                            .frame(width: horizontalUnit, height: verticalUnit)
+                    }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }

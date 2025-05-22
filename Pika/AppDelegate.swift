@@ -168,7 +168,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 let labMenuItem = NSMenuItem(
                     title: PikaText.textFormatLAB,
                     action: #selector(AppDelegate.triggerFormatLAB(_:)),
-                    keyEquivalent: "" // Consider adding a key equivalent if desired
+                    keyEquivalent: "6" // Using Command + 6 as the shortcut
                 )
 
                 // Add a separator for visual distinction, if the last item isn't already one.
