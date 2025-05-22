@@ -126,6 +126,63 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             }
         }
 
+        // Add LAB format menu item
+        if let mainMenu = NSApp.mainMenu {
+            var formatMenuToAddTo: NSMenu?
+
+            // Iterate through top-level menu items to find "Format"
+            // Common titles are "Format". If Pika uses a custom/localized title here from PikaText,
+            // that should be used. For now, assuming standard "Format".
+            for menuItem in mainMenu.items {
+                if menuItem.title == NSLocalizedString("Format", comment: "Format menu title") {
+                    formatMenuToAddTo = menuItem.submenu
+                    break
+                }
+            }
+
+            // If not found as a top-level menu, check under "Edit"
+            if formatMenuToAddTo == nil {
+                if let editMenu = mainMenu.item(withTitle: NSLocalizedString("Edit", comment: "Edit menu title"))?.submenu {
+                    for menuItem in editMenu.items {
+                        if menuItem.title == NSLocalizedString("Format", comment: "Format menu title") {
+                            formatMenuToAddTo = menuItem.submenu
+                            break
+                        }
+                    }
+                }
+            }
+
+            // If still not found, check under the main application menu (e.g., "Pika" -> "Format")
+            if formatMenuToAddTo == nil {
+                if let appMenu = mainMenu.item(withTitle: PikaText.textAppName)?.submenu {
+                    for menuItem in appMenu.items {
+                        if menuItem.title == NSLocalizedString("Format", comment: "Format menu title") {
+                            formatMenuToAddTo = menuItem.submenu
+                            break
+                        }
+                    }
+                }
+            }
+
+            if let actualFormatMenu = formatMenuToAddTo {
+                let labMenuItem = NSMenuItem(
+                    title: PikaText.textFormatLAB,
+                    action: #selector(AppDelegate.triggerFormatLAB(_:)),
+                    keyEquivalent: "" // Consider adding a key equivalent if desired
+                )
+
+                // Add a separator for visual distinction, if the last item isn't already one.
+                if let lastItem = actualFormatMenu.items.last, !lastItem.isSeparatorItem {
+                    actualFormatMenu.addItem(NSMenuItem.separator())
+                }
+                actualFormatMenu.addItem(labMenuItem)
+            } else {
+                // If the "Format" menu is not found, log a warning.
+                // This might mean the menu is named differently or structured in an unexpected way.
+                NSLog("Pika: Warning - Could not automatically find the 'Format' menu. The 'LAB' menu item may need to be added manually to the Storyboard or the menu finding logic in AppDelegate.swift adjusted.")
+            }
+        }
+
         // Open splash window, or main
         if !Defaults[.viewedSplash] {
             openSplashWindow(nil)
@@ -430,6 +487,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     @IBAction func triggerFormatOpenGL(_: Any) {
         notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerFormatOpenGL), object: self)
+    }
+
+    @IBAction func triggerFormatLAB(_: Any) {
+        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerFormatLAB), object: self)
     }
 
     @IBAction func hidePika(_: Any) {

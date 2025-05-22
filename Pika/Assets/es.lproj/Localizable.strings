@@ -282,3 +282,5 @@
 
 /* Quit */
 "menu.quit" = "Forzar salida";
+
+"color.format.lab" = "LAB";

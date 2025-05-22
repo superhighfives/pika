@@ -286,3 +286,5 @@
 /* Get started */
 "splash.start" = "Los geht's";
 
+
+"color.format.lab" = "LAB";
