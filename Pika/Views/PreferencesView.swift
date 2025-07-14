@@ -186,9 +186,7 @@ struct PreferencesView: View {
                                 }
                             }
                             .pickerStyle(.menu)
-                            .fixedSize()
                             .labelsHidden()
-                            Spacer()
                         }
 
                         ColorExampleRow(copyFormat: copyFormat, eyedropper: eyedroppers.foreground)

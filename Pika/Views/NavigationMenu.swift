@@ -3,12 +3,22 @@ import SwiftUI
 
 struct NavigationMenu: View {
     @Default(.colorFormat) var colorFormat
+    @Default(.copyFormat) var copyFormat
+
+    func isFormatDisabled(_ format: ColorFormat) -> Bool {
+        if copyFormat == .swiftUI {
+            let disabledFormats: [ColorFormat] = [.hex, .hsl, .opengl]
+            return disabledFormats.contains(format)
+        }
+        return false
+    }
 
     var body: some View {
         HStack(spacing: 0) {
             Picker(PikaText.textFormatTitle, selection: $colorFormat) {
                 ForEach(ColorFormat.allCases, id: \.self) { value in
                     Text(value.rawValue)
+                        .selectionDisabled(isFormatDisabled(value))
                 }
             }
             .offset(y: 1.0)
@@ -20,7 +30,8 @@ struct NavigationMenu: View {
             } label: {
                 IconImage(name: "gearshape")
             }
-            .menuStyle(BorderlessButtonMenuStyle(showsMenuIndicator: true))
+            .menuStyle(BorderlessButtonMenuStyle())
+            .menuIndicator(.visible)
             .frame(alignment: .leading)
             .padding(.trailing, 10.0)
             .padding(.leading, 5.0)
@@ -30,7 +41,9 @@ struct NavigationMenu: View {
             HStack {
                 ForEach(ColorFormat.allCases, id: \.self) { value in
                     Button(value.rawValue, action: {
-                        colorFormat = value
+                        if !isFormatDisabled(value) {
+                            colorFormat = value
+                        }
                     }).keyboardShortcut(
                         KeyEquivalent(
                             Character("\(values.firstIndex(of: value)! + 1)")
@@ -41,6 +54,14 @@ struct NavigationMenu: View {
             .opacity(0)
             .frame(width: 0, height: 0)
             .padding(0)
+        }
+        .onChange(of: copyFormat) {
+            if copyFormat == .swiftUI {
+                let disabledFormats: [ColorFormat] = [.hex, .hsl, .opengl]
+                if disabledFormats.contains(colorFormat) {
+                    colorFormat = .rgb
+                }
+            }
         }
     }
 }
