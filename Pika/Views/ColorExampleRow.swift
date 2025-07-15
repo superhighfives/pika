@@ -5,6 +5,13 @@ struct ColorExampleRow: View {
     @ObservedObject var eyedropper: Eyedropper
     @Environment(\.colorScheme) var colorScheme: ColorScheme
 
+    var availableFormats: [ColorFormat] {
+        if copyFormat == .swiftUI {
+            return [.rgb, .hsb]
+        }
+        return ColorFormat.allCases
+    }
+
     var body: some View {
         let shadowColor: Color = eyedropper.color.getUIColor()
 
@@ -25,7 +32,7 @@ struct ColorExampleRow: View {
                 .font(.system(size: 11))
 
             HStack(alignment: .bottom, spacing: 8.0) {
-                ForEach(ColorFormat.allCases, id: \.self) { value in
+                ForEach(availableFormats, id: \.self) { value in
                     HStack(alignment: .bottom, spacing: 4.0) {
                         Text(value.rawValue)
                             .font(.system(size: 11))

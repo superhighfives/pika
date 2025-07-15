@@ -37,7 +37,7 @@ struct ContentView: View {
                     }, label: {
                         IconImage(name: "arrow.triangle.swap")
                             .rotationEffect(.degrees(angle))
-                            .animation(.easeInOut)
+                            .animation(.easeInOut, value: angle)
                     })
                     .buttonStyle(SwapButtonStyle(
                         isVisible: swapVisible,
