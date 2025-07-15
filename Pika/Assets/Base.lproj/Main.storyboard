@@ -171,7 +171,7 @@
                                                     </menuItem>
                                                     <menuItem title="OpenGL" keyEquivalent="5" allowsKeyEquivalentWhenHidden="YES" id="caq-wZ-Zn0" userLabel="Format">
                                                         <connections>
-                                                            <action selector="triggerFormatHSL:" target="Voe-Tx-rLC" id="aIc-Ec-3GJ"/>
+                                                            <action selector="triggerFormatOpenGL:" target="Voe-Tx-rLC" id="d59-fh-wXc"/>
                                                         </connections>
                                                     </menuItem>
                                                     <menuItem title="LAB" keyEquivalent="6" allowsKeyEquivalentWhenHidden="YES" id="Nwx-nK-ndW" userLabel="Format">
