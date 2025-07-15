@@ -4,6 +4,7 @@ import SwiftUI
 
 // swiftlint:disable identifier_name
 // swiftlint:disable large_tuple
+// swiftlint:disable file_length
 
 extension NSColor {
     /*
@@ -428,3 +429,4 @@ extension NSColor {
 
 // swiftlint:enable large_tuple
 // swiftlint:enable identifier_name
+// swiftlint:enable file_length

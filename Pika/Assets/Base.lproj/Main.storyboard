@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="23504"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="23727"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -172,6 +172,11 @@
                                                     <menuItem title="OpenGL" keyEquivalent="5" allowsKeyEquivalentWhenHidden="YES" id="caq-wZ-Zn0" userLabel="Format">
                                                         <connections>
                                                             <action selector="triggerFormatHSL:" target="Voe-Tx-rLC" id="aIc-Ec-3GJ"/>
+                                                        </connections>
+                                                    </menuItem>
+                                                    <menuItem title="LAB" keyEquivalent="6" allowsKeyEquivalentWhenHidden="YES" id="Nwx-nK-ndW" userLabel="Format">
+                                                        <connections>
+                                                            <action selector="triggerFormatLAB:" target="Voe-Tx-rLC" id="Lvn-QU-223"/>
                                                         </connections>
                                                     </menuItem>
                                                 </items>

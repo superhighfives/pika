@@ -82,6 +82,9 @@
 /* OpenGL format */
 "color.format.opengl" = "OpenGL-Format";
 
+/* LAB format */
+"color.format.lab" = "LAB-Format";
+
 /* Copy all as text */
 "color.copy.text" = "Als Text kopieren";
 
@@ -285,6 +288,3 @@
 
 /* Get started */
 "splash.start" = "Los geht's";
-
-
-"color.format.lab" = "LAB";

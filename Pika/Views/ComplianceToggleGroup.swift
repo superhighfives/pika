@@ -19,7 +19,7 @@ struct ComplianceToggleGroup: View {
     var body: some View {
         if theme == .weight {
             HStack(spacing: 16.0) {
-                HStack(alignment: .center, spacing: 8.0) {
+                HStack(alignment: .center, spacing: 10.0) {
                     if size == .full {
                         Text(PikaText.textColorNormal)
                             .fontWeight(.semibold)
@@ -43,7 +43,7 @@ struct ComplianceToggleGroup: View {
                         size: size
                     )
                 }
-                HStack(alignment: .center, spacing: 8.0) {
+                HStack(alignment: .center, spacing: 10.0) {
                     if size == .full {
                         Text(PikaText.textColorLarge)
                             .fontWeight(.semibold)
@@ -73,7 +73,7 @@ struct ComplianceToggleGroup: View {
         }
 
         if theme == .contrast {
-            HStack(spacing: 12.0) {
+            HStack(spacing: 16.0) {
                 ComplianceToggle(
                     title: "AA",
                     isCompliant: colorWCAGCompliance.ratio30,
