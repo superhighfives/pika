@@ -11,12 +11,8 @@ struct MenuGroup<Content>: View where Content: View {
     }
 
     var body: some View {
-        if #available(macOS 11.0, *) {
-            Menu(title) {
-                content()
-            }
-        } else {
-            MenuButton(label: Text(title), content: content)
+        Menu(title) {
+            content()
         }
     }
 }
