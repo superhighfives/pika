@@ -397,10 +397,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     @IBAction func triggerUndo(_: Any) {
+        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerUndo), object: self)
         undoManager.undo()
     }
 
     @IBAction func triggerRedo(_: Any) {
+        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerRedo), object: self)
         undoManager.redo()
     }
 
