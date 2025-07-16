@@ -185,9 +185,7 @@ struct PreferencesView: View {
                                     Text(value.localizedString())
                                 }
                             }
-                            .pickerStyle(RadioGroupPickerStyle())
-                            .horizontalRadioGroupLayout()
-                            .fixedSize()
+                            .pickerStyle(.menu)
                             .labelsHidden()
                         }
 

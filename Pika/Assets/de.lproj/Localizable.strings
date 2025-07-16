@@ -235,6 +235,9 @@
 /* CSS */
 "preferences.copy.options.css" = "CSS";
 
+/* SwiftUI */
+"preferences.copy.options.swiftui" = "SwiftUI";
+
 /* Design Application */
 "preferences.copy.options.design" = "Design-Software";
 

@@ -30,7 +30,7 @@ Learn more about the [motivations behind the project](https://medium.com/superhi
 
 ### OS
 
-- macOS Catalina (Version 10.15+) and newer
+- macOS Sequoia (Version 14) and newer
 
 ## Keyboard Shortcuts
 

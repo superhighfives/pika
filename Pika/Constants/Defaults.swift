@@ -22,6 +22,7 @@ enum ColorFormat: String, Codable, CaseIterable, Equatable {
 enum CopyFormat: String, Codable, CaseIterable {
     case css = "preferences.copy.options.css"
     case design = "preferences.copy.options.design"
+    case swiftUI = "preferences.copy.options.swiftui"
     case unformatted = "preferences.copy.options.unformatted"
 
     func localizedString() -> String {

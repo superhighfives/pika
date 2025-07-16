@@ -46,6 +46,9 @@
 /* CSS */
 "preferences.copy.options.css" = "CSS";
 
+/* SwiftUI */
+"preferences.copy.options.swiftui" = "SwiftUI";
+
 /* Automatically copy color to clipboard on pick */
 "preferences.copy.automatic" = "Copier automatiquement la couleur dans le presse-papiers lors de la sélection";
 
