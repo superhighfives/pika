@@ -82,6 +82,11 @@ struct EyedropperItem: View {
                     }
                 }
             }
+            .onReceive(NotificationCenter.default.publisher(
+                for: Notification.Name(PikaConstants.ncTriggerFormatLAB)))
+            { _ in
+                colorFormat = .lab
+            }
             .toast(
                 isShowing: $showToast,
                 color: eyedropper.color.getUIColor(),

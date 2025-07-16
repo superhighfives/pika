@@ -4,6 +4,7 @@ import SwiftUI
 
 // swiftlint:disable identifier_name
 // swiftlint:disable large_tuple
+// swiftlint:disable file_length
 
 extension NSColor {
     /*
@@ -316,6 +317,86 @@ extension NSColor {
     }
 
     /*
+     * CIE-LAB
+     */
+
+    private func toXYZComponents() -> (x: CGFloat, y: CGFloat, z: CGFloat) {
+        let srgb = toRGBAComponents()
+
+        // Linearize sRGB components
+        func linearize(_ c: CGFloat) -> CGFloat {
+            if c <= 0.04045 {
+                return c / 12.92
+            } else {
+                return pow((c + 0.055) / 1.055, 2.4)
+            }
+        }
+
+        let r_lin = linearize(srgb.r)
+        let g_lin = linearize(srgb.g)
+        let b_lin = linearize(srgb.b)
+
+        // Convert linear RGB to XYZ (D65)
+        let x = r_lin * 0.4124564 + g_lin * 0.3575761 + b_lin * 0.1804375
+        let y = r_lin * 0.2126729 + g_lin * 0.7151522 + b_lin * 0.0721750
+        let z = r_lin * 0.0193339 + g_lin * 0.1191920 + b_lin * 0.9503041
+
+        return (x: x, y: y, z: z)
+    }
+
+    func toLabComponents() -> (l: CGFloat, a: CGFloat, b: CGFloat) {
+        let xyz = toXYZComponents()
+
+        // D65 Reference White
+        let Xn: CGFloat = 0.95047
+        let Yn: CGFloat = 1.00000
+        let Zn: CGFloat = 1.08883
+
+        let xr = xyz.x / Xn
+        let yr = xyz.y / Yn
+        let zr = xyz.z / Zn
+
+        func f(_ t: CGFloat) -> CGFloat {
+            let delta: CGFloat = 6.0 / 29.0
+            if t > pow(delta, 3.0) { // approx 0.008856
+                return pow(t, 1.0 / 3.0)
+            } else {
+                return (t / (3.0 * pow(delta, 2.0))) + (4.0 / 29.0)
+                // Equivalent to: (t * (pow(29.0 / 6.0, 2.0) / 3.0)) + (4.0 / 29.0)
+                // Or: t * (7.787) + (16.0 / 116.0)
+            }
+        }
+
+        let L_star = (116.0 * f(yr)) - 16.0
+        let a_star = 500.0 * (f(xr) - f(yr))
+        let b_star = 200.0 * (f(yr) - f(zr))
+
+        return (l: L_star, a: a_star, b: b_star)
+    }
+
+    func toLabString(style: CopyFormat) -> String {
+        let lab = toLabComponents()
+        let l_val = round(lab.l * 100) / 100
+        let a_val = round(lab.a * 100) / 100
+        let b_val = round(lab.b * 100) / 100
+
+        let formatString: String
+        switch style {
+        case .css:
+            // CSS L is 0-100, a and b are typically -128 to 127.
+            // L* from calculation is 0-100.
+            // For CSS, L is a percentage, but the value is already 0-100.
+            // The spec actually shows L as a number or percentage, common usage is number.
+            formatString = String(format: "lab(%.2f %.2f %.2f)", l_val, a_val, b_val)
+        case .design, .swiftUI:
+            formatString = String(format: "lab(%.2f, %.2f, %.2f)", l_val, a_val, b_val)
+        case .unformatted:
+            formatString = String(format: "%.2f,%.2f,%.2f", l_val, a_val, b_val)
+        }
+        return formatString
+    }
+
+    /*
      * Helpers
      */
 
@@ -336,6 +417,8 @@ extension NSColor {
             return toHSLString(style: style)
         case .opengl:
             return toOpenGLString(style: style)
+        case .lab:
+            return toLabString(style: style)
         }
     }
 
@@ -350,3 +433,4 @@ extension NSColor {
 
 // swiftlint:enable large_tuple
 // swiftlint:enable identifier_name
+// swiftlint:enable file_length

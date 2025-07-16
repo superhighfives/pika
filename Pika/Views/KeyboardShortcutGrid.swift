@@ -9,7 +9,8 @@ struct KeyboardShortcutGrid: View {
                 let width = geometry.size.width
                 let height = geometry.size.height
 
-                let horizontalUnit = width / 5
+                let fiveGridhorizontalUnit = width / 5
+                let sixGridhorizontalUnit = width / 6
                 let verticalUnit = floor(height / 3)
 
                 VStack(spacing: 0.0) {
@@ -20,7 +21,7 @@ struct KeyboardShortcutGrid: View {
                             event: PikaConstants.ncTriggerPickForeground,
                             keys: ["⌘", "D"]
                         )
-                        .frame(width: horizontalUnit, height: verticalUnit)
+                        .frame(width: fiveGridhorizontalUnit, height: verticalUnit)
 
                         Divider()
                             .frame(height: verticalUnit)
@@ -30,7 +31,7 @@ struct KeyboardShortcutGrid: View {
                             event: PikaConstants.ncTriggerPickBackground,
                             keys: ["⇧", "⌘", "D"]
                         )
-                        .frame(width: horizontalUnit, height: verticalUnit)
+                        .frame(width: fiveGridhorizontalUnit, height: verticalUnit)
 
                         Divider()
                             .frame(height: verticalUnit)
@@ -40,7 +41,7 @@ struct KeyboardShortcutGrid: View {
                             event: PikaConstants.ncTriggerCopyForeground,
                             keys: ["⌘", "C"]
                         )
-                        .frame(width: horizontalUnit, height: verticalUnit)
+                        .frame(width: fiveGridhorizontalUnit, height: verticalUnit)
 
                         Divider()
                             .frame(height: verticalUnit)
@@ -50,7 +51,7 @@ struct KeyboardShortcutGrid: View {
                             event: PikaConstants.ncTriggerCopyBackground,
                             keys: ["⇧", "⌘", "C"]
                         )
-                        .frame(width: horizontalUnit, height: verticalUnit)
+                        .frame(width: fiveGridhorizontalUnit, height: verticalUnit)
 
                         Divider()
                             .frame(height: verticalUnit)
@@ -60,7 +61,7 @@ struct KeyboardShortcutGrid: View {
                             event: PikaConstants.ncTriggerSystemPickerForeground,
                             keys: ["⌘", "S"]
                         )
-                        .frame(width: horizontalUnit, height: verticalUnit)
+                        .frame(width: fiveGridhorizontalUnit, height: verticalUnit)
                     }
 
                     Divider()
@@ -73,7 +74,7 @@ struct KeyboardShortcutGrid: View {
                             event: PikaConstants.ncTriggerSystemPickerBackground,
                             keys: ["⇧", "⌘", "S"]
                         )
-                        .frame(width: horizontalUnit, height: verticalUnit)
+                        .frame(width: fiveGridhorizontalUnit, height: verticalUnit)
 
                         Divider()
                             .frame(height: verticalUnit)
@@ -83,7 +84,7 @@ struct KeyboardShortcutGrid: View {
                             event: PikaConstants.ncTriggerUndo,
                             keys: ["⌘", "z"]
                         )
-                        .frame(width: horizontalUnit, height: verticalUnit)
+                        .frame(width: fiveGridhorizontalUnit, height: verticalUnit)
 
                         Divider()
                             .frame(height: verticalUnit)
@@ -93,7 +94,7 @@ struct KeyboardShortcutGrid: View {
                             event: PikaConstants.ncTriggerRedo,
                             keys: ["⌘", "Z"]
                         )
-                        .frame(width: horizontalUnit, height: verticalUnit)
+                        .frame(width: fiveGridhorizontalUnit, height: verticalUnit)
 
                         Divider()
                             .frame(height: verticalUnit)
@@ -103,7 +104,7 @@ struct KeyboardShortcutGrid: View {
                             event: PikaConstants.ncTriggerSwap,
                             keys: ["⇧", "⌘", "X"]
                         )
-                        .frame(width: horizontalUnit, height: verticalUnit)
+                        .frame(width: fiveGridhorizontalUnit, height: verticalUnit)
 
                         Divider()
                             .frame(height: verticalUnit)
@@ -113,7 +114,7 @@ struct KeyboardShortcutGrid: View {
                             event: PikaConstants.ncTriggerPreferences,
                             keys: ["⌘", ","]
                         )
-                        .frame(width: horizontalUnit, height: verticalUnit)
+                        .frame(width: fiveGridhorizontalUnit, height: verticalUnit)
                     }
 
                     Divider()
@@ -125,7 +126,7 @@ struct KeyboardShortcutGrid: View {
                             event: PikaConstants.ncTriggerFormatHex,
                             keys: ["⌘", "1"]
                         )
-                        .frame(width: horizontalUnit, height: verticalUnit)
+                        .frame(width: sixGridhorizontalUnit, height: verticalUnit)
 
                         Divider()
                             .frame(height: verticalUnit)
@@ -135,7 +136,7 @@ struct KeyboardShortcutGrid: View {
                             event: PikaConstants.ncTriggerFormatRGB,
                             keys: ["⌘", "2"]
                         )
-                        .frame(width: horizontalUnit, height: verticalUnit)
+                        .frame(width: sixGridhorizontalUnit, height: verticalUnit)
 
                         Divider()
                             .frame(height: verticalUnit)
@@ -145,7 +146,7 @@ struct KeyboardShortcutGrid: View {
                             event: PikaConstants.ncTriggerFormatHSB,
                             keys: ["⌘", "3"]
                         )
-                        .frame(width: horizontalUnit, height: verticalUnit)
+                        .frame(width: sixGridhorizontalUnit, height: verticalUnit)
 
                         Divider()
                             .frame(height: verticalUnit)
@@ -155,7 +156,7 @@ struct KeyboardShortcutGrid: View {
                             event: PikaConstants.ncTriggerFormatHSL,
                             keys: ["⌘", "4"]
                         )
-                        .frame(width: horizontalUnit, height: verticalUnit)
+                        .frame(width: sixGridhorizontalUnit, height: verticalUnit)
 
                         Divider()
                             .frame(height: verticalUnit)
@@ -165,7 +166,17 @@ struct KeyboardShortcutGrid: View {
                             event: PikaConstants.ncTriggerFormatOpenGL,
                             keys: ["⌘", "5"]
                         )
-                        .frame(width: horizontalUnit, height: verticalUnit)
+                        .frame(width: sixGridhorizontalUnit, height: verticalUnit)
+
+                        Divider()
+                            .frame(height: verticalUnit)
+
+                        KeyboardShortcutItem(
+                            title: PikaText.textFormatLAB,
+                            event: PikaConstants.ncTriggerFormatLAB,
+                            keys: ["⌘", "6"]
+                        )
+                        .frame(width: sixGridhorizontalUnit, height: verticalUnit)
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)

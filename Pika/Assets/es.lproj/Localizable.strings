@@ -259,6 +259,9 @@
 /* OpenGL format */
 "color.format.opengl" = "Formato OpenGL";
 
+/* LAB format */
+"color.format.lab" = "Formato LAB";
+
 /* Copy foreground */
 "menu.copy.foreground" = "Copiar primer plano";
 

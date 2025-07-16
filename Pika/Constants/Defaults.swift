@@ -8,6 +8,7 @@ enum ColorFormat: String, Codable, CaseIterable, Equatable {
     case hsb = "HSB"
     case hsl = "HSL"
     case opengl = "OpenGL"
+    case lab = "LAB"
 
     func getExample(color: NSColor, style: CopyFormat) -> String {
         color.toFormat(format: self, style: style)

@@ -53,6 +53,7 @@ enum PikaConstants {
     static let ncTriggerFormatHSB = "triggerFormatHSB"
     static let ncTriggerFormatHSL = "triggerFormatHSL"
     static let ncTriggerFormatOpenGL = "triggerFormatOpenGL"
+    static let ncTriggerFormatLAB = "triggerFormatLAB"
 }
 
 enum PikaText {
@@ -227,6 +228,7 @@ enum PikaText {
     static let textFormatHSL = NSLocalizedString("color.format.hsl", comment: "HSL format")
     static let textFormatHSB = NSLocalizedString("color.format.hsb", comment: "HSB format")
     static let textFormatOpenGL = NSLocalizedString("color.format.opengl", comment: "OpenGL format")
+    static let textFormatLAB = NSLocalizedString("color.format.lab", comment: "LAB format")
 
     // Global Shortcut
     static let textHotkeyTitle = NSLocalizedString("preferences.hotkey.title", comment: "Global Shortcut")
