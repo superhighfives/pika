@@ -54,6 +54,7 @@ enum PikaConstants {
     static let ncTriggerFormatHSL = "triggerFormatHSL"
     static let ncTriggerFormatOpenGL = "triggerFormatOpenGL"
     static let ncTriggerFormatLAB = "triggerFormatLAB"
+    static let ncTriggerQuit = "triggerQuit"
 }
 
 enum PikaText {
