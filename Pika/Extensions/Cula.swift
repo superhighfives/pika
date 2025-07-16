@@ -388,8 +388,8 @@ extension NSColor {
             // For CSS, L is a percentage, but the value is already 0-100.
             // The spec actually shows L as a number or percentage, common usage is number.
             formatString = String(format: "lab(%.2f %.2f %.2f)", l_val, a_val, b_val)
-        case .design:
-            formatString = String(format: "%.2f, %.2f, %.2f", l_val, a_val, b_val)
+        case .design, .swiftUI:
+            formatString = String(format: "lab(%.2f, %.2f, %.2f)", l_val, a_val, b_val)
         case .unformatted:
             formatString = String(format: "%.2f,%.2f,%.2f", l_val, a_val, b_val)
         }
