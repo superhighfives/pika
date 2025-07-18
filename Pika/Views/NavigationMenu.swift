@@ -57,7 +57,7 @@ struct NavigationMenu: View {
         }
         .onChange(of: copyFormat) {
             if copyFormat == .swiftUI {
-                let disabledFormats: [ColorFormat] = [.hex, .hsl, .opengl]
+                let disabledFormats: [ColorFormat] = [.hex, .hsl, .opengl, .lab]
                 if disabledFormats.contains(colorFormat) {
                     colorFormat = .rgb
                 }
