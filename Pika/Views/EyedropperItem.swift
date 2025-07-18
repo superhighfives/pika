@@ -76,8 +76,7 @@ struct EyedropperItem: View {
             }
             .onChange(of: copyFormat) {
                 if copyFormat == .swiftUI {
-                    let disabledFormats: [ColorFormat] = [.hex, .hsl, .opengl]
-                    if disabledFormats.contains(colorFormat) {
+                    if PikaConstants.disabledFormats.contains(colorFormat) {
                         colorFormat = .rgb
                     }
                 }

@@ -7,8 +7,7 @@ struct NavigationMenu: View {
 
     func isFormatDisabled(_ format: ColorFormat) -> Bool {
         if copyFormat == .swiftUI {
-            let disabledFormats: [ColorFormat] = [.hex, .hsl, .opengl]
-            return disabledFormats.contains(format)
+            return PikaConstants.disabledFormats.contains(format)
         }
         return false
     }
@@ -57,8 +56,7 @@ struct NavigationMenu: View {
         }
         .onChange(of: copyFormat) {
             if copyFormat == .swiftUI {
-                let disabledFormats: [ColorFormat] = [.hex, .hsl, .opengl, .lab]
-                if disabledFormats.contains(colorFormat) {
+                if PikaConstants.disabledFormats.contains(colorFormat) {
                     colorFormat = .rgb
                 }
             }

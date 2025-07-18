@@ -56,6 +56,9 @@ enum PikaConstants {
     static let ncTriggerFormatOpenGL = "triggerFormatOpenGL"
     static let ncTriggerFormatLAB = "triggerFormatLAB"
     static let ncTriggerQuit = "triggerQuit"
+
+    // Disabled formats for SwiftUI copy format
+    static let disabledFormats: [ColorFormat] = [.hex, .hsl, .opengl, .lab]
 }
 
 enum PikaText {
