@@ -262,6 +262,9 @@
 /* Copy OpenGL values */
 "color.copy.opengl" = "Copiar valores OpenGL";
 
+/* Copy LAB values */
+"color.copy.lab" = "Copiar valores LAB";
+
 /* System color picker */
 "color.system" = "Selector de color del sistema";
 

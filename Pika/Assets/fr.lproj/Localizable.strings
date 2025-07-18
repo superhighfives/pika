@@ -262,14 +262,17 @@
 /* Copy OpenGL values */
 "color.copy.opengl" = "Copier les valeurs OpenGL";
 
+/* Copy LAB values */
+"color.copy.lab" = "Copier les valeurs LAB";
+
 /* System color picker */
 "color.system" = "Sélecteur de couleur système";
 
 /* Use foreground system color picker */
-"color.system.foreground" = "Sélecteur de couleurs du système d'arrière-plan";
+"color.system.foreground" = "Sélecteur de couleurs du système de premier plan";
 
 /* Use background system color picker */
-"color.system.background" = "Sélecteur de couleurs du système de premier plan";
+"color.system.background" = "Sélecteur de couleurs du système d'arrière-plan";
 
 /* System foreground */
 "color.system.foreground.simple" = "Premier plan du système";
