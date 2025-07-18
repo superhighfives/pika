@@ -46,6 +46,9 @@
 /* CSS */
 "preferences.copy.options.css" = "CSS";
 
+/* SwiftUI */
+"preferences.copy.options.swiftui" = "SwiftUI";
+
 /* Automatically copy color to clipboard on pick */
 "preferences.copy.automatic" = "Copiar color automaticamente al portapapeles al seleccionar";
 
@@ -288,6 +291,9 @@
 
 /* OpenGL format */
 "color.format.opengl" = "Formato OpenGL";
+
+/* LAB format */
+"color.format.lab" = "Formato LAB";
 
 /* Copy foreground */
 "menu.copy.foreground" = "Copiar primer plano";

@@ -8,6 +8,7 @@ enum ColorFormat: String, Codable, CaseIterable, Equatable {
     case hsb = "HSB"
     case hsl = "HSL"
     case opengl = "OpenGL"
+    case lab = "LAB"
 
     func getExample(color: NSColor, style: CopyFormat) -> String {
         color.toFormat(format: self, style: style)
@@ -21,6 +22,7 @@ enum ColorFormat: String, Codable, CaseIterable, Equatable {
 enum CopyFormat: String, Codable, CaseIterable {
     case css = "preferences.copy.options.css"
     case design = "preferences.copy.options.design"
+    case swiftUI = "preferences.copy.options.swiftui"
     case unformatted = "preferences.copy.options.unformatted"
 
     func localizedString() -> String {
