@@ -93,11 +93,11 @@ struct PreferencesView: View {
                                 Text(PikaText.textAlwaysShowOnLaunch)
                             }
                             #if TARGET_SPARKLE
-                                .onReceive([betaUpdates].publisher.first()) {
-                                    _ in
+                            .onReceive([betaUpdates].publisher.first()) { _ in
                                     NSApp.sendAction(
                                         #selector(AppDelegate.updateFeedURL),
-                                        to: nil, from: nil)
+                                        to: nil, from: nil
+                                    )
                                 }
                             #endif
                             if appMode != .menubar {
@@ -167,6 +167,8 @@ struct PreferencesView: View {
                 Divider()
                     .padding(.vertical, 16.0)
 
+                // Appearance
+                
                 VStack(alignment: .leading, spacing: 10.0) {
                     Text(PikaText.textAppearanceTitle).font(.system(size: 16))
 
@@ -175,8 +177,7 @@ struct PreferencesView: View {
                             PikaText.textContrastStandard,
                             selection: $contrastStandard
                         ) {
-                            ForEach(ContrastStandard.allCases, id: \.self) {
-                                value in
+                            ForEach(ContrastStandard.allCases, id: \.self) { value in
                                 Text(value.rawValue)
                             }
                         }
@@ -191,7 +192,7 @@ struct PreferencesView: View {
                             let horizontalUnit = width / 2
 
                             HStack(spacing: 16.0) {
-                                ComplianceButtons(
+                                CompliancePreviewWCAG(
                                     width: horizontalUnit - 8,
                                     foreground: eyedroppers.foreground,
                                     background: eyedroppers.background
@@ -204,7 +205,8 @@ struct PreferencesView: View {
                         HStack(spacing: 16.0) {
                             CompliancePreviewAPCA(
                                 foreground: eyedroppers.foreground,
-                                background: eyedroppers.background)
+                                background: eyedroppers.background
+                            )
                         }
                         .frame(height: 100)
                     }
@@ -225,8 +227,7 @@ struct PreferencesView: View {
                             Picker(
                                 PikaText.textCopyFormat, selection: $copyFormat
                             ) {
-                                ForEach(CopyFormat.allCases, id: \.self) {
-                                    value in
+                                ForEach(CopyFormat.allCases, id: \.self) { value in
                                     Text(value.localizedString())
                                 }
                             }
@@ -238,7 +239,8 @@ struct PreferencesView: View {
 
                         ColorExampleRow(
                             copyFormat: copyFormat,
-                            eyedropper: eyedroppers.foreground)
+                            eyedropper: eyedroppers.foreground
+                        )
                     }
 
                     Toggle(isOn: $copyColorOnPick) {
@@ -261,19 +263,18 @@ struct PreferencesView: View {
                         VStack(alignment: .leading, spacing: 12.0) {
                             Section(
                                 header:
-                                    Text(PikaText.textFormatDescription).font(
-                                        .system(size: 13, weight: .medium))
+                                Text(PikaText.textFormatDescription).font(
+                                    .system(size: 13, weight: .medium))
                             ) {
                                 Picker(
                                     PikaText.textSpaceTitle,
                                     selection:
-                                        $colorSpace.onChange(perform: {
-                                            NSColorPanel.shared.close()
-                                            Defaults[.colorSpace] = $0
-                                        })
+                                    $colorSpace.onChange(perform: {
+                                        NSColorPanel.shared.close()
+                                        Defaults[.colorSpace] = $0
+                                    })
                                 ) {
-                                    ForEach(primarySpaces, id: \.self) {
-                                        value in
+                                    ForEach(primarySpaces, id: \.self) { value in
                                         if value == systemDefaultSpace {
                                             Text(
                                                 "\(PikaText.textSystemDefault) (\(value.localizedName!))"
@@ -285,8 +286,7 @@ struct PreferencesView: View {
                                         }
                                     }
                                     Divider()
-                                    ForEach(availableSpaces, id: \.self) {
-                                        value in
+                                    ForEach(availableSpaces, id: \.self) { value in
                                         Text(value.localizedName!)
                                             .tag(value)
                                     }

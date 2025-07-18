@@ -8,7 +8,7 @@ struct Footer: View {
 
     var body: some View {
         @Default(.contrastStandard) var contrastStandard
-        let colorContrastRatio = contrastStandard == .wcag ? foreground.color.toContrastRatioString(with: background.color) : 
+        let colorContrastRatio = contrastStandard == .wcag ? foreground.color.toContrastRatioString(with: background.color) :
             foreground.color.APCAcontrastValue(with: background.color)
         let complianceType = contrastStandard == .wcag ? "WCAG" : "APCA"
         let colorCompliance: Any = contrastStandard == .wcag ?

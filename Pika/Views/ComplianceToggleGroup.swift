@@ -30,8 +30,7 @@ struct ComplianceToggleGroup: View {
     }
 
     var body: some View {
-        if complianceType == "WCAG", let wcag = colorCompliance as? NSColor.WCAG
-        {
+        if complianceType == "WCAG", let wcag = colorCompliance as? NSColor.WCAG {
             if theme == .weight {
                 HStack(spacing: 16.0) {
                     HStack(alignment: .center, spacing: 8.0) {
@@ -88,14 +87,15 @@ struct ComplianceToggleGroup: View {
                     }
                 }
             } else if theme == .contrast,
-                let wcag = colorCompliance as? NSColor.WCAG
+                      let wcag = colorCompliance as? NSColor.WCAG
             {
                 HStack(spacing: 12.0) {
                     ComplianceToggle(
                         title: "AA",
                         isCompliant: wcag.ratio30,
                         tooltip: NSLocalizedString(
-                            "color.wcag.30", comment: "WCAG 3:1"),
+                            "color.wcag.30", comment: "WCAG 3:1"
+                        ),
                         large: true,
                         combined: true,
                         size: size
@@ -104,7 +104,8 @@ struct ComplianceToggleGroup: View {
                         title: "AA/AAA",
                         isCompliant: wcag.ratio45,
                         tooltip: NSLocalizedString(
-                            "color.wcag.45", comment: "WCAG 4.5:1"),
+                            "color.wcag.45", comment: "WCAG 4.5:1"
+                        ),
                         large: true,
                         combined: true,
                         size: size
@@ -113,7 +114,8 @@ struct ComplianceToggleGroup: View {
                         title: "AAA",
                         isCompliant: wcag.ratio70,
                         tooltip: NSLocalizedString(
-                            "color.wcag.70", comment: "WCAG 7:1"),
+                            "color.wcag.70", comment: "WCAG 7:1"
+                        ),
                         combined: true,
                         size: size
                     )
@@ -121,7 +123,7 @@ struct ComplianceToggleGroup: View {
             }
 
         } else if complianceType == "APCA",
-            let apca = colorCompliance as? NSColor.APCA
+                  let apca = colorCompliance as? NSColor.APCA
         {
             HStack(spacing: 12.0) {
                 ComplianceToggle(

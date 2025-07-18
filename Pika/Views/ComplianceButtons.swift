@@ -1,7 +1,7 @@
 import Defaults
 import SwiftUI
 
-struct ComplianceButtons: View {
+struct CompliancePreviewWCAG: View {
     @Default(.combineCompliance) var combineCompliance
     var width: CGFloat
     @ObservedObject var foreground: Eyedropper
@@ -23,7 +23,8 @@ struct ComplianceButtons: View {
                 )
                 .padding(20.0)
                 .frame(
-                    maxWidth: width, maxHeight: .infinity, alignment: .leading)
+                    maxWidth: width, maxHeight: .infinity, alignment: .leading
+                )
             }
         )
         .buttonStyle(
@@ -44,7 +45,8 @@ struct ComplianceButtons: View {
                 )
                 .padding(20.0)
                 .frame(
-                    maxWidth: width, maxHeight: .infinity, alignment: .leading)
+                    maxWidth: width, maxHeight: .infinity, alignment: .leading
+                )
             }
         )
         .buttonStyle(
@@ -66,7 +68,7 @@ struct CompliancePreviewAPCA: View {
             with: background.color
         )
 
-        StyledContentView(title: PikaText.textAppearanceAPCATitle, description: PikaText.textAppearanceAPCADescription){
+        StyledContentView(title: PikaText.textAppearanceAPCATitle, description: PikaText.textAppearanceAPCADescription) {
             VStack(alignment: .leading, spacing: 3.0) {
                 Text(PikaText.textColorAPCA)
                     .font(.caption)
@@ -81,7 +83,6 @@ struct CompliancePreviewAPCA: View {
             }
             .frame(maxHeight: .infinity, alignment: .leading)
         }
-
     }
 }
 
@@ -89,9 +90,11 @@ struct ComplianceButtons_Previews: PreviewProvider {
     static var previews: some View {
         let foreground = Eyedropper(
             type: .foreground,
-            color: PikaConstants.initialColors.randomElement()!)
+            color: PikaConstants.initialColors.randomElement()!
+        )
         let background = Eyedropper(type: .background, color: NSColor.black)
-        ComplianceButtons(
-            width: 200, foreground: foreground, background: background)
+        CompliancePreviewWCAG(
+            width: 200, foreground: foreground, background: background
+        )
     }
 }

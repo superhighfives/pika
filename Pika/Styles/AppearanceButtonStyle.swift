@@ -144,7 +144,8 @@ struct StyledContentView<Content: View>: View {
                 )
                 .shadow(
                     color: .black.opacity(colorScheme == .dark ? 0.25 : 0.1),
-                    radius: 2, x: 0, y: 2)
+                    radius: 2, x: 0, y: 2
+                )
 
             VStack(spacing: 4.0) {
                 Text(title).foregroundColor(.primary)
