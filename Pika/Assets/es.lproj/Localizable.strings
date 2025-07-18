@@ -124,11 +124,32 @@
 /* View WCAG compliance by contrast, from 3:1 to 7:1 */
 "preferences.appearance.contrast.description" = "Ver cumplimiento de WCAG por contraste, desde 3:1 hasta 7:1";
 
+/* Contrast Value */
+"preferences.appearance.apca.title" = "Valor de Contraste";
+
+/* View APCA contrast value by lightness contrast (Lc), from 30 to 75 */
+"preferences.appearance.apca.description" = "Ver el valor de contraste APCA por contraste de luminosidad (Lc), desde 30 hasta 75";
+
+/* Contrast Calculation Standard */
+"preferences.contrast.standard" = "Estándar de Cálculo de Contraste";
+
 /* Contrast ratio */
 "color.ratio" = "Proporción de contraste";
 
+/* Contrast ratio is a measure of the difference in perceived brightness between two colors, used to calculate the contrast ratio. */
+"color.ratio.description" = "La proporción de contraste es una medida de la diferencia en el brillo percibido entre dos colores, utilizada para calcular la proporción de contraste.";
+
+/* Contrast Value (Lc) */
+"color.lc" = "Valor de Contraste (Lc)";
+
+/* Lightness contrast (Lc) is a measure of the lightness difference between two colors, used to calculate the contrast value. */
+"color.lc.description" = "El contraste de luminosidad (Lc) es una medida de la diferencia de luminosidad entre dos colores, utilizada para calcular el valor de contraste.";
+
 /* WCAG Compliance */
 "color.wcag" = "Cumplimiento de WCAG";
+
+/* APCA Contrast Reference */
+"color.apca" = "Referencia de Contraste APCA";
 
 /* Foreground */
 "color.foreground" = "Primer plano";
@@ -144,6 +165,18 @@
 
 /* WCAG 7:1 */
 "color.wcag.70" = "El nivel AAA de WCAG 2 requiere una proporción de contraste de al menos 7:1 para texto normal.";
+
+/* APCA 30 */
+"color.apca.30" = "APCA >= 30 es el contraste mínimo para texto base y contenido no textual. Adecuado para texto más grande, marcadores de posición y elementos deshabilitados.";
+
+/* APCA 45 */
+"color.apca.45" = "APCA >= 45 es el contraste mínimo para texto de encabezado. Adecuado para encabezados grandes, elementos de navegación y componentes importantes de la interfaz.";
+
+/* APCA 60 */
+"color.apca.60" = "APCA >= 60 es el contraste mínimo para texto de título. Adecuado para subtítulos, leyendas y contenido secundario que debe ser claramente legible.";
+
+/* APCA 75 */
+"color.apca.75" = "APCA >= 75 es el contraste mínimo para texto de cuerpo. Adecuado para contenido principal, texto de tamaño normal y material de lectura extendida.";
 
 /* Pass */
 "color.wcag.pass" = "Conforme";
@@ -274,11 +307,11 @@
 /* Preferences */
 "menu.preferences" = "Ajustes";
 
-/* Open Website */
+/* Pika website */
 "menu.website" = "Sitio web de Pika";
 
-/* Report Bug or Feedback */
+/* Report feedback */
 "menu.issue" = "Reportar comentarios";
 
 /* Quit */
-"menu.quit" = "Forzar salida";
+"menu.quit" = "Salir";

@@ -40,7 +40,7 @@
 /* Unformatted */
 "preferences.copy.options.unformatted" = "Non formaté";
 
-/* Design */
+/* Design Application */
 "preferences.copy.options.design" = "Logiciel de dessin";
 
 /* CSS */
@@ -58,14 +58,11 @@
 /* Set your RGB color space */
 "preferences.space.description" = "Définissez votre espace colorimétrique RGB";
 
-/* System default */
+/* System Default */
 "preferences.space.default" = "Par défaut";
 
 /* Hide Pika while picking */
 "preferences.pick.hide" = "Masquer Pika lors de la sélection";
-
-/* Automatically copy color to clipboard on pick */
-"preferences.pick.copy" = "Copier automatiquement la couleur dans le presse-papiers lors de la sélection";
 
 /* General Settings */
 "preferences.general.title" = "Réglages";
@@ -73,11 +70,11 @@
 /* Selection Settings */
 "preferences.selection.title" = "Sélection";
 
-/* Launch at login */
-"preferences.launch.description" = "Lancer au démarrage";
-
 /* Hide menu bar icon */
 "preferences.icon.description" = "Masquer l'icône de la barre des menus";
+
+/* Launch at login */
+"preferences.launch.description" = "Lancer au démarrage";
 
 /* Hide color names */
 "preferences.names.description" = "Masquer les noms de couleurs";
@@ -127,11 +124,32 @@
 /* View WCAG compliance by contrast, from 3:1 to 7:1 */
 "preferences.appearance.contrast.description" = "Voir la conformité WCAG en revanche, de 3:1 à 7:1";
 
+/* Contrast Value */
+"preferences.appearance.apca.title" = "Valeur de Contraste";
+
+/* View APCA contrast value by lightness contrast (Lc), from 30 to 75 */
+"preferences.appearance.apca.description" = "Voir la valeur de contraste APCA par contraste de luminosité (Lc), de 30 à 75";
+
+/* Contrast Calculation Standard */
+"preferences.contrast.standard" = "Standard de Calcul de Contraste";
+
 /* Contrast ratio */
 "color.ratio" = "Contraste";
 
+/* Contrast ratio is a measure of the difference in perceived brightness between two colors, used to calculate the contrast ratio. */
+"color.ratio.description" = "Le rapport de contraste est une mesure de la différence de luminosité perçue entre deux couleurs, utilisée pour calculer le rapport de contraste.";
+
+/* Contrast Value (Lc) */
+"color.lc" = "Valeur de Contraste (Lc)";
+
+/* Lightness contrast (Lc) is a measure of the lightness difference between two colors, used to calculate the contrast value. */
+"color.lc.description" = "Le contraste de luminosité (Lc) est une mesure de la différence de luminosité entre deux couleurs, utilisée pour calculer la valeur de contraste.";
+
 /* WCAG Compliance */
 "color.wcag" = "Conformité WCAG";
+
+/* APCA Contrast Reference */
+"color.apca" = "Référence de Contraste APCA";
 
 /* Foreground */
 "color.foreground" = "Premier plan";
@@ -147,6 +165,18 @@
 
 /* WCAG 7:1 */
 "color.wcag.70" = "Le niveau WCAG 2 AAA requiert un contraste d'au moins 7:1 pour un texte normal.";
+
+/* APCA 30 */
+"color.apca.30" = "APCA >= 30 est le contraste minimum pour le texte de base et le contenu non textuel. Convient pour du texte plus grand, des espaces réservés et des éléments désactivés.";
+
+/* APCA 45 */
+"color.apca.45" = "APCA >= 45 est le contraste minimum pour le texte d'en-tête. Convient pour de grands titres, des éléments de navigation et des composants d'interface importants.";
+
+/* APCA 60 */
+"color.apca.60" = "APCA >= 60 est le contraste minimum pour le texte de titre. Convient pour des sous-titres, des légendes et du contenu secondaire qui doit être clairement lisible.";
+
+/* APCA 75 */
+"color.apca.75" = "APCA >= 75 est le contraste minimum pour le texte de corps. Convient pour le contenu principal, le texte de taille normale et le matériel de lecture étendue.";
 
 /* Pass */
 "color.wcag.pass" = "Conforme";
@@ -171,6 +201,9 @@
 
 /* Get started */
 "splash.start" = "Démarrer";
+
+/* Pick */
+"color.pick" = "Sélectionner";
 
 /* Swap */
 "color.swap" = "Permuter";
