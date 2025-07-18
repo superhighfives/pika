@@ -127,11 +127,32 @@
 /* View WCAG compliance by contrast, from 3:1 to 7:1 */
 "preferences.appearance.contrast.description" = "View WCAG compliance by contrast, from 3:1 to 7:1";
 
+/* Contrast Value */
+"preferences.appearance.apca.title" = "Contrast Value";
+
+/* View APCA contrast value by lightness contrast (Lc), from 30 to 75 */
+"preferences.appearance.apca.description" = "View APCA contrast value by lightness contrast (Lc), from 30 to 75";
+
+/* Contrast Calculation Standard */
+"preferences.contrast.standard" = "Contrast Calculation Standard";
+
 /* Contrast ratio */
 "color.ratio" = "Contrast Ratio";
 
+/* Contrast ratio is a measure of the difference in perceived brightness between two colors, used to calculate the contrast ratio. */
+"color.ratio.description" = "Contrast ratio is a measure of the difference in perceived brightness between two colors, used to calculate the contrast ratio.";
+
+/* Contrast Value (Lc) */
+"color.lc" = "Contrast Value (Lc)";
+
+/* Lightness contrast (Lc) is a measure of the lightness difference between two colors, used to calculate the contrast value. */
+"color.lc.description" = "Lightness contrast (Lc) is a measure of the lightness difference between two colors, used to calculate the contrast value.";
+
 /* WCAG Compliance */
 "color.wcag" = "WCAG Compliance";
+
+/* APCA Contrast Reference */
+"color.apca" = "APCA Contrast Reference";
 
 /* Foreground */
 "color.foreground" = "Foreground";
@@ -147,6 +168,18 @@
 
 /* WCAG 7:1 */
 "color.wcag.70" = "WCAG 2 level AAA requires a contrast ratio of at least 7:1 for normal text.";
+
+/* APCA 30 */
+"color.apca.30" = "APCA >= 30 is the minimum contrast for baseline text and non-text content. Suitable for larger text, placeholders, and disabled elements.";
+
+/* APCA 45 */
+"color.apca.45" = "APCA >= 45 is the minimum contrast for headline text. Suitable for large headings, navigation elements, and important UI components.";
+
+/* APCA 60 */
+"color.apca.60" = "APCA >= 60 is the minimum contrast for title text. Suitable for subheadings, captions, and secondary content that needs to be clearly readable.";
+
+/* APCA 75 */
+"color.apca.75" = "APCA >= 75 is the minimum contrast for body text. Suitable for primary content, normal-sized text, and extended reading material.";
 
 /* Pass */
 "color.wcag.pass" = "Pass";
@@ -280,7 +313,7 @@
 /* Preferences */
 "menu.preferences" = "Settings";
 
-/* Open Website */
+/* Pika Website */
 "menu.website" = "Pika website";
 
 /* Report Bug or Feedback */

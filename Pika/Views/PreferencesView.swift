@@ -15,6 +15,7 @@ struct PreferencesView: View {
     @Default(.appMode) var appMode
     @Default(.appFloating) var appFloating
     @Default(.alwaysShowOnLaunch) var alwaysShowOnLaunch
+    @Default(.contrastStandard) var contrastStandard
     @State var colorSpace: NSColorSpace = Defaults[.colorSpace]
     @State var disableHideMenuBarIcon = true
     @State private var viewHeight: CGFloat = 0.0
@@ -24,19 +25,21 @@ struct PreferencesView: View {
     // swiftlint:disable large_tuple opening_brace
     func getColorSpaces() -> ([NSColorSpace], [NSColorSpace], NSColorSpace) {
         let systemDefaultSpace: NSColorSpace = NSScreen.main!.colorSpace!
-        var availableSpaces = NSColorSpace.availableColorSpaces(with: .rgb).unique()
+        var availableSpaces = NSColorSpace.availableColorSpaces(with: .rgb)
+            .unique()
         if !availableSpaces.contains(systemDefaultSpace) {
             availableSpaces.append(systemDefaultSpace)
         }
         var primarySpaces: [NSColorSpace] = []
 
         for space in availableSpaces {
-            if space == NSColorSpace.sRGB ||
-                space == NSColorSpace.adobeRGB1998 ||
-                space == NSColorSpace.displayP3 ||
-                space == systemDefaultSpace
+            if space == NSColorSpace.sRGB || space == NSColorSpace.adobeRGB1998
+                || space == NSColorSpace.displayP3
+                || space == systemDefaultSpace
             {
-                guard let index = availableSpaces.firstIndex(of: space) else { continue }
+                guard let index = availableSpaces.firstIndex(of: space) else {
+                    continue
+                }
                 availableSpaces.remove(at: index)
 
                 if space == systemDefaultSpace {
@@ -53,7 +56,8 @@ struct PreferencesView: View {
     // swiftlint:enable large_tuple opening_brace
 
     var body: some View {
-        let (primarySpaces, availableSpaces, systemDefaultSpace) = getColorSpaces()
+        let (primarySpaces, availableSpaces, systemDefaultSpace) =
+            getColorSpaces()
 
         HStack(alignment: .top, spacing: 0) {
             ZStack {
@@ -61,10 +65,11 @@ struct PreferencesView: View {
                 AppVersion(displayOnTransparent: true)
             }
             .frame(maxWidth: 240.0, maxHeight: .infinity)
-            .background(VisualEffect(
-                material: NSVisualEffectView.Material.sidebar,
-                blendingMode: NSVisualEffectView.BlendingMode.behindWindow
-            ))
+            .background(
+                VisualEffect(
+                    material: NSVisualEffectView.Material.sidebar,
+                    blendingMode: NSVisualEffectView.BlendingMode.behindWindow
+                ))
 
             Divider()
 
@@ -74,7 +79,8 @@ struct PreferencesView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     HStack(alignment: .top, spacing: 0) {
                         VStack(alignment: .leading, spacing: 10.0) {
-                            Text(PikaText.textGeneralTitle).font(.system(size: 16))
+                            Text(PikaText.textGeneralTitle).font(
+                                .system(size: 16))
                             LaunchAtLogin.Toggle {
                                 Text(PikaText.textLaunchDescription)
                             }
@@ -88,7 +94,10 @@ struct PreferencesView: View {
                             }
                             #if TARGET_SPARKLE
                             .onReceive([betaUpdates].publisher.first()) { _ in
-                                    NSApp.sendAction(#selector(AppDelegate.updateFeedURL), to: nil, from: nil)
+                                    NSApp.sendAction(
+                                        #selector(AppDelegate.updateFeedURL),
+                                        to: nil, from: nil
+                                    )
                                 }
                             #endif
                             if appMode != .menubar {
@@ -101,13 +110,17 @@ struct PreferencesView: View {
                                 }
                             }
                         }
-                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                        .frame(
+                            minWidth: 0, maxWidth: .infinity,
+                            alignment: .leading
+                        )
                         .padding(.all, 24.0)
 
                         Divider()
 
                         VStack(alignment: .leading, spacing: 10.0) {
-                            Text(PikaText.textSelectionTitle).font(.system(size: 16))
+                            Text(PikaText.textSelectionTitle).font(
+                                .system(size: 16))
                             Toggle(isOn: $hidePikaWhilePicking) {
                                 Text(PikaText.textPickHide)
                             }
@@ -116,10 +129,15 @@ struct PreferencesView: View {
                             }
                             Toggle(isOn: $appFloating) {
                                 Text(PikaText.textFloatDescription)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .frame(
+                                        maxWidth: .infinity, alignment: .leading
+                                    )
                             }
                         }
-                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                        .frame(
+                            minWidth: 0, maxWidth: .infinity,
+                            alignment: .leading
+                        )
                         .padding(.all, 24.0)
                     }
                     .fixedSize(horizontal: false, vertical: true)
@@ -149,23 +167,49 @@ struct PreferencesView: View {
                 Divider()
                     .padding(.vertical, 16.0)
 
+                // Appearance
+
                 VStack(alignment: .leading, spacing: 10.0) {
                     Text(PikaText.textAppearanceTitle).font(.system(size: 16))
 
-                    GeometryReader { geometry in
-                        let width = geometry.size.width
-                        let horizontalUnit = width / 2
+                    HStack(spacing: 16.0) {
+                        Picker(
+                            PikaText.textContrastStandard,
+                            selection: $contrastStandard
+                        ) {
+                            ForEach(ContrastStandard.allCases, id: \.self) { value in
+                                Text(value.rawValue)
+                            }
+                        }
+                        .pickerStyle(RadioGroupPickerStyle())
+                        .horizontalRadioGroupLayout()
+                        .fixedSize()
+                    }
+                    .padding(.bottom, 8.0)
+                    if contrastStandard == .wcag {
+                        GeometryReader { geometry in
+                            let width = geometry.size.width
+                            let horizontalUnit = width / 2
 
+                            HStack(spacing: 16.0) {
+                                CompliancePreviewWCAG(
+                                    width: horizontalUnit - 8,
+                                    foreground: eyedroppers.foreground,
+                                    background: eyedroppers.background
+                                )
+                            }
+                            .frame(maxWidth: width)
+                        }
+                        .frame(height: 100)
+                    } else {
                         HStack(spacing: 16.0) {
-                            ComplianceButtons(
-                                width: horizontalUnit - 8,
+                            CompliancePreviewAPCA(
                                 foreground: eyedroppers.foreground,
                                 background: eyedroppers.background
                             )
                         }
-                        .frame(maxWidth: width)
+                        .frame(height: 100)
                     }
-                    .frame(height: 100)
                 }
                 .padding(.horizontal, 24.0)
 
@@ -180,7 +224,9 @@ struct PreferencesView: View {
                         HStack(alignment: .firstTextBaseline, spacing: 8.0) {
                             Text(PikaText.textCopyExport)
                                 .fixedSize()
-                            Picker(PikaText.textCopyFormat, selection: $copyFormat) {
+                            Picker(
+                                PikaText.textCopyFormat, selection: $copyFormat
+                            ) {
                                 ForEach(CopyFormat.allCases, id: \.self) { value in
                                     Text(value.localizedString())
                                 }
@@ -189,7 +235,10 @@ struct PreferencesView: View {
                             .labelsHidden()
                         }
 
-                        ColorExampleRow(copyFormat: copyFormat, eyedropper: eyedroppers.foreground)
+                        ColorExampleRow(
+                            copyFormat: copyFormat,
+                            eyedropper: eyedroppers.foreground
+                        )
                     }
 
                     Toggle(isOn: $copyColorOnPick) {
@@ -205,32 +254,42 @@ struct PreferencesView: View {
                 // Color Format
 
                 VStack(alignment: .leading, spacing: 8.0) {
-                    Section(header: Text(PikaText.textFormatTitle).font(.system(size: 16))) {
+                    Section(
+                        header: Text(PikaText.textFormatTitle).font(
+                            .system(size: 16))
+                    ) {
                         VStack(alignment: .leading, spacing: 12.0) {
-                            Section(header:
-                                Text(PikaText.textFormatDescription).font(.system(size: 13, weight: .medium))
+                            Section(
+                                header:
+                                Text(PikaText.textFormatDescription).font(
+                                    .system(size: 13, weight: .medium))
                             ) {
-                                Picker(PikaText.textSpaceTitle, selection:
+                                Picker(
+                                    PikaText.textSpaceTitle,
+                                    selection:
                                     $colorSpace.onChange(perform: {
                                         NSColorPanel.shared.close()
                                         Defaults[.colorSpace] = $0
-                                    })) {
-                                        ForEach(primarySpaces, id: \.self) { value in
-                                            if value == systemDefaultSpace {
-                                                Text("\(PikaText.textSystemDefault) (\(value.localizedName!))")
-                                                    .tag(value)
-                                            } else {
-                                                Text(value.localizedName!)
-                                                    .tag(value)
-                                            }
-                                        }
-                                        Divider()
-                                        ForEach(availableSpaces, id: \.self) { value in
+                                    })
+                                ) {
+                                    ForEach(primarySpaces, id: \.self) { value in
+                                        if value == systemDefaultSpace {
+                                            Text(
+                                                "\(PikaText.textSystemDefault) (\(value.localizedName!))"
+                                            )
+                                            .tag(value)
+                                        } else {
                                             Text(value.localizedName!)
                                                 .tag(value)
                                         }
                                     }
-                                    .labelsHidden()
+                                    Divider()
+                                    ForEach(availableSpaces, id: \.self) { value in
+                                        Text(value.localizedName!)
+                                            .tag(value)
+                                    }
+                                }
+                                .labelsHidden()
                             }
                         }
                     }
@@ -243,9 +302,13 @@ struct PreferencesView: View {
                 // Global Shortcut
 
                 VStack(alignment: .leading, spacing: 8.0) {
-                    Section(header: Text(PikaText.textHotkeyTitle).font(.system(size: 16))) {
+                    Section(
+                        header: Text(PikaText.textHotkeyTitle).font(
+                            .system(size: 16))
+                    ) {
                         VStack(alignment: .leading, spacing: 12.0) {
-                            Text(PikaText.textHotkeyDescription).font(.system(size: 13, weight: .medium))
+                            Text(PikaText.textHotkeyDescription).font(
+                                .system(size: 13, weight: .medium))
                             KeyboardShortcuts.Recorder(for: .togglePika)
                         }
                     }
