@@ -168,7 +168,7 @@ struct PreferencesView: View {
                     .padding(.vertical, 16.0)
 
                 // Appearance
-                
+
                 VStack(alignment: .leading, spacing: 10.0) {
                     Text(PikaText.textAppearanceTitle).font(.system(size: 16))
 

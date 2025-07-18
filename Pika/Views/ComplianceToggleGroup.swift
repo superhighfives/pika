@@ -129,7 +129,7 @@ struct ComplianceToggleGroup: View {
                 ComplianceToggle(
                     title: "Baseline",
                     isCompliant: abs(apca.value) >= 30,
-                    tooltip: "APCA ≥45",
+                    tooltip: "APCA ≥30",
                     combined: true,
                     size: size
                 )
@@ -143,7 +143,7 @@ struct ComplianceToggleGroup: View {
                 ComplianceToggle(
                     title: "Title",
                     isCompliant: abs(apca.value) >= 60,
-                    tooltip: "APCA ≥45",
+                    tooltip: "APCA ≥60",
                     combined: true,
                     size: size
                 )

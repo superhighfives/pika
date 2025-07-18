@@ -3,11 +3,11 @@ import SwiftUI
 
 struct Footer: View {
     @Default(.combineCompliance) var combineCompliance
+    @Default(.contrastStandard) var contrastStandard
     @ObservedObject var foreground: Eyedropper
     @ObservedObject var background: Eyedropper
 
     var body: some View {
-        @Default(.contrastStandard) var contrastStandard
         let colorContrastRatio = contrastStandard == .wcag ? foreground.color.toContrastRatioString(with: background.color) :
             foreground.color.APCAcontrastValue(with: background.color)
         let complianceType = contrastStandard == .wcag ? "WCAG" : "APCA"
