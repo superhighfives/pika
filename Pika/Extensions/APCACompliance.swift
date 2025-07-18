@@ -18,8 +18,8 @@ extension NSColor {
         )
     }
 
-    func APCAcontrastValue(with color: NSColor) -> String {
-        let value = calculateAPCA(with: color)
+    func toAPCAcontrastValue(with color: NSColor) -> String {
+        let value = abs(calculateAPCA(with: color))
         let number = NSNumber(value: value)
 
         let numberFormatter = NumberFormatter()

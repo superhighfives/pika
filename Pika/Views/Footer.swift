@@ -9,7 +9,7 @@ struct Footer: View {
 
     var body: some View {
         let colorContrastRatio = contrastStandard == .wcag ? foreground.color.toContrastRatioString(with: background.color) :
-            foreground.color.APCAcontrastValue(with: background.color)
+            foreground.color.toAPCAcontrastValue(with: background.color)
         let complianceType = contrastStandard == .wcag ? "WCAG" : "APCA"
         let colorCompliance: Any = contrastStandard == .wcag ?
             foreground.color.toWCAGCompliance(with: background.color) as Any :
@@ -23,9 +23,17 @@ struct Footer: View {
                     .fontWeight(.semibold)
                     .foregroundColor(.secondary)
                     .fixedSize()
-                Text("\(colorContrastRatio)")
-                    .font(.system(size: 18))
-                    .fixedSize()
+                if contrastStandard == .wcag {
+                    Text("\(colorContrastRatio)")
+                        .font(.system(size: 18))
+                        .help(PikaText.textColorRatioDescription)
+                        .fixedSize()
+                } else {
+                    Text("\(colorContrastRatio)")
+                        .font(.system(size: 18))
+                        .help(PikaText.textLightnessContrastValueDescription)
+                        .fixedSize()
+                }
             }
 
             Divider()

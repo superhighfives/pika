@@ -134,11 +134,11 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
         NSLayoutConstraint.activate(hconstraints)
 
         foreground.$color.sink { textField.stringValue = self.contrastStandard == .wcag ? $0.toContrastRatioString(with: background.color) :
-            $0.APCAcontrastValue(with: background.color)
+            $0.toAPCAcontrastValue(with: background.color)
         }
         .store(in: &cancellables)
         background.$color.sink { textField.stringValue = self.contrastStandard == .wcag ? $0.toContrastRatioString(with: background.color) :
-            $0.APCAcontrastValue(with: background.color)
+            $0.toAPCAcontrastValue(with: background.color)
         }
         .store(in: &cancellables)
         return item
