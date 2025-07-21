@@ -1,5 +1,7 @@
+import AppKit
 import Defaults
 import KeyboardShortcuts
+import SwiftData
 import SwiftUI
 
 // swiftlint:disable trailing_comma
@@ -257,6 +259,44 @@ enum PikaText {
         "preferences.hotkey.description",
         comment: "Set a global hotkey shortcut to invoke Pika"
     )
+}
+
+// MARK: - SwiftData Models
+
+@Model
+final class ColorPair {
+    var foregroundColor: Data
+    var backgroundColor: Data
+    var timestamp: Date
+
+    init(foregroundColor: NSColor, backgroundColor: NSColor) {
+        self.foregroundColor = Self.colorToData(foregroundColor)
+        self.backgroundColor = Self.colorToData(backgroundColor)
+        timestamp = Date()
+    }
+
+    var foreground: NSColor {
+        get { Self.dataToColor(foregroundColor) }
+        set { foregroundColor = Self.colorToData(newValue) }
+    }
+
+    var background: NSColor {
+        get { Self.dataToColor(backgroundColor) }
+        set { backgroundColor = Self.colorToData(newValue) }
+    }
+
+    private static func colorToData(_ color: NSColor) -> Data {
+        let rgbColor = color.usingColorSpace(.deviceRGB) ?? color
+        let data = try! NSKeyedArchiver.archivedData(withRootObject: rgbColor, requiringSecureCoding: true)
+        return data
+    }
+
+    private static func dataToColor(_ data: Data) -> NSColor {
+        guard let color = try? NSKeyedUnarchiver.unarchivedObject(ofClass: NSColor.self, from: data) else {
+            return .clear
+        }
+        return color
+    }
 }
 
 // swiftlint:enable trailing_comma

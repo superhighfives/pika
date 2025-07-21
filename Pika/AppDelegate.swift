@@ -2,6 +2,7 @@ import Cocoa
 import Defaults
 import KeyboardShortcuts
 import LaunchAtLogin
+import SwiftData
 import SwiftUI
 #if TARGET_SPARKLE
     import Sparkle
@@ -17,7 +18,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     var splashWindow: NSWindow!
     var aboutWindow: NSWindow!
     var preferencesWindow: NSWindow!
+    var colorHistoryWindow: NSWindow!
     var eyedroppers: Eyedroppers!
+    var modelContainer: ModelContainer!
 
     var undoManager = UndoManager()
 
@@ -99,14 +102,27 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         setupAppMode()
         setupStatusBar()
 
+        // Set up SwiftData
+        do {
+            modelContainer = try ModelContainer(for: ColorPair.self)
+        } catch {
+            fatalError("Failed to initialize SwiftData: \(error)")
+        }
+
         // Set up eyedroppers
         eyedroppers = Eyedroppers()
         eyedroppers.foreground.undoManager = undoManager
         eyedroppers.background.undoManager = undoManager
+        eyedroppers.onColorsChanged = { [weak self] in
+            Task { @MainActor in
+                self?.saveColorPair()
+            }
+        }
 
         // Define content view
         let contentView = ContentView()
             .environmentObject(eyedroppers)
+            .modelContainer(modelContainer)
             .frame(minWidth: 520,
                    idealWidth: 520,
                    maxWidth: 600,
@@ -281,6 +297,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         )
         preferences.keyEquivalentModifierMask = NSEvent.ModifierFlags.command
         statusBarMenu.addItem(preferences)
+
+        statusBarMenu.addItem(
+            withTitle: "Color History...",
+            action: #selector(openColorHistoryWindow(_:)),
+            keyEquivalent: ""
+        )
 
         statusBarMenu.addItem(NSMenuItem.separator())
         statusBarMenu.addItem(
@@ -476,6 +498,50 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     @IBAction func terminatePika(_: Any) {
         NSApplication.shared.terminate(self)
+    }
+
+    @IBAction func openColorHistoryWindow(_: Any?) {
+        if colorHistoryWindow == nil {
+            let view = NSHostingView(rootView: ColorHistory()
+                .environmentObject(eyedroppers)
+                .modelContainer(modelContainer))
+
+            colorHistoryWindow = PikaWindow.createSecondaryWindow(
+                title: "Color History",
+                size: NSRect(x: 0, y: 0, width: 600, height: 500),
+                styleMask: [.titled, .closable, .resizable, .miniaturizable]
+            )
+            colorHistoryWindow.contentView = view
+        }
+        colorHistoryWindow.makeKeyAndOrderFront(nil)
+    }
+
+    @MainActor
+    private func saveColorPair() {
+        let colorPair = ColorPair(
+            foregroundColor: eyedroppers.foreground.color,
+            backgroundColor: eyedroppers.background.color
+        )
+
+        modelContainer.mainContext.insert(colorPair)
+
+        undoManager.registerUndo(withTarget: self) { target in
+            Task { @MainActor in
+                target.modelContainer.mainContext.delete(colorPair)
+                do {
+                    try target.modelContainer.mainContext.save()
+                } catch {
+                    print("Failed to undo color pair save: \(error)")
+                }
+            }
+        }
+        undoManager.setActionName("Save Color Pair")
+
+        do {
+            try modelContainer.mainContext.save()
+        } catch {
+            print("Failed to save color pair: \(error)")
+        }
     }
 }
 

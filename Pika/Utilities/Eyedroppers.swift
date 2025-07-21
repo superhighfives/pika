@@ -4,10 +4,21 @@ import SwiftUI
 class Eyedroppers: ObservableObject {
     @Default(.colorFormat) var colorFormat
 
+    var onColorsChanged: (() -> Void)?
+
     @Published var foreground = Eyedropper(
         type: .foreground, color: PikaConstants.initialColors.randomElement()!
     )
     @Published var background = Eyedropper(type: .background, color: NSColor.black)
+
+    init() {
+        foreground.onColorChanged = { [weak self] in
+            self?.onColorsChanged?()
+        }
+        background.onColorChanged = { [weak self] in
+            self?.onColorsChanged?()
+        }
+    }
 }
 
 class Eyedropper: ObservableObject {
@@ -46,11 +57,16 @@ class Eyedropper: ObservableObject {
 
     let type: Types
     var forceShow = false
+    var onColorChanged: (() -> Void)?
 
     let colorNames: [ColorName] = loadColors()!
     var closestVector: ClosestVector!
 
-    @objc @Published public var color: NSColor
+    @objc @Published public var color: NSColor {
+        didSet {
+            onColorChanged?()
+        }
+    }
 
     var undoManager: UndoManager?
 
