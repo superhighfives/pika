@@ -202,12 +202,10 @@ struct PreferencesView: View {
                         }
                         .frame(height: 100)
                     } else {
-                        HStack(spacing: 16.0) {
-                            CompliancePreviewAPCA(
-                                foreground: eyedroppers.foreground,
-                                background: eyedroppers.background
-                            )
-                        }
+                        CompliancePreviewAPCA(
+                            foreground: eyedroppers.foreground,
+                            background: eyedroppers.background
+                        )
                         .frame(height: 100)
                     }
                 }

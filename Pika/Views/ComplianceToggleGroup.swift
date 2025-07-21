@@ -32,7 +32,7 @@ struct ComplianceToggleGroup: View {
     var body: some View {
         if complianceType == "WCAG", let wcag = colorCompliance as? NSColor.WCAG {
             if theme == .weight {
-                HStack(spacing: 16.0) {
+                HStack(spacing: size == .full ? 16.0 : 8.0) {
                     HStack(alignment: .center, spacing: 8.0) {
                         if size == .full {
                             Text(PikaText.textColorNormal)
@@ -89,7 +89,7 @@ struct ComplianceToggleGroup: View {
             } else if theme == .contrast,
                       let wcag = colorCompliance as? NSColor.WCAG
             {
-                HStack(spacing: 12.0) {
+                HStack(spacing: size == .full ? 16.0 : 8.0) {
                     ComplianceToggle(
                         title: "AA",
                         isCompliant: wcag.ratio30,
@@ -125,7 +125,7 @@ struct ComplianceToggleGroup: View {
         } else if complianceType == "APCA",
                   let apca = colorCompliance as? NSColor.APCA
         {
-            HStack(spacing: 12.0) {
+            HStack(spacing: size == .full ? 16.0 : 8.0) {
                 ComplianceToggle(
                     title: "Baseline",
                     isCompliant: abs(apca.value) >= 30,

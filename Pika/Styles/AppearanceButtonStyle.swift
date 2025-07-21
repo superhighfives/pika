@@ -154,6 +154,7 @@ struct StyledContentView<Content: View>: View {
                     .multilineTextAlignment(.center)
                     .foregroundColor(.secondary)
                     .padding(.horizontal, 20.0)
+                    .frame(maxWidth: 250.0)
             }
         }
         .contentShape(Rectangle())
