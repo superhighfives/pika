@@ -202,10 +202,15 @@ struct PreferencesView: View {
                         }
                         .frame(height: 100)
                     } else {
-                        CompliancePreviewAPCA(
-                            foreground: eyedroppers.foreground,
-                            background: eyedroppers.background
-                        )
+                        GeometryReader { geometry in
+                            let width = geometry.size.width
+
+                            CompliancePreviewAPCA(
+                                foreground: eyedroppers.foreground,
+                                background: eyedroppers.background
+                            )
+                            .frame(maxWidth: width)
+                        }
                         .frame(height: 100)
                     }
                 }

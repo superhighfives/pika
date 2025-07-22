@@ -121,6 +121,50 @@ struct StyledContentView<Content: View>: View {
         self.content = content()
     }
 
+    func makeOverlay() -> some View {
+        HStack {
+            Rectangle()
+                .fill(
+                    LinearGradient(
+                        gradient: .init(
+                            colors: colorScheme == .dark
+                                ? [
+                                    darkBaseColor.opacity(0.5),
+                                    darkBaseColor.opacity(0),
+                                ]
+                                : [
+                                    lightBaseColor.opacity(0.9),
+                                    lightBaseColor.opacity(0),
+                                ]
+                        ),
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                )
+                .frame(maxWidth: 25, maxHeight: .infinity)
+            Spacer()
+            Rectangle()
+                .fill(
+                    LinearGradient(
+                        gradient: .init(
+                            colors: colorScheme == .dark
+                                ? [
+                                    darkBaseColor.opacity(0),
+                                    darkBaseColor.opacity(0.5),
+                                ]
+                                : [
+                                    lightBaseColor.opacity(0),
+                                    lightBaseColor.opacity(0.9),
+                                ]
+                        ),
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                )
+                .frame(maxWidth: 25, maxHeight: .infinity)
+        }
+    }
+
     var body: some View {
         VStack {
             content
@@ -134,6 +178,9 @@ struct StyledContentView<Content: View>: View {
                         startPoint: .init(x: 0, y: 0),
                         endPoint: .init(x: 0, y: 1)
                     )
+                )
+                .overlay(
+                    makeOverlay()
                 )
                 .clipShape(
                     RoundedRectangle(cornerRadius: 10.0, style: .continuous)

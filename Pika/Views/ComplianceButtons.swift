@@ -69,19 +69,13 @@ struct CompliancePreviewAPCA: View {
         )
 
         StyledContentView(title: PikaText.textAppearanceAPCATitle, description: PikaText.textAppearanceAPCADescription) {
-            VStack(alignment: .leading, spacing: 3.0) {
-                Text(PikaText.textColorAPCA)
-                    .font(.caption)
-                    .fontWeight(.semibold)
-                    .foregroundColor(.secondary)
-
-                ComplianceToggleGroup(
-                    colorCompliance: colorAPCACompliance,
-                    complianceType: "APCA",
-                    theme: .weight
-                )
-            }
-            .frame(maxHeight: .infinity, alignment: .leading)
+            ComplianceToggleGroup(
+                colorCompliance: colorAPCACompliance,
+                complianceType: "APCA",
+                theme: .weight
+            )
+            .padding(20.0)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         }
     }
 }
