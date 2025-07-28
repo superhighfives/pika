@@ -107,12 +107,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         // Define content view
         let contentView = ContentView()
             .environmentObject(eyedroppers)
-            .frame(minWidth: 520,
-                   idealWidth: 520,
-                   maxWidth: 600,
+            .frame(minWidth: 570,
+                   idealWidth: 570,
+                   maxWidth: 650,
                    minHeight: 230,
                    idealHeight: 230,
-                   maxHeight: 360,
+                   maxHeight: 400,
                    alignment: .center)
 
         pikaWindow = PikaWindow.createPrimaryWindow()
@@ -345,7 +345,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 title: "Preferences",
                 size: NSRect(x: 0, y: 0, width: 750, height: 750),
                 styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView],
-                maxHeight: 750
+                maxHeight: 750,
             )
             preferencesWindow.contentView = view
         }
