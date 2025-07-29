@@ -3,6 +3,7 @@ import KeyboardShortcuts
 import SwiftUI
 
 // swiftlint:disable trailing_comma
+// swiftlint:disable line_length
 
 extension KeyboardShortcuts.Name {
     static let togglePika = Self("togglePika")
@@ -53,6 +54,11 @@ enum PikaConstants {
     static let ncTriggerFormatHSB = "triggerFormatHSB"
     static let ncTriggerFormatHSL = "triggerFormatHSL"
     static let ncTriggerFormatOpenGL = "triggerFormatOpenGL"
+    static let ncTriggerFormatLAB = "triggerFormatLAB"
+    static let ncTriggerQuit = "triggerQuit"
+
+    // Disabled formats for SwiftUI copy format
+    static let disabledFormats: [ColorFormat] = [.hex, .hsl, .opengl, .lab]
 }
 
 enum PikaText {
@@ -67,7 +73,11 @@ enum PikaText {
     static let textColorPass = NSLocalizedString("color.wcag.pass", comment: "Pass")
     static let textColorFail = NSLocalizedString("color.wcag.fail", comment: "Fail")
     static let textColorRatio = NSLocalizedString("color.ratio", comment: "Contrast Ratio")
+    static let textColorRatioDescription = NSLocalizedString("color.ratio.description", comment: "Contrast ratio is a measure of the difference in perceived brightness between two colors, used to calculate the contrast ratio.")
+    static let textLightnessContrastValue = NSLocalizedString("color.lc", comment: "Lightness Contrast Level")
+    static let textLightnessContrastValueDescription = NSLocalizedString("color.lc.description", comment: "Lightness contrast (Lc) is a measure of the lightness difference between two colors, used to calculate the contrast value.")
     static let textColorWCAG = NSLocalizedString("color.wcag", comment: "WCAG Compliance")
+    static let textColorAPCA = NSLocalizedString("color.apca", comment: "APCA Compliance")
     static let textColorWCAG30 = NSLocalizedString("color.wcag.30", comment: "WCAG 3:1")
     static let textColorWCAG45 = NSLocalizedString("color.wcag.45", comment: "WCAG 4.5:1")
     static let textColorWCAG70 = NSLocalizedString("color.wcag.70", comment: "WCAG 7:1")
@@ -202,6 +212,18 @@ enum PikaText {
         "preferences.appearance.contrast.description",
         comment: "View WCAG compliance by contrast, from 3:1 to 7:1"
     )
+    static let textAppearanceAPCATitle = NSLocalizedString(
+        "preferences.appearance.apca.title",
+        comment: "Contrast Value"
+    )
+    static let textAppearanceAPCADescription = NSLocalizedString(
+        "preferences.appearance.apca.description",
+        comment: "View APCA contrast value by lightness contrast (Lc), from 30 to 75"
+    )
+    static let textContrastStandard = NSLocalizedString(
+        "preferences.contrast.standard",
+        comment: "Contrast Standard"
+    )
 
     // Copy Settings
     static let textCopyTitle = NSLocalizedString("preferences.copy.title", comment: "Copy Settings")
@@ -227,6 +249,7 @@ enum PikaText {
     static let textFormatHSL = NSLocalizedString("color.format.hsl", comment: "HSL format")
     static let textFormatHSB = NSLocalizedString("color.format.hsb", comment: "HSB format")
     static let textFormatOpenGL = NSLocalizedString("color.format.opengl", comment: "OpenGL format")
+    static let textFormatLAB = NSLocalizedString("color.format.lab", comment: "LAB format")
 
     // Global Shortcut
     static let textHotkeyTitle = NSLocalizedString("preferences.hotkey.title", comment: "Global Shortcut")
@@ -237,3 +260,4 @@ enum PikaText {
 }
 
 // swiftlint:enable trailing_comma
+// swiftlint:enable line_length

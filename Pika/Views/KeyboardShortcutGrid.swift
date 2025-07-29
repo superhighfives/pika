@@ -9,7 +9,7 @@ struct KeyboardShortcutGrid: View {
                 let width = geometry.size.width
                 let height = geometry.size.height
 
-                let horizontalUnit = width / 5
+                let horizontalUnit = width / 6
                 let verticalUnit = floor(height / 3)
 
                 VStack(spacing: 0.0) {
@@ -61,6 +61,16 @@ struct KeyboardShortcutGrid: View {
                             keys: ["⌘", "S"]
                         )
                         .frame(width: horizontalUnit, height: verticalUnit)
+
+                        Divider()
+                            .frame(height: verticalUnit)
+
+                        KeyboardShortcutItem(
+                            title: PikaText.textColorSystemPickerBackgroundSimple,
+                            event: PikaConstants.ncTriggerSystemPickerBackground,
+                            keys: ["⇧", "⌘", "S"]
+                        )
+                        .frame(width: horizontalUnit, height: verticalUnit)
                     }
 
                     Divider()
@@ -68,16 +78,6 @@ struct KeyboardShortcutGrid: View {
 
                     // Copy
                     HStack(spacing: 0) {
-                        KeyboardShortcutItem(
-                            title: PikaText.textColorSystemPickerBackgroundSimple,
-                            event: PikaConstants.ncTriggerSystemPickerBackground,
-                            keys: ["⇧", "⌘", "S"]
-                        )
-                        .frame(width: horizontalUnit, height: verticalUnit)
-
-                        Divider()
-                            .frame(height: verticalUnit)
-
                         KeyboardShortcutItem(
                             title: PikaText.textColorUndo,
                             event: PikaConstants.ncTriggerUndo,
@@ -91,7 +91,7 @@ struct KeyboardShortcutGrid: View {
                         KeyboardShortcutItem(
                             title: PikaText.textColorRedo,
                             event: PikaConstants.ncTriggerRedo,
-                            keys: ["⌘", "Z"]
+                            keys: ["⇧", "⌘", "Z"]
                         )
                         .frame(width: horizontalUnit, height: verticalUnit)
 
@@ -101,7 +101,7 @@ struct KeyboardShortcutGrid: View {
                         KeyboardShortcutItem(
                             title: PikaText.textColorSwapDetail,
                             event: PikaConstants.ncTriggerSwap,
-                            keys: ["⇧", "⌘", "X"]
+                            keys: ["X"]
                         )
                         .frame(width: horizontalUnit, height: verticalUnit)
 
@@ -114,6 +114,21 @@ struct KeyboardShortcutGrid: View {
                             keys: ["⌘", ","]
                         )
                         .frame(width: horizontalUnit, height: verticalUnit)
+
+                        Divider()
+                            .frame(height: verticalUnit)
+
+                        KeyboardShortcutItem(
+                            title: PikaText.textMenuQuit,
+                            event: PikaConstants.ncTriggerQuit,
+                            keys: ["⌘", "Q"]
+                        )
+                        .frame(width: horizontalUnit, height: verticalUnit)
+
+                        Divider()
+                            .frame(height: verticalUnit)
+
+                        Spacer()
                     }
 
                     Divider()
@@ -164,6 +179,16 @@ struct KeyboardShortcutGrid: View {
                             title: PikaText.textFormatOpenGL,
                             event: PikaConstants.ncTriggerFormatOpenGL,
                             keys: ["⌘", "5"]
+                        )
+                        .frame(width: horizontalUnit, height: verticalUnit)
+
+                        Divider()
+                            .frame(height: verticalUnit)
+
+                        KeyboardShortcutItem(
+                            title: PikaText.textFormatLAB,
+                            event: PikaConstants.ncTriggerFormatLAB,
+                            keys: ["⌘", "6"]
                         )
                         .frame(width: horizontalUnit, height: verticalUnit)
                     }

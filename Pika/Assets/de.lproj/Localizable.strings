@@ -1,191 +1,86 @@
-/* Build */
-"app.build" = "Build";
-
-/* Designed by */
-"app.designed" = "Entworfen von";
-
-/* GitHub */
-"app.github" = "GitHub";
-
 /* Pika */
 "app.name" = "Pika";
-
-/* Unknown */
-"app.unknown" = "Unbekannt";
 
 /* Version */
 "app.version" = "Version";
 
+/* Build */
+"app.build" = "Build";
+
+/* Unknown */
+"app.unknown" = "Unbekannt";
+
+/* Designed by */
+"app.designed" = "Entworfen von";
+
 /* Website */
 "app.website" = "Website";
 
-/* Background */
-"color.background" = "Hintergrund";
+/* GitHub */
+"app.github" = "GitHub";
 
-/* Copy */
-"color.copy" = "Kopieren";
+/* Global Shortcut */
+"preferences.hotkey.title" = "Globaler Kurzbefehl";
 
-/* Copy background */
-"color.copy.background" = "Hintergrund kopieren";
+/* Set a global hotkey shortcut to invoke Pika */
+"preferences.hotkey.description" = "Festlegen eines globalen Tastaturkurzbefehls, um Pika aufzurufen";
 
-/* Copy current format */
-"color.copy.current" = "Aktuelles Format kopieren";
+/* Copy Settings */
+"preferences.copy.title" = "Kopieren-Einstellungen";
 
-/* Copy all as JSON */
-"color.copy.data" = "Als JSON kopieren";
+/* Export color for */
+"preferences.copy.export" = "Farbe exportieren für";
 
-/* Copy foreground */
-"color.copy.foreground" = "Vordergrund kopieren";
+/* Example output */
+"preferences.copy.export.example" = "Beispiel";
 
-/* Copy HEX values */
-"color.copy.hex" = "HEX-Werte kopieren";
+/* Export Format */
+"preferences.copy.format" = "Exportformat";
 
-/* Copy HSB values */
-"color.copy.hsb" = "HSB-Werte kopieren";
+/* Unformatted */
+"preferences.copy.options.unformatted" = "Unformatiert";
 
-/* Copy HSL values */
-"color.copy.hsl" = "HSL-Werte kopieren";
+/* Design Application */
+"preferences.copy.options.design" = "Design-Software";
 
-/* Copy RGB values */
-"color.copy.rgb" = "RGB-Werte kopieren";
+/* CSS */
+"preferences.copy.options.css" = "CSS";
 
-/* Copy OpenGL values */
-"color.copy.opengl" = "OpenGL-Werte kopieren";
+/* SwiftUI */
+"preferences.copy.options.swiftui" = "SwiftUI";
 
-/* System color picker */
-"color.system" = "Systemfarbwähler";
+/* Automatically copy color to clipboard on pick */
+"preferences.copy.automatic" = "Automatisches Kopieren in die Zwischenablage nach dem Auswählen einer Farbe";
 
-/* Use foreground system color picker */
-"color.system.foreground" = "Vordergrund-Systemfarbauswahl";
+/* Color Format */
+"preferences.format.title" = "Farbformat";
 
-/* Use background system color picker */
-"color.system.background" = "Hintergrund-Systemfarbauswahl";
+/* Set your preferred display format for colors */
+"preferences.format.description" = "Festlegen des bevorzugten Anzeigeformats für Farben";
 
-/* System foreground */
-"color.system.foreground.simple" = "Systemvordergrund";
+/* Set your RGB color space */
+"preferences.space.description" = "Einstellen des RGB-Farbraums";
 
-/* System background */
-"color.system.background.simple" = "Systemhintergrund";
+/* System Default */
+"preferences.space.default" = "Systemstandard";
 
-/* HEX format */
-"color.format.hex" = "Hex-Format";
+/* Hide Pika while picking */
+"preferences.pick.hide" = "Pika während dem Auswählen verstecken";
 
-/* HSB format */
-"color.format.hsb" = "HSB-Format";
+/* General Settings */
+"preferences.general.title" = "Allgemeine Einstellungen";
 
-/* HSL format */
-"color.format.hsl" = "HSL-Format";
+/* Selection Settings */
+"preferences.selection.title" = "Auswahl-Einstellungen";
 
-/* RGB format */
-"color.format.rgb" = "RGB-Format";
+/* Hide menu bar icon */
+"preferences.icon.description" = "Menüleistensymbol verstecken";
 
-/* OpenGL format */
-"color.format.opengl" = "OpenGL-Format";
+/* Launch at login */
+"preferences.launch.description" = "Starten beim Login";
 
-/* Copy all as text */
-"color.copy.text" = "Als Text kopieren";
-
-/* Copied */
-"color.copy.toast" = "Kopiert";
-
-/* Foreground */
-"color.foreground" = "Vordergrund";
-
-/* Pick */
-"color.pick" = "Auswählen";
-
-/* Pick background */
-"color.pick.background" = "Hintergrund auswählen";
-
-/* Pick foreground */
-"color.pick.foreground" = "Vordergrund auswählen";
-
-/* Contrast ratio */
-"color.ratio" = "Kontrastverhältnis";
-
-/* Redo */
-"color.redo" = "Wiederholen";
-
-/* Swap */
-"color.swap" = "Tauschen";
-
-/* Swap colors */
-"color.swap.detail" = "Farben tauschen";
-
-/* Undo */
-"color.undo" = "Widerrufen";
-
-/* WCAG Compliance */
-"color.wcag" = "WCAG-Konformität";
-
-/* WCAG 3:1 */
-"color.wcag.30" = "WCAG 2-Level AA erfordert ein Kontrastverhältnis von mindestens 3:1 für großen (18pt / ~24px) oder fetten (14pt / ~18.6px) Text und für Nicht-Text-Inhalte wie UI.";
-
-/* WCAG 4.5:1 */
-"color.wcag.45" = "WCAG 2-Level AA erfordert ein Kontrastverhältnis von mindestens 4,5:1 für normalen Text. WCAG 2-Level AAA erfordert mindestens 4,5:1 für großen (18pt / ~24px) oder fetten (14pt / ~18.6px) Text.";
-
-/* WCAG 7:1 */
-"color.wcag.70" = "WCAG 2-Level AAA erfordert ein Kontrastverhältnis von mindestens 7:1 für normalen Text.";
-
-/* Fail */
-"color.wcag.fail" = "Gescheitert";
-
-/* Large */
-"color.wcag.large" = "Gross";
-
-/* LG */
-"color.wcag.large.abbr" = "LG";
-
-/* Normal */
-"color.wcag.normal" = "Normal";
-
-/* Pass */
-"color.wcag.pass" = "Bestanden";
-
-/* No comment provided by engineer. */
-"L" = "";
-
-/* About */
-"menu.about" = "Über Pika";
-
-/* Copy background */
-"menu.copy.background" = "Hintergrund kopieren";
-
-/* Copy foreground */
-"menu.copy.foreground" = "Vordergrund kopieren";
-
-/* Export */
-"menu.export" = "Exportieren";
-
-/* Preferences */
-"menu.preferences" = "Einstellungen";
-
-/* Pika website */
-"menu.website" = "Pika-website";
-
-/* Report feedback */
-"menu.issue" = "Feedback melden";
-
-/* Quit */
-"menu.quit" = "Beenden";
-
-/* Check for updates */
-"menu.updates" = "Updates überprüfen";
-
-/* View WCAG compliance by contrast, from 3:1 to 7:1 */
-"preferences.appearance.contrast.description" = "WCAG-Konformität ansehen, von 3:1 bis 7:1";
-
-/* Contrast */
-"preferences.appearance.contrast.title" = "Kontrast";
-
-/* Appearance */
-"preferences.appearance.title" = "Erscheinungsbild";
-
-/* View WCAG compliance by weight, from normal to large */
-"preferences.appearance.weight.description" = "WCAG-Konformität ansehen, von normal zu gross";
-
-/* Weight */
-"preferences.appearance.weight.title" = "Gewicht";
+/* Hide color names */
+"preferences.names.description" = "Farbnamen verstecken";
 
 /* Subscribe to beta releases */
 "preferences.beta.description" = "Beta-Veröffentlichungen abonnieren";
@@ -217,65 +112,89 @@
 /* Hide app */
 "preferences.app.hidden.description" = "App verstecken";
 
-/* Automatically copy color to clipboard on pick */
-"preferences.copy.automatic" = "Automatisches Kopieren in die Zwischenablage nach dem Auswählen einer Farbe";
+/* Appearance */
+"preferences.appearance.title" = "Erscheinungsbild";
 
-/* Export color for */
-"preferences.copy.export" = "Farbe exportieren für";
+/* Weight */
+"preferences.appearance.weight.title" = "Gewicht";
 
-/* Example output */
-"preferences.copy.export.example" = "Beispiel";
+/* View WCAG compliance by weight, from normal to large */
+"preferences.appearance.weight.description" = "WCAG-Konformität ansehen, von normal zu gross";
 
-/* Export Format */
-"preferences.copy.format" = "Exportformat";
+/* Contrast */
+"preferences.appearance.contrast.title" = "Kontrast";
 
-/* CSS */
-"preferences.copy.options.css" = "CSS";
+/* View WCAG compliance by contrast, from 3:1 to 7:1 */
+"preferences.appearance.contrast.description" = "WCAG-Konformität ansehen, von 3:1 bis 7:1";
 
-/* Design Application */
-"preferences.copy.options.design" = "Design-Software";
+/* Contrast Value */
+"preferences.appearance.apca.title" = "Kontrastwert";
 
-/* Unformatted */
-"preferences.copy.options.unformatted" = "Unformatiert";
+/* View APCA contrast value by lightness contrast (Lc), from 30 to 75 */
+"preferences.appearance.apca.description" = "APCA-Kontrastwert nach Helligkeitskontrast (Lc) anzeigen, von 30 bis 75";
 
-/* Copy Settings */
-"preferences.copy.title" = "Kopieren-Einstellungen";
+/* Contrast Calculation Standard */
+"preferences.contrast.standard" = "Kontrastberechnungsstandard";
 
-/* Set your preferred display format for colors */
-"preferences.format.description" = "Festlegen des bevorzugten Anzeigeformats für Farben";
+/* Contrast ratio */
+"color.ratio" = "Kontrastverhältnis";
 
-/* Color Format */
-"preferences.format.title" = "Farbformat";
+/* Contrast ratio is a measure of the difference in perceived brightness between two colors, used to calculate the contrast ratio. */
+"color.ratio.description" = "Das Kontrastverhältnis ist ein Maß für den wahrgenommenen Helligkeitsunterschied zwischen zwei Farben, mit dem das Kontrastverhältnis berechnet wird.";
 
-/* General Settings */
-"preferences.general.title" = "Allgemeine Einstellungen";
+/* Contrast Value (Lc) */
+"color.lc" = "Kontrastwert (Lc)";
 
-/* Set a global hotkey shortcut to invoke Pika */
-"preferences.hotkey.description" = "Festlegen eines globalen Tastaturkurzbefehls, um Pika aufzurufen";
+/* Lightness contrast (Lc) is a measure of the lightness difference between two colors, used to calculate the contrast value. */
+"color.lc.description" = "Der Helligkeitskontrast (Lc) ist ein Maß für den Helligkeitsunterschied zwischen zwei Farben, mit dem der Kontrastwert berechnet wird.";
 
-/* Global Shortcut */
-"preferences.hotkey.title" = "Globaler Kurzbefehl";
+/* WCAG Compliance */
+"color.wcag" = "WCAG-Konformität";
 
-/* Hide menu bar icon */
-"preferences.icon.description" = "Menüleistensymbol verstecken";
+/* APCA Contrast Reference */
+"color.apca" = "APCA-Kontrastreferenz";
 
-/* Launch at login */
-"preferences.launch.description" = "Starten beim Login";
+/* Foreground */
+"color.foreground" = "Vordergrund";
 
-/* Hide color names */
-"preferences.names.description" = "Farbnamen verstecken";
+/* Background */
+"color.background" = "Hintergrund";
 
-/* Hide Pika while picking */
-"preferences.pick.hide" = "Pika während dem Auswählen verstecken";
+/* WCAG 3:1 */
+"color.wcag.30" = "WCAG 2-Level AA erfordert ein Kontrastverhältnis von mindestens 3:1 für großen (18pt / ~24px) oder fetten (14pt / ~18.6px) Text und für Nicht-Text-Inhalte wie UI.";
 
-/* Selection Settings */
-"preferences.selection.title" = "Auswahl-Einstellungen";
+/* WCAG 4.5:1 */
+"color.wcag.45" = "WCAG 2-Level AA erfordert ein Kontrastverhältnis von mindestens 4,5:1 für normalen Text. WCAG 2-Level AAA erfordert mindestens 4,5:1 für großen (18pt / ~24px) oder fetten (14pt / ~18.6px) Text.";
 
-/* System Default */
-"preferences.space.default" = "Systemstandard";
+/* WCAG 7:1 */
+"color.wcag.70" = "WCAG 2-Level AAA erfordert ein Kontrastverhältnis von mindestens 7:1 für normalen Text.";
 
-/* Set your RGB color space */
-"preferences.space.description" = "Einstellen des RGB-Farbraums";
+/* APCA 30 */
+"color.apca.30" = "APCA >= 30 ist der Mindestkontrast für Grundtext und Nicht-Text-Inhalte. Geeignet für größeren Text, Platzhalter und deaktivierte Elemente.";
+
+/* APCA 45 */
+"color.apca.45" = "APCA >= 45 ist der Mindestkontrast für Überschriftentext. Geeignet für große Überschriften, Navigationselemente und wichtige UI-Komponenten.";
+
+/* APCA 60 */
+"color.apca.60" = "APCA >= 60 ist der Mindestkontrast für Titeltext. Geeignet für Unterüberschriften, Bildunterschriften und sekundäre Inhalte, die klar lesbar sein müssen.";
+
+/* APCA 75 */
+"color.apca.75" = "APCA >= 75 ist der Mindestkontrast für Fließtext. Geeignet für primäre Inhalte, normal große Texte und längere Lesematerialien.";
+
+/* Pass */
+"color.wcag.pass" = "Bestanden";
+
+/* Fail */
+"color.wcag.fail" = "Gescheitert";
+
+/* Normal */
+"color.wcag.normal" = "Normal";
+
+/* Large */
+"color.wcag.large" = "Gross";
+
+/* LG */
+"color.wcag.large.abbr" = "LG";
 
 /* Global shortcut */
 "splash.hotkey" = "Globaler Kurzbefehl";
@@ -286,3 +205,122 @@
 /* Get started */
 "splash.start" = "Los geht's";
 
+/* Pick */
+"color.pick" = "Auswählen";
+
+/* Swap */
+"color.swap" = "Tauschen";
+
+/* Swap colors */
+"color.swap.detail" = "Farben tauschen";
+
+/* Undo */
+"color.undo" = "Widerrufen";
+
+/* Redo */
+"color.redo" = "Wiederholen";
+
+/* Pick foreground */
+"color.pick.foreground" = "Vordergrund auswählen";
+
+/* Pick background */
+"color.pick.background" = "Hintergrund auswählen";
+
+/* Copy */
+"color.copy" = "Kopieren";
+
+/* Copy foreground */
+"color.copy.foreground" = "Vordergrund kopieren";
+
+/* Copy background */
+"color.copy.background" = "Hintergrund kopieren";
+
+/* Copy all as text */
+"color.copy.text" = "Als Text kopieren";
+
+/* Copy all as JSON */
+"color.copy.data" = "Als JSON kopieren";
+
+/* Copied */
+"color.copy.toast" = "Kopiert";
+
+/* Copy current format */
+"color.copy.current" = "Aktuelles Format kopieren";
+
+/* Copy HEX values */
+"color.copy.hex" = "HEX-Werte kopieren";
+
+/* Copy HSB values */
+"color.copy.hsb" = "HSB-Werte kopieren";
+
+/* Copy HSL values */
+"color.copy.hsl" = "HSL-Werte kopieren";
+
+/* Copy RGB values */
+"color.copy.rgb" = "RGB-Werte kopieren";
+
+/* Copy OpenGL values */
+"color.copy.opengl" = "OpenGL-Werte kopieren";
+
+/* Copy LAB values */
+"color.copy.lab" = "LAB-Werte kopieren";
+
+/* System color picker */
+"color.system" = "Systemfarbwähler";
+
+/* Use foreground system color picker */
+"color.system.foreground" = "Vordergrund-Systemfarbauswahl";
+
+/* Use background system color picker */
+"color.system.background" = "Hintergrund-Systemfarbauswahl";
+
+/* System foreground */
+"color.system.foreground.simple" = "Systemvordergrund";
+
+/* System background */
+"color.system.background.simple" = "Systemhintergrund";
+
+/* HEX format */
+"color.format.hex" = "Hex-Format";
+
+/* HSB format */
+"color.format.hsb" = "HSB-Format";
+
+/* HSL format */
+"color.format.hsl" = "HSL-Format";
+
+/* RGB format */
+"color.format.rgb" = "RGB-Format";
+
+/* OpenGL format */
+"color.format.opengl" = "OpenGL-Format";
+
+/* LAB format */
+"color.format.lab" = "LAB-Format";
+
+/* Copy foreground */
+"menu.copy.foreground" = "Vordergrund kopieren";
+
+/* Copy background */
+"menu.copy.background" = "Hintergrund kopieren";
+
+/* Export */
+"menu.export" = "Exportieren";
+
+/* About */
+"menu.about" = "Über Pika";
+
+/* Check for updates */
+"menu.updates" = "Updates überprüfen";
+
+/* Preferences */
+"menu.preferences" = "Einstellungen";
+
+/* Pika website */
+"menu.website" = "Pika-website";
+
+/* Report feedback */
+"menu.issue" = "Feedback melden";
+
+/* Quit */
+"menu.quit" = "Beenden";

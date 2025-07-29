@@ -107,12 +107,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         // Define content view
         let contentView = ContentView()
             .environmentObject(eyedroppers)
-            .frame(minWidth: 450,
-                   idealWidth: 450,
-                   maxWidth: 550,
+            .frame(minWidth: 570,
+                   idealWidth: 570,
+                   maxWidth: 650,
                    minHeight: 230,
                    idealHeight: 230,
-                   maxHeight: 360,
+                   maxHeight: 400,
                    alignment: .center)
 
         pikaWindow = PikaWindow.createPrimaryWindow()
@@ -345,7 +345,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 title: "Preferences",
                 size: NSRect(x: 0, y: 0, width: 750, height: 750),
                 styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView],
-                maxHeight: 750
+                maxHeight: 750,
             )
             preferencesWindow.contentView = view
         }
@@ -397,10 +397,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     @IBAction func triggerUndo(_: Any) {
+        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerUndo), object: self)
         undoManager.undo()
     }
 
     @IBAction func triggerRedo(_: Any) {
+        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerRedo), object: self)
         undoManager.redo()
     }
 
@@ -430,6 +432,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     @IBAction func triggerFormatOpenGL(_: Any) {
         notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerFormatOpenGL), object: self)
+    }
+
+    @IBAction func triggerFormatLAB(_: Any) {
+        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerFormatLAB), object: self)
     }
 
     @IBAction func hidePika(_: Any) {

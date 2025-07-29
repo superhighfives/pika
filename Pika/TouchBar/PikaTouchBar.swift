@@ -11,6 +11,7 @@ extension NSTouchBarItem.Identifier {
 }
 
 class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
+    @Default(.contrastStandard) var contrastStandard
     var cancellables = Set<AnyCancellable>()
 
     override func makeTouchBar() -> NSTouchBar? {
@@ -56,7 +57,7 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
         item.view = stackView
         let viewBindings: [String: NSView] = ["stackView": stackView]
         let hconstraints = NSLayoutConstraint.constraints(
-            withVisualFormat: "H:[stackView(370)]",
+            withVisualFormat: "H:[stackView(420)]",
             options: [],
             metrics: nil,
             views: viewBindings
@@ -132,44 +133,18 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
         )
         NSLayoutConstraint.activate(hconstraints)
 
-        foreground.$color.sink { textField.stringValue = $0.toContrastRatioString(with: background.color) }
+        let updateContrastText = {
+            textField.stringValue = self.contrastStandard == .wcag ?
+                foreground.color.toContrastRatioString(with: background.color) :
+                foreground.color.toAPCAcontrastValue(with: background.color)
+        }
+
+        foreground.$color.sink { _ in updateContrastText() }
             .store(in: &cancellables)
-        background.$color.sink { textField.stringValue = $0.toContrastRatioString(with: foreground.color) }
+        background.$color.sink { _ in updateContrastText() }
             .store(in: &cancellables)
-        return item
-    }
-
-    func createWCAGComplianceGroup(
-        _ identifier: NSTouchBarItem.Identifier,
-        _ foreground: Eyedropper,
-        _ background: Eyedropper
-    ) -> NSTouchBarItem? {
-        let item = NSCustomTouchBarItem(identifier: identifier)
-
-        let colorWCAGCompliance = foreground.color.toWCAGCompliance(with: background.color)
-
-        let wcagViews = NSHostingView(rootView:
-            ComplianceToggleGroup(
-                colorWCAGCompliance: colorWCAGCompliance,
-                size: .small,
-                theme: Defaults[.combineCompliance] ? .contrast : .weight
-            ))
-
-        Defaults.publisher(keys: .combineCompliance).sink {
-            wcagViews.rootView.theme = Defaults[.combineCompliance] ? .contrast : .weight
-        }
-        .store(in: &cancellables)
-        foreground.$color.sink {
-            let colorWCAGCompliance = $0.toWCAGCompliance(with: background.color)
-            wcagViews.rootView.colorWCAGCompliance = colorWCAGCompliance
-        }
-        .store(in: &cancellables)
-        background.$color.sink {
-            let colorWCAGCompliance = $0.toWCAGCompliance(with: foreground.color)
-            wcagViews.rootView.colorWCAGCompliance = colorWCAGCompliance
-        }
-        .store(in: &cancellables)
-        item.view = wcagViews
+        Defaults.observe(.contrastStandard) { _ in updateContrastText() }
+            .tieToLifetime(of: self)
         return item
     }
 
@@ -193,9 +168,6 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
         case NSTouchBarItem.Identifier.ratio:
             let item = createContrastRatio(identifier, foreground, background)
             return item
-
-        case NSTouchBarItem.Identifier.wcag:
-            return createWCAGComplianceGroup(identifier, foreground, background)
 
         default:
             return nil

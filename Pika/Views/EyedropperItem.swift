@@ -13,8 +13,8 @@ struct EyedropperItem: View {
     @ObservedObject var eyedropper: Eyedropper
     @State private var showToast: Bool = false
     @Default(.colorFormat) var colorFormat
+    @Default(.copyFormat) var copyFormat
     let pasteboard = NSPasteboard.general
-
     var body: some View {
         ZStack {
             EyedropperButton(eyedropper: eyedropper)
@@ -46,7 +46,9 @@ struct EyedropperItem: View {
             .onReceive(NotificationCenter.default.publisher(
                 for: Notification.Name("triggerFormatHex")))
             { _ in
-                colorFormat = ColorFormat.hex
+                if copyFormat != .swiftUI {
+                    colorFormat = ColorFormat.hex
+                }
             }
             .onReceive(NotificationCenter.default.publisher(
                 for: Notification.Name("triggerFormatRGB")))
@@ -61,12 +63,28 @@ struct EyedropperItem: View {
             .onReceive(NotificationCenter.default.publisher(
                 for: Notification.Name("triggerFormatHSL")))
             { _ in
-                colorFormat = ColorFormat.hsl
+                if copyFormat != .swiftUI {
+                    colorFormat = ColorFormat.hsl
+                }
             }
             .onReceive(NotificationCenter.default.publisher(
                 for: Notification.Name("triggerFormatOpenGL")))
             { _ in
-                colorFormat = ColorFormat.opengl
+                if copyFormat != .swiftUI {
+                    colorFormat = ColorFormat.opengl
+                }
+            }
+            .onChange(of: copyFormat) {
+                if copyFormat == .swiftUI {
+                    if PikaConstants.disabledFormats.contains(colorFormat) {
+                        colorFormat = .rgb
+                    }
+                }
+            }
+            .onReceive(NotificationCenter.default.publisher(
+                for: Notification.Name(PikaConstants.ncTriggerFormatLAB)))
+            { _ in
+                colorFormat = .lab
             }
             .toast(
                 isShowing: $showToast,

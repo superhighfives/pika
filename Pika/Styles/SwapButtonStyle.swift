@@ -85,7 +85,8 @@ struct SwapButtonStyle: ButtonStyle {
             .opacity(isVisible ? (configuration.isPressed ? 0.8 : 1.0) : 0.0)
             .foregroundColor(fgColor.opacity(0.8))
             .frame(height: 32.0)
-            .animation(.easeInOut)
+            .animation(.easeInOut, value: isVisible)
+            .animation(.easeInOut, value: configuration.isPressed)
         }
     }
 

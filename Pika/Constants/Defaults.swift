@@ -8,6 +8,7 @@ enum ColorFormat: String, Codable, CaseIterable, Equatable {
     case hsb = "HSB"
     case hsl = "HSL"
     case opengl = "OpenGL"
+    case lab = "LAB"
 
     func getExample(color: NSColor, style: CopyFormat) -> String {
         color.toFormat(format: self, style: style)
@@ -21,11 +22,17 @@ enum ColorFormat: String, Codable, CaseIterable, Equatable {
 enum CopyFormat: String, Codable, CaseIterable {
     case css = "preferences.copy.options.css"
     case design = "preferences.copy.options.design"
+    case swiftUI = "preferences.copy.options.swiftui"
     case unformatted = "preferences.copy.options.unformatted"
 
     func localizedString() -> String {
         NSLocalizedString(rawValue, comment: "Copy Format")
     }
+}
+
+enum ContrastStandard: String, Codable, CaseIterable {
+    case wcag = "WCAG"
+    case apca = "APCA"
 }
 
 enum AppMode: String, Codable, CaseIterable {
@@ -55,4 +62,5 @@ extension Defaults.Keys {
     static let appMode = Key<AppMode>("appMode", default: .menubar)
     static let appFloating = Key<Bool>("appFloating", default: true)
     static let alwaysShowOnLaunch = Key<Bool>("alwaysShowOnLaunch", default: false)
+    static let contrastStandard = Key<ContrastStandard>("contrastStandard", default: .wcag)
 }
