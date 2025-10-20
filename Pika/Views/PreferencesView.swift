@@ -77,6 +77,8 @@ struct PreferencesView: View {
                 // General Settings
 
                 VStack(alignment: .leading, spacing: 0) {
+                    Divider()
+
                     HStack(alignment: .top, spacing: 0) {
                         VStack(alignment: .leading, spacing: 10.0) {
                             Text(PikaText.textGeneralTitle).font(
@@ -163,6 +165,7 @@ struct PreferencesView: View {
                     }
                     .padding(.horizontal, 24.0)
                 }
+                .padding(.top, 32.0)
 
                 Divider()
                     .padding(.vertical, 16.0)

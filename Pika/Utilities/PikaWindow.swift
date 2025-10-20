@@ -51,8 +51,7 @@ class PikaWindow {
             backing: .buffered,
             defer: false
         )
-        window.titleVisibility = .hidden
-        window.titlebarAppearsTransparent = true
+        window.titleVisibility = .visible
         window.level = (Defaults[.appFloating] ? .floating : .normal) + 1
         window.isMovableByWindowBackground = true
         window.center()
