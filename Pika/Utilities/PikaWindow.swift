@@ -51,7 +51,13 @@ class PikaWindow {
             backing: .buffered,
             defer: false
         )
-        window.titleVisibility = .visible
+        if #available(macOS 26, *) {
+            window.titleVisibility = .visible
+        } else {
+            window.titleVisibility = .hidden
+            window.titlebarAppearsTransparent = true
+        }
+
         window.level = (Defaults[.appFloating] ? .floating : .normal) + 1
         window.isMovableByWindowBackground = true
         window.center()
