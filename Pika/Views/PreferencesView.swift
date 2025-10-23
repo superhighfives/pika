@@ -16,6 +16,8 @@ struct PreferencesView: View {
     @Default(.appFloating) var appFloating
     @Default(.alwaysShowOnLaunch) var alwaysShowOnLaunch
     @Default(.contrastStandard) var contrastStandard
+    @Default(.showColorOverlay) var showColorOverlay
+    @Default(.colorOverlayDuration) var colorOverlayDuration
     @State var colorSpace: NSColorSpace = Defaults[.colorSpace]
     @State var disableHideMenuBarIcon = true
     @State private var viewHeight: CGFloat = 0.0
@@ -132,6 +134,29 @@ struct PreferencesView: View {
                                     .frame(
                                         maxWidth: .infinity, alignment: .leading
                                     )
+                            }
+
+                            Divider()
+                                .padding(.vertical, 2.0)
+
+                            Toggle(isOn: $showColorOverlay) {
+                                Text("Show color overlay after picking")
+                            }
+
+                            if showColorOverlay {
+                                HStack(spacing: 8.0) {
+                                    Text("Duration:")
+                                        .font(.system(size: 12))
+                                    Slider(
+                                        value: $colorOverlayDuration,
+                                        in: 1.0...5.0,
+                                        step: 0.5
+                                    )
+                                    Text(String(format: "%.1fs", colorOverlayDuration))
+                                        .font(.system(size: 12, design: .monospaced))
+                                        .frame(width: 35, alignment: .trailing)
+                                }
+                                .padding(.leading, 8.0)
                             }
                         }
                         .frame(
