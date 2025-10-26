@@ -79,6 +79,10 @@ struct PreferencesView: View {
                 // General Settings
 
                 VStack(alignment: .leading, spacing: 0) {
+                    if #available(macOS 26, *) {
+                        Divider()
+                    }
+
                     HStack(alignment: .top, spacing: 0) {
                         VStack(alignment: .leading, spacing: 10.0) {
                             Text(PikaText.textGeneralTitle).font(
@@ -187,6 +191,13 @@ struct PreferencesView: View {
                         .frame(height: 96)
                     }
                     .padding(.horizontal, 24.0)
+                }
+                .modify {
+                    if #available(macOS 26.0, *) {
+                        $0.padding(.top, 32.0)
+                    } else {
+                        $0.padding(.top, 0.0)
+                    }
                 }
 
                 Divider()
