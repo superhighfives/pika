@@ -53,6 +53,7 @@ class Eyedropper: ObservableObject {
     @objc @Published public var color: NSColor
 
     var undoManager: UndoManager?
+    private var overlayWindow = ColorPickOverlayWindow()
 
     init(type: Types, color: NSColor) {
         self.type = type
@@ -117,6 +118,17 @@ class Eyedropper: ObservableObject {
             sampler.show { selectedColor in
 
                 if let selectedColor = selectedColor {
+                    if Defaults[.showColorOverlay] {
+                        let colorText = selectedColor.toFormat(format: Defaults[.colorFormat], style: Defaults[.copyFormat])
+                        let cursorPosition = NSEvent.mouseLocation
+                        self.overlayWindow.show(
+                            colorText: colorText,
+                            pickedColor: selectedColor,
+                            nearCursor: cursorPosition,
+                            duration: Defaults[.colorOverlayDuration]
+                        )
+                    }
+
                     self.set(selectedColor)
 
                     if Defaults[.copyColorOnPick] {
