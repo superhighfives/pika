@@ -324,3 +324,9 @@
 
 /* Quit */
 "menu.quit" = "Quit";
+
+/* Show color overlay after picking */
+"preferences.overlay.show" = "Show color overlay after picking";
+
+/* Duration: */
+"preferences.overlay.duration" = "Duration";

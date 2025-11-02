@@ -28,17 +28,6 @@ struct AppModeButtons: View {
             description: PikaText.textAppDockDescription,
             selected: appMode == .regular
         ))
-//        Button(action: {
-//            appMode = .hidden
-//        }, label: {
-//            AppModeToggleGroup(theme: .hidden)
-//                .frame(maxWidth: width, maxHeight: .infinity, alignment: .leading)
-//        })
-//            .buttonStyle(AppearanceButtonStyle(
-//                title: PikaText.textAppHiddenTitle,
-//                description: PikaText.textAppHiddenDescription,
-//                selected: appMode == .hidden
-//            ))
     }
 }
 

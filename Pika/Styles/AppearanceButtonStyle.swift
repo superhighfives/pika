@@ -19,7 +19,7 @@ struct AppearanceButtonStyle: ButtonStyle {
                             colors: colorScheme == .dark
                                 ? [
                                     darkBaseColor.opacity(0.5),
-                                    darkBaseColor.opacity(0),
+                                    darkBaseColor.opacity(0)
                                 ]
                                 : [
                                     lightBaseColor.opacity(0.9),
@@ -39,7 +39,7 @@ struct AppearanceButtonStyle: ButtonStyle {
                             colors: colorScheme == .dark
                                 ? [
                                     darkBaseColor.opacity(0),
-                                    darkBaseColor.opacity(0.5),
+                                    darkBaseColor.opacity(0.5)
                                 ]
                                 : [
                                     lightBaseColor.opacity(0),
@@ -130,7 +130,7 @@ struct StyledContentView<Content: View>: View {
                             colors: colorScheme == .dark
                                 ? [
                                     darkBaseColor.opacity(0.5),
-                                    darkBaseColor.opacity(0),
+                                    darkBaseColor.opacity(0)
                                 ]
                                 : [
                                     lightBaseColor.opacity(0.9),
@@ -150,7 +150,7 @@ struct StyledContentView<Content: View>: View {
                             colors: colorScheme == .dark
                                 ? [
                                     darkBaseColor.opacity(0),
-                                    darkBaseColor.opacity(0.5),
+                                    darkBaseColor.opacity(0.5)
                                 ]
                                 : [
                                     lightBaseColor.opacity(0),

@@ -140,27 +140,24 @@ struct PreferencesView: View {
                                     )
                             }
 
-                            Divider()
-                                .padding(.vertical, 2.0)
-
                             Toggle(isOn: $showColorOverlay) {
-                                Text("Show color overlay after picking")
+                                Text(PikaText.textShowColorOverlay)
                             }
 
                             if showColorOverlay {
                                 HStack(spacing: 8.0) {
-                                    Text("Duration:")
+                                    Text(PikaText.textDuration)
                                         .font(.system(size: 12))
                                     Slider(
                                         value: $colorOverlayDuration,
-                                        in: 1.0...5.0,
+                                        in: 1.0 ... 5.0,
                                         step: 0.5
                                     )
                                     Text(String(format: "%.1fs", colorOverlayDuration))
-                                        .font(.system(size: 12, design: .monospaced))
-                                        .frame(width: 35, alignment: .trailing)
+                                        .font(.system(size: 11))
+                                        .foregroundColor(.secondary)
                                 }
-                                .padding(.leading, 8.0)
+                                .padding(.leading, 20.0)
                             }
                         }
                         .frame(
