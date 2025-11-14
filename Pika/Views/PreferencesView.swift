@@ -16,6 +16,8 @@ struct PreferencesView: View {
     @Default(.appFloating) var appFloating
     @Default(.alwaysShowOnLaunch) var alwaysShowOnLaunch
     @Default(.contrastStandard) var contrastStandard
+    @Default(.showColorOverlay) var showColorOverlay
+    @Default(.colorOverlayDuration) var colorOverlayDuration
     @State var colorSpace: NSColorSpace = Defaults[.colorSpace]
     @State var disableHideMenuBarIcon = true
     @State private var viewHeight: CGFloat = 0.0
@@ -77,6 +79,10 @@ struct PreferencesView: View {
                 // General Settings
 
                 VStack(alignment: .leading, spacing: 0) {
+                    if #available(macOS 26, *) {
+                        Divider()
+                    }
+
                     HStack(alignment: .top, spacing: 0) {
                         VStack(alignment: .leading, spacing: 10.0) {
                             Text(PikaText.textGeneralTitle).font(
@@ -133,6 +139,26 @@ struct PreferencesView: View {
                                         maxWidth: .infinity, alignment: .leading
                                     )
                             }
+
+                            Toggle(isOn: $showColorOverlay) {
+                                Text(PikaText.textShowColorOverlay)
+                            }
+
+                            if showColorOverlay {
+                                HStack(spacing: 8.0) {
+                                    Text(PikaText.textDuration)
+                                        .font(.system(size: 12))
+                                    Slider(
+                                        value: $colorOverlayDuration,
+                                        in: 1.0 ... 5.0,
+                                        step: 0.5
+                                    )
+                                    Text(String(format: "%.1fs", colorOverlayDuration))
+                                        .font(.system(size: 11))
+                                        .foregroundColor(.secondary)
+                                }
+                                .padding(.leading, 20.0)
+                            }
                         }
                         .frame(
                             minWidth: 0, maxWidth: .infinity,
@@ -162,6 +188,13 @@ struct PreferencesView: View {
                         .frame(height: 96)
                     }
                     .padding(.horizontal, 24.0)
+                }
+                .modify {
+                    if #available(macOS 26.0, *) {
+                        $0.padding(.top, 32.0)
+                    } else {
+                        $0.padding(.top, 0.0)
+                    }
                 }
 
                 Divider()

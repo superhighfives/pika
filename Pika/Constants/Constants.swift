@@ -257,6 +257,13 @@ enum PikaText {
         "preferences.hotkey.description",
         comment: "Set a global hotkey shortcut to invoke Pika"
     )
+
+    // Color Overlay
+    static let textShowColorOverlay = NSLocalizedString(
+        "preferences.overlay.show",
+        comment: "Show color overlay after picking"
+    )
+    static let textDuration = NSLocalizedString("preferences.overlay.duration", comment: "Duration:")
 }
 
 // swiftlint:enable trailing_comma

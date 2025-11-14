@@ -63,4 +63,6 @@ extension Defaults.Keys {
     static let appFloating = Key<Bool>("appFloating", default: true)
     static let alwaysShowOnLaunch = Key<Bool>("alwaysShowOnLaunch", default: false)
     static let contrastStandard = Key<ContrastStandard>("contrastStandard", default: .wcag)
+    static let showColorOverlay = Key<Bool>("showColorOverlay", default: true)
+    static let colorOverlayDuration = Key<Double>("colorOverlayDuration", default: 2.0)
 }

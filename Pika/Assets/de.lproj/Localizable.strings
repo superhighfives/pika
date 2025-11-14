@@ -324,3 +324,9 @@
 
 /* Quit */
 "menu.quit" = "Beenden";
+
+/* Show color overlay after picking */
+"preferences.overlay.show" = "Farbüberlagerung nach Auswahl anzeigen";
+
+/* Duration: */
+"preferences.overlay.duration" = "Dauer";

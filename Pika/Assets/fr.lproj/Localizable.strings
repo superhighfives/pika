@@ -324,3 +324,9 @@
 
 /* Quit */
 "menu.quit" = "Quitter";
+
+/* Show color overlay after picking */
+"preferences.overlay.show" = "Afficher la superposition de couleur après la sélection";
+
+/* Duration: */
+"preferences.overlay.duration" = "Durée";
