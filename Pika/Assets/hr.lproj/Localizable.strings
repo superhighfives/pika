@@ -254,7 +254,7 @@
 "color.copy.hsb" = "Kopiraj HSB vrijednosti";
 
 /* Copy HSL values */
-"color.copy.hsl" = "Kopiraj HLS vrijednosti";
+"color.copy.hsl" = "Kopiraj HSL vrijednosti";
 
 /* Copy RGB values */
 "color.copy.rgb" = "Kopiraj RGB vrijednosti";
