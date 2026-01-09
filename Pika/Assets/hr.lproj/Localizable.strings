@@ -65,7 +65,7 @@
 "preferences.space.default" = "Standard sustava";
 
 /* Hide Pika while picking */
-"preferences.pick.hide" = "Sakrj Pika tijekom biranja";
+"preferences.pick.hide" = "Sakrij Pika tijekom biranja";
 
 /* General Settings */
 "preferences.general.title" = "Opće postavke";
