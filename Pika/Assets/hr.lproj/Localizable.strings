@@ -89,7 +89,7 @@
 "preferences.float.description" = "Lebdi iznad prozora";
 
 /* Always show Pika on launch */
-"preferences.show.description" = "Uvije prikaži Pika nakon pokretanja sustava";
+"preferences.show.description" = "Uvijek prikaži Pika nakon pokretanja sustava";
 
 /* App Settings */
 "preferences.app.title" = "Postavke aplikacije";
