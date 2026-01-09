@@ -245,7 +245,7 @@
 "color.copy.toast" = "Kopirano";
 
 /* Copy current format */
-"color.copy.current" = "Kopiraj tranutačni format";
+"color.copy.current" = "Kopiraj trenutačni format";
 
 /* Copy HEX values */
 "color.copy.hex" = "Kopiraj HEX vrijednosti";
