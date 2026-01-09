@@ -128,7 +128,7 @@
 "preferences.appearance.contrast.description" = "Pogledaj usklađenost s WCAG-om prema kontrastu, od 3:1 do 7:1";
 
 /* Contrast Value */
-"preferences.appearance.apca.title" = "Vrijedonst kontrasta";
+"preferences.appearance.apca.title" = "Vrijednost kontrasta";
 
 /* View APCA contrast value by lightness contrast (Lc), from 30 to 75 */
 "preferences.appearance.apca.description" = "Pogledaj APCA vrijednost kontrasta prema kontrastu svjetline, od 30 do 75";
