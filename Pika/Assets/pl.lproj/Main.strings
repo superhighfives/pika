@@ -1,0 +1,120 @@
+
+/* Class = "NSMenuItem"; title = "Pika"; ObjectID = "1Xt-HY-uBw"; */
+"1Xt-HY-uBw.title" = "Pika";
+
+/* Class = "NSMenuItem"; title = "Quit Pika"; ObjectID = "4sb-4s-VLi"; */
+"4sb-4s-VLi.title" = "Zakończ Pikę";
+
+/* Class = "NSMenuItem"; title = "Edit"; ObjectID = "5QF-Oa-p0T"; */
+"5QF-Oa-p0T.title" = "Edytuj";
+
+/* Class = "NSMenuItem"; title = "About Pika"; ObjectID = "5kV-Vb-QxS"; */
+"5kV-Vb-QxS.title" = "Pika…";
+
+/* Class = "NSMenuItem"; title = "Redo"; ObjectID = "6dh-zS-Vam"; */
+"6dh-zS-Vam.title" = "Przywróć";
+
+/* Class = "NSMenuItem"; title = "Swap colors"; ObjectID = "6j0-AT-P3M"; */
+"6j0-AT-P3M.title" = "Zamień kolory";
+
+/* Class = "NSMenu"; title = "Main Menu"; ObjectID = "AYu-sK-qS6"; */
+"AYu-sK-qS6.title" = "Menu główne";
+
+/* Class = "NSMenuItem"; title = "Check for updates…"; ObjectID = "BOF-NM-1cW"; */
+"BOF-NM-1cW.title" = "Sprawdź uaktualnienia…";
+
+/* Class = "NSMenuItem"; title = "Copy all as text"; ObjectID = "D8e-06-QFY"; */
+"D8e-06-QFY.title" = "Kopiuj wszystko jako tekst";
+
+/* Class = "NSMenu"; title = "Help"; ObjectID = "F2S-fz-NVQ"; */
+"F2S-fz-NVQ.title" = "Pomoc";
+
+/* Class = "NSMenuItem"; title = "Pika website"; ObjectID = "FKE-Sm-Kum"; */
+"FKE-Sm-Kum.title" = "Witryna Piki";
+
+/* Class = "NSMenu"; title = "Eyedroppers"; ObjectID = "KHB-9b-hO2"; */
+"KHB-9b-hO2.title" = "Próbniki koloru";
+
+/* Class = "NSMenuItem"; title = "Show All"; ObjectID = "Kd2-mp-pUS"; */
+"Kd2-mp-pUS.title" = "Pokaż wszystkie";
+
+/* Class = "NSMenuItem"; title = "Services"; ObjectID = "NMo-om-nkz"; */
+"NMo-om-nkz.title" = "Usługi";
+
+/* Class = "NSMenuItem"; title = "Preferences…"; ObjectID = "NQA-cg-qc7"; */
+"NQA-cg-qc7.title" = "Preferencje…";
+
+/* Class = "NSMenuItem"; title = "Pick foreground..."; ObjectID = "Nec-cr-B3a"; */
+"Nec-cr-B3a.title" = "Wybierz kolor pierwszego planu…";
+
+/* Class = "NSMenuItem"; title = "Hide Pika"; ObjectID = "Olw-nP-bQN"; */
+"Olw-nP-bQN.title" = "Ukryj Pikę";
+
+/* Class = "NSMenuItem"; title = "Copy all as JSON"; ObjectID = "U40-Ip-3Uj"; */
+"U40-Ip-3Uj.title" = "Kopiuj wszystko jako JSON";
+
+/* Class = "NSMenuItem"; title = "Hide Others"; ObjectID = "Vdr-fp-XzO"; */
+"Vdr-fp-XzO.title" = "Ukryj pozostałe";
+
+/* Class = "NSMenu"; title = "Edit"; ObjectID = "W48-6f-4Dl"; */
+"W48-6f-4Dl.title" = "Edytuj";
+
+/* Class = "NSMenuItem"; title = "Pick background..."; ObjectID = "YF5-6a-ACB"; */
+"YF5-6a-ACB.title" = "Wybierz kolor tła…";
+
+/* Class = "NSMenuItem"; title = "Eyedroppers"; ObjectID = "dNS-BC-3MB"; */
+"dNS-BC-3MB.title" = "Próbniki koloru";
+
+/* Class = "NSMenuItem"; title = "Undo"; ObjectID = "dRJ-4n-Yzg"; */
+"dRJ-4n-Yzg.title" = "Cofnij";
+
+/* Class = "NSMenu"; title = "Services"; ObjectID = "hz9-B4-Xy5"; */
+"hz9-B4-Xy5.title" = "Usługi";
+
+/* Class = "NSMenuItem"; title = "Copy background"; ObjectID = "p7U-sR-JqZ"; */
+"p7U-sR-JqZ.title" = "Kopiuj kolor tła";
+
+/* Class = "NSMenu"; title = "Pika"; ObjectID = "uQy-DD-JDr"; */
+"uQy-DD-JDr.title" = "Pika";
+
+/* Class = "NSMenuItem"; title = "Help"; ObjectID = "wpr-3q-Mcd"; */
+"wpr-3q-Mcd.title" = "Pomoc";
+
+/* Class = "NSMenuItem"; title = "Copy foreground"; ObjectID = "x3v-GG-iWU"; */
+"x3v-GG-iWU.title" = "Kopiuj kolor pierwszego planu";
+
+/* Class = "NSMenuItem"; title = "Report feedback"; ObjectID = "hxD-2G-mEq.title"; */
+"hxD-2G-mEq.title" = "Zgłoś błąd lub prześlij opinię";
+
+/* Class = "NSMenuItem"; title = "Close window"; ObjectID = "VpE-fH-2gc"; */
+"VpE-fH-2gc.title" = "Zamknij okno";
+
+/* Class = "NSMenu"; title = "Eyedroppers"; ObjectID = "z8G-HT-ae8"; */
+"z8G-HT-ae8.title" = "Próbniki koloru";
+
+/* Class = "NSMenuItem"; title = "Use system picker for foreground"; ObjectID = "hMH-To-rZ9"; */
+"hMH-To-rZ9.title" = "Użyj systemowego wyboru koloru pierwszego planu";
+
+/* Class = "NSMenuItem"; title = "Use system picker for background"; ObjectID = "CnG-MW-7x1"; */
+"CnG-MW-7x1.title" = "Użyj systemowego wyboru koloru tła";
+
+/* Class = "NSMenuItem"; title = "Format"; ObjectID = "jQ5-Ak-Ocb"; */
+"jQ5-Ak-Ocb.title" = "Format";
+
+/* Class = "NSMenuItem"; title = "Hex"; ObjectID = "rJ3-3M-xcY"; */
+"rJ3-3M-xcY.title" = "szesnastkowy";
+
+/* Class = "NSMenuItem"; title = "RGB"; ObjectID = "Jrv-mf-bNr"; */
+"Jrv-mf-bNr.title" = "RGB";
+
+/* Class = "NSMenuItem"; title = "HSB"; ObjectID = "GfU-Et-UCF"; */
+"GfU-Et-UCF.title" = "HSB";
+
+/* Class = "NSMenuItem"; title = "HSL"; ObjectID = "t7X-bM-FAM"; */
+"t7X-bM-FAM.title" = "HSL";
+
+/* Class = "NSMenuItem"; title = "OpenGL"; ObjectID = "caq-wZ-Zn0"; */
+"caq-wZ-Zn0.title" = "OpenGL";
+
+/* Class = "NSMenuItem"; title = "LAB"; ObjectID = "Nwx-nK-ndW"; */
+"Nwx-nK-ndW.title" = "LAB";
