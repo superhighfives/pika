@@ -1,0 +1,332 @@
+/* Pika */
+"app.name" = "Pika";
+
+/* Version */
+"app.version" = "Verzija";
+
+/* Build */
+"app.build" = "Izgradnja";
+
+/* Unknown */
+"app.unknown" = "Nepoznato";
+
+/* Designed by */
+"app.designed" = "Dizajn:";
+
+/* Website */
+"app.website" = "Web-stranica";
+
+/* GitHub */
+"app.github" = "GitHub";
+
+/* Global Shortcut */
+"preferences.hotkey.title" = "Globalni prečac";
+
+/* Set a global hotkey shortcut to invoke Pika */
+"preferences.hotkey.description" = "Postavi globalan tipkovni prečac za pokretanje aplikacije Pika";
+
+/* Copy Settings */
+"preferences.copy.title" = "Kopiraj postavke";
+
+/* Export color for */
+"preferences.copy.export" = "Izvezi boju za";
+
+/* Example output */
+"preferences.copy.export.example" = "Rezultat primjera";
+
+/* Export Format */
+"preferences.copy.format" = "Format izvoza";
+
+/* Unformatted */
+"preferences.copy.options.unformatted" = "Neformatirano";
+
+/* Design Application */
+"preferences.copy.options.design" = "Softver za dizajn";
+
+/* CSS */
+"preferences.copy.options.css" = "CSS";
+
+/* SwiftUI */
+"preferences.copy.options.swiftui" = "SwiftUI";
+
+/* Automatically copy color to clipboard on pick */
+"preferences.copy.automatic" = "Nakon odabira boje automatski kopiraj boju u međuspremnik";
+
+/* Color Format */
+"preferences.format.title" = "Format boje";
+
+/* Set your preferred display format for colors */
+"preferences.format.description" = "Postavi format za prikaz boja";
+
+/* Set your RGB color space */
+"preferences.space.description" = "Postavi RGB prostor boja";
+
+/* System Default */
+"preferences.space.default" = "Standard sustava";
+
+/* Hide Pika while picking */
+"preferences.pick.hide" = "Sakrij Pika tijekom biranja";
+
+/* General Settings */
+"preferences.general.title" = "Opće postavke";
+
+/* Selection Settings */
+"preferences.selection.title" = "Postavke odabira";
+
+/* Hide menu bar icon */
+"preferences.icon.description" = "Sakrij ikonu u traci izbornika";
+
+/* Launch at login */
+"preferences.launch.description" = "Pokreni nakon prijave";
+
+/* Hide color names */
+"preferences.names.description" = "Sakrij imena boja";
+
+/* Subscribe to beta releases */
+"preferences.beta.description" = "Pretplati se na beta izdanja";
+
+/* Float above windows */
+"preferences.float.description" = "Lebdi iznad prozora";
+
+/* Always show Pika on launch */
+"preferences.show.description" = "Uvijek prikaži Pika nakon pokretanja sustava";
+
+/* App Settings */
+"preferences.app.title" = "Postavke aplikacije";
+
+/* Menu bar */
+"preferences.app.menubar.title" = "Traka izbornika";
+
+/* Show in menu bar */
+"preferences.app.menubar.description" = "Prikaži u traci izbornika";
+
+/* Dock */
+"preferences.app.dock.title" = "Dock";
+
+/* Show in dock */
+"preferences.app.dock.description" = "Prikaži u Docku";
+
+/* Hidden */
+"preferences.app.hidden.title" = "Skriveno";
+
+/* Hide app */
+"preferences.app.hidden.description" = "Sakrij aplikaciju";
+
+/* Appearance */
+"preferences.appearance.title" = "Izgled";
+
+/* Weight */
+"preferences.appearance.weight.title" = "Razina";
+
+/* View WCAG compliance by weight, from normal to large */
+"preferences.appearance.weight.description" = "Pogledaj usklađenost s WCAG-om prema razini, od normalne do visoke";
+
+/* Contrast */
+"preferences.appearance.contrast.title" = "Kontrast";
+
+/* View WCAG compliance by contrast, from 3:1 to 7:1 */
+"preferences.appearance.contrast.description" = "Pogledaj usklađenost s WCAG-om prema kontrastu, od 3:1 do 7:1";
+
+/* Contrast Value */
+"preferences.appearance.apca.title" = "Vrijednost kontrasta";
+
+/* View APCA contrast value by lightness contrast (Lc), from 30 to 75 */
+"preferences.appearance.apca.description" = "Pogledaj APCA vrijednost kontrasta prema kontrastu svjetline, od 30 do 75";
+
+/* Contrast Calculation Standard */
+"preferences.contrast.standard" = "Standard izračuna kontrasta";
+
+/* Contrast ratio */
+"color.ratio" = "Omjer kontrasta";
+
+/* Contrast ratio is a measure of the difference in perceived brightness between two colors, used to calculate the contrast ratio. */
+"color.ratio.description" = "Omjer kontrasta je mjera razlike u percipiranoj svjetlini između dviju boja i koristi se za izračun omjera kontrasta.";
+
+/* Contrast Value (Lc) */
+"color.lc" = "Vrijednost kontrasta";
+
+/* Lightness contrast (Lc) is a measure of the lightness difference between two colors, used to calculate the contrast value. */
+"color.lc.description" = "Kontrast svjetline je mjera razlike u svjetlini između dviju boja i koristi se za izračun vrijednosti kontrasta.";
+
+/* WCAG Compliance */
+"color.wcag" = "Usklađenost s WCAG-om";
+
+/* APCA Contrast Reference */
+"color.apca" = "APCA referenca kontrasta";
+
+/* Foreground */
+"color.foreground" = "Prednja boja";
+
+/* Background */
+"color.background" = "Boja pozadine";
+
+/* WCAG 3:1 */
+"color.wcag.30" = "WCAG 2 razina AA zahtijeva omjer kontrasta od najmanje 3:1 za veliki tekst (18 pt / ~24 px) ili za podebljani tekst (14 pt / ~18,6 px) te za netekstualni sadržaj poput korisničkog sučelja.";
+
+/* WCAG 4.5:1 */
+"color.wcag.45" = "WCAG 2 razina AA zahtijeva omjer kontrasta od najmanje 4,5:1 za normalan tekst. WCAG 2 razina AAA zahtijeva najmanje 4,5:1 za veliki tekst (18 pt / ~24 px) ili za podebljani tekst (14 pt / ~18,6 px).";
+
+/* WCAG 7:1 */
+"color.wcag.70" = "WCAG 2 razina AAA zahtijeva omjer kontrasta od najmanje 7:1 za normalan tekst.";
+
+/* APCA 30 */
+"color.apca.30" = "APCA ≥ 30 je minimalni kontrast za osnovni tekst i netekstualni sadržaj. Pogodno za veći tekst, za rezervirana mjesta i za deaktivirane elemente.";
+
+/* APCA 45 */
+"color.apca.45" = "APCA ≥ 45 je minimalni kontrast za tekst naslova. Pogodno za velike naslove, za navigacijske elemente i za važne komponente korisničkog sučelja.";
+
+/* APCA 60 */
+"color.apca.60" = "APCA ≥ 60 je minimalni kontrast za tekst naslova. Pogodno za podnaslove, za natpise i za sekundarni sadržaj koji mora biti jasno čitljiv.";
+
+/* APCA 75 */
+"color.apca.75" = "APCA ≥ 75 je minimalni kontrast za glavni tekst. Pogodno za primarni sadržaj, za tekst normalne veličine i za duže materijale za čitanje.";
+
+/* Pass */
+"color.wcag.pass" = "Uspjelo";
+
+/* Fail */
+"color.wcag.fail" = "Neuspjelo";
+
+/* Normal */
+"color.wcag.normal" = "Normalno";
+
+/* Large */
+"color.wcag.large" = "Veliko";
+
+/* LG */
+"color.wcag.large.abbr" = "Veliko";
+
+/* Global shortcut */
+"splash.hotkey" = "Globalni prečac";
+
+/* Launch at login */
+"splash.launch" = "Pokreni nakon prijave";
+
+/* Get started */
+"splash.start" = "Započni";
+
+/* Pick */
+"color.pick" = "Odaberi";
+
+/* Swap */
+"color.swap" = "Zamijeni";
+
+/* Swap colors */
+"color.swap.detail" = "Zamijeni boje";
+
+/* Undo */
+"color.undo" = "Poništi";
+
+/* Redo */
+"color.redo" = "Ponovi";
+
+/* Pick foreground */
+"color.pick.foreground" = "Odaberi prednju boju";
+
+/* Pick background */
+"color.pick.background" = "Odaberi boju pozadine";
+
+/* Copy */
+"color.copy" = "Kopiraj";
+
+/* Copy foreground */
+"color.copy.foreground" = "Kopiraj prednju boju";
+
+/* Copy background */
+"color.copy.background" = "Kopiraj boju pozadine";
+
+/* Copy all as text */
+"color.copy.text" = "Kopiraj sve kao tekst";
+
+/* Copy all as JSON */
+"color.copy.data" = "Kopiraj sve kao JSON";
+
+/* Copied */
+"color.copy.toast" = "Kopirano";
+
+/* Copy current format */
+"color.copy.current" = "Kopiraj trenutačni format";
+
+/* Copy HEX values */
+"color.copy.hex" = "Kopiraj HEX vrijednosti";
+
+/* Copy HSB values */
+"color.copy.hsb" = "Kopiraj HSB vrijednosti";
+
+/* Copy HSL values */
+"color.copy.hsl" = "Kopiraj HSL vrijednosti";
+
+/* Copy RGB values */
+"color.copy.rgb" = "Kopiraj RGB vrijednosti";
+
+/* Copy OpenGL values */
+"color.copy.opengl" = "Kopiraj OpenGL vrijednosti";
+
+/* Copy LAB values */
+"color.copy.lab" = "Kopiraj LAB vrijednosti";
+
+/* System color picker */
+"color.system" = "Sustavni birač boja";
+
+/* Use foreground system color picker */
+"color.system.foreground" = "Koristi sustavni birač boje za prednje boje";
+
+/* Use background system color picker */
+"color.system.background" = "Koristi sustavni birač boje za boje pozadine";
+
+/* System foreground */
+"color.system.foreground.simple" = "Sustavna prednja boja";
+
+/* System background */
+"color.system.background.simple" = "Sustavna boja pozadine";
+
+/* HEX format */
+"color.format.hex" = "Hex format";
+
+/* HSB format */
+"color.format.hsb" = "HSB format";
+
+/* HSL format */
+"color.format.hsl" = "HSL format";
+
+/* RGB format */
+"color.format.rgb" = "RGB format";
+
+/* OpenGL format */
+"color.format.opengl" = "OpenGL format";
+
+/* LAB format */
+"color.format.lab" = "LAB format";
+
+/* Copy foreground */
+"menu.copy.foreground" = "Kopiraj prednju boju";
+
+/* Copy background */
+"menu.copy.background" = "Kopiraj boju pozadine";
+
+/* Export */
+"menu.export" = "Izvezi";
+
+/* About */
+"menu.about" = "O aplikaciji";
+
+/* Check for updates */
+"menu.updates" = "Traži nove verzije";
+
+/* Preferences */
+"menu.preferences" = "Postavke";
+
+/* Pika Website */
+"menu.website" = "Pika web-stranica";
+
+/* Report Bug or Feedback */
+"menu.issue" = "Pošalji povratne informacije";
+
+/* Quit */
+"menu.quit" = "Zatvori aplikaciju";
+
+/* Show color overlay after picking */
+"preferences.overlay.show" = "Prikaži sloj boje nakon biranja";
+
+/* Duration: */
+"preferences.overlay.duration" = "Trajanje";
