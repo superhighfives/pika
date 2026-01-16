@@ -130,6 +130,20 @@ enum PikaText {
     static let textAboutVersion = NSLocalizedString("app.version", comment: "Version")
     static let textAboutBuild = NSLocalizedString("app.build", comment: "Build")
     static let textAboutUnknown = NSLocalizedString("app.unknown", comment: "Unknown")
+    static let textAboutMacAppStore = NSLocalizedString("app.store.mas", comment: "Mac App Store")
+    static let textAboutDownloaded = NSLocalizedString("app.store.download", comment: "Downloaded from the internet")
+
+    // APCA Compliance Labels
+    static let textAPCABaseline = NSLocalizedString("color.apca.baseline", comment: "Baseline")
+    static let textAPCAHeadline = NSLocalizedString("color.apca.headline", comment: "Headline")
+    static let textAPCATitle = NSLocalizedString("color.apca.title", comment: "Title")
+    static let textAPCABody = NSLocalizedString("color.apca.body", comment: "Body Text")
+
+    // APCA Tooltips
+    static let textColorAPCA30 = NSLocalizedString("color.apca.30", comment: "APCA ≥30")
+    static let textColorAPCA45 = NSLocalizedString("color.apca.45", comment: "APCA ≥45")
+    static let textColorAPCA60 = NSLocalizedString("color.apca.60", comment: "APCA ≥60")
+    static let textColorAPCA75 = NSLocalizedString("color.apca.75", comment: "APCA ≥75")
 
     // Keyboard shortcuts
     static let textPickForeground = NSLocalizedString("color.pick.foreground", comment: "Pick foreground")

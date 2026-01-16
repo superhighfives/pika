@@ -66,7 +66,7 @@ struct AboutView: View {
                                 .foregroundColor(Color.secondary)
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 14, height: 14)
-                            Text("Mac App Store")
+                            Text(PikaText.textAboutMacAppStore)
                                 .foregroundColor(Color.secondary)
                         }
                     #endif
@@ -76,7 +76,7 @@ struct AboutView: View {
                                 .foregroundColor(Color.secondary)
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 14, height: 14)
-                            Text("Downloaded from the internet")
+                            Text(PikaText.textAboutDownloaded)
                                 .foregroundColor(Color.secondary)
                         }
                     #endif
