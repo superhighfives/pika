@@ -60,7 +60,7 @@
 "W48-6f-4Dl.title" = "Uredi";
 
 /* Class = "NSMenuItem"; title = "Pick background..."; ObjectID = "YF5-6a-ACB"; */
-"YF5-6a-ACB.title" = "Odaberi pozadinu";
+"YF5-6a-ACB.title" = "Odaberi pozadinu …";
 
 /* Class = "NSMenuItem"; title = "Eyedroppers"; ObjectID = "dNS-BC-3MB"; */
 "dNS-BC-3MB.title" = "Kapaljke";
