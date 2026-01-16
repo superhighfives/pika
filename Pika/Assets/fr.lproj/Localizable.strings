@@ -19,6 +19,12 @@
 /* GitHub */
 "app.github" = "GitHub";
 
+/* Mac App Store */
+"app.store.mas" = "Mac App Store";
+
+/* Downloaded from the internet */
+"app.store.download" = "Téléchargé depuis Internet";
+
 /* Global Shortcut */
 "preferences.hotkey.title" = "Raccourci principal";
 
@@ -180,6 +186,18 @@
 
 /* APCA 75 */
 "color.apca.75" = "APCA >= 75 est le contraste minimum pour le texte de corps. Convient pour le contenu principal, le texte de taille normale et le matériel de lecture étendue.";
+
+/* Baseline */
+"color.apca.baseline" = "Base";
+
+/* Headline */
+"color.apca.headline" = "En-tête";
+
+/* Title */
+"color.apca.title" = "Titre";
+
+/* Body Text */
+"color.apca.body" = "Corps de texte";
 
 /* Pass */
 "color.wcag.pass" = "Conforme";
