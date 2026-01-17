@@ -19,6 +19,12 @@
 /* GitHub */
 "app.github" = "GitHub";
 
+/* Mac App Store */
+"app.store.mas" = "Mac App Store";
+
+/* Downloaded from the internet */
+"app.store.download" = "Preuzeto s interneta";
+
 /* Global Shortcut */
 "preferences.hotkey.title" = "Globalni prečac";
 
@@ -181,6 +187,18 @@
 /* APCA 75 */
 "color.apca.75" = "APCA ≥ 75 je minimalni kontrast za glavni tekst. Pogodno za primarni sadržaj, za tekst normalne veličine i za duže materijale za čitanje.";
 
+/* Baseline */
+"color.apca.baseline" = "Osnovni tekst";
+
+/* Headline */
+"color.apca.headline" = "Naslov odlomka";
+
+/* Title */
+"color.apca.title" = "Naslov";
+
+/* Body Text */
+"color.apca.body" = "Glavni tekst";
+
 /* Pass */
 "color.wcag.pass" = "Uspjelo";
 
@@ -266,19 +284,19 @@
 "color.copy.lab" = "Kopiraj LAB vrijednosti";
 
 /* System color picker */
-"color.system" = "Sustavni birač boja";
+"color.system" = "Birač boja sustava";
 
 /* Use foreground system color picker */
-"color.system.foreground" = "Koristi sustavni birač boje za prednje boje";
+"color.system.foreground" = "Koristi birač boje sustava za prednje boje";
 
 /* Use background system color picker */
-"color.system.background" = "Koristi sustavni birač boje za boje pozadine";
+"color.system.background" = "Koristi birač boje sustava za boje pozadine";
 
 /* System foreground */
-"color.system.foreground.simple" = "Sustavna prednja boja";
+"color.system.foreground.simple" = "Prednja boja sustava";
 
 /* System background */
-"color.system.background.simple" = "Sustavna boja pozadine";
+"color.system.background.simple" = "Boja pozadine sustava";
 
 /* HEX format */
 "color.format.hex" = "Hex format";
