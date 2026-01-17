@@ -6,14 +6,27 @@ Pika (pronounced pi·kuh, like picker) is an easy to use, open-source, native co
 
 <img width="768" alt="Screenshots of the dark and light Pika interface" src="https://github.com/user-attachments/assets/19c0f44c-7da8-4a76-89ff-862ab4731007">
 
+## Download
 
 **Download the latest version of the app at:<br />
 [superhighfives.com/pika](https://superhighfives.com/pika)**
 
-Or you can install it with Homebrew:
+Or install with Homebrew:
 ```bash
 brew install --cask pika
 ```
+
+## Features
+
+- Quick color picking from anywhere on screen
+- Multiple color format support (Hex, RGB, HSB, HSL, LAB, OpenGL)
+- Keyboard shortcuts for efficiency
+- URL scheme support for automation
+- System color picker integration
+- Undo/redo functionality
+- Color swapping capabilities
+
+## Learn More
 
 Learn more about the [motivations behind the project](https://medium.com/superhighfives/introducing-pika-d7725c397585), and the [product vision](https://github.com/superhighfives/pika/wiki).
 
@@ -75,7 +88,7 @@ You can also change the format by appending it to the URL when picking or copyin
 - Pick colour with specific format:
   - `pika://pick/foreground/hex` (or hex, rgb, hsb, hsl, lab, opengl)
   - `pika://pick/background/hex` (or hex, rgb, hsb, hsl, lab, opengl)
-- Use the system color picker for forground:
+- Use the system color picker for foreground:
   - `pika://system/foreground`
 - Use the system color picker for background:
   - `pika://system/background`
@@ -121,7 +134,7 @@ You can also change the format by appending it to the URL when picking or copyin
 - Swift Package Manager
 - [Mint](https://github.com/yonaskolb/Mint)
 
-## Getting started with contributing
+## Getting Started with Contributing
 
 Make sure you have [mint](https://github.com/yonaskolb/Mint) installed, and bootstrap the toolchain dependencies:
 
@@ -138,7 +151,7 @@ If you run into any problems, please [detail them in an issue](https://github.co
 
 Any and all contributions are welcomed. Check for [open issues](https://github.com/superhighfives/pika/issues), look through the [project roadmap](https://github.com/superhighfives/pika/projects/1), and [submit a PR](https://github.com/superhighfives/pika/compare).
 
-## Dependencies and thanks
+## Dependencies and Thanks
 
 - [Sparkle](https://github.com/sparkle-project/Sparkle) software update framework
 - [Defaults](https://github.com/sindresorhus/Defaults)
