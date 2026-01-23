@@ -21,7 +21,7 @@
 "AYu-sK-qS6.title" = "Glavni izbornik";
 
 /* Class = "NSMenuItem"; title = "Check for updates…"; ObjectID = "BOF-NM-1cW"; */
-"BOF-NM-1cW.title" = "Traži nove verzije …";
+"BOF-NM-1cW.title" = "Traži nove verzije…";
 
 /* Class = "NSMenuItem"; title = "Copy all as text"; ObjectID = "D8e-06-QFY"; */
 "D8e-06-QFY.title" = "Kopiraj sve kao tekst";
@@ -45,7 +45,7 @@
 "NQA-cg-qc7.title" = "Postavke…";
 
 /* Class = "NSMenuItem"; title = "Pick foreground..."; ObjectID = "Nec-cr-B3a"; */
-"Nec-cr-B3a.title" = "Odaberi prednju boju …";
+"Nec-cr-B3a.title" = "Odaberi prednju boju…";
 
 /* Class = "NSMenuItem"; title = "Hide Pika"; ObjectID = "Olw-nP-bQN"; */
 "Olw-nP-bQN.title" = "Sakrij Pika";
@@ -60,7 +60,7 @@
 "W48-6f-4Dl.title" = "Uredi";
 
 /* Class = "NSMenuItem"; title = "Pick background..."; ObjectID = "YF5-6a-ACB"; */
-"YF5-6a-ACB.title" = "Odaberi pozadinu …";
+"YF5-6a-ACB.title" = "Odaberi pozadinu…";
 
 /* Class = "NSMenuItem"; title = "Eyedroppers"; ObjectID = "dNS-BC-3MB"; */
 "dNS-BC-3MB.title" = "Kapaljke";
