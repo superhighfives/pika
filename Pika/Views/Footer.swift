@@ -24,10 +24,22 @@ struct Footer: View {
                     .foregroundColor(.secondary)
                     .fixedSize()
                 if contrastStandard == .wcag {
-                    Text("\(colorContrastRatio)")
-                        .font(.system(size: 18))
-                        .help(PikaText.textColorRatioDescription)
-                        .fixedSize()
+                    HStack(spacing: 2.0) {
+                        Text("\(colorContrastRatio)")
+                            .font(.system(size: 18))
+                            .help(PikaText.textColorRatioDescription)
+                            .fixedSize()
+                        HStack(spacing: 1.0) {
+                            Text(":")
+                                .font(.system(size: 18))
+                                .foregroundStyle(Color.secondary)
+                                .fixedSize()
+                            Text("1")
+                                .font(.system(size: 18))
+                                .foregroundStyle(Color.secondary)
+                                .fixedSize()
+                        }
+                    }
                 } else {
                     Text("\(colorContrastRatio)")
                         .font(.system(size: 18))

@@ -1,0 +1,350 @@
+/* Pika */
+"app.name" = "Pika";
+
+/* Version */
+"app.version" = "wersja";
+
+/* Build */
+"app.build" = "kompilacja";
+
+/* Unknown */
+"app.unknown" = "nieznana";
+
+/* Designed by */
+"app.designed" = "Zaprojektowana przez:";
+
+/* Website */
+"app.website" = "Witryna";
+
+/* GitHub */
+"app.github" = "GitHub";
+
+/* Mac App Store */
+"app.store.mas" = "Mac App Store";
+
+/* Downloaded from the internet */
+"app.store.download" = "Pobrane z Internetu";
+
+/* Global Shortcut */
+"preferences.hotkey.title" = "Globalny skrót klawiszowy";
+
+/* Set a global hotkey shortcut to invoke Pika */
+"preferences.hotkey.description" = "Utwórz globalny skrót klawiszowy służący do wywołania Piki";
+
+/* Copy Settings */
+"preferences.copy.title" = "Kopiuj ustawienia";
+
+/* Export color for */
+"preferences.copy.export" = "Eksportuj kolor dla";
+
+/* Example output */
+"preferences.copy.export.example" = "Przykładowy wynik";
+
+/* Export Format */
+"preferences.copy.format" = "Format eksportu";
+
+/* Unformatted */
+"preferences.copy.options.unformatted" = "Bez formatowania";
+
+/* Design Application */
+"preferences.copy.options.design" = "Oprogramowanie do projektowania";
+
+/* CSS */
+"preferences.copy.options.css" = "Kaskadowe arkusze stylów (CSS)";
+
+/* SwiftUI */
+"preferences.copy.options.swiftui" = "SwiftUI";
+
+/* Automatically copy color to clipboard on pick */
+"preferences.copy.automatic" = "Po wybraniu, automatycznie kopiuj kolor do schowka";
+
+/* Color Format */
+"preferences.format.title" = "Format koloru";
+
+/* Set your preferred display format for colors */
+"preferences.format.description" = "Ustaw preferowany format wyświetlania kolorów";
+
+/* Set your RGB color space */
+"preferences.space.description" = "Ustaw profil kolorów RGB";
+
+/* System Default */
+"preferences.space.default" = "Domyślny systemu";
+
+/* Hide Pika while picking */
+"preferences.pick.hide" = "Ukryj Pikę podczas wybierania";
+
+/* General Settings */
+"preferences.general.title" = "Ustawienia ogólne";
+
+/* Selection Settings */
+"preferences.selection.title" = "Ustawienia zaznaczania";
+
+/* Hide menu bar icon */
+"preferences.icon.description" = "Ukryj ikonę paska menu";
+
+/* Launch at login */
+"preferences.launch.description" = "Uruchom podczas logowania";
+
+/* Hide color names */
+"preferences.names.description" = "Ukryj nazwy kolorów";
+
+/* Subscribe to beta releases */
+"preferences.beta.description" = "Subskrybuj wersje beta";
+
+/* Float above windows */
+"preferences.float.description" = "Pływaj ponad oknami";
+
+/* Always show Pika on launch */
+"preferences.show.description" = "Zawsze pokazuj Pikę po uruchomieniu";
+
+/* App Settings */
+"preferences.app.title" = "Ustawienia aplikacji";
+
+/* Menu bar */
+"preferences.app.menubar.title" = "Pasek menu";
+
+/* Show in menu bar */
+"preferences.app.menubar.description" = "Pokazuj w pasku menu";
+
+/* Dock */
+"preferences.app.dock.title" = "Dock";
+
+/* Show in dock */
+"preferences.app.dock.description" = "Pokazuj w Docku";
+
+/* Hidden */
+"preferences.app.hidden.title" = "Ukryte";
+
+/* Hide app */
+"preferences.app.hidden.description" = "Ukryj aplikację";
+
+/* Appearance */
+"preferences.appearance.title" = "Wygląd";
+
+/* Weight */
+"preferences.appearance.weight.title" = "Ciężar optyczny";
+
+/* View WCAG compliance by weight, from normal to large */
+"preferences.appearance.weight.description" = "Pokazuj zgodność z WCAG według ciężaru, od zwykłego do dużego";
+
+/* Contrast */
+"preferences.appearance.contrast.title" = "Kontrast";
+
+/* View WCAG compliance by contrast, from 3:1 to 7:1 */
+"preferences.appearance.contrast.description" = "Pokazuj zgodność z WCAG według kontrastu, od 3:1 do 7:1";
+
+/* Contrast Value */
+"preferences.appearance.apca.title" = "Wartość kontrastu";
+
+/* View APCA contrast value by lightness contrast (Lc), from 30 to 75 */
+"preferences.appearance.apca.description" = "Pokazuj wartość kontrastu APCA według kontrastu jasności (Lc) od 30 do 75";
+
+/* Contrast Calculation Standard */
+"preferences.contrast.standard" = "Metoda obliczania kontrastu";
+
+/* Contrast ratio */
+"color.ratio" = "Współczynnik kontrastu";
+
+/* Contrast ratio is a measure of the difference in perceived brightness between two colors, used to calculate the contrast ratio. */
+"color.ratio.description" = "Współczynnik kontrastu to miara różnicy w postrzeganej jasności dwóch kolorów, służąca do obliczenia współczynnika kontrastu.";
+
+/* Contrast Value (Lc) */
+"color.lc" = "Wartość kontrastu jasności (Lc)";
+
+/* Lightness contrast (Lc) is a measure of the lightness difference between two colors, used to calculate the contrast value. */
+"color.lc.description" = "Kontrast jasności (Lc) to miara różnicy jasności między dwoma kolorami, służąca do obliczenia wartości kontrastu.";
+
+/* WCAG Compliance */
+"color.wcag" = "Zgodność z wytycznymi WCAG";
+
+/* APCA Contrast Reference */
+"color.apca" = "Zgodność kontrastu tekstu z wytycznymi APCA";
+
+/* Foreground */
+"color.foreground" = "Pierwszy plan";
+
+/* Background */
+"color.background" = "Tło";
+
+/* WCAG 3:1 */
+"color.wcag.30" = "Norma WCAG 2 poziomu AA wymaga współczynnika kontrastu wynoszącego co najmniej 3:1 dla tekstu dużego (18 pt / ~24 px) lub pogrubionego (14 pt / ~18,6 px), a także dla zawartości innej niż tekst, np. interfejsu użytkownika.";
+
+/* WCAG 4.5:1 */
+"color.wcag.45" = "Norma WCAG 2 poziomu AA wymaga współczynnika kontrastu co najmniej 4,5:1 dla zwykłego tekstu. Norma WCAG 2 poziomu AAA wymaga współczynnika kontrastu co najmniej 4,5:1 dla tekstu dużego (18 pt / ~24 px) lub pogrubionego (14 pt / ~18,6 px).";
+
+/* WCAG 7:1 */
+"color.wcag.70" = "Norma WCAG 2 poziomu AAA wymaga, aby w przypadku zwykłego tekstu współczynnik kontrastu wynosił co najmniej 7:1.";
+
+/* APCA 30 */
+"color.apca.30" = "APCA >= 30 to minimalny kontrast tekstu podstawowego i elementów nietekstowych. Odpowiedni dla większego tekstu, tekstów zastępczych i elementów wyłączonych.";
+
+/* APCA 45 */
+"color.apca.45" = "APCA >= 45 to minimalny kontrast tekstu nagłówkowego. Odpowiedni dla dużych nagłówków, elementów nawigacyjnych i ważnych komponentów interfejsu użytkownika.";
+
+/* APCA 60 */
+"color.apca.60" = "APCA >= 60 to minimalny kontrast tekstu tytułowego. Odpowiedni dla podtytułów, podpisów i treści drugorzędnych, które muszą być wyraźnie czytelne.";
+
+/* APCA 75 */
+"color.apca.75" = "APCA >= 75 to minimalny kontrast tekstu głównego. Odpowiedni dla treści podstawowych, tekstu o standardowym rozmiarze i obszernych materiałów do czytania.";
+
+/* Baseline */
+"color.apca.baseline" = "Podstawowy";
+
+/* Headline */
+"color.apca.headline" = "Nagłówek";
+
+/* Title */
+"color.apca.title" = "Tytuł";
+
+/* Body Text */
+"color.apca.body" = "Tekst główny";
+
+/* Pass */
+"color.wcag.pass" = "zaliczona";
+
+/* Fail */
+"color.wcag.fail" = "niezaliczona";
+
+/* Normal */
+"color.wcag.normal" = "Zwykły";
+
+/* Large */
+"color.wcag.large" = "Duży";
+
+/* LG */
+"color.wcag.large.abbr" = "LG";
+
+/* Global shortcut */
+"splash.hotkey" = "Skrót globalny";
+
+/* Launch at login */
+"splash.launch" = "Uruchom podczas logowania";
+
+/* Get started */
+"splash.start" = "Zaczynamy";
+
+/* Pick */
+"color.pick" = "Wybierz";
+
+/* Swap */
+"color.swap" = "Zamień";
+
+/* Swap colors */
+"color.swap.detail" = "Zamień kolory";
+
+/* Undo */
+"color.undo" = "Cofnij";
+
+/* Redo */
+"color.redo" = "Przywróć";
+
+/* Pick foreground */
+"color.pick.foreground" = "Wybierz pierwszy plan";
+
+/* Pick background */
+"color.pick.background" = "Wybierz tło";
+
+/* Copy */
+"color.copy" = "Kopiuj";
+
+/* Copy foreground */
+"color.copy.foreground" = "Kopiuj pierwszy plan";
+
+/* Copy background */
+"color.copy.background" = "Kopiuj tło";
+
+/* Copy all as text */
+"color.copy.text" = "Kopiuj wszystko jako tekst";
+
+/* Copy all as JSON */
+"color.copy.data" = "Kopiuj wszystko jako JSON";
+
+/* Copied */
+"color.copy.toast" = "Skopiowano";
+
+/* Copy current format */
+"color.copy.current" = "Kopiuj bieżący format";
+
+/* Copy HEX values */
+"color.copy.hex" = "Kopiuj wartości szesnastkowe";
+
+/* Copy HSB values */
+"color.copy.hsb" = "Kopiuj wartości HSB";
+
+/* Copy HSL values */
+"color.copy.hsl" = "Kopiuj wartości HSL";
+
+/* Copy RGB values */
+"color.copy.rgb" = "Kopiuj wartości RGB";
+
+/* Copy OpenGL values */
+"color.copy.opengl" = "Kopiuj wartości OpenGL";
+
+/* Copy LAB values */
+"color.copy.lab" = "Kopiuj wartości LAB";
+
+/* System color picker */
+"color.system" = "Systemowy wybór koloru";
+
+/* Use foreground system color picker */
+"color.system.foreground" = "Wybierz pierwszy plan (system)";
+
+/* Use background system color picker */
+"color.system.background" = "Wybierz tło (system)";
+
+/* System foreground */
+"color.system.foreground.simple" = "Pierwszy plan (system)";
+
+/* System background */
+"color.system.background.simple" = "Tło (system)";
+
+/* HEX format */
+"color.format.hex" = "Format szesnastkowy";
+
+/* HSB format */
+"color.format.hsb" = "Format HSB";
+
+/* HSL format */
+"color.format.hsl" = "Format HSL";
+
+/* RGB format */
+"color.format.rgb" = "Format RGB";
+
+/* OpenGL format */
+"color.format.opengl" = "Format OpenGL";
+
+/* LAB format */
+"color.format.lab" = "Format LAB";
+
+/* Copy foreground */
+"menu.copy.foreground" = "Kopiuj pierwszy plan";
+
+/* Copy background */
+"menu.copy.background" = "Kopiuj tło";
+
+/* Export */
+"menu.export" = "Eksportuj";
+
+/* About */
+"menu.about" = "Pika…";
+
+/* Check for updates */
+"menu.updates" = "Sprawdź uaktualnienia";
+
+/* Preferences */
+"menu.preferences" = "Ustawienia";
+
+/* Pika Website */
+"menu.website" = "Witryna Piki";
+
+/* Report Bug or Feedback */
+"menu.issue" = "Prześlij opinię";
+
+/* Quit */
+"menu.quit" = "Zakończ";
+
+/* Show color overlay after picking */
+"preferences.overlay.show" = "Pokazuj chwilową nakładkę kolorystyczną po wybraniu";
+
+/* Duration: */
+"preferences.overlay.duration" = "Czas trwania";

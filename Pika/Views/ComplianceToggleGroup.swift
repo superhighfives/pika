@@ -127,30 +127,30 @@ struct ComplianceToggleGroup: View {
         {
             HStack(spacing: size == .full ? 16.0 : 8.0) {
                 ComplianceToggle(
-                    title: "Baseline",
+                    title: PikaText.textAPCABaseline,
                     isCompliant: abs(apca.value) >= 30,
-                    tooltip: "APCA ≥30",
+                    tooltip: PikaText.textColorAPCA30,
                     combined: true,
                     size: size
                 )
                 ComplianceToggle(
-                    title: "Headline",
+                    title: PikaText.textAPCAHeadline,
                     isCompliant: abs(apca.value) >= 45,
-                    tooltip: "APCA ≥45",
+                    tooltip: PikaText.textColorAPCA45,
                     combined: true,
                     size: size
                 )
                 ComplianceToggle(
-                    title: "Title",
+                    title: PikaText.textAPCATitle,
                     isCompliant: abs(apca.value) >= 60,
-                    tooltip: "APCA ≥60",
+                    tooltip: PikaText.textColorAPCA60,
                     combined: true,
                     size: size
                 )
                 ComplianceToggle(
-                    title: "Body Text",
+                    title: PikaText.textAPCABody,
                     isCompliant: abs(apca.value) >= 75,
-                    tooltip: "APCA ≥75",
+                    tooltip: PikaText.textColorAPCA75,
                     combined: true,
                     size: size
                 )
