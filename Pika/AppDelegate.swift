@@ -107,8 +107,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         // Define content view
         let contentView = ContentView()
             .environmentObject(eyedroppers)
-            .frame(minWidth: 570,
-                   idealWidth: 570,
+            .frame(minWidth: 480,
+                   idealWidth: 480,
                    maxWidth: 650,
                    minHeight: 230,
                    idealHeight: 230,
@@ -436,6 +436,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     @IBAction func triggerFormatLAB(_: Any) {
         notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerFormatLAB), object: self)
+    }
+
+    @IBAction func triggerFormatOKLCH(_: Any) {
+        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerFormatOKLCH), object: self)
     }
 
     @IBAction func hidePika(_: Any) {

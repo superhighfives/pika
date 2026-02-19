@@ -9,7 +9,7 @@ struct KeyboardShortcutGrid: View {
                 let width = geometry.size.width
                 let height = geometry.size.height
 
-                let horizontalUnit = width / 6
+                let horizontalUnit = width / 7
                 let verticalUnit = floor(height / 3)
 
                 VStack(spacing: 0.0) {
@@ -189,6 +189,16 @@ struct KeyboardShortcutGrid: View {
                             title: PikaText.textFormatLAB,
                             event: PikaConstants.ncTriggerFormatLAB,
                             keys: ["⌘", "6"]
+                        )
+                        .frame(width: horizontalUnit, height: verticalUnit)
+
+                        Divider()
+                            .frame(height: verticalUnit)
+
+                        KeyboardShortcutItem(
+                            title: PikaText.textFormatOKLCH,
+                            event: PikaConstants.ncTriggerFormatOKLCH,
+                            keys: ["⌘", "7"]
                         )
                         .frame(width: horizontalUnit, height: verticalUnit)
                     }

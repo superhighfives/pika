@@ -397,6 +397,68 @@ extension NSColor {
     }
 
     /*
+     * OKLCH
+     */
+
+    func toOklchComponents() -> (l: CGFloat, c: CGFloat, h: CGFloat) {
+        let srgb = toRGBAComponents()
+
+        // Linearize sRGB components
+        func linearize(_ c: CGFloat) -> CGFloat {
+            if c <= 0.04045 {
+                return c / 12.92
+            } else {
+                return pow((c + 0.055) / 1.055, 2.4)
+            }
+        }
+
+        let r_lin = linearize(srgb.r)
+        let g_lin = linearize(srgb.g)
+        let b_lin = linearize(srgb.b)
+
+        // Linear RGB to LMS
+        let l = 0.4122214708 * r_lin + 0.5363325363 * g_lin + 0.0514459929 * b_lin
+        let m = 0.2119034982 * r_lin + 0.6806995451 * g_lin + 0.1073969566 * b_lin
+        let s = 0.0883024619 * r_lin + 0.2817188376 * g_lin + 0.6299787005 * b_lin
+
+        // LMS to Oklab (cube root of LMS)
+        let l_ = cbrt(l)
+        let m_ = cbrt(m)
+        let s_ = cbrt(s)
+
+        let L = 0.2104542553 * l_ + 0.7936177850 * m_ - 0.0040720468 * s_
+        let a = 1.9779984951 * l_ - 2.4285922050 * m_ + 0.4505937099 * s_
+        let b = 0.0259040371 * l_ + 0.7827717662 * m_ - 0.8086757660 * s_
+
+        // Oklab to OKLCH
+        let C = sqrt(a * a + b * b)
+        var H = atan2(b, a) * 180.0 / .pi
+        if H < 0 {
+            H += 360.0
+        }
+
+        return (l: L, c: C, h: H)
+    }
+
+    func toOklchString(style: CopyFormat) -> String {
+        let oklch = toOklchComponents()
+        let l_val = round(oklch.l * 10000) / 100
+        let c_val = round(oklch.c * 10000) / 10000
+        let h_val = round(oklch.h * 100) / 100
+
+        let formatString: String
+        switch style {
+        case .css:
+            formatString = String(format: "oklch(%.2f%% %.4f %.2f)", l_val, c_val, h_val)
+        case .design, .swiftUI:
+            formatString = String(format: "oklch(%.2f, %.4f, %.2f)", l_val, c_val, h_val)
+        case .unformatted:
+            formatString = String(format: "%.2f, %.4f, %.2f", l_val, c_val, h_val)
+        }
+        return formatString
+    }
+
+    /*
      * Helpers
      */
 
@@ -419,6 +481,8 @@ extension NSColor {
             return toOpenGLString(style: style)
         case .lab:
             return toLabString(style: style)
+        case .oklch:
+            return toOklchString(style: style)
         }
     }
 

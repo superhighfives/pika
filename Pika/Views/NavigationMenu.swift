@@ -20,8 +20,7 @@ struct NavigationMenu: View {
                         .selectionDisabled(isFormatDisabled(value))
                 }
             }
-            .offset(y: 1.0)
-            .pickerStyle(SegmentedPickerStyle())
+            .pickerStyle(.menu)
             .labelsHidden()
 
             Menu {

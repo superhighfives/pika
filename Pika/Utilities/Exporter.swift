@@ -10,19 +10,21 @@ class Exporter {
         let foregroundHsb = foreground.color.toFormat(format: ColorFormat.hsb, style: style)
         let foregroundHsl = foreground.color.toFormat(format: ColorFormat.hsl, style: style)
         let foregroundOpengl = foreground.color.toFormat(format: ColorFormat.opengl, style: style)
+        let foregroundOklch = foreground.color.toFormat(format: ColorFormat.oklch, style: style)
 
         let backgroundHex = background.color.toFormat(format: ColorFormat.hex, style: style)
         let backgroundRgb = background.color.toFormat(format: ColorFormat.rgb, style: style)
         let backgroundHsb = background.color.toFormat(format: ColorFormat.hsb, style: style)
         let backgroundHsl = background.color.toFormat(format: ColorFormat.hsl, style: style)
         let backgroundOpengl = background.color.toFormat(format: ColorFormat.opengl, style: style)
+        let backgroundOklch = background.color.toFormat(format: ColorFormat.oklch, style: style)
         let passMessage = PikaText.textColorPass
         let failMessage = PikaText.textColorFail
 
         // swiftlint:disable line_length
         return """
-        \(PikaText.textColorForeground): Hex \(foregroundHex) · RGB \(foregroundRgb) · HSB \(foregroundHsb) · HSL \(foregroundHsl) · OpenGL \(foregroundOpengl)
-        \(PikaText.textColorBackground): Hex \(backgroundHex) · RGB \(backgroundRgb) · HSB \(backgroundHsb) · HSL \(backgroundHsl) · OpenGl \(backgroundOpengl)
+        \(PikaText.textColorForeground): Hex \(foregroundHex) · RGB \(foregroundRgb) · HSB \(foregroundHsb) · HSL \(foregroundHsl) · OpenGL \(foregroundOpengl) · OKLCH \(foregroundOklch)
+        \(PikaText.textColorBackground): Hex \(backgroundHex) · RGB \(backgroundRgb) · HSB \(backgroundHsb) · HSL \(backgroundHsl) · OpenGl \(backgroundOpengl) · OKLCH \(backgroundOklch)
         \(PikaText.textColorRatio): \(colorContrastRatio):1
         \(PikaText.textColorWCAG): AA Large (\(colorWCAGCompliance.ratio30 ? passMessage : failMessage)) · AA / AAA Large (\(colorWCAGCompliance.ratio45 ? passMessage : failMessage)) · AAA (\(colorWCAGCompliance.ratio70 ? passMessage : failMessage)) · Non-text (\(colorWCAGCompliance.ratio30 ? passMessage : failMessage))
         """
@@ -42,6 +44,7 @@ class Exporter {
               "hsb": "\(foreground.color.toFormat(format: ColorFormat.hsb, style: style))",
               "hsl": "\(foreground.color.toFormat(format: ColorFormat.hsl, style: style))",
               "opengl": "\(foreground.color.toFormat(format: ColorFormat.opengl, style: style))",
+              "oklch": "\(foreground.color.toFormat(format: ColorFormat.oklch, style: style))",
               "name": "\(foreground.getClosestColor())"
             },
             "background": {
@@ -50,6 +53,7 @@ class Exporter {
               "hsb": "\(background.color.toFormat(format: ColorFormat.hsb, style: style))",
               "hsl": "\(background.color.toFormat(format: ColorFormat.hsl, style: style))",
               "opengl": "\(background.color.toFormat(format: ColorFormat.opengl, style: style))",
+              "oklch": "\(background.color.toFormat(format: ColorFormat.oklch, style: style))",
               "name": "\(background.getClosestColor())"
             }
           },
