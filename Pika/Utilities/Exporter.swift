@@ -24,7 +24,7 @@ class Exporter {
         // swiftlint:disable line_length
         return """
         \(PikaText.textColorForeground): Hex \(foregroundHex) · RGB \(foregroundRgb) · HSB \(foregroundHsb) · HSL \(foregroundHsl) · OpenGL \(foregroundOpengl) · OKLCH \(foregroundOklch)
-        \(PikaText.textColorBackground): Hex \(backgroundHex) · RGB \(backgroundRgb) · HSB \(backgroundHsb) · HSL \(backgroundHsl) · OpenGl \(backgroundOpengl) · OKLCH \(backgroundOklch)
+        \(PikaText.textColorBackground): Hex \(backgroundHex) · RGB \(backgroundRgb) · HSB \(backgroundHsb) · HSL \(backgroundHsl) · OpenGL \(backgroundOpengl) · OKLCH \(backgroundOklch)
         \(PikaText.textColorRatio): \(colorContrastRatio):1
         \(PikaText.textColorWCAG): AA Large (\(colorWCAGCompliance.ratio30 ? passMessage : failMessage)) · AA / AAA Large (\(colorWCAGCompliance.ratio45 ? passMessage : failMessage)) · AAA (\(colorWCAGCompliance.ratio70 ? passMessage : failMessage)) · Non-text (\(colorWCAGCompliance.ratio30 ? passMessage : failMessage))
         """

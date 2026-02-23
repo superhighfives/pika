@@ -321,7 +321,7 @@ extension NSColor {
      */
 
     private func toXYZComponents() -> (x: CGFloat, y: CGFloat, z: CGFloat) {
-        let srgb = toRGBAComponents()
+        let srgb = toRGBAComponents(in: .sRGB)
 
         // Linearize sRGB components
         func linearize(_ c: CGFloat) -> CGFloat {
@@ -401,7 +401,7 @@ extension NSColor {
      */
 
     func toOklchComponents() -> (l: CGFloat, c: CGFloat, h: CGFloat) {
-        let srgb = toRGBAComponents()
+        let srgb = toRGBAComponents(in: .sRGB)
 
         // Linearize sRGB components
         func linearize(_ c: CGFloat) -> CGFloat {

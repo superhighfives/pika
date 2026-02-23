@@ -176,8 +176,8 @@ struct KeyboardShortcutGrid: View {
                             .frame(height: verticalUnit)
 
                         KeyboardShortcutItem(
-                            title: PikaText.textFormatOpenGL,
-                            event: PikaConstants.ncTriggerFormatOpenGL,
+                            title: PikaText.textFormatLAB,
+                            event: PikaConstants.ncTriggerFormatLAB,
                             keys: ["⌘", "5"]
                         )
                         .frame(width: horizontalUnit, height: verticalUnit)
@@ -186,8 +186,8 @@ struct KeyboardShortcutGrid: View {
                             .frame(height: verticalUnit)
 
                         KeyboardShortcutItem(
-                            title: PikaText.textFormatLAB,
-                            event: PikaConstants.ncTriggerFormatLAB,
+                            title: PikaText.textFormatOpenGL,
+                            event: PikaConstants.ncTriggerFormatOpenGL,
                             keys: ["⌘", "6"]
                         )
                         .frame(width: horizontalUnit, height: verticalUnit)
