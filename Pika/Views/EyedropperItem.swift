@@ -84,7 +84,16 @@ struct EyedropperItem: View {
             .onReceive(NotificationCenter.default.publisher(
                 for: Notification.Name(PikaConstants.ncTriggerFormatLAB)))
             { _ in
-                colorFormat = .lab
+                if copyFormat != .swiftUI {
+                    colorFormat = .lab
+                }
+            }
+            .onReceive(NotificationCenter.default.publisher(
+                for: Notification.Name(PikaConstants.ncTriggerFormatOKLCH)))
+            { _ in
+                if copyFormat != .swiftUI {
+                    colorFormat = .oklch
+                }
             }
             .toast(
                 isShowing: $showToast,

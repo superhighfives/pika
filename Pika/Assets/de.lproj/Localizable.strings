@@ -316,6 +316,9 @@
 /* LAB format */
 "color.format.lab" = "LAB-Format";
 
+/* OKLCH format */
+"color.format.oklch" = "OKLCH-Format";
+
 /* Copy foreground */
 "menu.copy.foreground" = "Vordergrund kopieren";
 

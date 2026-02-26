@@ -55,10 +55,11 @@ enum PikaConstants {
     static let ncTriggerFormatHSL = "triggerFormatHSL"
     static let ncTriggerFormatOpenGL = "triggerFormatOpenGL"
     static let ncTriggerFormatLAB = "triggerFormatLAB"
+    static let ncTriggerFormatOKLCH = "triggerFormatOKLCH"
     static let ncTriggerQuit = "triggerQuit"
 
     // Disabled formats for SwiftUI copy format
-    static let disabledFormats: [ColorFormat] = [.hex, .hsl, .opengl, .lab]
+    static let disabledFormats: [ColorFormat] = [.hex, .hsl, .opengl, .lab, .oklch]
 }
 
 enum PikaText {
@@ -264,6 +265,7 @@ enum PikaText {
     static let textFormatHSB = NSLocalizedString("color.format.hsb", comment: "HSB format")
     static let textFormatOpenGL = NSLocalizedString("color.format.opengl", comment: "OpenGL format")
     static let textFormatLAB = NSLocalizedString("color.format.lab", comment: "LAB format")
+    static let textFormatOKLCH = NSLocalizedString("color.format.oklch", comment: "OKLCH format")
 
     // Global Shortcut
     static let textHotkeyTitle = NSLocalizedString("preferences.hotkey.title", comment: "Global Shortcut")

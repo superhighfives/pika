@@ -179,6 +179,11 @@
                                                             <action selector="triggerFormatOpenGL:" target="Voe-Tx-rLC" id="d59-fh-wXc"/>
                                                         </connections>
                                                     </menuItem>
+                                                    <menuItem title="OKLCH" keyEquivalent="7" allowsKeyEquivalentWhenHidden="YES" id="oKl-Ch-7fM" userLabel="Format">
+                                                        <connections>
+                                                            <action selector="triggerFormatOKLCH:" target="Voe-Tx-rLC" id="oKl-Cn-8gN"/>
+                                                        </connections>
+                                                    </menuItem>
                                                 </items>
                                             </menu>
                                             <connections>
