@@ -28,7 +28,7 @@ class PikaWindow {
         window.toolbarStyle = .unifiedCompact
 
         let toolbarButtons = NSHostingView(rootView: NavigationMenu())
-        toolbarButtons.frame.size = toolbarButtons.intrinsicContentSize
+        toolbarButtons.frame.size = toolbarButtons.fittingSize
         let titlebarAccessory = NSTitlebarAccessoryViewController()
         titlebarAccessory.view = toolbarButtons
         titlebarAccessory.layoutAttribute = .trailing

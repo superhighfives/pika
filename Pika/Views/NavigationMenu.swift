@@ -23,6 +23,7 @@ struct NavigationMenu: View {
             .pickerStyle(.menu)
             .labelsHidden()
             .fixedSize()
+            .frame(minWidth: 90)
 
             Menu {
                 NavigationMenuItems()
@@ -35,7 +36,8 @@ struct NavigationMenu: View {
             .padding(.trailing, 10.0)
             .padding(.leading, 5.0)
             .fixedSize()
-
+        }
+        .background {
             let values = ColorFormat.allCases.map { $0 }
             HStack {
                 ForEach(ColorFormat.allCases, id: \.self) { value in
@@ -52,7 +54,7 @@ struct NavigationMenu: View {
             }
             .opacity(0)
             .frame(width: 0, height: 0)
-            .padding(0)
+            .allowsHitTesting(false)
         }
         .onChange(of: copyFormat) {
             if copyFormat == .swiftUI {
