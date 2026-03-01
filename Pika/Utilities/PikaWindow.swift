@@ -5,7 +5,7 @@ import SwiftUI
 class PikaWindow {
     static func createPrimaryWindow() -> NSWindow {
         let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 380, height: 150),
+            contentRect: NSRect(x: 0, y: 0, width: 480, height: 230),
             styleMask: [.titled, .closable, .miniaturizable, .resizable],
             backing: .buffered,
             defer: false

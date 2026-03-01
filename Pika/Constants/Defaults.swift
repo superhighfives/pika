@@ -66,4 +66,8 @@ extension Defaults.Keys {
     static let contrastStandard = Key<ContrastStandard>("contrastStandard", default: .wcag)
     static let showColorOverlay = Key<Bool>("showColorOverlay", default: true)
     static let colorOverlayDuration = Key<Double>("colorOverlayDuration", default: 2.0)
+    static let showColorHistory = Key<Bool>("showColorHistory", default: true)
+    static let colorHistory = Key<[String]>("colorHistory", default: [])
+    static let paletteText = Key<String>("paletteText", default: "")
+    static let openAsWindow = Key<Bool>("openAsWindow", default: false)
 }

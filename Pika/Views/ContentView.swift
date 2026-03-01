@@ -7,13 +7,21 @@ struct ContentView: View {
 
     @Default(.copyFormat) var copyFormat
     @Default(.colorFormat) var colorFormat
+    @Default(.paletteText) var paletteText
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     let pasteboard = NSPasteboard.general
+
+    /// When provided (popover path), avoids re-parsing paletteText that PopoverContentView already parsed.
+    var externalPalettes: [ColorPalette]?
 
     @State var swapVisible: Bool = false
     @State private var timerSubscription: Cancellable?
     @State private var timer = Timer.publish(every: 0.25, on: .main, in: .common)
     @State private var angle: Double = 0
+
+    private var palettes: [ColorPalette] {
+        externalPalettes ?? PaletteParser.parse(paletteText)
+    }
 
     var body: some View {
         VStack(alignment: .trailing, spacing: 0) {
@@ -44,11 +52,6 @@ struct ContentView: View {
                         alt: PikaText.textColorSwap,
                         ltr: true
                     ))
-                    .onReceive(NotificationCenter.default.publisher(
-                        for: Notification.Name(PikaConstants.ncTriggerSwap)))
-                    { _ in
-                        swap(&eyedroppers.foreground.color, &eyedroppers.background.color)
-                    }
                     .focusable(false)
                     .padding(16.0)
                     .frame(maxHeight: .infinity, alignment: .top)
@@ -63,11 +66,16 @@ struct ContentView: View {
 
             Divider()
             Footer(foreground: eyedroppers.foreground, background: eyedroppers.background)
+            ColorHistory()
+            ColorPalettes(palettes: palettes)
         }
         .onAppear {
-            eyedroppers.background.color = colorScheme == .light
-                ? NSColor.white
-                : NSColor.black
+            if !eyedroppers.hasSetInitialBackground {
+                eyedroppers.hasSetInitialBackground = true
+                eyedroppers.background.color = colorScheme == .light
+                    ? NSColor.white
+                    : NSColor.black
+            }
         }
         .onReceive(NotificationCenter.default.publisher(
             for: Notification.Name(PikaConstants.ncTriggerCopyText)))
@@ -87,6 +95,59 @@ struct ContentView: View {
             // swiftlint:enable line_length
             pasteboard.setString(contents, forType: .string)
         }
+    }
+}
+
+/// Shared layout constants for dynamic height calculation.
+/// Used by both PopoverContentView and AppDelegate.updateWindowSize().
+enum SwatchLayout {
+    /// Height of a single swatch section (Divider + SwatchBar + padding).
+    static let swatchSectionHeight: CGFloat = 52
+    static let maxHeight: CGFloat = 550
+
+    static func totalHeight(base: CGFloat, hasHistory: Bool, paletteCount: Int) -> CGFloat {
+        var height = base
+        if hasHistory {
+            height += swatchSectionHeight
+        }
+        height += CGFloat(paletteCount) * swatchSectionHeight
+        return min(height, maxHeight)
+    }
+}
+
+struct PopoverContentView: View {
+    @EnvironmentObject var eyedroppers: Eyedroppers
+    @Default(.colorHistory) var colorHistory
+    @Default(.paletteText) var paletteText
+
+    /// MenuBarExtra .window style requires an explicit frame — no intrinsic sizing.
+    private static let popoverBaseHeight: CGFloat = 284
+
+    private var palettes: [ColorPalette] {
+        PaletteParser.parse(paletteText)
+    }
+
+    private func popoverHeight(paletteCount: Int) -> CGFloat {
+        SwatchLayout.totalHeight(
+            base: Self.popoverBaseHeight,
+            hasHistory: !colorHistory.isEmpty,
+            paletteCount: paletteCount
+        )
+    }
+
+    var body: some View {
+        let parsedPalettes = palettes
+        VStack(spacing: 0) {
+            HStack {
+                Spacer()
+                NavigationMenu()
+            }
+            .padding(.leading, 10)
+            .padding(.vertical, 10)
+            ContentView(externalPalettes: parsedPalettes)
+                .environmentObject(eyedroppers)
+        }
+        .frame(width: 480, height: popoverHeight(paletteCount: parsedPalettes.count))
     }
 }
 
