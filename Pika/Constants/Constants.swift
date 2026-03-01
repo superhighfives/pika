@@ -89,6 +89,7 @@ enum PikaText {
     static let textColorCopy = NSLocalizedString("color.copy", comment: "Copy")
     static let textColorSystemPicker = NSLocalizedString("color.system", comment: "System picker")
     static let textColorCopied = NSLocalizedString("color.copy.toast", comment: "Copied")
+    static let textColorHistory = NSLocalizedString("color.history", comment: "Color History")
 
     /*
      * Menu
@@ -280,6 +281,12 @@ enum PikaText {
         comment: "Show color overlay after picking"
     )
     static let textDuration = NSLocalizedString("preferences.overlay.duration", comment: "Duration:")
+
+    // Color Palettes
+    static let textPalettesTitle = NSLocalizedString("palette.title", comment: "Custom Color Palettes")
+    static let textPalettesDescription = NSLocalizedString(
+        "palette.description", comment: "Palette description"
+    )
 }
 
 // swiftlint:enable trailing_comma
