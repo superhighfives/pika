@@ -350,7 +350,14 @@ struct PreferencesView: View {
                     }
                     .padding(.horizontal, 24.0)
                 }
-                .padding(.bottom, 24.0)
+                Divider()
+                    .padding(.vertical, 16.0)
+
+                // Color Palettes
+
+                PaletteEditor()
+                    .padding(.horizontal, 24.0)
+                    .padding(.bottom, 24.0)
             }
             .background(
                 GeometryReader { contentGeometry in

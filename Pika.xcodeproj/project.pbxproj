@@ -134,6 +134,16 @@
 		1C7412E01A6EF6E6D516CEB6 /* ColorHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB487C20A8FA16610A2DE6C4 /* ColorHistory.swift */; };
 		D1E2F3A4B5C6D7E8F9A0B1C1 /* SwatchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E2F3A4B5C6D7E8F9A0B1C0 /* SwatchBar.swift */; };
 		D1E2F3A4B5C6D7E8F9A0B1C2 /* SwatchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E2F3A4B5C6D7E8F9A0B1C0 /* SwatchBar.swift */; };
+		B1C2D3E4F5061728394A5B6C /* ColorPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A4B5C /* ColorPalette.swift */; };
+		C1D2E3F4051627384A5B6C7D /* ColorPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A4B5C /* ColorPalette.swift */; };
+		B1C2D3E4F5061728394A5B6D /* PaletteSyncManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A4B5D /* PaletteSyncManager.swift */; };
+		C1D2E3F4051627384A5B6C7E /* PaletteSyncManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A4B5D /* PaletteSyncManager.swift */; };
+		B1C2D3E4F5061728394A5B6E /* ColorPaletteBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A4B5E /* ColorPaletteBar.swift */; };
+		C1D2E3F4051627384A5B6C7F /* ColorPaletteBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A4B5E /* ColorPaletteBar.swift */; };
+		B1C2D3E4F5061728394A5B6F /* ColorPalettes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A4B5F /* ColorPalettes.swift */; };
+		C1D2E3F4051627384A5B6C80 /* ColorPalettes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A4B5F /* ColorPalettes.swift */; };
+		B1C2D3E4F5061728394A5B70 /* PaletteEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A4B60 /* PaletteEditor.swift */; };
+		C1D2E3F4051627384A5B6C81 /* PaletteEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A4B60 /* PaletteEditor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -220,6 +230,11 @@
 		1804CBF1E38631A06B89C401 /* ColorHistoryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorHistoryManager.swift; sourceTree = "<group>"; };
 		CB487C20A8FA16610A2DE6C4 /* ColorHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorHistory.swift; sourceTree = "<group>"; };
 		D1E2F3A4B5C6D7E8F9A0B1C0 /* SwatchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwatchBar.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60718293A4B5C /* ColorPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPalette.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60718293A4B5D /* PaletteSyncManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteSyncManager.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60718293A4B5E /* ColorPaletteBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPaletteBar.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60718293A4B5F /* ColorPalettes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPalettes.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60718293A4B60 /* PaletteEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteEditor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -315,6 +330,7 @@
 				EAD0B6D7259CED1D00FA2F67 /* Info.plist */,
 				EAE2EB9B2D03697600FA9BC9 /* Info (Mac App Store).plist */,
 				EA72BB8125A5334B008205E7 /* Metal */,
+				D1E2F30415263748596A7B8C /* Models */,
 				EAD0B6D8259CED1D00FA2F67 /* Pika.entitlements */,
 				EAD0B6D1259CED1D00FA2F67 /* Preview Content */,
 				EAD0B71A259D14C200FA2F67 /* Styles */,
@@ -358,6 +374,7 @@
 				EACA8A44260501210064035C /* Exporter.swift */,
 				EAD0B6F1259CF29300FA2F67 /* Eyedroppers.swift */,
 				EA7B199525FBA08100E06D9D /* LoadColors.swift */,
+				A1B2C3D4E5F60718293A4B5D /* PaletteSyncManager.swift */,
 				EA0C526325AB5D1700AFF716 /* PikaWindow.swift */,
 				22D28DB62862377F00FC7DD4 /* OverflowContentViewModifier.swift */,
 			);
@@ -373,6 +390,8 @@
 				EAD0B6F5259CF29300FA2F67 /* AppVersion.swift */,
 				22903B0228294F49004BB9F0 /* ColorExampleRow.swift */,
 				CB487C20A8FA16610A2DE6C4 /* ColorHistory.swift */,
+				A1B2C3D4E5F60718293A4B5E /* ColorPaletteBar.swift */,
+				A1B2C3D4E5F60718293A4B5F /* ColorPalettes.swift */,
 				EA635DE025B4FC580014D91A /* ColorPickers.swift */,
 				F8ABAC592EAAD0DF008CD152 /* ColorPickOverlay.swift */,
 				EABAEADF284D50D1000716AE /* ComplianceButtons.swift */,
@@ -388,6 +407,7 @@
 				EAA8AE1825B8EC070049299B /* KeyboardShortcutKey.swift */,
 				EAD0B71B259D151400FA2F67 /* NavigationMenu.swift */,
 				EA0C525F25AB5A2B00AFF716 /* NavigationMenuItems.swift */,
+				A1B2C3D4E5F60718293A4B60 /* PaletteEditor.swift */,
 				EAD0B6F4259CF29300FA2F67 /* PreferencesView.swift */,
 				EA72BB8725A53750008205E7 /* SplashView.swift */,
 				D1E2F3A4B5C6D7E8F9A0B1C0 /* SwatchBar.swift */,
@@ -397,6 +417,14 @@
 				EA0C524F25AA729300AFF716 /* Visualisation.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		D1E2F30415263748596A7B8C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A1B2C3D4E5F60718293A4B5C /* ColorPalette.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		EAD0B71A259D14C200FA2F67 /* Styles */ = {
@@ -672,6 +700,11 @@
 				FC6B02943A97C369AEDA0D64 /* ColorHistoryManager.swift in Sources */,
 				68267E79E2A1817195C7C16F /* ColorHistory.swift in Sources */,
 				D1E2F3A4B5C6D7E8F9A0B1C1 /* SwatchBar.swift in Sources */,
+				B1C2D3E4F5061728394A5B6C /* ColorPalette.swift in Sources */,
+				B1C2D3E4F5061728394A5B6D /* PaletteSyncManager.swift in Sources */,
+				B1C2D3E4F5061728394A5B6E /* ColorPaletteBar.swift in Sources */,
+				B1C2D3E4F5061728394A5B6F /* ColorPalettes.swift in Sources */,
+				B1C2D3E4F5061728394A5B70 /* PaletteEditor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -735,6 +768,11 @@
 				3FB457874C3F741FC84DADD6 /* ColorHistoryManager.swift in Sources */,
 				1C7412E01A6EF6E6D516CEB6 /* ColorHistory.swift in Sources */,
 				D1E2F3A4B5C6D7E8F9A0B1C2 /* SwatchBar.swift in Sources */,
+				C1D2E3F4051627384A5B6C7D /* ColorPalette.swift in Sources */,
+				C1D2E3F4051627384A5B6C7E /* PaletteSyncManager.swift in Sources */,
+				C1D2E3F4051627384A5B6C7F /* ColorPaletteBar.swift in Sources */,
+				C1D2E3F4051627384A5B6C80 /* ColorPalettes.swift in Sources */,
+				C1D2E3F4051627384A5B6C81 /* PaletteEditor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

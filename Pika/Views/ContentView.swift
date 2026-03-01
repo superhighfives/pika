@@ -7,13 +7,21 @@ struct ContentView: View {
 
     @Default(.copyFormat) var copyFormat
     @Default(.colorFormat) var colorFormat
+    @Default(.paletteText) var paletteText
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     let pasteboard = NSPasteboard.general
+
+    /// When provided (popover path), avoids re-parsing paletteText that PopoverContentView already parsed.
+    var externalPalettes: [ColorPalette]?
 
     @State var swapVisible: Bool = false
     @State private var timerSubscription: Cancellable?
     @State private var timer = Timer.publish(every: 0.25, on: .main, in: .common)
     @State private var angle: Double = 0
+
+    private var palettes: [ColorPalette] {
+        externalPalettes ?? PaletteParser.parse(paletteText)
+    }
 
     var body: some View {
         VStack(alignment: .trailing, spacing: 0) {
@@ -59,6 +67,7 @@ struct ContentView: View {
             Divider()
             Footer(foreground: eyedroppers.foreground, background: eyedroppers.background)
             ColorHistory()
+            ColorPalettes(palettes: palettes)
         }
         .onAppear {
             if !eyedroppers.hasSetInitialBackground {

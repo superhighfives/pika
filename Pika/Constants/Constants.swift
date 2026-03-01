@@ -281,6 +281,10 @@ enum PikaText {
         comment: "Show color overlay after picking"
     )
     static let textDuration = NSLocalizedString("preferences.overlay.duration", comment: "Duration:")
+
+    // Color Palettes
+    static let textPalettesTitle = NSLocalizedString("palette.title", comment: "Custom Color Palettes")
+    static let textPalettesSync = NSLocalizedString("palette.sync", comment: "Palette sync description")
 }
 
 // swiftlint:enable trailing_comma

@@ -354,3 +354,9 @@
 
 /* Color History */
 "color.history" = "Color History";
+
+/* Custom Color Palettes */
+"palette.title" = "Custom Color Palettes";
+
+/* Palette sync description */
+"palette.sync" = "Synced across all devices running Pika via iCloud";
