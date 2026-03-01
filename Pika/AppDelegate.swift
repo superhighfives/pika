@@ -18,14 +18,49 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     var aboutWindow: NSWindow!
     var preferencesWindow: NSWindow!
     var eyedroppers: Eyedroppers!
+    let colorHistoryManager = ColorHistoryManager()
 
     var undoManager = UndoManager()
+    private var hadColorHistory = false
+
+    override init() {
+        super.init()
+        eyedroppers = Eyedroppers()
+        eyedroppers.foreground.undoManager = undoManager
+        eyedroppers.background.undoManager = undoManager
+        eyedroppers.foreground.colorHistoryManager = colorHistoryManager
+        eyedroppers.background.colorHistoryManager = colorHistoryManager
+    }
 
     var pikaTouchBarController: PikaTouchBarController!
     var splashTouchBarController: SplashTouchBarController!
     var aboutTouchBarController: SplashTouchBarController!
 
     let notificationCenter = NotificationCenter.default
+
+    private func idealWindowContentHeight() -> CGFloat {
+        SwatchLayout.totalHeight(
+            base: 230,
+            hasHistory: hadColorHistory,
+            paletteCount: 0
+        )
+    }
+
+    func updateWindowSize(animate: Bool) {
+        guard pikaWindow != nil else { return }
+        let contentHeight = idealWindowContentHeight()
+        let targetContent = NSRect(x: 0, y: 0, width: CGFloat(pikaWindow.frame.width), height: contentHeight)
+        let targetFrame = pikaWindow.frameRect(forContentRect: targetContent)
+        // Pin the top edge of the window.
+        let currentFrame = pikaWindow.frame
+        let newFrame = NSRect(
+            x: currentFrame.origin.x,
+            y: currentFrame.origin.y + currentFrame.size.height - targetFrame.height,
+            width: currentFrame.size.width,
+            height: targetFrame.height
+        )
+        pikaWindow.setFrame(newFrame, display: true, animate: animate && pikaWindow.isVisible)
+    }
 
     func setupAppMode() {
         var currentMode = Defaults[.appMode] == .regular
@@ -41,7 +76,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 NSApp.setActivationPolicy(newMode)
                 NSApp.activate(ignoringOtherApps: true)
                 if change.newValue == .regular {
-                    DispatchQueue.main.asyncAfter(deadline: .now()) {
+                    DispatchQueue.main.async {
                         NSApp.unhide(self)
 
                         if let window = NSApp.windows.first {
@@ -99,11 +134,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         setupAppMode()
         setupStatusBar()
 
-        // Set up eyedroppers
-        eyedroppers = Eyedroppers()
-        eyedroppers.foreground.undoManager = undoManager
-        eyedroppers.background.undoManager = undoManager
-
         // Define content view
         let contentView = ContentView()
             .environmentObject(eyedroppers)
@@ -112,12 +142,25 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                    maxWidth: 650,
                    minHeight: 230,
                    idealHeight: 230,
-                   maxHeight: 400,
+                   maxHeight: 550,
                    alignment: .center)
 
         pikaWindow = PikaWindow.createPrimaryWindow()
         pikaWindow.contentView = NSHostingView(rootView: contentView)
         pikaTouchBarController = PikaTouchBarController(window: pikaWindow)
+
+        hadColorHistory = !Defaults[.colorHistory].isEmpty
+        updateWindowSize(animate: false)
+
+        Defaults.observe(.colorHistory) { [weak self] _ in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                let hasHistory = !Defaults[.colorHistory].isEmpty
+                guard hasHistory != self.hadColorHistory else { return }
+                self.hadColorHistory = hasHistory
+                self.updateWindowSize(animate: true)
+            }
+        }.tieToLifetime(of: self)
 
         // Define global keyboard shortcuts
         KeyboardShortcuts.onKeyUp(for: .togglePika) { [] in
@@ -157,25 +200,26 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     // swiftlint:disable function_body_length
     @objc func handleGetURLEvent(_ event: NSAppleEventDescriptor, withReplyEvent _: NSAppleEventDescriptor) {
         if let urlString = event.forKeyword(AEKeyword(keyDirectObject))?.stringValue {
-            let url = URL(string: urlString)
-            guard url != nil, let scheme = url!.scheme, let action = url!.host else {
-                // some error
+            guard let url = URL(string: urlString),
+                  let scheme = url.scheme,
+                  let action = url.host
+            else {
                 return
             }
 
-            var list = url!.pathComponents.dropFirst()
+            var list = url.pathComponents.dropFirst()
             let task = list.popFirst()
             let colorFormat = list.popFirst()
 
             if scheme.caseInsensitiveCompare("pika") == .orderedSame {
-                if colorFormat != nil {
-                    if let format = ColorFormat.withLabel(colorFormat!) {
-                        Defaults[.colorFormat] = format
-                    }
+                if let colorFormat = colorFormat,
+                   let format = ColorFormat.withLabel(colorFormat)
+                {
+                    Defaults[.colorFormat] = format
                 }
 
                 if action == "format" {
-                    if let format = ColorFormat.withLabel(task!) {
+                    if let task = task, let format = ColorFormat.withLabel(task) {
                         Defaults[.colorFormat] = format
                     }
                 }
@@ -385,14 +429,17 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     @IBAction func triggerSystemPickerForeground(_: Any) {
+        eyedroppers.foreground.togglePicker()
         notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerSystemPickerForeground), object: self)
     }
 
     @IBAction func triggerSystemPickerBackground(_: Any) {
+        eyedroppers.background.togglePicker()
         notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerSystemPickerBackground), object: self)
     }
 
     @IBAction func triggerSwap(_: Any) {
+        swap(&eyedroppers.foreground.color, &eyedroppers.background.color)
         notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerSwap), object: self)
     }
 

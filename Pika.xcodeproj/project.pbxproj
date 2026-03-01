@@ -128,6 +128,12 @@
 		F8ABAC5B2EAAD0DF008CD152 /* ColorPickOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8ABAC592EAAD0DF008CD152 /* ColorPickOverlay.swift */; };
 		F8ABAC5D2EAAD0F0008CD152 /* ColorPickOverlayWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8ABAC5C2EAAD0F0008CD152 /* ColorPickOverlayWindow.swift */; };
 		F8ABAC5E2EAAD0F0008CD152 /* ColorPickOverlayWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8ABAC5C2EAAD0F0008CD152 /* ColorPickOverlayWindow.swift */; };
+		FC6B02943A97C369AEDA0D64 /* ColorHistoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1804CBF1E38631A06B89C401 /* ColorHistoryManager.swift */; };
+		68267E79E2A1817195C7C16F /* ColorHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB487C20A8FA16610A2DE6C4 /* ColorHistory.swift */; };
+		3FB457874C3F741FC84DADD6 /* ColorHistoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1804CBF1E38631A06B89C401 /* ColorHistoryManager.swift */; };
+		1C7412E01A6EF6E6D516CEB6 /* ColorHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB487C20A8FA16610A2DE6C4 /* ColorHistory.swift */; };
+		D1E2F3A4B5C6D7E8F9A0B1C1 /* SwatchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E2F3A4B5C6D7E8F9A0B1C0 /* SwatchBar.swift */; };
+		D1E2F3A4B5C6D7E8F9A0B1C2 /* SwatchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E2F3A4B5C6D7E8F9A0B1C0 /* SwatchBar.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -211,6 +217,9 @@
 		EAF100CC25C785C4006E1EC3 /* TouchBarVisual.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchBarVisual.swift; sourceTree = "<group>"; };
 		F8ABAC592EAAD0DF008CD152 /* ColorPickOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickOverlay.swift; sourceTree = "<group>"; };
 		F8ABAC5C2EAAD0F0008CD152 /* ColorPickOverlayWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickOverlayWindow.swift; sourceTree = "<group>"; };
+		1804CBF1E38631A06B89C401 /* ColorHistoryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorHistoryManager.swift; sourceTree = "<group>"; };
+		CB487C20A8FA16610A2DE6C4 /* ColorHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorHistory.swift; sourceTree = "<group>"; };
+		D1E2F3A4B5C6D7E8F9A0B1C0 /* SwatchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwatchBar.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -344,6 +353,7 @@
 			isa = PBXGroup;
 			children = (
 				EA7B199B25FBA0E600E06D9D /* ClosestVector.swift */,
+				1804CBF1E38631A06B89C401 /* ColorHistoryManager.swift */,
 				F8ABAC5C2EAAD0F0008CD152 /* ColorPickOverlayWindow.swift */,
 				EACA8A44260501210064035C /* Exporter.swift */,
 				EAD0B6F1259CF29300FA2F67 /* Eyedroppers.swift */,
@@ -362,6 +372,7 @@
 				220D5E9728DB158400B6285E /* AppModeToggleGroup.swift */,
 				EAD0B6F5259CF29300FA2F67 /* AppVersion.swift */,
 				22903B0228294F49004BB9F0 /* ColorExampleRow.swift */,
+				CB487C20A8FA16610A2DE6C4 /* ColorHistory.swift */,
 				EA635DE025B4FC580014D91A /* ColorPickers.swift */,
 				F8ABAC592EAAD0DF008CD152 /* ColorPickOverlay.swift */,
 				EABAEADF284D50D1000716AE /* ComplianceButtons.swift */,
@@ -379,6 +390,7 @@
 				EA0C525F25AB5A2B00AFF716 /* NavigationMenuItems.swift */,
 				EAD0B6F4259CF29300FA2F67 /* PreferencesView.swift */,
 				EA72BB8725A53750008205E7 /* SplashView.swift */,
+				D1E2F3A4B5C6D7E8F9A0B1C0 /* SwatchBar.swift */,
 				EA635DF025B5A6D80014D91A /* Toast.swift */,
 				EAF100CC25C785C4006E1EC3 /* TouchBarVisual.swift */,
 				226FD60F25A940F90021A67F /* VisualEffect.swift */,
@@ -657,6 +669,9 @@
 				EAD0B713259CFD2000FA2F67 /* Defaults.swift in Sources */,
 				226FD61025A940F90021A67F /* VisualEffect.swift in Sources */,
 				EAD0B6FE259CF29C00FA2F67 /* Constants.swift in Sources */,
+				FC6B02943A97C369AEDA0D64 /* ColorHistoryManager.swift in Sources */,
+				68267E79E2A1817195C7C16F /* ColorHistory.swift in Sources */,
+				D1E2F3A4B5C6D7E8F9A0B1C1 /* SwatchBar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -717,6 +732,9 @@
 				EAE23DD52D032A38005BB270 /* Defaults.swift in Sources */,
 				EAE23DD62D032A38005BB270 /* VisualEffect.swift in Sources */,
 				EAE23DD72D032A38005BB270 /* Constants.swift in Sources */,
+				3FB457874C3F741FC84DADD6 /* ColorHistoryManager.swift in Sources */,
+				1C7412E01A6EF6E6D516CEB6 /* ColorHistory.swift in Sources */,
+				D1E2F3A4B5C6D7E8F9A0B1C2 /* SwatchBar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
