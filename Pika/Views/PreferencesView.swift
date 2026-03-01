@@ -16,6 +16,7 @@ struct PreferencesView: View {
     @Default(.appFloating) var appFloating
     @Default(.alwaysShowOnLaunch) var alwaysShowOnLaunch
     @Default(.contrastStandard) var contrastStandard
+    @Default(.showColorHistory) var showColorHistory
     @Default(.showColorOverlay) var showColorOverlay
     @Default(.colorOverlayDuration) var colorOverlayDuration
     @State var colorSpace: NSColorSpace = Defaults[.colorSpace]
@@ -106,6 +107,9 @@ struct PreferencesView: View {
                                     )
                                 }
                             #endif
+                            Toggle(isOn: $showColorHistory) {
+                                Text(PikaText.textShowColorHistory)
+                            }
                             if appMode != .menubar {
                                 Toggle(isOn: $disableHideMenuBarIcon) {
                                     Text(PikaText.textIconDescription)
