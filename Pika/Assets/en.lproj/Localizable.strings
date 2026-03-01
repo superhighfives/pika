@@ -363,3 +363,6 @@
 
 /* Palette description */
 "palette.description" = "Define color palettes for quick access to your project colors";
+
+/* Open as window */
+"preferences.open.window" = "Open as window";

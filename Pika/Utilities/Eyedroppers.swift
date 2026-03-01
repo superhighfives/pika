@@ -139,7 +139,9 @@ class Eyedropper: ObservableObject {
     }
 
     func start() {
-        if Defaults[.hidePikaWhilePicking] {
+        let isMenubarMode = Defaults[.appMode] == .menubar && !Defaults[.openAsWindow]
+
+        if !isMenubarMode, Defaults[.hidePikaWhilePicking] {
             if NSApp.mainWindow?.isVisible == true {
                 forceShow = true
             }
@@ -168,7 +170,7 @@ class Eyedropper: ObservableObject {
 
                     if Defaults[.copyColorOnPick] {
                         NSApp.sendAction(self.type.copySelector, to: nil, from: nil)
-                    } else {
+                    } else if !isMenubarMode {
                         NSApp.sendAction(#selector(AppDelegate.showPika), to: nil, from: nil)
                     }
                 }

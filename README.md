@@ -130,20 +130,20 @@ You can also change the format by appending it to the URL when picking or copyin
 
 ## Development
 
-- [Xcode](https://developer.apple.com/xcode/)
+- [Xcode](https://developer.apple.com/xcode/) 16.0 or later
 - Swift Package Manager
 - [Mint](https://github.com/yonaskolb/Mint)
 
 ## Getting Started with Contributing
 
-Make sure you have [mint](https://github.com/yonaskolb/Mint) installed, and bootstrap the toolchain dependencies:
+Make sure you have [Mint](https://github.com/yonaskolb/Mint) installed, and bootstrap the toolchain dependencies:
 
-```
+```bash
 brew install mint
 mint bootstrap
 ```
 
-Open `Pika.xcodeproj` and to run the project. [Sparkle](https://github.com/sparkle-project/Sparkle) requires that you have a [team and signing profile set](https://github.com/MonitorControl/MonitorControl/discussions/638) for the project, or it will crash with a dyld / signal SIGABRT error.
+Open `Pika.xcodeproj` and run the project. [Sparkle](https://github.com/sparkle-project/Sparkle) requires that you have a [team and signing profile set](https://github.com/MonitorControl/MonitorControl/discussions/638) for the project, or it will crash with a dyld / signal SIGABRT error.
 
 If you run into any problems, please [detail them in an issue](https://github.com/superhighfives/pika/issues/new/).
 

@@ -115,6 +115,42 @@ enum SwatchLayout {
     }
 }
 
+struct PopoverContentView: View {
+    @EnvironmentObject var eyedroppers: Eyedroppers
+    @Default(.colorHistory) var colorHistory
+    @Default(.paletteText) var paletteText
+
+    /// MenuBarExtra .window style requires an explicit frame — no intrinsic sizing.
+    private static let popoverBaseHeight: CGFloat = 284
+
+    private var palettes: [ColorPalette] {
+        PaletteParser.parse(paletteText)
+    }
+
+    private func popoverHeight(paletteCount: Int) -> CGFloat {
+        SwatchLayout.totalHeight(
+            base: Self.popoverBaseHeight,
+            hasHistory: !colorHistory.isEmpty,
+            paletteCount: paletteCount
+        )
+    }
+
+    var body: some View {
+        let parsedPalettes = palettes
+        VStack(spacing: 0) {
+            HStack {
+                Spacer()
+                NavigationMenu()
+            }
+            .padding(.leading, 10)
+            .padding(.vertical, 10)
+            ContentView(externalPalettes: parsedPalettes)
+                .environmentObject(eyedroppers)
+        }
+        .frame(width: 480, height: popoverHeight(paletteCount: parsedPalettes.count))
+    }
+}
+
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()

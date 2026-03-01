@@ -189,6 +189,10 @@ enum PikaText {
         "preferences.icon.description",
         comment: "Hide menu bar icon"
     )
+    static let textOpenAsWindow = NSLocalizedString(
+        "preferences.open.window",
+        comment: "Open as window"
+    )
     static let textColorNamesDescription = NSLocalizedString(
         "preferences.names.description",
         comment: "Hide color names"

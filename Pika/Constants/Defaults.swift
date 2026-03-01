@@ -69,4 +69,5 @@ extension Defaults.Keys {
     static let showColorHistory = Key<Bool>("showColorHistory", default: true)
     static let colorHistory = Key<[String]>("colorHistory", default: [])
     static let paletteText = Key<String>("paletteText", default: "")
+    static let openAsWindow = Key<Bool>("openAsWindow", default: false)
 }

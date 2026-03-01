@@ -34,7 +34,7 @@ struct NavigationMenu: View {
             .menuIndicator(.visible)
             .frame(alignment: .leading)
             .padding(.trailing, 10.0)
-            .padding(.leading, 5.0)
+            .padding(.leading, 15.0)
             .fixedSize()
         }
         .background {
@@ -56,6 +56,7 @@ struct NavigationMenu: View {
             .frame(width: 0, height: 0)
             .allowsHitTesting(false)
         }
+        .padding(.leading, 4.0)
         .onChange(of: copyFormat) {
             if copyFormat == .swiftUI {
                 if PikaConstants.disabledFormats.contains(colorFormat) {

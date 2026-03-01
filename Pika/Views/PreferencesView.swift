@@ -13,6 +13,7 @@ struct PreferencesView: View {
     @Default(.copyColorOnPick) var copyColorOnPick
     @Default(.copyFormat) var copyFormat
     @Default(.appMode) var appMode
+    @Default(.openAsWindow) var openAsWindow
     @Default(.appFloating) var appFloating
     @Default(.alwaysShowOnLaunch) var alwaysShowOnLaunch
     @Default(.contrastStandard) var contrastStandard
@@ -117,6 +118,11 @@ struct PreferencesView: View {
                             } else {
                                 Toggle(isOn: $hideMenuBarIcon) {
                                     Text(PikaText.textIconDescription)
+                                }
+                            }
+                            if appMode == .menubar {
+                                Toggle(isOn: $openAsWindow) {
+                                    Text(PikaText.textOpenAsWindow)
                                 }
                             }
                         }

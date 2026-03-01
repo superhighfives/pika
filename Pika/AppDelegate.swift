@@ -7,12 +7,9 @@ import SwiftUI
     import Sparkle
 #endif
 
-@main
 // swiftlint:disable type_body_length
 // swiftlint:disable file_length
-class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
-    var statusBarItem: NSStatusItem!
-    var statusBarMenu: NSMenu!
+class AppDelegate: NSObject, NSApplicationDelegate {
     var pikaWindow: NSWindow!
     var splashWindow: NSWindow!
     var aboutWindow: NSWindow!
@@ -23,6 +20,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     let paletteSyncManager = PaletteSyncManager()
 
     var undoManager = UndoManager()
+    var statusItem: NSStatusItem?
     private var cachedPaletteCount = 0
     private var hadColorHistory = false
 
@@ -40,6 +38,46 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     var aboutTouchBarController: SplashTouchBarController!
 
     let notificationCenter = NotificationCenter.default
+
+    var isMenubarMode: Bool {
+        Defaults[.appMode] == .menubar && !Defaults[.openAsWindow]
+    }
+
+    func setupStatusItem() {
+        let needsStatusItem = Defaults[.appMode] == .menubar
+            && Defaults[.openAsWindow]
+            && !Defaults[.hideMenuBarIcon]
+
+        if needsStatusItem {
+            if statusItem == nil {
+                statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
+                if let button = statusItem?.button {
+                    button.image = NSImage(named: "StatusBarIcon")
+                    button.image?.isTemplate = true
+                    button.action = #selector(statusItemClicked)
+                    button.target = self
+                }
+            }
+        } else {
+            if let item = statusItem {
+                NSStatusBar.system.removeStatusItem(item)
+                statusItem = nil
+            }
+        }
+    }
+
+    @objc func statusItemClicked() {
+        toggleMainWindow()
+    }
+
+    func toggleMainWindow() {
+        if pikaWindow.isVisible {
+            pikaWindow.orderOut(nil)
+        } else {
+            pikaWindow.makeKeyAndOrderFront(nil)
+            NSApp.activate(ignoringOtherApps: true)
+        }
+    }
 
     private func idealWindowContentHeight() -> CGFloat {
         SwatchLayout.totalHeight(
@@ -91,27 +129,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                         }
                     }
                 }
-                self.statusBarItem.isVisible = Defaults[.hideMenuBarIcon] == false && change.newValue == .menubar
             }
-        }.tieToLifetime(of: self)
-    }
-
-    func setupStatusBar() {
-        // Set up status bar and menu
-        let statusBar = NSStatusBar.system
-        statusBarItem = statusBar.statusItem(withLength: CGFloat(NSStatusItem.variableLength))
-
-        if let button = statusBarItem.button {
-            button.image = NSImage(named: "StatusBarIcon")
-            button.action = #selector(statusBarClicked(sender:))
-            button.sendAction(on: [.leftMouseUp, .rightMouseUp])
-        }
-
-        statusBarMenu = getStatusBarMenu()
-
-        statusBarItem.isVisible = Defaults[.hideMenuBarIcon] == false && Defaults[.appMode] == .menubar
-        Defaults.observe(.hideMenuBarIcon) { change in
-            self.statusBarItem.isVisible = change.newValue == false && Defaults[.appMode] == .menubar
         }.tieToLifetime(of: self)
     }
 
@@ -135,7 +153,19 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         #endif
 
         setupAppMode()
-        setupStatusBar()
+        setupStatusItem()
+
+        Defaults.observe(.openAsWindow) { [weak self] _ in
+            DispatchQueue.main.async { self?.setupStatusItem() }
+        }.tieToLifetime(of: self)
+
+        Defaults.observe(.hideMenuBarIcon) { [weak self] _ in
+            DispatchQueue.main.async { self?.setupStatusItem() }
+        }.tieToLifetime(of: self)
+
+        Defaults.observe(.appMode) { [weak self] _ in
+            DispatchQueue.main.async { self?.setupStatusItem() }
+        }.tieToLifetime(of: self)
 
         // Define content view
         let contentView = ContentView()
@@ -210,8 +240,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     func applicationShouldHandleReopen(_: NSApplication, hasVisibleWindows: Bool) -> Bool {
-        if !hasVisibleWindows {
-            pikaWindow.makeKeyAndOrderFront(self)
+        if !hasVisibleWindows, !isMenubarMode {
+            pikaWindow?.makeKeyAndOrderFront(self)
         }
         return true
     }
@@ -303,84 +333,28 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     // swiftlint:enable cyclomatic_complexity
 
     func startMainWindow() {
-        if !pikaWindow.isVisible {
-            pikaWindow.fadeIn(nil)
+        if !isMenubarMode {
+            if !pikaWindow.isVisible {
+                pikaWindow.fadeIn(nil)
+            }
         }
         Defaults[.viewedSplash] = true
     }
 
     func showMainWindow() {
-        pikaWindow.makeKeyAndOrderFront(nil)
+        if !isMenubarMode {
+            pikaWindow.makeKeyAndOrderFront(nil)
+        }
     }
 
     func hideMainWindow() {
-        pikaWindow.orderOut(nil)
+        if !isMenubarMode {
+            pikaWindow.orderOut(nil)
+        }
     }
 
     @objc func closeSplashWindow() {
         splashWindow.fadeOut(sender: nil, duration: 0.25, closeSelector: .close, completionHandler: startMainWindow)
-    }
-
-    func getStatusBarMenu() -> NSMenu {
-        statusBarMenu = NSMenu(title: "Status Bar Menu")
-        statusBarMenu.delegate = self
-        statusBarMenu.addItem(
-            withTitle: PikaText.textMenuAbout,
-            action: #selector(openAboutWindow(_:)),
-            keyEquivalent: ""
-        )
-
-        statusBarMenu.addItem(
-            withTitle: "\(PikaText.textMenuUpdates)...",
-            action: #selector(checkForUpdates(_:)),
-            keyEquivalent: ""
-        )
-
-        statusBarMenu.addItem(
-            withTitle: PikaText.textMenuGitHubIssue,
-            action: #selector(openGitHubIssue(_:)),
-            keyEquivalent: ""
-        )
-
-        let preferences = NSMenuItem(
-            title: "\(PikaText.textMenuPreferences)...",
-            action: #selector(openPreferencesWindow(_:)),
-            keyEquivalent: ","
-        )
-        preferences.keyEquivalentModifierMask = NSEvent.ModifierFlags.command
-        statusBarMenu.addItem(preferences)
-
-        statusBarMenu.addItem(NSMenuItem.separator())
-        statusBarMenu.addItem(
-            withTitle: PikaText.textMenuQuit,
-            action: #selector(terminatePika(_:)),
-            keyEquivalent: ""
-        )
-
-        return statusBarMenu
-    }
-
-    @objc func statusBarClicked(sender _: NSStatusBarButton) {
-        let event = NSApp.currentEvent
-        if event != nil, event!.type == NSEvent.EventType.rightMouseUp || event!.modifierFlags.contains(.control) {
-            statusBarItem.menu = statusBarMenu
-            statusBarItem.button?.performClick(nil)
-        } else {
-            togglePopover(nil)
-        }
-    }
-
-    @objc func menuDidClose(_: NSMenu) {
-        statusBarItem.menu = nil
-    }
-
-    @objc func togglePopover(_: AnyObject?) {
-        if pikaWindow.isVisible {
-            hideMainWindow()
-        } else {
-            showMainWindow()
-            NSApp.activate(ignoringOtherApps: true)
-        }
     }
 
     @IBAction func openAboutWindow(_: Any?) {
@@ -518,12 +492,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     @IBAction func showPika(_: Any) {
-        if pikaWindow.isVisible {
-            pikaWindow.makeKeyAndOrderFront(self)
-        } else {
-            pikaWindow.fadeIn(sender: nil, duration: 0.2)
+        if !isMenubarMode {
+            if pikaWindow.isVisible {
+                pikaWindow.makeKeyAndOrderFront(self)
+            } else {
+                pikaWindow.fadeIn(sender: nil, duration: 0.2)
+            }
+            NSApp.activate(ignoringOtherApps: true)
         }
-        NSApp.activate(ignoringOtherApps: true)
     }
 
     #if TARGET_SPARKLE
