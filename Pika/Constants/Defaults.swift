@@ -68,4 +68,5 @@ extension Defaults.Keys {
     static let colorOverlayDuration = Key<Double>("colorOverlayDuration", default: 2.0)
     static let showColorHistory = Key<Bool>("showColorHistory", default: true)
     static let colorHistory = Key<[String]>("colorHistory", default: [])
+    static let paletteText = Key<String>("paletteText", default: "")
 }

@@ -357,3 +357,9 @@
 
 /* Show color history */
 "preferences.history.show" = "Show color history";
+
+/* Custom Color Palettes */
+"palette.title" = "Custom Color Palettes";
+
+/* Palette description */
+"palette.description" = "Define color palettes for quick access to your project colors";
