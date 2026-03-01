@@ -354,3 +354,9 @@
 
 /* Color History */
 "color.history" = "Color History";
+
+/* Custom Color Palettes */
+"palette.title" = "Custom Color Palettes";
+
+/* Palette description */
+"palette.description" = "Define color palettes for quick access to your project colors";

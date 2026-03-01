@@ -19,8 +19,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     var preferencesWindow: NSWindow!
     var eyedroppers: Eyedroppers!
     let colorHistoryManager = ColorHistoryManager()
+    /// Retained for the app's lifetime to keep the iCloud KVS observer alive.
+    let paletteSyncManager = PaletteSyncManager()
 
     var undoManager = UndoManager()
+    private var cachedPaletteCount = 0
     private var hadColorHistory = false
 
     override init() {
@@ -42,7 +45,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         SwatchLayout.totalHeight(
             base: 230,
             hasHistory: hadColorHistory,
-            paletteCount: 0
+            paletteCount: cachedPaletteCount
         )
     }
 
@@ -149,8 +152,19 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         pikaWindow.contentView = NSHostingView(rootView: contentView)
         pikaTouchBarController = PikaTouchBarController(window: pikaWindow)
 
+        cachedPaletteCount = PaletteParser.countSections(Defaults[.paletteText])
         hadColorHistory = !Defaults[.colorHistory].isEmpty
         updateWindowSize(animate: false)
+
+        Defaults.observe(.paletteText) { [weak self] change in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                let newCount = PaletteParser.countSections(change.newValue)
+                guard newCount != self.cachedPaletteCount else { return }
+                self.cachedPaletteCount = newCount
+                self.updateWindowSize(animate: true)
+            }
+        }.tieToLifetime(of: self)
 
         Defaults.observe(.colorHistory) { [weak self] _ in
             DispatchQueue.main.async {
