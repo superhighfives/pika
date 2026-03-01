@@ -351,3 +351,9 @@
 
 /* Duration: */
 "preferences.overlay.duration" = "Duration";
+
+/* Color History */
+"color.history" = "Color History";
+
+/* Show color history */
+"preferences.history.show" = "Show color history";

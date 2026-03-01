@@ -44,11 +44,6 @@ struct ContentView: View {
                         alt: PikaText.textColorSwap,
                         ltr: true
                     ))
-                    .onReceive(NotificationCenter.default.publisher(
-                        for: Notification.Name(PikaConstants.ncTriggerSwap)))
-                    { _ in
-                        swap(&eyedroppers.foreground.color, &eyedroppers.background.color)
-                    }
                     .focusable(false)
                     .padding(16.0)
                     .frame(maxHeight: .infinity, alignment: .top)
@@ -63,11 +58,15 @@ struct ContentView: View {
 
             Divider()
             Footer(foreground: eyedroppers.foreground, background: eyedroppers.background)
+            ColorHistory()
         }
         .onAppear {
-            eyedroppers.background.color = colorScheme == .light
-                ? NSColor.white
-                : NSColor.black
+            if !eyedroppers.hasSetInitialBackground {
+                eyedroppers.hasSetInitialBackground = true
+                eyedroppers.background.color = colorScheme == .light
+                    ? NSColor.white
+                    : NSColor.black
+            }
         }
         .onReceive(NotificationCenter.default.publisher(
             for: Notification.Name(PikaConstants.ncTriggerCopyText)))
@@ -87,6 +86,23 @@ struct ContentView: View {
             // swiftlint:enable line_length
             pasteboard.setString(contents, forType: .string)
         }
+    }
+}
+
+/// Shared layout constants for dynamic height calculation.
+/// Used by both PopoverContentView and AppDelegate.updateWindowSize().
+enum SwatchLayout {
+    /// Height of a single swatch section (Divider + SwatchBar + padding).
+    static let swatchSectionHeight: CGFloat = 52
+    static let maxHeight: CGFloat = 550
+
+    static func totalHeight(base: CGFloat, hasHistory: Bool, paletteCount: Int) -> CGFloat {
+        var height = base
+        if hasHistory {
+            height += swatchSectionHeight
+        }
+        height += CGFloat(paletteCount) * swatchSectionHeight
+        return min(height, maxHeight)
     }
 }
 

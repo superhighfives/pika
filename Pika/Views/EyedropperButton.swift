@@ -66,7 +66,7 @@ struct EyedropperButton: View {
                 .focusable(false)
 
                 Button(action: {
-                    NSApp.sendAction(eyedropper.type.systemPickerSelector, to: nil, from: nil)
+                    eyedropper.togglePicker()
                 }, label: {
                     IconImage(name: "paintpalette", resizable: true)
                         .aspectRatio(contentMode: .fit)
