@@ -68,6 +68,7 @@ As of version `0.0.18`, Pika supports the following keyboard shortcuts:
 - <kbd>⌘ 4</kbd>: Format HSL
 - <kbd>⌘ 5</kbd>: Format LAB
 - <kbd>⌘ 6</kbd>: Format OpenGL
+- <kbd>⌘ 7</kbd>: Format OKLCH
 
 ### Change colors
 - <kbd>⌘ Z</kbd>: Undo last pick
@@ -86,8 +87,8 @@ You can also change the format by appending it to the URL when picking or copyin
 - Pick background:
   - `pika://pick/background`
 - Pick colour with specific format:
-  - `pika://pick/foreground/hex` (or hex, rgb, hsb, hsl, lab, opengl)
-  - `pika://pick/background/hex` (or hex, rgb, hsb, hsl, lab, opengl)
+  - `pika://pick/foreground/hex` (or hex, rgb, hsb, hsl, lab, opengl, oklch)
+  - `pika://pick/background/hex` (or hex, rgb, hsb, hsl, lab, opengl, oklch)
 - Use the system color picker for foreground:
   - `pika://system/foreground`
 - Use the system color picker for background:
@@ -99,8 +100,8 @@ You can also change the format by appending it to the URL when picking or copyin
 - Copy background:
   - `pika://copy/background`
 - Copy colour with specific format:
-  - `pika://copy/foreground/hex` (or hex, rgb, hsb, hsl, lab, opengl)
-  - `pika://copy/background/hex` (or hex, rgb, hsb, hsl, lab, opengl)
+  - `pika://copy/foreground/hex` (or hex, rgb, hsb, hsl, lab, opengl, oklch)
+  - `pika://copy/background/hex` (or hex, rgb, hsb, hsl, lab, opengl, oklch)
 - Copy text
   - `pika://copy/text`
 - Copy JSON
@@ -119,6 +120,8 @@ You can also change the format by appending it to the URL when picking or copyin
   - `pika://format/lab`
 - Format OpenGL
   - `pika://format/opengl`
+- Format OKLCH
+  - `pika://format/oklch`
 
 ### Change colors
 - Undo last pick
