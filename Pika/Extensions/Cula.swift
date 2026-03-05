@@ -493,6 +493,223 @@ extension NSColor {
     func getUIColor() -> (NSColor) {
         luminance < 0.5 ? NSColor.white : NSColor.black
     }
+
+    // MARK: - Multi-format color string parsing
+
+    /// Creates an NSColor from a color string in any supported format:
+    /// hex (`#RGB`, `#RRGGBB`), `rgb()`, `hsl()`, `hsb()`, `lab()`, `oklch()`, `rgba()`.
+    static func fromColorString(_ string: String) -> NSColor? {
+        let trimmed = string.trimmingCharacters(in: .whitespaces)
+        let lower = trimmed.lowercased()
+
+        if lower.hasPrefix("oklch(") { return parseOKLCHString(trimmed) }
+        if lower.hasPrefix("rgb(") { return parseRGBString(trimmed) }
+        if lower.hasPrefix("hsl(") { return parseHSLString(trimmed) }
+        if lower.hasPrefix("hsb(") { return parseHSBString(trimmed) }
+        if lower.hasPrefix("lab(") { return parseLABString(trimmed) }
+        if lower.hasPrefix("rgba(") { return parseOpenGLString(trimmed) }
+        return parseHexString(trimmed)
+    }
+
+    // MARK: Extraction helpers
+
+    /// Extracts the content between the first `(` and last `)` in a function-style color string.
+    private static func extractFunctionContent(_ string: String) -> String? {
+        guard let open = string.firstIndex(of: "("),
+              let close = string.lastIndex(of: ")"),
+              close > open
+        else { return nil }
+        return String(string[string.index(after: open) ..< close])
+    }
+
+    /// Parses space- or comma-separated numeric values, tracking which had a `%` suffix.
+    private static func extractValues(from content: String) -> [(value: CGFloat, isPercentage: Bool)] {
+        let tokens = content
+            .components(separatedBy: CharacterSet(charactersIn: ", "))
+            .map { $0.trimmingCharacters(in: .whitespaces) }
+            .filter { !$0.isEmpty }
+
+        return tokens.compactMap { token in
+            let isPct = token.hasSuffix("%")
+            let numStr = isPct ? String(token.dropLast()) : token
+            guard let value = Double(numStr) else { return nil }
+            return (value: CGFloat(value), isPercentage: isPct)
+        }
+    }
+
+    // MARK: Individual format parsers
+
+    private static func parseHexString(_ string: String) -> NSColor? {
+        var hex = string.trimmingCharacters(in: .whitespaces)
+        if hex.hasPrefix("#") { hex = String(hex.dropFirst()) }
+        guard hex.allSatisfy(\.isHexDigit) else { return nil }
+        if hex.count == 3 { hex = hex.map { "\($0)\($0)" }.joined() }
+        guard hex.count == 6 else { return nil }
+        return NSColor(hex: hex)
+    }
+
+    /// Parses `rgb(R, G, B)` where R/G/B are 0–255 integers.
+    private static func parseRGBString(_ string: String) -> NSColor? {
+        guard let content = extractFunctionContent(string) else { return nil }
+        let vals = extractValues(from: content)
+        guard vals.count == 3 else { return nil }
+        let r = vals[0].value / 255.0
+        let g = vals[1].value / 255.0
+        let b = vals[2].value / 255.0
+        return NSColor(red: r, green: g, blue: b, alpha: 1.0)
+    }
+
+    /// Parses a three-component `func(H, S/S%, V/V%)` color string where
+    /// the first value is hue (0–360) and the second/third may be percentages.
+    private static func parseHSxString(
+        _ string: String,
+        make: (CGFloat, CGFloat, CGFloat) -> NSColor
+    ) -> NSColor? {
+        guard let content = extractFunctionContent(string) else { return nil }
+        let vals = extractValues(from: content)
+        guard vals.count == 3 else { return nil }
+        let h = vals[0].value / 360.0
+        let s = vals[1].isPercentage ? vals[1].value / 100.0 : vals[1].value
+        let v = vals[2].isPercentage ? vals[2].value / 100.0 : vals[2].value
+        return make(h, s, v)
+    }
+
+    /// Parses `hsl(H, S%, L%)` where H is 0–360, S and L are 0–100.
+    private static func parseHSLString(_ string: String) -> NSColor? {
+        parseHSxString(string) { h, s, l in colorFromHSL(h: h, s: s, l: l) }
+    }
+
+    /// Parses `hsb(H, S%, B%)` where H is 0–360, S and B are 0–100.
+    private static func parseHSBString(_ string: String) -> NSColor? {
+        parseHSxString(string) { h, s, b in NSColor(hue: h, saturation: s, brightness: b, alpha: 1.0) }
+    }
+
+    /// Parses `lab(L A B)` (CSS Color Level 4) where L is 0–100, A and B are unbounded.
+    private static func parseLABString(_ string: String) -> NSColor? {
+        guard let content = extractFunctionContent(string) else { return nil }
+        let vals = extractValues(from: content)
+        guard vals.count == 3 else { return nil }
+        let l = vals[0].value
+        let a = vals[1].value
+        let b = vals[2].value
+        return colorFromLAB(l: l, a: a, b: b)
+    }
+
+    /// Parses `oklch(L% C H)` where L is 0–100% (or 0–1), C is chroma, H is hue in degrees.
+    private static func parseOKLCHString(_ string: String) -> NSColor? {
+        guard let content = extractFunctionContent(string) else { return nil }
+        let vals = extractValues(from: content)
+        guard vals.count == 3 else { return nil }
+        let l: CGFloat
+        if vals[0].isPercentage {
+            l = vals[0].value / 100.0
+        } else {
+            // Heuristic: values > 1 are likely percentages written without %
+            l = vals[0].value > 1.0 ? vals[0].value / 100.0 : vals[0].value
+        }
+        let c = vals[1].value
+        let h = vals[2].value
+        return colorFromOKLCH(l: l, c: c, h: h)
+    }
+
+    /// Parses `rgba(R, G, B, A)` (OpenGL) where all components are 0.0–1.0.
+    private static func parseOpenGLString(_ string: String) -> NSColor? {
+        guard let content = extractFunctionContent(string) else { return nil }
+        let vals = extractValues(from: content)
+        guard vals.count == 4 else { return nil }
+        return NSColor(red: vals[0].value, green: vals[1].value, blue: vals[2].value, alpha: vals[3].value)
+    }
+
+    // MARK: Reverse color conversions
+
+    /// HSL → NSColor. All inputs are 0–1.
+    private static func colorFromHSL(h: CGFloat, s: CGFloat, l: CGFloat) -> NSColor {
+        guard s > 0 else {
+            return NSColor(red: l, green: l, blue: l, alpha: 1.0)
+        }
+
+        func hueToRGB(_ p: CGFloat, _ q: CGFloat, _ t: CGFloat) -> CGFloat {
+            var t = t
+            if t < 0 { t += 1 }
+            if t > 1 { t -= 1 }
+            if t < 1.0 / 6.0 { return p + (q - p) * 6.0 * t }
+            if t < 1.0 / 2.0 { return q }
+            if t < 2.0 / 3.0 { return p + (q - p) * (2.0 / 3.0 - t) * 6.0 }
+            return p
+        }
+
+        let q = l < 0.5 ? l * (1.0 + s) : l + s - l * s
+        let p = 2.0 * l - q
+        let r = hueToRGB(p, q, h + 1.0 / 3.0)
+        let g = hueToRGB(p, q, h)
+        let b = hueToRGB(p, q, h - 1.0 / 3.0)
+        return NSColor(red: r, green: g, blue: b, alpha: 1.0)
+    }
+
+    /// CIE-LAB → NSColor via XYZ → linear RGB → sRGB.
+    private static func colorFromLAB(l: CGFloat, a: CGFloat, b: CGFloat) -> NSColor {
+        let fy = (l + 16.0) / 116.0
+        let fx = a / 500.0 + fy
+        let fz = fy - b / 200.0
+
+        let delta: CGFloat = 6.0 / 29.0
+        func fInverse(_ t: CGFloat) -> CGFloat {
+            t > delta ? pow(t, 3.0) : 3.0 * pow(delta, 2.0) * (t - 4.0 / 29.0)
+        }
+
+        // D65 reference white
+        let x = 0.95047 * fInverse(fx)
+        let y = 1.00000 * fInverse(fy)
+        let z = 1.08883 * fInverse(fz)
+
+        // XYZ → linear RGB (sRGB matrix inverse)
+        let rLin = x * 3.2404542 + y * -1.5371385 + z * -0.4985314
+        let gLin = x * -0.9692660 + y * 1.8760108 + z * 0.0415560
+        let bLin = x * 0.0556434 + y * -0.2040259 + z * 1.0572252
+
+        return NSColor(
+            colorSpace: .sRGB,
+            components: [srgbGamma(rLin), srgbGamma(gLin), srgbGamma(bLin), 1.0],
+            count: 4
+        )
+    }
+
+    /// OKLCH → NSColor via Oklab → LMS → linear RGB → sRGB.
+    private static func colorFromOKLCH(l: CGFloat, c: CGFloat, h: CGFloat) -> NSColor {
+        // Polar → Cartesian
+        let hRad = h * .pi / 180.0
+        let a = c * cos(hRad)
+        let b = c * sin(hRad)
+
+        // Oklab → LMS (cube-root domain)
+        let l_ = l + 0.3963377774 * a + 0.2158037573 * b
+        let m_ = l - 0.1055613458 * a - 0.0638541728 * b
+        let s_ = l - 0.0894841775 * a - 1.2914855480 * b
+
+        // Undo cube root
+        let lCubed = l_ * l_ * l_
+        let mCubed = m_ * m_ * m_
+        let sCubed = s_ * s_ * s_
+
+        // LMS → linear RGB
+        let rLin = 4.0767416621 * lCubed - 3.3077115913 * mCubed + 0.2309699292 * sCubed
+        let gLin = -1.2684380046 * lCubed + 2.6097574011 * mCubed - 0.3413193965 * sCubed
+        let bLin = -0.0041960863 * lCubed - 0.7034186147 * mCubed + 1.7076147010 * sCubed
+
+        return NSColor(
+            colorSpace: .sRGB,
+            components: [srgbGamma(rLin), srgbGamma(gLin), srgbGamma(bLin), 1.0],
+            count: 4
+        )
+    }
+
+    /// Applies sRGB gamma encoding and clamps to 0–1.
+    private static func srgbGamma(_ linear: CGFloat) -> CGFloat {
+        let encoded = linear <= 0.0031308
+            ? 12.92 * linear
+            : 1.055 * pow(linear, 1.0 / 2.4) - 0.055
+        return max(0, min(1, encoded))
+    }
 }
 
 // swiftlint:enable large_tuple
