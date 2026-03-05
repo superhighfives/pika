@@ -34,16 +34,6 @@ struct EyedropperItem: View {
                 pasteboard.setString(contents, forType: .string)
             }
             .onReceive(NotificationCenter.default.publisher(
-                for: Notification.Name("triggerSystemPicker\(eyedropper.type.rawValue.capitalized)")))
-            { _ in
-                let panel = NSColorPanel.shared
-                if panel.isVisible, panel.title == "\(eyedropper.type.rawValue.capitalized)" {
-                    panel.close()
-                } else {
-                    eyedropper.picker()
-                }
-            }
-            .onReceive(NotificationCenter.default.publisher(
                 for: Notification.Name("triggerFormatHex")))
             { _ in
                 if copyFormat != .swiftUI {

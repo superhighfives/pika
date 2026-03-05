@@ -8,6 +8,7 @@ class Eyedroppers: ObservableObject {
         type: .foreground, color: PikaConstants.initialColors.randomElement()!
     )
     @Published var background = Eyedropper(type: .background, color: NSColor.black)
+    var hasSetInitialBackground = false
 }
 
 class Eyedropper: ObservableObject {
@@ -35,17 +36,16 @@ class Eyedropper: ObservableObject {
             case .background: return #selector(AppDelegate.triggerPickBackground)
             }
         }
-
-        var systemPickerSelector: Selector {
-            switch self {
-            case .foreground: return #selector(AppDelegate.triggerSystemPickerForeground)
-            case .background: return #selector(AppDelegate.triggerSystemPickerBackground)
-            }
-        }
     }
+
+    /// Tracks which eyedropper currently owns the shared NSColorPanel.
+    /// Used by togglePicker() to know whether to open or close the panel.
+    private static var activePickerType: Types?
 
     let type: Types
     var forceShow = false
+    /// Injected from AppDelegate; weak to avoid a retain cycle (AppDelegate owns both).
+    weak var colorHistoryManager: ColorHistoryManager?
 
     let colorNames: [ColorName] = loadColors()!
     var closestVector: ClosestVector!
@@ -71,13 +71,29 @@ class Eyedropper: ObservableObject {
         colorNames[closestVector.compare(color)].name
     }
 
-    func set(_ selectedColor: NSColor) {
+    /// Pass `recordToHistory: false` when setting from a history/palette tap
+    /// to avoid re-recording a color the user selected from an existing list.
+    func set(_ selectedColor: NSColor, recordToHistory: Bool = true) {
         let previousColor = color
         undoManager?.registerUndo(withTarget: self) { _ in
             self.set(previousColor)
         }
 
         color = selectedColor.usingColorSpace(Defaults[.colorSpace])!
+        if recordToHistory {
+            colorHistoryManager?.recordImmediate(color)
+        }
+    }
+
+    /// Sets a color from a swatch tap (without recording to history) and triggers copy.
+    func applyFromSwatch(_ color: NSColor) {
+        set(color, recordToHistory: false)
+        NSApp.sendAction(type.copySelector, to: nil, from: nil)
+    }
+
+    /// Promotes an existing color to the front of the history list.
+    func promoteInHistory(hex: String) {
+        colorHistoryManager?.moveToFront(hex: hex)
     }
 
     @objc func colorDidChange(sender: AnyObject) {
@@ -88,6 +104,7 @@ class Eyedropper: ObservableObject {
             }
 
             color = picker.color.usingColorSpace(Defaults[.colorSpace])!
+            colorHistoryManager?.recordDebounced(color)
         }
     }
 
@@ -100,26 +117,46 @@ class Eyedropper: ObservableObject {
         panel.color = color
         panel.mode = .RGB
         panel.colorSpace = Defaults[.colorSpace]
-        panel.orderFrontRegardless()
         panel.setAction(#selector(colorDidChange))
         panel.isContinuous = true
+        Self.activePickerType = type
+
+        // Activate before showing — required in menubar mode where the app
+        // runs with .accessory activation policy and orderFrontRegardless()
+        // alone cannot bring the panel on screen from a MenuBarExtra popover.
+        NSApp.activate(ignoringOtherApps: true)
+        panel.orderFrontRegardless()
+    }
+
+    func togglePicker() {
+        let panel = NSColorPanel.shared
+        if panel.isVisible, Self.activePickerType == type {
+            panel.close()
+            Self.activePickerType = nil
+        } else {
+            picker()
+        }
     }
 
     func start() {
-        if Defaults[.hidePikaWhilePicking] {
+        let isMenubarMode = Defaults[.appMode] == .menubar && !Defaults[.openAsWindow]
+
+        if !isMenubarMode, Defaults[.hidePikaWhilePicking] {
             if NSApp.mainWindow?.isVisible == true {
                 forceShow = true
             }
             NSApp.sendAction(#selector(AppDelegate.hidePika), to: nil, from: nil)
         }
 
-        DispatchQueue.main.asyncAfter(deadline: .now()) {
+        DispatchQueue.main.async {
             let sampler = NSColorSampler()
             sampler.show { selectedColor in
 
                 if let selectedColor = selectedColor {
                     if Defaults[.showColorOverlay] {
-                        let colorText = selectedColor.toFormat(format: Defaults[.colorFormat], style: Defaults[.copyFormat])
+                        let colorText = selectedColor.toFormat(
+                            format: Defaults[.colorFormat], style: Defaults[.copyFormat]
+                        )
                         let cursorPosition = NSEvent.mouseLocation
                         self.overlayWindow.show(
                             colorText: colorText,
@@ -133,7 +170,7 @@ class Eyedropper: ObservableObject {
 
                     if Defaults[.copyColorOnPick] {
                         NSApp.sendAction(self.type.copySelector, to: nil, from: nil)
-                    } else {
+                    } else if !isMenubarMode {
                         NSApp.sendAction(#selector(AppDelegate.showPika), to: nil, from: nil)
                     }
                 }
