@@ -24,6 +24,14 @@
 		CC000001000000000000AAB2 /* NSColor+HSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000001000000000000AAB0 /* NSColor+HSL.swift */; };
 		CC000001000000000000AAC1 /* NSColor+Lab.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000001000000000000AAC0 /* NSColor+Lab.swift */; };
 		CC000001000000000000AAC2 /* NSColor+Lab.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000001000000000000AAC0 /* NSColor+Lab.swift */; };
+		CC000001000000000000AAD1 /* NSColor+Init.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000001000000000000AAD0 /* NSColor+Init.swift */; };
+		CC000001000000000000AAD2 /* NSColor+Init.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000001000000000000AAD0 /* NSColor+Init.swift */; };
+		CC000001000000000000AAE1 /* NSColor+Luminance.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000001000000000000AAE0 /* NSColor+Luminance.swift */; };
+		CC000001000000000000AAE2 /* NSColor+Luminance.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000001000000000000AAE0 /* NSColor+Luminance.swift */; };
+		CC000001000000000000AAF1 /* NSColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000001000000000000AAF0 /* NSColor+Hex.swift */; };
+		CC000001000000000000AAF2 /* NSColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000001000000000000AAF0 /* NSColor+Hex.swift */; };
+		CC000001000000000000AB01 /* NSColor+RGB.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000001000000000000AB00 /* NSColor+RGB.swift */; };
+		CC000001000000000000AB02 /* NSColor+RGB.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000001000000000000AB00 /* NSColor+RGB.swift */; };
 		EA0C525025AA729300AFF716 /* Visualisation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C524F25AA729300AFF716 /* Visualisation.swift */; };
 		EA0C526025AB5A2B00AFF716 /* NavigationMenuItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C525F25AB5A2B00AFF716 /* NavigationMenuItems.swift */; };
 		EA0C526425AB5D1700AFF716 /* PikaWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C526325AB5D1700AFF716 /* PikaWindow.swift */; };
@@ -32,7 +40,6 @@
 		EA257BD125D8629300C3FC54 /* SwapButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA257BD025D8629300C3FC54 /* SwapButtonStyle.swift */; };
 		EA424C7D25CDEF98009056A9 /* ComplianceToggleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA424C7C25CDEF98009056A9 /* ComplianceToggleGroup.swift */; };
 		EA424CDE25CF0328009056A9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = EA424CE025CF0328009056A9 /* Localizable.strings */; };
-		EA635DC925B3B2650014D91A /* Cula.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DC825B3B2650014D91A /* Cula.swift */; };
 		EA635DCC25B3B42B0014D91A /* WCAGCompliance.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DCB25B3B42B0014D91A /* WCAGCompliance.swift */; };
 		EA635DDC25B4E90B0014D91A /* BindingOnChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DDB25B4E90B0014D91A /* BindingOnChange.swift */; };
 		EA635DE125B4FC580014D91A /* ColorPickers.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DE025B4FC580014D91A /* ColorPickers.swift */; };
@@ -104,7 +111,6 @@
 		EAE23DC92D032A38005BB270 /* SwapButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA257BD025D8629300C3FC54 /* SwapButtonStyle.swift */; };
 		EAE23DCA2D032A38005BB270 /* NSWindowFade.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA72BBA825A7CE9C008205E7 /* NSWindowFade.swift */; };
 		EAE23DCB2D032A38005BB270 /* EyedropperButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B717259D146200FA2F67 /* EyedropperButtonStyle.swift */; };
-		EAE23DCC2D032A38005BB270 /* Cula.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DC825B3B2650014D91A /* Cula.swift */; };
 		EAE23DCD2D032A38005BB270 /* CircleButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAEBF64625E878A5002999D1 /* CircleButtonStyle.swift */; };
 		EAE23DCE2D032A38005BB270 /* ColorPickers.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DE025B4FC580014D91A /* ColorPickers.swift */; };
 		EAE23DCF2D032A38005BB270 /* Exporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EACA8A44260501210064035C /* Exporter.swift */; };
@@ -161,6 +167,10 @@
 		CC000001000000000000AAA0 /* Color+PikaControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+PikaControl.swift"; sourceTree = "<group>"; };
 		CC000001000000000000AAB0 /* NSColor+HSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+HSL.swift"; sourceTree = "<group>"; };
 		CC000001000000000000AAC0 /* NSColor+Lab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+Lab.swift"; sourceTree = "<group>"; };
+		CC000001000000000000AAD0 /* NSColor+Init.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+Init.swift"; sourceTree = "<group>"; };
+		CC000001000000000000AAE0 /* NSColor+Luminance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+Luminance.swift"; sourceTree = "<group>"; };
+		CC000001000000000000AAF0 /* NSColor+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+Hex.swift"; sourceTree = "<group>"; };
+		CC000001000000000000AB00 /* NSColor+RGB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+RGB.swift"; sourceTree = "<group>"; };
 		EA0C524F25AA729300AFF716 /* Visualisation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Visualisation.swift; sourceTree = "<group>"; };
 		EA0C525F25AB5A2B00AFF716 /* NavigationMenuItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationMenuItems.swift; sourceTree = "<group>"; };
 		EA0C526325AB5D1700AFF716 /* PikaWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PikaWindow.swift; sourceTree = "<group>"; };
@@ -171,7 +181,6 @@
 		EA16C6562CF3301500FBC93E /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		EA257BD025D8629300C3FC54 /* SwapButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapButtonStyle.swift; sourceTree = "<group>"; };
 		EA424C7C25CDEF98009056A9 /* ComplianceToggleGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComplianceToggleGroup.swift; sourceTree = "<group>"; };
-		EA635DC825B3B2650014D91A /* Cula.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cula.swift; sourceTree = "<group>"; };
 		EA635DCB25B3B42B0014D91A /* WCAGCompliance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCAGCompliance.swift; sourceTree = "<group>"; };
 		EA635DDB25B4E90B0014D91A /* BindingOnChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingOnChange.swift; sourceTree = "<group>"; };
 		EA635DE025B4FC580014D91A /* ColorPickers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickers.swift; sourceTree = "<group>"; };
@@ -339,7 +348,6 @@
 				EAE2EBA12D03C3FE00FA9BC9 /* LatestAppStoreVersion+ShouldUpdate.swift */,
 				EAE2EB9E2D03C3DA00FA9BC9 /* LookUpAPI.swift */,
 				EA635DDB25B4E90B0014D91A /* BindingOnChange.swift */,
-				EA635DC825B3B2650014D91A /* Cula.swift */,
 				221600FC25A636D600B8B7D9 /* ConditionalModifier.swift */,
 				EA72BBA825A7CE9C008205E7 /* NSWindowFade.swift */,
 				EA635DCB25B3B42B0014D91A /* WCAGCompliance.swift */,
@@ -348,6 +356,10 @@
 				CC000001000000000000AAA0 /* Color+PikaControl.swift */,
 				CC000001000000000000AAB0 /* NSColor+HSL.swift */,
 				CC000001000000000000AAC0 /* NSColor+Lab.swift */,
+				CC000001000000000000AAD0 /* NSColor+Init.swift */,
+				CC000001000000000000AAE0 /* NSColor+Luminance.swift */,
+				CC000001000000000000AAF0 /* NSColor+Hex.swift */,
+				CC000001000000000000AB00 /* NSColor+RGB.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -653,13 +665,16 @@
 				CC000001000000000000AAA1 /* Color+PikaControl.swift in Sources */,
 				CC000001000000000000AAB1 /* NSColor+HSL.swift in Sources */,
 				CC000001000000000000AAC1 /* NSColor+Lab.swift in Sources */,
+				CC000001000000000000AAD1 /* NSColor+Init.swift in Sources */,
+				CC000001000000000000AAE1 /* NSColor+Luminance.swift in Sources */,
+				CC000001000000000000AAF1 /* NSColor+Hex.swift in Sources */,
+				CC000001000000000000AB01 /* NSColor+RGB.swift in Sources */,
 				EAA8AE1925B8EC070049299B /* KeyboardShortcutKey.swift in Sources */,
 				EA0C526F25AB683400AFF716 /* EyedropperButton.swift in Sources */,
 				EA72BB8425A5334B008205E7 /* MetalShader.metal in Sources */,
 				EA257BD125D8629300C3FC54 /* SwapButtonStyle.swift in Sources */,
 				EA72BBA925A7CE9C008205E7 /* NSWindowFade.swift in Sources */,
 				EAD0B718259D146200FA2F67 /* EyedropperButtonStyle.swift in Sources */,
-				EA635DC925B3B2650014D91A /* Cula.swift in Sources */,
 				EAEBF64725E878A5002999D1 /* CircleButtonStyle.swift in Sources */,
 				F8ABAC5D2EAAD0F0008CD152 /* ColorPickOverlayWindow.swift in Sources */,
 				EA635DE125B4FC580014D91A /* ColorPickers.swift in Sources */,
@@ -690,6 +705,10 @@
 				CC000001000000000000AAA2 /* Color+PikaControl.swift in Sources */,
 				CC000001000000000000AAB2 /* NSColor+HSL.swift in Sources */,
 				CC000001000000000000AAC2 /* NSColor+Lab.swift in Sources */,
+				CC000001000000000000AAD2 /* NSColor+Init.swift in Sources */,
+				CC000001000000000000AAE2 /* NSColor+Luminance.swift in Sources */,
+				CC000001000000000000AAF2 /* NSColor+Hex.swift in Sources */,
+				CC000001000000000000AB02 /* NSColor+RGB.swift in Sources */,
 				EAE23DAE2D032A38005BB270 /* SplashTouchBar.swift in Sources */,
 				EAE23DAF2D032A38005BB270 /* OverflowContentViewModifier.swift in Sources */,
 				EAE23DB02D032A38005BB270 /* KeyboardShortcutGrid.swift in Sources */,
@@ -723,7 +742,6 @@
 				EAE23DC92D032A38005BB270 /* SwapButtonStyle.swift in Sources */,
 				EAE23DCA2D032A38005BB270 /* NSWindowFade.swift in Sources */,
 				EAE23DCB2D032A38005BB270 /* EyedropperButtonStyle.swift in Sources */,
-				EAE23DCC2D032A38005BB270 /* Cula.swift in Sources */,
 				EAE23DCD2D032A38005BB270 /* CircleButtonStyle.swift in Sources */,
 				EAE23DCE2D032A38005BB270 /* ColorPickers.swift in Sources */,
 				EAE23DCF2D032A38005BB270 /* Exporter.swift in Sources */,
