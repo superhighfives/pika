@@ -98,9 +98,8 @@ struct ColorHistoryDrawer: View {
     }
 
     private func isActivePair(_ pair: ColorPair) -> Bool {
-        let fgHex = foreground.color.usingColorSpace(.sRGB)?.toHexString() ?? foreground.color.toHexString()
-        let bgHex = background.color.usingColorSpace(.sRGB)?.toHexString() ?? background.color.toHexString()
-        return pair.foregroundHex == fgHex && pair.backgroundHex == bgHex
+        pair.foregroundHex == foreground.color.toHexString() &&
+            pair.backgroundHex == background.color.toHexString()
     }
 
     private func applyBoth(_ pair: ColorPair) {

@@ -1,4 +1,5 @@
 import Cocoa
+import Defaults
 
 struct ColorPair: Codable, Identifiable, Equatable {
     let id: UUID
@@ -9,20 +10,21 @@ struct ColorPair: Codable, Identifiable, Equatable {
     var foregroundColor: NSColor { Self.colorFromHex(foregroundHex) }
     var backgroundColor: NSColor { Self.colorFromHex(backgroundHex) }
 
-    // Uses sRGB explicitly so the round-trip through set() (which converts to
-    // Defaults[.colorSpace]) and toHexString() (which reads in Defaults[.colorSpace])
-    // produces the same hex as the stored value.
+    // Reconstructs the color in Defaults[.colorSpace] — the same space toHexString()
+    // reads from. This makes set() a no-op (colorSpace → colorSpace), so the stored
+    // hex round-trips exactly and isActivePair comparison always holds.
     private static func colorFromHex(_ hex: String) -> NSColor {
-        var h = hex.replacingOccurrences(of: "#", with: "")
+        let h = hex.replacingOccurrences(of: "#", with: "")
         let scanner = Scanner(string: h)
         var rgb: UInt64 = 0
         scanner.scanHexInt64(&rgb)
-        return NSColor(
-            srgbRed: CGFloat((rgb >> 16) & 0xFF) / 255,
-            green: CGFloat((rgb >> 8) & 0xFF) / 255,
-            blue: CGFloat(rgb & 0xFF) / 255,
-            alpha: 1
-        )
+        let components: [CGFloat] = [
+            CGFloat((rgb >> 16) & 0xFF) / 255,
+            CGFloat((rgb >> 8) & 0xFF) / 255,
+            CGFloat(rgb & 0xFF) / 255,
+            1.0,
+        ]
+        return NSColor(colorSpace: Defaults[.colorSpace], components: components, count: 4)
     }
 
     static let maxHistory = 20
