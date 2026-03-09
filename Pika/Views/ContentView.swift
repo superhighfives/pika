@@ -7,6 +7,7 @@ struct ContentView: View {
 
     @Default(.copyFormat) var copyFormat
     @Default(.colorFormat) var colorFormat
+    @Default(.historyDrawerVisible) var historyDrawerVisible
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     let pasteboard = NSPasteboard.general
 
@@ -61,11 +62,23 @@ struct ContentView: View {
 
             Divider()
             Footer(foreground: eyedroppers.foreground, background: eyedroppers.background)
+            if historyDrawerVisible {
+                ColorHistoryDrawer(foreground: eyedroppers.foreground, background: eyedroppers.background)
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+            }
         }
         .onAppear {
             eyedroppers.background.color = colorScheme == .light
                 ? NSColor.white
                 : NSColor.black
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .colorPicked)) { _ in
+            eyedroppers.recordHistory()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .toggleHistory)) { _ in
+            withAnimation(.easeInOut(duration: 0.25)) {
+                historyDrawerVisible.toggle()
+            }
         }
         .onReceive(NotificationCenter.default.publisher(for: .triggerCopyText)) { _ in
             pasteboard.clearContents()

@@ -69,6 +69,14 @@ struct NavigationMenuItems: View {
             Divider()
         }
 
+        Button(PikaText.textHistoryToggle, action: {
+            NotificationCenter.default.post(name: .toggleHistory, object: nil)
+        })
+
+        VStack {
+            Divider()
+        }
+
         Button(PikaText.textColorSwapDetail, action: {
             NSApp.sendAction(#selector(AppDelegate.triggerSwap), to: nil, from: nil)
         })

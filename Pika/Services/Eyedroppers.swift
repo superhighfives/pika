@@ -8,6 +8,23 @@ class Eyedroppers: ObservableObject {
         type: .foreground, color: PikaConstants.initialColors.randomElement()!
     )
     @Published var background = Eyedropper(type: .background, color: NSColor.black)
+
+    func recordHistory() {
+        let fgHex = foreground.color.toHexString()
+        let bgHex = background.color.toHexString()
+
+        let history = Defaults[.colorHistory]
+        if let last = history.first, last.foregroundHex == fgHex, last.backgroundHex == bgHex {
+            return
+        }
+
+        let pair = ColorPair(id: UUID(), foregroundHex: fgHex, backgroundHex: bgHex, date: Date())
+        var updated = [pair] + history
+        if updated.count > ColorPair.maxHistory {
+            updated = Array(updated.prefix(ColorPair.maxHistory))
+        }
+        Defaults[.colorHistory] = updated
+    }
 }
 
 class Eyedropper: ObservableObject {
@@ -153,6 +170,8 @@ class Eyedropper: ObservableObject {
                     }
 
                     self.set(selectedColor)
+
+                    NotificationCenter.default.post(name: .colorPicked, object: nil)
 
                     if Defaults[.copyColorOnPick] {
                         NSApp.sendAction(self.type.copySelector, to: nil, from: nil)

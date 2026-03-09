@@ -53,6 +53,10 @@
 		CC000001000000000000AB02 /* NSColor+RGB.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000001000000000000AB00 /* NSColor+RGB.swift */; };
 		CC000001000000000000AB11 /* CGFloat+Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000001000000000000AB10 /* CGFloat+Format.swift */; };
 		CC000001000000000000AB12 /* CGFloat+Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000001000000000000AB10 /* CGFloat+Format.swift */; };
+		EA03E39B2F5E618E00998D8B /* ColorPair.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA03E39A2F5E618E00998D8B /* ColorPair.swift */; };
+		EA03E39C2F5E618E00998D8B /* ColorPair.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA03E39A2F5E618E00998D8B /* ColorPair.swift */; };
+		EA03E39E2F5E619800998D8B /* ColorHistoryDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA03E39D2F5E619800998D8B /* ColorHistoryDrawer.swift */; };
+		EA03E39F2F5E619800998D8B /* ColorHistoryDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA03E39D2F5E619800998D8B /* ColorHistoryDrawer.swift */; };
 		EA0C525025AA729300AFF716 /* Visualisation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C524F25AA729300AFF716 /* Visualisation.swift */; };
 		EA0C526025AB5A2B00AFF716 /* NavigationMenuItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C525F25AB5A2B00AFF716 /* NavigationMenuItems.swift */; };
 		EA0C526425AB5D1700AFF716 /* PikaWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C526325AB5D1700AFF716 /* PikaWindow.swift */; };
@@ -228,6 +232,8 @@
 		CC000001000000000000AAF0 /* NSColor+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+Hex.swift"; sourceTree = "<group>"; };
 		CC000001000000000000AB00 /* NSColor+RGB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+RGB.swift"; sourceTree = "<group>"; };
 		CC000001000000000000AB10 /* CGFloat+Format.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+Format.swift"; sourceTree = "<group>"; };
+		EA03E39A2F5E618E00998D8B /* ColorPair.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPair.swift; sourceTree = "<group>"; };
+		EA03E39D2F5E619800998D8B /* ColorHistoryDrawer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorHistoryDrawer.swift; sourceTree = "<group>"; };
 		EA0C524F25AA729300AFF716 /* Visualisation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Visualisation.swift; sourceTree = "<group>"; };
 		EA0C525F25AB5A2B00AFF716 /* NavigationMenuItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationMenuItems.swift; sourceTree = "<group>"; };
 		EA0C526325AB5D1700AFF716 /* PikaWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PikaWindow.swift; sourceTree = "<group>"; };
@@ -435,6 +441,7 @@
 		EAD0B6F0259CF29300FA2F67 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				EA03E39A2F5E618E00998D8B /* ColorPair.swift */,
 				CC1100000000000000000007 /* Models */,
 				CC1100000000000000000008 /* Export */,
 				CC1100000000000000000009 /* Windows */,
@@ -450,6 +457,7 @@
 		EAD0B6F2259CF29300FA2F67 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				EA03E39D2F5E619800998D8B /* ColorHistoryDrawer.swift */,
 				EAD0B6F6259CF29300FA2F67 /* ContentView.swift */,
 				EA8124C0259E307D00033F0B /* Footer.swift */,
 				CC1100000000000000000001 /* Eyedropper */,
@@ -868,7 +876,9 @@
 				EABAEAE0284D50D1000716AE /* ComplianceButtons.swift in Sources */,
 				EAF100CD25C785C4006E1EC3 /* TouchBarVisual.swift in Sources */,
 				EA801285259F8F480026D5D9 /* ComplianceToggle.swift in Sources */,
+				EA03E39B2F5E618E00998D8B /* ColorPair.swift in Sources */,
 				221600FD25A636D600B8B7D9 /* ConditionalModifier.swift in Sources */,
+				EA03E39E2F5E619800998D8B /* ColorHistoryDrawer.swift in Sources */,
 				EA635DF125B5A6D80014D91A /* Toast.swift in Sources */,
 				EAD0B71C259D151400FA2F67 /* NavigationMenu.swift in Sources */,
 				22FE80B325BA0F820063759E /* KeyboardShortcutItem.swift in Sources */,
@@ -917,6 +927,7 @@
 				EAE23DAA2D032A38005BB270 /* SplashView.swift in Sources */,
 				EAE23DAB2D032A38005BB270 /* AppearanceButtonStyle.swift in Sources */,
 				EAE23DAC2D032A38005BB270 /* PikaTouchBar.swift in Sources */,
+				EA03E39F2F5E619800998D8B /* ColorHistoryDrawer.swift in Sources */,
 				EAE23DAD2D032A38005BB270 /* LoadColors.swift in Sources */,
 				C49A11492DB394F500EE7E80 /* APCACompliance.swift in Sources */,
 				CC000001000000000000AAA2 /* Color+PikaControl.swift in Sources */,
@@ -934,6 +945,7 @@
 				F8ABAC5E2EAAD0F0008CD152 /* ColorPickOverlayWindow.swift in Sources */,
 				EAE23DB12D032A38005BB270 /* AppModeToggleGroup.swift in Sources */,
 				EAE23DB22D032A38005BB270 /* Visualisation.swift in Sources */,
+				EA03E39C2F5E618E00998D8B /* ColorPair.swift in Sources */,
 				EAE23DB32D032A38005BB270 /* ContentView.swift in Sources */,
 				EAE23DB42D032A38005BB270 /* AppDelegate.swift in Sources */,
 				EAE23DB52D032A38005BB270 /* WCAGCompliance.swift in Sources */,
