@@ -1,0 +1,41 @@
+name: Tests
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    name: Unit Tests
+    runs-on: macos-15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_16.3.app
+
+      - name: Resolve Swift packages
+        run: |
+          xcodebuild -resolvePackageDependencies \
+            -project Pika.xcodeproj \
+            -scheme Pika
+
+      - name: Build and test
+        run: |
+          xcodebuild test \
+            -project Pika.xcodeproj \
+            -scheme Pika \
+            -destination 'platform=macOS' \
+            CODE_SIGNING_ALLOWED=NO \
+            | xcpretty --color && exit ${PIPESTATUS[0]}
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: ~/Library/Developer/Xcode/DerivedData/**/Logs/Test/*.xcresult
+          retention-days: 7
