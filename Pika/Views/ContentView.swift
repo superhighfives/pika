@@ -46,6 +46,21 @@ struct ContentView: View {
                         ltr: true
                     ))
                     .onReceive(NotificationCenter.default.publisher(for: .triggerSwap)) { _ in
+                        let fgHex = eyedroppers.foreground.color.toHexString()
+                        let bgHex = eyedroppers.background.color.toHexString()
+                        var history = Defaults[.colorHistory]
+                        if let idx = history.firstIndex(where: {
+                            $0.foregroundHex == fgHex && $0.backgroundHex == bgHex
+                        }) {
+                            let pair = history[idx]
+                            history[idx] = ColorPair(
+                                id: pair.id,
+                                foregroundHex: pair.backgroundHex,
+                                backgroundHex: pair.foregroundHex,
+                                date: pair.date
+                            )
+                            Defaults[.colorHistory] = history
+                        }
                         let temp = eyedroppers.foreground.color
                         eyedroppers.foreground.color = eyedroppers.background.color
                         eyedroppers.background.color = temp
