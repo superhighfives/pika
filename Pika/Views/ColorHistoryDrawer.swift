@@ -58,15 +58,13 @@ struct ColorHistoryDrawer: View {
 
     var body: some View {
         Divider()
-        HStack(spacing: 0) {
+        VStack(alignment: .leading, spacing: 0) {
             Text(PikaText.textHistoryTitle)
                 .font(.caption)
                 .fontWeight(.semibold)
                 .foregroundColor(.secondary)
                 .padding(.horizontal, 12)
-                .frame(maxHeight: .infinity)
-
-            Divider()
+                .padding(.top, 8)
 
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 8) {
@@ -84,10 +82,10 @@ struct ColorHistoryDrawer: View {
                     }
                 }
                 .padding(.horizontal, 12)
-                .padding(.vertical, 8)
+                .padding(.vertical, 6)
             }
         }
-        .frame(height: 60)
+        .frame(maxWidth: .infinity, maxHeight: 76, alignment: .leading)
         .background(
             ZStack {
                 VisualEffect(

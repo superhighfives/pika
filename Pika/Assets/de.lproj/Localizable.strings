@@ -351,3 +351,24 @@
 
 /* Duration: */
 "preferences.overlay.duration" = "Dauer";
+
+/* History */
+"history.title" = "History";
+
+/* Toggle history */
+"history.toggle" = "Toggle history";
+
+/* Apply foreground only */
+"history.apply.foreground" = "Apply foreground only";
+
+/* Apply background only */
+"history.apply.background" = "Apply background only";
+
+/* Swap and apply */
+"history.apply.swapped" = "Swap and apply";
+
+/* Remove from history */
+"history.remove" = "Remove from history";
+
+/* Clear history */
+"history.clear" = "Clear history";
