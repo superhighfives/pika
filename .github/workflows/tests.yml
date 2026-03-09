@@ -23,19 +23,35 @@ jobs:
             -project Pika.xcodeproj \
             -scheme Pika
 
-      - name: Build and test
+      # Build separately so script phase stderr (LaunchAtLogin keychain warning)
+      # doesn't prevent tests from running — Xcode 15+ fails the whole test action
+      # if any script phase emits to stderr, even with exit code 0.
+      - name: Build for testing
         run: |
-          xcodebuild test \
+          set -o pipefail
+          xcodebuild build-for-testing \
             -project Pika.xcodeproj \
             -scheme Pika \
             -destination 'platform=macOS' \
+            -derivedDataPath build/DerivedData \
             CODE_SIGNING_ALLOWED=NO \
-            | xcpretty --color && exit ${PIPESTATUS[0]}
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            2>&1 | xcpretty --color
+
+      - name: Run tests
+        run: |
+          set -o pipefail
+          XCTESTRUN=$(find build/DerivedData -name "Pika_*.xctestrun" | head -1)
+          xcodebuild test-without-building \
+            -xctestrun "$XCTESTRUN" \
+            -destination 'platform=macOS' \
+            2>&1 | xcpretty --color
 
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: test-results
-          path: ~/Library/Developer/Xcode/DerivedData/**/Logs/Test/*.xcresult
+          path: build/DerivedData/**/Logs/Test/*.xcresult
           retention-days: 7
