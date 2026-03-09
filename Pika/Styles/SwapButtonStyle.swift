@@ -58,6 +58,7 @@ struct SwapButtonStyle: ButtonStyle {
             )
             .onHover { hover in
                 if hover {
+                    hoverTask?.cancel()
                     hoverTask = Task {
                         try? await Task.sleep(for: .milliseconds(100))
                         isHovered = true
