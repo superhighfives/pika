@@ -353,22 +353,22 @@
 "preferences.overlay.duration" = "Dauer";
 
 /* History */
-"history.title" = "History";
+"history.title" = "Verlauf";
 
 /* Toggle history */
-"history.toggle" = "Toggle history";
+"history.toggle" = "Verlauf ein-/ausblenden";
 
 /* Apply foreground only */
-"history.apply.foreground" = "Apply foreground only";
+"history.apply.foreground" = "Nur Vordergrund anwenden";
 
 /* Apply background only */
-"history.apply.background" = "Apply background only";
+"history.apply.background" = "Nur Hintergrund anwenden";
 
 /* Swap and apply */
-"history.apply.swapped" = "Swap and apply";
+"history.apply.swapped" = "Tauschen und anwenden";
 
 /* Remove from history */
-"history.remove" = "Remove from history";
+"history.remove" = "Aus Verlauf entfernen";
 
 /* Clear history */
-"history.clear" = "Clear history";
+"history.clear" = "Verlauf löschen";

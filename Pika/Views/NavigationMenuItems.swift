@@ -70,7 +70,7 @@ struct NavigationMenuItems: View {
         }
 
         Button(PikaText.textHistoryToggle, action: {
-            NotificationCenter.default.post(name: .toggleHistory, object: nil)
+            NSApp.sendAction(#selector(AppDelegate.triggerToggleHistory), to: nil, from: nil)
         })
 
         VStack {

@@ -144,6 +144,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         notificationCenter.post(name: .triggerSystemPickerBackground, object: self)
     }
 
+    @IBAction func triggerToggleHistory(_: Any) {
+        notificationCenter.post(name: .toggleHistory, object: self)
+    }
+
     @IBAction func triggerSwap(_: Any) {
         notificationCenter.post(name: .triggerSwap, object: self)
     }

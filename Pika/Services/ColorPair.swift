@@ -14,17 +14,19 @@ struct ColorPair: Codable, Identifiable, Equatable {
     // reads from. This makes set() a no-op (colorSpace → colorSpace), so the stored
     // hex round-trips exactly and isActivePair comparison always holds.
     private static func colorFromHex(_ hex: String) -> NSColor {
+        let fallback = NSColor.black.usingColorSpace(Defaults[.colorSpace]) ?? .black
         let h = hex.replacingOccurrences(of: "#", with: "")
+        guard h.count == 6 else { return fallback }
         let scanner = Scanner(string: h)
         var rgb: UInt64 = 0
-        scanner.scanHexInt64(&rgb)
+        guard scanner.scanHexInt64(&rgb) else { return fallback }
         let components: [CGFloat] = [
             CGFloat((rgb >> 16) & 0xFF) / 255,
             CGFloat((rgb >> 8) & 0xFF) / 255,
             CGFloat(rgb & 0xFF) / 255,
             1.0,
         ]
-        return NSColor(colorSpace: Defaults[.colorSpace], components: components, count: 4)
+        return NSColor(colorSpace: Defaults[.colorSpace], components: components, count: 4) ?? fallback
     }
 
     static let maxHistory = 20
