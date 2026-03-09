@@ -173,6 +173,7 @@ enum PikaText {
     static let textColorAPCA75 = NSLocalizedString("color.apca.75", comment: "APCA ≥75")
 
     // History
+    static let textHistoryTitle = NSLocalizedString("history.title", comment: "History")
     static let textHistoryToggle = NSLocalizedString("history.toggle", comment: "Toggle history")
     static let textHistoryApplyForeground = NSLocalizedString("history.apply.foreground", comment: "Apply foreground only")
     static let textHistoryApplyBackground = NSLocalizedString("history.apply.background", comment: "Apply background only")

@@ -58,29 +58,45 @@ struct ColorHistoryDrawer: View {
 
     var body: some View {
         Divider()
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 8) {
-                ForEach(colorHistory) { pair in
-                    ColorHistoryChip(
-                        pair: pair,
-                        isActive: isActivePair(pair),
-                        onApplyBoth: { applyBoth(pair) },
-                        onApplyForeground: { applyForeground(pair) },
-                        onApplyBackground: { applyBackground(pair) },
-                        onApplySwapped: { applySwapped(pair) },
-                        onRemove: { removePair(pair) },
-                        onClearAll: { Defaults[.colorHistory] = [] }
-                    )
+        HStack(spacing: 0) {
+            Text(PikaText.textHistoryTitle)
+                .font(.caption)
+                .fontWeight(.semibold)
+                .foregroundColor(.secondary)
+                .padding(.horizontal, 12)
+                .frame(maxHeight: .infinity)
+
+            Divider()
+
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 8) {
+                    ForEach(colorHistory) { pair in
+                        ColorHistoryChip(
+                            pair: pair,
+                            isActive: isActivePair(pair),
+                            onApplyBoth: { applyBoth(pair) },
+                            onApplyForeground: { applyForeground(pair) },
+                            onApplyBackground: { applyBackground(pair) },
+                            onApplySwapped: { applySwapped(pair) },
+                            onRemove: { removePair(pair) },
+                            onClearAll: { Defaults[.colorHistory] = [] }
+                        )
+                    }
                 }
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
             }
-            .padding(.horizontal, 12)
-            .padding(.vertical, 8)
         }
         .frame(height: 60)
-        .background(VisualEffect(
-            material: NSVisualEffectView.Material.underWindowBackground,
-            blendingMode: NSVisualEffectView.BlendingMode.behindWindow
-        ))
+        .background(
+            ZStack {
+                VisualEffect(
+                    material: NSVisualEffectView.Material.underWindowBackground,
+                    blendingMode: NSVisualEffectView.BlendingMode.behindWindow
+                )
+                Color.accentColor.opacity(0.07)
+            }
+        )
     }
 
     private func isActivePair(_ pair: ColorPair) -> Bool {

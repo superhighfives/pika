@@ -46,7 +46,9 @@ struct ContentView: View {
                         ltr: true
                     ))
                     .onReceive(NotificationCenter.default.publisher(for: .triggerSwap)) { _ in
-                        swap(&eyedroppers.foreground.color, &eyedroppers.background.color)
+                        let temp = eyedroppers.foreground.color
+                        eyedroppers.foreground.color = eyedroppers.background.color
+                        eyedroppers.background.color = temp
                     }
                     .focusable(false)
                     .padding(16.0)
