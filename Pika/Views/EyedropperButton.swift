@@ -1,4 +1,3 @@
-import Combine
 import Defaults
 import SwiftUI
 
@@ -9,8 +8,7 @@ struct EyedropperButton: View {
     @Default(.hideColorNames) var hideColorNames
 
     @State var hoverVisible: Bool = false
-    @State private var timerSubscription: Cancellable?
-    @State private var timer = Timer.publish(every: 0.25, on: .main, in: .common)
+    @State private var hoverTask: Task<Void, Never>?
 
     var body: some View {
         ZStack {
@@ -84,20 +82,15 @@ struct EyedropperButton: View {
         }
         .onHover { hover in
             if hover {
+                hoverTask?.cancel()
+                hoverTask = nil
                 hoverVisible = true
-                timerSubscription?.cancel()
-                timerSubscription = nil
             } else {
-                if timerSubscription == nil {
-                    timer = Timer.publish(every: 0.25, on: .main, in: .common)
-                    timerSubscription = timer.connect()
+                hoverTask = Task {
+                    try? await Task.sleep(for: .milliseconds(250))
+                    hoverVisible = false
                 }
             }
-        }
-        .onReceive(timer) { _ in
-            hoverVisible = false
-            timerSubscription?.cancel()
-            timerSubscription = nil
         }
     }
 }

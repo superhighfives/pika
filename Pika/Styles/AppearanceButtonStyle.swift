@@ -1,58 +1,47 @@
 import SwiftUI
 
+private let darkBaseColor = Color(red: 0.1, green: 0.1, blue: 0.1)
+private let lightBaseColor = Color(red: 0.975, green: 0.975, blue: 0.975)
+
+@ViewBuilder
+private func appearanceSideOverlay(colorScheme: ColorScheme) -> some View {
+    HStack {
+        Rectangle()
+            .fill(
+                LinearGradient(
+                    gradient: .init(
+                        colors: colorScheme == .dark
+                            ? [darkBaseColor.opacity(0.5), darkBaseColor.opacity(0)]
+                            : [lightBaseColor.opacity(0.9), lightBaseColor.opacity(0)]
+                    ),
+                    startPoint: .leading,
+                    endPoint: .trailing
+                )
+            )
+            .frame(maxWidth: 25, maxHeight: .infinity)
+        Spacer()
+        Rectangle()
+            .fill(
+                LinearGradient(
+                    gradient: .init(
+                        colors: colorScheme == .dark
+                            ? [darkBaseColor.opacity(0), darkBaseColor.opacity(0.5)]
+                            : [lightBaseColor.opacity(0), lightBaseColor.opacity(0.9)]
+                    ),
+                    startPoint: .leading,
+                    endPoint: .trailing
+                )
+            )
+            .frame(maxWidth: 25, maxHeight: .infinity)
+    }
+}
+
 struct AppearanceButtonStyle: ButtonStyle {
     @Environment(\.colorScheme) var colorScheme: ColorScheme
 
     var title: String
     var description: String
     var selected = false
-
-    let darkBaseColor = Color(red: 0.1, green: 0.1, blue: 0.1)
-    let lightBaseColor = Color(red: 0.975, green: 0.975, blue: 0.975)
-
-    func makeOverlay() -> some View {
-        HStack {
-            Rectangle()
-                .fill(
-                    LinearGradient(
-                        gradient: .init(
-                            colors: colorScheme == .dark
-                                ? [
-                                    darkBaseColor.opacity(0.5),
-                                    darkBaseColor.opacity(0)
-                                ]
-                                : [
-                                    lightBaseColor.opacity(0.9),
-                                    lightBaseColor.opacity(0),
-                                ]
-                        ),
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    )
-                )
-                .frame(maxWidth: 25, maxHeight: .infinity)
-            Spacer()
-            Rectangle()
-                .fill(
-                    LinearGradient(
-                        gradient: .init(
-                            colors: colorScheme == .dark
-                                ? [
-                                    darkBaseColor.opacity(0),
-                                    darkBaseColor.opacity(0.5)
-                                ]
-                                : [
-                                    lightBaseColor.opacity(0),
-                                    lightBaseColor.opacity(0.9),
-                                ]
-                        ),
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    )
-                )
-                .frame(maxWidth: 25, maxHeight: .infinity)
-        }
-    }
 
     func makeBody(configuration: Self.Configuration) -> some View {
         VStack {
@@ -73,7 +62,7 @@ struct AppearanceButtonStyle: ButtonStyle {
                 )
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .overlay(
-                    makeOverlay()
+                    appearanceSideOverlay(colorScheme: colorScheme)
                 )
                 .clipShape(
                     RoundedRectangle(cornerRadius: 10.0, style: .continuous)
@@ -110,59 +99,12 @@ struct StyledContentView<Content: View>: View {
     let description: String
     let content: Content
 
-    let darkBaseColor = Color(red: 0.1, green: 0.1, blue: 0.1)
-    let lightBaseColor = Color(red: 0.975, green: 0.975, blue: 0.975)
-
     init(
         title: String, description: String, @ViewBuilder content: () -> Content
     ) {
         self.title = title
         self.description = description
         self.content = content()
-    }
-
-    func makeOverlay() -> some View {
-        HStack {
-            Rectangle()
-                .fill(
-                    LinearGradient(
-                        gradient: .init(
-                            colors: colorScheme == .dark
-                                ? [
-                                    darkBaseColor.opacity(0.5),
-                                    darkBaseColor.opacity(0)
-                                ]
-                                : [
-                                    lightBaseColor.opacity(0.9),
-                                    lightBaseColor.opacity(0),
-                                ]
-                        ),
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    )
-                )
-                .frame(maxWidth: 25, maxHeight: .infinity)
-            Spacer()
-            Rectangle()
-                .fill(
-                    LinearGradient(
-                        gradient: .init(
-                            colors: colorScheme == .dark
-                                ? [
-                                    darkBaseColor.opacity(0),
-                                    darkBaseColor.opacity(0.5)
-                                ]
-                                : [
-                                    lightBaseColor.opacity(0),
-                                    lightBaseColor.opacity(0.9),
-                                ]
-                        ),
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    )
-                )
-                .frame(maxWidth: 25, maxHeight: .infinity)
-        }
     }
 
     var body: some View {
@@ -180,7 +122,7 @@ struct StyledContentView<Content: View>: View {
                     )
                 )
                 .overlay(
-                    makeOverlay()
+                    appearanceSideOverlay(colorScheme: colorScheme)
                 )
                 .clipShape(
                     RoundedRectangle(cornerRadius: 10.0, style: .continuous)

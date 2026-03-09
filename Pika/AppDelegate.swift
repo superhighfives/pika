@@ -351,7 +351,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         }
         preferencesWindow.makeKeyAndOrderFront(nil)
         preferencesWindow.makeFirstResponder(nil)
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerPreferences), object: self)
+        notificationCenter.post(name: .triggerPreferences, object: self)
     }
 
     @IBAction func openSplashWindow(_: Any?) {
@@ -369,77 +369,77 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     @IBAction func triggerPickForeground(_: Any) {
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerPickForeground), object: self)
+        notificationCenter.post(name: .triggerPickForeground, object: self)
     }
 
     @IBAction func triggerPickBackground(_: Any) {
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerPickBackground), object: self)
+        notificationCenter.post(name: .triggerPickBackground, object: self)
     }
 
     @IBAction func triggerCopyForeground(_: Any) {
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerCopyForeground), object: self)
+        notificationCenter.post(name: .triggerCopyForeground, object: self)
     }
 
     @IBAction func triggerCopyBackground(_: Any) {
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerCopyBackground), object: self)
+        notificationCenter.post(name: .triggerCopyBackground, object: self)
     }
 
     @IBAction func triggerSystemPickerForeground(_: Any) {
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerSystemPickerForeground), object: self)
+        notificationCenter.post(name: .triggerSystemPickerForeground, object: self)
     }
 
     @IBAction func triggerSystemPickerBackground(_: Any) {
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerSystemPickerBackground), object: self)
+        notificationCenter.post(name: .triggerSystemPickerBackground, object: self)
     }
 
     @IBAction func triggerSwap(_: Any) {
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerSwap), object: self)
+        notificationCenter.post(name: .triggerSwap, object: self)
     }
 
     @IBAction func triggerUndo(_: Any) {
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerUndo), object: self)
+        notificationCenter.post(name: .triggerUndo, object: self)
         undoManager.undo()
     }
 
     @IBAction func triggerRedo(_: Any) {
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerRedo), object: self)
+        notificationCenter.post(name: .triggerRedo, object: self)
         undoManager.redo()
     }
 
     @IBAction func triggerCopyText(_: Any) {
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerCopyText), object: self)
+        notificationCenter.post(name: .triggerCopyText, object: self)
     }
 
     @IBAction func triggerCopyData(_: Any) {
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerCopyData), object: self)
+        notificationCenter.post(name: .triggerCopyData, object: self)
     }
 
     @IBAction func triggerFormatHex(_: Any) {
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerFormatHex), object: self)
+        notificationCenter.post(name: .triggerFormatHex, object: self)
     }
 
     @IBAction func triggerFormatRGB(_: Any) {
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerFormatRGB), object: self)
+        notificationCenter.post(name: .triggerFormatRGB, object: self)
     }
 
     @IBAction func triggerFormatHSB(_: Any) {
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerFormatHSB), object: self)
+        notificationCenter.post(name: .triggerFormatHSB, object: self)
     }
 
     @IBAction func triggerFormatHSL(_: Any) {
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerFormatHSL), object: self)
+        notificationCenter.post(name: .triggerFormatHSL, object: self)
     }
 
     @IBAction func triggerFormatOpenGL(_: Any) {
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerFormatOpenGL), object: self)
+        notificationCenter.post(name: .triggerFormatOpenGL, object: self)
     }
 
     @IBAction func triggerFormatLAB(_: Any) {
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerFormatLAB), object: self)
+        notificationCenter.post(name: .triggerFormatLAB, object: self)
     }
 
     @IBAction func triggerFormatOKLCH(_: Any) {
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerFormatOKLCH), object: self)
+        notificationCenter.post(name: .triggerFormatOKLCH, object: self)
     }
 
     @IBAction func hidePika(_: Any) {

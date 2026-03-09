@@ -42,6 +42,27 @@ class Eyedropper: ObservableObject {
             case .background: return #selector(AppDelegate.triggerSystemPickerBackground)
             }
         }
+
+        var pickNotification: Notification.Name {
+            switch self {
+            case .foreground: return .triggerPickForeground
+            case .background: return .triggerPickBackground
+            }
+        }
+
+        var copyNotification: Notification.Name {
+            switch self {
+            case .foreground: return .triggerCopyForeground
+            case .background: return .triggerCopyBackground
+            }
+        }
+
+        var systemPickerNotification: Notification.Name {
+            switch self {
+            case .foreground: return .triggerSystemPickerForeground
+            case .background: return .triggerSystemPickerBackground
+            }
+        }
     }
 
     let type: Types

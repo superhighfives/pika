@@ -62,6 +62,29 @@ enum PikaConstants {
     static let disabledFormats: [ColorFormat] = [.hex, .hsl, .opengl, .lab, .oklch]
 }
 
+extension Notification.Name {
+    static let triggerPickForeground = Notification.Name(PikaConstants.ncTriggerPickForeground)
+    static let triggerPickBackground = Notification.Name(PikaConstants.ncTriggerPickBackground)
+    static let triggerCopyForeground = Notification.Name(PikaConstants.ncTriggerCopyForeground)
+    static let triggerCopyBackground = Notification.Name(PikaConstants.ncTriggerCopyBackground)
+    static let triggerCopyText = Notification.Name(PikaConstants.ncTriggerCopyText)
+    static let triggerCopyData = Notification.Name(PikaConstants.ncTriggerCopyData)
+    static let triggerSystemPickerForeground = Notification.Name(PikaConstants.ncTriggerSystemPickerForeground)
+    static let triggerSystemPickerBackground = Notification.Name(PikaConstants.ncTriggerSystemPickerBackground)
+    static let triggerSwap = Notification.Name(PikaConstants.ncTriggerSwap)
+    static let triggerUndo = Notification.Name(PikaConstants.ncTriggerUndo)
+    static let triggerRedo = Notification.Name(PikaConstants.ncTriggerRedo)
+    static let triggerPreferences = Notification.Name(PikaConstants.ncTriggerPreferences)
+    static let triggerFormatHex = Notification.Name(PikaConstants.ncTriggerFormatHex)
+    static let triggerFormatRGB = Notification.Name(PikaConstants.ncTriggerFormatRGB)
+    static let triggerFormatHSB = Notification.Name(PikaConstants.ncTriggerFormatHSB)
+    static let triggerFormatHSL = Notification.Name(PikaConstants.ncTriggerFormatHSL)
+    static let triggerFormatOpenGL = Notification.Name(PikaConstants.ncTriggerFormatOpenGL)
+    static let triggerFormatLAB = Notification.Name(PikaConstants.ncTriggerFormatLAB)
+    static let triggerFormatOKLCH = Notification.Name(PikaConstants.ncTriggerFormatOKLCH)
+    static let triggerQuit = Notification.Name(PikaConstants.ncTriggerQuit)
+}
+
 enum PikaText {
     static let textAppName = NSLocalizedString("app.name", comment: "Pika")
 

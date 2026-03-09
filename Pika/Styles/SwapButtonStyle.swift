@@ -1,8 +1,6 @@
-import Combine
 import SwiftUI
 
 struct SwapButtonStyle: ButtonStyle {
-    @State private var isHovered: Bool = false
     let isVisible: Bool
     let alt: String
     var ltr = false
@@ -11,23 +9,16 @@ struct SwapButtonStyle: ButtonStyle {
         @Environment(\.colorScheme) var colorScheme: ColorScheme
 
         @State private var isHovered: Bool = false
-        @State private var timerSubscription: Cancellable?
-        @State private var timer = Timer.publish(every: 0.1, on: .main, in: .common)
+        @State private var hoverTask: Task<Void, Never>?
 
         let configuration: Configuration
         let isVisible: Bool
         let alt: String
         let ltr: Bool
 
-        func getBackgroundColor(colorScheme: ColorScheme) -> Color {
-            colorScheme == .dark
-                ? Color(red: 27 / 255, green: 27 / 255, blue: 27 / 255)
-                : Color(red: 233 / 255, green: 233 / 255, blue: 233 / 255)
-        }
-
         var body: some View {
             let fgColor = colorScheme == .dark ? Color.white : .black
-            let bgColor: Color = getBackgroundColor(colorScheme: colorScheme)
+            let bgColor = Color.pikaControlBackground(for: colorScheme)
 
             HStack {
                 if ltr {
@@ -67,20 +58,15 @@ struct SwapButtonStyle: ButtonStyle {
             )
             .onHover { hover in
                 if hover {
-                    if timerSubscription == nil {
-                        timer = Timer.publish(every: 0.1, on: .main, in: .common)
-                        timerSubscription = timer.connect()
+                    hoverTask = Task {
+                        try? await Task.sleep(for: .milliseconds(100))
+                        isHovered = true
                     }
                 } else {
-                    timerSubscription?.cancel()
-                    timerSubscription = nil
+                    hoverTask?.cancel()
+                    hoverTask = nil
                     isHovered = false
                 }
-            }
-            .onReceive(timer) { _ in
-                isHovered = true
-                timerSubscription?.cancel()
-                timerSubscription = nil
             }
             .opacity(isVisible ? (configuration.isPressed ? 0.8 : 1.0) : 0.0)
             .foregroundColor(fgColor.opacity(0.8))

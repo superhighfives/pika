@@ -2,9 +2,9 @@ import SwiftUI
 
 struct KeyboardShortcutItem: View {
     @Environment(\.colorScheme) var colorScheme: ColorScheme
-    @State var title: String
-    @State var event: String
-    @State var keys: [String]
+    let title: String
+    let notificationName: Notification.Name
+    let keys: [String]
     @State private var highlight: Bool = false
 
     var body: some View {
@@ -21,11 +21,10 @@ struct KeyboardShortcutItem: View {
                 }
             }
         }
-        .onReceive(NotificationCenter.default.publisher(
-            for: Notification.Name(event)))
-        { _ in
+        .onReceive(NotificationCenter.default.publisher(for: notificationName)) { _ in
             highlight = true
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+            Task {
+                try? await Task.sleep(for: .milliseconds(600))
                 withAnimation {
                     highlight = false
                 }
@@ -41,7 +40,7 @@ struct KeyboardShortcutItem: View {
 struct KeyboardShortcutItem_Previews: PreviewProvider {
     static var previews: some View {
         KeyboardShortcutItem(title: "Copy example but with a much longer text",
-                             event: PikaConstants.ncTriggerPickForeground, keys: ["A", "B"])
+                             notificationName: .triggerPickForeground, keys: ["A", "B"])
             .frame(width: 100.0, height: 100.0)
     }
 }

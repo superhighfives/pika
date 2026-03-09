@@ -3,8 +3,6 @@ import Defaults
 import SwiftUI
 
 // swiftlint:disable identifier_name
-// swiftlint:disable large_tuple
-// swiftlint:disable file_length
 
 extension NSColor {
     /*
@@ -91,13 +89,11 @@ extension NSColor {
     func roundToHex(_ x: CGFloat) -> UInt32 {
         guard x > 0 else { return 0 }
         let rounded: CGFloat = round(x * 255.0)
-
         return UInt32(rounded)
     }
 
     func toHex() -> UInt32 {
         let rgba = toRGBAComponents()
-
         return roundToHex(rgba.r) << 16 | roundToHex(rgba.g) << 8 | roundToHex(rgba.b)
     }
 
@@ -150,7 +146,7 @@ extension NSColor {
     /**
      Get the rgb values of this color in 8-bit format.
 
-     - returns: An NSColor as an 8-bit rgb string.
+     - returns: An NSColor as an 8-bit rgb array.
      */
     func toRGB8BitArray() -> [Int] {
         let RGB = toRGBAComponents()
@@ -158,304 +154,6 @@ extension NSColor {
         let green = Int(round(RGB.g * 255))
         let blue = Int(round(RGB.b * 255))
         return [red, green, blue]
-    }
-
-    /*
-     * OpenGL
-     */
-
-    /**
-     Get the rgb values of this color in opengl format.
-
-     - returns: An NSColor as an opengl string.
-     */
-    func toOpenGLString(style: CopyFormat = .css) -> String {
-        let RGB = toRGBAComponents()
-        let red = RGB.r
-        let green = RGB.g
-        let blue = RGB.b
-
-        let formatString: NSString
-        switch style {
-        case .css, .design, .swiftUI:
-            formatString = "rgba(%.5g, %.5g, %.5g, 1.0)"
-        case .unformatted:
-            formatString = "%.5g, %.5g, %.5g, 1.0"
-        }
-
-        let openGLString = NSString(format: formatString, red, green, blue)
-        return openGLString as String
-    }
-
-    /*
-     * HSB
-     */
-
-    public final func toHSBComponents() -> (h: CGFloat, s: CGFloat, b: CGFloat) {
-        var h: CGFloat = 0.0
-        var s: CGFloat = 0.0
-        var b: CGFloat = 0.0
-
-        guard let rgbaColor = usingColorSpace(Defaults[.colorSpace]) else {
-            fatalError("Could not convert color to RGBA.")
-        }
-
-        if toHexString() == NSColor.black.toHexString() {
-            return (0.0, 0.0, 0.0)
-        } else if toHexString() == NSColor.white.toHexString() {
-            return (0.0, 0.0, 1.0)
-        }
-
-        rgbaColor.getHue(&h, saturation: &s, brightness: &b, alpha: nil)
-
-        return (h: h, s: s, b: b)
-    }
-
-    /**
-     Get the hsb values of this color in 8-bit format.
-
-     - returns: An NSColor as an 8-bit hsb string.
-     */
-    func toHSBString(style: CopyFormat = .css) -> String {
-        let HSB = toHSBComponents()
-        let hue = Int(round(HSB.h * 360))
-        let saturation = Int(round(HSB.s * 100))
-        let brightness = Int(round(HSB.b * 100))
-
-        let hsbString: String
-        switch style {
-        case .css:
-            hsbString = String(format: "hsb(%d, %d%%, %d%%)", hue, saturation, brightness)
-        case .design:
-            hsbString = String(format: "hsb(%d, %d, %d)", hue, saturation, brightness)
-        case .swiftUI:
-            hsbString = String(format: "Color(hue: %.5g, saturation: %.5g, brightness: %.5g)", HSB.h, HSB.s, HSB.b)
-        case .unformatted:
-            hsbString = String(format: "%d, %d, %d", hue, saturation, brightness)
-        }
-        return hsbString as String
-    }
-
-    /*
-     * HSL
-     */
-
-    public final func toHSLComponents() -> (h: CGFloat, s: CGFloat, l: CGFloat) {
-        var h: CGFloat = 0.0
-        var s: CGFloat = 0.0
-        var l: CGFloat = 0.0
-
-        let RGB = toRGBAComponents()
-        let r = RGB.r
-        let g = RGB.g
-        let b = RGB.b
-
-        if toHexString() == NSColor.black.toHexString() {
-            return (0.0, 0.0, 0.0)
-        } else if toHexString() == NSColor.white.toHexString() {
-            return (0.0, 0.0, 1.0)
-        }
-
-        let min = Swift.min(Swift.min(r, g), b)
-        let max = Swift.max(Swift.max(r, g), b)
-        let delta = max - min
-
-        if max == min {
-            h = 0
-        } else if r == max {
-            h = (g - b) / delta
-        } else if g == max {
-            h = 2 + (b - r) / delta
-        } else {
-            h = 4 + (r - g) / delta
-        }
-
-        h = Swift.min(h * 60, 360)
-
-        if h < 0 {
-            h += 360
-        }
-
-        h /= 360
-
-        l = (min + max) / 2
-
-        if max == min {
-            s = 0
-        } else if l <= 0.5 {
-            s = delta / (max + min)
-        } else {
-            s = delta / (2 - max - min)
-        }
-
-        return (h: h, s: s, l: l)
-    }
-
-    /**
-     Get the hsl values of this color in 8-bit format.
-
-     - returns: An NSColor as an 8-bit hsl string.
-     */
-    func toHSLString(style: CopyFormat = .css) -> String {
-        let HSL = toHSLComponents()
-        let hue = Int(round(HSL.h * 360))
-        let saturation = Int(round(HSL.s * 100))
-        let lightness = Int(round(HSL.l * 100))
-
-        let formatString: NSString
-        switch style {
-        case .css:
-            formatString = "hsl(%d, %d%%, %d%%)"
-        case .design, .swiftUI:
-            formatString = "hsl(%d, %d, %d)"
-        case .unformatted:
-            formatString = "%d, %d, %d"
-        }
-
-        let hslString = NSString(format: formatString, hue, saturation, lightness)
-        return hslString as String
-    }
-
-    /*
-     * CIE-LAB
-     */
-
-    private func toXYZComponents() -> (x: CGFloat, y: CGFloat, z: CGFloat) {
-        let srgb = toRGBAComponents(in: .sRGB)
-
-        // Linearize sRGB components
-        func linearize(_ c: CGFloat) -> CGFloat {
-            if c <= 0.04045 {
-                return c / 12.92
-            } else {
-                return pow((c + 0.055) / 1.055, 2.4)
-            }
-        }
-
-        let r_lin = linearize(srgb.r)
-        let g_lin = linearize(srgb.g)
-        let b_lin = linearize(srgb.b)
-
-        // Convert linear RGB to XYZ (D65)
-        let x = r_lin * 0.4124564 + g_lin * 0.3575761 + b_lin * 0.1804375
-        let y = r_lin * 0.2126729 + g_lin * 0.7151522 + b_lin * 0.0721750
-        let z = r_lin * 0.0193339 + g_lin * 0.1191920 + b_lin * 0.9503041
-
-        return (x: x, y: y, z: z)
-    }
-
-    func toLabComponents() -> (l: CGFloat, a: CGFloat, b: CGFloat) {
-        let xyz = toXYZComponents()
-
-        // D65 Reference White
-        let Xn: CGFloat = 0.95047
-        let Yn: CGFloat = 1.00000
-        let Zn: CGFloat = 1.08883
-
-        let xr = xyz.x / Xn
-        let yr = xyz.y / Yn
-        let zr = xyz.z / Zn
-
-        func f(_ t: CGFloat) -> CGFloat {
-            let delta: CGFloat = 6.0 / 29.0
-            if t > pow(delta, 3.0) { // approx 0.008856
-                return pow(t, 1.0 / 3.0)
-            } else {
-                return (t / (3.0 * pow(delta, 2.0))) + (4.0 / 29.0)
-                // Equivalent to: (t * (pow(29.0 / 6.0, 2.0) / 3.0)) + (4.0 / 29.0)
-                // Or: t * (7.787) + (16.0 / 116.0)
-            }
-        }
-
-        let L_star = (116.0 * f(yr)) - 16.0
-        let a_star = 500.0 * (f(xr) - f(yr))
-        let b_star = 200.0 * (f(yr) - f(zr))
-
-        return (l: L_star, a: a_star, b: b_star)
-    }
-
-    func toLabString(style: CopyFormat) -> String {
-        let lab = toLabComponents()
-        let l_val = round(lab.l * 100) / 100
-        let a_val = round(lab.a * 100) / 100
-        let b_val = round(lab.b * 100) / 100
-
-        let formatString: String
-        switch style {
-        case .css:
-            // CSS L is 0-100, a and b are typically -128 to 127.
-            // L* from calculation is 0-100.
-            // For CSS, L is a percentage, but the value is already 0-100.
-            // The spec actually shows L as a number or percentage, common usage is number.
-            formatString = String(format: "lab(%.2f %.2f %.2f)", l_val, a_val, b_val)
-        case .design, .swiftUI:
-            formatString = String(format: "lab(%.2f, %.2f, %.2f)", l_val, a_val, b_val)
-        case .unformatted:
-            formatString = String(format: "%.2f,%.2f,%.2f", l_val, a_val, b_val)
-        }
-        return formatString
-    }
-
-    /*
-     * OKLCH
-     */
-
-    func toOklchComponents() -> (l: CGFloat, c: CGFloat, h: CGFloat) {
-        let srgb = toRGBAComponents(in: .sRGB)
-
-        // Linearize sRGB components
-        func linearize(_ c: CGFloat) -> CGFloat {
-            if c <= 0.04045 {
-                return c / 12.92
-            } else {
-                return pow((c + 0.055) / 1.055, 2.4)
-            }
-        }
-
-        let r_lin = linearize(srgb.r)
-        let g_lin = linearize(srgb.g)
-        let b_lin = linearize(srgb.b)
-
-        // Linear RGB to LMS
-        let l = 0.4122214708 * r_lin + 0.5363325363 * g_lin + 0.0514459929 * b_lin
-        let m = 0.2119034982 * r_lin + 0.6806995451 * g_lin + 0.1073969566 * b_lin
-        let s = 0.0883024619 * r_lin + 0.2817188376 * g_lin + 0.6299787005 * b_lin
-
-        // LMS to Oklab (cube root of LMS)
-        let l_ = cbrt(l)
-        let m_ = cbrt(m)
-        let s_ = cbrt(s)
-
-        let L = 0.2104542553 * l_ + 0.7936177850 * m_ - 0.0040720468 * s_
-        let a = 1.9779984951 * l_ - 2.4285922050 * m_ + 0.4505937099 * s_
-        let b = 0.0259040371 * l_ + 0.7827717662 * m_ - 0.8086757660 * s_
-
-        // Oklab to OKLCH
-        let C = sqrt(a * a + b * b)
-        var H = atan2(b, a) * 180.0 / .pi
-        if H < 0 {
-            H += 360.0
-        }
-
-        return (l: L, c: C, h: H)
-    }
-
-    func toOklchString(style: CopyFormat) -> String {
-        let oklch = toOklchComponents()
-        let l_val = round(oklch.l * 10000) / 100
-        let c_val = round(oklch.c * 10000) / 10000
-        let h_val = round(oklch.h * 100) / 100
-
-        let formatString: String
-        switch style {
-        case .css:
-            formatString = String(format: "oklch(%.2f%% %.4f %.2f)", l_val, c_val, h_val)
-        case .design, .swiftUI:
-            formatString = String(format: "oklch(%.2f, %.4f, %.2f)", l_val, c_val, h_val)
-        case .unformatted:
-            formatString = String(format: "%.2f, %.4f, %.2f", l_val, c_val, h_val)
-        }
-        return formatString
     }
 
     /*
@@ -495,6 +193,4 @@ extension NSColor {
     }
 }
 
-// swiftlint:enable large_tuple
 // swiftlint:enable identifier_name
-// swiftlint:enable file_length
