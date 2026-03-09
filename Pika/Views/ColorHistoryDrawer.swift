@@ -92,14 +92,15 @@ struct ColorHistoryDrawer: View {
                     material: NSVisualEffectView.Material.underWindowBackground,
                     blendingMode: NSVisualEffectView.BlendingMode.behindWindow
                 )
-                Color.accentColor.opacity(0.07)
+                Color.black.opacity(0.2)
             }
         )
     }
 
     private func isActivePair(_ pair: ColorPair) -> Bool {
-        pair.foregroundHex == foreground.color.toHexString() &&
-            pair.backgroundHex == background.color.toHexString()
+        let fgHex = foreground.color.usingColorSpace(.sRGB)?.toHexString() ?? foreground.color.toHexString()
+        let bgHex = background.color.usingColorSpace(.sRGB)?.toHexString() ?? background.color.toHexString()
+        return pair.foregroundHex == fgHex && pair.backgroundHex == bgHex
     }
 
     private func applyBoth(_ pair: ColorPair) {

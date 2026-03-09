@@ -10,8 +10,9 @@ class Eyedroppers: ObservableObject {
     @Published var background = Eyedropper(type: .background, color: NSColor.black)
 
     func recordHistory() {
-        let fgHex = foreground.color.toHexString()
-        let bgHex = background.color.toHexString()
+        // Store in sRGB so colorFromHex round-trips correctly regardless of display color space
+        let fgHex = foreground.color.usingColorSpace(.sRGB)?.toHexString() ?? foreground.color.toHexString()
+        let bgHex = background.color.usingColorSpace(.sRGB)?.toHexString() ?? background.color.toHexString()
 
         let history = Defaults[.colorHistory]
         if let last = history.first, last.foregroundHex == fgHex, last.backgroundHex == bgHex {
