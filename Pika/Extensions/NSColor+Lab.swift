@@ -73,7 +73,7 @@ extension NSColor {
         return (l: L_star, a: a_star, b: b_star)
     }
 
-    func toLabString(style: CopyFormat) -> String {
+    func toLabString(style: CopyFormat = .css) -> String {
         let lab = toLabComponents()
         let l_val = round(lab.l * 100) / 100
         let a_val = round(lab.a * 100) / 100
@@ -118,7 +118,7 @@ extension NSColor {
         return (l: L, c: C, h: H)
     }
 
-    func toOklchString(style: CopyFormat) -> String {
+    func toOklchString(style: CopyFormat = .css) -> String {
         let oklch = toOklchComponents()
         let l_val = round(oklch.l * 10000) / 100
         let c_val = round(oklch.c * 10000) / 10000

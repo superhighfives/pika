@@ -1,3 +1,4 @@
+import SwiftUI
 import XCTest
 @testable import Pika
 
