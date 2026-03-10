@@ -45,7 +45,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationWillFinishLaunching(_: Notification) {
-        NSApp.setActivationPolicy(.prohibited)
+        NSApp.setActivationPolicy(Defaults[.appMode] == .regular ? .regular : .accessory)
         NSAppleEventManager.shared().setEventHandler(
             URLSchemeHandler.shared,
             andSelector: #selector(URLSchemeHandler.handle(event:withReplyEvent:)),

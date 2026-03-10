@@ -63,11 +63,13 @@ class StatusBarController: NSObject, NSMenuDelegate {
         menu.addItem(preferences)
 
         menu.addItem(NSMenuItem.separator())
-        menu.addItem(
-            withTitle: PikaText.textMenuQuit,
+        let quit = NSMenuItem(
+            title: PikaText.textMenuQuit,
             action: #selector(AppDelegate.terminatePika),
-            keyEquivalent: ""
+            keyEquivalent: "q"
         )
+        quit.keyEquivalentModifierMask = .command
+        menu.addItem(quit)
 
         return menu
     }

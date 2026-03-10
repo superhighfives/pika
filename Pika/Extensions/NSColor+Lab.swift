@@ -121,16 +121,16 @@ extension NSColor {
     func toOklchString(style: CopyFormat = .css) -> String {
         let oklch = toOklchComponents()
         let l_val = round(oklch.l * 10000) / 100
-        let c_val = round(oklch.c * 10000) / 10000
+        let c_val = round(oklch.c * 1000) / 1000
         let h_val = round(oklch.h * 100) / 100
 
         switch style {
         case .css:
-            return String(format: "oklch(%.2f%% %.4f %.2f)", l_val, c_val, h_val)
+            return String(format: "oklch(%.2f%% %.3f %.2f)", l_val, c_val, h_val)
         case .design, .swiftUI:
-            return String(format: "oklch(%.2f, %.4f, %.2f)", l_val, c_val, h_val)
+            return String(format: "oklch(%.2f, %.3f, %.2f)", l_val, c_val, h_val)
         case .unformatted:
-            return String(format: "%.2f, %.4f, %.2f", l_val, c_val, h_val)
+            return String(format: "%.2f, %.3f, %.2f", l_val, c_val, h_val)
         }
     }
 }
