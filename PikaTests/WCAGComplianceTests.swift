@@ -72,7 +72,7 @@ final class WCAGComplianceTests: XCTestCase {
             NSColor(r: 50, g: 50, b: 50),
             NSColor(r: 128, g: 128, b: 128),
             NSColor(r: 200, g: 200, b: 200),
-            NSColor(r: 255, g: 255, b: 255)
+            NSColor(r: 255, g: 255, b: 255),
         ]
         let white = NSColor(r: 255, g: 255, b: 255)
         for color in colors {

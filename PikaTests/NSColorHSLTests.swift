@@ -1,5 +1,5 @@
-@testable import Pika
 import Defaults
+@testable import Pika
 import XCTest
 
 final class NSColorHSLTests: XCTestCase {
@@ -7,6 +7,7 @@ final class NSColorHSLTests: XCTestCase {
         super.setUp()
         Defaults[.colorSpace] = .sRGB
     }
+
     // MARK: - toHSBComponents()
 
     func test_toHSBComponents_red_hueIsZero() {

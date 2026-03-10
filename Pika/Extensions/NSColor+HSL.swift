@@ -24,6 +24,7 @@ extension NSColor {
         }
 
         rgbaColor.getHue(&h, saturation: &s, brightness: &b, alpha: nil)
+        h = h.truncatingRemainder(dividingBy: 1.0)
 
         return (h: h, s: s, b: b)
     }

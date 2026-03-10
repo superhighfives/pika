@@ -1,5 +1,5 @@
-@testable import Pika
 import Defaults
+@testable import Pika
 import XCTest
 
 final class NSColorHexTests: XCTestCase {

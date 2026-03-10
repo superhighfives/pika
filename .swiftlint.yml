@@ -1,2 +1,3 @@
 disabled_rules: # rule identifiers turned on by default to exclude from running
   - opening_brace
+  - trailing_comma

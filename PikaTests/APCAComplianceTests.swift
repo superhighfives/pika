@@ -30,10 +30,10 @@ final class APCAComplianceTests: XCTestCase {
         let pairs: [(NSColor, NSColor)] = [
             (NSColor(r: 0, g: 0, b: 0), NSColor(r: 0, g: 0, b: 0)),
             (NSColor(r: 50, g: 50, b: 50), NSColor(r: 240, g: 240, b: 240)),
-            (NSColor(r: 0, g: 0, b: 0), NSColor(r: 255, g: 255, b: 255)),
+            (NSColor(r: 0, g: 0, b: 0), NSColor(r: 255, g: 255, b: 255))
         ]
-        for (fg, bg) in pairs {
-            let level = fg.APCACompliance(with: bg).level
+        for (foreground, background) in pairs {
+            let level = foreground.APCACompliance(with: background).level
             XCTAssertTrue(knownLevels.contains(level), "Unexpected level: \(level)")
         }
     }
@@ -69,10 +69,10 @@ final class APCAComplianceTests: XCTestCase {
     // MARK: - toAPCACompliance(with:) alias
 
     func test_toAPCACompliance_equivalentToAPCACompliance() {
-        let a = NSColor(r: 50, g: 100, b: 200)
-        let b = NSColor(r: 220, g: 220, b: 220)
-        let direct = a.APCACompliance(with: b)
-        let alias = a.toAPCACompliance(with: b)
+        let colorA = NSColor(r: 50, g: 100, b: 200)
+        let colorB = NSColor(r: 220, g: 220, b: 220)
+        let direct = colorA.APCACompliance(with: colorB)
+        let alias = colorA.toAPCACompliance(with: colorB)
         XCTAssertEqual(direct.level, alias.level)
         XCTAssertEqual(direct.value, alias.value, accuracy: 0.001)
     }
