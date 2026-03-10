@@ -8,9 +8,6 @@ struct SwapButtonStyle: ButtonStyle {
     private struct SwapButtonStyleView: View {
         @Environment(\.colorScheme) var colorScheme: ColorScheme
 
-        @State private var isHovered: Bool = false
-        @State private var hoverTask: Task<Void, Never>?
-
         let configuration: Configuration
         let isVisible: Bool
         let alt: String
@@ -23,13 +20,13 @@ struct SwapButtonStyle: ButtonStyle {
             HStack {
                 if ltr {
                     configuration.label
-                    if isHovered {
+                    if isVisible {
                         Text(alt)
                             .font(.system(size: 12.0))
                             .padding(.trailing, 2)
                     }
                 } else {
-                    if isHovered {
+                    if isVisible {
                         Text(alt)
                             .font(.system(size: 12.0))
                             .padding(.leading, 6)
@@ -56,19 +53,6 @@ struct SwapButtonStyle: ButtonStyle {
                         )
                 }
             )
-            .onHover { hover in
-                if hover {
-                    hoverTask?.cancel()
-                    hoverTask = Task {
-                        try? await Task.sleep(for: .milliseconds(100))
-                        isHovered = true
-                    }
-                } else {
-                    hoverTask?.cancel()
-                    hoverTask = nil
-                    isHovered = false
-                }
-            }
             .opacity(isVisible ? (configuration.isPressed ? 0.8 : 1.0) : 0.0)
             .foregroundColor(fgColor.opacity(0.8))
             .frame(height: 32.0)

@@ -22,10 +22,11 @@ struct ContentView: View {
                         swapHideTask?.cancel()
                         swapHideTask = nil
                         swapVisible = true
-                    } else {
+                    } else if swapHideTask == nil {
                         swapHideTask = Task {
                             try? await Task.sleep(for: .milliseconds(250))
                             swapVisible = false
+                            swapHideTask = nil
                         }
                     }
                 }

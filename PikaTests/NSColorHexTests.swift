@@ -1,7 +1,13 @@
 @testable import Pika
+import Defaults
 import XCTest
 
 final class NSColorHexTests: XCTestCase {
+    override func setUp() {
+        super.setUp()
+        Defaults[.colorSpace] = .sRGB
+    }
+
     // MARK: - roundToHex()
 
     func test_roundToHex_zero_returnsZero() {
@@ -81,13 +87,13 @@ final class NSColorHexTests: XCTestCase {
     }
 
     func test_toHexString_isLowercase() {
-        let color = NSColor(hex: "AABBCC")
+        let color = NSColor(hex: "AABBCC").usingColorSpace(.sRGB)!
         XCTAssertEqual(color.toHexString(style: .css), "#aabbcc")
     }
 
     func test_initHex_roundtrips_throughToHexString() {
         let original = "#3a7bd5"
-        let color = NSColor(hex: original)
+        let color = NSColor(hex: original).usingColorSpace(.sRGB)!
         XCTAssertEqual(color.toHexString(style: .css), original)
     }
 }

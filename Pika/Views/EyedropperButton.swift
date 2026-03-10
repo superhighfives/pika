@@ -85,10 +85,11 @@ struct EyedropperButton: View {
                 hoverTask?.cancel()
                 hoverTask = nil
                 hoverVisible = true
-            } else {
+            } else if hoverTask == nil {
                 hoverTask = Task {
                     try? await Task.sleep(for: .milliseconds(250))
                     hoverVisible = false
+                    hoverTask = nil
                 }
             }
         }

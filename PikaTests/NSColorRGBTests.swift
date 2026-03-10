@@ -1,8 +1,13 @@
 @testable import Pika
+import Defaults
 import SwiftUI
 import XCTest
 
 final class NSColorRGBTests: XCTestCase {
+    override func setUp() {
+        super.setUp()
+        Defaults[.colorSpace] = .sRGB
+    }
     // MARK: - toRGBAComponents(in:)
 
     func test_toRGBAComponents_red() {

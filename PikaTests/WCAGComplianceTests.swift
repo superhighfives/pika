@@ -56,13 +56,13 @@ final class WCAGComplianceTests: XCTestCase {
 
     // isSymmetric — contrast is the same regardless of order
     func test_WCAGCompliance_isSymmetric() {
-        let a = NSColor(r: 50, g: 100, b: 200)
-        let b = NSColor(r: 220, g: 220, b: 220)
-        let ab = a.WCAGCompliance(with: b)
-        let ba = b.WCAGCompliance(with: a)
-        XCTAssertEqual(ab.ratio30, ba.ratio30)
-        XCTAssertEqual(ab.ratio45, ba.ratio45)
-        XCTAssertEqual(ab.ratio70, ba.ratio70)
+        let colorA = NSColor(r: 50, g: 100, b: 200)
+        let colorB = NSColor(r: 220, g: 220, b: 220)
+        let colorAB = colorA.WCAGCompliance(with: colorB)
+        let colorBA = colorB.WCAGCompliance(with: colorA)
+        XCTAssertEqual(colorAB.ratio30, colorBA.ratio30)
+        XCTAssertEqual(colorAB.ratio45, colorBA.ratio45)
+        XCTAssertEqual(colorAB.ratio70, colorBA.ratio70)
     }
 
     // Ratio levels are cumulative — ratio70 can't pass without ratio45
@@ -72,7 +72,7 @@ final class WCAGComplianceTests: XCTestCase {
             NSColor(r: 50, g: 50, b: 50),
             NSColor(r: 128, g: 128, b: 128),
             NSColor(r: 200, g: 200, b: 200),
-            NSColor(r: 255, g: 255, b: 255),
+            NSColor(r: 255, g: 255, b: 255)
         ]
         let white = NSColor(r: 255, g: 255, b: 255)
         for color in colors {
