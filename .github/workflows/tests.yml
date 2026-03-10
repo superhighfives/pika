@@ -42,11 +42,16 @@ jobs:
       - name: Run tests
         run: |
           set -o pipefail
-          XCTESTRUN=$(find build/DerivedData -name "Pika_*.xctestrun" | head -1)
+          XCTESTRUN=$(find build/DerivedData -name "*.xctestrun" | head -1)
+          echo "Using xctestrun: $XCTESTRUN"
+          if [ -z "$XCTESTRUN" ]; then
+            echo "Error: no .xctestrun file found"
+            find build/DerivedData -type f -name "*.xctestrun" || true
+            exit 1
+          fi
           xcodebuild test-without-building \
             -xctestrun "$XCTESTRUN" \
-            -destination 'platform=macOS' \
-            2>&1 | xcpretty --color
+            -destination 'platform=macOS'
 
       - name: Upload test results
         if: always()
