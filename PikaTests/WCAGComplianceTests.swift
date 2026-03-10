@@ -34,8 +34,8 @@ final class WCAGComplianceTests: XCTestCase {
 
     // Contrast ≥ 4.5:1 but < 7:1 — ratio30 and ratio45 pass
     func test_mediumContrast_ratio30And45Pass() {
-        // Black text on mid-light background: ~5.7:1
-        let background = NSColor(r: 180, g: 180, b: 180)
+        // rgb(120,120,120) on black: luminance ≈ 0.188 → contrast ≈ 4.76:1
+        let background = NSColor(r: 120, g: 120, b: 120)
         let text = NSColor(r: 0, g: 0, b: 0)
         let result = background.WCAGCompliance(with: text)
         XCTAssertTrue(result.ratio30)
