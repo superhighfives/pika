@@ -4,14 +4,19 @@ struct SwapButtonStyle: ButtonStyle {
     let isVisible: Bool
     let alt: String
     var ltr = false
+    var onHoverChange: ((Bool) -> Void)?
 
     private struct SwapButtonStyleView: View {
         @Environment(\.colorScheme) var colorScheme: ColorScheme
+
+        @State private var isHovered: Bool = false
+        @State private var hoverTask: Task<Void, Never>?
 
         let configuration: Configuration
         let isVisible: Bool
         let alt: String
         let ltr: Bool
+        let onHoverChange: ((Bool) -> Void)?
 
         var body: some View {
             let fgColor = colorScheme == .dark ? Color.white : .black
@@ -20,13 +25,13 @@ struct SwapButtonStyle: ButtonStyle {
             HStack {
                 if ltr {
                     configuration.label
-                    if isVisible {
+                    if isHovered {
                         Text(alt)
                             .font(.system(size: 12.0))
                             .padding(.trailing, 2)
                     }
                 } else {
-                    if isVisible {
+                    if isHovered {
                         Text(alt)
                             .font(.system(size: 12.0))
                             .padding(.leading, 6)
@@ -53,6 +58,22 @@ struct SwapButtonStyle: ButtonStyle {
                         )
                 }
             )
+            .onHover { hover in
+                onHoverChange?(hover)
+                if hover {
+                    if hoverTask == nil {
+                        hoverTask = Task {
+                            try? await Task.sleep(for: .milliseconds(100))
+                            isHovered = true
+                            hoverTask = nil
+                        }
+                    }
+                } else {
+                    hoverTask?.cancel()
+                    hoverTask = nil
+                    isHovered = false
+                }
+            }
             .opacity(isVisible ? (configuration.isPressed ? 0.8 : 1.0) : 0.0)
             .foregroundColor(fgColor.opacity(0.8))
             .frame(height: 32.0)
@@ -62,6 +83,12 @@ struct SwapButtonStyle: ButtonStyle {
     }
 
     func makeBody(configuration: Self.Configuration) -> some View {
-        SwapButtonStyleView(configuration: configuration, isVisible: isVisible, alt: alt, ltr: ltr)
+        SwapButtonStyleView(
+            configuration: configuration,
+            isVisible: isVisible,
+            alt: alt,
+            ltr: ltr,
+            onHoverChange: onHoverChange
+        )
     }
 }

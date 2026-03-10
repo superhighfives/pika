@@ -11,6 +11,7 @@ struct ContentView: View {
 
     @State var swapVisible: Bool = false
     @State private var swapHideTask: Task<Void, Never>?
+    @State private var swapButtonHovered: Bool = false
     @State private var angle: Double = 0
 
     var body: some View {
@@ -22,7 +23,7 @@ struct ContentView: View {
                         swapHideTask?.cancel()
                         swapHideTask = nil
                         swapVisible = true
-                    } else if swapHideTask == nil {
+                    } else if swapHideTask == nil && !swapButtonHovered {
                         swapHideTask = Task {
                             try? await Task.sleep(for: .milliseconds(250))
                             swapVisible = false
@@ -42,7 +43,11 @@ struct ContentView: View {
                     .buttonStyle(SwapButtonStyle(
                         isVisible: swapVisible,
                         alt: PikaText.textColorSwap,
-                        ltr: true
+                        ltr: true,
+                        onHoverChange: { hover in
+                            swapButtonHovered = hover
+                            if hover { swapHideTask?.cancel(); swapHideTask = nil }
+                        }
                     ))
                     .onReceive(NotificationCenter.default.publisher(for: .triggerSwap)) { _ in
                         swap(&eyedroppers.foreground.color, &eyedroppers.background.color)

@@ -9,6 +9,7 @@ struct EyedropperButton: View {
 
     @State var hoverVisible: Bool = false
     @State private var hoverTask: Task<Void, Never>?
+    @State private var childHovered: Bool = false
 
     var body: some View {
         ZStack {
@@ -58,7 +59,11 @@ struct EyedropperButton: View {
                 })
                 .buttonStyle(SwapButtonStyle(
                     isVisible: hoverVisible,
-                    alt: PikaText.textColorCopy
+                    alt: PikaText.textColorCopy,
+                    onHoverChange: { hover in
+                        childHovered = hover
+                        if hover { hoverTask?.cancel(); hoverTask = nil }
+                    }
                 ))
                 .frame(maxWidth: .infinity, alignment: .trailing)
                 .focusable(false)
@@ -72,7 +77,11 @@ struct EyedropperButton: View {
                 })
                 .buttonStyle(SwapButtonStyle(
                     isVisible: hoverVisible,
-                    alt: PikaText.textColorSystemPicker
+                    alt: PikaText.textColorSystemPicker,
+                    onHoverChange: { hover in
+                        childHovered = hover
+                        if hover { hoverTask?.cancel(); hoverTask = nil }
+                    }
                 ))
                 .frame(maxWidth: .infinity, alignment: .trailing)
                 .focusable(false)
@@ -85,7 +94,7 @@ struct EyedropperButton: View {
                 hoverTask?.cancel()
                 hoverTask = nil
                 hoverVisible = true
-            } else if hoverTask == nil {
+            } else if hoverTask == nil && !childHovered {
                 hoverTask = Task {
                     try? await Task.sleep(for: .milliseconds(250))
                     hoverVisible = false
