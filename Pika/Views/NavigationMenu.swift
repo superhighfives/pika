@@ -23,7 +23,6 @@ struct NavigationMenu: View {
             .pickerStyle(.menu)
             .labelsHidden()
             .fixedSize()
-            .frame(minWidth: 90)
 
             Menu {
                 NavigationMenuItems()
