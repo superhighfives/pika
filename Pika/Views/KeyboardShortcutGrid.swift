@@ -1,5 +1,65 @@
 import SwiftUI
 
+private struct ShortcutEntry {
+    let title: String
+    let notificationName: Notification.Name
+    let keys: [String]
+}
+
+private let pickRow: [ShortcutEntry] = [
+    ShortcutEntry(title: PikaText.textPickForeground, notificationName: .triggerPickForeground, keys: ["⌘", "D"]),
+    ShortcutEntry(title: PikaText.textPickBackground, notificationName: .triggerPickBackground, keys: ["⇧", "⌘", "D"]),
+    ShortcutEntry(title: PikaText.textCopyForeground, notificationName: .triggerCopyForeground, keys: ["⌘", "C"]),
+    ShortcutEntry(title: PikaText.textCopyBackground, notificationName: .triggerCopyBackground, keys: ["⇧", "⌘", "C"]),
+    ShortcutEntry(title: PikaText.textColorSystemPickerForegroundSimple, notificationName: .triggerSystemPickerForeground, keys: ["⌘", "S"]),
+    ShortcutEntry(title: PikaText.textColorSystemPickerBackgroundSimple, notificationName: .triggerSystemPickerBackground, keys: ["⇧", "⌘", "S"]),
+]
+
+private let actionRow: [ShortcutEntry] = [
+    ShortcutEntry(title: PikaText.textColorUndo, notificationName: .triggerUndo, keys: ["⌘", "z"]),
+    ShortcutEntry(title: PikaText.textColorRedo, notificationName: .triggerRedo, keys: ["⇧", "⌘", "Z"]),
+    ShortcutEntry(title: PikaText.textColorSwapDetail, notificationName: .triggerSwap, keys: ["X"]),
+    ShortcutEntry(title: "\(PikaText.textMenuPreferences)...", notificationName: .triggerPreferences, keys: ["⌘", ","]),
+    ShortcutEntry(title: PikaText.textMenuQuit, notificationName: .triggerQuit, keys: ["⌘", "Q"]),
+]
+
+private let formatRow: [ShortcutEntry] = [
+    ShortcutEntry(title: PikaText.textFormatHex, notificationName: .triggerFormatHex, keys: ["⌘", "1"]),
+    ShortcutEntry(title: PikaText.textFormatRGB, notificationName: .triggerFormatRGB, keys: ["⌘", "2"]),
+    ShortcutEntry(title: PikaText.textFormatHSB, notificationName: .triggerFormatHSB, keys: ["⌘", "3"]),
+    ShortcutEntry(title: PikaText.textFormatHSL, notificationName: .triggerFormatHSL, keys: ["⌘", "4"]),
+    ShortcutEntry(title: PikaText.textFormatLAB, notificationName: .triggerFormatLAB, keys: ["⌘", "5"]),
+    ShortcutEntry(title: PikaText.textFormatOpenGL, notificationName: .triggerFormatOpenGL, keys: ["⌘", "6"]),
+    ShortcutEntry(title: PikaText.textFormatOKLCH, notificationName: .triggerFormatOKLCH, keys: ["⌘", "7"]),
+]
+
+private struct ShortcutRow: View {
+    let entries: [ShortcutEntry]
+    let unitWidth: CGFloat
+    let unitHeight: CGFloat
+    var padWithSpacer = false
+
+    var body: some View {
+        HStack(spacing: 0) {
+            ForEach(entries.indices, id: \.self) { index in
+                if index > 0 {
+                    Divider().frame(height: unitHeight)
+                }
+                KeyboardShortcutItem(
+                    title: entries[index].title,
+                    notificationName: entries[index].notificationName,
+                    keys: entries[index].keys
+                )
+                .frame(width: unitWidth, height: unitHeight)
+            }
+            if padWithSpacer {
+                Divider().frame(height: unitHeight)
+                Spacer()
+            }
+        }
+    }
+}
+
 struct KeyboardShortcutGrid: View {
     var body: some View {
         VStack(spacing: 0) {
@@ -8,200 +68,19 @@ struct KeyboardShortcutGrid: View {
             GeometryReader { geometry in
                 let width = geometry.size.width
                 let height = geometry.size.height
-
-                let horizontalUnit = width / 7
-                let verticalUnit = floor(height / 3)
+                let unitWidth = width / 7
+                let unitHeight = floor(height / 3)
 
                 VStack(spacing: 0.0) {
-                    // Pick
-                    HStack(spacing: 0.0) {
-                        KeyboardShortcutItem(
-                            title: PikaText.textPickForeground,
-                            event: PikaConstants.ncTriggerPickForeground,
-                            keys: ["⌘", "D"]
-                        )
-                        .frame(width: horizontalUnit, height: verticalUnit)
+                    ShortcutRow(entries: pickRow, unitWidth: unitWidth, unitHeight: unitHeight)
 
-                        Divider()
-                            .frame(height: verticalUnit)
+                    Divider().frame(maxWidth: .infinity)
 
-                        KeyboardShortcutItem(
-                            title: PikaText.textPickBackground,
-                            event: PikaConstants.ncTriggerPickBackground,
-                            keys: ["⇧", "⌘", "D"]
-                        )
-                        .frame(width: horizontalUnit, height: verticalUnit)
+                    ShortcutRow(entries: actionRow, unitWidth: unitWidth, unitHeight: unitHeight, padWithSpacer: true)
 
-                        Divider()
-                            .frame(height: verticalUnit)
+                    Divider().frame(maxWidth: .infinity)
 
-                        KeyboardShortcutItem(
-                            title: PikaText.textCopyForeground,
-                            event: PikaConstants.ncTriggerCopyForeground,
-                            keys: ["⌘", "C"]
-                        )
-                        .frame(width: horizontalUnit, height: verticalUnit)
-
-                        Divider()
-                            .frame(height: verticalUnit)
-
-                        KeyboardShortcutItem(
-                            title: PikaText.textCopyBackground,
-                            event: PikaConstants.ncTriggerCopyBackground,
-                            keys: ["⇧", "⌘", "C"]
-                        )
-                        .frame(width: horizontalUnit, height: verticalUnit)
-
-                        Divider()
-                            .frame(height: verticalUnit)
-
-                        KeyboardShortcutItem(
-                            title: PikaText.textColorSystemPickerForegroundSimple,
-                            event: PikaConstants.ncTriggerSystemPickerForeground,
-                            keys: ["⌘", "S"]
-                        )
-                        .frame(width: horizontalUnit, height: verticalUnit)
-
-                        Divider()
-                            .frame(height: verticalUnit)
-
-                        KeyboardShortcutItem(
-                            title: PikaText.textColorSystemPickerBackgroundSimple,
-                            event: PikaConstants.ncTriggerSystemPickerBackground,
-                            keys: ["⇧", "⌘", "S"]
-                        )
-                        .frame(width: horizontalUnit, height: verticalUnit)
-                    }
-
-                    Divider()
-                        .frame(maxWidth: .infinity)
-
-                    // Copy
-                    HStack(spacing: 0) {
-                        KeyboardShortcutItem(
-                            title: PikaText.textColorUndo,
-                            event: PikaConstants.ncTriggerUndo,
-                            keys: ["⌘", "z"]
-                        )
-                        .frame(width: horizontalUnit, height: verticalUnit)
-
-                        Divider()
-                            .frame(height: verticalUnit)
-
-                        KeyboardShortcutItem(
-                            title: PikaText.textColorRedo,
-                            event: PikaConstants.ncTriggerRedo,
-                            keys: ["⇧", "⌘", "Z"]
-                        )
-                        .frame(width: horizontalUnit, height: verticalUnit)
-
-                        Divider()
-                            .frame(height: verticalUnit)
-
-                        KeyboardShortcutItem(
-                            title: PikaText.textColorSwapDetail,
-                            event: PikaConstants.ncTriggerSwap,
-                            keys: ["X"]
-                        )
-                        .frame(width: horizontalUnit, height: verticalUnit)
-
-                        Divider()
-                            .frame(height: verticalUnit)
-
-                        KeyboardShortcutItem(
-                            title: "\(PikaText.textMenuPreferences)...",
-                            event: PikaConstants.ncTriggerPreferences,
-                            keys: ["⌘", ","]
-                        )
-                        .frame(width: horizontalUnit, height: verticalUnit)
-
-                        Divider()
-                            .frame(height: verticalUnit)
-
-                        KeyboardShortcutItem(
-                            title: PikaText.textMenuQuit,
-                            event: PikaConstants.ncTriggerQuit,
-                            keys: ["⌘", "Q"]
-                        )
-                        .frame(width: horizontalUnit, height: verticalUnit)
-
-                        Divider()
-                            .frame(height: verticalUnit)
-
-                        Spacer()
-                    }
-
-                    Divider()
-                        .frame(maxWidth: .infinity)
-
-                    HStack(spacing: 0) {
-                        KeyboardShortcutItem(
-                            title: PikaText.textFormatHex,
-                            event: PikaConstants.ncTriggerFormatHex,
-                            keys: ["⌘", "1"]
-                        )
-                        .frame(width: horizontalUnit, height: verticalUnit)
-
-                        Divider()
-                            .frame(height: verticalUnit)
-
-                        KeyboardShortcutItem(
-                            title: PikaText.textFormatRGB,
-                            event: PikaConstants.ncTriggerFormatRGB,
-                            keys: ["⌘", "2"]
-                        )
-                        .frame(width: horizontalUnit, height: verticalUnit)
-
-                        Divider()
-                            .frame(height: verticalUnit)
-
-                        KeyboardShortcutItem(
-                            title: PikaText.textFormatHSB,
-                            event: PikaConstants.ncTriggerFormatHSB,
-                            keys: ["⌘", "3"]
-                        )
-                        .frame(width: horizontalUnit, height: verticalUnit)
-
-                        Divider()
-                            .frame(height: verticalUnit)
-
-                        KeyboardShortcutItem(
-                            title: PikaText.textFormatHSL,
-                            event: PikaConstants.ncTriggerFormatHSL,
-                            keys: ["⌘", "4"]
-                        )
-                        .frame(width: horizontalUnit, height: verticalUnit)
-
-                        Divider()
-                            .frame(height: verticalUnit)
-
-                        KeyboardShortcutItem(
-                            title: PikaText.textFormatLAB,
-                            event: PikaConstants.ncTriggerFormatLAB,
-                            keys: ["⌘", "5"]
-                        )
-                        .frame(width: horizontalUnit, height: verticalUnit)
-
-                        Divider()
-                            .frame(height: verticalUnit)
-
-                        KeyboardShortcutItem(
-                            title: PikaText.textFormatOpenGL,
-                            event: PikaConstants.ncTriggerFormatOpenGL,
-                            keys: ["⌘", "6"]
-                        )
-                        .frame(width: horizontalUnit, height: verticalUnit)
-
-                        Divider()
-                            .frame(height: verticalUnit)
-
-                        KeyboardShortcutItem(
-                            title: PikaText.textFormatOKLCH,
-                            event: PikaConstants.ncTriggerFormatOKLCH,
-                            keys: ["⌘", "7"]
-                        )
-                        .frame(width: horizontalUnit, height: verticalUnit)
-                    }
+                    ShortcutRow(entries: formatRow, unitWidth: unitWidth, unitHeight: unitHeight)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }

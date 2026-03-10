@@ -1,8 +1,6 @@
-import Combine
 import SwiftUI
 
 struct CircleButtonStyle: ButtonStyle {
-    @State private var isHovered: Bool = false
     let isVisible: Bool
 
     private struct CircleButtonStyleView: View {
@@ -11,15 +9,9 @@ struct CircleButtonStyle: ButtonStyle {
         let configuration: Configuration
         let isVisible: Bool
 
-        func getBackgroundColor(colorScheme: ColorScheme) -> Color {
-            colorScheme == .dark
-                ? Color(red: 27 / 255, green: 27 / 255, blue: 27 / 255)
-                : Color(red: 233 / 255, green: 233 / 255, blue: 233 / 255)
-        }
-
         var body: some View {
             let fgColor = colorScheme == .dark ? Color.white : .black
-            let bgColor: Color = getBackgroundColor(colorScheme: colorScheme)
+            let bgColor = Color.pikaControlBackground(for: colorScheme)
 
             configuration.label
                 .padding(.all, 8)

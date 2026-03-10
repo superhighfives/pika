@@ -7,15 +7,27 @@ struct Footer: View {
     @ObservedObject var foreground: Eyedropper
     @ObservedObject var background: Eyedropper
 
-    var body: some View {
-        let colorContrastRatio = contrastStandard == .wcag ? foreground.color.toContrastRatioString(with: background.color) :
-            foreground.color.toAPCAcontrastValue(with: background.color)
-        let complianceType = contrastStandard == .wcag ? "WCAG" : "APCA"
-        let colorCompliance: Any = contrastStandard == .wcag ?
-            foreground.color.toWCAGCompliance(with: background.color) as Any :
-            foreground.color.toAPCACompliance(with: background.color) as Any
-        let contrastHeader = contrastStandard == .wcag ? PikaText.textColorRatio : PikaText.textLightnessContrastValue
+    private var contrastRatioString: String {
+        contrastStandard == .wcag
+            ? foreground.color.toContrastRatioString(with: background.color)
+            : foreground.color.toAPCAcontrastValue(with: background.color)
+    }
 
+    private var complianceData: ComplianceData {
+        contrastStandard == .wcag
+            ? .wcag(foreground.color.toWCAGCompliance(with: background.color))
+            : .apca(foreground.color.toAPCACompliance(with: background.color))
+    }
+
+    private var contrastHeader: String {
+        contrastStandard == .wcag ? PikaText.textColorRatio : PikaText.textLightnessContrastValue
+    }
+
+    private var complianceLabel: String {
+        contrastStandard == .wcag ? PikaText.textColorWCAG : PikaText.textColorAPCA
+    }
+
+    var body: some View {
         HStack(spacing: 16.0) {
             VStack(alignment: .leading, spacing: 0.0) {
                 Text(contrastHeader)
@@ -25,7 +37,7 @@ struct Footer: View {
                     .fixedSize()
                 if contrastStandard == .wcag {
                     HStack(spacing: 2.0) {
-                        Text("\(colorContrastRatio)")
+                        Text(contrastRatioString)
                             .font(.system(size: 18))
                             .help(PikaText.textColorRatioDescription)
                             .fixedSize()
@@ -41,7 +53,7 @@ struct Footer: View {
                         }
                     }
                 } else {
-                    Text("\(colorContrastRatio)")
+                    Text(contrastRatioString)
                         .font(.system(size: 18))
                         .help(PikaText.textLightnessContrastValueDescription)
                         .fixedSize()
@@ -51,14 +63,13 @@ struct Footer: View {
             Divider()
 
             VStack(alignment: .leading, spacing: 3.0) {
-                Text(contrastStandard == .wcag ? PikaText.textColorWCAG : PikaText.textColorAPCA)
+                Text(complianceLabel)
                     .font(.caption)
                     .fontWeight(.semibold)
                     .foregroundColor(.secondary)
 
                 ComplianceToggleGroup(
-                    colorCompliance: colorCompliance,
-                    complianceType: complianceType,
+                    complianceData: complianceData,
                     theme: combineCompliance ? .contrast : .weight
                 )
             }

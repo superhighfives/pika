@@ -1,0 +1,131 @@
+import Cocoa
+import Defaults
+import SwiftUI
+
+/// Owns all secondary window lifecycle — creation, presentation, and visibility.
+/// The primary Pika window is created here and exposed for `applicationShouldHandleReopen`.
+class WindowCoordinator: NSObject {
+    weak var eyedroppers: Eyedroppers?
+
+    private(set) var pikaWindow: NSWindow!
+    private var splashWindow: NSWindow!
+    private var aboutWindow: NSWindow?
+    private var preferencesWindow: NSWindow?
+
+    private var pikaTouchBarController: PikaTouchBarController!
+    private var splashTouchBarController: SplashTouchBarController?
+    private var aboutTouchBarController: SplashTouchBarController?
+
+    private let notificationCenter = NotificationCenter.default
+
+    func setupMainWindow(eyedroppers: Eyedroppers) {
+        self.eyedroppers = eyedroppers
+
+        let contentView = ContentView()
+            .environmentObject(eyedroppers)
+            .frame(minWidth: 480,
+                   idealWidth: 480,
+                   maxWidth: 650,
+                   minHeight: 230,
+                   idealHeight: 230,
+                   maxHeight: 400,
+                   alignment: .center)
+
+        pikaWindow = PikaWindow.createPrimaryWindow()
+        pikaWindow.contentView = NSHostingView(rootView: contentView)
+        pikaTouchBarController = PikaTouchBarController(window: pikaWindow)
+    }
+
+    func startMainWindow() {
+        if !pikaWindow.isVisible {
+            pikaWindow.fadeIn(nil)
+        }
+        Defaults[.viewedSplash] = true
+    }
+
+    func showMainWindow() {
+        pikaWindow.makeKeyAndOrderFront(nil)
+    }
+
+    func hideMainWindow() {
+        pikaWindow.orderOut(nil)
+    }
+
+    func closeSplashWindow() {
+        splashWindow.fadeOut(sender: nil, duration: 0.25, closeSelector: .close, completionHandler: startMainWindow)
+    }
+
+    func togglePopover() {
+        if pikaWindow.isVisible {
+            hideMainWindow()
+        } else {
+            showMainWindow()
+            NSApp.activate(ignoringOtherApps: true)
+        }
+    }
+
+    func showPika() {
+        if pikaWindow.isVisible {
+            pikaWindow.makeKeyAndOrderFront(nil)
+        } else {
+            pikaWindow.fadeIn(sender: nil, duration: 0.2)
+        }
+        NSApp.activate(ignoringOtherApps: true)
+    }
+
+    func hidePika() {
+        hideMainWindow()
+    }
+
+    func openAboutWindow() {
+        if aboutWindow == nil {
+            let view = NSHostingView(rootView: AboutView().edgesIgnoringSafeArea(.all))
+            aboutWindow = PikaWindow.createSecondaryWindow(
+                title: "About",
+                size: NSRect(x: 0, y: 0, width: 750, height: 650),
+                styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView]
+            )
+            aboutWindow?.contentView = view
+        }
+        aboutTouchBarController = SplashTouchBarController(window: aboutWindow!)
+        aboutWindow?.makeKeyAndOrderFront(nil)
+    }
+
+    func openPreferencesWindow() {
+        if preferencesWindow == nil, let eyedroppers {
+            let view = NSHostingView(rootView: PreferencesView()
+                .edgesIgnoringSafeArea(.all)
+                .frame(minWidth: 750,
+                       maxWidth: .infinity,
+                       minHeight: 0,
+                       maxHeight: 750,
+                       alignment: .topLeading)
+                .fixedSize(horizontal: false, vertical: true)
+                .environmentObject(eyedroppers))
+
+            preferencesWindow = PikaWindow.createSecondaryWindow(
+                title: "Preferences",
+                size: NSRect(x: 0, y: 0, width: 750, height: 750),
+                styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView],
+                maxHeight: 750,
+            )
+            preferencesWindow?.contentView = view
+        }
+        preferencesWindow?.makeKeyAndOrderFront(nil)
+        preferencesWindow?.makeFirstResponder(nil)
+        notificationCenter.post(name: .triggerPreferences, object: self)
+    }
+
+    func openSplashWindow() {
+        splashWindow = PikaWindow.createSecondaryWindow(
+            title: "Splash",
+            size: NSRect(x: 0, y: 0, width: 650, height: 380),
+            styleMask: [.titled, .fullSizeContentView]
+        )
+        splashWindow.title = PikaText.textAppName
+        splashWindow.titleVisibility = .visible
+        splashTouchBarController = SplashTouchBarController(window: splashWindow)
+        splashWindow.contentView = NSHostingView(rootView: SplashView().edgesIgnoringSafeArea(.all))
+        splashWindow.fadeIn(nil)
+    }
+}

@@ -1,0 +1,63 @@
+name: Tests
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Unit Tests
+    runs-on: macos-15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_16.3.app
+
+      - name: Resolve Swift packages
+        run: |
+          xcodebuild -resolvePackageDependencies \
+            -project Pika.xcodeproj \
+            -scheme Pika
+
+      # Build separately so script phase stderr (LaunchAtLogin keychain warning)
+      # doesn't prevent tests from running — Xcode 15+ fails the whole test action
+      # if any script phase emits to stderr, even with exit code 0.
+      - name: Build for testing
+        run: |
+          set -o pipefail
+          xcodebuild build-for-testing \
+            -project Pika.xcodeproj \
+            -scheme Pika \
+            -destination 'platform=macOS' \
+            -derivedDataPath build/DerivedData \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            2>&1 | xcpretty --color
+
+      - name: Run tests
+        run: |
+          set -o pipefail
+          XCTESTRUN=$(find build/DerivedData -name "*.xctestrun" | head -1)
+          echo "Using xctestrun: $XCTESTRUN"
+          if [ -z "$XCTESTRUN" ]; then
+            echo "Error: no .xctestrun file found"
+            find build/DerivedData -type f -name "*.xctestrun" || true
+            exit 1
+          fi
+          xcodebuild test-without-building \
+            -xctestrun "$XCTESTRUN" \
+            -destination 'platform=macOS'
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: build/DerivedData/**/Logs/Test/*.xcresult
+          retention-days: 7

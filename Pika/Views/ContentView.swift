@@ -11,8 +11,8 @@ struct ContentView: View {
     let pasteboard = NSPasteboard.general
 
     @State var swapVisible: Bool = false
-    @State private var timerSubscription: Cancellable?
-    @State private var timer = Timer.publish(every: 0.25, on: .main, in: .common)
+    @State private var swapTimerSubscription: Cancellable?
+    @State private var swapTimer = Timer.publish(every: 0.25, on: .main, in: .common)
     @State private var angle: Double = 0
 
     var body: some View {
@@ -22,13 +22,13 @@ struct ContentView: View {
                 .onHover { hover in
                     guard hover else { return }
                     swapVisible = true
-                    timerSubscription?.cancel()
-                    timerSubscription = nil
+                    swapTimerSubscription?.cancel()
+                    swapTimerSubscription = nil
                 }
-                .onReceive(timer) { _ in
+                .onReceive(swapTimer) { _ in
                     swapVisible = false
-                    timerSubscription?.cancel()
-                    timerSubscription = nil
+                    swapTimerSubscription?.cancel()
+                    swapTimerSubscription = nil
                 }
                 .overlay(
                     Button(action: {
@@ -44,9 +44,7 @@ struct ContentView: View {
                         alt: PikaText.textColorSwap,
                         ltr: true
                     ))
-                    .onReceive(NotificationCenter.default.publisher(
-                        for: Notification.Name(PikaConstants.ncTriggerSwap)))
-                    { _ in
+                    .onReceive(NotificationCenter.default.publisher(for: .triggerSwap)) { _ in
                         swap(&eyedroppers.foreground.color, &eyedroppers.background.color)
                     }
                     .focusable(false)
@@ -54,11 +52,11 @@ struct ContentView: View {
                     .frame(maxHeight: .infinity, alignment: .top)
                 )
                 .onHover { hover in
-                    guard !hover, timerSubscription == nil else {
+                    guard !hover, swapTimerSubscription == nil else {
                         return
                     }
-                    timer = Timer.publish(every: 0.25, on: .main, in: .common)
-                    timerSubscription = timer.connect()
+                    swapTimer = Timer.publish(every: 0.25, on: .main, in: .common)
+                    swapTimerSubscription = swapTimer.connect()
                 }
 
             Divider()
@@ -69,22 +67,14 @@ struct ContentView: View {
                 ? NSColor.white
                 : NSColor.black
         }
-        .onReceive(NotificationCenter.default.publisher(
-            for: Notification.Name(PikaConstants.ncTriggerCopyText)))
-        { _ in
+        .onReceive(NotificationCenter.default.publisher(for: .triggerCopyText)) { _ in
             pasteboard.clearContents()
-            // swiftlint:disable line_length
             let contents = "\(Exporter.toText(foreground: eyedroppers.foreground, background: eyedroppers.background, style: copyFormat))"
-            // swiftlint:enable line_length
             pasteboard.setString(contents, forType: .string)
         }
-        .onReceive(NotificationCenter.default.publisher(
-            for: Notification.Name(PikaConstants.ncTriggerCopyData)))
-        { _ in
+        .onReceive(NotificationCenter.default.publisher(for: .triggerCopyData)) { _ in
             pasteboard.clearContents()
-            // swiftlint:disable line_length
             let contents = "\(Exporter.toJSON(foreground: eyedroppers.foreground, background: eyedroppers.background, style: copyFormat))"
-            // swiftlint:enable line_length
             pasteboard.setString(contents, forType: .string)
         }
     }

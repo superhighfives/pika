@@ -8,24 +8,13 @@ import SwiftUI
 #endif
 
 @main
-// swiftlint:disable type_body_length
-// swiftlint:disable file_length
-class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
-    var statusBarItem: NSStatusItem!
-    var statusBarMenu: NSMenu!
-    var pikaWindow: NSWindow!
-    var splashWindow: NSWindow!
-    var aboutWindow: NSWindow!
-    var preferencesWindow: NSWindow!
+class AppDelegate: NSObject, NSApplicationDelegate {
     var eyedroppers: Eyedroppers!
-
     var undoManager = UndoManager()
 
-    var pikaTouchBarController: PikaTouchBarController!
-    var splashTouchBarController: SplashTouchBarController!
-    var aboutTouchBarController: SplashTouchBarController!
-
     let notificationCenter = NotificationCenter.default
+    let windowCoordinator = WindowCoordinator()
+    let statusBarController = StatusBarController()
 
     func setupAppMode() {
         var currentMode = Defaults[.appMode] == .regular
@@ -43,9 +32,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 if change.newValue == .regular {
                     DispatchQueue.main.asyncAfter(deadline: .now()) {
                         NSApp.unhide(self)
-
                         if let window = NSApp.windows.first {
-                            // Verify window can become key before making it key and moving it to front
                             if window.canBecomeKey {
                                 window.makeKeyAndOrderFront(self)
                             }
@@ -53,36 +40,18 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                         }
                     }
                 }
-                self.statusBarItem.isVisible = Defaults[.hideMenuBarIcon] == false && change.newValue == .menubar
             }
-        }.tieToLifetime(of: self)
-    }
-
-    func setupStatusBar() {
-        // Set up status bar and menu
-        let statusBar = NSStatusBar.system
-        statusBarItem = statusBar.statusItem(withLength: CGFloat(NSStatusItem.variableLength))
-
-        if let button = statusBarItem.button {
-            button.image = NSImage(named: "StatusBarIcon")
-            button.action = #selector(statusBarClicked(sender:))
-            button.sendAction(on: [.leftMouseUp, .rightMouseUp])
-        }
-
-        statusBarMenu = getStatusBarMenu()
-
-        statusBarItem.isVisible = Defaults[.hideMenuBarIcon] == false && Defaults[.appMode] == .menubar
-        Defaults.observe(.hideMenuBarIcon) { change in
-            self.statusBarItem.isVisible = change.newValue == false && Defaults[.appMode] == .menubar
         }.tieToLifetime(of: self)
     }
 
     func applicationWillFinishLaunching(_: Notification) {
         NSApp.setActivationPolicy(.prohibited)
-        let appleEventManager = NSAppleEventManager.shared()
-        appleEventManager.setEventHandler(self, andSelector: #selector(handleGetURLEvent(_:withReplyEvent:)),
-                                          forEventClass: AEEventClass(kInternetEventClass),
-                                          andEventID: AEEventID(kAEGetURL))
+        NSAppleEventManager.shared().setEventHandler(
+            URLSchemeHandler.shared,
+            andSelector: #selector(URLSchemeHandler.handle(event:withReplyEvent:)),
+            forEventClass: AEEventClass(kInternetEventClass),
+            andEventID: AEEventID(kAEGetURL)
+        )
     }
 
     func applicationDidFinishLaunching(_: Notification) {
@@ -97,54 +66,39 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         #endif
 
         setupAppMode()
-        setupStatusBar()
 
-        // Set up eyedroppers
+        statusBarController.setup()
+        statusBarController.onToggle = { [weak self] in self?.windowCoordinator.togglePopover() }
+
         eyedroppers = Eyedroppers()
         eyedroppers.foreground.undoManager = undoManager
         eyedroppers.background.undoManager = undoManager
 
-        // Define content view
-        let contentView = ContentView()
-            .environmentObject(eyedroppers)
-            .frame(minWidth: 480,
-                   idealWidth: 480,
-                   maxWidth: 650,
-                   minHeight: 230,
-                   idealHeight: 230,
-                   maxHeight: 400,
-                   alignment: .center)
+        windowCoordinator.setupMainWindow(eyedroppers: eyedroppers)
 
-        pikaWindow = PikaWindow.createPrimaryWindow()
-        pikaWindow.contentView = NSHostingView(rootView: contentView)
-        pikaTouchBarController = PikaTouchBarController(window: pikaWindow)
-
-        // Define global keyboard shortcuts
         KeyboardShortcuts.onKeyUp(for: .togglePika) { [] in
             if Defaults[.viewedSplash] {
                 NSApp.sendAction(#selector(AppDelegate.triggerPickForeground), to: nil, from: nil)
             }
         }
 
-        // Open splash window, or main
         if !Defaults[.viewedSplash] {
             openSplashWindow(nil)
             NSApp.activate(ignoringOtherApps: true)
         }
 
-        // Configure color space
         if !NSColorSpace.availableColorSpaces(with: .rgb).contains(Defaults[.colorSpace]) {
             Defaults[.colorSpace] = Defaults.Keys.colorSpace.defaultValue
         }
 
         if Defaults[.alwaysShowOnLaunch] {
-            showPika(true)
+            showPika(self)
         }
     }
 
     func applicationShouldHandleReopen(_: NSApplication, hasVisibleWindows: Bool) -> Bool {
         if !hasVisibleWindows {
-            pikaWindow.makeKeyAndOrderFront(self)
+            windowCoordinator.pikaWindow.makeKeyAndOrderFront(self)
         }
         return true
     }
@@ -153,307 +107,94 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         true
     }
 
-    // swiftlint:disable cyclomatic_complexity
-    // swiftlint:disable function_body_length
-    @objc func handleGetURLEvent(_ event: NSAppleEventDescriptor, withReplyEvent _: NSAppleEventDescriptor) {
-        if let urlString = event.forKeyword(AEKeyword(keyDirectObject))?.stringValue {
-            let url = URL(string: urlString)
-            guard url != nil, let scheme = url!.scheme, let action = url!.host else {
-                // some error
-                return
-            }
+    // MARK: - Window forwarding
 
-            var list = url!.pathComponents.dropFirst()
-            let task = list.popFirst()
-            let colorFormat = list.popFirst()
+    @objc func closeSplashWindow() { windowCoordinator.closeSplashWindow() }
+    @objc func togglePopover(_: AnyObject?) { windowCoordinator.togglePopover() }
 
-            if scheme.caseInsensitiveCompare("pika") == .orderedSame {
-                if colorFormat != nil {
-                    if let format = ColorFormat.withLabel(colorFormat!) {
-                        Defaults[.colorFormat] = format
-                    }
-                }
+    @IBAction func openAboutWindow(_: Any?) { windowCoordinator.openAboutWindow() }
+    @IBAction func openPreferencesWindow(_: Any?) { windowCoordinator.openPreferencesWindow() }
+    @IBAction func openSplashWindow(_: Any?) { windowCoordinator.openSplashWindow() }
+    @IBAction func showPika(_: Any) { windowCoordinator.showPika() }
+    @IBAction func hidePika(_: Any) { windowCoordinator.hidePika() }
 
-                if action == "format" {
-                    if let format = ColorFormat.withLabel(task!) {
-                        Defaults[.colorFormat] = format
-                    }
-                }
-
-                if action == "pick" {
-                    if task == "foreground" {
-                        NSApp.sendAction(#selector(AppDelegate.triggerPickForeground(_:)), to: nil, from: nil)
-                    }
-
-                    if task == "background" {
-                        NSApp.sendAction(#selector(AppDelegate.triggerPickBackground(_:)), to: nil, from: nil)
-                    }
-                }
-
-                if action == "system" {
-                    if task == "foreground" {
-                        NSApp.sendAction(#selector(AppDelegate.triggerSystemPickerForeground(_:)), to: nil, from: nil)
-                    }
-
-                    if task == "background" {
-                        NSApp.sendAction(#selector(AppDelegate.triggerSystemPickerBackground(_:)), to: nil, from: nil)
-                    }
-                }
-
-                if action == "copy", task == "foreground" {
-                    NSApp.sendAction(#selector(AppDelegate.triggerCopyForeground(_:)), to: nil, from: nil)
-                }
-
-                if action == "copy", task == "background" {
-                    NSApp.sendAction(#selector(AppDelegate.triggerCopyBackground(_:)), to: nil, from: nil)
-                }
-
-                if action == "copy", task == "text" {
-                    NSApp.sendAction(#selector(AppDelegate.triggerCopyText(_:)), to: nil, from: nil)
-                }
-
-                if action == "copy", task == "json" {
-                    NSApp.sendAction(#selector(AppDelegate.triggerCopyData(_:)), to: nil, from: nil)
-                }
-
-                if action == "swap" {
-                    NSApp.sendAction(#selector(AppDelegate.triggerSwap(_:)), to: nil, from: nil)
-                }
-
-                if action == "undo" {
-                    NSApp.sendAction(#selector(AppDelegate.triggerUndo(_:)), to: nil, from: nil)
-                }
-
-                if action == "redo" {
-                    NSApp.sendAction(#selector(AppDelegate.triggerRedo(_:)), to: nil, from: nil)
-                }
-            }
-        }
-    }
-
-    // swiftlint:enable function_body_length
-    // swiftlint:enable cyclomatic_complexity
-
-    func startMainWindow() {
-        if !pikaWindow.isVisible {
-            pikaWindow.fadeIn(nil)
-        }
-        Defaults[.viewedSplash] = true
-    }
-
-    func showMainWindow() {
-        pikaWindow.makeKeyAndOrderFront(nil)
-    }
-
-    func hideMainWindow() {
-        pikaWindow.orderOut(nil)
-    }
-
-    @objc func closeSplashWindow() {
-        splashWindow.fadeOut(sender: nil, duration: 0.25, closeSelector: .close, completionHandler: startMainWindow)
-    }
-
-    func getStatusBarMenu() -> NSMenu {
-        statusBarMenu = NSMenu(title: "Status Bar Menu")
-        statusBarMenu.delegate = self
-        statusBarMenu.addItem(
-            withTitle: PikaText.textMenuAbout,
-            action: #selector(openAboutWindow(_:)),
-            keyEquivalent: ""
-        )
-
-        statusBarMenu.addItem(
-            withTitle: "\(PikaText.textMenuUpdates)...",
-            action: #selector(checkForUpdates(_:)),
-            keyEquivalent: ""
-        )
-
-        statusBarMenu.addItem(
-            withTitle: PikaText.textMenuGitHubIssue,
-            action: #selector(openGitHubIssue(_:)),
-            keyEquivalent: ""
-        )
-
-        let preferences = NSMenuItem(
-            title: "\(PikaText.textMenuPreferences)...",
-            action: #selector(openPreferencesWindow(_:)),
-            keyEquivalent: ","
-        )
-        preferences.keyEquivalentModifierMask = NSEvent.ModifierFlags.command
-        statusBarMenu.addItem(preferences)
-
-        statusBarMenu.addItem(NSMenuItem.separator())
-        statusBarMenu.addItem(
-            withTitle: PikaText.textMenuQuit,
-            action: #selector(terminatePika(_:)),
-            keyEquivalent: ""
-        )
-
-        return statusBarMenu
-    }
-
-    @objc func statusBarClicked(sender _: NSStatusBarButton) {
-        let event = NSApp.currentEvent
-        if event != nil, event!.type == NSEvent.EventType.rightMouseUp || event!.modifierFlags.contains(.control) {
-            statusBarItem.menu = statusBarMenu
-            statusBarItem.button?.performClick(nil)
-        } else {
-            togglePopover(nil)
-        }
-    }
-
-    @objc func menuDidClose(_: NSMenu) {
-        statusBarItem.menu = nil
-    }
-
-    @objc func togglePopover(_: AnyObject?) {
-        if pikaWindow.isVisible {
-            hideMainWindow()
-        } else {
-            showMainWindow()
-            NSApp.activate(ignoringOtherApps: true)
-        }
-    }
-
-    @IBAction func openAboutWindow(_: Any?) {
-        if aboutWindow == nil {
-            let view = NSHostingView(rootView: AboutView().edgesIgnoringSafeArea(.all))
-            aboutWindow = PikaWindow.createSecondaryWindow(
-                title: "About",
-                size: NSRect(x: 0, y: 0, width: 750, height: 650),
-                styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView]
-            )
-            aboutWindow.contentView = view
-        }
-        aboutTouchBarController = SplashTouchBarController(window: aboutWindow)
-        aboutWindow.makeKeyAndOrderFront(nil)
-    }
-
-    @IBAction func openPreferencesWindow(_: Any?) {
-        if preferencesWindow == nil {
-            let view = NSHostingView(rootView: PreferencesView()
-                .edgesIgnoringSafeArea(.all)
-                .frame(minWidth: 750,
-                       maxWidth: .infinity,
-                       minHeight: 0,
-                       maxHeight: 750,
-                       alignment: .topLeading)
-                .fixedSize(horizontal: false, vertical: true)
-                .environmentObject(eyedroppers))
-
-            preferencesWindow = PikaWindow.createSecondaryWindow(
-                title: "Preferences",
-                size: NSRect(x: 0, y: 0, width: 750, height: 750),
-                styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView],
-                maxHeight: 750,
-            )
-            preferencesWindow.contentView = view
-        }
-        preferencesWindow.makeKeyAndOrderFront(nil)
-        preferencesWindow.makeFirstResponder(nil)
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerPreferences), object: self)
-    }
-
-    @IBAction func openSplashWindow(_: Any?) {
-        splashWindow = PikaWindow.createSecondaryWindow(
-            title: "Splash",
-            size: NSRect(x: 0, y: 0, width: 650, height: 380),
-            styleMask: [.titled, .fullSizeContentView]
-        )
-        splashWindow.title = PikaText.textAppName
-        splashWindow.titleVisibility = .visible
-        splashTouchBarController = SplashTouchBarController(window: splashWindow)
-        splashWindow.contentView = NSHostingView(rootView: SplashView().edgesIgnoringSafeArea(.all))
-
-        splashWindow.fadeIn(nil)
-    }
+    // MARK: - Notification dispatch
 
     @IBAction func triggerPickForeground(_: Any) {
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerPickForeground), object: self)
+        notificationCenter.post(name: .triggerPickForeground, object: self)
     }
 
     @IBAction func triggerPickBackground(_: Any) {
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerPickBackground), object: self)
+        notificationCenter.post(name: .triggerPickBackground, object: self)
     }
 
     @IBAction func triggerCopyForeground(_: Any) {
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerCopyForeground), object: self)
+        notificationCenter.post(name: .triggerCopyForeground, object: self)
     }
 
     @IBAction func triggerCopyBackground(_: Any) {
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerCopyBackground), object: self)
+        notificationCenter.post(name: .triggerCopyBackground, object: self)
     }
 
     @IBAction func triggerSystemPickerForeground(_: Any) {
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerSystemPickerForeground), object: self)
+        notificationCenter.post(name: .triggerSystemPickerForeground, object: self)
     }
 
     @IBAction func triggerSystemPickerBackground(_: Any) {
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerSystemPickerBackground), object: self)
+        notificationCenter.post(name: .triggerSystemPickerBackground, object: self)
     }
 
     @IBAction func triggerSwap(_: Any) {
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerSwap), object: self)
+        notificationCenter.post(name: .triggerSwap, object: self)
     }
 
     @IBAction func triggerUndo(_: Any) {
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerUndo), object: self)
+        notificationCenter.post(name: .triggerUndo, object: self)
         undoManager.undo()
     }
 
     @IBAction func triggerRedo(_: Any) {
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerRedo), object: self)
+        notificationCenter.post(name: .triggerRedo, object: self)
         undoManager.redo()
     }
 
     @IBAction func triggerCopyText(_: Any) {
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerCopyText), object: self)
+        notificationCenter.post(name: .triggerCopyText, object: self)
     }
 
     @IBAction func triggerCopyData(_: Any) {
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerCopyData), object: self)
+        notificationCenter.post(name: .triggerCopyData, object: self)
     }
 
     @IBAction func triggerFormatHex(_: Any) {
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerFormatHex), object: self)
+        notificationCenter.post(name: .triggerFormatHex, object: self)
     }
 
     @IBAction func triggerFormatRGB(_: Any) {
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerFormatRGB), object: self)
+        notificationCenter.post(name: .triggerFormatRGB, object: self)
     }
 
     @IBAction func triggerFormatHSB(_: Any) {
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerFormatHSB), object: self)
+        notificationCenter.post(name: .triggerFormatHSB, object: self)
     }
 
     @IBAction func triggerFormatHSL(_: Any) {
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerFormatHSL), object: self)
+        notificationCenter.post(name: .triggerFormatHSL, object: self)
     }
 
     @IBAction func triggerFormatOpenGL(_: Any) {
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerFormatOpenGL), object: self)
+        notificationCenter.post(name: .triggerFormatOpenGL, object: self)
     }
 
     @IBAction func triggerFormatLAB(_: Any) {
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerFormatLAB), object: self)
+        notificationCenter.post(name: .triggerFormatLAB, object: self)
     }
 
     @IBAction func triggerFormatOKLCH(_: Any) {
-        notificationCenter.post(name: Notification.Name(PikaConstants.ncTriggerFormatOKLCH), object: self)
+        notificationCenter.post(name: .triggerFormatOKLCH, object: self)
     }
 
-    @IBAction func hidePika(_: Any) {
-        hideMainWindow()
-    }
-
-    @IBAction func showPika(_: Any) {
-        if pikaWindow.isVisible {
-            pikaWindow.makeKeyAndOrderFront(self)
-        } else {
-            pikaWindow.fadeIn(sender: nil, duration: 0.2)
-        }
-        NSApp.activate(ignoringOtherApps: true)
-    }
+    // MARK: - App actions
 
     #if TARGET_SPARKLE
         @IBAction func updateFeedURL(_: Any) {
@@ -482,6 +223,3 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         NSApplication.shared.terminate(self)
     }
 }
-
-// swiftlint:enable type_body_length
-// swiftlint:enable file_length

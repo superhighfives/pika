@@ -7,6 +7,24 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CC1100000000000000000200 /* URLSchemeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1100000000000000000100 /* URLSchemeHandler.swift */; };
+		CC1100000000000000000201 /* WindowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1100000000000000000101 /* WindowCoordinator.swift */; };
+		CC1100000000000000000202 /* StatusBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1100000000000000000102 /* StatusBarController.swift */; };
+		CC1100000000000000000203 /* URLSchemeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1100000000000000000100 /* URLSchemeHandler.swift */; };
+		CC1100000000000000000204 /* WindowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1100000000000000000101 /* WindowCoordinator.swift */; };
+		CC1100000000000000000205 /* StatusBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1100000000000000000102 /* StatusBarController.swift */; };
+
+		CC20000000000000000000F2 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC20000000000000000000D2 /* XCTest.framework */; };
+		CC2000000000000000000101 /* NSColorInitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000100 /* NSColorInitTests.swift */; };
+		CC2000000000000000000201 /* NSColorLuminanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000200 /* NSColorLuminanceTests.swift */; };
+		CC2000000000000000000301 /* NSColorHexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000300 /* NSColorHexTests.swift */; };
+		CC2000000000000000000401 /* NSColorRGBTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000400 /* NSColorRGBTests.swift */; };
+		CC2000000000000000000501 /* NSColorHSLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000500 /* NSColorHSLTests.swift */; };
+		CC2000000000000000000601 /* NSColorLabTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000600 /* NSColorLabTests.swift */; };
+		CC2000000000000000000701 /* WCAGComplianceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000700 /* WCAGComplianceTests.swift */; };
+		CC2000000000000000000801 /* APCAComplianceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000800 /* APCAComplianceTests.swift */; };
+		CC2000000000000000000901 /* NotificationNamesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000900 /* NotificationNamesTests.swift */; };
+
 		220D5E9428DB154300B6285E /* AppModeButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220D5E9328DB154300B6285E /* AppModeButtons.swift */; };
 		220D5E9828DB158400B6285E /* AppModeToggleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220D5E9728DB158400B6285E /* AppModeToggleGroup.swift */; };
 		221600F925A62E5B00B8B7D9 /* IconImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221600F825A62E5B00B8B7D9 /* IconImage.swift */; };
@@ -18,6 +36,20 @@
 		22FE80B325BA0F820063759E /* KeyboardShortcutItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FE80B225BA0F820063759E /* KeyboardShortcutItem.swift */; };
 		C49A11482DB394F500EE7E80 /* APCACompliance.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49A11472DB394F500EE7E80 /* APCACompliance.swift */; };
 		C49A11492DB394F500EE7E80 /* APCACompliance.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49A11472DB394F500EE7E80 /* APCACompliance.swift */; };
+		CC000001000000000000AAA1 /* Color+PikaControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000001000000000000AAA0 /* Color+PikaControl.swift */; };
+		CC000001000000000000AAA2 /* Color+PikaControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000001000000000000AAA0 /* Color+PikaControl.swift */; };
+		CC000001000000000000AAB1 /* NSColor+HSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000001000000000000AAB0 /* NSColor+HSL.swift */; };
+		CC000001000000000000AAB2 /* NSColor+HSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000001000000000000AAB0 /* NSColor+HSL.swift */; };
+		CC000001000000000000AAC1 /* NSColor+Lab.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000001000000000000AAC0 /* NSColor+Lab.swift */; };
+		CC000001000000000000AAC2 /* NSColor+Lab.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000001000000000000AAC0 /* NSColor+Lab.swift */; };
+		CC000001000000000000AAD1 /* NSColor+Init.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000001000000000000AAD0 /* NSColor+Init.swift */; };
+		CC000001000000000000AAD2 /* NSColor+Init.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000001000000000000AAD0 /* NSColor+Init.swift */; };
+		CC000001000000000000AAE1 /* NSColor+Luminance.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000001000000000000AAE0 /* NSColor+Luminance.swift */; };
+		CC000001000000000000AAE2 /* NSColor+Luminance.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000001000000000000AAE0 /* NSColor+Luminance.swift */; };
+		CC000001000000000000AAF1 /* NSColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000001000000000000AAF0 /* NSColor+Hex.swift */; };
+		CC000001000000000000AAF2 /* NSColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000001000000000000AAF0 /* NSColor+Hex.swift */; };
+		CC000001000000000000AB01 /* NSColor+RGB.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000001000000000000AB00 /* NSColor+RGB.swift */; };
+		CC000001000000000000AB02 /* NSColor+RGB.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000001000000000000AB00 /* NSColor+RGB.swift */; };
 		EA0C525025AA729300AFF716 /* Visualisation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C524F25AA729300AFF716 /* Visualisation.swift */; };
 		EA0C526025AB5A2B00AFF716 /* NavigationMenuItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C525F25AB5A2B00AFF716 /* NavigationMenuItems.swift */; };
 		EA0C526425AB5D1700AFF716 /* PikaWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C526325AB5D1700AFF716 /* PikaWindow.swift */; };
@@ -26,7 +58,6 @@
 		EA257BD125D8629300C3FC54 /* SwapButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA257BD025D8629300C3FC54 /* SwapButtonStyle.swift */; };
 		EA424C7D25CDEF98009056A9 /* ComplianceToggleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA424C7C25CDEF98009056A9 /* ComplianceToggleGroup.swift */; };
 		EA424CDE25CF0328009056A9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = EA424CE025CF0328009056A9 /* Localizable.strings */; };
-		EA635DC925B3B2650014D91A /* Cula.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DC825B3B2650014D91A /* Cula.swift */; };
 		EA635DCC25B3B42B0014D91A /* WCAGCompliance.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DCB25B3B42B0014D91A /* WCAGCompliance.swift */; };
 		EA635DDC25B4E90B0014D91A /* BindingOnChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DDB25B4E90B0014D91A /* BindingOnChange.swift */; };
 		EA635DE125B4FC580014D91A /* ColorPickers.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DE025B4FC580014D91A /* ColorPickers.swift */; };
@@ -98,7 +129,6 @@
 		EAE23DC92D032A38005BB270 /* SwapButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA257BD025D8629300C3FC54 /* SwapButtonStyle.swift */; };
 		EAE23DCA2D032A38005BB270 /* NSWindowFade.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA72BBA825A7CE9C008205E7 /* NSWindowFade.swift */; };
 		EAE23DCB2D032A38005BB270 /* EyedropperButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B717259D146200FA2F67 /* EyedropperButtonStyle.swift */; };
-		EAE23DCC2D032A38005BB270 /* Cula.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DC825B3B2650014D91A /* Cula.swift */; };
 		EAE23DCD2D032A38005BB270 /* CircleButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAEBF64625E878A5002999D1 /* CircleButtonStyle.swift */; };
 		EAE23DCE2D032A38005BB270 /* ColorPickers.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DE025B4FC580014D91A /* ColorPickers.swift */; };
 		EAE23DCF2D032A38005BB270 /* Exporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EACA8A44260501210064035C /* Exporter.swift */; };
@@ -130,7 +160,41 @@
 		F8ABAC5E2EAAD0F0008CD152 /* ColorPickOverlayWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8ABAC5C2EAAD0F0008CD152 /* ColorPickOverlayWindow.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		CC20000000000000000000A2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EAD0B6C0259CED1C00FA2F67 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EAD0B6C7259CED1C00FA2F67;
+			remoteInfo = Pika;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXTargetDependency section */
+		CC20000000000000000000B2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EAD0B6C7259CED1C00FA2F67 /* Pika */;
+			targetProxy = CC20000000000000000000A2 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXFileReference section */
+		CC1100000000000000000100 /* URLSchemeHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSchemeHandler.swift; sourceTree = "<group>"; };
+		CC1100000000000000000101 /* WindowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowCoordinator.swift; sourceTree = "<group>"; };
+		CC1100000000000000000102 /* StatusBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarController.swift; sourceTree = "<group>"; };
+
+		CC20000000000000000000D2 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_FRAMEWORKS_DIR; };
+		CC20000000000000000000E2 /* PikaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PikaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC2000000000000000000100 /* NSColorInitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSColorInitTests.swift; sourceTree = "<group>"; };
+		CC2000000000000000000200 /* NSColorLuminanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSColorLuminanceTests.swift; sourceTree = "<group>"; };
+		CC2000000000000000000300 /* NSColorHexTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSColorHexTests.swift; sourceTree = "<group>"; };
+		CC2000000000000000000400 /* NSColorRGBTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSColorRGBTests.swift; sourceTree = "<group>"; };
+		CC2000000000000000000500 /* NSColorHSLTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSColorHSLTests.swift; sourceTree = "<group>"; };
+		CC2000000000000000000600 /* NSColorLabTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSColorLabTests.swift; sourceTree = "<group>"; };
+		CC2000000000000000000700 /* WCAGComplianceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCAGComplianceTests.swift; sourceTree = "<group>"; };
+		CC2000000000000000000800 /* APCAComplianceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APCAComplianceTests.swift; sourceTree = "<group>"; };
+		CC2000000000000000000900 /* NotificationNamesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationNamesTests.swift; sourceTree = "<group>"; };
+
 		220D5E9328DB154300B6285E /* AppModeButtons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppModeButtons.swift; sourceTree = "<group>"; };
 		220D5E9728DB158400B6285E /* AppModeToggleGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppModeToggleGroup.swift; sourceTree = "<group>"; };
 		221600F825A62E5B00B8B7D9 /* IconImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconImage.swift; sourceTree = "<group>"; };
@@ -152,6 +216,13 @@
 		C1BF64202C1AE53C004D33DD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		C1BF64212C1AE53C004D33DD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Main.strings"; sourceTree = "<group>"; };
 		C49A11472DB394F500EE7E80 /* APCACompliance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APCACompliance.swift; sourceTree = "<group>"; };
+		CC000001000000000000AAA0 /* Color+PikaControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+PikaControl.swift"; sourceTree = "<group>"; };
+		CC000001000000000000AAB0 /* NSColor+HSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+HSL.swift"; sourceTree = "<group>"; };
+		CC000001000000000000AAC0 /* NSColor+Lab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+Lab.swift"; sourceTree = "<group>"; };
+		CC000001000000000000AAD0 /* NSColor+Init.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+Init.swift"; sourceTree = "<group>"; };
+		CC000001000000000000AAE0 /* NSColor+Luminance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+Luminance.swift"; sourceTree = "<group>"; };
+		CC000001000000000000AAF0 /* NSColor+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+Hex.swift"; sourceTree = "<group>"; };
+		CC000001000000000000AB00 /* NSColor+RGB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+RGB.swift"; sourceTree = "<group>"; };
 		EA0C524F25AA729300AFF716 /* Visualisation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Visualisation.swift; sourceTree = "<group>"; };
 		EA0C525F25AB5A2B00AFF716 /* NavigationMenuItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationMenuItems.swift; sourceTree = "<group>"; };
 		EA0C526325AB5D1700AFF716 /* PikaWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PikaWindow.swift; sourceTree = "<group>"; };
@@ -162,7 +233,6 @@
 		EA16C6562CF3301500FBC93E /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		EA257BD025D8629300C3FC54 /* SwapButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapButtonStyle.swift; sourceTree = "<group>"; };
 		EA424C7C25CDEF98009056A9 /* ComplianceToggleGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComplianceToggleGroup.swift; sourceTree = "<group>"; };
-		EA635DC825B3B2650014D91A /* Cula.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cula.swift; sourceTree = "<group>"; };
 		EA635DCB25B3B42B0014D91A /* WCAGCompliance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCAGCompliance.swift; sourceTree = "<group>"; };
 		EA635DDB25B4E90B0014D91A /* BindingOnChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingOnChange.swift; sourceTree = "<group>"; };
 		EA635DE025B4FC580014D91A /* ColorPickers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickers.swift; sourceTree = "<group>"; };
@@ -235,6 +305,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CC20000000000000000000C1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC20000000000000000000F2 /* XCTest.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -283,6 +361,7 @@
 				EAD0B705259CF3BA00FA2F67 /* LICENSE.md */,
 				EAD0B704259CF3BA00FA2F67 /* README.md */,
 				EAD0B6CA259CED1C00FA2F67 /* Pika */,
+				CC20000000000000000000C2 /* PikaTests */,
 				EAD0B6C9259CED1C00FA2F67 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -292,6 +371,7 @@
 			children = (
 				EAD0B6C8259CED1C00FA2F67 /* Pika.app */,
 				EAE23DE82D032A38005BB270 /* Pika.app */,
+				CC20000000000000000000E2 /* PikaTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -308,9 +388,9 @@
 				EA72BB8125A5334B008205E7 /* Metal */,
 				EAD0B6D8259CED1D00FA2F67 /* Pika.entitlements */,
 				EAD0B6D1259CED1D00FA2F67 /* Preview Content */,
-				EAD0B71A259D14C200FA2F67 /* Styles */,
+				EAD0B71A259D14C200FA2F67 /* ButtonStyles */,
 				22F23B6925CEE1E600064E62 /* TouchBar */,
-				EAD0B6F0259CF29300FA2F67 /* Utilities */,
+				EAD0B6F0259CF29300FA2F67 /* Services */,
 				EAD0B6F2259CF29300FA2F67 /* Views */,
 			);
 			path = Pika;
@@ -330,64 +410,53 @@
 				EAE2EBA12D03C3FE00FA9BC9 /* LatestAppStoreVersion+ShouldUpdate.swift */,
 				EAE2EB9E2D03C3DA00FA9BC9 /* LookUpAPI.swift */,
 				EA635DDB25B4E90B0014D91A /* BindingOnChange.swift */,
-				EA635DC825B3B2650014D91A /* Cula.swift */,
 				221600FC25A636D600B8B7D9 /* ConditionalModifier.swift */,
 				EA72BBA825A7CE9C008205E7 /* NSWindowFade.swift */,
 				EA635DCB25B3B42B0014D91A /* WCAGCompliance.swift */,
 				22EF1D9A25B7AA18001102FA /* Sequence.swift */,
 				C49A11472DB394F500EE7E80 /* APCACompliance.swift */,
+				CC000001000000000000AAA0 /* Color+PikaControl.swift */,
+				CC000001000000000000AAB0 /* NSColor+HSL.swift */,
+				CC000001000000000000AAC0 /* NSColor+Lab.swift */,
+				CC000001000000000000AAD0 /* NSColor+Init.swift */,
+				CC000001000000000000AAE0 /* NSColor+Luminance.swift */,
+				CC000001000000000000AAF0 /* NSColor+Hex.swift */,
+				CC000001000000000000AB00 /* NSColor+RGB.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		EAD0B6F0259CF29300FA2F67 /* Utilities */ = {
+		EAD0B6F0259CF29300FA2F67 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				EA7B199B25FBA0E600E06D9D /* ClosestVector.swift */,
-				F8ABAC5C2EAAD0F0008CD152 /* ColorPickOverlayWindow.swift */,
-				EACA8A44260501210064035C /* Exporter.swift */,
-				EAD0B6F1259CF29300FA2F67 /* Eyedroppers.swift */,
-				EA7B199525FBA08100E06D9D /* LoadColors.swift */,
-				EA0C526325AB5D1700AFF716 /* PikaWindow.swift */,
-				22D28DB62862377F00FC7DD4 /* OverflowContentViewModifier.swift */,
+				CC1100000000000000000007 /* Models */,
+				CC1100000000000000000008 /* Export */,
+				CC1100000000000000000009 /* Windows */,
+				CC110000000000000000000A /* ColorNames */,
+				CC110000000000000000000B /* StatusBar */,
+				CC110000000000000000000C /* URLHandling */,
+				CC110000000000000000000D /* Modifiers */,
 			);
-			path = Utilities;
+			name = Services;
+			path = Services;
 			sourceTree = "<group>";
 		};
 		EAD0B6F2259CF29300FA2F67 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				EAD0B6F3259CF29300FA2F67 /* AboutView.swift */,
-				220D5E9328DB154300B6285E /* AppModeButtons.swift */,
-				220D5E9728DB158400B6285E /* AppModeToggleGroup.swift */,
-				EAD0B6F5259CF29300FA2F67 /* AppVersion.swift */,
-				22903B0228294F49004BB9F0 /* ColorExampleRow.swift */,
-				EA635DE025B4FC580014D91A /* ColorPickers.swift */,
-				F8ABAC592EAAD0DF008CD152 /* ColorPickOverlay.swift */,
-				EABAEADF284D50D1000716AE /* ComplianceButtons.swift */,
-				EA801284259F8F480026D5D9 /* ComplianceToggle.swift */,
-				EA424C7C25CDEF98009056A9 /* ComplianceToggleGroup.swift */,
 				EAD0B6F6259CF29300FA2F67 /* ContentView.swift */,
-				EA0C526E25AB683400AFF716 /* EyedropperButton.swift */,
-				EA635DE925B534C80014D91A /* EyedropperItem.swift */,
 				EA8124C0259E307D00033F0B /* Footer.swift */,
-				221600F825A62E5B00B8B7D9 /* IconImage.swift */,
-				EAA8AE1B25B8F03B0049299B /* KeyboardShortcutGrid.swift */,
-				22FE80B225BA0F820063759E /* KeyboardShortcutItem.swift */,
-				EAA8AE1825B8EC070049299B /* KeyboardShortcutKey.swift */,
-				EAD0B71B259D151400FA2F67 /* NavigationMenu.swift */,
-				EA0C525F25AB5A2B00AFF716 /* NavigationMenuItems.swift */,
-				EAD0B6F4259CF29300FA2F67 /* PreferencesView.swift */,
-				EA72BB8725A53750008205E7 /* SplashView.swift */,
-				EA635DF025B5A6D80014D91A /* Toast.swift */,
-				EAF100CC25C785C4006E1EC3 /* TouchBarVisual.swift */,
-				226FD60F25A940F90021A67F /* VisualEffect.swift */,
-				EA0C524F25AA729300AFF716 /* Visualisation.swift */,
+				CC1100000000000000000001 /* Eyedropper */,
+				CC1100000000000000000002 /* Compliance */,
+				CC1100000000000000000003 /* Preferences */,
+				CC1100000000000000000004 /* About */,
+				CC1100000000000000000005 /* Navigation */,
+				CC1100000000000000000006 /* Shared */,
 			);
 			path = Views;
 			sourceTree = "<group>";
 		};
-		EAD0B71A259D14C200FA2F67 /* Styles */ = {
+		EAD0B71A259D14C200FA2F67 /* ButtonStyles */ = {
 			isa = PBXGroup;
 			children = (
 				EAD0B717259D146200FA2F67 /* EyedropperButtonStyle.swift */,
@@ -395,7 +464,150 @@
 				EA257BD025D8629300C3FC54 /* SwapButtonStyle.swift */,
 				EAEBF64625E878A5002999D1 /* CircleButtonStyle.swift */,
 			);
-			path = Styles;
+			name = ButtonStyles;
+			path = ButtonStyles;
+			sourceTree = "<group>";
+		};
+		CC20000000000000000000C2 /* PikaTests */ = {
+			isa = PBXGroup;
+			children = (
+				CC2000000000000000000100 /* NSColorInitTests.swift */,
+				CC2000000000000000000200 /* NSColorLuminanceTests.swift */,
+				CC2000000000000000000300 /* NSColorHexTests.swift */,
+				CC2000000000000000000400 /* NSColorRGBTests.swift */,
+				CC2000000000000000000500 /* NSColorHSLTests.swift */,
+				CC2000000000000000000600 /* NSColorLabTests.swift */,
+				CC2000000000000000000700 /* WCAGComplianceTests.swift */,
+				CC2000000000000000000800 /* APCAComplianceTests.swift */,
+				CC2000000000000000000900 /* NotificationNamesTests.swift */,
+			);
+			path = PikaTests;
+			sourceTree = "<group>";
+		};
+
+		CC1100000000000000000001 /* Eyedropper */ = {
+			isa = PBXGroup;
+			children = (
+				EA635DE025B4FC580014D91A /* ColorPickers.swift */,
+				EA0C526E25AB683400AFF716 /* EyedropperButton.swift */,
+				EA635DE925B534C80014D91A /* EyedropperItem.swift */,
+			);
+			name = Eyedropper;
+			sourceTree = "<group>";
+		};
+		CC1100000000000000000002 /* Compliance */ = {
+			isa = PBXGroup;
+			children = (
+				EABAEADF284D50D1000716AE /* ComplianceButtons.swift */,
+				EA801284259F8F480026D5D9 /* ComplianceToggle.swift */,
+				EA424C7C25CDEF98009056A9 /* ComplianceToggleGroup.swift */,
+			);
+			name = Compliance;
+			sourceTree = "<group>";
+		};
+		CC1100000000000000000003 /* Preferences */ = {
+			isa = PBXGroup;
+			children = (
+				220D5E9328DB154300B6285E /* AppModeButtons.swift */,
+				220D5E9728DB158400B6285E /* AppModeToggleGroup.swift */,
+				22903B0228294F49004BB9F0 /* ColorExampleRow.swift */,
+				EAD0B6F4259CF29300FA2F67 /* PreferencesView.swift */,
+			);
+			name = Preferences;
+			sourceTree = "<group>";
+		};
+		CC1100000000000000000004 /* About */ = {
+			isa = PBXGroup;
+			children = (
+				EAD0B6F3259CF29300FA2F67 /* AboutView.swift */,
+				EAA8AE1B25B8F03B0049299B /* KeyboardShortcutGrid.swift */,
+				22FE80B225BA0F820063759E /* KeyboardShortcutItem.swift */,
+				EAA8AE1825B8EC070049299B /* KeyboardShortcutKey.swift */,
+				EA72BB8725A53750008205E7 /* SplashView.swift */,
+			);
+			name = About;
+			sourceTree = "<group>";
+		};
+		CC1100000000000000000005 /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				EAD0B71B259D151400FA2F67 /* NavigationMenu.swift */,
+				EA0C525F25AB5A2B00AFF716 /* NavigationMenuItems.swift */,
+			);
+			name = Navigation;
+			sourceTree = "<group>";
+		};
+		CC1100000000000000000006 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				EAD0B6F5259CF29300FA2F67 /* AppVersion.swift */,
+				F8ABAC592EAAD0DF008CD152 /* ColorPickOverlay.swift */,
+				221600F825A62E5B00B8B7D9 /* IconImage.swift */,
+				EA635DF025B5A6D80014D91A /* Toast.swift */,
+				EAF100CC25C785C4006E1EC3 /* TouchBarVisual.swift */,
+				EA0C524F25AA729300AFF716 /* Visualisation.swift */,
+				226FD60F25A940F90021A67F /* VisualEffect.swift */,
+			);
+			name = Shared;
+			sourceTree = "<group>";
+		};
+		CC1100000000000000000007 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				EAD0B6F1259CF29300FA2F67 /* Eyedroppers.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		CC1100000000000000000008 /* Export */ = {
+			isa = PBXGroup;
+			children = (
+				EACA8A44260501210064035C /* Exporter.swift */,
+			);
+			name = Export;
+			sourceTree = "<group>";
+		};
+		CC1100000000000000000009 /* Windows */ = {
+			isa = PBXGroup;
+			children = (
+				F8ABAC5C2EAAD0F0008CD152 /* ColorPickOverlayWindow.swift */,
+				EA0C526325AB5D1700AFF716 /* PikaWindow.swift */,
+				CC1100000000000000000101 /* WindowCoordinator.swift */,
+			);
+			name = Windows;
+			sourceTree = "<group>";
+		};
+		CC110000000000000000000A /* ColorNames */ = {
+			isa = PBXGroup;
+			children = (
+				EA7B199B25FBA0E600E06D9D /* ClosestVector.swift */,
+				EA7B199525FBA08100E06D9D /* LoadColors.swift */,
+			);
+			name = ColorNames;
+			sourceTree = "<group>";
+		};
+		CC110000000000000000000B /* StatusBar */ = {
+			isa = PBXGroup;
+			children = (
+				CC1100000000000000000102 /* StatusBarController.swift */,
+			);
+			name = StatusBar;
+			sourceTree = "<group>";
+		};
+		CC110000000000000000000C /* URLHandling */ = {
+			isa = PBXGroup;
+			children = (
+				CC1100000000000000000100 /* URLSchemeHandler.swift */,
+			);
+			name = URLHandling;
+			sourceTree = "<group>";
+		};
+		CC110000000000000000000D /* Modifiers */ = {
+			isa = PBXGroup;
+			children = (
+				22D28DB62862377F00FC7DD4 /* OverflowContentViewModifier.swift */,
+			);
+			name = Modifiers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -450,6 +662,23 @@
 			productReference = EAE23DE82D032A38005BB270 /* Pika.app */;
 			productType = "com.apple.product-type.application";
 		};
+		CC20000000000000000000A1 /* PikaTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CC20000000000000000000D1 /* Build configuration list for PBXNativeTarget "PikaTests" */;
+			buildPhases = (
+				CC20000000000000000000B1 /* Sources */,
+				CC20000000000000000000C1 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CC20000000000000000000B2 /* PBXTargetDependency */,
+			);
+			name = PikaTests;
+			productName = PikaTests;
+			productReference = CC20000000000000000000E2 /* PikaTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -493,6 +722,7 @@
 			targets = (
 				EAD0B6C7259CED1C00FA2F67 /* Pika */,
 				EAE23D9D2D032A38005BB270 /* Pika (Mac App Store) */,
+				CC20000000000000000000A1 /* PikaTests */,
 			);
 		};
 /* End PBXProject section */
@@ -638,13 +868,19 @@
 				F8ABAC5A2EAAD0DF008CD152 /* ColorPickOverlay.swift in Sources */,
 				EAD0B6F8259CF29300FA2F67 /* AboutView.swift in Sources */,
 				C49A11482DB394F500EE7E80 /* APCACompliance.swift in Sources */,
+				CC000001000000000000AAA1 /* Color+PikaControl.swift in Sources */,
+				CC000001000000000000AAB1 /* NSColor+HSL.swift in Sources */,
+				CC000001000000000000AAC1 /* NSColor+Lab.swift in Sources */,
+				CC000001000000000000AAD1 /* NSColor+Init.swift in Sources */,
+				CC000001000000000000AAE1 /* NSColor+Luminance.swift in Sources */,
+				CC000001000000000000AAF1 /* NSColor+Hex.swift in Sources */,
+				CC000001000000000000AB01 /* NSColor+RGB.swift in Sources */,
 				EAA8AE1925B8EC070049299B /* KeyboardShortcutKey.swift in Sources */,
 				EA0C526F25AB683400AFF716 /* EyedropperButton.swift in Sources */,
 				EA72BB8425A5334B008205E7 /* MetalShader.metal in Sources */,
 				EA257BD125D8629300C3FC54 /* SwapButtonStyle.swift in Sources */,
 				EA72BBA925A7CE9C008205E7 /* NSWindowFade.swift in Sources */,
 				EAD0B718259D146200FA2F67 /* EyedropperButtonStyle.swift in Sources */,
-				EA635DC925B3B2650014D91A /* Cula.swift in Sources */,
 				EAEBF64725E878A5002999D1 /* CircleButtonStyle.swift in Sources */,
 				F8ABAC5D2EAAD0F0008CD152 /* ColorPickOverlayWindow.swift in Sources */,
 				EA635DE125B4FC580014D91A /* ColorPickers.swift in Sources */,
@@ -656,6 +892,9 @@
 				EA635DDC25B4E90B0014D91A /* BindingOnChange.swift in Sources */,
 				EAD0B713259CFD2000FA2F67 /* Defaults.swift in Sources */,
 				226FD61025A940F90021A67F /* VisualEffect.swift in Sources */,
+				CC1100000000000000000200 /* URLSchemeHandler.swift in Sources */,
+				CC1100000000000000000201 /* WindowCoordinator.swift in Sources */,
+				CC1100000000000000000202 /* StatusBarController.swift in Sources */,
 				EAD0B6FE259CF29C00FA2F67 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -672,6 +911,13 @@
 				EAE23DAC2D032A38005BB270 /* PikaTouchBar.swift in Sources */,
 				EAE23DAD2D032A38005BB270 /* LoadColors.swift in Sources */,
 				C49A11492DB394F500EE7E80 /* APCACompliance.swift in Sources */,
+				CC000001000000000000AAA2 /* Color+PikaControl.swift in Sources */,
+				CC000001000000000000AAB2 /* NSColor+HSL.swift in Sources */,
+				CC000001000000000000AAC2 /* NSColor+Lab.swift in Sources */,
+				CC000001000000000000AAD2 /* NSColor+Init.swift in Sources */,
+				CC000001000000000000AAE2 /* NSColor+Luminance.swift in Sources */,
+				CC000001000000000000AAF2 /* NSColor+Hex.swift in Sources */,
+				CC000001000000000000AB02 /* NSColor+RGB.swift in Sources */,
 				EAE23DAE2D032A38005BB270 /* SplashTouchBar.swift in Sources */,
 				EAE23DAF2D032A38005BB270 /* OverflowContentViewModifier.swift in Sources */,
 				EAE23DB02D032A38005BB270 /* KeyboardShortcutGrid.swift in Sources */,
@@ -705,7 +951,6 @@
 				EAE23DC92D032A38005BB270 /* SwapButtonStyle.swift in Sources */,
 				EAE23DCA2D032A38005BB270 /* NSWindowFade.swift in Sources */,
 				EAE23DCB2D032A38005BB270 /* EyedropperButtonStyle.swift in Sources */,
-				EAE23DCC2D032A38005BB270 /* Cula.swift in Sources */,
 				EAE23DCD2D032A38005BB270 /* CircleButtonStyle.swift in Sources */,
 				EAE23DCE2D032A38005BB270 /* ColorPickers.swift in Sources */,
 				EAE23DCF2D032A38005BB270 /* Exporter.swift in Sources */,
@@ -716,7 +961,26 @@
 				EAE23DD42D032A38005BB270 /* BindingOnChange.swift in Sources */,
 				EAE23DD52D032A38005BB270 /* Defaults.swift in Sources */,
 				EAE23DD62D032A38005BB270 /* VisualEffect.swift in Sources */,
+				CC1100000000000000000203 /* URLSchemeHandler.swift in Sources */,
+				CC1100000000000000000204 /* WindowCoordinator.swift in Sources */,
+				CC1100000000000000000205 /* StatusBarController.swift in Sources */,
 				EAE23DD72D032A38005BB270 /* Constants.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CC20000000000000000000B1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC2000000000000000000101 /* NSColorInitTests.swift in Sources */,
+				CC2000000000000000000201 /* NSColorLuminanceTests.swift in Sources */,
+				CC2000000000000000000301 /* NSColorHexTests.swift in Sources */,
+				CC2000000000000000000401 /* NSColorRGBTests.swift in Sources */,
+				CC2000000000000000000501 /* NSColorHSLTests.swift in Sources */,
+				CC2000000000000000000601 /* NSColorLabTests.swift in Sources */,
+				CC2000000000000000000701 /* WCAGComplianceTests.swift in Sources */,
+				CC2000000000000000000801 /* APCAComplianceTests.swift in Sources */,
+				CC2000000000000000000901 /* NotificationNamesTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1001,6 +1265,36 @@
 			};
 			name = Release;
 		};
+		CC20000000000000000000E1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = TGHU37N6EX;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.superhighfives.PikaTests";
+				PRODUCT_NAME = PikaTests;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Pika.app/Contents/MacOS/Pika";
+			};
+			name = Debug;
+		};
+		CC20000000000000000000F1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = TGHU37N6EX;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.superhighfives.PikaTests";
+				PRODUCT_NAME = PikaTests;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Pika.app/Contents/MacOS/Pika";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1027,6 +1321,15 @@
 			buildConfigurations = (
 				EAE23DE62D032A38005BB270 /* Debug */,
 				EAE23DE72D032A38005BB270 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CC20000000000000000000D1 /* Build configuration list for PBXNativeTarget "PikaTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CC20000000000000000000E1 /* Debug */,
+				CC20000000000000000000F1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

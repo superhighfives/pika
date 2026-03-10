@@ -17,15 +17,7 @@ struct Toast<Presenting>: View where Presenting: View {
     let color: Color
 
     var body: some View {
-        if isShowing {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                withAnimation {
-                    isShowing = false
-                }
-            }
-        }
-        return GeometryReader { _ in
-
+        GeometryReader { _ in
             ZStack(alignment: .topLeading) {
                 presenting()
 
@@ -45,6 +37,13 @@ struct Toast<Presenting>: View where Presenting: View {
                 .transition(.slide)
                 .opacity(isShowing ? 1 : 0)
                 .offset(x: 8.0, y: 8.0)
+            }
+        }
+        .task(id: isShowing) {
+            guard isShowing else { return }
+            try? await Task.sleep(for: .seconds(1))
+            withAnimation {
+                isShowing = false
             }
         }
     }
