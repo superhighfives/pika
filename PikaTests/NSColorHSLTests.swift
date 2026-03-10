@@ -1,5 +1,5 @@
-import XCTest
 @testable import Pika
+import XCTest
 
 final class NSColorHSLTests: XCTestCase {
     // MARK: - toHSBComponents()
@@ -58,9 +58,9 @@ final class NSColorHSLTests: XCTestCase {
     func test_toHSLComponents_red_correctValues() {
         let red = NSColor(hex: "FF0000")
         let hsl = red.toHSLComponents()
-        XCTAssertEqual(hsl.h, 0.0, accuracy: 0.01)   // hue = 0°
-        XCTAssertEqual(hsl.s, 1.0, accuracy: 0.01)   // saturation = 100%
-        XCTAssertEqual(hsl.l, 0.5, accuracy: 0.01)   // lightness = 50%
+        XCTAssertEqual(hsl.h, 0.0, accuracy: 0.01) // hue = 0°
+        XCTAssertEqual(hsl.s, 1.0, accuracy: 0.01) // saturation = 100%
+        XCTAssertEqual(hsl.l, 0.5, accuracy: 0.01) // lightness = 50%
     }
 
     func test_toHSLComponents_black_allZero() {

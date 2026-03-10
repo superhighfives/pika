@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CC1100000000000000000200 /* URLSchemeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1100000000000000000100 /* URLSchemeHandler.swift */; };
+		CC1100000000000000000201 /* WindowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1100000000000000000101 /* WindowCoordinator.swift */; };
+		CC1100000000000000000202 /* StatusBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1100000000000000000102 /* StatusBarController.swift */; };
+		CC1100000000000000000203 /* URLSchemeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1100000000000000000100 /* URLSchemeHandler.swift */; };
+		CC1100000000000000000204 /* WindowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1100000000000000000101 /* WindowCoordinator.swift */; };
+		CC1100000000000000000205 /* StatusBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1100000000000000000102 /* StatusBarController.swift */; };
+
 		CC20000000000000000000F2 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC20000000000000000000D2 /* XCTest.framework */; };
 		CC2000000000000000000101 /* NSColorInitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000100 /* NSColorInitTests.swift */; };
 		CC2000000000000000000201 /* NSColorLuminanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000200 /* NSColorLuminanceTests.swift */; };
@@ -172,6 +179,10 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXFileReference section */
+		CC1100000000000000000100 /* URLSchemeHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSchemeHandler.swift; sourceTree = "<group>"; };
+		CC1100000000000000000101 /* WindowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowCoordinator.swift; sourceTree = "<group>"; };
+		CC1100000000000000000102 /* StatusBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarController.swift; sourceTree = "<group>"; };
+
 		CC20000000000000000000D2 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_FRAMEWORKS_DIR; };
 		CC20000000000000000000E2 /* PikaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PikaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC2000000000000000000100 /* NSColorInitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSColorInitTests.swift; sourceTree = "<group>"; };
@@ -377,9 +388,9 @@
 				EA72BB8125A5334B008205E7 /* Metal */,
 				EAD0B6D8259CED1D00FA2F67 /* Pika.entitlements */,
 				EAD0B6D1259CED1D00FA2F67 /* Preview Content */,
-				EAD0B71A259D14C200FA2F67 /* Styles */,
+				EAD0B71A259D14C200FA2F67 /* ButtonStyles */,
 				22F23B6925CEE1E600064E62 /* TouchBar */,
-				EAD0B6F0259CF29300FA2F67 /* Utilities */,
+				EAD0B6F0259CF29300FA2F67 /* Services */,
 				EAD0B6F2259CF29300FA2F67 /* Views */,
 			);
 			path = Pika;
@@ -415,54 +426,37 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		EAD0B6F0259CF29300FA2F67 /* Utilities */ = {
+		EAD0B6F0259CF29300FA2F67 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				EA7B199B25FBA0E600E06D9D /* ClosestVector.swift */,
-				F8ABAC5C2EAAD0F0008CD152 /* ColorPickOverlayWindow.swift */,
-				EACA8A44260501210064035C /* Exporter.swift */,
-				EAD0B6F1259CF29300FA2F67 /* Eyedroppers.swift */,
-				EA7B199525FBA08100E06D9D /* LoadColors.swift */,
-				EA0C526325AB5D1700AFF716 /* PikaWindow.swift */,
-				22D28DB62862377F00FC7DD4 /* OverflowContentViewModifier.swift */,
+				CC1100000000000000000007 /* Models */,
+				CC1100000000000000000008 /* Export */,
+				CC1100000000000000000009 /* Windows */,
+				CC110000000000000000000A /* ColorNames */,
+				CC110000000000000000000B /* StatusBar */,
+				CC110000000000000000000C /* URLHandling */,
+				CC110000000000000000000D /* Modifiers */,
 			);
-			path = Utilities;
+			name = Services;
+			path = Services;
 			sourceTree = "<group>";
 		};
 		EAD0B6F2259CF29300FA2F67 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				EAD0B6F3259CF29300FA2F67 /* AboutView.swift */,
-				220D5E9328DB154300B6285E /* AppModeButtons.swift */,
-				220D5E9728DB158400B6285E /* AppModeToggleGroup.swift */,
-				EAD0B6F5259CF29300FA2F67 /* AppVersion.swift */,
-				22903B0228294F49004BB9F0 /* ColorExampleRow.swift */,
-				EA635DE025B4FC580014D91A /* ColorPickers.swift */,
-				F8ABAC592EAAD0DF008CD152 /* ColorPickOverlay.swift */,
-				EABAEADF284D50D1000716AE /* ComplianceButtons.swift */,
-				EA801284259F8F480026D5D9 /* ComplianceToggle.swift */,
-				EA424C7C25CDEF98009056A9 /* ComplianceToggleGroup.swift */,
 				EAD0B6F6259CF29300FA2F67 /* ContentView.swift */,
-				EA0C526E25AB683400AFF716 /* EyedropperButton.swift */,
-				EA635DE925B534C80014D91A /* EyedropperItem.swift */,
 				EA8124C0259E307D00033F0B /* Footer.swift */,
-				221600F825A62E5B00B8B7D9 /* IconImage.swift */,
-				EAA8AE1B25B8F03B0049299B /* KeyboardShortcutGrid.swift */,
-				22FE80B225BA0F820063759E /* KeyboardShortcutItem.swift */,
-				EAA8AE1825B8EC070049299B /* KeyboardShortcutKey.swift */,
-				EAD0B71B259D151400FA2F67 /* NavigationMenu.swift */,
-				EA0C525F25AB5A2B00AFF716 /* NavigationMenuItems.swift */,
-				EAD0B6F4259CF29300FA2F67 /* PreferencesView.swift */,
-				EA72BB8725A53750008205E7 /* SplashView.swift */,
-				EA635DF025B5A6D80014D91A /* Toast.swift */,
-				EAF100CC25C785C4006E1EC3 /* TouchBarVisual.swift */,
-				226FD60F25A940F90021A67F /* VisualEffect.swift */,
-				EA0C524F25AA729300AFF716 /* Visualisation.swift */,
+				CC1100000000000000000001 /* Eyedropper */,
+				CC1100000000000000000002 /* Compliance */,
+				CC1100000000000000000003 /* Preferences */,
+				CC1100000000000000000004 /* About */,
+				CC1100000000000000000005 /* Navigation */,
+				CC1100000000000000000006 /* Shared */,
 			);
 			path = Views;
 			sourceTree = "<group>";
 		};
-		EAD0B71A259D14C200FA2F67 /* Styles */ = {
+		EAD0B71A259D14C200FA2F67 /* ButtonStyles */ = {
 			isa = PBXGroup;
 			children = (
 				EAD0B717259D146200FA2F67 /* EyedropperButtonStyle.swift */,
@@ -470,7 +464,8 @@
 				EA257BD025D8629300C3FC54 /* SwapButtonStyle.swift */,
 				EAEBF64625E878A5002999D1 /* CircleButtonStyle.swift */,
 			);
-			path = Styles;
+			name = ButtonStyles;
+			path = ButtonStyles;
 			sourceTree = "<group>";
 		};
 		CC20000000000000000000C2 /* PikaTests */ = {
@@ -487,6 +482,132 @@
 				CC2000000000000000000900 /* NotificationNamesTests.swift */,
 			);
 			path = PikaTests;
+			sourceTree = "<group>";
+		};
+
+		CC1100000000000000000001 /* Eyedropper */ = {
+			isa = PBXGroup;
+			children = (
+				EA635DE025B4FC580014D91A /* ColorPickers.swift */,
+				EA0C526E25AB683400AFF716 /* EyedropperButton.swift */,
+				EA635DE925B534C80014D91A /* EyedropperItem.swift */,
+			);
+			name = Eyedropper;
+			sourceTree = "<group>";
+		};
+		CC1100000000000000000002 /* Compliance */ = {
+			isa = PBXGroup;
+			children = (
+				EABAEADF284D50D1000716AE /* ComplianceButtons.swift */,
+				EA801284259F8F480026D5D9 /* ComplianceToggle.swift */,
+				EA424C7C25CDEF98009056A9 /* ComplianceToggleGroup.swift */,
+			);
+			name = Compliance;
+			sourceTree = "<group>";
+		};
+		CC1100000000000000000003 /* Preferences */ = {
+			isa = PBXGroup;
+			children = (
+				220D5E9328DB154300B6285E /* AppModeButtons.swift */,
+				220D5E9728DB158400B6285E /* AppModeToggleGroup.swift */,
+				22903B0228294F49004BB9F0 /* ColorExampleRow.swift */,
+				EAD0B6F4259CF29300FA2F67 /* PreferencesView.swift */,
+			);
+			name = Preferences;
+			sourceTree = "<group>";
+		};
+		CC1100000000000000000004 /* About */ = {
+			isa = PBXGroup;
+			children = (
+				EAD0B6F3259CF29300FA2F67 /* AboutView.swift */,
+				EAA8AE1B25B8F03B0049299B /* KeyboardShortcutGrid.swift */,
+				22FE80B225BA0F820063759E /* KeyboardShortcutItem.swift */,
+				EAA8AE1825B8EC070049299B /* KeyboardShortcutKey.swift */,
+				EA72BB8725A53750008205E7 /* SplashView.swift */,
+			);
+			name = About;
+			sourceTree = "<group>";
+		};
+		CC1100000000000000000005 /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				EAD0B71B259D151400FA2F67 /* NavigationMenu.swift */,
+				EA0C525F25AB5A2B00AFF716 /* NavigationMenuItems.swift */,
+			);
+			name = Navigation;
+			sourceTree = "<group>";
+		};
+		CC1100000000000000000006 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				EAD0B6F5259CF29300FA2F67 /* AppVersion.swift */,
+				F8ABAC592EAAD0DF008CD152 /* ColorPickOverlay.swift */,
+				221600F825A62E5B00B8B7D9 /* IconImage.swift */,
+				EA635DF025B5A6D80014D91A /* Toast.swift */,
+				EAF100CC25C785C4006E1EC3 /* TouchBarVisual.swift */,
+				EA0C524F25AA729300AFF716 /* Visualisation.swift */,
+				226FD60F25A940F90021A67F /* VisualEffect.swift */,
+			);
+			name = Shared;
+			sourceTree = "<group>";
+		};
+		CC1100000000000000000007 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				EAD0B6F1259CF29300FA2F67 /* Eyedroppers.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		CC1100000000000000000008 /* Export */ = {
+			isa = PBXGroup;
+			children = (
+				EACA8A44260501210064035C /* Exporter.swift */,
+			);
+			name = Export;
+			sourceTree = "<group>";
+		};
+		CC1100000000000000000009 /* Windows */ = {
+			isa = PBXGroup;
+			children = (
+				F8ABAC5C2EAAD0F0008CD152 /* ColorPickOverlayWindow.swift */,
+				EA0C526325AB5D1700AFF716 /* PikaWindow.swift */,
+				CC1100000000000000000101 /* WindowCoordinator.swift */,
+			);
+			name = Windows;
+			sourceTree = "<group>";
+		};
+		CC110000000000000000000A /* ColorNames */ = {
+			isa = PBXGroup;
+			children = (
+				EA7B199B25FBA0E600E06D9D /* ClosestVector.swift */,
+				EA7B199525FBA08100E06D9D /* LoadColors.swift */,
+			);
+			name = ColorNames;
+			sourceTree = "<group>";
+		};
+		CC110000000000000000000B /* StatusBar */ = {
+			isa = PBXGroup;
+			children = (
+				CC1100000000000000000102 /* StatusBarController.swift */,
+			);
+			name = StatusBar;
+			sourceTree = "<group>";
+		};
+		CC110000000000000000000C /* URLHandling */ = {
+			isa = PBXGroup;
+			children = (
+				CC1100000000000000000100 /* URLSchemeHandler.swift */,
+			);
+			name = URLHandling;
+			sourceTree = "<group>";
+		};
+		CC110000000000000000000D /* Modifiers */ = {
+			isa = PBXGroup;
+			children = (
+				22D28DB62862377F00FC7DD4 /* OverflowContentViewModifier.swift */,
+			);
+			name = Modifiers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -771,6 +892,9 @@
 				EA635DDC25B4E90B0014D91A /* BindingOnChange.swift in Sources */,
 				EAD0B713259CFD2000FA2F67 /* Defaults.swift in Sources */,
 				226FD61025A940F90021A67F /* VisualEffect.swift in Sources */,
+				CC1100000000000000000200 /* URLSchemeHandler.swift in Sources */,
+				CC1100000000000000000201 /* WindowCoordinator.swift in Sources */,
+				CC1100000000000000000202 /* StatusBarController.swift in Sources */,
 				EAD0B6FE259CF29C00FA2F67 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -837,6 +961,9 @@
 				EAE23DD42D032A38005BB270 /* BindingOnChange.swift in Sources */,
 				EAE23DD52D032A38005BB270 /* Defaults.swift in Sources */,
 				EAE23DD62D032A38005BB270 /* VisualEffect.swift in Sources */,
+				CC1100000000000000000203 /* URLSchemeHandler.swift in Sources */,
+				CC1100000000000000000204 /* WindowCoordinator.swift in Sources */,
+				CC1100000000000000000205 /* StatusBarController.swift in Sources */,
 				EAE23DD72D032A38005BB270 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

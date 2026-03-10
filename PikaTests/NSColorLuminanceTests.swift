@@ -1,5 +1,5 @@
-import XCTest
 @testable import Pika
+import XCTest
 
 final class NSColorLuminanceTests: XCTestCase {
     // MARK: - clip()

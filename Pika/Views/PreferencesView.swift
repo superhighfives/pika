@@ -187,8 +187,13 @@ private struct CopySettingsSection: View {
 private struct ColorFormatSection: View {
     @State var colorSpace: NSColorSpace = Defaults[.colorSpace]
 
-    // swiftlint:disable large_tuple opening_brace
-    func getColorSpaces() -> ([NSColorSpace], [NSColorSpace], NSColorSpace) {
+    private struct ColorSpaceConfig {
+        let systemDefault: NSColorSpace
+        let primary: [NSColorSpace]
+        let additional: [NSColorSpace]
+    }
+
+    private func getColorSpaces() -> ColorSpaceConfig {
         let systemDefaultSpace: NSColorSpace = NSScreen.main!.colorSpace!
         var availableSpaces = NSColorSpace.availableColorSpaces(with: .rgb).unique()
         if !availableSpaces.contains(systemDefaultSpace) {
@@ -208,13 +213,14 @@ private struct ColorFormatSection: View {
                 }
             }
         }
-        return (primarySpaces, availableSpaces, systemDefaultSpace)
+        return ColorSpaceConfig(systemDefault: systemDefaultSpace, primary: primarySpaces, additional: availableSpaces)
     }
 
-    // swiftlint:enable large_tuple opening_brace
-
     var body: some View {
-        let (primarySpaces, availableSpaces, systemDefaultSpace) = getColorSpaces()
+        let spaces = getColorSpaces()
+        let primarySpaces = spaces.primary
+        let availableSpaces = spaces.additional
+        let systemDefaultSpace = spaces.systemDefault
 
         VStack(alignment: .leading, spacing: 8.0) {
             Section(header: Text(PikaText.textFormatTitle).font(.system(size: 16))) {

@@ -1,5 +1,5 @@
-import XCTest
 @testable import Pika
+import XCTest
 
 final class NSColorLabTests: XCTestCase {
     // MARK: - toOpenGLString(style:)

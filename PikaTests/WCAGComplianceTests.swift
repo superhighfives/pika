@@ -1,5 +1,5 @@
-import XCTest
 @testable import Pika
+import XCTest
 
 final class WCAGComplianceTests: XCTestCase {
     // White on black — contrast 21:1 — all levels pass

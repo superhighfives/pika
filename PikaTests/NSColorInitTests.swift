@@ -1,5 +1,5 @@
-import XCTest
 @testable import Pika
+import XCTest
 
 final class NSColorInitTests: XCTestCase {
     // MARK: - init(r:g:b:a:) — 255-based values

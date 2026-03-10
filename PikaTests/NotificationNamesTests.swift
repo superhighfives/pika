@@ -1,5 +1,5 @@
-import XCTest
 @testable import Pika
+import XCTest
 
 /// Verifies that every typed Notification.Name constant resolves to its
 /// expected raw string value. These tests catch accidental regressions

@@ -1,5 +1,5 @@
-import XCTest
 @testable import Pika
+import XCTest
 
 final class NSColorHexTests: XCTestCase {
     // MARK: - roundToHex()

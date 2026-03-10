@@ -1,6 +1,6 @@
+@testable import Pika
 import SwiftUI
 import XCTest
-@testable import Pika
 
 final class NSColorRGBTests: XCTestCase {
     // MARK: - toRGBAComponents(in:)
