@@ -11,6 +11,7 @@ struct SwapButtonStyle: ButtonStyle {
 
         @State private var isHovered: Bool = false
         @State private var hoverTask: Task<Void, Never>?
+        @State private var hoverCooldown: Task<Void, Never>?
 
         let configuration: Configuration
         let isVisible: Bool
@@ -38,48 +39,54 @@ struct SwapButtonStyle: ButtonStyle {
                     }
                     configuration.label
                 }
-            }.animation(.easeInOut, value: isHovered)
-                .padding(.horizontal, 8)
-                .padding(.vertical, 8)
-                .mask(RoundedRectangle(cornerRadius: 100.0, style: .continuous))
-                .background(
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 100.0, style: .continuous)
-                            .fill(bgColor)
-                            .shadow(
-                                color: Color.black.opacity(0.2),
-                                radius: configuration.isPressed ? 1 : 2,
-                                x: 0,
-                                y: configuration.isPressed ? 1 : 2
-                            )
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 100.0, style: .continuous)
-                                    .stroke(fgColor.opacity(0.1))
-                            )
-                    }
-                )
-                .onHover { hover in
-                    onHoverChange?(hover)
-                    if hover {
-                        if hoverTask == nil {
-                            hoverTask = Task {
-                                try? await Task.sleep(for: .milliseconds(100))
-                                isHovered = true
-                                hoverTask = nil
-                            }
-                        }
-                    } else {
-                        hoverTask?.cancel()
+            }
+            .padding(.horizontal, 8)
+            .padding(.vertical, 8)
+            .mask(RoundedRectangle(cornerRadius: 100.0, style: .continuous))
+            .background(
+                ZStack {
+                    RoundedRectangle(cornerRadius: 100.0, style: .continuous)
+                        .fill(bgColor)
+                        .shadow(
+                            color: Color.black.opacity(0.2),
+                            radius: configuration.isPressed ? 1 : 2,
+                            x: 0,
+                            y: configuration.isPressed ? 1 : 2
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 100.0, style: .continuous)
+                                .stroke(fgColor.opacity(0.1))
+                        )
+                }
+            )
+            .onHover { hover in
+                onHoverChange?(hover)
+                if hover {
+                    guard hoverCooldown == nil, hoverTask == nil else { return }
+                    hoverTask = Task {
+                        try? await Task.sleep(for: .milliseconds(100))
+                        guard !Task.isCancelled else { return }
+                        isHovered = true
                         hoverTask = nil
-                        isHovered = false
+                    }
+                } else {
+                    hoverTask?.cancel()
+                    hoverTask = nil
+                    isHovered = false
+                    hoverCooldown?.cancel()
+                    hoverCooldown = Task {
+                        try? await Task.sleep(for: .milliseconds(150))
+                        guard !Task.isCancelled else { return }
+                        hoverCooldown = nil
                     }
                 }
-                .animation(.easeInOut, value: isHovered)
-                .opacity(isVisible ? (configuration.isPressed ? 0.8 : 1.0) : 0.0)
-                .foregroundColor(fgColor.opacity(0.8))
-                .frame(height: 32.0)
-                .animation(.easeInOut, value: isVisible)
-                .animation(.easeInOut, value: configuration.isPressed)
+            }
+            .opacity(isVisible ? (configuration.isPressed ? 0.8 : 1.0) : 0.0)
+            .foregroundColor(fgColor.opacity(0.8))
+            .frame(height: 32.0)
+            .animation(.easeInOut(duration: 0.15), value: isHovered)
+            .animation(.easeInOut, value: isVisible)
+            .animation(.easeInOut, value: configuration.isPressed)
         }
     }
 
