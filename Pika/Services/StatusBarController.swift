@@ -34,42 +34,72 @@ class StatusBarController: NSObject, NSMenuDelegate {
         }.tieToLifetime(of: self)
     }
 
+    private func menuItem(
+        title: String,
+        action: Selector,
+        key: String,
+        modifiers: NSEvent.ModifierFlags = .command
+    ) -> NSMenuItem {
+        let item = NSMenuItem(title: title, action: action, keyEquivalent: key)
+        item.keyEquivalentModifierMask = modifiers
+        return item
+    }
+
     private func buildMenu() -> NSMenu {
         let menu = NSMenu(title: "Status Bar Menu")
         menu.delegate = self
 
-        menu.addItem(
-            withTitle: PikaText.textMenuAbout,
-            action: #selector(AppDelegate.openAboutWindow),
-            keyEquivalent: ""
-        )
-        menu.addItem(
-            withTitle: "\(PikaText.textMenuUpdates)...",
-            action: #selector(AppDelegate.checkForUpdates),
-            keyEquivalent: ""
-        )
-        menu.addItem(
-            withTitle: PikaText.textMenuGitHubIssue,
-            action: #selector(AppDelegate.openGitHubIssue),
-            keyEquivalent: ""
-        )
-
-        let preferences = NSMenuItem(
-            title: "\(PikaText.textMenuPreferences)...",
-            action: #selector(AppDelegate.openPreferencesWindow),
-            keyEquivalent: ","
-        )
-        preferences.keyEquivalentModifierMask = NSEvent.ModifierFlags.command
-        menu.addItem(preferences)
+        menu.addItem(menuItem(title: "\(PikaText.textPickForeground)...",
+                              action: #selector(AppDelegate.triggerPickForeground),
+                              key: "d"))
+        menu.addItem(menuItem(title: "\(PikaText.textPickBackground)...",
+                              action: #selector(AppDelegate.triggerPickBackground),
+                              key: "d", modifiers: [.command, .shift]))
 
         menu.addItem(NSMenuItem.separator())
-        let quit = NSMenuItem(
-            title: PikaText.textMenuQuit,
-            action: #selector(AppDelegate.terminatePika),
-            keyEquivalent: "q"
-        )
-        quit.keyEquivalentModifierMask = .command
-        menu.addItem(quit)
+
+        menu.addItem(menuItem(title: PikaText.textCopyForeground,
+                              action: #selector(AppDelegate.triggerCopyForeground),
+                              key: "c"))
+        menu.addItem(menuItem(title: PikaText.textCopyBackground,
+                              action: #selector(AppDelegate.triggerCopyBackground),
+                              key: "c", modifiers: [.command, .shift]))
+
+        menu.addItem(NSMenuItem.separator())
+
+        menu.addItem(menuItem(title: PikaText.textColorSystemPickerForeground,
+                              action: #selector(AppDelegate.triggerSystemPickerForeground),
+                              key: "s"))
+        menu.addItem(menuItem(title: PikaText.textColorSystemPickerBackground,
+                              action: #selector(AppDelegate.triggerSystemPickerBackground),
+                              key: "s", modifiers: [.command, .shift]))
+
+        menu.addItem(NSMenuItem.separator())
+
+        menu.addItem(menuItem(title: PikaText.textColorSwapDetail,
+                              action: #selector(AppDelegate.triggerSwap),
+                              key: "x", modifiers: []))
+
+        menu.addItem(NSMenuItem.separator())
+
+        menu.addItem(menuItem(title: PikaText.textMenuAbout,
+                              action: #selector(AppDelegate.openAboutWindow),
+                              key: ""))
+        menu.addItem(menuItem(title: "\(PikaText.textMenuUpdates)...",
+                              action: #selector(AppDelegate.checkForUpdates),
+                              key: ""))
+        menu.addItem(menuItem(title: PikaText.textMenuGitHubIssue,
+                              action: #selector(AppDelegate.openGitHubIssue),
+                              key: ""))
+        menu.addItem(menuItem(title: "\(PikaText.textMenuPreferences)...",
+                              action: #selector(AppDelegate.openPreferencesWindow),
+                              key: ","))
+
+        menu.addItem(NSMenuItem.separator())
+
+        menu.addItem(menuItem(title: PikaText.textMenuQuit,
+                              action: #selector(AppDelegate.terminatePika),
+                              key: "q"))
 
         return menu
     }

@@ -75,17 +75,17 @@ extension NSColor {
 
     func toLabString(style: CopyFormat = .css) -> String {
         let lab = toLabComponents()
-        let l_val = round(lab.l * 100) / 100
-        let a_val = round(lab.a * 100) / 100
-        let b_val = round(lab.b * 100) / 100
+        let l_str = (round(lab.l * 100) / 100).strippedDecimalString(maxDecimalPlaces: 2)
+        let a_str = (round(lab.a * 100) / 100).strippedDecimalString(maxDecimalPlaces: 2)
+        let b_str = (round(lab.b * 100) / 100).strippedDecimalString(maxDecimalPlaces: 2)
 
         switch style {
         case .css:
-            return String(format: "lab(%.2f %.2f %.2f)", l_val, a_val, b_val)
+            return "lab(\(l_str) \(a_str) \(b_str))"
         case .design, .swiftUI:
-            return String(format: "lab(%.2f, %.2f, %.2f)", l_val, a_val, b_val)
+            return "lab(\(l_str), \(a_str), \(b_str))"
         case .unformatted:
-            return String(format: "%.2f,%.2f,%.2f", l_val, a_val, b_val)
+            return "\(l_str),\(a_str),\(b_str)"
         }
     }
 
@@ -120,17 +120,17 @@ extension NSColor {
 
     func toOklchString(style: CopyFormat = .css) -> String {
         let oklch = toOklchComponents()
-        let l_val = round(oklch.l * 10000) / 100
-        let c_val = round(oklch.c * 1000) / 1000
-        let h_val = round(oklch.h * 100) / 100
+        let l_str = (round(oklch.l * 10000) / 100).strippedDecimalString(maxDecimalPlaces: 2)
+        let c_str = (round(oklch.c * 10000) / 10000).strippedDecimalString(maxDecimalPlaces: 4)
+        let h_str = (round(oklch.h * 100) / 100).strippedDecimalString(maxDecimalPlaces: 2)
 
         switch style {
         case .css:
-            return String(format: "oklch(%.2f%% %.3f %.2f)", l_val, c_val, h_val)
+            return "oklch(\(l_str)% \(c_str) \(h_str))"
         case .design, .swiftUI:
-            return String(format: "oklch(%.2f, %.3f, %.2f)", l_val, c_val, h_val)
+            return "oklch(\(l_str), \(c_str), \(h_str))"
         case .unformatted:
-            return String(format: "%.2f, %.3f, %.2f", l_val, c_val, h_val)
+            return "\(l_str), \(c_str), \(h_str)"
         }
     }
 }
