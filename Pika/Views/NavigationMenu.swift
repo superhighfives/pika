@@ -13,7 +13,7 @@ struct NavigationMenu: View {
     }
 
     var body: some View {
-        HStack(spacing: 0) {
+        HStack(spacing: 4.0) {
             Picker(PikaText.textFormatTitle, selection: $colorFormat) {
                 ForEach(ColorFormat.allCases, id: \.self) { value in
                     Text(value.rawValue)
@@ -23,6 +23,7 @@ struct NavigationMenu: View {
             .pickerStyle(.menu)
             .labelsHidden()
             .fixedSize()
+            .frame(width: 100.0)
 
             Menu {
                 NavigationMenuItems()
