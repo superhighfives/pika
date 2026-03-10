@@ -38,47 +38,48 @@ struct SwapButtonStyle: ButtonStyle {
                     }
                     configuration.label
                 }
-            }
-            .padding(.horizontal, 8)
-            .padding(.vertical, 8)
-            .mask(RoundedRectangle(cornerRadius: 100.0, style: .continuous))
-            .background(
-                ZStack {
-                    RoundedRectangle(cornerRadius: 100.0, style: .continuous)
-                        .fill(bgColor)
-                        .shadow(
-                            color: Color.black.opacity(0.2),
-                            radius: configuration.isPressed ? 1 : 2,
-                            x: 0,
-                            y: configuration.isPressed ? 1 : 2
-                        )
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 100.0, style: .continuous)
-                                .stroke(fgColor.opacity(0.1))
-                        )
-                }
-            )
-            .onHover { hover in
-                onHoverChange?(hover)
-                if hover {
-                    if hoverTask == nil {
-                        hoverTask = Task {
-                            try? await Task.sleep(for: .milliseconds(100))
-                            isHovered = true
-                            hoverTask = nil
-                        }
+            }.animation(.easeInOut, value: isHovered)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 8)
+                .mask(RoundedRectangle(cornerRadius: 100.0, style: .continuous))
+                .background(
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 100.0, style: .continuous)
+                            .fill(bgColor)
+                            .shadow(
+                                color: Color.black.opacity(0.2),
+                                radius: configuration.isPressed ? 1 : 2,
+                                x: 0,
+                                y: configuration.isPressed ? 1 : 2
+                            )
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 100.0, style: .continuous)
+                                    .stroke(fgColor.opacity(0.1))
+                            )
                     }
-                } else {
-                    hoverTask?.cancel()
-                    hoverTask = nil
-                    isHovered = false
+                )
+                .onHover { hover in
+                    onHoverChange?(hover)
+                    if hover {
+                        if hoverTask == nil {
+                            hoverTask = Task {
+                                try? await Task.sleep(for: .milliseconds(100))
+                                isHovered = true
+                                hoverTask = nil
+                            }
+                        }
+                    } else {
+                        hoverTask?.cancel()
+                        hoverTask = nil
+                        isHovered = false
+                    }
                 }
-            }
-            .opacity(isVisible ? (configuration.isPressed ? 0.8 : 1.0) : 0.0)
-            .foregroundColor(fgColor.opacity(0.8))
-            .frame(height: 32.0)
-            .animation(.easeInOut, value: isVisible)
-            .animation(.easeInOut, value: configuration.isPressed)
+                .animation(.easeInOut, value: isHovered)
+                .opacity(isVisible ? (configuration.isPressed ? 0.8 : 1.0) : 0.0)
+                .foregroundColor(fgColor.opacity(0.8))
+                .frame(height: 32.0)
+                .animation(.easeInOut, value: isVisible)
+                .animation(.easeInOut, value: configuration.isPressed)
         }
     }
 

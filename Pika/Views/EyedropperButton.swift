@@ -94,7 +94,7 @@ struct EyedropperButton: View {
                 hoverTask?.cancel()
                 hoverTask = nil
                 hoverVisible = true
-            } else if hoverTask == nil && !childHovered {
+            } else if hoverTask == nil, !childHovered {
                 hoverTask = Task {
                     try? await Task.sleep(for: .milliseconds(250))
                     hoverVisible = false

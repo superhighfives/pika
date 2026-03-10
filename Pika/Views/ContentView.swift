@@ -1,3 +1,4 @@
+import Combine
 import Defaults
 import SwiftUI
 
@@ -10,8 +11,8 @@ struct ContentView: View {
     let pasteboard = NSPasteboard.general
 
     @State var swapVisible: Bool = false
-    @State private var swapHideTask: Task<Void, Never>?
-    @State private var swapButtonHovered: Bool = false
+    @State private var swapTimerSubscription: Cancellable?
+    @State private var swapTimer = Timer.publish(every: 0.25, on: .main, in: .common)
     @State private var angle: Double = 0
 
     var body: some View {
@@ -19,17 +20,15 @@ struct ContentView: View {
             Divider()
             ColorPickers()
                 .onHover { hover in
-                    if hover {
-                        swapHideTask?.cancel()
-                        swapHideTask = nil
-                        swapVisible = true
-                    } else if swapHideTask == nil && !swapButtonHovered {
-                        swapHideTask = Task {
-                            try? await Task.sleep(for: .milliseconds(250))
-                            swapVisible = false
-                            swapHideTask = nil
-                        }
-                    }
+                    guard hover else { return }
+                    swapVisible = true
+                    swapTimerSubscription?.cancel()
+                    swapTimerSubscription = nil
+                }
+                .onReceive(swapTimer) { _ in
+                    swapVisible = false
+                    swapTimerSubscription?.cancel()
+                    swapTimerSubscription = nil
                 }
                 .overlay(
                     Button(action: {
@@ -43,11 +42,7 @@ struct ContentView: View {
                     .buttonStyle(SwapButtonStyle(
                         isVisible: swapVisible,
                         alt: PikaText.textColorSwap,
-                        ltr: true,
-                        onHoverChange: { hover in
-                            swapButtonHovered = hover
-                            if hover { swapHideTask?.cancel(); swapHideTask = nil }
-                        }
+                        ltr: true
                     ))
                     .onReceive(NotificationCenter.default.publisher(for: .triggerSwap)) { _ in
                         swap(&eyedroppers.foreground.color, &eyedroppers.background.color)
@@ -56,6 +51,13 @@ struct ContentView: View {
                     .padding(16.0)
                     .frame(maxHeight: .infinity, alignment: .top)
                 )
+                .onHover { hover in
+                    guard !hover, swapTimerSubscription == nil else {
+                        return
+                    }
+                    swapTimer = Timer.publish(every: 0.25, on: .main, in: .common)
+                    swapTimerSubscription = swapTimer.connect()
+                }
 
             Divider()
             Footer(foreground: eyedroppers.foreground, background: eyedroppers.background)

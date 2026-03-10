@@ -30,7 +30,7 @@ final class APCAComplianceTests: XCTestCase {
         let pairs: [(NSColor, NSColor)] = [
             (NSColor(r: 0, g: 0, b: 0), NSColor(r: 0, g: 0, b: 0)),
             (NSColor(r: 50, g: 50, b: 50), NSColor(r: 240, g: 240, b: 240)),
-            (NSColor(r: 0, g: 0, b: 0), NSColor(r: 255, g: 255, b: 255))
+            (NSColor(r: 0, g: 0, b: 0), NSColor(r: 255, g: 255, b: 255)),
         ]
         for (foreground, background) in pairs {
             let level = foreground.APCACompliance(with: background).level
