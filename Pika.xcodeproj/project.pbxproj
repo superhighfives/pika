@@ -24,6 +24,7 @@
 		CC2000000000000000000701 /* WCAGComplianceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000700 /* WCAGComplianceTests.swift */; };
 		CC2000000000000000000801 /* APCAComplianceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000800 /* APCAComplianceTests.swift */; };
 		CC2000000000000000000901 /* NotificationNamesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000900 /* NotificationNamesTests.swift */; };
+		CC2000000000000000000A01 /* CGFloatFormatTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000A00 /* CGFloatFormatTests.swift */; };
 
 		220D5E9428DB154300B6285E /* AppModeButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220D5E9328DB154300B6285E /* AppModeButtons.swift */; };
 		220D5E9828DB158400B6285E /* AppModeToggleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220D5E9728DB158400B6285E /* AppModeToggleGroup.swift */; };
@@ -50,6 +51,8 @@
 		CC000001000000000000AAF2 /* NSColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000001000000000000AAF0 /* NSColor+Hex.swift */; };
 		CC000001000000000000AB01 /* NSColor+RGB.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000001000000000000AB00 /* NSColor+RGB.swift */; };
 		CC000001000000000000AB02 /* NSColor+RGB.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000001000000000000AB00 /* NSColor+RGB.swift */; };
+		CC000001000000000000AB11 /* CGFloat+Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000001000000000000AB10 /* CGFloat+Format.swift */; };
+		CC000001000000000000AB12 /* CGFloat+Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000001000000000000AB10 /* CGFloat+Format.swift */; };
 		EA0C525025AA729300AFF716 /* Visualisation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C524F25AA729300AFF716 /* Visualisation.swift */; };
 		EA0C526025AB5A2B00AFF716 /* NavigationMenuItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C525F25AB5A2B00AFF716 /* NavigationMenuItems.swift */; };
 		EA0C526425AB5D1700AFF716 /* PikaWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C526325AB5D1700AFF716 /* PikaWindow.swift */; };
@@ -194,6 +197,7 @@
 		CC2000000000000000000700 /* WCAGComplianceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCAGComplianceTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000000800 /* APCAComplianceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APCAComplianceTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000000900 /* NotificationNamesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationNamesTests.swift; sourceTree = "<group>"; };
+		CC2000000000000000000A00 /* CGFloatFormatTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGFloatFormatTests.swift; sourceTree = "<group>"; };
 
 		220D5E9328DB154300B6285E /* AppModeButtons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppModeButtons.swift; sourceTree = "<group>"; };
 		220D5E9728DB158400B6285E /* AppModeToggleGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppModeToggleGroup.swift; sourceTree = "<group>"; };
@@ -223,6 +227,7 @@
 		CC000001000000000000AAE0 /* NSColor+Luminance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+Luminance.swift"; sourceTree = "<group>"; };
 		CC000001000000000000AAF0 /* NSColor+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+Hex.swift"; sourceTree = "<group>"; };
 		CC000001000000000000AB00 /* NSColor+RGB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+RGB.swift"; sourceTree = "<group>"; };
+		CC000001000000000000AB10 /* CGFloat+Format.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+Format.swift"; sourceTree = "<group>"; };
 		EA0C524F25AA729300AFF716 /* Visualisation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Visualisation.swift; sourceTree = "<group>"; };
 		EA0C525F25AB5A2B00AFF716 /* NavigationMenuItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationMenuItems.swift; sourceTree = "<group>"; };
 		EA0C526325AB5D1700AFF716 /* PikaWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PikaWindow.swift; sourceTree = "<group>"; };
@@ -422,6 +427,7 @@
 				CC000001000000000000AAE0 /* NSColor+Luminance.swift */,
 				CC000001000000000000AAF0 /* NSColor+Hex.swift */,
 				CC000001000000000000AB00 /* NSColor+RGB.swift */,
+				CC000001000000000000AB10 /* CGFloat+Format.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -480,6 +486,7 @@
 				CC2000000000000000000700 /* WCAGComplianceTests.swift */,
 				CC2000000000000000000800 /* APCAComplianceTests.swift */,
 				CC2000000000000000000900 /* NotificationNamesTests.swift */,
+				CC2000000000000000000A00 /* CGFloatFormatTests.swift */,
 			);
 			path = PikaTests;
 			sourceTree = "<group>";
@@ -875,6 +882,7 @@
 				CC000001000000000000AAE1 /* NSColor+Luminance.swift in Sources */,
 				CC000001000000000000AAF1 /* NSColor+Hex.swift in Sources */,
 				CC000001000000000000AB01 /* NSColor+RGB.swift in Sources */,
+				CC000001000000000000AB11 /* CGFloat+Format.swift in Sources */,
 				EAA8AE1925B8EC070049299B /* KeyboardShortcutKey.swift in Sources */,
 				EA0C526F25AB683400AFF716 /* EyedropperButton.swift in Sources */,
 				EA72BB8425A5334B008205E7 /* MetalShader.metal in Sources */,
@@ -918,6 +926,7 @@
 				CC000001000000000000AAE2 /* NSColor+Luminance.swift in Sources */,
 				CC000001000000000000AAF2 /* NSColor+Hex.swift in Sources */,
 				CC000001000000000000AB02 /* NSColor+RGB.swift in Sources */,
+				CC000001000000000000AB12 /* CGFloat+Format.swift in Sources */,
 				EAE23DAE2D032A38005BB270 /* SplashTouchBar.swift in Sources */,
 				EAE23DAF2D032A38005BB270 /* OverflowContentViewModifier.swift in Sources */,
 				EAE23DB02D032A38005BB270 /* KeyboardShortcutGrid.swift in Sources */,
@@ -981,6 +990,7 @@
 				CC2000000000000000000701 /* WCAGComplianceTests.swift in Sources */,
 				CC2000000000000000000801 /* APCAComplianceTests.swift in Sources */,
 				CC2000000000000000000901 /* NotificationNamesTests.swift in Sources */,
+				CC2000000000000000000A01 /* CGFloatFormatTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1143,6 +1153,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
@@ -1174,6 +1185,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
@@ -1205,6 +1217,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Pika/Pika.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -1237,6 +1250,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Pika/Pika.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";

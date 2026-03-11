@@ -2,7 +2,6 @@ import Defaults
 import KeyboardShortcuts
 import SwiftUI
 
-// swiftlint:disable trailing_comma
 // swiftlint:disable line_length
 
 extension KeyboardShortcuts.Name {
@@ -305,5 +304,6 @@ enum PikaText {
     static let textDuration = NSLocalizedString("preferences.overlay.duration", comment: "Duration:")
 }
 
-// swiftlint:enable trailing_comma
 // swiftlint:enable line_length
+// line_length is disabled above because NSLocalizedString comment strings on lines 100 and 102
+// exceed 120 characters and cannot be shortened without losing meaning for localizers.

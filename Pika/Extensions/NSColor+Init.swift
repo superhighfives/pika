@@ -1,6 +1,8 @@
 import Cocoa
 
 extension NSColor {
+    // r, g, b, a are the public parameter labels for this init (NSColor(r:g:b:a:)) and cannot be renamed.
+    // swiftlint:disable:next identifier_name
     convenience init(r: CGFloat, g: CGFloat, b: CGFloat, a: CGFloat = 1) {
         if (r > 1) || (g > 1) || (b > 1) {
             self.init(red: r / 255, green: g / 255, blue: b / 255, alpha: a)
@@ -25,8 +27,8 @@ extension NSColor {
         if hex.count == 3 {
             let tmp = hex
             hex = ""
-            for c in tmp {
-                hex += String([c, c])
+            for char in tmp {
+                hex += String([char, char])
             }
         }
 
@@ -34,9 +36,9 @@ extension NSColor {
         var rgb: UInt64 = 0
         scanner.scanHexInt64(&rgb)
 
-        let R = CGFloat((rgb >> 16) & 0xFF) / 255
-        let G = CGFloat((rgb >> 8) & 0xFF) / 255
-        let B = CGFloat(rgb & 0xFF) / 255
-        self.init(red: R, green: G, blue: B, alpha: alpha)
+        let red = CGFloat((rgb >> 16) & 0xFF) / 255
+        let green = CGFloat((rgb >> 8) & 0xFF) / 255
+        let blue = CGFloat(rgb & 0xFF) / 255
+        self.init(red: red, green: green, blue: blue, alpha: alpha)
     }
 }

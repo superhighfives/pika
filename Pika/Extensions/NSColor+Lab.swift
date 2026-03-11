@@ -1,6 +1,12 @@
 import Cocoa
 
 // swiftlint:disable identifier_name
+// identifier_name is disabled because color science math uses conventional single-letter
+// variable names (x, y, z, l, a, b, c, h, L, C, H) that would be misleading if renamed.
+
+private struct XYZComponents { let x, y, z: CGFloat }
+struct LabComponents { let l, a, b: CGFloat }
+struct OklchComponents { let l, c, h: CGFloat }
 
 extension NSColor {
     // Shared linearization for sRGB components used by both LAB and OKLCH.
@@ -20,23 +26,25 @@ extension NSColor {
     func toOpenGLString(style: CopyFormat = .css) -> String {
         let RGB = toRGBAComponents()
 
-        let formatString: NSString
+        // %.5g strips trailing zeros but drops the decimal entirely for whole numbers,
+        // so append ".0" when there is no decimal point (e.g. 0 → "0.0", 1 → "1.0").
+        let red = { let s = String(format: "%.5g", RGB.r); return s.contains(".") ? s : "\(s).0" }()
+        let green = { let s = String(format: "%.5g", RGB.g); return s.contains(".") ? s : "\(s).0" }()
+        let blue = { let s = String(format: "%.5g", RGB.b); return s.contains(".") ? s : "\(s).0" }()
+
         switch style {
         case .css, .design, .swiftUI:
-            formatString = "rgba(%.5g, %.5g, %.5g, 1.0)"
+            return "rgba(\(red), \(green), \(blue), 1.0)"
         case .unformatted:
-            formatString = "%.5g, %.5g, %.5g, 1.0"
+            return "\(red), \(green), \(blue), 1.0"
         }
-
-        let openGLString = NSString(format: formatString, RGB.r, RGB.g, RGB.b)
-        return openGLString as String
     }
 
     /*
      * CIE-LAB
      */
 
-    private func toXYZComponents() -> (x: CGFloat, y: CGFloat, z: CGFloat) {
+    private func toXYZComponents() -> XYZComponents {
         let srgb = toRGBAComponents(in: .sRGB)
         let r_lin = linearizeSRGB(srgb.r)
         let g_lin = linearizeSRGB(srgb.g)
@@ -46,10 +54,10 @@ extension NSColor {
         let y = r_lin * 0.2126729 + g_lin * 0.7151522 + b_lin * 0.0721750
         let z = r_lin * 0.0193339 + g_lin * 0.1191920 + b_lin * 0.9503041
 
-        return (x: x, y: y, z: z)
+        return XYZComponents(x: x, y: y, z: z)
     }
 
-    func toLabComponents() -> (l: CGFloat, a: CGFloat, b: CGFloat) {
+    func toLabComponents() -> LabComponents {
         let xyz = toXYZComponents()
 
         // D65 Reference White
@@ -70,22 +78,22 @@ extension NSColor {
         let a_star = 500.0 * (f(xyz.x / Xn) - f(xyz.y / Yn))
         let b_star = 200.0 * (f(xyz.y / Yn) - f(xyz.z / Zn))
 
-        return (l: L_star, a: a_star, b: b_star)
+        return LabComponents(l: L_star, a: a_star, b: b_star)
     }
 
     func toLabString(style: CopyFormat = .css) -> String {
         let lab = toLabComponents()
-        let l_val = round(lab.l * 100) / 100
-        let a_val = round(lab.a * 100) / 100
-        let b_val = round(lab.b * 100) / 100
+        let l_str = (round(lab.l * 100) / 100).strippedDecimalString(maxDecimalPlaces: 2)
+        let a_str = (round(lab.a * 100) / 100).strippedDecimalString(maxDecimalPlaces: 2)
+        let b_str = (round(lab.b * 100) / 100).strippedDecimalString(maxDecimalPlaces: 2)
 
         switch style {
         case .css:
-            return String(format: "lab(%.2f %.2f %.2f)", l_val, a_val, b_val)
+            return "lab(\(l_str) \(a_str) \(b_str))"
         case .design, .swiftUI:
-            return String(format: "lab(%.2f, %.2f, %.2f)", l_val, a_val, b_val)
+            return "lab(\(l_str), \(a_str), \(b_str))"
         case .unformatted:
-            return String(format: "%.2f,%.2f,%.2f", l_val, a_val, b_val)
+            return "\(l_str), \(a_str), \(b_str)"
         }
     }
 
@@ -93,7 +101,7 @@ extension NSColor {
      * OKLCH
      */
 
-    func toOklchComponents() -> (l: CGFloat, c: CGFloat, h: CGFloat) {
+    func toOklchComponents() -> OklchComponents {
         let srgb = toRGBAComponents(in: .sRGB)
         let r_lin = linearizeSRGB(srgb.r)
         let g_lin = linearizeSRGB(srgb.g)
@@ -115,22 +123,22 @@ extension NSColor {
         var H = atan2(b, a) * 180.0 / .pi
         if H < 0 { H += 360.0 }
 
-        return (l: L, c: C, h: H)
+        return OklchComponents(l: L, c: C, h: H)
     }
 
     func toOklchString(style: CopyFormat = .css) -> String {
         let oklch = toOklchComponents()
-        let l_val = round(oklch.l * 10000) / 100
-        let c_val = round(oklch.c * 10000) / 10000
-        let h_val = round(oklch.h * 100) / 100
+        let l_str = (round(oklch.l * 10000) / 100).strippedDecimalString(maxDecimalPlaces: 2)
+        let c_str = (round(oklch.c * 10000) / 10000).strippedDecimalString(maxDecimalPlaces: 4)
+        let h_str = (round(oklch.h * 100) / 100).strippedDecimalString(maxDecimalPlaces: 2)
 
         switch style {
         case .css:
-            return String(format: "oklch(%.2f%% %.4f %.2f)", l_val, c_val, h_val)
+            return "oklch(\(l_str)% \(c_str) \(h_str))"
         case .design, .swiftUI:
-            return String(format: "oklch(%.2f, %.4f, %.2f)", l_val, c_val, h_val)
+            return "oklch(\(l_str), \(c_str), \(h_str))"
         case .unformatted:
-            return String(format: "%.2f, %.4f, %.2f", l_val, c_val, h_val)
+            return "\(l_str), \(c_str), \(h_str)"
         }
     }
 }

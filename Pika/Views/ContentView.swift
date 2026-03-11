@@ -69,12 +69,18 @@ struct ContentView: View {
         }
         .onReceive(NotificationCenter.default.publisher(for: .triggerCopyText)) { _ in
             pasteboard.clearContents()
-            let contents = "\(Exporter.toText(foreground: eyedroppers.foreground, background: eyedroppers.background, style: copyFormat))"
+            let contents = Exporter.toText(
+                foreground: eyedroppers.foreground, background: eyedroppers.background,
+                style: copyFormat
+            )
             pasteboard.setString(contents, forType: .string)
         }
         .onReceive(NotificationCenter.default.publisher(for: .triggerCopyData)) { _ in
             pasteboard.clearContents()
-            let contents = "\(Exporter.toJSON(foreground: eyedroppers.foreground, background: eyedroppers.background, style: copyFormat))"
+            let contents = Exporter.toJSON(
+                foreground: eyedroppers.foreground, background: eyedroppers.background,
+                style: copyFormat
+            )
             pasteboard.setString(contents, forType: .string)
         }
     }

@@ -33,8 +33,14 @@ struct ComplianceToggleGroup: View {
                                 .foregroundColor((wcag.ratio45 && wcag.ratio70) ? .primary : .secondary)
                                 .fixedSize()
                         }
-                        ComplianceToggle(title: "AA", isCompliant: wcag.ratio45, tooltip: PikaText.textColorWCAG45, size: size)
-                        ComplianceToggle(title: "AAA", isCompliant: wcag.ratio70, tooltip: PikaText.textColorWCAG70, size: size)
+                        ComplianceToggle(
+                            title: "AA", isCompliant: wcag.ratio45,
+                            tooltip: PikaText.textColorWCAG45, size: size
+                        )
+                        ComplianceToggle(
+                            title: "AAA", isCompliant: wcag.ratio70,
+                            tooltip: PikaText.textColorWCAG70, size: size
+                        )
                     }
                     HStack(alignment: .center, spacing: 8.0) {
                         if size == .full {
@@ -43,24 +49,51 @@ struct ComplianceToggleGroup: View {
                                 .foregroundColor((wcag.ratio30 && wcag.ratio45) ? .primary : .secondary)
                                 .fixedSize()
                         }
-                        ComplianceToggle(title: "AA", isCompliant: wcag.ratio30, tooltip: PikaText.textColorWCAG30, large: true, size: size)
-                        ComplianceToggle(title: "AAA", isCompliant: wcag.ratio45, tooltip: PikaText.textColorWCAG45, large: true, size: size)
+                        ComplianceToggle(
+                            title: "AA", isCompliant: wcag.ratio30,
+                            tooltip: PikaText.textColorWCAG30, large: true, size: size
+                        )
+                        ComplianceToggle(
+                            title: "AAA", isCompliant: wcag.ratio45,
+                            tooltip: PikaText.textColorWCAG45, large: true, size: size
+                        )
                     }
                 }
             } else {
                 HStack(spacing: size == .full ? 16.0 : 8.0) {
-                    ComplianceToggle(title: "AA", isCompliant: wcag.ratio30, tooltip: PikaText.textColorWCAG30, large: true, combined: true, size: size)
-                    ComplianceToggle(title: "AA/AAA", isCompliant: wcag.ratio45, tooltip: PikaText.textColorWCAG45, large: true, combined: true, size: size)
-                    ComplianceToggle(title: "AAA", isCompliant: wcag.ratio70, tooltip: PikaText.textColorWCAG70, combined: true, size: size)
+                    ComplianceToggle(
+                        title: "AA", isCompliant: wcag.ratio30,
+                        tooltip: PikaText.textColorWCAG30, large: true, combined: true, size: size
+                    )
+                    ComplianceToggle(
+                        title: "AA/AAA", isCompliant: wcag.ratio45,
+                        tooltip: PikaText.textColorWCAG45, large: true, combined: true, size: size
+                    )
+                    ComplianceToggle(
+                        title: "AAA", isCompliant: wcag.ratio70,
+                        tooltip: PikaText.textColorWCAG70, combined: true, size: size
+                    )
                 }
             }
 
         case let .apca(apca):
             HStack(spacing: size == .full ? 16.0 : 8.0) {
-                ComplianceToggle(title: PikaText.textAPCABaseline, isCompliant: abs(apca.value) >= 30, tooltip: PikaText.textColorAPCA30, combined: true, size: size)
-                ComplianceToggle(title: PikaText.textAPCAHeadline, isCompliant: abs(apca.value) >= 45, tooltip: PikaText.textColorAPCA45, combined: true, size: size)
-                ComplianceToggle(title: PikaText.textAPCATitle, isCompliant: abs(apca.value) >= 60, tooltip: PikaText.textColorAPCA60, combined: true, size: size)
-                ComplianceToggle(title: PikaText.textAPCABody, isCompliant: abs(apca.value) >= 75, tooltip: PikaText.textColorAPCA75, combined: true, size: size)
+                ComplianceToggle(
+                    title: PikaText.textAPCABaseline, isCompliant: abs(apca.value) >= 30,
+                    tooltip: PikaText.textColorAPCA30, combined: true, size: size
+                )
+                ComplianceToggle(
+                    title: PikaText.textAPCAHeadline, isCompliant: abs(apca.value) >= 45,
+                    tooltip: PikaText.textColorAPCA45, combined: true, size: size
+                )
+                ComplianceToggle(
+                    title: PikaText.textAPCATitle, isCompliant: abs(apca.value) >= 60,
+                    tooltip: PikaText.textColorAPCA60, combined: true, size: size
+                )
+                ComplianceToggle(
+                    title: PikaText.textAPCABody, isCompliant: abs(apca.value) >= 75,
+                    tooltip: PikaText.textColorAPCA75, combined: true, size: size
+                )
             }
         }
     }

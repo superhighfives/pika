@@ -111,4 +111,40 @@ final class NSColorLabTests: XCTestCase {
         let color = NSColor(r: 50, g: 100, b: 200)
         XCTAssertFalse(color.toOklchString().isEmpty)
     }
+
+    func test_toOklchString_achromatic_noTrailingZerosOnChroma() {
+        // Gray has chroma ≈ 0; the formatted chroma should not end in trailing zeros
+        let gray = NSColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1).usingColorSpace(.sRGB)!
+        let result = gray.toOklchString(style: .css)
+        // Extract chroma token: oklch(L% C H)
+        let tokens = String(result.dropFirst("oklch(".count).dropLast(1)).components(separatedBy: " ")
+        XCTAssertEqual(tokens.count, 3)
+        let chroma = tokens[1]
+        XCTAssertFalse(chroma.contains(".") && chroma.hasSuffix("0"),
+                       "Chroma '\(chroma)' has trailing zeros after decimal")
+    }
+
+    func test_toOklchString_chromatic_stripsTrailingZerosWherePresent() {
+        // A color whose chroma rounds to a value with trailing zeros (e.g. exactly 0.1000)
+        // should not show them, while one with significant digits should keep them
+        let blue = NSColor(red: 0, green: 0, blue: 1, alpha: 1).usingColorSpace(.sRGB)!
+        let result = blue.toOklchString(style: .css)
+        XCTAssertTrue(result.hasPrefix("oklch("))
+        // No token should end in a trailing zero after the decimal
+        let tokens = String(result.dropFirst("oklch(".count).dropLast(1)).components(separatedBy: " ")
+        for token in tokens {
+            XCTAssertFalse(token.contains(".") && token.hasSuffix("0"),
+                           "Token '\(token)' has trailing zeros after decimal")
+        }
+    }
+
+    func test_toOklchString_unformatted_noTrailingZeros() {
+        let gray = NSColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1).usingColorSpace(.sRGB)!
+        let result = gray.toOklchString(style: .unformatted)
+        let tokens = result.components(separatedBy: ", ")
+        for token in tokens {
+            XCTAssertFalse(token.contains(".") && token.hasSuffix("0"),
+                           "Token '\(token)' has trailing zeros after decimal")
+        }
+    }
 }

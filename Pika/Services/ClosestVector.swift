@@ -22,15 +22,13 @@ public class ClosestVector {
         var minDistance = Int.max
         var index = 0
 
-        // swiftlint:disable identifier_name
-        for i in 0 ..< list.count {
-            let distance = diff(colorArr, list[i])
+        for idx in 0 ..< list.count {
+            let distance = diff(colorArr, list[idx])
             if distance < minDistance {
                 minDistance = distance
-                index = i
+                index = idx
             }
         }
-        // swiftlint:enable identifier_name
 
         return index
     }
