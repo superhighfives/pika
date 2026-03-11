@@ -20,16 +20,21 @@ extension NSColor {
     func toOpenGLString(style: CopyFormat = .css) -> String {
         let RGB = toRGBAComponents()
 
-        let formatString: NSString
-        switch style {
-        case .css, .design, .swiftUI:
-            formatString = "rgba(%.5g, %.5g, %.5g, 1.0)"
-        case .unformatted:
-            formatString = "%.5g, %.5g, %.5g, 1.0"
+        func glFloat(_ val: CGFloat) -> String {
+            let str = String(format: "%.5g", val)
+            return str.contains(".") ? str : "\(str).0"
         }
 
-        let openGLString = NSString(format: formatString, RGB.r, RGB.g, RGB.b)
-        return openGLString as String
+        let r_str = glFloat(RGB.r)
+        let g_str = glFloat(RGB.g)
+        let b_str = glFloat(RGB.b)
+
+        switch style {
+        case .css, .design, .swiftUI:
+            return "rgba(\(r_str), \(g_str), \(b_str), 1.0)"
+        case .unformatted:
+            return "\(r_str), \(g_str), \(b_str), 1.0"
+        }
     }
 
     /*

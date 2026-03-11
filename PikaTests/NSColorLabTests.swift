@@ -117,7 +117,7 @@ final class NSColorLabTests: XCTestCase {
         let gray = NSColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1).usingColorSpace(.sRGB)!
         let result = gray.toOklchString(style: .css)
         // Extract chroma token: oklch(L% C H)
-        let tokens = result.dropFirst("oklch(".count).dropLast(1).components(separatedBy: " ")
+        let tokens = String(result.dropFirst("oklch(".count).dropLast(1)).components(separatedBy: " ")
         XCTAssertEqual(tokens.count, 3)
         let chroma = tokens[1]
         XCTAssertFalse(chroma.contains(".") && chroma.hasSuffix("0"),
@@ -131,7 +131,7 @@ final class NSColorLabTests: XCTestCase {
         let result = blue.toOklchString(style: .css)
         XCTAssertTrue(result.hasPrefix("oklch("))
         // No token should end in a trailing zero after the decimal
-        let tokens = result.dropFirst("oklch(".count).dropLast(1).components(separatedBy: " ")
+        let tokens = String(result.dropFirst("oklch(".count).dropLast(1)).components(separatedBy: " ")
         for token in tokens {
             XCTAssertFalse(token.contains(".") && token.hasSuffix("0"),
                            "Token '\(token)' has trailing zeros after decimal")
