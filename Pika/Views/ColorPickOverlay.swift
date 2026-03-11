@@ -140,16 +140,20 @@ struct ColorPickOverlay_Previews: PreviewProvider {
         VStack(spacing: 20) {
             ColorPickOverlay(
                 colorText: "#232323", pickedColor: NSColor(hex: "#232323"),
-                viewModel: ColorPickOverlayViewModel())
+                viewModel: ColorPickOverlayViewModel()
+            )
             ColorPickOverlay(
                 colorText: "rgb(35, 35, 35)", pickedColor: NSColor(hex: "#232323"),
-                viewModel: ColorPickOverlayViewModel())
+                viewModel: ColorPickOverlayViewModel()
+            )
             ColorPickOverlay(
                 colorText: "hsl(0, 0%, 14%)", pickedColor: NSColor(hex: "#232323"),
-                viewModel: ColorPickOverlayViewModel())
+                viewModel: ColorPickOverlayViewModel()
+            )
             ColorPickOverlay(
                 colorText: "0.14 0.14 0.14", pickedColor: NSColor(hex: "#232323"),
-                viewModel: ColorPickOverlayViewModel())
+                viewModel: ColorPickOverlayViewModel()
+            )
         }
         .frame(width: 400, height: 400)
     }

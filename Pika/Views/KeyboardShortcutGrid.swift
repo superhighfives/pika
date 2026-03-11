@@ -9,16 +9,20 @@ private struct ShortcutEntry {
 private let pickRow: [ShortcutEntry] = [
     ShortcutEntry(title: PikaText.textPickForeground, notificationName: .triggerPickForeground, keys: ["⌘", "D"]),
     ShortcutEntry(
-        title: PikaText.textPickBackground, notificationName: .triggerPickBackground, keys: ["⇧", "⌘", "D"]),
+        title: PikaText.textPickBackground, notificationName: .triggerPickBackground, keys: ["⇧", "⌘", "D"]
+    ),
     ShortcutEntry(title: PikaText.textCopyForeground, notificationName: .triggerCopyForeground, keys: ["⌘", "C"]),
     ShortcutEntry(
-        title: PikaText.textCopyBackground, notificationName: .triggerCopyBackground, keys: ["⇧", "⌘", "C"]),
+        title: PikaText.textCopyBackground, notificationName: .triggerCopyBackground, keys: ["⇧", "⌘", "C"]
+    ),
     ShortcutEntry(
         title: PikaText.textColorSystemPickerForegroundSimple,
-        notificationName: .triggerSystemPickerForeground, keys: ["⌘", "S"]),
+        notificationName: .triggerSystemPickerForeground, keys: ["⌘", "S"]
+    ),
     ShortcutEntry(
         title: PikaText.textColorSystemPickerBackgroundSimple,
-        notificationName: .triggerSystemPickerBackground, keys: ["⇧", "⌘", "S"]),
+        notificationName: .triggerSystemPickerBackground, keys: ["⇧", "⌘", "S"]
+    ),
 ]
 
 private let actionRow: [ShortcutEntry] = [
@@ -26,7 +30,8 @@ private let actionRow: [ShortcutEntry] = [
     ShortcutEntry(title: PikaText.textColorRedo, notificationName: .triggerRedo, keys: ["⇧", "⌘", "Z"]),
     ShortcutEntry(title: PikaText.textColorSwapDetail, notificationName: .triggerSwap, keys: ["X"]),
     ShortcutEntry(
-        title: "\(PikaText.textMenuPreferences)...", notificationName: .triggerPreferences, keys: ["⌘", ","]),
+        title: "\(PikaText.textMenuPreferences)...", notificationName: .triggerPreferences, keys: ["⌘", ","]
+    ),
     ShortcutEntry(title: PikaText.textMenuQuit, notificationName: .triggerQuit, keys: ["⌘", "Q"]),
 ]
 

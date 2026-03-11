@@ -3,7 +3,6 @@ import KeyboardShortcuts
 import SwiftUI
 
 // swiftlint:disable line_length
-// trailing_comma is already disabled globally in .swiftlint.yml
 
 extension KeyboardShortcuts.Name {
     static let togglePika = Self("togglePika")

@@ -25,7 +25,8 @@ class ColorPickOverlayWindow {
 
         positionPanels(
             infoPanel: infoPanel, crosshairPanel: crosshairPanel,
-            near: cursorPosition, panelSize: panelSize, crosshairSize: crosshairSize)
+            near: cursorPosition, panelSize: panelSize, crosshairSize: crosshairSize
+        )
 
         infoPanel.orderFrontRegardless()
         crosshairPanel.orderFrontRegardless()
@@ -121,14 +122,17 @@ class ColorPickOverlayWindow {
 
         infoPanel.setFrame(
             NSRect(x: xPosition, y: yPosition, width: panelSize.width, height: panelSize.height),
-            display: true)
+            display: true
+        )
 
         crosshairPanel.setFrame(
             NSRect(
                 x: cursorPosition.x - crosshairSize / 2,
                 y: cursorPosition.y - crosshairSize / 2,
-                width: crosshairSize, height: crosshairSize),
-            display: true)
+                width: crosshairSize, height: crosshairSize
+            ),
+            display: true
+        )
     }
 
     func dismiss() {

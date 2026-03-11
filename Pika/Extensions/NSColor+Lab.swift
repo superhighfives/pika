@@ -93,7 +93,7 @@ extension NSColor {
         case .design, .swiftUI:
             return "lab(\(l_str), \(a_str), \(b_str))"
         case .unformatted:
-            return "\(l_str),\(a_str),\(b_str)"
+            return "\(l_str), \(a_str), \(b_str)"
         }
     }
 

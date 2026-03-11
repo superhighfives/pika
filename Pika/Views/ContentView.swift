@@ -71,14 +71,16 @@ struct ContentView: View {
             pasteboard.clearContents()
             let contents = Exporter.toText(
                 foreground: eyedroppers.foreground, background: eyedroppers.background,
-                style: copyFormat)
+                style: copyFormat
+            )
             pasteboard.setString(contents, forType: .string)
         }
         .onReceive(NotificationCenter.default.publisher(for: .triggerCopyData)) { _ in
             pasteboard.clearContents()
             let contents = Exporter.toJSON(
                 foreground: eyedroppers.foreground, background: eyedroppers.background,
-                style: copyFormat)
+                style: copyFormat
+            )
             pasteboard.setString(contents, forType: .string)
         }
     }
