@@ -5,8 +5,8 @@ import Defaults
 // identifier_name is disabled because color science math uses conventional single-letter
 // variable names (h, s, b, l, r, g) that would be misleading if renamed.
 
-struct HSBComponents { let h, s, b: CGFloat }
-struct HSLComponents { let h, s, l: CGFloat }
+public struct HSBComponents { let h, s, b: CGFloat }
+public struct HSLComponents { let h, s, l: CGFloat }
 
 extension NSColor {
     /*
