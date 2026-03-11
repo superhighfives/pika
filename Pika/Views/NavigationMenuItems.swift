@@ -23,12 +23,10 @@ struct NavigationMenuItems: View {
             Button("\(PikaText.textPickForeground)...", action: {
                 NSApp.sendAction(#selector(AppDelegate.triggerPickForeground), to: nil, from: nil)
             })
-            .keyboardShortcut("d", modifiers: .command)
 
             Button("\(PikaText.textPickBackground)...", action: {
                 NSApp.sendAction(#selector(AppDelegate.triggerPickBackground), to: nil, from: nil)
             })
-            .keyboardShortcut("d", modifiers: [.command, .shift])
 
             VStack {
                 Divider()
@@ -37,12 +35,10 @@ struct NavigationMenuItems: View {
             Button(PikaText.textCopyForeground, action: {
                 NSApp.sendAction(#selector(AppDelegate.triggerCopyForeground), to: nil, from: nil)
             })
-            .keyboardShortcut("c", modifiers: .command)
 
             Button(PikaText.textCopyBackground, action: {
                 NSApp.sendAction(#selector(AppDelegate.triggerCopyBackground), to: nil, from: nil)
             })
-            .keyboardShortcut("c", modifiers: [.command, .shift])
 
             VStack {
                 Divider()
@@ -51,12 +47,10 @@ struct NavigationMenuItems: View {
             Button(PikaText.textColorSystemPickerForeground, action: {
                 NSApp.sendAction(#selector(AppDelegate.triggerSystemPickerForeground), to: nil, from: nil)
             })
-            .keyboardShortcut("s", modifiers: .command)
 
             Button(PikaText.textColorSystemPickerBackground, action: {
                 NSApp.sendAction(#selector(AppDelegate.triggerSystemPickerBackground), to: nil, from: nil)
             })
-            .keyboardShortcut("s", modifiers: [.command, .shift])
 
             VStack {
                 Divider()
@@ -78,17 +72,14 @@ struct NavigationMenuItems: View {
         Button(PikaText.textColorSwapDetail, action: {
             NSApp.sendAction(#selector(AppDelegate.triggerSwap), to: nil, from: nil)
         })
-        .keyboardShortcut("x", modifiers: [])
 
         Button(PikaText.textColorUndo, action: {
             NSApp.sendAction(#selector(AppDelegate.triggerUndo), to: nil, from: nil)
         })
-        .keyboardShortcut("z", modifiers: .command)
 
         Button(PikaText.textColorRedo, action: {
             NSApp.sendAction(#selector(AppDelegate.triggerRedo), to: nil, from: nil)
         })
-        .keyboardShortcut("z", modifiers: [.command, .shift])
 
         VStack {
             Divider()
@@ -109,7 +100,6 @@ struct NavigationMenuItems: View {
             Button("\(PikaText.textMenuPreferences)...", action: {
                 NSApp.sendAction(#selector(AppDelegate.openPreferencesWindow), to: nil, from: nil)
             })
-            .keyboardShortcut(",", modifiers: .command)
         }
 
         VStack {
@@ -119,7 +109,6 @@ struct NavigationMenuItems: View {
         Button(PikaText.textMenuQuit, action: {
             NSApplication.shared.terminate(self)
         })
-        .keyboardShortcut("q", modifiers: .command)
     }
 }
 
