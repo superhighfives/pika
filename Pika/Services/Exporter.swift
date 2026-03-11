@@ -22,6 +22,8 @@ class Exporter {
         let failMessage = PikaText.textColorFail
 
         // swiftlint:disable line_length
+        // line_length is disabled because the export format strings are inherently long
+        // and cannot be broken across lines without changing the output format.
         return """
         \(PikaText.textColorForeground): Hex \(foregroundHex) · RGB \(foregroundRgb) · HSB \(foregroundHsb) · HSL \(foregroundHsl) · OpenGL \(foregroundOpengl) · OKLCH \(foregroundOklch)
         \(PikaText.textColorBackground): Hex \(backgroundHex) · RGB \(backgroundRgb) · HSB \(backgroundHsb) · HSL \(backgroundHsl) · OpenGL \(backgroundOpengl) · OKLCH \(backgroundOklch)

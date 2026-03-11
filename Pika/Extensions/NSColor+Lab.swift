@@ -1,6 +1,12 @@
 import Cocoa
 
 // swiftlint:disable identifier_name
+// identifier_name is disabled because color science math uses conventional single-letter
+// variable names (x, y, z, l, a, b, c, h, L, C, H) that would be misleading if renamed.
+
+private struct XYZComponents { let x, y, z: CGFloat }
+struct LabComponents { let l, a, b: CGFloat }
+struct OklchComponents { let l, c, h: CGFloat }
 
 extension NSColor {
     // Shared linearization for sRGB components used by both LAB and OKLCH.
@@ -38,7 +44,7 @@ extension NSColor {
      * CIE-LAB
      */
 
-    private func toXYZComponents() -> (x: CGFloat, y: CGFloat, z: CGFloat) {
+    private func toXYZComponents() -> XYZComponents {
         let srgb = toRGBAComponents(in: .sRGB)
         let r_lin = linearizeSRGB(srgb.r)
         let g_lin = linearizeSRGB(srgb.g)
@@ -48,10 +54,10 @@ extension NSColor {
         let y = r_lin * 0.2126729 + g_lin * 0.7151522 + b_lin * 0.0721750
         let z = r_lin * 0.0193339 + g_lin * 0.1191920 + b_lin * 0.9503041
 
-        return (x: x, y: y, z: z)
+        return XYZComponents(x: x, y: y, z: z)
     }
 
-    func toLabComponents() -> (l: CGFloat, a: CGFloat, b: CGFloat) {
+    func toLabComponents() -> LabComponents {
         let xyz = toXYZComponents()
 
         // D65 Reference White
@@ -72,7 +78,7 @@ extension NSColor {
         let a_star = 500.0 * (f(xyz.x / Xn) - f(xyz.y / Yn))
         let b_star = 200.0 * (f(xyz.y / Yn) - f(xyz.z / Zn))
 
-        return (l: L_star, a: a_star, b: b_star)
+        return LabComponents(l: L_star, a: a_star, b: b_star)
     }
 
     func toLabString(style: CopyFormat = .css) -> String {
@@ -95,7 +101,7 @@ extension NSColor {
      * OKLCH
      */
 
-    func toOklchComponents() -> (l: CGFloat, c: CGFloat, h: CGFloat) {
+    func toOklchComponents() -> OklchComponents {
         let srgb = toRGBAComponents(in: .sRGB)
         let r_lin = linearizeSRGB(srgb.r)
         let g_lin = linearizeSRGB(srgb.g)
@@ -117,7 +123,7 @@ extension NSColor {
         var H = atan2(b, a) * 180.0 / .pi
         if H < 0 { H += 360.0 }
 
-        return (l: L, c: C, h: H)
+        return OklchComponents(l: L, c: C, h: H)
     }
 
     func toOklchString(style: CopyFormat = .css) -> String {

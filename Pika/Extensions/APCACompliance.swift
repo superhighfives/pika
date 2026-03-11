@@ -1,6 +1,8 @@
 import Cocoa
 
 // swiftlint:disable identifier_name
+// identifier_name is disabled because the APCA algorithm uses conventional single-letter
+// variable names (c, r, g, b, y, s) from the specification that would be misleading if renamed.
 
 extension NSColor {
     struct APCA {

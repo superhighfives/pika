@@ -2,13 +2,18 @@ import Cocoa
 import Defaults
 
 // swiftlint:disable identifier_name
+// identifier_name is disabled because color science math uses conventional single-letter
+// variable names (h, s, b, l, r, g) that would be misleading if renamed.
+
+struct HSBComponents { let h, s, b: CGFloat }
+struct HSLComponents { let h, s, l: CGFloat }
 
 extension NSColor {
     /*
      * HSB
      */
 
-    public final func toHSBComponents() -> (h: CGFloat, s: CGFloat, b: CGFloat) {
+    public final func toHSBComponents() -> HSBComponents {
         var h: CGFloat = 0.0
         var s: CGFloat = 0.0
         var b: CGFloat = 0.0
@@ -18,15 +23,15 @@ extension NSColor {
         }
 
         if toHexString() == NSColor.black.toHexString() {
-            return (0.0, 0.0, 0.0)
+            return HSBComponents(h: 0.0, s: 0.0, b: 0.0)
         } else if toHexString() == NSColor.white.toHexString() {
-            return (0.0, 0.0, 1.0)
+            return HSBComponents(h: 0.0, s: 0.0, b: 1.0)
         }
 
         rgbaColor.getHue(&h, saturation: &s, brightness: &b, alpha: nil)
         h = h.truncatingRemainder(dividingBy: 1.0)
 
-        return (h: h, s: s, b: b)
+        return HSBComponents(h: h, s: s, b: b)
     }
 
     /**
@@ -58,7 +63,7 @@ extension NSColor {
      * HSL
      */
 
-    public final func toHSLComponents() -> (h: CGFloat, s: CGFloat, l: CGFloat) {
+    public final func toHSLComponents() -> HSLComponents {
         var h: CGFloat = 0.0
         var s: CGFloat = 0.0
         var l: CGFloat = 0.0
@@ -69,9 +74,9 @@ extension NSColor {
         let b = RGB.b
 
         if toHexString() == NSColor.black.toHexString() {
-            return (0.0, 0.0, 0.0)
+            return HSLComponents(h: 0.0, s: 0.0, l: 0.0)
         } else if toHexString() == NSColor.white.toHexString() {
-            return (0.0, 0.0, 1.0)
+            return HSLComponents(h: 0.0, s: 0.0, l: 1.0)
         }
 
         let min = Swift.min(Swift.min(r, g), b)
@@ -106,7 +111,7 @@ extension NSColor {
             s = delta / (2 - max - min)
         }
 
-        return (h: h, s: s, l: l)
+        return HSLComponents(h: h, s: s, l: l)
     }
 
     /**

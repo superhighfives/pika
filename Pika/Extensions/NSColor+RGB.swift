@@ -3,11 +3,13 @@ import Defaults
 import SwiftUI
 
 // swiftlint:disable identifier_name
+// identifier_name is disabled because color component names (r, g, b, a) are standard
+// single-letter identifiers used throughout the color APIs.
+
+struct RGBAComponents { let r, g, b, a: CGFloat }
 
 extension NSColor {
-    final func toRGBAComponents(in colorSpace: NSColorSpace = Defaults[.colorSpace])
-        -> (r: CGFloat, g: CGFloat, b: CGFloat, a: CGFloat)
-    {
+    final func toRGBAComponents(in colorSpace: NSColorSpace = Defaults[.colorSpace]) -> RGBAComponents {
         var r: CGFloat = 0, g: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
 
         guard let rgbaColor = usingColorSpace(colorSpace) else {
@@ -16,7 +18,7 @@ extension NSColor {
 
         rgbaColor.getRed(&r, green: &g, blue: &b, alpha: &a)
 
-        return (r, g, b, a)
+        return RGBAComponents(r: r, g: g, b: b, a: a)
     }
 
     func toRGBString(style: CopyFormat = .css) -> String {
