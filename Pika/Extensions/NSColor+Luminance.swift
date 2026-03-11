@@ -1,29 +1,31 @@
 import Cocoa
 
 extension NSColor {
-    func clip<T: Comparable>(_ v: T, _ minimum: T, _ maximum: T) -> T {
-        max(min(v, maximum), minimum)
+    func clip<T: Comparable>(_ val: T, _ minimum: T, _ maximum: T) -> T {
+        max(min(val, maximum), minimum)
     }
 
     var luminance: CGFloat {
         let rgba = toRGBAComponents(in: .extendedSRGB)
 
-        func lumHelper(c: CGFloat) -> CGFloat {
-            (c < 0.03928) ? (c / 12.92) : pow((c + 0.055) / 1.055, 2.4)
+        func lumHelper(component: CGFloat) -> CGFloat {
+            (component < 0.03928) ? (component / 12.92) : pow((component + 0.055) / 1.055, 2.4)
         }
 
-        let result = 0.2126 * lumHelper(c: rgba.r) + 0.7152 * lumHelper(c: rgba.g) + 0.0722 * lumHelper(c: rgba.b)
+        let result = 0.2126 * lumHelper(component: rgba.r)
+            + 0.7152 * lumHelper(component: rgba.g)
+            + 0.0722 * lumHelper(component: rgba.b)
         return max(.zero, result)
     }
 
     func contrastRatio(with color: NSColor) -> CGFloat {
-        let L1 = luminance
-        let L2 = color.luminance
+        let lum1 = luminance
+        let lum2 = color.luminance
 
-        if L1 < L2 {
-            return (L2 + 0.05) / (L1 + 0.05)
+        if lum1 < lum2 {
+            return (lum2 + 0.05) / (lum1 + 0.05)
         } else {
-            return (L1 + 0.05) / (L2 + 0.05)
+            return (lum1 + 0.05) / (lum2 + 0.05)
         }
     }
 

@@ -48,7 +48,10 @@ struct CompliancePreviewAPCA: View {
     var body: some View {
         let apca = foreground.color.toAPCACompliance(with: background.color)
 
-        StyledContentView(title: PikaText.textAppearanceAPCATitle, description: PikaText.textAppearanceAPCADescription) {
+        StyledContentView(
+            title: PikaText.textAppearanceAPCATitle,
+            description: PikaText.textAppearanceAPCADescription
+        ) {
             ComplianceToggleGroup(complianceData: .apca(apca), theme: .weight)
                 .padding(20.0)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)

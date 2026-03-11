@@ -19,95 +19,13 @@ class ColorPickOverlayWindow {
         let viewModel = ColorPickOverlayViewModel()
         self.viewModel = viewModel
 
-        // Create info panel with color text
-        let contentView = ColorPickOverlay(colorText: colorText, pickedColor: pickedColor, viewModel: viewModel)
-        let hostingView = NSHostingView(rootView: contentView)
-
-        hostingView.invalidateIntrinsicContentSize()
-        let intrinsicSize = hostingView.intrinsicContentSize
-        let panelWidth = intrinsicSize.width
-        let panelHeight = intrinsicSize.height
-
-        let infoPanel = NSPanel(
-            contentRect: NSRect(x: 0, y: 0, width: panelWidth, height: panelHeight),
-            styleMask: [.nonactivatingPanel, .hudWindow],
-            backing: .buffered,
-            defer: false
-        )
-
-        infoPanel.isFloatingPanel = true
-        infoPanel.level = .popUpMenu
-        infoPanel.backgroundColor = .clear
-        infoPanel.isOpaque = false
-        infoPanel.hasShadow = true
-        infoPanel.titlebarAppearsTransparent = true
-        infoPanel.titleVisibility = .hidden
-        infoPanel.isMovable = false
-        infoPanel.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
-
-        infoPanel.contentView = hostingView
-
-        // Create crosshair panel at cursor position
-        let crosshairView = ColorPickCrosshair(pickedColor: pickedColor, viewModel: viewModel)
-        let crosshairHostingView = NSHostingView(rootView: crosshairView)
-
+        let (infoPanel, panelSize) = makeInfoPanel(colorText: colorText, pickedColor: pickedColor, viewModel: viewModel)
         let crosshairSize: CGFloat = 20
-        let crosshairPanel = NSPanel(
-            contentRect: NSRect(x: 0, y: 0, width: crosshairSize, height: crosshairSize),
-            styleMask: [.nonactivatingPanel, .borderless],
-            backing: .buffered,
-            defer: false
-        )
+        let crosshairPanel = makeCrosshairPanel(pickedColor: pickedColor, viewModel: viewModel, size: crosshairSize)
 
-        crosshairPanel.isFloatingPanel = true
-        crosshairPanel.level = .popUpMenu
-        crosshairPanel.backgroundColor = .clear
-        crosshairPanel.isOpaque = false
-        crosshairPanel.hasShadow = false
-        crosshairPanel.titlebarAppearsTransparent = true
-        crosshairPanel.titleVisibility = .hidden
-        crosshairPanel.isMovable = false
-        crosshairPanel.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
-
-        crosshairPanel.contentView = crosshairHostingView
-
-        let screen = NSScreen.screens.first { NSMouseInRect(cursorPosition, $0.frame, false) } ?? NSScreen.main
-
-        if let screen = screen {
-            let screenFrame = screen.visibleFrame
-            let offset: CGFloat = 5
-
-            // Position info panel offset from cursor
-            var xPosition = cursorPosition.x + offset
-            var yPosition = cursorPosition.y - panelHeight - offset
-
-            if xPosition + panelWidth > screenFrame.maxX {
-                xPosition = cursorPosition.x - panelWidth - offset
-            }
-
-            if xPosition < screenFrame.minX {
-                xPosition = screenFrame.minX + 10
-            }
-
-            if yPosition < screenFrame.minY {
-                yPosition = cursorPosition.y + offset
-            }
-
-            if yPosition + panelHeight > screenFrame.maxY {
-                yPosition = screenFrame.maxY - panelHeight - 10
-            }
-
-            infoPanel.setFrame(
-                NSRect(x: xPosition, y: yPosition, width: panelWidth, height: panelHeight),
-                display: true
-            )
-
-            // Position crosshair centered on cursor
-            crosshairPanel.setFrame(
-                NSRect(x: cursorPosition.x - crosshairSize / 2, y: cursorPosition.y - crosshairSize / 2, width: crosshairSize, height: crosshairSize),
-                display: true
-            )
-        }
+        positionPanels(
+            infoPanel: infoPanel, crosshairPanel: crosshairPanel,
+            near: cursorPosition, panelSize: panelSize, crosshairSize: crosshairSize)
 
         infoPanel.orderFrontRegardless()
         crosshairPanel.orderFrontRegardless()
@@ -118,6 +36,99 @@ class ColorPickOverlayWindow {
         dismissTimer = Timer.scheduledTimer(withTimeInterval: duration, repeats: false) { [weak self] _ in
             self?.dismiss()
         }
+    }
+
+    private func makeInfoPanel(
+        colorText: String, pickedColor: NSColor, viewModel: ColorPickOverlayViewModel
+    ) -> (NSPanel, CGSize) {
+        let contentView = ColorPickOverlay(colorText: colorText, pickedColor: pickedColor, viewModel: viewModel)
+        let hostingView = NSHostingView(rootView: contentView)
+
+        hostingView.invalidateIntrinsicContentSize()
+        let intrinsicSize = hostingView.intrinsicContentSize
+
+        let panel = NSPanel(
+            contentRect: NSRect(x: 0, y: 0, width: intrinsicSize.width, height: intrinsicSize.height),
+            styleMask: [.nonactivatingPanel, .hudWindow],
+            backing: .buffered,
+            defer: false
+        )
+        panel.isFloatingPanel = true
+        panel.level = .popUpMenu
+        panel.backgroundColor = .clear
+        panel.isOpaque = false
+        panel.hasShadow = true
+        panel.titlebarAppearsTransparent = true
+        panel.titleVisibility = .hidden
+        panel.isMovable = false
+        panel.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
+        panel.contentView = hostingView
+
+        return (panel, intrinsicSize)
+    }
+
+    private func makeCrosshairPanel(
+        pickedColor: NSColor, viewModel: ColorPickOverlayViewModel, size: CGFloat
+    ) -> NSPanel {
+        let crosshairView = ColorPickCrosshair(pickedColor: pickedColor, viewModel: viewModel)
+        let hostingView = NSHostingView(rootView: crosshairView)
+
+        let panel = NSPanel(
+            contentRect: NSRect(x: 0, y: 0, width: size, height: size),
+            styleMask: [.nonactivatingPanel, .borderless],
+            backing: .buffered,
+            defer: false
+        )
+        panel.isFloatingPanel = true
+        panel.level = .popUpMenu
+        panel.backgroundColor = .clear
+        panel.isOpaque = false
+        panel.hasShadow = false
+        panel.titlebarAppearsTransparent = true
+        panel.titleVisibility = .hidden
+        panel.isMovable = false
+        panel.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
+        panel.contentView = hostingView
+
+        return panel
+    }
+
+    private func positionPanels(
+        infoPanel: NSPanel, crosshairPanel: NSPanel,
+        near cursorPosition: NSPoint, panelSize: CGSize, crosshairSize: CGFloat
+    ) {
+        let screen = NSScreen.screens.first { NSMouseInRect(cursorPosition, $0.frame, false) } ?? NSScreen.main
+        guard let screen = screen else { return }
+
+        let screenFrame = screen.visibleFrame
+        let offset: CGFloat = 5
+
+        var xPosition = cursorPosition.x + offset
+        var yPosition = cursorPosition.y - panelSize.height - offset
+
+        if xPosition + panelSize.width > screenFrame.maxX {
+            xPosition = cursorPosition.x - panelSize.width - offset
+        }
+        if xPosition < screenFrame.minX {
+            xPosition = screenFrame.minX + 10
+        }
+        if yPosition < screenFrame.minY {
+            yPosition = cursorPosition.y + offset
+        }
+        if yPosition + panelSize.height > screenFrame.maxY {
+            yPosition = screenFrame.maxY - panelSize.height - 10
+        }
+
+        infoPanel.setFrame(
+            NSRect(x: xPosition, y: yPosition, width: panelSize.width, height: panelSize.height),
+            display: true)
+
+        crosshairPanel.setFrame(
+            NSRect(
+                x: cursorPosition.x - crosshairSize / 2,
+                y: cursorPosition.y - crosshairSize / 2,
+                width: crosshairSize, height: crosshairSize),
+            display: true)
     }
 
     func dismiss() {

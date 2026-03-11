@@ -140,7 +140,8 @@ class Eyedropper: ObservableObject {
 
                 if let selectedColor = selectedColor {
                     if Defaults[.showColorOverlay] {
-                        let colorText = selectedColor.toFormat(format: Defaults[.colorFormat], style: Defaults[.copyFormat])
+                        let colorText = selectedColor.toFormat(
+                            format: Defaults[.colorFormat], style: Defaults[.copyFormat])
                         let cursorPosition = NSEvent.mouseLocation
                         self.overlayWindow.show(
                             colorText: colorText,

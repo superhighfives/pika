@@ -23,40 +23,46 @@ final class URLSchemeHandler: NSObject {
         }
 
         switch action {
-        case "format":
-            if let task, let format = ColorFormat.withLabel(task) {
-                Defaults[.colorFormat] = format
-            }
-        case "pick":
-            if task == "foreground" {
-                NSApp.sendAction(#selector(AppDelegate.triggerPickForeground), to: nil, from: nil)
-            } else if task == "background" {
-                NSApp.sendAction(#selector(AppDelegate.triggerPickBackground), to: nil, from: nil)
-            }
-        case "system":
-            if task == "foreground" {
-                NSApp.sendAction(#selector(AppDelegate.triggerSystemPickerForeground), to: nil, from: nil)
-            } else if task == "background" {
-                NSApp.sendAction(#selector(AppDelegate.triggerSystemPickerBackground), to: nil, from: nil)
-            }
-        case "copy":
-            if task == "foreground" {
-                NSApp.sendAction(#selector(AppDelegate.triggerCopyForeground), to: nil, from: nil)
-            } else if task == "background" {
-                NSApp.sendAction(#selector(AppDelegate.triggerCopyBackground), to: nil, from: nil)
-            } else if task == "text" {
-                NSApp.sendAction(#selector(AppDelegate.triggerCopyText), to: nil, from: nil)
-            } else if task == "json" {
-                NSApp.sendAction(#selector(AppDelegate.triggerCopyData), to: nil, from: nil)
-            }
-        case "swap":
-            NSApp.sendAction(#selector(AppDelegate.triggerSwap), to: nil, from: nil)
-        case "undo":
-            NSApp.sendAction(#selector(AppDelegate.triggerUndo), to: nil, from: nil)
-        case "redo":
-            NSApp.sendAction(#selector(AppDelegate.triggerRedo), to: nil, from: nil)
-        default:
-            break
+        case "format": handleFormat(task: task)
+        case "pick": handlePick(task: task)
+        case "system": handleSystem(task: task)
+        case "copy": handleCopy(task: task)
+        case "swap": NSApp.sendAction(#selector(AppDelegate.triggerSwap), to: nil, from: nil)
+        case "undo": NSApp.sendAction(#selector(AppDelegate.triggerUndo), to: nil, from: nil)
+        case "redo": NSApp.sendAction(#selector(AppDelegate.triggerRedo), to: nil, from: nil)
+        default: break
+        }
+    }
+
+    private func handleFormat(task: String?) {
+        if let task, let format = ColorFormat.withLabel(task) {
+            Defaults[.colorFormat] = format
+        }
+    }
+
+    private func handlePick(task: String?) {
+        if task == "foreground" {
+            NSApp.sendAction(#selector(AppDelegate.triggerPickForeground), to: nil, from: nil)
+        } else if task == "background" {
+            NSApp.sendAction(#selector(AppDelegate.triggerPickBackground), to: nil, from: nil)
+        }
+    }
+
+    private func handleSystem(task: String?) {
+        if task == "foreground" {
+            NSApp.sendAction(#selector(AppDelegate.triggerSystemPickerForeground), to: nil, from: nil)
+        } else if task == "background" {
+            NSApp.sendAction(#selector(AppDelegate.triggerSystemPickerBackground), to: nil, from: nil)
+        }
+    }
+
+    private func handleCopy(task: String?) {
+        switch task {
+        case "foreground": NSApp.sendAction(#selector(AppDelegate.triggerCopyForeground), to: nil, from: nil)
+        case "background": NSApp.sendAction(#selector(AppDelegate.triggerCopyBackground), to: nil, from: nil)
+        case "text": NSApp.sendAction(#selector(AppDelegate.triggerCopyText), to: nil, from: nil)
+        case "json": NSApp.sendAction(#selector(AppDelegate.triggerCopyData), to: nil, from: nil)
+        default: break
         }
     }
 }
