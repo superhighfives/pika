@@ -94,17 +94,19 @@ class Eyedropper: ObservableObject {
             self.set(previousColor)
         }
 
-        color = selectedColor.usingColorSpace(.sRGB)!
+        color = selectedColor.usingColorSpace(.sRGB) ?? selectedColor
     }
 
     @objc func colorDidChange(sender: AnyObject) {
         if let picker = sender as? NSColorPanel {
+            guard let srgbColor = picker.color.usingColorSpace(.sRGB) else { return }
+
             let previousColor = color
             undoManager?.registerUndo(withTarget: self) { _ in
                 self.set(previousColor)
             }
 
-            color = picker.color.usingColorSpace(.sRGB)!
+            color = srgbColor
         }
     }
 
@@ -135,7 +137,7 @@ class Eyedropper: ObservableObject {
             sampler.show { selectedColor in
 
                 if let selectedColor = selectedColor {
-                    let normalizedColor = selectedColor.usingColorSpace(.sRGB)!
+                    let normalizedColor = selectedColor.usingColorSpace(.sRGB) ?? selectedColor
 
                     if Defaults[.showColorOverlay] {
                         let colorText = normalizedColor.toFormat(
@@ -150,7 +152,7 @@ class Eyedropper: ObservableObject {
                         )
                     }
 
-                    self.set(selectedColor)
+                    self.set(normalizedColor)
 
                     if Defaults[.copyColorOnPick] {
                         NSApp.sendAction(self.type.copySelector, to: nil, from: nil)

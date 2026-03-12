@@ -96,4 +96,29 @@ final class NSColorHexTests: XCTestCase {
         let color = NSColor(hex: original).usingColorSpace(.sRGB)!
         XCTAssertEqual(color.toHexString(style: .css), original)
     }
+
+    // MARK: - sRGB normalization stability
+
+    func test_displayP3Color_normalizedToSRGB_producesStableHex() {
+        // A Display P3 color should produce the same hex regardless of the
+        // user's color space preference, when normalized to sRGB first.
+        let p3Color = NSColor(colorSpace: .displayP3, components: [0.055, 0.094, 0.161, 1.0], count: 4)
+        let srgbColor = p3Color.usingColorSpace(.sRGB)!
+
+        Defaults[.colorSpace] = .displayP3
+        let hexInP3 = srgbColor.toHexString()
+
+        Defaults[.colorSpace] = .sRGB
+        let hexInSRGB = srgbColor.toHexString()
+
+        XCTAssertEqual(hexInP3, hexInSRGB, "Hex should be stable across color space preferences when stored in sRGB")
+    }
+
+    func test_sRGB_roundTrip_noChannelDrift() {
+        // Verify that converting to sRGB and back to hex doesn't introduce
+        // the 1-3 channel drift reported in issue #187.
+        let original = "#0e1829"
+        let color = NSColor(hex: original).usingColorSpace(.sRGB)!
+        XCTAssertEqual(color.toHexString(style: .css), original)
+    }
 }

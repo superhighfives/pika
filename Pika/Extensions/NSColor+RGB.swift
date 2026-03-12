@@ -37,8 +37,8 @@ extension NSColor {
         }
     }
 
-    func toRGB8BitArray() -> [Int] {
-        let RGB = toRGBAComponents()
+    func toRGB8BitArray(in colorSpace: NSColorSpace = .sRGB) -> [Int] {
+        let RGB = toRGBAComponents(in: colorSpace)
         let red = Int(round(RGB.r * 255))
         let green = Int(round(RGB.g * 255))
         let blue = Int(round(RGB.b * 255))
