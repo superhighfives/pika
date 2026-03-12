@@ -10,23 +10,20 @@ struct ColorPair: Codable, Identifiable, Equatable {
     var foregroundColor: NSColor { Self.colorFromHex(foregroundHex) }
     var backgroundColor: NSColor { Self.colorFromHex(backgroundHex) }
 
-    // Reconstructs the color in Defaults[.colorSpace] — the same space toHexString()
-    // reads from. This makes set() a no-op (colorSpace → colorSpace), so the stored
-    // hex round-trips exactly and isActivePair comparison always holds.
+    // Reconstructs the color in sRGB. History hex values are stored as sRGB,
+    // so decoding them in sRGB keeps history stable regardless of the current
+    // Defaults[.colorSpace] preference.
     private static func colorFromHex(_ hex: String) -> NSColor {
-        let fallback = NSColor.black.usingColorSpace(Defaults[.colorSpace]) ?? .black
+        let fallback = NSColor.black.usingColorSpace(.sRGB) ?? .black
         let h = hex.replacingOccurrences(of: "#", with: "")
         guard h.count == 6 else { return fallback }
         let scanner = Scanner(string: h)
         var rgb: UInt64 = 0
         guard scanner.scanHexInt64(&rgb) else { return fallback }
-        let components: [CGFloat] = [
-            CGFloat((rgb >> 16) & 0xFF) / 255,
-            CGFloat((rgb >> 8) & 0xFF) / 255,
-            CGFloat(rgb & 0xFF) / 255,
-            1.0,
-        ]
-        return NSColor(colorSpace: Defaults[.colorSpace], components: components, count: 4) ?? fallback
+        let red = CGFloat((rgb >> 16) & 0xFF) / 255.0
+        let green = CGFloat((rgb >> 8) & 0xFF) / 255.0
+        let blue = CGFloat(rgb & 0xFF) / 255.0
+        return NSColor(srgbRed: red, green: green, blue: blue, alpha: 1.0)
     }
 
     static let maxHistory = 20

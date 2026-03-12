@@ -122,6 +122,8 @@ class Eyedropper: ObservableObject {
             }
 
             color = picker.color.usingColorSpace(.sRGB)!
+
+            NotificationCenter.default.post(name: .colorPicked, object: nil)
         }
     }
 
