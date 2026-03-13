@@ -364,9 +364,6 @@
 /* Apply background only */
 "history.apply.background" = "Primijeni samo pozadinu";
 
-/* Swap and apply */
-"history.apply.swapped" = "Zamijeni i primijeni";
-
 /* Remove from history */
 "history.remove" = "Ukloni iz povijesti";
 
