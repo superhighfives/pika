@@ -10,7 +10,6 @@ import SwiftUI
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
     var eyedroppers: Eyedroppers!
-    var undoManager = UndoManager()
 
     let notificationCenter = NotificationCenter.default
     let windowCoordinator = WindowCoordinator()
@@ -71,8 +70,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         statusBarController.onToggle = { [weak self] in self?.windowCoordinator.togglePopover() }
 
         eyedroppers = Eyedroppers()
-        eyedroppers.foreground.undoManager = undoManager
-        eyedroppers.background.undoManager = undoManager
 
         windowCoordinator.setupMainWindow(eyedroppers: eyedroppers)
 
@@ -93,6 +90,23 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         if Defaults[.alwaysShowOnLaunch] {
             showPika(self)
+        }
+
+        NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
+            guard Defaults[.historyDrawerVisible] else { return event }
+            switch event.keyCode {
+            case 123: // left arrow
+                self.notificationCenter.post(name: .historyNext, object: self)
+                return nil
+            case 124: // right arrow
+                self.notificationCenter.post(name: .historyPrevious, object: self)
+                return nil
+            case 51: // delete key
+                self.notificationCenter.post(name: .historyDelete, object: self)
+                return nil
+            default:
+                return event
+            }
         }
     }
 
@@ -148,18 +162,30 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         notificationCenter.post(name: .toggleHistory, object: self)
     }
 
+    @IBAction func triggerHistoryPrevious(_: Any) {
+        notificationCenter.post(name: .historyPrevious, object: self)
+    }
+
+    @IBAction func triggerHistoryNext(_: Any) {
+        notificationCenter.post(name: .historyNext, object: self)
+    }
+
+    @IBAction func triggerHistoryDelete(_: Any) {
+        notificationCenter.post(name: .historyDelete, object: self)
+    }
+
     @IBAction func triggerSwap(_: Any) {
         notificationCenter.post(name: .triggerSwap, object: self)
     }
 
     @IBAction func triggerUndo(_: Any) {
         notificationCenter.post(name: .triggerUndo, object: self)
-        undoManager.undo()
+        eyedroppers.undo()
     }
 
     @IBAction func triggerRedo(_: Any) {
         notificationCenter.post(name: .triggerRedo, object: self)
-        undoManager.redo()
+        eyedroppers.redo()
     }
 
     @IBAction func triggerCopyText(_: Any) {

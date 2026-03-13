@@ -46,24 +46,9 @@ struct ContentView: View {
                         ltr: true
                     ))
                     .onReceive(NotificationCenter.default.publisher(for: .triggerSwap)) { _ in
-                        let fgHex = eyedroppers.foreground.color.toHexString()
-                        let bgHex = eyedroppers.background.color.toHexString()
-                        var history = Defaults[.colorHistory]
-                        if let idx = history.firstIndex(where: {
-                            $0.foregroundHex == fgHex && $0.backgroundHex == bgHex
-                        }) {
-                            let pair = history[idx]
-                            history[idx] = ColorPair(
-                                id: pair.id,
-                                foregroundHex: pair.backgroundHex,
-                                backgroundHex: pair.foregroundHex,
-                                date: pair.date
-                            )
-                            Defaults[.colorHistory] = history
+                        withAnimation(.easeInOut(duration: 0.2)) {
+                            eyedroppers.swap()
                         }
-                        let temp = eyedroppers.foreground.color
-                        eyedroppers.foreground.color = eyedroppers.background.color
-                        eyedroppers.background.color = temp
                     }
                     .focusable(false)
                     .padding(16.0)
@@ -85,16 +70,39 @@ struct ContentView: View {
             }
         }
         .onAppear {
-            eyedroppers.background.color = colorScheme == .light
-                ? NSColor.white
-                : NSColor.black
+            if let latest = Defaults[.colorHistory].first {
+                eyedroppers.foreground.color = latest.foregroundColor
+                eyedroppers.background.color = latest.backgroundColor
+                eyedroppers.activeHistoryID = latest.id
+            } else {
+                eyedroppers.background.color = colorScheme == .light
+                    ? NSColor.white
+                    : NSColor.black
+                eyedroppers.recordHistory()
+            }
         }
         .onReceive(NotificationCenter.default.publisher(for: .colorPicked)) { _ in
-            eyedroppers.recordHistory()
+            withAnimation(.easeInOut(duration: 0.2)) {
+                eyedroppers.recordHistory()
+            }
         }
         .onReceive(NotificationCenter.default.publisher(for: .toggleHistory)) { _ in
             withAnimation(.easeInOut(duration: 0.25)) {
                 historyDrawerVisible.toggle()
+            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .historyPrevious)) { _ in
+            guard historyDrawerVisible else { return }
+            eyedroppers.navigatePrevious()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .historyNext)) { _ in
+            guard historyDrawerVisible else { return }
+            eyedroppers.navigateNext()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .historyDelete)) { _ in
+            guard historyDrawerVisible else { return }
+            withAnimation(.easeInOut(duration: 0.2)) {
+                eyedroppers.deleteCurrentHistoryEntry()
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: .triggerCopyText)) { _ in

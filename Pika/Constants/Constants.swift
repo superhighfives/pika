@@ -58,6 +58,9 @@ enum PikaConstants {
     static let ncTriggerQuit = "triggerQuit"
     static let ncColorPicked = "colorPicked"
     static let ncToggleHistory = "toggleHistory"
+    static let ncHistoryPrevious = "historyPrevious"
+    static let ncHistoryNext = "historyNext"
+    static let ncHistoryDelete = "historyDelete"
 
     // Disabled formats for SwiftUI copy format
     static let disabledFormats: [ColorFormat] = [.hex, .hsl, .opengl, .lab, .oklch]
@@ -86,6 +89,9 @@ extension Notification.Name {
     static let triggerQuit = Notification.Name(PikaConstants.ncTriggerQuit)
     static let colorPicked = Notification.Name(PikaConstants.ncColorPicked)
     static let toggleHistory = Notification.Name(PikaConstants.ncToggleHistory)
+    static let historyPrevious = Notification.Name(PikaConstants.ncHistoryPrevious)
+    static let historyNext = Notification.Name(PikaConstants.ncHistoryNext)
+    static let historyDelete = Notification.Name(PikaConstants.ncHistoryDelete)
 }
 
 enum PikaText {
@@ -177,7 +183,6 @@ enum PikaText {
     static let textHistoryToggle = NSLocalizedString("history.toggle", comment: "Toggle history")
     static let textHistoryApplyForeground = NSLocalizedString("history.apply.foreground", comment: "Apply foreground only")
     static let textHistoryApplyBackground = NSLocalizedString("history.apply.background", comment: "Apply background only")
-    static let textHistoryApplySwapped = NSLocalizedString("history.apply.swapped", comment: "Swap and apply")
     static let textHistoryRemove = NSLocalizedString("history.remove", comment: "Remove from history")
     static let textHistoryClear = NSLocalizedString("history.clear", comment: "Clear history")
 

@@ -26,7 +26,7 @@ struct ColorPair: Codable, Identifiable, Equatable {
             CGFloat(rgb & 0xFF) / 255,
             1.0,
         ]
-        return NSColor(colorSpace: Defaults[.colorSpace], components: components, count: 4) ?? fallback
+        return NSColor(colorSpace: Defaults[.colorSpace], components: components, count: 4)
     }
 
     static let maxHistory = 20

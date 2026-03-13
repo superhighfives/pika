@@ -364,9 +364,6 @@
 /* Apply background only */
 "history.apply.background" = "Apply background only";
 
-/* Swap and apply */
-"history.apply.swapped" = "Swap and apply";
-
 /* Remove from history */
 "history.remove" = "Remove from history";
 

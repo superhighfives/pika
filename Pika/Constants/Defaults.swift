@@ -67,5 +67,7 @@ extension Defaults.Keys {
     static let showColorOverlay = Key<Bool>("showColorOverlay", default: true)
     static let colorOverlayDuration = Key<Double>("colorOverlayDuration", default: 2.0)
     static let colorHistory = Key<[ColorPair]>("colorHistory", default: [])
+    static let undoStack = Key<[[ColorPair]]>("undoStack", default: [])
+    static let redoStack = Key<[[ColorPair]]>("redoStack", default: [])
     static let historyDrawerVisible = Key<Bool>("historyDrawerVisible", default: false)
 }

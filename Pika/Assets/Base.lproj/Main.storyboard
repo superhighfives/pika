@@ -144,6 +144,31 @@
                                                 <action selector="triggerSwap:" target="Ady-hI-5gd" id="Gu5-Cw-s7r"/>
                                             </connections>
                                         </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="hst-Ry-sep"/>
+                                        <menuItem title="Toggle history" keyEquivalent="h" allowsKeyEquivalentWhenHidden="YES" id="tgl-Hs-mnu">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="triggerToggleHistory:" target="Voe-Tx-rLC" id="tgl-Hs-con"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Previous history item" keyEquivalent="" allowsKeyEquivalentWhenHidden="YES" id="hst-Pv-mnu">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="triggerHistoryPrevious:" target="Voe-Tx-rLC" id="hst-Pv-con"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Next history item" keyEquivalent="" allowsKeyEquivalentWhenHidden="YES" id="hst-Nx-mnu">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="triggerHistoryNext:" target="Voe-Tx-rLC" id="hst-Nx-con"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Delete history item" keyEquivalent="" allowsKeyEquivalentWhenHidden="YES" id="hst-Dl-mnu">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="triggerHistoryDelete:" target="Voe-Tx-rLC" id="hst-Dl-con"/>
+                                            </connections>
+                                        </menuItem>
                                         <menuItem isSeparatorItem="YES" id="r0x-k7-3Pf"/>
                                         <menuItem title="Format" allowsKeyEquivalentWhenHidden="YES" id="jQ5-Ak-Ocb" userLabel="Format">
                                             <modifierMask key="keyEquivalentModifierMask"/>

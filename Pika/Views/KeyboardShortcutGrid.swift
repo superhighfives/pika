@@ -29,6 +29,7 @@ private let actionRow: [ShortcutEntry] = [
     ShortcutEntry(title: PikaText.textColorUndo, notificationName: .triggerUndo, keys: ["⌘", "z"]),
     ShortcutEntry(title: PikaText.textColorRedo, notificationName: .triggerRedo, keys: ["⇧", "⌘", "Z"]),
     ShortcutEntry(title: PikaText.textColorSwapDetail, notificationName: .triggerSwap, keys: ["X"]),
+    ShortcutEntry(title: PikaText.textHistoryToggle, notificationName: .toggleHistory, keys: ["H"]),
     ShortcutEntry(
         title: "\(PikaText.textMenuPreferences)...", notificationName: .triggerPreferences, keys: ["⌘", ","]
     ),

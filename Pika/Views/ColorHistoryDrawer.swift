@@ -7,33 +7,31 @@ struct ColorHistoryChip: View {
     let onApplyBoth: () -> Void
     let onApplyForeground: () -> Void
     let onApplyBackground: () -> Void
-    let onApplySwapped: () -> Void
     let onRemove: () -> Void
     let onClearAll: () -> Void
 
     @State private var isHovered = false
 
     var body: some View {
-        RoundedRectangle(cornerRadius: 8)
+        RoundedRectangle(cornerRadius: 6)
             .fill(Color.clear)
-            .frame(width: 44, height: 44)
+            .frame(width: 30, height: 30)
             .overlay(
                 VStack(spacing: 0) {
                     Color(pair.foregroundColor)
                     Color(pair.backgroundColor)
                 }
-                .clipShape(RoundedRectangle(cornerRadius: 8))
+                .clipShape(RoundedRectangle(cornerRadius: 6))
             )
             .overlay(
-                RoundedRectangle(cornerRadius: 8)
+                RoundedRectangle(cornerRadius: 6)
                     .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
             )
             .overlay(
-                RoundedRectangle(cornerRadius: 8)
+                RoundedRectangle(cornerRadius: 6)
                     .strokeBorder(Color.accentColor, lineWidth: 2)
                     .opacity(isActive ? 1 : 0)
             )
-            .scaleEffect(isHovered ? 1.05 : 1.0)
             .shadow(radius: isHovered ? 3 : 0)
             .animation(.easeInOut(duration: 0.1), value: isHovered)
             .onHover { hovering in isHovered = hovering }
@@ -41,7 +39,6 @@ struct ColorHistoryChip: View {
             .contextMenu {
                 Button(PikaText.textHistoryApplyForeground, action: onApplyForeground)
                 Button(PikaText.textHistoryApplyBackground, action: onApplyBackground)
-                Button(PikaText.textHistoryApplySwapped, action: onApplySwapped)
                 Divider()
                 Button(PikaText.textHistoryRemove, action: onRemove)
                 Button(PikaText.textHistoryClear, action: onClearAll)
@@ -58,16 +55,9 @@ struct ColorHistoryDrawer: View {
 
     var body: some View {
         Divider()
-        VStack(alignment: .leading, spacing: 0) {
-            Text(PikaText.textHistoryTitle)
-                .font(.caption)
-                .fontWeight(.semibold)
-                .foregroundColor(.secondary)
-                .padding(.horizontal, 12)
-                .padding(.top, 8)
-
+        HStack(spacing: 0) {
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 8) {
+                HStack(spacing: 6) {
                     ForEach(colorHistory) { pair in
                         ColorHistoryChip(
                             pair: pair,
@@ -75,17 +65,45 @@ struct ColorHistoryDrawer: View {
                             onApplyBoth: { applyBoth(pair) },
                             onApplyForeground: { applyForeground(pair) },
                             onApplyBackground: { applyBackground(pair) },
-                            onApplySwapped: { applySwapped(pair) },
                             onRemove: { removePair(pair) },
-                            onClearAll: { Defaults[.colorHistory] = [] }
+                            onClearAll: { eyedroppers.clearHistory() }
                         )
+                        .transition(.scale.combined(with: .opacity))
                     }
                 }
+                .animation(.easeInOut(duration: 0.2), value: colorHistory)
                 .padding(.horizontal, 12)
-                .padding(.vertical, 6)
             }
+
+            ZStack(alignment: .leading) {
+                Rectangle()
+                    .fill(
+                        LinearGradient(
+                            colors: [.clear, .black.opacity(0.15)],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+                    .frame(width: 6)
+                    .offset(x: -6)
+
+                HStack(spacing: 0) {
+                    Divider()
+
+                    Button(action: { eyedroppers.clearHistory() }) {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.system(size: 14))
+                            .foregroundColor(.secondary)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    }
+                    .buttonStyle(.plain)
+                    .help(PikaText.textHistoryClear)
+                    .frame(width: 38)
+                }
+            }
+            .fixedSize(horizontal: true, vertical: false)
         }
-        .frame(maxWidth: .infinity, maxHeight: 76, alignment: .leading)
+        .frame(maxWidth: .infinity, maxHeight: 50, alignment: .leading)
         .background(
             ZStack {
                 VisualEffect(
@@ -98,29 +116,24 @@ struct ColorHistoryDrawer: View {
     }
 
     private func isActivePair(_ pair: ColorPair) -> Bool {
-        pair.foregroundHex == foreground.color.toHexString() &&
-            pair.backgroundHex == background.color.toHexString()
+        pair.id == eyedroppers.activeHistoryID
     }
 
     private func applyBoth(_ pair: ColorPair) {
-        eyedroppers.foreground.set(pair.foregroundColor)
-        eyedroppers.background.set(pair.backgroundColor)
+        eyedroppers.applyHistoryEntry(pair)
     }
 
     private func applyForeground(_ pair: ColorPair) {
         eyedroppers.foreground.set(pair.foregroundColor)
+        eyedroppers.recordHistory()
     }
 
     private func applyBackground(_ pair: ColorPair) {
         eyedroppers.background.set(pair.backgroundColor)
-    }
-
-    private func applySwapped(_ pair: ColorPair) {
-        eyedroppers.foreground.set(pair.backgroundColor)
-        eyedroppers.background.set(pair.foregroundColor)
+        eyedroppers.recordHistory()
     }
 
     private func removePair(_ pair: ColorPair) {
-        Defaults[.colorHistory] = colorHistory.filter { $0.id != pair.id }
+        eyedroppers.deleteHistoryEntry(id: pair.id)
     }
 }
