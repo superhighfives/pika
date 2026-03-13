@@ -351,3 +351,21 @@
 
 /* Duration: */
 "preferences.overlay.duration" = "Duración";
+
+/* History */
+"history.title" = "Historial";
+
+/* Toggle history */
+"history.toggle" = "Alternar historial";
+
+/* Apply foreground only */
+"history.apply.foreground" = "Aplicar solo al primer plano";
+
+/* Apply background only */
+"history.apply.background" = "Aplicar solo al fondo";
+
+/* Remove from history */
+"history.remove" = "Eliminar del historial";
+
+/* Clear history */
+"history.clear" = "Borrar historial";

@@ -351,3 +351,21 @@
 
 /* Duration: */
 "preferences.overlay.duration" = "Dauer";
+
+/* History */
+"history.title" = "Verlauf";
+
+/* Toggle history */
+"history.toggle" = "Verlauf ein-/ausblenden";
+
+/* Apply foreground only */
+"history.apply.foreground" = "Nur Vordergrund anwenden";
+
+/* Apply background only */
+"history.apply.background" = "Nur Hintergrund anwenden";
+
+/* Remove from history */
+"history.remove" = "Aus Verlauf entfernen";
+
+/* Clear history */
+"history.clear" = "Verlauf löschen";

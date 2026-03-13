@@ -4,6 +4,7 @@ import SwiftUI
 struct NavigationMenu: View {
     @Default(.colorFormat) var colorFormat
     @Default(.copyFormat) var copyFormat
+    @Default(.historyDrawerVisible) var historyDrawerVisible
 
     func isFormatDisabled(_ format: ColorFormat) -> Bool {
         if copyFormat == .swiftUI {
@@ -24,6 +25,19 @@ struct NavigationMenu: View {
             .labelsHidden()
             .fixedSize()
             .frame(width: 100.0)
+
+            Button(action: {
+                withAnimation(.easeInOut(duration: 0.25)) {
+                    historyDrawerVisible.toggle()
+                }
+            }, label: {
+                IconImage(name: historyDrawerVisible ? "clock.arrow.circlepath" : "clock")
+            })
+            .buttonStyle(PlainButtonStyle())
+            .padding(.leading, 8.0)
+            .padding(.trailing, 2.0)
+            .foregroundColor(historyDrawerVisible ? .accentColor : .primary)
+            .help(PikaText.textHistoryToggle)
 
             Menu {
                 NavigationMenuItems()
@@ -51,6 +65,12 @@ struct NavigationMenu: View {
                         ), modifiers: .command
                     )
                 }
+                Button(PikaText.textHistoryToggle, action: {
+                    withAnimation(.easeInOut(duration: 0.25)) {
+                        historyDrawerVisible.toggle()
+                    }
+                })
+                .keyboardShortcut("y", modifiers: .command)
             }
             .opacity(0)
             .frame(width: 0, height: 0)

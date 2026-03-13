@@ -351,3 +351,21 @@
 
 /* Duration: */
 "preferences.overlay.duration" = "Trajanje";
+
+/* History */
+"history.title" = "Povijest";
+
+/* Toggle history */
+"history.toggle" = "Uključi/isključi povijest";
+
+/* Apply foreground only */
+"history.apply.foreground" = "Primijeni samo prednji plan";
+
+/* Apply background only */
+"history.apply.background" = "Primijeni samo pozadinu";
+
+/* Remove from history */
+"history.remove" = "Ukloni iz povijesti";
+
+/* Clear history */
+"history.clear" = "Izbriši povijest";

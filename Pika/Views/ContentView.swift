@@ -7,6 +7,7 @@ struct ContentView: View {
 
     @Default(.copyFormat) var copyFormat
     @Default(.colorFormat) var colorFormat
+    @Default(.historyDrawerVisible) var historyDrawerVisible
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     let pasteboard = NSPasteboard.general
 
@@ -45,7 +46,9 @@ struct ContentView: View {
                         ltr: true
                     ))
                     .onReceive(NotificationCenter.default.publisher(for: .triggerSwap)) { _ in
-                        swap(&eyedroppers.foreground.color, &eyedroppers.background.color)
+                        withAnimation(.easeInOut(duration: 0.2)) {
+                            eyedroppers.swap()
+                        }
                     }
                     .focusable(false)
                     .padding(16.0)
@@ -61,11 +64,46 @@ struct ContentView: View {
 
             Divider()
             Footer(foreground: eyedroppers.foreground, background: eyedroppers.background)
+            if historyDrawerVisible {
+                ColorHistoryDrawer(foreground: eyedroppers.foreground, background: eyedroppers.background)
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+            }
         }
         .onAppear {
-            eyedroppers.background.color = colorScheme == .light
-                ? NSColor.white
-                : NSColor.black
+            if let latest = Defaults[.colorHistory].first {
+                eyedroppers.foreground.color = latest.foregroundColor
+                eyedroppers.background.color = latest.backgroundColor
+                eyedroppers.activeHistoryID = latest.id
+            } else {
+                eyedroppers.background.color = colorScheme == .light
+                    ? NSColor.white
+                    : NSColor.black
+                eyedroppers.recordHistory()
+            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .colorPicked)) { _ in
+            withAnimation(.easeInOut(duration: 0.2)) {
+                eyedroppers.recordHistory()
+            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .toggleHistory)) { _ in
+            withAnimation(.easeInOut(duration: 0.25)) {
+                historyDrawerVisible.toggle()
+            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .historyPrevious)) { _ in
+            guard historyDrawerVisible else { return }
+            eyedroppers.navigatePrevious()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .historyNext)) { _ in
+            guard historyDrawerVisible else { return }
+            eyedroppers.navigateNext()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .historyDelete)) { _ in
+            guard historyDrawerVisible else { return }
+            withAnimation(.easeInOut(duration: 0.2)) {
+                eyedroppers.deleteCurrentHistoryEntry()
+            }
         }
         .onReceive(NotificationCenter.default.publisher(for: .triggerCopyText)) { _ in
             pasteboard.clearContents()
