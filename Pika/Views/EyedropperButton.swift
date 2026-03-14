@@ -25,7 +25,7 @@ struct EyedropperButton: View {
                             .foregroundColor(eyedropper.color.getUIColor().opacity(0.75))
 
                         VStack(alignment: .leading, spacing: 6.0) {
-                            Text(eyedropper.color.toFormat(format: colorFormat, style: copyFormat))
+                            Text((eyedropper.color.usingColorSpace(colorSpace) ?? eyedropper.color).toFormat(format: colorFormat, style: copyFormat))
                                 .foregroundColor(eyedropper.color.getUIColor())
                                 .font(.system(size: 18, weight: .regular))
                                 .padding(.trailing, 32.0)
@@ -90,7 +90,9 @@ struct EyedropperButton: View {
             .padding(.all, 8.0)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
         }
-        .onReceive(Defaults.publisher(.colorSpace)) { colorSpace = $0.newValue }
+        .onReceive(NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification)) { _ in
+            colorSpace = Defaults[.colorSpace]
+        }
         .onHover { hover in
             if hover {
                 hoverTask?.cancel()
