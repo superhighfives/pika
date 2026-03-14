@@ -1,6 +1,5 @@
 import AppKit
 import Cocoa
-import Defaults
 
 public class ClosestVector {
     public var list: [[Int]]
@@ -16,7 +15,7 @@ public class ClosestVector {
     }
 
     public func compare(_ val: NSColor) -> (Int) {
-        let color = val.usingColorSpace(Defaults[.colorSpace])!
+        guard let color = val.usingColorSpace(.sRGB) else { return 0 }
         let colorArr = [Int(color.redComponent * 255), Int(color.greenComponent * 255), Int(color.blueComponent * 255)]
 
         var minDistance = Int.max
