@@ -90,7 +90,7 @@ struct EyedropperButton: View {
             .padding(.all, 8.0)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
         }
-        .onReceive(Defaults.publisher(.colorSpace)) { colorSpace = $0 }
+        .onReceive(Defaults.publisher(.colorSpace)) { colorSpace = $0.newValue }
         .onHover { hover in
             if hover {
                 hoverTask?.cancel()
