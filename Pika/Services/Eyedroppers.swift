@@ -78,14 +78,10 @@ class Eyedropper: ObservableObject {
 
     init(type: Types, color: NSColor) {
         self.type = type
-        self.color = color
+        self.color = color.usingColorSpace(.sRGB) ?? color
 
         // Load colors
         closestVector = ClosestVector(colorNames.map { $0.color.toRGB8BitArray() })
-
-        Defaults.observe(.colorSpace) { change in
-            self.color = self.color.usingColorSpace(change.newValue)!
-        }.tieToLifetime(of: self)
     }
 
     func getClosestColor() -> String {
@@ -98,17 +94,19 @@ class Eyedropper: ObservableObject {
             self.set(previousColor)
         }
 
-        color = selectedColor.usingColorSpace(Defaults[.colorSpace])!
+        color = selectedColor.usingColorSpace(.sRGB) ?? selectedColor
     }
 
     @objc func colorDidChange(sender: AnyObject) {
         if let picker = sender as? NSColorPanel {
+            guard let srgbColor = picker.color.usingColorSpace(.sRGB) else { return }
+
             let previousColor = color
             undoManager?.registerUndo(withTarget: self) { _ in
                 self.set(previousColor)
             }
 
-            color = picker.color.usingColorSpace(Defaults[.colorSpace])!
+            color = srgbColor
         }
     }
 
@@ -139,20 +137,22 @@ class Eyedropper: ObservableObject {
             sampler.show { selectedColor in
 
                 if let selectedColor = selectedColor {
+                    let normalizedColor = selectedColor.usingColorSpace(.sRGB) ?? selectedColor
+
                     if Defaults[.showColorOverlay] {
-                        let colorText = selectedColor.toFormat(
+                        let colorText = normalizedColor.toFormat(
                             format: Defaults[.colorFormat], style: Defaults[.copyFormat]
                         )
                         let cursorPosition = NSEvent.mouseLocation
                         self.overlayWindow.show(
                             colorText: colorText,
-                            pickedColor: selectedColor,
+                            pickedColor: normalizedColor,
                             nearCursor: cursorPosition,
                             duration: Defaults[.colorOverlayDuration]
                         )
                     }
 
-                    self.set(selectedColor)
+                    self.set(normalizedColor)
 
                     if Defaults[.copyColorOnPick] {
                         NSApp.sendAction(self.type.copySelector, to: nil, from: nil)
