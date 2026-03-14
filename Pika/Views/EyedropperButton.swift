@@ -5,10 +5,10 @@ struct EyedropperButton: View {
     @ObservedObject var eyedropper: Eyedropper
     @Default(.colorFormat) var colorFormat
     @Default(.copyFormat) var copyFormat
-    @Default(.colorSpace) var colorSpace
     @Default(.hideColorNames) var hideColorNames
 
     @State var hoverVisible: Bool = false
+    @State private var colorSpace = Defaults[.colorSpace]
     @State private var hoverTask: Task<Void, Never>?
     @State private var childHovered: Bool = false
 
@@ -90,6 +90,7 @@ struct EyedropperButton: View {
             .padding(.all, 8.0)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
         }
+        .onReceive(Defaults.publisher(.colorSpace)) { colorSpace = $0 }
         .onHover { hover in
             if hover {
                 hoverTask?.cancel()
