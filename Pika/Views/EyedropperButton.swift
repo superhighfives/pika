@@ -5,6 +5,7 @@ struct EyedropperButton: View {
     @ObservedObject var eyedropper: Eyedropper
     @Default(.colorFormat) var colorFormat
     @Default(.copyFormat) var copyFormat
+    @Default(.colorSpace) var colorSpace
     @Default(.hideColorNames) var hideColorNames
 
     @State var hoverVisible: Bool = false
