@@ -8,6 +8,7 @@ struct EyedropperButton: View {
     @Default(.hideColorNames) var hideColorNames
 
     @State var hoverVisible: Bool = false
+    @State private var colorSpace = Defaults[.colorSpace]
     @State private var hoverTask: Task<Void, Never>?
     @State private var childHovered: Bool = false
 
@@ -24,7 +25,7 @@ struct EyedropperButton: View {
                             .foregroundColor(eyedropper.color.getUIColor().opacity(0.75))
 
                         VStack(alignment: .leading, spacing: 6.0) {
-                            Text(eyedropper.color.toFormat(format: colorFormat, style: copyFormat))
+                            Text((eyedropper.color.usingColorSpace(colorSpace) ?? eyedropper.color).toFormat(format: colorFormat, style: copyFormat))
                                 .foregroundColor(eyedropper.color.getUIColor())
                                 .font(.system(size: 18, weight: .regular))
                                 .padding(.trailing, 32.0)
@@ -88,6 +89,9 @@ struct EyedropperButton: View {
             }
             .padding(.all, 8.0)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+        }
+        .onReceive(NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification)) { _ in
+            colorSpace = Defaults[.colorSpace]
         }
         .onHover { hover in
             if hover {
