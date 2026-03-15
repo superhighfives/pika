@@ -26,8 +26,8 @@ class WindowCoordinator: NSObject {
             .frame(minWidth: 480,
                    idealWidth: 480,
                    maxWidth: 650,
-                   minHeight: 300,
-                   idealHeight: 300,
+                   minHeight: 260,
+                   idealHeight: 260,
                    maxHeight: 400,
                    alignment: .center)
 
@@ -82,7 +82,7 @@ class WindowCoordinator: NSObject {
             let view = NSHostingView(rootView: AboutView().edgesIgnoringSafeArea(.all))
             aboutWindow = PikaWindow.createSecondaryWindow(
                 title: "About",
-                size: NSRect(x: 0, y: 0, width: 750, height: 650),
+                size: NSRect(x: 0, y: 0, width: 750, height: 700),
                 styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView]
             )
             aboutWindow?.contentView = view
