@@ -43,6 +43,9 @@ private let formatRow: [ShortcutEntry] = [
     ShortcutEntry(title: PikaText.textFormatHSL, notificationName: .triggerFormatHSL, keys: ["⌘", "4"]),
     ShortcutEntry(title: PikaText.textFormatLAB, notificationName: .triggerFormatLAB, keys: ["⌘", "5"]),
     ShortcutEntry(title: PikaText.textFormatOpenGL, notificationName: .triggerFormatOpenGL, keys: ["⌘", "6"]),
+]
+
+private let formatRowExtra: [ShortcutEntry] = [
     ShortcutEntry(title: PikaText.textFormatOKLCH, notificationName: .triggerFormatOKLCH, keys: ["⌘", "7"]),
 ]
 
@@ -81,19 +84,23 @@ struct KeyboardShortcutGrid: View {
             GeometryReader { geometry in
                 let width = geometry.size.width
                 let height = geometry.size.height
-                let unitWidth = width / 7
-                let unitHeight = floor(height / 3)
+                let unitWidth = width / 6
+                let unitHeight = floor(height / 4)
 
                 VStack(spacing: 0.0) {
                     ShortcutRow(entries: pickRow, unitWidth: unitWidth, unitHeight: unitHeight)
 
                     Divider().frame(maxWidth: .infinity)
 
-                    ShortcutRow(entries: actionRow, unitWidth: unitWidth, unitHeight: unitHeight, padWithSpacer: true)
+                    ShortcutRow(entries: actionRow, unitWidth: unitWidth, unitHeight: unitHeight)
 
                     Divider().frame(maxWidth: .infinity)
 
                     ShortcutRow(entries: formatRow, unitWidth: unitWidth, unitHeight: unitHeight)
+
+                    Divider().frame(maxWidth: .infinity)
+
+                    ShortcutRow(entries: formatRowExtra, unitWidth: unitWidth, unitHeight: unitHeight, padWithSpacer: true)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
