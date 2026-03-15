@@ -6,46 +6,34 @@ private struct ShortcutEntry {
     let keys: [String]
 }
 
-private let pickRow: [ShortcutEntry] = [
+private let row1: [ShortcutEntry] = [
     ShortcutEntry(title: PikaText.textPickForeground, notificationName: .triggerPickForeground, keys: ["⌘", "D"]),
-    ShortcutEntry(
-        title: PikaText.textPickBackground, notificationName: .triggerPickBackground, keys: ["⇧", "⌘", "D"]
-    ),
+    ShortcutEntry(title: PikaText.textPickBackground, notificationName: .triggerPickBackground, keys: ["⇧", "⌘", "D"]),
     ShortcutEntry(title: PikaText.textCopyForeground, notificationName: .triggerCopyForeground, keys: ["⌘", "C"]),
-    ShortcutEntry(
-        title: PikaText.textCopyBackground, notificationName: .triggerCopyBackground, keys: ["⇧", "⌘", "C"]
-    ),
-    ShortcutEntry(
-        title: PikaText.textColorSystemPickerForegroundSimple,
-        notificationName: .triggerSystemPickerForeground, keys: ["⌘", "S"]
-    ),
-    ShortcutEntry(
-        title: PikaText.textColorSystemPickerBackgroundSimple,
-        notificationName: .triggerSystemPickerBackground, keys: ["⇧", "⌘", "S"]
-    ),
+    ShortcutEntry(title: PikaText.textCopyBackground, notificationName: .triggerCopyBackground, keys: ["⇧", "⌘", "C"]),
+    ShortcutEntry(title: PikaText.textColorSystemPickerForegroundSimple, notificationName: .triggerSystemPickerForeground, keys: ["⌘", "S"]),
 ]
 
-private let actionRow: [ShortcutEntry] = [
+private let row2: [ShortcutEntry] = [
+    ShortcutEntry(title: PikaText.textColorSystemPickerBackgroundSimple, notificationName: .triggerSystemPickerBackground, keys: ["⇧", "⌘", "S"]),
     ShortcutEntry(title: PikaText.textColorUndo, notificationName: .triggerUndo, keys: ["⌘", "z"]),
     ShortcutEntry(title: PikaText.textColorRedo, notificationName: .triggerRedo, keys: ["⇧", "⌘", "Z"]),
     ShortcutEntry(title: PikaText.textColorSwapDetail, notificationName: .triggerSwap, keys: ["X"]),
     ShortcutEntry(title: PikaText.textHistoryToggle, notificationName: .toggleHistory, keys: ["H"]),
-    ShortcutEntry(
-        title: "\(PikaText.textMenuPreferences)...", notificationName: .triggerPreferences, keys: ["⌘", ","]
-    ),
-    ShortcutEntry(title: PikaText.textMenuQuit, notificationName: .triggerQuit, keys: ["⌘", "Q"]),
 ]
 
-private let formatRow: [ShortcutEntry] = [
+private let row3: [ShortcutEntry] = [
+    ShortcutEntry(title: "\(PikaText.textMenuPreferences)...", notificationName: .triggerPreferences, keys: ["⌘", ","]),
+    ShortcutEntry(title: PikaText.textMenuQuit, notificationName: .triggerQuit, keys: ["⌘", "Q"]),
     ShortcutEntry(title: PikaText.textFormatHex, notificationName: .triggerFormatHex, keys: ["⌘", "1"]),
     ShortcutEntry(title: PikaText.textFormatRGB, notificationName: .triggerFormatRGB, keys: ["⌘", "2"]),
     ShortcutEntry(title: PikaText.textFormatHSB, notificationName: .triggerFormatHSB, keys: ["⌘", "3"]),
+]
+
+private let row4: [ShortcutEntry] = [
     ShortcutEntry(title: PikaText.textFormatHSL, notificationName: .triggerFormatHSL, keys: ["⌘", "4"]),
     ShortcutEntry(title: PikaText.textFormatLAB, notificationName: .triggerFormatLAB, keys: ["⌘", "5"]),
     ShortcutEntry(title: PikaText.textFormatOpenGL, notificationName: .triggerFormatOpenGL, keys: ["⌘", "6"]),
-]
-
-private let formatRowExtra: [ShortcutEntry] = [
     ShortcutEntry(title: PikaText.textFormatOKLCH, notificationName: .triggerFormatOKLCH, keys: ["⌘", "7"]),
 ]
 
@@ -84,23 +72,23 @@ struct KeyboardShortcutGrid: View {
             GeometryReader { geometry in
                 let width = geometry.size.width
                 let height = geometry.size.height
-                let unitWidth = width / 6
+                let unitWidth = width / 5
                 let unitHeight = floor(height / 4)
 
                 VStack(spacing: 0.0) {
-                    ShortcutRow(entries: pickRow, unitWidth: unitWidth, unitHeight: unitHeight)
+                    ShortcutRow(entries: row1, unitWidth: unitWidth, unitHeight: unitHeight)
 
                     Divider().frame(maxWidth: .infinity)
 
-                    ShortcutRow(entries: actionRow, unitWidth: unitWidth, unitHeight: unitHeight)
+                    ShortcutRow(entries: row2, unitWidth: unitWidth, unitHeight: unitHeight)
 
                     Divider().frame(maxWidth: .infinity)
 
-                    ShortcutRow(entries: formatRow, unitWidth: unitWidth, unitHeight: unitHeight)
+                    ShortcutRow(entries: row3, unitWidth: unitWidth, unitHeight: unitHeight)
 
                     Divider().frame(maxWidth: .infinity)
 
-                    ShortcutRow(entries: formatRowExtra, unitWidth: unitWidth, unitHeight: unitHeight, padWithSpacer: true)
+                    ShortcutRow(entries: row4, unitWidth: unitWidth, unitHeight: unitHeight, padWithSpacer: true)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
