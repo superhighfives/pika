@@ -87,6 +87,7 @@ class WindowCoordinator: NSObject {
                 size: NSRect(x: 0, y: 0, width: 400, height: view.fittingSize.height),
                 styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView]
             )
+            aboutWindow?.titlebarAppearsTransparent = true
             aboutWindow?.contentView = view
         }
         aboutTouchBarController = SplashTouchBarController(window: aboutWindow!)
@@ -95,13 +96,17 @@ class WindowCoordinator: NSObject {
 
     func openHelpWindow() {
         if helpWindow == nil {
-            let view = NSHostingView(rootView: HelpView().edgesIgnoringSafeArea(.all))
+            let rootView = HelpView()
+                .frame(minWidth: 440, maxWidth: .infinity, minHeight: 400, maxHeight: .infinity)
+                .edgesIgnoringSafeArea(.all)
+            let view = NSHostingView(rootView: rootView)
             helpWindow = PikaWindow.createSecondaryWindow(
                 title: "Help",
                 size: NSRect(x: 0, y: 0, width: 550, height: 600),
                 styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView]
             )
-            helpWindow?.minSize = NSSize(width: 550, height: 500)
+            helpWindow?.minSize = NSSize(width: 440, height: 400)
+            helpWindow?.contentMinSize = NSSize(width: 440, height: 400)
             helpWindow?.contentView = view
         }
         helpWindow?.makeKeyAndOrderFront(nil)

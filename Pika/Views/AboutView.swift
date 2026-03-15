@@ -1,19 +1,5 @@
 import SwiftUI
 
-struct LinkButton: View {
-    var title: String
-    var link: String
-
-    var body: some View {
-        Button(title) {
-            if let url = URL(string: link) {
-                NSWorkspace.shared.open(url)
-            }
-        }
-        .buttonStyle(LinkButtonStyle())
-    }
-}
-
 struct AboutView: View {
     @Environment(\.colorScheme) var colorScheme: ColorScheme
 
@@ -31,24 +17,15 @@ struct AboutView: View {
                     .frame(maxWidth: .infinity)
                     .frame(height: 200)
                 AppVersion()
-                    .padding(.bottom, 16)
+                    .padding(.bottom, 32)
             }
             VStack(spacing: 0) {
                 Divider()
-                LinkButton(title: PikaText.textAboutWebsite, link: PikaConstants.pikaWebsiteURL)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal, 20.0)
-                    .padding(.vertical, 10.0)
+                HelpExternalLinkRow(title: PikaText.textAboutWebsite, url: PikaConstants.pikaWebsiteURL, shorthand: "superhighfives.com/pika", verticalPadding: 10.0)
                 Divider()
-                LinkButton(title: PikaText.textAboutGitHub, link: PikaConstants.gitHubRepoURL)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal, 20.0)
-                    .padding(.vertical, 10.0)
+                HelpExternalLinkRow(title: PikaText.textAboutGitHub, url: PikaConstants.gitHubRepoURL, shorthand: "github.com/superhighfives/pika", verticalPadding: 10.0)
                 Divider()
-                LinkButton(title: PikaText.textMenuGitHubIssue, link: PikaConstants.gitHubIssueURL)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal, 20.0)
-                    .padding(.vertical, 10.0)
+                HelpExternalLinkRow(title: PikaText.textMenuGitHubIssue, url: PikaConstants.gitHubIssueURL, shorthand: "github.com/…/issues", verticalPadding: 10.0)
                 Divider()
                 #if TARGET_MAS
                     HStack(spacing: 5.0) {
@@ -64,6 +41,8 @@ struct AboutView: View {
                     .padding(.vertical, 10.0)
                     Divider()
                 #endif
+                HelpExternalLinkRow(title: "\(PikaText.textAboutBy) Charlie Gleason", url: PikaConstants.charlieGleasonWebsiteURL, shorthand: "charliegleason.com", verticalPadding: 10.0)
+                Divider()
                 #if TARGET_SPARKLE
                     HStack(spacing: 5.0) {
                         IconImage(name: "arrow.down.circle", resizable: true)
@@ -78,15 +57,6 @@ struct AboutView: View {
                     .padding(.vertical, 10.0)
                     Divider()
                 #endif
-                HStack(spacing: 5.0) {
-                    IconImage(name: "hand.thumbsup.fill")
-                    Text(PikaText.textAboutBy)
-                    LinkButton(title: "Charlie Gleason", link: PikaConstants.charlieGleasonWebsiteURL)
-                    Spacer()
-                }
-                .padding(.horizontal, 20.0)
-                .padding(.vertical, 10.0)
-                Divider()
             }
         }
     }

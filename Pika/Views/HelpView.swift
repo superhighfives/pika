@@ -9,10 +9,11 @@ private struct HelpDescriptionRow: View {
         Text(text)
             .font(.system(size: 13))
             .foregroundColor(.secondary)
+            .lineSpacing(5)
             .fixedSize(horizontal: false, vertical: true)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 20)
-            .padding(.vertical, 12)
+            .padding(.vertical, 14)
     }
 }
 
@@ -83,11 +84,14 @@ private struct HelpShortcutRow: View {
 
 // MARK: - External Link Row
 
-private struct HelpExternalLinkRow: View {
+struct HelpExternalLinkRow: View {
     let title: String
     let url: String
+    let shorthand: String
+    var verticalPadding: CGFloat = 5.0
 
     @State private var isHovered = false
+    @Environment(\.colorScheme) var colorScheme: ColorScheme
 
     var body: some View {
         Button {
@@ -100,15 +104,19 @@ private struct HelpExternalLinkRow: View {
                     .font(.system(size: 12))
                     .foregroundColor(.primary)
                 Spacer()
-                Image(systemName: "arrow.up.right")
-                    .font(.system(size: 10))
+                Text(shorthand)
+                    .font(.system(size: 11, design: .monospaced))
                     .foregroundColor(isHovered ? .accentColor : .secondary)
             }
             .padding(.horizontal, 20.0)
-            .padding(.vertical, 5.0)
+            .padding(.vertical, verticalPadding)
+            .background(isHovered
+                ? (colorScheme == .light ? Color.black.opacity(0.05) : Color.white.opacity(0.07))
+                : Color.clear)
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+        .animation(.easeOut(duration: 0.15), value: isHovered)
         .onHover { isHovered = $0 }
     }
 }
@@ -136,6 +144,7 @@ private struct URLTriggerRow: View {
                 Text(url)
                     .font(.system(size: 11, design: .monospaced))
                     .foregroundColor(isHovered ? .accentColor : .secondary)
+                    .lineLimit(1)
             }
             .padding(.horizontal, 20.0)
             .padding(.vertical, 5.0)
@@ -304,8 +313,8 @@ struct HelpView: View {
                             Spacer()
                         }
                         .padding(.horizontal, 20)
-                        .padding(.top, 20)
-                        .padding(.bottom, 2)
+                        .padding(.top, 12)
+                        .padding(.bottom, 4)
 
                         ForEach(group.entries.indices, id: \.self) { ei in
                             HelpShortcutRow(entry: group.entries[ei])
@@ -314,6 +323,7 @@ struct HelpView: View {
                             }
                         }
                     }
+                    .padding(.bottom, 10)
                     if gi < shortcutGroups.count - 1 {
                         Divider()
                     }
@@ -338,8 +348,8 @@ struct HelpView: View {
                             Spacer()
                         }
                         .padding(.horizontal, 20)
-                        .padding(.top, 20)
-                        .padding(.bottom, 2)
+                        .padding(.top, 12)
+                        .padding(.bottom, 4)
 
                         ForEach(group.entries.indices, id: \.self) { ei in
                             URLTriggerRow(url: group.entries[ei].url, description: group.entries[ei].description)
@@ -348,6 +358,7 @@ struct HelpView: View {
                             }
                         }
                     }
+                    .padding(.bottom, 10)
                     if gi < urlGroups.count - 1 {
                         Divider()
                     }
@@ -366,6 +377,8 @@ struct HelpView: View {
                         }
                     }
                 }
+                .padding(.top, 10)
+                .padding(.bottom, 10)
                 Divider()
 
                 // MARK: Open Source
@@ -375,14 +388,16 @@ struct HelpView: View {
                 HelpDescriptionRow(text: PikaText.textHelpOpenSourceDescription)
                 Divider()
                 VStack(spacing: 0) {
-                    HelpExternalLinkRow(title: PikaText.textHelpViewOnGitHub, url: PikaConstants.gitHubRepoURL)
+                    HelpExternalLinkRow(title: PikaText.textHelpViewOnGitHub, url: PikaConstants.gitHubRepoURL, shorthand: "github.com/superhighfives/pika")
                     Divider().padding(.horizontal, 20)
-                    HelpExternalLinkRow(title: PikaText.textMenuGitHubIssue, url: PikaConstants.gitHubIssueURL)
+                    HelpExternalLinkRow(title: PikaText.textMenuGitHubIssue, url: PikaConstants.gitHubIssueURL, shorthand: "github.com/…/issues")
                     Divider().padding(.horizontal, 20)
-                    HelpExternalLinkRow(title: PikaText.textHelpSupportOnMAS, url: PikaConstants.macAppStoreURL)
+                    HelpExternalLinkRow(title: PikaText.textHelpSupportOnMAS, url: PikaConstants.macAppStoreURL, shorthand: "apps.apple.com/…/pika")
                 }
-                Divider()
+                .padding(.top, 10)
+                .padding(.bottom, 10)
             }
+            .padding(.bottom, 8)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
