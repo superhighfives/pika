@@ -331,6 +331,36 @@
 /* About */
 "menu.about" = "About";
 
+/* Help */
+"menu.help" = "Help";
+
+/* Help description */
+"help.description" = "Everything you need to know about using Pika, from keyboard shortcuts to URL automation.";
+
+/* Keyboard Shortcuts */
+"help.shortcuts" = "Keyboard Shortcuts";
+
+/* URL Triggers */
+"help.url_triggers" = "URL Triggers";
+
+/* URL Triggers description */
+"help.url_triggers.description" = "Automate Pika from other apps using the pika:// URL scheme. You can also append a format to pick or copy actions, e.g. pika://pick/foreground/hex.";
+
+/* Formats */
+"help.formats" = "Formats";
+
+/* Open Source */
+"help.open_source" = "Open Source";
+
+/* Open Source description */
+"help.open_source.description" = "Pika is free and open source, built and maintained on GitHub. Contributions, bug reports, and feature requests are always welcome.";
+
+/* View on GitHub */
+"help.github" = "View on GitHub";
+
+/* Support on the Mac App Store */
+"help.mas" = "Support on the Mac App Store";
+
 /* Check for updates */
 "menu.updates" = "Check for updates";
 

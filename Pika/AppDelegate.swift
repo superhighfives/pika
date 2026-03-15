@@ -127,6 +127,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @objc func togglePopover(_: AnyObject?) { windowCoordinator.togglePopover() }
 
     @IBAction func openAboutWindow(_: Any?) { windowCoordinator.openAboutWindow() }
+    @IBAction func openHelpWindow(_: Any?) { windowCoordinator.openHelpWindow() }
     @IBAction func openPreferencesWindow(_: Any?) { windowCoordinator.openPreferencesWindow() }
     @IBAction func openSplashWindow(_: Any?) { windowCoordinator.openSplashWindow() }
     @IBAction func showPika(_: Any) { windowCoordinator.showPika() }

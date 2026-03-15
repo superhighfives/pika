@@ -20,6 +20,8 @@ enum PikaConstants {
     static let gitHubRepoURL = "https://github.com/superhighfives/pika"
     static let gitHubIssueURL = "https://github.com/superhighfives/pika/issues/new/choose"
     static let charlieGleasonWebsiteURL = "https://charliegleason.com"
+    static let pikaHelpURL = "https://superhighfives.com/pika/help"
+    static let macAppStoreURL = "https://apps.apple.com/us/app/pika/id6739170421"
 
     // Initial colors
     static let initialColors = [
@@ -125,6 +127,17 @@ enum PikaText {
     /*
      * Menu
      */
+
+    static let textMenuHelp = NSLocalizedString("menu.help", comment: "Help")
+    static let textHelpDescription = NSLocalizedString("help.description", comment: "Help description")
+    static let textHelpKeyboardShortcuts = NSLocalizedString("help.shortcuts", comment: "Keyboard Shortcuts")
+    static let textHelpURLTriggers = NSLocalizedString("help.url_triggers", comment: "URL Triggers")
+    static let textHelpURLTriggersDescription = NSLocalizedString("help.url_triggers.description", comment: "URL Triggers description")
+    static let textHelpFormats = NSLocalizedString("help.formats", comment: "Formats")
+    static let textHelpOpenSource = NSLocalizedString("help.open_source", comment: "Open Source")
+    static let textHelpOpenSourceDescription = NSLocalizedString("help.open_source.description", comment: "Open Source description")
+    static let textHelpViewOnGitHub = NSLocalizedString("help.github", comment: "View on GitHub")
+    static let textHelpSupportOnMAS = NSLocalizedString("help.mas", comment: "Support on the Mac App Store")
 
     static let textMenuAbout = NSLocalizedString("menu.about", comment: "About")
     static let textMenuUpdates = NSLocalizedString("menu.updates", comment: "Check for updates")

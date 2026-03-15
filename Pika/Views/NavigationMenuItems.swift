@@ -97,6 +97,9 @@ struct NavigationMenuItems: View {
             Button(PikaText.textMenuAbout, action: {
                 NSApp.sendAction(#selector(AppDelegate.openAboutWindow), to: nil, from: nil)
             })
+            Button(PikaText.textMenuHelp, action: {
+                NSApp.sendAction(#selector(AppDelegate.openHelpWindow), to: nil, from: nil)
+            })
             #if TARGET_SPARKLE
                 Button("\(PikaText.textMenuUpdates)...", action: {
                     NSApp.sendAction(#selector(AppDelegate.checkForUpdates), to: nil, from: nil)

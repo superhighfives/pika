@@ -331,6 +331,36 @@
 /* About */
 "menu.about" = "Pika…";
 
+/* Help */
+"menu.help" = "Pomoc";
+
+/* Help description */
+"help.description" = "Wszystko, co musisz wiedzieć o używaniu Piki, od skrótów klawiszowych po automatyzację URL.";
+
+/* Keyboard Shortcuts */
+"help.shortcuts" = "Skróty klawiszowe";
+
+/* URL Triggers */
+"help.url_triggers" = "Wyzwalacze URL";
+
+/* URL Triggers description */
+"help.url_triggers.description" = "Automatyzuj Pikę z innych aplikacji używając schematu URL pika://. Możesz też dołączyć format do akcji pobierania lub kopiowania, np. pika://pick/foreground/hex.";
+
+/* Formats */
+"help.formats" = "Formaty";
+
+/* Open Source */
+"help.open_source" = "Open Source";
+
+/* Open Source description */
+"help.open_source.description" = "Pika jest bezpłatna i open source, tworzona i utrzymywana na GitHubie. Wkłady, zgłoszenia błędów i prośby o funkcje są zawsze mile widziane.";
+
+/* View on GitHub */
+"help.github" = "Zobacz na GitHubie";
+
+/* Support on the Mac App Store */
+"help.mas" = "Wesprzyj w Mac App Store";
+
 /* Check for updates */
 "menu.updates" = "Sprawdź uaktualnienia";
 
