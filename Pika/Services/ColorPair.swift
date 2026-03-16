@@ -11,8 +11,8 @@ struct ColorPair: Codable, Identifiable, Equatable {
     var backgroundColor: NSColor { Self.colorFromHex(backgroundHex) }
 
     // Reconstructs the color in Defaults[.colorSpace] — the same space toHexString()
-    // reads from. This makes set() a no-op (colorSpace → colorSpace), so the stored
-    // hex round-trips exactly and isActivePair comparison always holds.
+    // reads from. This makes set() a no-op (colorSpace → colorSpace) so the stored
+    // hex round-trips exactly.
     private static func colorFromHex(_ hex: String) -> NSColor {
         let fallback = NSColor.black.usingColorSpace(Defaults[.colorSpace]) ?? .black
         let h = hex.replacingOccurrences(of: "#", with: "")

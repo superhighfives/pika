@@ -39,7 +39,7 @@ class Eyedroppers: ObservableObject {
             return
         }
 
-        pushUndo()
+        if !history.isEmpty { pushUndo() }
         let pair = ColorPair(id: UUID(), foregroundHex: fgHex, backgroundHex: bgHex, date: Date())
         var updated = [pair] + history
         if updated.count > ColorPair.maxHistory {
@@ -56,6 +56,7 @@ class Eyedroppers: ObservableObject {
         background.color = temp
 
         var history = Defaults[.colorHistory]
+        guard !history.isEmpty else { return }
         let index = activeIndex
         let entry = history[index]
         history[index] = ColorPair(

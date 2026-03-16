@@ -28,7 +28,7 @@ final class URLSchemeHandler: NSObject {
         case "pick":       handlePick(task: task)
         case "system":     handleSystem(task: task)
         case "copy":       handleCopy(task: task)
-        case "set":        handleSet(task: task, hex: arg2)
+        case "set":        handleSet(task: task, hex: arg1)
         case "history":    handleHistory(task: task)
         case "window":     handleWindow(task: task, arg1: arg1, arg2: arg2)
         case "appearance": handleAppearance(task: task)
