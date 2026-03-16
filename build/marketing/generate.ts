@@ -3,19 +3,20 @@
  * Pika marketing asset generator.
  *
  * Usage:
- *   npx tsx build/marketing/generate.ts --version <version> [--capture] [--web] [--figma] [--all]
+ *   npx tsx build/marketing/generate.ts --version <version> [--app <path>] [--capture] [--web] [--figma] [--all]
  *
  * Flags:
  *   --version  Required. Version string, e.g. 1.3.0 or 1.2.0-beta1.
- *   --capture  Launch the exported Pika.app, capture all shots, quit.
+ *   --app      Optional. Path to Pika.app. Overrides auto-detection.
+ *   --capture  Launch Pika.app, capture all shots, quit.
  *   --web      Composite source PNGs into website JPGs (@2x + @1x).
  *   --figma    Copy shadow-trimmed PNGs to figma/ output folder.
  *   --all      Run capture, web, and figma in sequence.
  *
- * Pika.app is auto-detected from:
- *   pika-releases/Production Exports/Pika * (v<version>)/Pika.app
- *
- * If no export is found, falls back to whatever Pika is registered system-wide.
+ * Pika.app resolution order:
+ *   1. --app <path> if provided
+ *   2. pika-releases/Production Exports/Pika * (v<version>)/Pika.app
+ *   3. Whatever Pika is registered system-wide (fallback)
  *
  * Output: pika-releases/Marketing/v<version>/
  */
@@ -41,6 +42,7 @@ const RELEASES_DIR = join(WORKSPACE_ROOT, "pika-releases", "Marketing");
 // ---------------------------------------------------------------------------
 
 interface Shot {
+  window?: "about" | "help" | "preferences" | "splash";
   file: string;
   fg: string;
   bg: string;
@@ -105,7 +107,7 @@ function findExportedApp(ver: string): string | undefined {
   return existsSync(appPath) ? appPath : undefined;
 }
 
-const pikaApp = findExportedApp(version);
+const pikaApp = arg("--app") ?? findExportedApp(version);
 
 // ---------------------------------------------------------------------------
 // Capture
@@ -117,6 +119,9 @@ async function runCaptureStep(): Promise<void> {
 
   if (pikaApp) {
     console.log(`  App: ${pikaApp}`);
+    console.log("  Quitting any existing Pika…");
+    spawnSync("pkill", ["-x", "Pika"], { stdio: "pipe" });
+    await sleep(500);
     console.log("  Launching Pika…");
     spawnSync("open", ["-a", pikaApp], { stdio: "inherit" });
     // Allow Pika to fully initialise before sending URL triggers
@@ -130,7 +135,7 @@ async function runCaptureStep(): Promise<void> {
 
   for (const shot of manifest.shots) {
     const outputPath = join(SOURCE_DIR, shot.file);
-    const cmd = `"${captureScript}" "${outputPath}" "${shot.fg}" "${shot.bg}" "${shot.appearance}" "${shot.history}"`;
+    const cmd = `"${captureScript}" "${outputPath}" "${shot.fg}" "${shot.bg}" "${shot.appearance}" "${shot.history}" "${shot.window ?? "main"}"`;
     console.log(`  ${shot.file}`);
     execSync(cmd, { stdio: "inherit", env });
   }
@@ -149,15 +154,22 @@ function sleep(ms: number): Promise<void> {
 // Web composite
 // ---------------------------------------------------------------------------
 
+// Canvas dimensions match the website @2x asset size.
+// screencapture gives 960x600px windows (480x300pt at @2x Retina).
+// Windows are placed at full captured size on the @2x canvas.
+// @1x output is a 50% resize of the @2x canvas.
 const CANVAS_WIDTH = 2380;
 const CANVAS_HEIGHT = 838;
 
-// Layout: left (x=-30, y=54), center (x=893, y=0), right (x=1820, y=54)
+// Three-window fan layout on the @2x canvas (2380x838).
+// Center window is in front (composited last), side windows partially off-screen.
+// Draw order: left → right → center (so center appears on top).
 const WINDOW_POSITIONS = [
-  { left: -30, top: 54 },
-  { left: 893, top: 0 },
-  { left: 1820, top: 54 },
+  { left: -50, top: 160 },  // left  (index 0 in manifest.web)
+  { left: 710, top: 80  },  // center (index 1)
+  { left: 1470, top: 160 }, // right  (index 2)
 ];
+const COMPOSITE_ORDER = [0, 2, 1]; // draw left and right first, center last
 
 const BACKGROUNDS: Record<"dark" | "light", { r: number; g: number; b: number }> = {
   dark:  { r: 26,  g: 26,  b: 26  },
@@ -168,29 +180,32 @@ async function compositeWeb(mode: "dark" | "light"): Promise<void> {
   const files = manifest.web[mode];
   const bg = BACKGROUNDS[mode];
 
-  const trimmed = await Promise.all(
-    files.map((f) =>
-      sharp(join(SOURCE_DIR, f))
-        .trim()
-        .toBuffer({ resolveWithObject: true })
-    )
-  );
+  // Build composites in COMPOSITE_ORDER so center window renders on top.
+  const composites: Parameters<ReturnType<typeof sharp>["composite"]>[0] = [];
+  for (const idx of COMPOSITE_ORDER) {
+    const file = join(SOURCE_DIR, files[idx]);
+    let left = WINDOW_POSITIONS[idx].left;
+    const top = WINDOW_POSITIONS[idx].top;
 
-  const composites = trimmed.map(({ data }, i) => ({
-    input: data,
-    left: Math.max(0, WINDOW_POSITIONS[i].left),
-    top: WINDOW_POSITIONS[i].top,
-  }));
+    let input: Buffer;
+    if (left < 0) {
+      // Crop off the portion that would be off-screen to the left.
+      const meta = await sharp(file).metadata();
+      input = await sharp(file)
+        .extract({ left: -left, top: 0, width: (meta.width ?? 960) + left, height: meta.height ?? 600 })
+        .toBuffer();
+      left = 0;
+    } else {
+      input = await sharp(file).toBuffer();
+    }
+
+    composites.push({ input, left, top });
+  }
 
   mkdirSync(OUTPUT_DIR, { recursive: true });
 
   const composited = await sharp({
-    create: {
-      width: CANVAS_WIDTH,
-      height: CANVAS_HEIGHT,
-      channels: 3,
-      background: bg,
-    },
+    create: { width: CANVAS_WIDTH, height: CANVAS_HEIGHT, channels: 3, background: bg },
   })
     .composite(composites)
     .jpeg({ quality: 95 })
@@ -219,6 +234,21 @@ async function runWebStep(): Promise<void> {
 // Figma export
 // ---------------------------------------------------------------------------
 
+// Remove macOS window shadow from a PNG.
+// screencapture includes the shadow as semi-transparent pixels outside the window frame.
+// sharp's default .trim() only removes fully-transparent pixels (alpha === 0), leaving
+// residual shadow. This function first zeros out any pixel with alpha < 200, then trims.
+async function removeShadow(src: string): Promise<Buffer> {
+  const { data, info } = await sharp(src).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+  const { width, height, channels } = info;
+  for (let i = 0; i < data.length; i += channels) {
+    if (data[i + 3] < 200) {
+      data[i] = 0; data[i + 1] = 0; data[i + 2] = 0; data[i + 3] = 0;
+    }
+  }
+  return sharp(Buffer.from(data), { raw: { width, height, channels } }).trim().png().toBuffer();
+}
+
 async function runFigmaStep(): Promise<void> {
   console.log("\n── Figma exports ────────────────────────────────");
   mkdirSync(FIGMA_DIR, { recursive: true });
@@ -226,7 +256,8 @@ async function runFigmaStep(): Promise<void> {
   for (const [key, file] of Object.entries(manifest.figma)) {
     const src = join(SOURCE_DIR, file);
     const dest = join(FIGMA_DIR, `${key}.png`);
-    await sharp(src).trim().toFile(dest);
+    const buf = await removeShadow(src);
+    await sharp(buf).toFile(dest);
     console.log(`  ${key}.png  ← ${file}`);
   }
 }

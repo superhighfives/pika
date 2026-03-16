@@ -16,7 +16,7 @@ struct AboutView: View {
                     ))
                     .frame(maxWidth: .infinity)
                     .frame(height: 200)
-                AppVersion()
+                AppVersion(displayOnTransparent: true)
                     .padding(.bottom, 32)
             }
             VStack(spacing: 0) {

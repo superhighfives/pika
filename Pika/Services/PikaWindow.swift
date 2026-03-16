@@ -58,6 +58,7 @@ class PikaWindow {
             window.titlebarAppearsTransparent = true
         }
 
+        window.title = title
         window.level = (Defaults[.appFloating] ? .floating : .normal) + 1
         window.isMovableByWindowBackground = true
         window.center()

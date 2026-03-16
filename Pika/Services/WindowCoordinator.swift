@@ -139,12 +139,10 @@ class WindowCoordinator: NSObject {
 
     func openSplashWindow() {
         splashWindow = PikaWindow.createSecondaryWindow(
-            title: "Splash",
+            title: PikaText.textAppName,
             size: NSRect(x: 0, y: 0, width: 650, height: 380),
             styleMask: [.titled, .fullSizeContentView]
         )
-        splashWindow.title = PikaText.textAppName
-        splashWindow.titleVisibility = .visible
         splashTouchBarController = SplashTouchBarController(window: splashWindow)
         splashWindow.contentView = NSHostingView(rootView: SplashView().edgesIgnoringSafeArea(.all))
         splashWindow.fadeIn(nil)

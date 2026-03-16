@@ -24,17 +24,17 @@ final class URLSchemeHandler: NSObject {
         }
 
         switch action {
-        case "format":     handleFormat(task: task)
-        case "pick":       handlePick(task: task)
-        case "system":     handleSystem(task: task)
-        case "copy":       handleCopy(task: task)
-        case "set":        handleSet(task: task, hex: arg1)
-        case "history":    handleHistory(task: task)
-        case "window":     handleWindow(task: task, arg1: arg1, arg2: arg2)
+        case "format": handleFormat(task: task)
+        case "pick": handlePick(task: task)
+        case "system": handleSystem(task: task)
+        case "copy": handleCopy(task: task)
+        case "set": handleSet(task: task, hex: arg1)
+        case "history": handleHistory(task: task)
+        case "window": handleWindow(task: task, arg1: arg1, arg2: arg2)
         case "appearance": handleAppearance(task: task)
-        case "swap":       NSApp.sendAction(#selector(AppDelegate.triggerSwap), to: nil, from: nil)
-        case "undo":       NSApp.sendAction(#selector(AppDelegate.triggerUndo), to: nil, from: nil)
-        case "redo":       NSApp.sendAction(#selector(AppDelegate.triggerRedo), to: nil, from: nil)
+        case "swap": NSApp.sendAction(#selector(AppDelegate.triggerSwap), to: nil, from: nil)
+        case "undo": NSApp.sendAction(#selector(AppDelegate.triggerUndo), to: nil, from: nil)
+        case "redo": NSApp.sendAction(#selector(AppDelegate.triggerRedo), to: nil, from: nil)
         default: break
         }
     }
@@ -88,8 +88,8 @@ final class URLSchemeHandler: NSObject {
     private func handleHistory(task: String?) {
         let visible = Defaults[.historyDrawerVisible]
         switch task {
-        case "show"   where !visible: Defaults[.historyDrawerVisible] = true
-        case "hide"   where visible:  Defaults[.historyDrawerVisible] = false
+        case "show" where !visible: Defaults[.historyDrawerVisible] = true
+        case "hide" where visible: Defaults[.historyDrawerVisible] = false
         case "toggle": Defaults[.historyDrawerVisible].toggle()
         default: break
         }
@@ -97,10 +97,11 @@ final class URLSchemeHandler: NSObject {
 
     private func handleWindow(task: String?, arg1: String?, arg2: String?) {
         switch task {
-        case "about":       NSApp.sendAction(#selector(AppDelegate.openAboutWindow), to: nil, from: nil)
-        case "help":        NSApp.sendAction(#selector(AppDelegate.openHelpWindow), to: nil, from: nil)
+        case "about": NSApp.sendAction(#selector(AppDelegate.openAboutWindow), to: nil, from: nil)
+        case "help": NSApp.sendAction(#selector(AppDelegate.openHelpWindow), to: nil, from: nil)
         case "preferences": NSApp.sendAction(#selector(AppDelegate.openPreferencesWindow), to: nil, from: nil)
-        case "resize":      handleWindowResize(w: arg1, h: arg2)
+        case "splash": NSApp.sendAction(#selector(AppDelegate.openSplashWindow), to: nil, from: nil)
+        case "resize": handleWindowResize(w: arg1, h: arg2)
         default: break
         }
     }
@@ -116,8 +117,8 @@ final class URLSchemeHandler: NSObject {
 
     private func handleAppearance(task: String?) {
         switch task {
-        case "light":  NSApp.appearance = NSAppearance(named: .aqua)
-        case "dark":   NSApp.appearance = NSAppearance(named: .darkAqua)
+        case "light": NSApp.appearance = NSAppearance(named: .aqua)
+        case "dark": NSApp.appearance = NSAppearance(named: .darkAqua)
         case "system": NSApp.appearance = nil
         default: break
         }
