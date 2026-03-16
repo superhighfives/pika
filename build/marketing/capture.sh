@@ -1,7 +1,11 @@
 #!/bin/sh
 # Usage: ./capture.sh <output.png> <fg-hex> <bg-hex> <appearance> [history]
 # Example: ./capture.sh window-dark-1.png fbbf24 e74661 dark hide
-# Pika must be running.
+#
+# Set PIKA_APP to target a specific Pika.app rather than the system default:
+#   PIKA_APP="/path/to/Pika.app" ./capture.sh ...
+#
+# Pika must be running (generate.ts launches it automatically when PIKA_APP is set).
 
 OUTPUT="$1"
 FG="$2"
@@ -9,16 +13,25 @@ BG="$3"
 APPEARANCE="$4"
 HISTORY="${5:-hide}"
 
+# Send a pika:// URL — via a specific app if PIKA_APP is set, otherwise system default
+pika_open() {
+    if [ -n "$PIKA_APP" ]; then
+        open -a "$PIKA_APP" "$1"
+    else
+        open "$1"
+    fi
+}
+
 # Configure Pika state via URL triggers
-open "pika://appearance/$APPEARANCE"
+pika_open "pika://appearance/$APPEARANCE"
 sleep 0.3
-open "pika://set/foreground/$FG"
+pika_open "pika://set/foreground/$FG"
 sleep 0.3
-open "pika://set/background/$BG"
+pika_open "pika://set/background/$BG"
 sleep 0.3
-open "pika://history/$HISTORY"
+pika_open "pika://history/$HISTORY"
 sleep 0.3
-open "pika://window/resize/480/300"
+pika_open "pika://window/resize/480/300"
 sleep 0.5
 
 # Look up the Pika window ID

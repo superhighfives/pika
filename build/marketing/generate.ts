@@ -7,17 +7,22 @@
  *
  * Flags:
  *   --version  Required. Version string, e.g. 1.3.0 or 1.2.0-beta1.
- *   --capture  Run capture loop via capture.sh (requires Pika running).
- *   --web      Composite source PNGs into website JPGs.
+ *   --capture  Launch the exported Pika.app, capture all shots, quit.
+ *   --web      Composite source PNGs into website JPGs (@2x + @1x).
  *   --figma    Copy shadow-trimmed PNGs to figma/ output folder.
  *   --all      Run capture, web, and figma in sequence.
+ *
+ * Pika.app is auto-detected from:
+ *   pika-releases/Production Exports/Pika * (v<version>)/Pika.app
+ *
+ * If no export is found, falls back to whatever Pika is registered system-wide.
  *
  * Output: pika-releases/Marketing/v<version>/
  */
 
-import { execSync } from "child_process";
-import { copyFileSync, existsSync, mkdirSync, readFileSync } from "fs";
-import { dirname, join, resolve } from "path";
+import { execSync, spawnSync } from "node:child_process";
+import { existsSync, mkdirSync, readdirSync, readFileSync } from "node:fs";
+import { dirname, join, resolve } from "node:path";
 import sharp from "sharp";
 
 // ---------------------------------------------------------------------------
@@ -28,6 +33,7 @@ const SCRIPT_DIR = dirname(new URL(import.meta.url).pathname);
 const REPO_ROOT = resolve(SCRIPT_DIR, "../..");
 const WORKSPACE_ROOT = resolve(REPO_ROOT, "..");
 const SOURCE_DIR = join(SCRIPT_DIR, "source");
+const EXPORTS_DIR = join(WORKSPACE_ROOT, "pika-releases", "Production Exports");
 const RELEASES_DIR = join(WORKSPACE_ROOT, "pika-releases", "Marketing");
 
 // ---------------------------------------------------------------------------
@@ -86,6 +92,22 @@ const OUTPUT_DIR = join(RELEASES_DIR, `v${version}`);
 const FIGMA_DIR = join(OUTPUT_DIR, "figma");
 
 // ---------------------------------------------------------------------------
+// App detection
+// ---------------------------------------------------------------------------
+
+function findExportedApp(ver: string): string | undefined {
+  if (!existsSync(EXPORTS_DIR)) return undefined;
+  const match = readdirSync(EXPORTS_DIR).find((entry) =>
+    entry.includes(`(v${ver})`)
+  );
+  if (!match) return undefined;
+  const appPath = join(EXPORTS_DIR, match, "Pika.app");
+  return existsSync(appPath) ? appPath : undefined;
+}
+
+const pikaApp = findExportedApp(version);
+
+// ---------------------------------------------------------------------------
 // Capture
 // ---------------------------------------------------------------------------
 
@@ -93,14 +115,34 @@ async function runCaptureStep(): Promise<void> {
   console.log("\n── Capture ──────────────────────────────────────");
   mkdirSync(SOURCE_DIR, { recursive: true });
 
+  if (pikaApp) {
+    console.log(`  App: ${pikaApp}`);
+    console.log("  Launching Pika…");
+    spawnSync("open", ["-a", pikaApp], { stdio: "inherit" });
+    // Allow Pika to fully initialise before sending URL triggers
+    await sleep(2000);
+  } else {
+    console.log("  App: system Pika (no export found for this version)");
+  }
+
   const captureScript = join(SCRIPT_DIR, "capture.sh");
+  const env = { ...process.env, ...(pikaApp ? { PIKA_APP: pikaApp } : {}) };
 
   for (const shot of manifest.shots) {
     const outputPath = join(SOURCE_DIR, shot.file);
     const cmd = `"${captureScript}" "${outputPath}" "${shot.fg}" "${shot.bg}" "${shot.appearance}" "${shot.history}"`;
     console.log(`  ${shot.file}`);
-    execSync(cmd, { stdio: "inherit" });
+    execSync(cmd, { stdio: "inherit", env });
   }
+
+  if (pikaApp) {
+    console.log("  Quitting Pika…");
+    spawnSync("osascript", ["-e", 'quit app "Pika"'], { stdio: "inherit" });
+  }
+}
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 // ---------------------------------------------------------------------------
@@ -134,7 +176,7 @@ async function compositeWeb(mode: "dark" | "light"): Promise<void> {
     )
   );
 
-  const composites = trimmed.map(({ data, info }, i) => ({
+  const composites = trimmed.map(({ data }, i) => ({
     input: data,
     left: Math.max(0, WINDOW_POSITIONS[i].left),
     top: WINDOW_POSITIONS[i].top,
@@ -142,22 +184,20 @@ async function compositeWeb(mode: "dark" | "light"): Promise<void> {
 
   mkdirSync(OUTPUT_DIR, { recursive: true });
 
-  const base2x = sharp({
+  const composited = await sharp({
     create: {
       width: CANVAS_WIDTH,
       height: CANVAS_HEIGHT,
       channels: 3,
       background: bg,
     },
-  });
-
-  const jpg2x = join(OUTPUT_DIR, `pika-screenshot-${mode}@2x.jpg`);
-  const jpg1x = join(OUTPUT_DIR, `pika-screenshot-${mode}.jpg`);
-
-  const composited = await base2x
+  })
     .composite(composites)
     .jpeg({ quality: 95 })
     .toBuffer();
+
+  const jpg2x = join(OUTPUT_DIR, `pika-screenshot-${mode}@2x.jpg`);
+  const jpg1x = join(OUTPUT_DIR, `pika-screenshot-${mode}.jpg`);
 
   await sharp(composited).toFile(jpg2x);
   console.log(`  → ${jpg2x}`);
@@ -186,7 +226,6 @@ async function runFigmaStep(): Promise<void> {
   for (const [key, file] of Object.entries(manifest.figma)) {
     const src = join(SOURCE_DIR, file);
     const dest = join(FIGMA_DIR, `${key}.png`);
-
     await sharp(src).trim().toFile(dest);
     console.log(`  ${key}.png  ← ${file}`);
   }
