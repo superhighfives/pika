@@ -70,7 +70,7 @@ struct NavigationMenu: View {
                         historyDrawerVisible.toggle()
                     }
                 })
-                .keyboardShortcut("y", modifiers: .command)
+                .keyboardShortcut("h", modifiers: [])
             }
             .opacity(0)
             .frame(width: 0, height: 0)

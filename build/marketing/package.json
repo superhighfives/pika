@@ -1,0 +1,13 @@
+{
+  "name": "pika-marketing",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "sharp": "^0.33.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
+  }
+}

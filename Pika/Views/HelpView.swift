@@ -252,6 +252,26 @@ private let urlGroups: [URLGroup] = [
         ("pika://undo", PikaText.textColorUndo),
         ("pika://redo", PikaText.textColorRedo),
     ]),
+    ("Set Color", [
+        ("pika://set/foreground/<hex>", "Set foreground color (e.g. pika://set/foreground/fbbf24)"),
+        ("pika://set/background/<hex>", "Set background color (e.g. pika://set/background/e74661)"),
+    ]),
+    ("History", [
+        ("pika://history/show", "Show the history drawer"),
+        ("pika://history/hide", "Hide the history drawer"),
+        ("pika://history/toggle", "Toggle the history drawer"),
+    ]),
+    ("Window", [
+        ("pika://window/about", "Open the About window"),
+        ("pika://window/help", "Open the Help window"),
+        ("pika://window/preferences", "Open the Preferences window"),
+        ("pika://window/resize/<w>/<h>", "Resize window (e.g. pika://window/resize/480/300)"),
+    ]),
+    ("Appearance", [
+        ("pika://appearance/light", "Force light appearance"),
+        ("pika://appearance/dark", "Force dark appearance"),
+        ("pika://appearance/system", "Restore system appearance"),
+    ]),
 ]
 
 private let formats: [(name: String, example: String, shortcut: String)] = [

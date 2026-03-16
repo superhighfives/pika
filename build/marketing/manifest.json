@@ -1,0 +1,20 @@
+{
+  "shots": [
+    { "file": "window-yellow-red-dark.png",   "fg": "fbbf24", "bg": "e74661", "appearance": "dark",  "history": "hide" },
+    { "file": "window-blue-purple-dark.png",  "fg": "0a31bc", "bg": "432f9b", "appearance": "dark",  "history": "hide" },
+    { "file": "window-pink-purple-dark.png",  "fg": "be6ddc", "bg": "432f9b", "appearance": "dark",  "history": "hide" },
+    { "file": "window-yellow-red-light.png",  "fg": "fbbf24", "bg": "e74661", "appearance": "light", "history": "hide" },
+    { "file": "window-blue-purple-light.png", "fg": "0a31bc", "bg": "432f9b", "appearance": "light", "history": "hide" },
+    { "file": "window-settings-light.png",    "fg": "0a31bc", "bg": "432f9b", "appearance": "light", "history": "show" }
+  ],
+  "web": {
+    "dark":  ["window-blue-purple-dark.png", "window-yellow-red-dark.png", "window-pink-purple-dark.png"],
+    "light": ["window-blue-purple-light.png", "window-yellow-red-light.png", "window-pink-purple-dark.png"]
+  },
+  "figma": {
+    "mas-01": "window-blue-purple-light.png",
+    "mas-02": "window-yellow-red-dark.png",
+    "mas-03": "window-settings-light.png",
+    "mas-04": "window-pink-purple-dark.png"
+  }
+}
