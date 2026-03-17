@@ -11,6 +11,7 @@ struct KeyboardShortcutKey<Content: View>: View {
     var body: some View {
         content
             .font(.system(size: 14, weight: .semibold, design: .rounded))
+            .frame(minWidth: 20)
             .padding(.vertical, 3.0)
             .padding(.horizontal, 7.0)
             .border(colorScheme == .light ? Color.gray.opacity(0.5) : Color.gray.opacity(0.5), width: 1)

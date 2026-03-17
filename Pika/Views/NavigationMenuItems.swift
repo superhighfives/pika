@@ -69,6 +69,14 @@ struct NavigationMenuItems: View {
             Divider()
         }
 
+        Button(PikaText.textHistoryToggle, action: {
+            NSApp.sendAction(#selector(AppDelegate.triggerToggleHistory), to: nil, from: nil)
+        })
+
+        VStack {
+            Divider()
+        }
+
         Button(PikaText.textColorSwapDetail, action: {
             NSApp.sendAction(#selector(AppDelegate.triggerSwap), to: nil, from: nil)
         })
@@ -88,6 +96,9 @@ struct NavigationMenuItems: View {
         Group {
             Button(PikaText.textMenuAbout, action: {
                 NSApp.sendAction(#selector(AppDelegate.openAboutWindow), to: nil, from: nil)
+            })
+            Button(PikaText.textMenuHelp, action: {
+                NSApp.sendAction(#selector(AppDelegate.openHelpWindow), to: nil, from: nil)
             })
             #if TARGET_SPARKLE
                 Button("\(PikaText.textMenuUpdates)...", action: {

@@ -20,6 +20,8 @@ enum PikaConstants {
     static let gitHubRepoURL = "https://github.com/superhighfives/pika"
     static let gitHubIssueURL = "https://github.com/superhighfives/pika/issues/new/choose"
     static let charlieGleasonWebsiteURL = "https://charliegleason.com"
+    static let pikaHelpURL = "https://superhighfives.com/pika/help"
+    static let macAppStoreURL = "https://apps.apple.com/us/app/pika/id6739170421"
 
     // Initial colors
     static let initialColors = [
@@ -56,6 +58,11 @@ enum PikaConstants {
     static let ncTriggerFormatLAB = "triggerFormatLAB"
     static let ncTriggerFormatOKLCH = "triggerFormatOKLCH"
     static let ncTriggerQuit = "triggerQuit"
+    static let ncColorPicked = "colorPicked"
+    static let ncToggleHistory = "toggleHistory"
+    static let ncHistoryPrevious = "historyPrevious"
+    static let ncHistoryNext = "historyNext"
+    static let ncHistoryDelete = "historyDelete"
 
     // Disabled formats for SwiftUI copy format
     static let disabledFormats: [ColorFormat] = [.hex, .hsl, .opengl, .lab, .oklch]
@@ -82,6 +89,11 @@ extension Notification.Name {
     static let triggerFormatLAB = Notification.Name(PikaConstants.ncTriggerFormatLAB)
     static let triggerFormatOKLCH = Notification.Name(PikaConstants.ncTriggerFormatOKLCH)
     static let triggerQuit = Notification.Name(PikaConstants.ncTriggerQuit)
+    static let colorPicked = Notification.Name(PikaConstants.ncColorPicked)
+    static let toggleHistory = Notification.Name(PikaConstants.ncToggleHistory)
+    static let historyPrevious = Notification.Name(PikaConstants.ncHistoryPrevious)
+    static let historyNext = Notification.Name(PikaConstants.ncHistoryNext)
+    static let historyDelete = Notification.Name(PikaConstants.ncHistoryDelete)
 }
 
 enum PikaText {
@@ -115,6 +127,17 @@ enum PikaText {
     /*
      * Menu
      */
+
+    static let textMenuHelp = NSLocalizedString("menu.help", comment: "Help")
+    static let textHelpDescription = NSLocalizedString("help.description", comment: "Help description")
+    static let textHelpKeyboardShortcuts = NSLocalizedString("help.shortcuts", comment: "Keyboard Shortcuts")
+    static let textHelpURLTriggers = NSLocalizedString("help.url_triggers", comment: "URL Triggers")
+    static let textHelpURLTriggersDescription = NSLocalizedString("help.url_triggers.description", comment: "URL Triggers description")
+    static let textHelpFormats = NSLocalizedString("help.formats", comment: "Formats")
+    static let textHelpOpenSource = NSLocalizedString("help.open_source", comment: "Open Source")
+    static let textHelpOpenSourceDescription = NSLocalizedString("help.open_source.description", comment: "Open Source description")
+    static let textHelpViewOnGitHub = NSLocalizedString("help.github", comment: "View on GitHub")
+    static let textHelpSupportOnMAS = NSLocalizedString("help.mas", comment: "Support on the Mac App Store")
 
     static let textMenuAbout = NSLocalizedString("menu.about", comment: "About")
     static let textMenuUpdates = NSLocalizedString("menu.updates", comment: "Check for updates")
@@ -167,6 +190,14 @@ enum PikaText {
     static let textColorAPCA45 = NSLocalizedString("color.apca.45", comment: "APCA ≥45")
     static let textColorAPCA60 = NSLocalizedString("color.apca.60", comment: "APCA ≥60")
     static let textColorAPCA75 = NSLocalizedString("color.apca.75", comment: "APCA ≥75")
+
+    // History
+    static let textHistoryTitle = NSLocalizedString("history.title", comment: "History")
+    static let textHistoryToggle = NSLocalizedString("history.toggle", comment: "Toggle history")
+    static let textHistoryApplyForeground = NSLocalizedString("history.apply.foreground", comment: "Apply foreground only")
+    static let textHistoryApplyBackground = NSLocalizedString("history.apply.background", comment: "Apply background only")
+    static let textHistoryRemove = NSLocalizedString("history.remove", comment: "Remove from history")
+    static let textHistoryClear = NSLocalizedString("history.clear", comment: "Clear history")
 
     // Keyboard shortcuts
     static let textPickForeground = NSLocalizedString("color.pick.foreground", comment: "Pick foreground")

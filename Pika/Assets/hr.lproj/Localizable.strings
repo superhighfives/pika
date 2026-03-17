@@ -331,6 +331,36 @@
 /* About */
 "menu.about" = "O aplikaciji";
 
+/* Help */
+"menu.help" = "Pomoć";
+
+/* Help description */
+"help.description" = "Sve što trebate znati o korištenju Pike, od tipkovnih prečaca do URL automatizacije.";
+
+/* Keyboard Shortcuts */
+"help.shortcuts" = "Tipkovni prečaci";
+
+/* URL Triggers */
+"help.url_triggers" = "URL okidači";
+
+/* URL Triggers description */
+"help.url_triggers.description" = "Automatizirajte Piku iz drugih aplikacija koristeći pika:// URL shemu. Možete dodati i format akcijama odabira ili kopiranja, npr. pika://pick/foreground/hex.";
+
+/* Formats */
+"help.formats" = "Formati";
+
+/* Open Source */
+"help.open_source" = "Otvoreni izvor";
+
+/* Open Source description */
+"help.open_source.description" = "Pika je besplatna i otvorenog koda, izgrađena i održavana na GitHubu. Doprinosi, prijave grešaka i zahtjevi za značajkama uvijek su dobrodošli.";
+
+/* View on GitHub */
+"help.github" = "Pogledaj na GitHubu";
+
+/* Support on the Mac App Store */
+"help.mas" = "Podržite na Mac App Storeu";
+
 /* Check for updates */
 "menu.updates" = "Traži nove verzije";
 
@@ -351,3 +381,21 @@
 
 /* Duration: */
 "preferences.overlay.duration" = "Trajanje";
+
+/* History */
+"history.title" = "Povijest";
+
+/* Toggle history */
+"history.toggle" = "Uključi/isključi povijest";
+
+/* Apply foreground only */
+"history.apply.foreground" = "Primijeni samo prednji plan";
+
+/* Apply background only */
+"history.apply.background" = "Primijeni samo pozadinu";
+
+/* Remove from history */
+"history.remove" = "Ukloni iz povijesti";
+
+/* Clear history */
+"history.clear" = "Izbriši povijest";

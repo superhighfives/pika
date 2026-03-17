@@ -331,6 +331,36 @@
 /* About */
 "menu.about" = "Über Pika";
 
+/* Help */
+"menu.help" = "Hilfe";
+
+/* Help description */
+"help.description" = "Alles, was Sie über die Verwendung von Pika wissen müssen, von Tastaturkürzeln bis zur URL-Automatisierung.";
+
+/* Keyboard Shortcuts */
+"help.shortcuts" = "Tastaturkürzel";
+
+/* URL Triggers */
+"help.url_triggers" = "URL-Aktionen";
+
+/* URL Triggers description */
+"help.url_triggers.description" = "Automatisieren Sie Pika aus anderen Apps mit dem pika://-URL-Schema. Sie können auch ein Format anhängen, z.B. pika://pick/foreground/hex.";
+
+/* Formats */
+"help.formats" = "Formate";
+
+/* Open Source */
+"help.open_source" = "Open Source";
+
+/* Open Source description */
+"help.open_source.description" = "Pika ist kostenlos und Open Source, entwickelt und gepflegt auf GitHub. Beiträge, Fehlerberichte und Feature-Anfragen sind immer willkommen.";
+
+/* View on GitHub */
+"help.github" = "Auf GitHub ansehen";
+
+/* Support on the Mac App Store */
+"help.mas" = "Im Mac App Store unterstützen";
+
 /* Check for updates */
 "menu.updates" = "Updates überprüfen";
 
@@ -351,3 +381,21 @@
 
 /* Duration: */
 "preferences.overlay.duration" = "Dauer";
+
+/* History */
+"history.title" = "Verlauf";
+
+/* Toggle history */
+"history.toggle" = "Verlauf ein-/ausblenden";
+
+/* Apply foreground only */
+"history.apply.foreground" = "Nur Vordergrund anwenden";
+
+/* Apply background only */
+"history.apply.background" = "Nur Hintergrund anwenden";
+
+/* Remove from history */
+"history.remove" = "Aus Verlauf entfernen";
+
+/* Clear history */
+"history.clear" = "Verlauf löschen";
