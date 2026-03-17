@@ -143,6 +143,7 @@ class WindowCoordinator: NSObject {
             size: NSRect(x: 0, y: 0, width: 650, height: 380),
             styleMask: [.titled, .fullSizeContentView]
         )
+        splashWindow.titlebarAppearsTransparent = true
         splashTouchBarController = SplashTouchBarController(window: splashWindow)
         splashWindow.contentView = NSHostingView(rootView: SplashView().edgesIgnoringSafeArea(.all))
         splashWindow.fadeIn(nil)
