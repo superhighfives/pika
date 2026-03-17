@@ -161,13 +161,22 @@ function sleep(ms: number): Promise<void> {
 const CANVAS_WIDTH = 2380;
 const CANVAS_HEIGHT = 838;
 
+// Drop shadow parameters — declared here so WINDOW_POSITIONS can reference them.
+const SHADOW_OFFSET_Y = 10;   // downward shift in px
+const SHADOW_BLUR     = 10;   // gaussian sigma
+const SHADOW_OPACITY  = 0.15; // 0–1
+
 // Three-window fan layout on the @2x canvas (2380x838).
 // Center window is in front (composited last), side windows partially off-screen.
 // Draw order: left → right → center (so center appears on top).
+// Positions refer to the visual window corner (shadow padding is added internally).
+// Side windows are inset by SHADOW_BLUR * 2 so the outer shadow fades to the canvas edge
+// rather than clipping. Center window remains horizontally centred on the canvas.
+const SHADOW_EDGE_PAD = SHADOW_BLUR * 2;
 const WINDOW_POSITIONS = [
-  { left: -50, top: 160 },  // left  (index 0 in manifest.web)
-  { left: 710, top: 80  },  // center (index 1)
-  { left: 1470, top: 160 }, // right  (index 2)
+  { left: SHADOW_EDGE_PAD,                      top: 160 },  // left
+  { left: 710,                                  top: 80  },  // center — centred on 2380px canvas
+  { left: CANVAS_WIDTH - 960 - SHADOW_EDGE_PAD, top: 160 },  // right
 ];
 const COMPOSITE_ORDER = [0, 2, 1]; // draw left and right first, center last
 
@@ -176,6 +185,73 @@ const BACKGROUNDS: Record<"dark" | "light", { r: number; g: number; b: number }>
   light: { r: 255, g: 255, b: 255 },
 };
 
+// Add a consistent programmatic drop shadow to a window image.
+// Returns the image buffer with shadow included, plus the uniform padding added on each side.
+//
+// Why grayscale for the blur: Sharp uses premultiplied alpha internally for gaussblur.
+// Blurring pure black (0,0,0) on transparent (0,0,0,0) gives identical premultiplied
+// values (0,0,0) in both regions — the Gaussian has nothing to spread, producing a
+// hard edge. Extracting the alpha channel as single-channel greyscale and blurring that
+// directly avoids premultiplied alpha entirely, giving a proper Gaussian gradient.
+async function withDropShadow(buf: Buffer): Promise<{ image: Buffer; padLeft: number; padTop: number }> {
+
+  const meta = await sharp(buf).metadata();
+  const w = meta.width ?? 960;
+  const h = meta.height ?? 600;
+
+  // All sides need 2× SHADOW_BLUR so the Gaussian (σ=SHADOW_BLUR) doesn't clip at the canvas edge
+  // (at 1σ the shadow is still ~61% intensity; at 2σ it's ~14%, negligible).
+  // Bottom gets an extra SHADOW_OFFSET_Y since the shadow is shifted down.
+  const padLeft   = SHADOW_BLUR * 2;
+  const padTop    = SHADOW_BLUR * 2;
+  const padRight  = SHADOW_BLUR * 2;
+  const padBottom = SHADOW_BLUR * 2 + SHADOW_OFFSET_Y;
+  const totalW = w + padLeft + padRight;
+  const totalH = h + padTop + padBottom;
+
+  // 1. Extract the window's alpha channel as single-channel greyscale.
+  const windowAlpha = await sharp(buf).extractChannel(3).toBuffer();
+
+  // 2. Extend the alpha mask with black padding (shadow shifted down), then blur.
+  //    Using extend() on the greyscale image directly and blurring in a second step
+  //    avoids RGB canvas compositing quirks and pipeline ordering issues.
+  const alphaPadded = await sharp(windowAlpha)
+    .extend({
+      top:    padTop + SHADOW_OFFSET_Y,   // extra offset pushes shadow down in the blur canvas
+      bottom: SHADOW_BLUR * 2,
+      left:   padLeft,
+      right:  padRight,
+      background: { r: 0, g: 0, b: 0 },
+    })
+    .png()
+    .toBuffer();
+
+  const { data: blurredGrey, info: blurInfo } = await sharp(alphaPadded)
+    .blur(SHADOW_BLUR)
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+
+  // 3. Build RGBA shadow: R=G=B=0 (black), A = blurred grey × SHADOW_OPACITY.
+  // Use blurInfo.channels to stride correctly — Sharp may output 1, 2, or 3 channels
+  // depending on how it encoded the padded PNG; always take the first channel.
+  const ch = blurInfo.channels;
+  const shadowData = Buffer.alloc(totalW * totalH * 4, 0);
+  for (let i = 0; i < totalW * totalH; i++) {
+    shadowData[i * 4 + 3] = Math.round((blurredGrey[i * ch] as number) * SHADOW_OPACITY);
+  }
+  const shadow = await sharp(shadowData, { raw: { width: totalW, height: totalH, channels: 4 } })
+    .png()
+    .toBuffer();
+
+  // 4. Composite the clean window over the shadow at the padded position.
+  const result = await sharp(shadow)
+    .composite([{ input: buf, left: padLeft, top: padTop }])
+    .png()
+    .toBuffer();
+
+  return { image: result, padLeft, padTop };
+}
+
 async function compositeWeb(mode: "dark" | "light"): Promise<void> {
   const files = manifest.web[mode];
   const bg = BACKGROUNDS[mode];
@@ -183,20 +259,26 @@ async function compositeWeb(mode: "dark" | "light"): Promise<void> {
   // Build composites in COMPOSITE_ORDER so center window renders on top.
   const composites: Parameters<ReturnType<typeof sharp>["composite"]>[0] = [];
   for (const idx of COMPOSITE_ORDER) {
-    const file = join(SOURCE_DIR, files[idx]);
-    let left = WINDOW_POSITIONS[idx].left;
-    const top = WINDOW_POSITIONS[idx].top;
+    const src = join(SOURCE_DIR, files[idx]);
+
+    // Remove macOS-captured shadow, then apply a consistent programmatic shadow.
+    const cleaned = await removeShadow(src);
+    const { image: shadowed, padLeft, padTop } = await withDropShadow(cleaned);
+
+    // Adjust position so the window chrome lands at WINDOW_POSITIONS[idx].
+    let left = WINDOW_POSITIONS[idx].left - padLeft;
+    const top = WINDOW_POSITIONS[idx].top - padTop;
 
     let input: Buffer;
     if (left < 0) {
-      // Crop off the portion that would be off-screen to the left.
-      const meta = await sharp(file).metadata();
-      input = await sharp(file)
-        .extract({ left: -left, top: 0, width: (meta.width ?? 960) + left, height: meta.height ?? 600 })
+      // Crop the hidden left portion (shadow padding + off-screen shift).
+      const meta = await sharp(shadowed).metadata();
+      input = await sharp(shadowed)
+        .extract({ left: -left, top: 0, width: (meta.width ?? 0) + left, height: meta.height ?? 0 })
         .toBuffer();
       left = 0;
     } else {
-      input = await sharp(file).toBuffer();
+      input = shadowed;
     }
 
     composites.push({ input, left, top });
