@@ -5,6 +5,6 @@ updates:
     schedule:
       interval: weekly
   - package-ecosystem: swift
-    directory: /
+    directory: /Pika.xcodeproj/project.xcworkspace/xcshareddata/swiftpm
     schedule:
       interval: weekly
