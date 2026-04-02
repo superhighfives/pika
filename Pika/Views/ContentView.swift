@@ -64,8 +64,8 @@ struct ContentView: View {
                             )
                         }
                     }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
-                    .padding(.bottom, 12.0)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                    .padding(.bottom, 0)
                     .allowsHitTesting(false)
                 )
                 .onHover { hover in
