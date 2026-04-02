@@ -391,6 +391,9 @@
 /* Toggle history */
 "history.toggle" = "Toggle history";
 
+/* Toggle color preview */
+"color.preview.toggle" = "Toggle color preview";
+
 /* Apply foreground only */
 "history.apply.foreground" = "Apply foreground only";
 

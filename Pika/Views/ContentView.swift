@@ -105,6 +105,11 @@ struct ContentView: View {
                 historyDrawerVisible.toggle()
             }
         }
+        .onReceive(NotificationCenter.default.publisher(for: .toggleColorPreview)) { _ in
+            withAnimation(.easeInOut(duration: 0.2)) {
+                showColorPreview.toggle()
+            }
+        }
         .onReceive(NotificationCenter.default.publisher(for: .historyPrevious)) { _ in
             guard historyDrawerVisible else { return }
             eyedroppers.navigatePrevious()

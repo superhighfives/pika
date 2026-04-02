@@ -71,6 +71,10 @@ struct NavigationMenu: View {
                     }
                 })
                 .keyboardShortcut("h", modifiers: [])
+                Button(PikaText.textColorPreviewToggle, action: {
+                    NSApp.sendAction(#selector(AppDelegate.triggerToggleColorPreview), to: nil, from: nil)
+                })
+                .keyboardShortcut("p", modifiers: [])
             }
             .opacity(0)
             .frame(width: 0, height: 0)

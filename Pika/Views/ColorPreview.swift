@@ -4,6 +4,7 @@ import SwiftUI
 struct ColorPreview: View {
     @ObservedObject var foreground: Eyedropper
     @ObservedObject var background: Eyedropper
+    @Environment(\.colorScheme) var colorScheme: ColorScheme
 
     var body: some View {
         HStack(spacing: 8.0) {
@@ -21,6 +22,13 @@ struct ColorPreview: View {
             Capsule()
                 .fill(Color(background.color))
                 .shadow(color: .black.opacity(0.25), radius: 6, x: 0, y: 2)
+        )
+        .overlay(
+            Capsule()
+                .strokeBorder(
+                    colorScheme == .dark ? Color.black.opacity(0.4) : Color.white.opacity(0.6),
+                    lineWidth: 1
+                )
         )
         .padding(.horizontal, 16.0)
         .transition(AnyTransition.scale(scale: 0.8).combined(with: .opacity))

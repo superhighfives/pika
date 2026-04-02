@@ -60,6 +60,7 @@ enum PikaConstants {
     static let ncTriggerQuit = "triggerQuit"
     static let ncColorPicked = "colorPicked"
     static let ncToggleHistory = "toggleHistory"
+    static let ncToggleColorPreview = "toggleColorPreview"
     static let ncHistoryPrevious = "historyPrevious"
     static let ncHistoryNext = "historyNext"
     static let ncHistoryDelete = "historyDelete"
@@ -91,6 +92,7 @@ extension Notification.Name {
     static let triggerQuit = Notification.Name(PikaConstants.ncTriggerQuit)
     static let colorPicked = Notification.Name(PikaConstants.ncColorPicked)
     static let toggleHistory = Notification.Name(PikaConstants.ncToggleHistory)
+    static let toggleColorPreview = Notification.Name(PikaConstants.ncToggleColorPreview)
     static let historyPrevious = Notification.Name(PikaConstants.ncHistoryPrevious)
     static let historyNext = Notification.Name(PikaConstants.ncHistoryNext)
     static let historyDelete = Notification.Name(PikaConstants.ncHistoryDelete)
@@ -194,6 +196,7 @@ enum PikaText {
     // History
     static let textHistoryTitle = NSLocalizedString("history.title", comment: "History")
     static let textHistoryToggle = NSLocalizedString("history.toggle", comment: "Toggle history")
+    static let textColorPreviewToggle = NSLocalizedString("color.preview.toggle", comment: "Toggle color preview")
     static let textHistoryApplyForeground = NSLocalizedString("history.apply.foreground", comment: "Apply foreground only")
     static let textHistoryApplyBackground = NSLocalizedString("history.apply.background", comment: "Apply background only")
     static let textHistoryRemove = NSLocalizedString("history.remove", comment: "Remove from history")
