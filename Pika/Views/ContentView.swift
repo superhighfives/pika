@@ -15,7 +15,6 @@ struct ContentView: View {
     @State var swapVisible: Bool = false
     @State private var swapTimerSubscription: Cancellable?
     @State private var swapTimer = Timer.publish(every: 0.25, on: .main, in: .common)
-    @State private var angle: Double = 0
 
     var body: some View {
         VStack(alignment: .trailing, spacing: 0) {
@@ -33,57 +32,23 @@ struct ContentView: View {
                     swapTimerSubscription = nil
                 }
                 .overlay(
-                    Group {
-                        if showColorPreview {
-                            HStack(spacing: 8.0) {
-                                ColorPreview(
-                                    foreground: eyedroppers.foreground,
-                                    background: eyedroppers.background
-                                )
-                                Button(action: {
-                                    NSApp.sendAction(#selector(AppDelegate.triggerSwap), to: nil, from: nil)
-                                    angle -= 180
-                                }, label: {
-                                    IconImage(name: "arrow.triangle.swap")
-                                        .rotationEffect(.degrees(angle))
-                                        .animation(.easeInOut, value: angle)
-                                })
-                                .buttonStyle(SwapButtonStyle(
-                                    isVisible: true,
-                                    alt: PikaText.textColorSwap,
-                                    ltr: true
-                                ))
-                                .transition(
-                                    .move(edge: .leading).combined(with: .opacity)
-                                )
-                            }
-                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-                            .padding(.horizontal, 16.0)
-                        } else {
-                            Button(action: {
-                                NSApp.sendAction(#selector(AppDelegate.triggerSwap), to: nil, from: nil)
-                                angle -= 180
-                            }, label: {
-                                IconImage(name: "arrow.triangle.swap")
-                                    .rotationEffect(.degrees(angle))
-                                    .animation(.easeInOut, value: angle)
-                            })
-                            .buttonStyle(SwapButtonStyle(
-                                isVisible: swapVisible,
-                                alt: PikaText.textColorSwap,
-                                ltr: true
-                            ))
-                            .focusable(false)
-                            .padding(16.0)
-                            .frame(maxHeight: .infinity, alignment: .top)
+                    SwapPreviewButton(
+                        foreground: eyedroppers.foreground,
+                        background: eyedroppers.background,
+                        showPreview: showColorPreview,
+                        isVisible: swapVisible,
+                        onSwap: {
+                            NSApp.sendAction(#selector(AppDelegate.triggerSwap), to: nil, from: nil)
                         }
-                    }
+                    )
                     .onReceive(NotificationCenter.default.publisher(for: .triggerSwap)) { _ in
                         withAnimation(.easeInOut(duration: 0.2)) {
                             eyedroppers.swap()
                         }
                     }
                     .focusable(false)
+                    .padding(16.0)
+                    .frame(maxHeight: .infinity, alignment: .top)
                 )
                 .onHover { hover in
                     guard !hover, swapTimerSubscription == nil else {
