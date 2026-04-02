@@ -55,6 +55,19 @@ struct ContentView: View {
                     .padding(16.0)
                     .frame(maxHeight: .infinity, alignment: .top)
                 )
+                .overlay(
+                    Group {
+                        if showColorPreview {
+                            ColorPreview(
+                                foreground: eyedroppers.foreground,
+                                background: eyedroppers.background
+                            )
+                        }
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+                    .padding(.bottom, 12.0)
+                    .allowsHitTesting(false)
+                )
                 .onHover { hover in
                     guard !hover, swapTimerSubscription == nil else {
                         return
@@ -64,11 +77,6 @@ struct ContentView: View {
                 }
 
             Divider()
-            if showColorPreview {
-                ColorPreview(foreground: eyedroppers.foreground, background: eyedroppers.background)
-                    .transition(AnyTransition.move(edge: .top).combined(with: .opacity))
-                Divider()
-            }
             Footer(foreground: eyedroppers.foreground, background: eyedroppers.background)
             if historyDrawerVisible {
                 ColorHistoryDrawer(foreground: eyedroppers.foreground, background: eyedroppers.background)
