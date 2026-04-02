@@ -17,6 +17,7 @@ private struct GeneralAndSelectionSection: View {
     @Default(.alwaysShowOnLaunch) var alwaysShowOnLaunch
     @Default(.showColorOverlay) var showColorOverlay
     @Default(.colorOverlayDuration) var colorOverlayDuration
+    @Default(.showColorPreview) var showColorPreview
     @State var disableHideMenuBarIcon = true
 
     var body: some View {
@@ -68,6 +69,9 @@ private struct GeneralAndSelectionSection: View {
                 Toggle(isOn: $appFloating) {
                     Text(PikaText.textFloatDescription)
                         .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                Toggle(isOn: $showColorPreview) {
+                    Text(PikaText.textShowColorPreview)
                 }
                 Toggle(isOn: $showColorOverlay) {
                     Text(PikaText.textShowColorOverlay)

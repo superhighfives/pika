@@ -8,6 +8,7 @@ struct ContentView: View {
     @Default(.copyFormat) var copyFormat
     @Default(.colorFormat) var colorFormat
     @Default(.historyDrawerVisible) var historyDrawerVisible
+    @Default(.showColorPreview) var showColorPreview
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     let pasteboard = NSPasteboard.general
 
@@ -63,6 +64,11 @@ struct ContentView: View {
                 }
 
             Divider()
+            if showColorPreview {
+                ColorPreview(foreground: eyedroppers.foreground, background: eyedroppers.background)
+                    .transition(.move(edge: .top).combined(with: .opacity))
+                Divider()
+            }
             Footer(foreground: eyedroppers.foreground, background: eyedroppers.background)
             if historyDrawerVisible {
                 ColorHistoryDrawer(foreground: eyedroppers.foreground, background: eyedroppers.background)

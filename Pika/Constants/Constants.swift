@@ -327,6 +327,12 @@ enum PikaText {
         comment: "Set a global hotkey shortcut to invoke Pika"
     )
 
+    // Color Preview
+    static let textShowColorPreview = NSLocalizedString(
+        "preferences.preview.show",
+        comment: "Show foreground color on background color"
+    )
+
     // Color Overlay
     static let textShowColorOverlay = NSLocalizedString(
         "preferences.overlay.show",
