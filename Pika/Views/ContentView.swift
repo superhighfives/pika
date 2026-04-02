@@ -66,7 +66,7 @@ struct ContentView: View {
             Divider()
             if showColorPreview {
                 ColorPreview(foreground: eyedroppers.foreground, background: eyedroppers.background)
-                    .transition(.move(edge: .top).combined(with: .opacity))
+                    .transition(AnyTransition.move(edge: .top).combined(with: .opacity))
                 Divider()
             }
             Footer(foreground: eyedroppers.foreground, background: eyedroppers.background)
