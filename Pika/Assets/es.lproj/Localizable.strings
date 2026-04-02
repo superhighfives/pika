@@ -399,3 +399,6 @@
 
 /* Clear history */
 "history.clear" = "Borrar historial";
+
+/* Sample preview text */
+"color.preview.sample" = "El rápido zorro marrón salta sobre el perro perezoso";

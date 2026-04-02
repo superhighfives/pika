@@ -399,3 +399,6 @@
 
 /* Clear history */
 "history.clear" = "Effacer l'historique";
+
+/* Sample preview text */
+"color.preview.sample" = "Le rapide renard brun saute par-dessus le chien paresseux";

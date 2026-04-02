@@ -399,3 +399,6 @@
 
 /* Clear history */
 "history.clear" = "Verlauf löschen";
+
+/* Sample preview text */
+"color.preview.sample" = "Der schnelle braune Fuchs springt über den faulen Hund";

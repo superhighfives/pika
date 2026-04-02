@@ -394,6 +394,9 @@
 /* Toggle color preview */
 "color.preview.toggle" = "Toggle color preview";
 
+/* Sample preview text */
+"color.preview.sample" = "The quick brown fox jumps over the lazy dog";
+
 /* Apply foreground only */
 "history.apply.foreground" = "Apply foreground only";
 

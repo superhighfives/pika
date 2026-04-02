@@ -399,3 +399,6 @@
 
 /* Clear history */
 "history.clear" = "Wyczyść historię";
+
+/* Sample preview text */
+"color.preview.sample" = "Szybki brązowy lis przeskakuje przez leniwego psa";

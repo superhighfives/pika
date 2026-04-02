@@ -399,3 +399,6 @@
 
 /* Clear history */
 "history.clear" = "Izbriši povijest";
+
+/* Sample preview text */
+"color.preview.sample" = "Brza smeđa lisica preskočila je lijenog psa";

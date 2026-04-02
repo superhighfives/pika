@@ -10,7 +10,7 @@ struct ColorPreview: View {
         HStack(spacing: 8.0) {
             Text("Aa")
                 .font(.system(size: 15, weight: .bold))
-            Text("The quick brown fox jumps over the lazy dog")
+            Text(NSLocalizedString("color.preview.sample", comment: "Sample preview text"))
                 .font(.system(size: 13, weight: .regular))
                 .lineLimit(1)
                 .truncationMode(.tail)
@@ -26,7 +26,7 @@ struct ColorPreview: View {
         .overlay(
             Capsule()
                 .strokeBorder(
-                    colorScheme == .dark ? Color.black.opacity(0.4) : Color.white.opacity(0.6),
+                    colorScheme == .dark ? Color.black.opacity(0.2) : Color.white.opacity(0.3),
                     lineWidth: 1
                 )
         )
