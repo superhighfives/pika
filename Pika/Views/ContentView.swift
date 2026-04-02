@@ -33,19 +33,32 @@ struct ContentView: View {
                     swapTimerSubscription = nil
                 }
                 .overlay(
-                    Button(action: {
-                        NSApp.sendAction(#selector(AppDelegate.triggerSwap), to: nil, from: nil)
-                        angle -= 180
-                    }, label: {
-                        IconImage(name: "arrow.triangle.swap")
-                            .rotationEffect(.degrees(angle))
-                            .animation(.easeInOut, value: angle)
-                    })
-                    .buttonStyle(SwapButtonStyle(
-                        isVisible: swapVisible,
-                        alt: PikaText.textColorSwap,
-                        ltr: true
-                    ))
+                    Group {
+                        if showColorPreview {
+                            ColorPreview(
+                                foreground: eyedroppers.foreground,
+                                background: eyedroppers.background,
+                                isVisible: swapVisible,
+                                onSwap: {
+                                    NSApp.sendAction(#selector(AppDelegate.triggerSwap), to: nil, from: nil)
+                                }
+                            )
+                        } else {
+                            Button(action: {
+                                NSApp.sendAction(#selector(AppDelegate.triggerSwap), to: nil, from: nil)
+                                angle -= 180
+                            }, label: {
+                                IconImage(name: "arrow.triangle.swap")
+                                    .rotationEffect(.degrees(angle))
+                                    .animation(.easeInOut, value: angle)
+                            })
+                            .buttonStyle(SwapButtonStyle(
+                                isVisible: swapVisible,
+                                alt: PikaText.textColorSwap,
+                                ltr: true
+                            ))
+                        }
+                    }
                     .onReceive(NotificationCenter.default.publisher(for: .triggerSwap)) { _ in
                         withAnimation(.easeInOut(duration: 0.2)) {
                             eyedroppers.swap()
@@ -54,19 +67,6 @@ struct ContentView: View {
                     .focusable(false)
                     .padding(16.0)
                     .frame(maxHeight: .infinity, alignment: .top)
-                )
-                .overlay(
-                    Group {
-                        if showColorPreview {
-                            ColorPreview(
-                                foreground: eyedroppers.foreground,
-                                background: eyedroppers.background
-                            )
-                        }
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-                    .padding(.bottom, 0)
-                    .allowsHitTesting(false)
                 )
                 .onHover { hover in
                     guard !hover, swapTimerSubscription == nil else {
