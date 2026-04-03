@@ -4,6 +4,7 @@ struct SwapButtonStyle: ButtonStyle {
     let isVisible: Bool
     let alt: String
     var ltr = false
+    var expanded = false
     var onHoverChange: ((Bool) -> Void)?
 
     private struct SwapButtonStyleView: View {
@@ -17,7 +18,10 @@ struct SwapButtonStyle: ButtonStyle {
         let isVisible: Bool
         let alt: String
         let ltr: Bool
+        let expanded: Bool
         let onHoverChange: ((Bool) -> Void)?
+
+        private var showText: Bool { isHovered || expanded }
 
         var body: some View {
             let fgColor = colorScheme == .dark ? Color.white : .black
@@ -26,13 +30,13 @@ struct SwapButtonStyle: ButtonStyle {
             HStack {
                 if ltr {
                     configuration.label
-                    if isHovered {
+                    if showText {
                         Text(alt)
                             .font(.system(size: 12.0))
                             .padding(.trailing, 2)
                     }
                 } else {
-                    if isHovered {
+                    if showText {
                         Text(alt)
                             .font(.system(size: 12.0))
                             .padding(.leading, 6)
@@ -84,9 +88,9 @@ struct SwapButtonStyle: ButtonStyle {
             .opacity(isVisible ? (configuration.isPressed ? 0.8 : 1.0) : 0.0)
             .foregroundColor(fgColor.opacity(0.8))
             .frame(height: 32.0)
-            .animation(.easeInOut(duration: 0.15), value: isHovered)
-            .animation(.easeInOut, value: isVisible)
-            .animation(.easeInOut, value: configuration.isPressed)
+            .animation(.timingCurve(0.65, 0, 0.35, 1, duration: 0.4), value: showText)
+            .animation(.timingCurve(0.65, 0, 0.35, 1, duration: 0.4), value: isVisible)
+            .animation(.timingCurve(0.65, 0, 0.35, 1, duration: 0.4), value: configuration.isPressed)
         }
     }
 
@@ -96,6 +100,7 @@ struct SwapButtonStyle: ButtonStyle {
             isVisible: isVisible,
             alt: alt,
             ltr: ltr,
+            expanded: expanded,
             onHoverChange: onHoverChange
         )
     }

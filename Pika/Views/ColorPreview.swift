@@ -1,60 +1,25 @@
 import SwiftUI
 
-struct SwapPreviewButton: View {
+struct PreviewPill: View {
     @ObservedObject var foreground: Eyedropper
     @ObservedObject var background: Eyedropper
-    let showPreview: Bool
-    let isVisible: Bool
-    let onSwap: () -> Void
-
     @Environment(\.colorScheme) var colorScheme
-    @State private var isHovered: Bool = false
-    @State private var hoverTask: Task<Void, Never>?
-    @State private var angle: Double = 0
 
-    private var bgColor: Color {
-        showPreview
-            ? Color(background.color)
-            : Color.pikaControlBackground(for: colorScheme)
-    }
-
-    private var fgColor: Color {
-        showPreview
-            ? Color(foreground.color)
-            : (colorScheme == .dark ? Color.white : Color.black)
-    }
+    private var bgColor: Color { Color(background.color) }
+    private var fgColor: Color { Color(foreground.color) }
 
     var body: some View {
-        Button(action: { onSwap(); angle -= 180 }) {
-            HStack(spacing: 6.0) {
-                IconImage(name: "arrow.triangle.swap")
-                    .rotationEffect(.degrees(angle))
-                    .animation(.easeInOut, value: angle)
-
-                if showPreview {
-                    Text(PikaText.textColorSwap)
-                        .font(.system(size: 12.0))
-                    Rectangle()
-                        .fill(fgColor.opacity(0.25))
-                        .frame(width: 1, height: 14)
-                        .padding(.horizontal, 2.0)
-                    Text("Aa")
-                        .font(.system(size: 15, weight: .bold))
-                    Text(NSLocalizedString("color.preview.sample", comment: "Sample preview text"))
-                        .font(.system(size: 13, weight: .regular))
-                        .lineLimit(1)
-                        .truncationMode(.tail)
-                } else if isHovered {
-                    Text(PikaText.textColorSwap)
-                        .font(.system(size: 12.0))
-                        .padding(.trailing, 2.0)
-                }
-            }
-            .foregroundColor(fgColor.opacity(0.8))
-            .padding(.horizontal, 8.0)
-            .padding(.vertical, 8.0)
+        HStack(spacing: 6.0) {
+            Text("Aa")
+                .font(.system(size: 15, weight: .bold))
+            Text(NSLocalizedString("color.preview.sample", comment: "Sample preview text"))
+                .font(.system(size: 13, weight: .regular))
+                .lineLimit(1)
+                .truncationMode(.tail)
         }
-        .buttonStyle(.plain)
+        .foregroundColor(fgColor.opacity(0.8))
+        .padding(.horizontal, 10.0)
+        .padding(.vertical, 8.0)
         .background(
             RoundedRectangle(cornerRadius: 100, style: .continuous)
                 .fill(bgColor)
@@ -62,31 +27,100 @@ struct SwapPreviewButton: View {
                 .overlay(
                     RoundedRectangle(cornerRadius: 100, style: .continuous)
                         .stroke(
-                            showPreview
-                                ? (colorScheme == .dark
-                                    ? Color.black.opacity(0.2)
-                                    : Color.white.opacity(0.3))
-                                : fgColor.opacity(0.1)
+                            colorScheme == .dark
+                                ? Color.black.opacity(0.2)
+                                : Color.white.opacity(0.3)
                         )
                 )
         )
-        .opacity(isVisible ? 1 : 0)
-        .animation(.easeInOut(duration: 0.15), value: isHovered)
-        .animation(.easeInOut, value: isVisible)
-        .onHover { hover in
-            if hover {
-                guard hoverTask == nil else { return }
-                hoverTask = Task {
-                    try? await Task.sleep(for: .milliseconds(100))
-                    guard !Task.isCancelled else { return }
-                    isHovered = true
-                    hoverTask = nil
+    }
+}
+
+struct SwapPreviewButton: View {
+    @ObservedObject var foreground: Eyedropper
+    @ObservedObject var background: Eyedropper
+    let showPreview: Bool
+    let isVisible: Bool
+    let onSwap: () -> Void
+
+    @State private var angle: Double = 0
+    @State private var displayMode: DisplayMode = .standalone
+    @State private var fadePhase: FadePhase = .visible
+    @State private var swapHovered: Bool = false
+
+    private enum DisplayMode {
+        case preview, standalone
+    }
+
+    private enum FadePhase {
+        case visible, fadingOut
+    }
+
+    private var swapButton: some View {
+        Button(action: { onSwap(); angle -= 180 }) {
+            IconImage(name: "arrow.triangle.swap")
+                .rotationEffect(.degrees(angle))
+                .animation(.easeInOut, value: angle)
+        }
+    }
+
+    var body: some View {
+        Group {
+            switch displayMode {
+            case .preview:
+                HStack(spacing: 8.0) {
+                    PreviewPill(
+                        foreground: foreground,
+                        background: background
+                    )
+                    .allowsHitTesting(false)
+                    .zIndex(1)
+
+                    if isVisible {
+                        swapButton
+                            .buttonStyle(SwapButtonStyle(
+                                isVisible: true,
+                                alt: PikaText.textColorSwap,
+                                ltr: true,
+                                expanded: swapHovered,
+                                onHoverChange: { swapHovered = $0 }
+                            ))
+                            .transition(
+                                .move(edge: .leading).combined(with: .opacity)
+                            )
+                    }
                 }
-            } else {
-                hoverTask?.cancel()
-                hoverTask = nil
-                isHovered = false
+                .animation(.timingCurve(0.65, 0, 0.35, 1, duration: 0.4), value: isVisible)
+                .animation(.timingCurve(0.65, 0, 0.35, 1, duration: 0.4), value: swapHovered)
+
+            case .standalone:
+                swapButton
+                    .buttonStyle(SwapButtonStyle(
+                        isVisible: isVisible,
+                        alt: PikaText.textColorSwap,
+                        ltr: true
+                    ))
             }
+        }
+        .opacity(fadePhase == .visible ? 1 : 0)
+        .onChange(of: showPreview) { _, newValue in
+            let targetMode: DisplayMode = newValue ? .preview : .standalone
+            guard targetMode != displayMode else { return }
+
+            withAnimation(.easeInOut(duration: 0.2)) {
+                fadePhase = .fadingOut
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                displayMode = targetMode
+                DispatchQueue.main.async {
+                    withAnimation(.easeInOut(duration: 0.25)) {
+                        fadePhase = .visible
+                    }
+                }
+            }
+        }
+        .onAppear {
+            displayMode = showPreview ? .preview : .standalone
         }
     }
 }

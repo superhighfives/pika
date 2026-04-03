@@ -91,7 +91,7 @@ struct ColorHistoryDrawer: View {
                     Divider()
 
                     Button(action: { eyedroppers.clearHistory() }) {
-                        Image(systemName: "xmark.circle.fill")
+                        Image(systemName: "trash.fill")
                             .font(.system(size: 14))
                             .foregroundColor(.secondary)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)

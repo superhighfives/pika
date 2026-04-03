@@ -6,6 +6,7 @@ struct EyedropperButton: View {
     @Default(.colorFormat) var colorFormat
     @Default(.copyFormat) var copyFormat
     @Default(.hideColorNames) var hideColorNames
+    @Default(.showColorPreview) var showColorPreview
 
     @State var hoverVisible: Bool = false
     @State private var colorSpace = Defaults[.colorSpace]
@@ -23,6 +24,8 @@ struct EyedropperButton: View {
                             .font(.caption)
                             .fontWeight(.semibold)
                             .foregroundColor(eyedropper.color.getUIColor().opacity(0.75))
+                            .opacity(showColorPreview ? 0 : 1)
+                            .animation(.easeInOut(duration: 0.2), value: showColorPreview)
 
                         VStack(alignment: .leading, spacing: 6.0) {
                             Text((eyedropper.color.usingColorSpace(colorSpace) ?? eyedropper.color).toFormat(format: colorFormat, style: copyFormat))
