@@ -402,3 +402,9 @@
 
 /* Sample preview text */
 "color.preview.sample" = "Szybki brązowy lis przeskakuje przez leniwego psa";
+
+/* Show preview */
+"preferences.preview.show" = "Pokaż kolor pierwszego planu na kolorze tła";
+
+/* Toggle color preview */
+"color.preview.toggle" = "Przełącz podgląd koloru";

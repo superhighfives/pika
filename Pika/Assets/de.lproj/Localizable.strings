@@ -402,3 +402,9 @@
 
 /* Sample preview text */
 "color.preview.sample" = "Der schnelle braune Fuchs springt über den faulen Hund";
+
+/* Show preview */
+"preferences.preview.show" = "Vordergrundfarbe auf Hintergrundfarbe anzeigen";
+
+/* Toggle color preview */
+"color.preview.toggle" = "Farbvorschau umschalten";

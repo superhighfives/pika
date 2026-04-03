@@ -47,6 +47,7 @@ struct SwapPreviewButton: View {
     @State private var displayMode: DisplayMode = .standalone
     @State private var fadePhase: FadePhase = .visible
     @State private var swapHovered: Bool = false
+    @State private var transitionTask: Task<Void, Never>?
 
     private enum DisplayMode {
         case preview, standalone
@@ -103,19 +104,21 @@ struct SwapPreviewButton: View {
             }
         }
         .opacity(fadePhase == .visible ? 1 : 0)
+        .allowsHitTesting(fadePhase == .visible)
         .onChange(of: showPreview) { _, newValue in
             let targetMode: DisplayMode = newValue ? .preview : .standalone
             guard targetMode != displayMode else { return }
 
-            withAnimation(.easeInOut(duration: 0.2)) {
-                fadePhase = .fadingOut
-            }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+            transitionTask?.cancel()
+            transitionTask = Task { @MainActor in
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    fadePhase = .fadingOut
+                }
+                try? await Task.sleep(for: .milliseconds(250))
+                guard !Task.isCancelled else { return }
                 displayMode = targetMode
-                DispatchQueue.main.async {
-                    withAnimation(.easeInOut(duration: 0.25)) {
-                        fadePhase = .visible
-                    }
+                withAnimation(.easeInOut(duration: 0.25)) {
+                    fadePhase = .visible
                 }
             }
         }

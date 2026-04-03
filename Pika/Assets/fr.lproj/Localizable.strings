@@ -402,3 +402,9 @@
 
 /* Sample preview text */
 "color.preview.sample" = "Le rapide renard brun saute par-dessus le chien paresseux";
+
+/* Show preview */
+"preferences.preview.show" = "Afficher la couleur de premier plan sur la couleur d'arrière-plan";
+
+/* Toggle color preview */
+"color.preview.toggle" = "Activer/désactiver l'aperçu des couleurs";
