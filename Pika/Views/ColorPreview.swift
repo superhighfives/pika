@@ -23,17 +23,14 @@ struct PreviewPill: View {
         .background(
             RoundedRectangle(cornerRadius: 100, style: .continuous)
                 .fill(bgColor)
-                .shadow(color: Color.black.opacity(0.2), radius: 2, x: 0, y: 2)
                 .overlay(
                     RoundedRectangle(cornerRadius: 100, style: .continuous)
-                        .stroke(
-                            colorScheme == .dark
-                                ? Color.black.opacity(0.2)
-                                : Color.white.opacity(0.3)
-                        )
+                        .stroke(fgColor)
                 )
         )
         .clipShape(RoundedRectangle(cornerRadius: 100, style: .continuous))
+        .shadow(color: Color.black.opacity(0.15), radius: 1, x: 0, y: 1)
+        .shadow(color: Color.black.opacity(0.15), radius: 5, x: 0, y: 2)
     }
 }
 
