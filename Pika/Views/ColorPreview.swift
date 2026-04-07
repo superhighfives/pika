@@ -33,6 +33,7 @@ struct PreviewPill: View {
                         )
                 )
         )
+        .clipShape(RoundedRectangle(cornerRadius: 100, style: .continuous))
     }
 }
 
@@ -74,6 +75,7 @@ struct SwapPreviewButton: View {
                         foreground: foreground,
                         background: background
                     )
+                    .geometryGroup()
                     .allowsHitTesting(false)
                     .zIndex(1)
 
