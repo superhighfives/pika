@@ -57,6 +57,8 @@
 		EA03E39C2F5E618E00998D8B /* ColorPair.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA03E39A2F5E618E00998D8B /* ColorPair.swift */; };
 		EA03E39E2F5E619800998D8B /* ColorHistoryDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA03E39D2F5E619800998D8B /* ColorHistoryDrawer.swift */; };
 		EA03E39F2F5E619800998D8B /* ColorHistoryDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA03E39D2F5E619800998D8B /* ColorHistoryDrawer.swift */; };
+		EA03E3A12F5E619800998D8B /* ColorPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA03E3A02F5E619800998D8B /* ColorPreview.swift */; };
+		EA03E3A22F5E619800998D8B /* ColorPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA03E3A02F5E619800998D8B /* ColorPreview.swift */; };
 		EA0C525025AA729300AFF716 /* Visualisation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C524F25AA729300AFF716 /* Visualisation.swift */; };
 		EA0C526025AB5A2B00AFF716 /* NavigationMenuItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C525F25AB5A2B00AFF716 /* NavigationMenuItems.swift */; };
 		EA0C526425AB5D1700AFF716 /* PikaWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C526325AB5D1700AFF716 /* PikaWindow.swift */; };
@@ -236,6 +238,7 @@
 		CC000001000000000000AB10 /* CGFloat+Format.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+Format.swift"; sourceTree = "<group>"; };
 		EA03E39A2F5E618E00998D8B /* ColorPair.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPair.swift; sourceTree = "<group>"; };
 		EA03E39D2F5E619800998D8B /* ColorHistoryDrawer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorHistoryDrawer.swift; sourceTree = "<group>"; };
+		EA03E3A02F5E619800998D8B /* ColorPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPreview.swift; sourceTree = "<group>"; };
 		EA0C524F25AA729300AFF716 /* Visualisation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Visualisation.swift; sourceTree = "<group>"; };
 		EA0C525F25AB5A2B00AFF716 /* NavigationMenuItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationMenuItems.swift; sourceTree = "<group>"; };
 		EA0C526325AB5D1700AFF716 /* PikaWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PikaWindow.swift; sourceTree = "<group>"; };
@@ -461,6 +464,7 @@
 			isa = PBXGroup;
 			children = (
 				EA03E39D2F5E619800998D8B /* ColorHistoryDrawer.swift */,
+				EA03E3A02F5E619800998D8B /* ColorPreview.swift */,
 				EAD0B6F6259CF29300FA2F67 /* ContentView.swift */,
 				EA8124C0259E307D00033F0B /* Footer.swift */,
 				CC1100000000000000000001 /* Eyedropper */,
@@ -883,6 +887,7 @@
 				EA03E39B2F5E618E00998D8B /* ColorPair.swift in Sources */,
 				221600FD25A636D600B8B7D9 /* ConditionalModifier.swift in Sources */,
 				EA03E39E2F5E619800998D8B /* ColorHistoryDrawer.swift in Sources */,
+				EA03E3A12F5E619800998D8B /* ColorPreview.swift in Sources */,
 				EA635DF125B5A6D80014D91A /* Toast.swift in Sources */,
 				EAD0B71C259D151400FA2F67 /* NavigationMenu.swift in Sources */,
 				22FE80B325BA0F820063759E /* KeyboardShortcutItem.swift in Sources */,
@@ -933,6 +938,7 @@
 				EAE23DAB2D032A38005BB270 /* AppearanceButtonStyle.swift in Sources */,
 				EAE23DAC2D032A38005BB270 /* PikaTouchBar.swift in Sources */,
 				EA03E39F2F5E619800998D8B /* ColorHistoryDrawer.swift in Sources */,
+				EA03E3A22F5E619800998D8B /* ColorPreview.swift in Sources */,
 				EAE23DAD2D032A38005BB270 /* LoadColors.swift in Sources */,
 				C49A11492DB394F500EE7E80 /* APCACompliance.swift in Sources */,
 				CC000001000000000000AAA2 /* Color+PikaControl.swift in Sources */,
@@ -1177,7 +1183,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 73;
+				CURRENT_PROJECT_VERSION = 75;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Pika/Preview Content\"";
 				DEVELOPMENT_TEAM = TGHU37N6EX;
@@ -1191,7 +1197,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.5.0;
+				MARKETING_VERSION = 1.6.0-beta1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.superhighfives.Pika;
 				PRODUCT_NAME = Pika;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG TARGET_SPARKLE";
@@ -1209,7 +1215,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 73;
+				CURRENT_PROJECT_VERSION = 75;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Pika/Preview Content\"";
 				DEVELOPMENT_TEAM = TGHU37N6EX;
@@ -1223,7 +1229,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.5.0;
+				MARKETING_VERSION = 1.6.0-beta1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.superhighfives.Pika;
 				PRODUCT_NAME = Pika;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = TARGET_SPARKLE;
@@ -1256,7 +1262,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.5.0;
+				MARKETING_VERSION = 1.6.0-beta1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.superhighfives.Pika;
 				PRODUCT_NAME = Pika;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG TARGET_MAS";
@@ -1289,7 +1295,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.5.0;
+				MARKETING_VERSION = 1.6.0-beta1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.superhighfives.Pika;
 				PRODUCT_NAME = Pika;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = TARGET_MAS;

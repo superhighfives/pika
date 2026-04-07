@@ -5,6 +5,7 @@ struct NavigationMenu: View {
     @Default(.colorFormat) var colorFormat
     @Default(.copyFormat) var copyFormat
     @Default(.historyDrawerVisible) var historyDrawerVisible
+    @Default(.showColorPreview) var showColorPreview
 
     func isFormatDisabled(_ format: ColorFormat) -> Bool {
         if copyFormat == .swiftUI {
@@ -25,6 +26,17 @@ struct NavigationMenu: View {
             .labelsHidden()
             .fixedSize()
             .frame(width: 100.0)
+            .padding(.trailing, 4.0)
+
+            Button(action: {
+                NSApp.sendAction(#selector(AppDelegate.triggerToggleColorPreview), to: nil, from: nil)
+            }, label: {
+                IconImage(name: showColorPreview ? "eye" : "eye.slash")
+            })
+            .buttonStyle(PlainButtonStyle())
+            .padding(.horizontal, 6.0)
+            .foregroundColor(showColorPreview ? .accentColor : .primary)
+            .help(PikaText.textColorPreviewToggle)
 
             Button(action: {
                 withAnimation(.easeInOut(duration: 0.25)) {
@@ -34,8 +46,7 @@ struct NavigationMenu: View {
                 IconImage(name: historyDrawerVisible ? "clock.arrow.circlepath" : "clock")
             })
             .buttonStyle(PlainButtonStyle())
-            .padding(.leading, 8.0)
-            .padding(.trailing, 2.0)
+            .padding(.horizontal, 6.0)
             .foregroundColor(historyDrawerVisible ? .accentColor : .primary)
             .help(PikaText.textHistoryToggle)
 
@@ -47,8 +58,8 @@ struct NavigationMenu: View {
             .menuStyle(BorderlessButtonMenuStyle())
             .menuIndicator(.visible)
             .frame(alignment: .leading)
+            .padding(.leading, 6.0)
             .padding(.trailing, 10.0)
-            .padding(.leading, 5.0)
             .fixedSize()
         }
         .background {
@@ -71,6 +82,10 @@ struct NavigationMenu: View {
                     }
                 })
                 .keyboardShortcut("h", modifiers: [])
+                Button(PikaText.textColorPreviewToggle, action: {
+                    NSApp.sendAction(#selector(AppDelegate.triggerToggleColorPreview), to: nil, from: nil)
+                })
+                .keyboardShortcut("p", modifiers: [])
             }
             .opacity(0)
             .frame(width: 0, height: 0)

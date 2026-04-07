@@ -163,6 +163,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         notificationCenter.post(name: .toggleHistory, object: self)
     }
 
+    @IBAction func triggerToggleColorPreview(_: Any) {
+        notificationCenter.post(name: .toggleColorPreview, object: self)
+    }
+
     @IBAction func triggerHistoryPrevious(_: Any) {
         notificationCenter.post(name: .historyPrevious, object: self)
     }

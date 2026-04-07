@@ -376,6 +376,9 @@
 /* Quit */
 "menu.quit" = "Quit";
 
+/* Show foreground color on background color */
+"preferences.preview.show" = "Show foreground color on background color";
+
 /* Show color overlay after picking */
 "preferences.overlay.show" = "Show color overlay after picking";
 
@@ -387,6 +390,12 @@
 
 /* Toggle history */
 "history.toggle" = "Toggle history";
+
+/* Toggle color preview */
+"color.preview.toggle" = "Toggle color preview";
+
+/* Sample preview text */
+"color.preview.sample" = "The quick brown fox jumps over the lazy dog";
 
 /* Apply foreground only */
 "history.apply.foreground" = "Apply foreground only";

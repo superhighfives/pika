@@ -399,3 +399,12 @@
 
 /* Clear history */
 "history.clear" = "Izbriši povijest";
+
+/* Sample preview text */
+"color.preview.sample" = "Brza smeđa lisica preskočila je lijenog psa";
+
+/* Show preview */
+"preferences.preview.show" = "Prikaži boju prednjeg plana na boji pozadine";
+
+/* Toggle color preview */
+"color.preview.toggle" = "Uključi/isključi pregled boje";

@@ -8,13 +8,13 @@ struct ContentView: View {
     @Default(.copyFormat) var copyFormat
     @Default(.colorFormat) var colorFormat
     @Default(.historyDrawerVisible) var historyDrawerVisible
+    @Default(.showColorPreview) var showColorPreview
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     let pasteboard = NSPasteboard.general
 
     @State var swapVisible: Bool = false
     @State private var swapTimerSubscription: Cancellable?
     @State private var swapTimer = Timer.publish(every: 0.25, on: .main, in: .common)
-    @State private var angle: Double = 0
 
     var body: some View {
         VStack(alignment: .trailing, spacing: 0) {
@@ -32,19 +32,15 @@ struct ContentView: View {
                     swapTimerSubscription = nil
                 }
                 .overlay(
-                    Button(action: {
-                        NSApp.sendAction(#selector(AppDelegate.triggerSwap), to: nil, from: nil)
-                        angle -= 180
-                    }, label: {
-                        IconImage(name: "arrow.triangle.swap")
-                            .rotationEffect(.degrees(angle))
-                            .animation(.easeInOut, value: angle)
-                    })
-                    .buttonStyle(SwapButtonStyle(
+                    SwapPreviewButton(
+                        foreground: eyedroppers.foreground,
+                        background: eyedroppers.background,
+                        showPreview: showColorPreview,
                         isVisible: swapVisible,
-                        alt: PikaText.textColorSwap,
-                        ltr: true
-                    ))
+                        onSwap: {
+                            NSApp.sendAction(#selector(AppDelegate.triggerSwap), to: nil, from: nil)
+                        }
+                    )
                     .onReceive(NotificationCenter.default.publisher(for: .triggerSwap)) { _ in
                         withAnimation(.easeInOut(duration: 0.2)) {
                             eyedroppers.swap()
@@ -70,14 +66,7 @@ struct ContentView: View {
             }
         }
         .onAppear {
-            if let latest = Defaults[.colorHistory].first {
-                eyedroppers.foreground.color = latest.foregroundColor
-                eyedroppers.background.color = latest.backgroundColor
-                eyedroppers.activeHistoryID = latest.id
-            } else {
-                eyedroppers.background.color = colorScheme == .light
-                    ? NSColor.white
-                    : NSColor.black
+            if Defaults[.colorHistory].isEmpty {
                 eyedroppers.recordHistory()
             }
         }
@@ -89,6 +78,11 @@ struct ContentView: View {
         .onReceive(NotificationCenter.default.publisher(for: .toggleHistory)) { _ in
             withAnimation(.easeInOut(duration: 0.25)) {
                 historyDrawerVisible.toggle()
+            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .toggleColorPreview)) { _ in
+            withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+                showColorPreview.toggle()
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: .historyPrevious)) { _ in

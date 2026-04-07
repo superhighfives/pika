@@ -73,6 +73,10 @@ struct NavigationMenuItems: View {
             NSApp.sendAction(#selector(AppDelegate.triggerToggleHistory), to: nil, from: nil)
         })
 
+        Button(PikaText.textColorPreviewToggle, action: {
+            NSApp.sendAction(#selector(AppDelegate.triggerToggleColorPreview), to: nil, from: nil)
+        })
+
         VStack {
             Divider()
         }
