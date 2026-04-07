@@ -66,14 +66,7 @@ struct ContentView: View {
             }
         }
         .onAppear {
-            if let latest = Defaults[.colorHistory].first {
-                eyedroppers.foreground.color = latest.foregroundColor
-                eyedroppers.background.color = latest.backgroundColor
-                eyedroppers.activeHistoryID = latest.id
-            } else {
-                eyedroppers.background.color = colorScheme == .light
-                    ? NSColor.white
-                    : NSColor.black
+            if Defaults[.colorHistory].isEmpty {
                 eyedroppers.recordHistory()
             }
         }

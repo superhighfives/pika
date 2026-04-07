@@ -4,11 +4,20 @@ import SwiftUI
 class Eyedroppers: ObservableObject {
     @Default(.colorFormat) var colorFormat
 
-    @Published var foreground = Eyedropper(
-        type: .foreground, color: PikaConstants.initialColors.randomElement()!
-    )
-    @Published var background = Eyedropper(type: .background, color: NSColor.black)
+    @Published var foreground: Eyedropper
+    @Published var background: Eyedropper
     @Published var activeHistoryID: UUID?
+
+    init() {
+        if let latest = Defaults[.colorHistory].first {
+            foreground = Eyedropper(type: .foreground, color: latest.foregroundColor)
+            background = Eyedropper(type: .background, color: latest.backgroundColor)
+            activeHistoryID = latest.id
+        } else {
+            foreground = Eyedropper(type: .foreground, color: PikaConstants.initialColors.randomElement()!)
+            background = Eyedropper(type: .background, color: NSColor.black)
+        }
+    }
 
     private func pushUndo() {
         var stack = Defaults[.undoStack]
