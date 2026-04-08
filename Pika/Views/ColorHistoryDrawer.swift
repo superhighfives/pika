@@ -105,6 +105,7 @@ struct PaletteTabBar: View {
     @Default(.palettes) var palettes
     @Default(.activePaletteIndex) var activePaletteIndex
     @Default(.historyDrawerVisible) var historyDrawerVisible
+    @Binding var slideDirection: ColorHistoryDrawer.VerticalDirection
 
     @State private var isShowingNewField = false
     @State private var renamingIndex: Int?
@@ -166,6 +167,7 @@ struct PaletteTabBar: View {
         let isSelected = index == activePaletteIndex
 
         Button(action: {
+            slideDirection = index > activePaletteIndex ? .down : .up
             activePaletteIndex = index
             if index == 0 { eyedroppers.restoreAutoHistorySelection() }
         }) {
@@ -237,7 +239,7 @@ struct ColorHistoryDrawer: View {
     var body: some View {
         Divider()
         VStack(spacing: 0) {
-            PaletteTabBar()
+            PaletteTabBar(slideDirection: $slideDirection)
             Divider()
             HStack(spacing: 0) {
                 ScrollView(.horizontal, showsIndicators: false) {
@@ -262,9 +264,6 @@ struct ColorHistoryDrawer: View {
                 }
                 .animation(.easeInOut(duration: 0.2), value: activePalette?.id)
                 .clipped()
-                .onChange(of: activePaletteIndex) { oldValue, newValue in
-                    slideDirection = newValue > oldValue ? .down : .up
-                }
 
                 HStack(spacing: 0) {
                     Rectangle()

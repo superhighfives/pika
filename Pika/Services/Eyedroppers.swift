@@ -288,6 +288,7 @@ class Eyedroppers: ObservableObject {
         Defaults[.palettes] = palettes
         if Defaults[.activePaletteIndex] >= palettes.count {
             Defaults[.activePaletteIndex] = 0
+            restoreAutoHistorySelection()
         }
     }
 
