@@ -140,16 +140,24 @@ struct ContentView: View {
             guard let palette = palette else { return }
 
             let json = Exporter.paletteToJSON(pairs: palette.pairs, name: palette.name)
+            let invalidChars = CharacterSet(charactersIn: "/:\\")
             let fileName = (palette.name ?? "color-history")
                 .lowercased()
                 .replacingOccurrences(of: " ", with: "-")
+                .components(separatedBy: invalidChars)
+                .joined()
 
             let savePanel = NSSavePanel()
             savePanel.allowedContentTypes = [.json]
             savePanel.nameFieldStringValue = "\(fileName).json"
             savePanel.isExtensionHidden = false
             if savePanel.runModal() == .OK, let url = savePanel.url {
-                try? json.write(to: url, atomically: true, encoding: .utf8)
+                do {
+                    try json.write(to: url, atomically: true, encoding: .utf8)
+                } catch {
+                    let alert = NSAlert(error: error)
+                    alert.runModal()
+                }
             }
         }
     }

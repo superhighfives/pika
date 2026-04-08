@@ -79,12 +79,11 @@ class Eyedroppers: ObservableObject {
     }
 
     func swap() {
-        pushUndo()
+        let paletteIndex = Defaults[.activePaletteIndex]
+        if paletteIndex == 0 { pushUndo() }
         let temp = foreground.color
         foreground.color = background.color
         background.color = temp
-
-        let paletteIndex = Defaults[.activePaletteIndex]
         var palettes = Defaults[.palettes]
         guard paletteIndex >= 0, paletteIndex < palettes.count else { return }
 

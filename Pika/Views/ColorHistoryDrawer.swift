@@ -9,6 +9,7 @@ struct ColorHistoryChip: View {
     let onApplyBackground: () -> Void
     let onRemove: () -> Void
     let onClearAll: (() -> Void)?
+    var isAutoHistory: Bool = true
 
     @State private var isHovered = false
 
@@ -40,7 +41,7 @@ struct ColorHistoryChip: View {
                 Button(PikaText.textHistoryApplyForeground, action: onApplyForeground)
                 Button(PikaText.textHistoryApplyBackground, action: onApplyBackground)
                 Divider()
-                Button(PikaText.textHistoryRemove, action: onRemove)
+                Button(isAutoHistory ? PikaText.textHistoryRemove : PikaText.textPaletteRemoveChip, action: onRemove)
                 if let onClearAll = onClearAll {
                     Button(PikaText.textHistoryClear, action: onClearAll)
                 }
@@ -217,12 +218,15 @@ struct ColorHistoryDrawer: View {
 
     private var activePalette: Palette? {
         let idx = activePaletteIndex
-        guard idx >= 0, idx < palettes.count else { return palettes.first }
+        guard idx >= 0, idx < palettes.count else {
+            DispatchQueue.main.async { activePaletteIndex = 0 }
+            return palettes.first
+        }
         return palettes[idx]
     }
 
     private var isAutoHistory: Bool {
-        activePaletteIndex == 0
+        activePalette?.isAutoHistory ?? false
     }
 
     var body: some View {
@@ -241,7 +245,8 @@ struct ColorHistoryDrawer: View {
                                 onApplyForeground: { applyForeground(pair) },
                                 onApplyBackground: { applyBackground(pair) },
                                 onRemove: { removePair(pair) },
-                                onClearAll: isAutoHistory ? { isShowingClearConfirm = true } : nil
+                                onClearAll: isAutoHistory ? { isShowingClearConfirm = true } : nil,
+                                isAutoHistory: isAutoHistory
                             )
                             .transition(.opacity)
                             .animation(

@@ -133,7 +133,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let existing = Defaults[.colorHistory]
         guard !existing.isEmpty else { return }
         let history = Palette(id: UUID(), name: nil, pairs: existing, createdAt: Date())
-        Defaults[.palettes] = [history]
+        var palettes = Defaults[.palettes]
+        if palettes.isEmpty {
+            palettes = [history]
+        } else {
+            palettes[0] = Palette(
+                id: palettes[0].id,
+                name: palettes[0].name,
+                pairs: existing + palettes[0].pairs,
+                createdAt: palettes[0].createdAt
+            )
+        }
+        Defaults[.palettes] = palettes
         Defaults[.colorHistory] = []
     }
 

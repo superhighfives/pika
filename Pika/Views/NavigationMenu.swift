@@ -42,7 +42,7 @@ struct NavigationMenu: View {
             Button(action: {
                 NSApp.sendAction(#selector(AppDelegate.triggerToggleCompliance), to: nil, from: nil)
             }, label: {
-                IconImage(name: showCompliance ? "checkmark.shield" : "checkmark.shield")
+                IconImage(name: showCompliance ? "checkmark.shield.fill" : "checkmark.shield")
             })
             .buttonStyle(PlainButtonStyle())
             .padding(.horizontal, 6.0)
