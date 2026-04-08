@@ -55,6 +55,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_: Notification) {
         LaunchAtLogin.migrateIfNeeded()
+        migrateHistoryToPalettes()
 
         #if TARGET_MAS
             if let mainMenu = NSApp.mainMenu?.item(withTitle: PikaText.textAppName)?.submenu {
@@ -119,6 +120,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationSupportsSecureRestorableState(_: NSApplication) -> Bool {
         true
+    }
+
+    // MARK: - Migration
+
+    private func migrateHistoryToPalettes() {
+        let existing = Defaults[.colorHistory]
+        guard !existing.isEmpty else { return }
+        let history = Palette(id: UUID(), name: nil, pairs: existing, createdAt: Date())
+        Defaults[.palettes] = [history]
+        Defaults[.colorHistory] = []
     }
 
     // MARK: - Window forwarding

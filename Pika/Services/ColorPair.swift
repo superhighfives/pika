@@ -35,3 +35,12 @@ struct ColorPair: Codable, Identifiable, Equatable {
         lhs.foregroundHex == rhs.foregroundHex && lhs.backgroundHex == rhs.backgroundHex
     }
 }
+
+struct Palette: Codable, Identifiable {
+    let id: UUID
+    var name: String?
+    var pairs: [ColorPair]
+    let createdAt: Date
+
+    var isAutoHistory: Bool { name == nil }
+}

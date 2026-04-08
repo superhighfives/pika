@@ -18,6 +18,17 @@ struct MenuGroup<Content>: View where Content: View {
 }
 
 struct NavigationMenuItems: View {
+    @Default(.palettes) var palettes
+    @Default(.activePaletteIndex) var activePaletteIndex
+
+    private var exportLabel: String {
+        let idx = activePaletteIndex
+        if idx > 0, idx < palettes.count, palettes[idx].name != nil {
+            return PikaText.textPaletteExport
+        }
+        return PikaText.textHistoryExport
+    }
+
     var body: some View {
         Group {
             Button("\(PikaText.textPickForeground)...", action: {
@@ -71,6 +82,14 @@ struct NavigationMenuItems: View {
 
         Button(PikaText.textHistoryToggle, action: {
             NSApp.sendAction(#selector(AppDelegate.triggerToggleHistory), to: nil, from: nil)
+        })
+
+        Button(PikaText.textPaletteNew, action: {
+            NotificationCenter.default.post(name: .savePalette, object: nil)
+        })
+
+        Button(exportLabel, action: {
+            NotificationCenter.default.post(name: .exportPalette, object: nil)
         })
 
         Button(PikaText.textColorPreviewToggle, action: {

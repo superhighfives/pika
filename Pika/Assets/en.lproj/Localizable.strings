@@ -388,8 +388,8 @@
 /* History */
 "history.title" = "History";
 
-/* Toggle history */
-"history.toggle" = "Toggle history";
+/* Toggle palettes */
+"history.toggle" = "Toggle palettes";
 
 /* Toggle color preview */
 "color.preview.toggle" = "Toggle color preview";
@@ -408,3 +408,33 @@
 
 /* Clear history */
 "history.clear" = "Clear history";
+
+/* New palette… */
+"palette.new" = "New palette…";
+
+/* Rename palette */
+"palette.rename" = "Rename palette";
+
+/* Delete palette */
+"palette.delete" = "Delete palette";
+
+/* Remove from palette */
+"palette.remove" = "Remove from palette";
+
+/* Palette name */
+"palette.name.prompt" = "Palette name";
+
+/* My palette */
+"palette.name.placeholder" = "My palette";
+
+/* Add to palette */
+"palette.add" = "Add to palette";
+
+/* Export palette */
+"palette.export" = "Export palette";
+
+/* Export color history */
+"history.export" = "Export color history";
+
+/* Are you sure you want to clear all history? */
+"history.clear.confirm" = "Are you sure you want to clear all history?";

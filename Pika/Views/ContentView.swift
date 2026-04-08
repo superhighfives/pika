@@ -1,6 +1,7 @@
 import Combine
 import Defaults
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct ContentView: View {
     @EnvironmentObject var eyedroppers: Eyedroppers
@@ -9,12 +10,16 @@ struct ContentView: View {
     @Default(.colorFormat) var colorFormat
     @Default(.historyDrawerVisible) var historyDrawerVisible
     @Default(.showColorPreview) var showColorPreview
+    @Default(.palettes) var palettes
+    @Default(.activePaletteIndex) var activePaletteIndex
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     let pasteboard = NSPasteboard.general
 
     @State var swapVisible: Bool = false
     @State private var swapTimerSubscription: Cancellable?
     @State private var swapTimer = Timer.publish(every: 0.25, on: .main, in: .common)
+    @State private var isShowingSavePaletteAlert = false
+    @State private var newPaletteName = ""
 
     var body: some View {
         VStack(alignment: .trailing, spacing: 0) {
@@ -66,7 +71,7 @@ struct ContentView: View {
             }
         }
         .onAppear {
-            if Defaults[.colorHistory].isEmpty {
+            if Defaults[.palettes].first?.pairs.isEmpty ?? true {
                 eyedroppers.recordHistory()
             }
         }
@@ -96,7 +101,7 @@ struct ContentView: View {
         .onReceive(NotificationCenter.default.publisher(for: .historyDelete)) { _ in
             guard historyDrawerVisible else { return }
             withAnimation(.easeInOut(duration: 0.2)) {
-                eyedroppers.deleteCurrentHistoryEntry()
+                eyedroppers.deleteCurrentEntry()
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: .triggerCopyText)) { _ in
@@ -114,6 +119,49 @@ struct ContentView: View {
                 style: copyFormat
             )
             pasteboard.setString(contents, forType: .string)
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .savePalette)) { _ in
+            newPaletteName = ""
+            isShowingSavePaletteAlert = true
+        }
+        .alert(PikaText.textPaletteNamePrompt, isPresented: $isShowingSavePaletteAlert) {
+            TextField(PikaText.textPaletteNamePlaceholder, text: $newPaletteName)
+            Button("Save") {
+                let name = newPaletteName.trimmingCharacters(in: .whitespaces)
+                if !name.isEmpty {
+                    eyedroppers.savePalette(name: name)
+                    if !historyDrawerVisible {
+                        withAnimation(.easeInOut(duration: 0.25)) {
+                            historyDrawerVisible = true
+                        }
+                    }
+                }
+                newPaletteName = ""
+            }
+            Button("Cancel", role: .cancel) { newPaletteName = "" }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .exportPalette)) { notification in
+            let idx: Int
+            if let paletteIndex = notification.object as? Int {
+                idx = paletteIndex
+            } else {
+                idx = activePaletteIndex
+            }
+            let palette: Palette? = (idx >= 0 && idx < palettes.count) ? palettes[idx] : palettes.first
+            guard let palette = palette else { return }
+
+            let json = Exporter.paletteToJSON(pairs: palette.pairs, name: palette.name)
+            let fileName = (palette.name ?? "color-history")
+                .lowercased()
+                .replacingOccurrences(of: " ", with: "-")
+
+            let savePanel = NSSavePanel()
+            savePanel.allowedContentTypes = [.json]
+            savePanel.nameFieldStringValue = "\(fileName).json"
+            savePanel.isExtensionHidden = false
+            if savePanel.runModal() == .OK, let url = savePanel.url {
+                try? json.write(to: url, atomically: true, encoding: .utf8)
+            }
         }
     }
 }

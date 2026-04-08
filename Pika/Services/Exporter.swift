@@ -1,3 +1,4 @@
+import Defaults
 import Foundation
 
 class Exporter {
@@ -67,5 +68,32 @@ class Exporter {
           }
         }
         """
+    }
+
+    static func paletteToJSON(pairs: [ColorPair], name: String?) -> String {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+
+        let entries = pairs.map { pair -> [String: String] in
+            [
+                "foreground": pair.foregroundHex,
+                "background": pair.backgroundHex,
+                "date": ISO8601DateFormatter().string(from: pair.date),
+            ]
+        }
+
+        let wrapper: [String: Any] = [
+            "name": name ?? "Color History",
+            "colors": entries,
+        ]
+
+        if let data = try? JSONSerialization.data(
+            withJSONObject: wrapper, options: [.prettyPrinted, .sortedKeys]
+        ),
+            let json = String(data: data, encoding: .utf8)
+        {
+            return json
+        }
+        return "{}"
     }
 }

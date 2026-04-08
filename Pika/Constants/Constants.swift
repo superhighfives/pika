@@ -64,6 +64,8 @@ enum PikaConstants {
     static let ncHistoryPrevious = "historyPrevious"
     static let ncHistoryNext = "historyNext"
     static let ncHistoryDelete = "historyDelete"
+    static let ncSavePalette = "savePalette"
+    static let ncExportPalette = "exportPalette"
 
     // Disabled formats for SwiftUI copy format
     static let disabledFormats: [ColorFormat] = [.hex, .hsl, .opengl, .lab, .oklch]
@@ -96,6 +98,8 @@ extension Notification.Name {
     static let historyPrevious = Notification.Name(PikaConstants.ncHistoryPrevious)
     static let historyNext = Notification.Name(PikaConstants.ncHistoryNext)
     static let historyDelete = Notification.Name(PikaConstants.ncHistoryDelete)
+    static let savePalette = Notification.Name(PikaConstants.ncSavePalette)
+    static let exportPalette = Notification.Name(PikaConstants.ncExportPalette)
 }
 
 enum PikaText {
@@ -195,12 +199,24 @@ enum PikaText {
 
     // History
     static let textHistoryTitle = NSLocalizedString("history.title", comment: "History")
-    static let textHistoryToggle = NSLocalizedString("history.toggle", comment: "Toggle history")
+    static let textHistoryToggle = NSLocalizedString("history.toggle", comment: "Toggle palettes")
     static let textColorPreviewToggle = NSLocalizedString("color.preview.toggle", comment: "Toggle color preview")
     static let textHistoryApplyForeground = NSLocalizedString("history.apply.foreground", comment: "Apply foreground only")
     static let textHistoryApplyBackground = NSLocalizedString("history.apply.background", comment: "Apply background only")
     static let textHistoryRemove = NSLocalizedString("history.remove", comment: "Remove from history")
     static let textHistoryClear = NSLocalizedString("history.clear", comment: "Clear history")
+
+    // Palettes
+    static let textPaletteNew = NSLocalizedString("palette.new", comment: "New palette…")
+    static let textPaletteRename = NSLocalizedString("palette.rename", comment: "Rename palette")
+    static let textPaletteDelete = NSLocalizedString("palette.delete", comment: "Delete palette")
+    static let textPaletteRemoveChip = NSLocalizedString("palette.remove", comment: "Remove from palette")
+    static let textPaletteNamePrompt = NSLocalizedString("palette.name.prompt", comment: "Palette name")
+    static let textPaletteNamePlaceholder = NSLocalizedString("palette.name.placeholder", comment: "My palette")
+    static let textPaletteAddColor = NSLocalizedString("palette.add", comment: "Add to palette")
+    static let textPaletteExport = NSLocalizedString("palette.export", comment: "Export palette")
+    static let textHistoryExport = NSLocalizedString("history.export", comment: "Export color history")
+    static let textHistoryClearConfirm = NSLocalizedString("history.clear.confirm", comment: "Are you sure you want to clear all history?")
 
     // Keyboard shortcuts
     static let textPickForeground = NSLocalizedString("color.pick.foreground", comment: "Pick foreground")

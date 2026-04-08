@@ -9,7 +9,7 @@ class Eyedroppers: ObservableObject {
     @Published var activeHistoryID: UUID?
 
     init() {
-        if let latest = Defaults[.colorHistory].first {
+        if let latest = Defaults[.palettes].first?.pairs.first {
             foreground = Eyedropper(type: .foreground, color: latest.foregroundColor)
             background = Eyedropper(type: .background, color: latest.backgroundColor)
             activeHistoryID = latest.id
@@ -19,9 +19,21 @@ class Eyedroppers: ObservableObject {
         }
     }
 
+    // MARK: - History helpers
+
+    private var autoHistory: [ColorPair] {
+        get { Defaults[.palettes].first?.pairs ?? [] }
+        set {
+            var palettes = Defaults[.palettes]
+            guard !palettes.isEmpty else { return }
+            palettes[0].pairs = newValue
+            Defaults[.palettes] = palettes
+        }
+    }
+
     private func pushUndo() {
         var stack = Defaults[.undoStack]
-        stack.insert(Defaults[.colorHistory], at: 0)
+        stack.insert(autoHistory, at: 0)
         if stack.count > ColorPair.maxHistory {
             stack = Array(stack.prefix(ColorPair.maxHistory))
         }
@@ -29,10 +41,17 @@ class Eyedroppers: ObservableObject {
         Defaults[.redoStack] = []
     }
 
+    private var activePairs: [ColorPair] {
+        let palettes = Defaults[.palettes]
+        let idx = Defaults[.activePaletteIndex]
+        guard idx >= 0, idx < palettes.count else { return autoHistory }
+        return palettes[idx].pairs
+    }
+
     private var activeIndex: Int {
-        let history = Defaults[.colorHistory]
+        let pairs = activePairs
         if let id = activeHistoryID,
-           let index = history.firstIndex(where: { $0.id == id })
+           let index = pairs.firstIndex(where: { $0.id == id })
         {
             return index
         }
@@ -43,7 +62,7 @@ class Eyedroppers: ObservableObject {
         let fgHex = foreground.color.toHexString()
         let bgHex = background.color.toHexString()
 
-        let history = Defaults[.colorHistory]
+        let history = autoHistory
         if let last = history.first, last.foregroundHex == fgHex, last.backgroundHex == bgHex {
             return
         }
@@ -54,7 +73,7 @@ class Eyedroppers: ObservableObject {
         if updated.count > ColorPair.maxHistory {
             updated = Array(updated.prefix(ColorPair.maxHistory))
         }
-        Defaults[.colorHistory] = updated
+        autoHistory = updated
         activeHistoryID = pair.id
     }
 
@@ -64,7 +83,7 @@ class Eyedroppers: ObservableObject {
         foreground.color = background.color
         background.color = temp
 
-        var history = Defaults[.colorHistory]
+        var history = autoHistory
         guard !history.isEmpty else { return }
         let index = activeIndex
         let entry = history[index]
@@ -74,32 +93,32 @@ class Eyedroppers: ObservableObject {
             backgroundHex: entry.foregroundHex,
             date: entry.date
         )
-        Defaults[.colorHistory] = history
+        autoHistory = history
     }
 
     func undo() {
         var undoStack = Defaults[.undoStack]
         guard !undoStack.isEmpty else { return }
-        let current = Defaults[.colorHistory]
+        let current = autoHistory
         let snapshot = undoStack.removeFirst()
         Defaults[.undoStack] = undoStack
         var redoStack = Defaults[.redoStack]
         redoStack.insert(current, at: 0)
         Defaults[.redoStack] = redoStack
-        Defaults[.colorHistory] = snapshot
+        autoHistory = snapshot
         applyRestoredSnapshot(snapshot, previous: current)
     }
 
     func redo() {
         var redoStack = Defaults[.redoStack]
         guard !redoStack.isEmpty else { return }
-        let current = Defaults[.colorHistory]
+        let current = autoHistory
         let snapshot = redoStack.removeFirst()
         Defaults[.redoStack] = redoStack
         var undoStack = Defaults[.undoStack]
         undoStack.insert(current, at: 0)
         Defaults[.undoStack] = undoStack
-        Defaults[.colorHistory] = snapshot
+        autoHistory = snapshot
         applyRestoredSnapshot(snapshot, previous: current)
     }
 
@@ -122,12 +141,25 @@ class Eyedroppers: ObservableObject {
             backgroundHex: background.color.toHexString(),
             date: Date()
         )
-        Defaults[.colorHistory] = [pair]
+        autoHistory = [pair]
         activeHistoryID = pair.id
     }
 
+    func deleteCurrentEntry() {
+        let paletteIndex = Defaults[.activePaletteIndex]
+        if paletteIndex == 0 {
+            deleteCurrentHistoryEntry()
+        } else if let id = activeHistoryID {
+            deleteChipFromPalette(paletteIndex: paletteIndex, pairID: id)
+            let palettes = Defaults[.palettes]
+            if paletteIndex < palettes.count, let first = palettes[paletteIndex].pairs.first {
+                applyEntry(first)
+            }
+        }
+    }
+
     func deleteCurrentHistoryEntry() {
-        var history = Defaults[.colorHistory]
+        var history = autoHistory
 
         if history.count <= 1 {
             clearHistory()
@@ -138,14 +170,14 @@ class Eyedroppers: ObservableObject {
 
         pushUndo()
         history.remove(at: index)
-        Defaults[.colorHistory] = history
+        autoHistory = history
 
         let newIndex = index > 0 ? index - 1 : 0
         applyHistoryEntry(history[newIndex])
     }
 
     func deleteHistoryEntry(id: UUID) {
-        var history = Defaults[.colorHistory]
+        var history = autoHistory
 
         if history.count <= 1 {
             clearHistory()
@@ -158,7 +190,7 @@ class Eyedroppers: ObservableObject {
 
         pushUndo()
         history.remove(at: index)
-        Defaults[.colorHistory] = history
+        autoHistory = history
 
         if isActive {
             let newIndex = index > 0 ? index - 1 : 0
@@ -167,25 +199,85 @@ class Eyedroppers: ObservableObject {
     }
 
     func navigatePrevious() {
-        let history = Defaults[.colorHistory]
-        guard history.count > 1 else { return }
+        let pairs = activePairs
+        guard pairs.count > 1 else { return }
         let nextIndex = activeIndex + 1
-        guard nextIndex < history.count else { return }
-        applyHistoryEntry(history[nextIndex])
+        guard nextIndex < pairs.count else { return }
+        applyEntry(pairs[nextIndex])
     }
 
     func navigateNext() {
-        let history = Defaults[.colorHistory]
-        guard history.count > 1 else { return }
+        let pairs = activePairs
+        guard pairs.count > 1 else { return }
         let nextIndex = activeIndex - 1
         guard nextIndex >= 0 else { return }
-        applyHistoryEntry(history[nextIndex])
+        applyEntry(pairs[nextIndex])
     }
 
-    func applyHistoryEntry(_ pair: ColorPair) {
+    func applyEntry(_ pair: ColorPair) {
         foreground.color = pair.foregroundColor
         background.color = pair.backgroundColor
         activeHistoryID = pair.id
+        if Defaults[.activePaletteIndex] != 0 {
+            recordHistory()
+        }
+    }
+
+    func applyHistoryEntry(_ pair: ColorPair) {
+        applyEntry(pair)
+    }
+
+    // MARK: - Palette management
+
+    func savePalette(name: String) {
+        let current = ColorPair(
+            id: UUID(),
+            foregroundHex: foreground.color.toHexString(),
+            backgroundHex: background.color.toHexString(),
+            date: Date()
+        )
+        let palette = Palette(id: UUID(), name: name, pairs: [current], createdAt: Date())
+        var palettes = Defaults[.palettes]
+        palettes.append(palette)
+        Defaults[.palettes] = palettes
+        Defaults[.activePaletteIndex] = palettes.count - 1
+    }
+
+    func renamePalette(at index: Int, to name: String) {
+        var palettes = Defaults[.palettes]
+        guard index > 0, index < palettes.count else { return }
+        palettes[index].name = name
+        Defaults[.palettes] = palettes
+    }
+
+    func deletePalette(at index: Int) {
+        var palettes = Defaults[.palettes]
+        guard index > 0, index < palettes.count else { return }
+        palettes.remove(at: index)
+        Defaults[.palettes] = palettes
+        if Defaults[.activePaletteIndex] >= palettes.count {
+            Defaults[.activePaletteIndex] = 0
+        }
+    }
+
+    func addCurrentToPalette(at index: Int) {
+        var palettes = Defaults[.palettes]
+        guard index > 0, index < palettes.count else { return }
+        let pair = ColorPair(
+            id: UUID(),
+            foregroundHex: foreground.color.toHexString(),
+            backgroundHex: background.color.toHexString(),
+            date: Date()
+        )
+        palettes[index].pairs.insert(pair, at: 0)
+        Defaults[.palettes] = palettes
+    }
+
+    func deleteChipFromPalette(paletteIndex: Int, pairID: UUID) {
+        var palettes = Defaults[.palettes]
+        guard paletteIndex > 0, paletteIndex < palettes.count else { return }
+        palettes[paletteIndex].pairs.removeAll { $0.id == pairID }
+        Defaults[.palettes] = palettes
     }
 }
 
