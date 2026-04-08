@@ -92,6 +92,10 @@ struct NavigationMenuItems: View {
             NotificationCenter.default.post(name: .exportPalette, object: nil)
         })
 
+        Button(PikaText.textComplianceToggle, action: {
+            NSApp.sendAction(#selector(AppDelegate.triggerToggleCompliance), to: nil, from: nil)
+        })
+
         Button(PikaText.textColorPreviewToggle, action: {
             NSApp.sendAction(#selector(AppDelegate.triggerToggleColorPreview), to: nil, from: nil)
         })

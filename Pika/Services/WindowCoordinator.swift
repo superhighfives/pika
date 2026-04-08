@@ -27,8 +27,8 @@ class WindowCoordinator: NSObject {
             .frame(minWidth: 480,
                    idealWidth: 480,
                    maxWidth: 650,
-                   minHeight: 260,
-                   idealHeight: 260,
+                   minHeight: 280,
+                   idealHeight: 280,
                    maxHeight: 400,
                    alignment: .center)
 

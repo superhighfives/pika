@@ -10,6 +10,7 @@ struct ContentView: View {
     @Default(.colorFormat) var colorFormat
     @Default(.historyDrawerVisible) var historyDrawerVisible
     @Default(.showColorPreview) var showColorPreview
+    @Default(.showCompliance) var showCompliance
     @Default(.palettes) var palettes
     @Default(.activePaletteIndex) var activePaletteIndex
     @Environment(\.colorScheme) var colorScheme: ColorScheme
@@ -18,8 +19,6 @@ struct ContentView: View {
     @State var swapVisible: Bool = false
     @State private var swapTimerSubscription: Cancellable?
     @State private var swapTimer = Timer.publish(every: 0.25, on: .main, in: .common)
-    @State private var isShowingSavePaletteAlert = false
-    @State private var newPaletteName = ""
 
     var body: some View {
         VStack(alignment: .trailing, spacing: 0) {
@@ -64,7 +63,10 @@ struct ContentView: View {
                 }
 
             Divider()
-            Footer(foreground: eyedroppers.foreground, background: eyedroppers.background)
+            if showCompliance {
+                Footer(foreground: eyedroppers.foreground, background: eyedroppers.background)
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+            }
             if historyDrawerVisible {
                 ColorHistoryDrawer(foreground: eyedroppers.foreground, background: eyedroppers.background)
                     .transition(.move(edge: .bottom).combined(with: .opacity))
@@ -88,6 +90,11 @@ struct ContentView: View {
         .onReceive(NotificationCenter.default.publisher(for: .toggleColorPreview)) { _ in
             withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
                 showColorPreview.toggle()
+            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .toggleCompliance)) { _ in
+            withAnimation(.easeInOut(duration: 0.25)) {
+                showCompliance.toggle()
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: .historyPrevious)) { _ in
@@ -119,26 +126,6 @@ struct ContentView: View {
                 style: copyFormat
             )
             pasteboard.setString(contents, forType: .string)
-        }
-        .onReceive(NotificationCenter.default.publisher(for: .savePalette)) { _ in
-            newPaletteName = ""
-            isShowingSavePaletteAlert = true
-        }
-        .alert(PikaText.textPaletteNamePrompt, isPresented: $isShowingSavePaletteAlert) {
-            TextField(PikaText.textPaletteNamePlaceholder, text: $newPaletteName)
-            Button("Save") {
-                let name = newPaletteName.trimmingCharacters(in: .whitespaces)
-                if !name.isEmpty {
-                    eyedroppers.savePalette(name: name)
-                    if !historyDrawerVisible {
-                        withAnimation(.easeInOut(duration: 0.25)) {
-                            historyDrawerVisible = true
-                        }
-                    }
-                }
-                newPaletteName = ""
-            }
-            Button("Cancel", role: .cancel) { newPaletteName = "" }
         }
         .onReceive(NotificationCenter.default.publisher(for: .exportPalette)) { notification in
             let idx: Int

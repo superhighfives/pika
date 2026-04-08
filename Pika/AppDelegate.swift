@@ -95,6 +95,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
             guard Defaults[.historyDrawerVisible] else { return event }
+            if let responder = NSApp.keyWindow?.firstResponder,
+               responder is NSTextView || responder is NSTextField
+            {
+                return event
+            }
             switch event.keyCode {
             case 123: // left arrow
                 self.notificationCenter.post(name: .historyNext, object: self)
@@ -176,6 +181,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBAction func triggerToggleColorPreview(_: Any) {
         notificationCenter.post(name: .toggleColorPreview, object: self)
+    }
+
+    @IBAction func triggerToggleCompliance(_: Any) {
+        notificationCenter.post(name: .toggleCompliance, object: self)
     }
 
     @IBAction func triggerHistoryPrevious(_: Any) {

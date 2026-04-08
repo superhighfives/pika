@@ -394,6 +394,9 @@
 /* Toggle color preview */
 "color.preview.toggle" = "Toggle color preview";
 
+/* Toggle compliance */
+"compliance.toggle" = "Toggle compliance";
+
 /* Sample preview text */
 "color.preview.sample" = "The quick brown fox jumps over the lazy dog";
 

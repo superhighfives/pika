@@ -214,6 +214,7 @@ private let shortcutGroups: [ShortcutGroup] = [
     ("Actions", [
         ShortcutEntry(title: PikaText.textColorSwapDetail, keys: ["X"], notificationName: .triggerSwap),
         ShortcutEntry(title: PikaText.textHistoryToggle, keys: ["H"], notificationName: .toggleHistory),
+        ShortcutEntry(title: PikaText.textComplianceToggle, keys: ["C"], notificationName: .toggleCompliance),
         ShortcutEntry(title: PikaText.textColorPreviewToggle, keys: ["P"], notificationName: .toggleColorPreview),
         ShortcutEntry(title: PikaText.textColorUndo, keys: ["⌘", "Z"], notificationName: .triggerUndo),
         ShortcutEntry(title: PikaText.textColorRedo, keys: ["⇧", "⌘", "Z"], notificationName: .triggerRedo),

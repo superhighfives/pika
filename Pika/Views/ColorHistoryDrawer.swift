@@ -15,7 +15,7 @@ struct ColorHistoryChip: View {
     var body: some View {
         RoundedRectangle(cornerRadius: 6)
             .fill(Color.clear)
-            .frame(width: 30, height: 30)
+            .frame(width: 24, height: 24)
             .overlay(
                 VStack(spacing: 0) {
                     Color(pair.foregroundColor)
@@ -49,66 +49,114 @@ struct ColorHistoryChip: View {
     }
 }
 
+struct PaletteNameField: View {
+    let placeholder: String
+    let onSubmit: (String) -> Void
+    let onCancel: () -> Void
+
+    @State private var text = ""
+    @FocusState private var isFocused: Bool
+
+    var body: some View {
+        HStack(spacing: 6) {
+            TextField(placeholder, text: $text)
+                .textFieldStyle(.plain)
+                .font(.system(size: 11))
+                .focused($isFocused)
+                .onSubmit { submit() }
+                .onExitCommand { onCancel() }
+                .frame(width: 120)
+
+            Button(action: { submit() }) {
+                Image(systemName: "checkmark.circle.fill")
+                    .font(.system(size: 12))
+                    .foregroundColor(.accentColor)
+            }
+            .buttonStyle(.plain)
+            .disabled(text.trimmingCharacters(in: .whitespaces).isEmpty)
+
+            Button(action: { onCancel() }) {
+                Image(systemName: "xmark.circle.fill")
+                    .font(.system(size: 12))
+                    .foregroundColor(.secondary)
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(.horizontal, 8)
+        .padding(.vertical, 4)
+        .background(
+            RoundedRectangle(cornerRadius: 4)
+                .fill(Color(nsColor: .controlBackgroundColor))
+                .shadow(color: .black.opacity(0.15), radius: 2, y: 1)
+        )
+        .onAppear { isFocused = true }
+    }
+
+    private func submit() {
+        let name = text.trimmingCharacters(in: .whitespaces)
+        guard !name.isEmpty else { return }
+        onSubmit(name)
+    }
+}
+
 struct PaletteTabBar: View {
     @EnvironmentObject var eyedroppers: Eyedroppers
     @Default(.palettes) var palettes
     @Default(.activePaletteIndex) var activePaletteIndex
+    @Default(.historyDrawerVisible) var historyDrawerVisible
 
-    @State private var isShowingSaveAlert = false
-    @State private var newPaletteName = ""
+    @State private var isShowingNewField = false
     @State private var renamingIndex: Int?
-    @State private var renameText = ""
 
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 0) {
                 ForEach(Array(palettes.enumerated()), id: \.element.id) { index, palette in
-                    paletteTab(palette: palette, index: index)
+                    if renamingIndex == index {
+                        PaletteNameField(
+                            placeholder: palette.name ?? PikaText.textPaletteNamePlaceholder,
+                            onSubmit: { name in
+                                eyedroppers.renamePalette(at: index, to: name)
+                                renamingIndex = nil
+                            },
+                            onCancel: { renamingIndex = nil }
+                        )
+                    } else {
+                        paletteTab(palette: palette, index: index)
+                    }
                 }
 
-                Button(action: { promptSavePalette() }) {
-                    Image(systemName: "plus")
-                        .font(.system(size: 10, weight: .semibold))
-                        .foregroundColor(.secondary)
-                        .frame(width: 28, height: 22)
+                if isShowingNewField {
+                    PaletteNameField(
+                        placeholder: PikaText.textPaletteNamePlaceholder,
+                        onSubmit: { name in
+                            eyedroppers.savePalette(name: name)
+                            isShowingNewField = false
+                        },
+                        onCancel: { isShowingNewField = false }
+                    )
+                } else {
+                    Button(action: { isShowingNewField = true }) {
+                        Image(systemName: "plus")
+                            .font(.system(size: 10, weight: .semibold))
+                            .foregroundColor(.secondary)
+                            .frame(width: 28, height: 22)
+                    }
+                    .buttonStyle(.plain)
+                    .help(PikaText.textPaletteNew)
                 }
-                .buttonStyle(.plain)
-                .help(PikaText.textPaletteNew)
             }
             .padding(.horizontal, 8)
         }
         .frame(height: 28)
         .background(Color.black.opacity(0.05))
-        .alert(PikaText.textPaletteNamePrompt, isPresented: $isShowingSaveAlert) {
-            TextField(PikaText.textPaletteNamePlaceholder, text: $newPaletteName)
-            Button("Save") {
-                let name = newPaletteName.trimmingCharacters(in: .whitespaces)
-                if !name.isEmpty {
-                    eyedroppers.savePalette(name: name)
+        .onReceive(NotificationCenter.default.publisher(for: .savePalette)) { _ in
+            if !historyDrawerVisible {
+                withAnimation(.easeInOut(duration: 0.25)) {
+                    historyDrawerVisible = true
                 }
-                newPaletteName = ""
             }
-            Button("Cancel", role: .cancel) { newPaletteName = "" }
-        }
-        .alert(PikaText.textPaletteRename, isPresented: Binding(
-            get: { renamingIndex != nil },
-            set: { if !$0 { renamingIndex = nil } }
-        )) {
-            TextField(PikaText.textPaletteNamePlaceholder, text: $renameText)
-            Button("Rename") {
-                if let idx = renamingIndex {
-                    let name = renameText.trimmingCharacters(in: .whitespaces)
-                    if !name.isEmpty {
-                        eyedroppers.renamePalette(at: idx, to: name)
-                    }
-                }
-                renamingIndex = nil
-                renameText = ""
-            }
-            Button("Cancel", role: .cancel) {
-                renamingIndex = nil
-                renameText = ""
-            }
+            isShowingNewField = true
         }
     }
 
@@ -116,7 +164,10 @@ struct PaletteTabBar: View {
     private func paletteTab(palette: Palette, index: Int) -> some View {
         let isSelected = index == activePaletteIndex
 
-        Button(action: { activePaletteIndex = index }) {
+        Button(action: {
+            activePaletteIndex = index
+            if index == 0 { eyedroppers.restoreAutoHistorySelection() }
+        }) {
             if palette.isAutoHistory {
                 Image(systemName: "clock")
                     .font(.system(size: 10))
@@ -141,7 +192,6 @@ struct PaletteTabBar: View {
                 }
             } else {
                 Button(PikaText.textPaletteRename) {
-                    renameText = palette.name ?? ""
                     renamingIndex = index
                 }
                 Button(PikaText.textPaletteExport) {
@@ -153,11 +203,6 @@ struct PaletteTabBar: View {
                 }
             }
         }
-    }
-
-    private func promptSavePalette() {
-        newPaletteName = ""
-        isShowingSaveAlert = true
     }
 }
 
@@ -188,7 +233,7 @@ struct ColorHistoryDrawer: View {
             HStack(spacing: 0) {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 6) {
-                        ForEach(activePalette?.pairs ?? []) { pair in
+                        ForEach(Array((activePalette?.pairs ?? []).enumerated()), id: \.element.id) { index, pair in
                             ColorHistoryChip(
                                 pair: pair,
                                 isActive: isActivePair(pair),
@@ -198,14 +243,18 @@ struct ColorHistoryDrawer: View {
                                 onRemove: { removePair(pair) },
                                 onClearAll: isAutoHistory ? { isShowingClearConfirm = true } : nil
                             )
-                            .transition(.scale.combined(with: .opacity))
+                            .transition(.opacity)
+                            .animation(
+                                .easeInOut(duration: 0.15).delay(Double(index) * 0.03),
+                                value: activePalette?.id
+                            )
                         }
                     }
                     .animation(.easeInOut(duration: 0.2), value: activePalette?.pairs)
-                    .padding(.horizontal, 12)
+                    .padding(.horizontal, 8)
                 }
 
-                ZStack(alignment: .leading) {
+                HStack(spacing: 0) {
                     Rectangle()
                         .fill(
                             LinearGradient(
@@ -215,39 +264,38 @@ struct ColorHistoryDrawer: View {
                             )
                         )
                         .frame(width: 6)
-                        .offset(x: -6)
 
-                    HStack(spacing: 0) {
-                        Divider()
+                    Divider()
 
-                        if isAutoHistory {
-                            Button(action: { isShowingClearConfirm = true }) {
-                                Image(systemName: "trash.fill")
-                                    .font(.system(size: 14))
-                                    .foregroundColor(.secondary)
-                                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            }
-                            .buttonStyle(.plain)
-                            .help(PikaText.textHistoryClear)
-                            .frame(width: 38)
-                        } else {
-                            Button(action: {
-                                eyedroppers.addCurrentToPalette(at: activePaletteIndex)
-                            }) {
-                                Image(systemName: "plus.circle.fill")
-                                    .font(.system(size: 14))
-                                    .foregroundColor(.secondary)
-                                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            }
-                            .buttonStyle(.plain)
-                            .help(PikaText.textPaletteAddColor)
-                            .frame(width: 38)
+                    if isAutoHistory {
+                        Button(action: { isShowingClearConfirm = true }) {
+                            Image(systemName: "trash.fill")
+                                .font(.system(size: 14))
+                                .foregroundColor(.secondary)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                .offset(x: -2, y: -2)
+                                .contentShape(Rectangle())
                         }
+                        .buttonStyle(.plain)
+                        .help(PikaText.textHistoryClear)
+                    } else {
+                        Button(action: {
+                            eyedroppers.addCurrentToPalette(at: activePaletteIndex)
+                        }) {
+                            Image(systemName: "plus")
+                                .font(.system(size: 16, weight: .semibold))
+                                .foregroundColor(.secondary)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                .offset(x: -2, y: -2)
+                                .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
+                        .help(PikaText.textPaletteAddColor)
                     }
                 }
-                .fixedSize(horizontal: true, vertical: false)
+                .frame(width: 50)
             }
-            .frame(maxWidth: .infinity, maxHeight: 50, alignment: .leading)
+            .frame(maxWidth: .infinity, maxHeight: 44, alignment: .leading)
         }
         .background(
             ZStack {

@@ -7,6 +7,7 @@ class Eyedroppers: ObservableObject {
     @Published var foreground: Eyedropper
     @Published var background: Eyedropper
     @Published var activeHistoryID: UUID?
+    private var lastAutoHistoryID: UUID?
 
     init() {
         if let latest = Defaults[.palettes].first?.pairs.first {
@@ -83,17 +84,22 @@ class Eyedroppers: ObservableObject {
         foreground.color = background.color
         background.color = temp
 
-        var history = autoHistory
-        guard !history.isEmpty else { return }
-        let index = activeIndex
-        let entry = history[index]
-        history[index] = ColorPair(
+        let paletteIndex = Defaults[.activePaletteIndex]
+        var palettes = Defaults[.palettes]
+        guard paletteIndex >= 0, paletteIndex < palettes.count else { return }
+
+        guard let id = activeHistoryID,
+              let index = palettes[paletteIndex].pairs.firstIndex(where: { $0.id == id })
+        else { return }
+
+        let entry = palettes[paletteIndex].pairs[index]
+        palettes[paletteIndex].pairs[index] = ColorPair(
             id: entry.id,
             foregroundHex: entry.backgroundHex,
             backgroundHex: entry.foregroundHex,
             date: entry.date
         )
-        autoHistory = history
+        Defaults[.palettes] = palettes
     }
 
     func undo() {
@@ -198,9 +204,18 @@ class Eyedroppers: ObservableObject {
         }
     }
 
+    private var hasActiveSelection: Bool {
+        guard let id = activeHistoryID else { return false }
+        return activePairs.contains { $0.id == id }
+    }
+
     func navigatePrevious() {
         let pairs = activePairs
-        guard pairs.count > 1 else { return }
+        guard !pairs.isEmpty else { return }
+        if !hasActiveSelection {
+            applyEntry(pairs[pairs.count - 1])
+            return
+        }
         let nextIndex = activeIndex + 1
         guard nextIndex < pairs.count else { return }
         applyEntry(pairs[nextIndex])
@@ -208,7 +223,11 @@ class Eyedroppers: ObservableObject {
 
     func navigateNext() {
         let pairs = activePairs
-        guard pairs.count > 1 else { return }
+        guard !pairs.isEmpty else { return }
+        if !hasActiveSelection {
+            applyEntry(pairs[0])
+            return
+        }
         let nextIndex = activeIndex - 1
         guard nextIndex >= 0 else { return }
         applyEntry(pairs[nextIndex])
@@ -217,14 +236,26 @@ class Eyedroppers: ObservableObject {
     func applyEntry(_ pair: ColorPair) {
         foreground.color = pair.foregroundColor
         background.color = pair.backgroundColor
-        activeHistoryID = pair.id
         if Defaults[.activePaletteIndex] != 0 {
             recordHistory()
+            lastAutoHistoryID = activeHistoryID
         }
+        activeHistoryID = pair.id
     }
 
     func applyHistoryEntry(_ pair: ColorPair) {
         applyEntry(pair)
+    }
+
+    func restoreAutoHistorySelection() {
+        if let id = lastAutoHistoryID,
+           autoHistory.contains(where: { $0.id == id })
+        {
+            activeHistoryID = id
+        } else if let first = autoHistory.first {
+            activeHistoryID = first.id
+        }
+        lastAutoHistoryID = nil
     }
 
     // MARK: - Palette management
@@ -271,6 +302,7 @@ class Eyedroppers: ObservableObject {
         )
         palettes[index].pairs.insert(pair, at: 0)
         Defaults[.palettes] = palettes
+        activeHistoryID = pair.id
     }
 
     func deleteChipFromPalette(paletteIndex: Int, pairID: UUID) {

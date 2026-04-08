@@ -25,10 +25,9 @@ struct PreviewPill: View {
                 .fill(bgColor)
                 .overlay(
                     RoundedRectangle(cornerRadius: 100, style: .continuous)
-                        .stroke(fgColor)
+                        .strokeBorder(fgColor)
                 )
         )
-        .clipShape(RoundedRectangle(cornerRadius: 100, style: .continuous))
         .shadow(color: Color.black.opacity(0.15), radius: 1, x: 0, y: 1)
         .shadow(color: Color.black.opacity(0.15), radius: 5, x: 0, y: 2)
     }
@@ -90,8 +89,11 @@ struct SwapPreviewButton: View {
                             )
                     }
                 }
-                .animation(.timingCurve(0.65, 0, 0.35, 1, duration: 0.4), value: isVisible)
-                .animation(.timingCurve(0.65, 0, 0.35, 1, duration: 0.4), value: swapHovered)
+                .animation(.timingCurve(0.65, 0, 0.35, 1, duration: 0.3), value: isVisible)
+                .animation(.timingCurve(0.65, 0, 0.35, 1, duration: 0.3), value: swapHovered)
+                .onChange(of: isVisible) { _, visible in
+                    if !visible { swapHovered = false }
+                }
 
             case .standalone:
                 swapButton
@@ -104,19 +106,21 @@ struct SwapPreviewButton: View {
         }
         .opacity(fadePhase == .visible ? 1 : 0)
         .allowsHitTesting(fadePhase == .visible)
+        .onReceive(NotificationCenter.default.publisher(for: .triggerSwap)) { _ in
+            angle -= 180
+        }
         .onChange(of: showPreview) { _, newValue in
             let targetMode: DisplayMode = newValue ? .preview : .standalone
-            guard targetMode != displayMode else { return }
 
             transitionTask?.cancel()
             transitionTask = Task { @MainActor in
-                withAnimation(.easeInOut(duration: 0.2)) {
+                withAnimation(.easeInOut(duration: 0.15)) {
                     fadePhase = .fadingOut
                 }
-                try? await Task.sleep(for: .milliseconds(250))
+                try? await Task.sleep(for: .milliseconds(150))
                 guard !Task.isCancelled else { return }
                 displayMode = targetMode
-                withAnimation(.easeInOut(duration: 0.25)) {
+                withAnimation(.easeInOut(duration: 0.15)) {
                     fadePhase = .visible
                 }
             }

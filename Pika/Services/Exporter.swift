@@ -71,15 +71,16 @@ class Exporter {
     }
 
     static func paletteToJSON(pairs: [ColorPair], name: String?) -> String {
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
-
-        let entries = pairs.map { pair -> [String: String] in
-            [
+        let isHistory = name == nil
+        let entries: [[String: String]] = pairs.map { pair in
+            var entry: [String: String] = [
                 "foreground": pair.foregroundHex,
                 "background": pair.backgroundHex,
-                "date": ISO8601DateFormatter().string(from: pair.date),
             ]
+            if isHistory {
+                entry["date"] = ISO8601DateFormatter().string(from: pair.date)
+            }
+            return entry
         }
 
         let wrapper: [String: Any] = [

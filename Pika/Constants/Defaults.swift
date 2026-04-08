@@ -75,4 +75,5 @@ extension Defaults.Keys {
     static let redoStack = Key<[[ColorPair]]>("redoStack", default: [])
     static let historyDrawerVisible = Key<Bool>("historyDrawerVisible", default: false)
     static let showColorPreview = Key<Bool>("showColorPreview", default: false)
+    static let showCompliance = Key<Bool>("showCompliance", default: true)
 }
