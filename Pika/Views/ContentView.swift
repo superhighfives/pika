@@ -72,6 +72,7 @@ struct ContentView: View {
                     .transition(.move(edge: .bottom).combined(with: .opacity))
             }
         }
+        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
         .onAppear {
             if Defaults[.palettes].first?.pairs.isEmpty ?? true {
                 eyedroppers.recordHistory()
@@ -131,6 +132,8 @@ struct ContentView: View {
             let idx: Int
             if let paletteIndex = notification.object as? Int {
                 idx = paletteIndex
+            } else if !historyDrawerVisible {
+                idx = 0
             } else {
                 idx = activePaletteIndex
             }

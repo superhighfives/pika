@@ -20,8 +20,10 @@ struct MenuGroup<Content>: View where Content: View {
 struct NavigationMenuItems: View {
     @Default(.palettes) var palettes
     @Default(.activePaletteIndex) var activePaletteIndex
+    @Default(.historyDrawerVisible) var historyDrawerVisible
 
     private var exportLabel: String {
+        guard historyDrawerVisible else { return PikaText.textHistoryExport }
         let idx = activePaletteIndex
         if idx > 0, idx < palettes.count, palettes[idx].name != nil {
             return PikaText.textPaletteExport
@@ -84,20 +86,24 @@ struct NavigationMenuItems: View {
             NSApp.sendAction(#selector(AppDelegate.triggerToggleHistory), to: nil, from: nil)
         })
 
-        Button(PikaText.textPaletteNew, action: {
-            NotificationCenter.default.post(name: .savePalette, object: nil)
-        })
-
-        Button(exportLabel, action: {
-            NotificationCenter.default.post(name: .exportPalette, object: nil)
-        })
-
         Button(PikaText.textComplianceToggle, action: {
             NSApp.sendAction(#selector(AppDelegate.triggerToggleCompliance), to: nil, from: nil)
         })
 
         Button(PikaText.textColorPreviewToggle, action: {
             NSApp.sendAction(#selector(AppDelegate.triggerToggleColorPreview), to: nil, from: nil)
+        })
+
+        VStack {
+            Divider()
+        }
+
+        Button(PikaText.textPaletteNew, action: {
+            NotificationCenter.default.post(name: .savePalette, object: nil)
+        })
+
+        Button(exportLabel, action: {
+            NotificationCenter.default.post(name: .exportPalette, object: nil)
         })
 
         VStack {
