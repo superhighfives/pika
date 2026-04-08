@@ -12,7 +12,6 @@ struct ColorPickers: View {
                 Divider()
             }
         }
-        .clipped()
     }
 }
 

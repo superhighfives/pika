@@ -72,7 +72,6 @@ struct ContentView: View {
                     .transition(.move(edge: .bottom).combined(with: .opacity))
             }
         }
-        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
         .onAppear {
             if Defaults[.palettes].first?.pairs.isEmpty ?? true {
                 eyedroppers.recordHistory()
