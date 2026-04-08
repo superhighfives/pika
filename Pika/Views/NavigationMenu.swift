@@ -37,7 +37,7 @@ struct NavigationMenu: View {
             .buttonStyle(PlainButtonStyle())
             .padding(.horizontal, 6.0)
             .foregroundColor(showColorPreview ? .accentColor : .primary)
-            .help(PikaText.textColorPreviewToggle)
+            .help("\(PikaText.textColorPreviewToggle) (P)")
 
             Button(action: {
                 NSApp.sendAction(#selector(AppDelegate.triggerToggleCompliance), to: nil, from: nil)
@@ -47,7 +47,7 @@ struct NavigationMenu: View {
             .buttonStyle(PlainButtonStyle())
             .padding(.horizontal, 6.0)
             .foregroundColor(showCompliance ? .accentColor : .primary)
-            .help(PikaText.textComplianceToggle)
+            .help("\(PikaText.textComplianceToggle) (C)")
 
             Button(action: {
                 withAnimation(.easeInOut(duration: 0.25)) {
@@ -59,7 +59,7 @@ struct NavigationMenu: View {
             .buttonStyle(PlainButtonStyle())
             .padding(.horizontal, 6.0)
             .foregroundColor(historyDrawerVisible ? .accentColor : .primary)
-            .help(PikaText.textHistoryToggle)
+            .help("\(PikaText.textHistoryToggle) (H)")
 
             Menu {
                 NavigationMenuItems()

@@ -271,6 +271,7 @@ class Eyedroppers: ObservableObject {
         palettes.append(palette)
         Defaults[.palettes] = palettes
         Defaults[.activePaletteIndex] = palettes.count - 1
+        activeHistoryID = current.id
     }
 
     func renamePalette(at index: Int, to name: String) {
@@ -309,6 +310,7 @@ class Eyedroppers: ObservableObject {
         guard paletteIndex > 0, paletteIndex < palettes.count else { return }
         palettes[paletteIndex].pairs.removeAll { $0.id == pairID }
         Defaults[.palettes] = palettes
+        if activeHistoryID == pairID { activeHistoryID = nil }
     }
 }
 

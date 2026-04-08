@@ -215,6 +215,11 @@ struct ColorHistoryDrawer: View {
     @Default(.activePaletteIndex) var activePaletteIndex
 
     @State private var isShowingClearConfirm = false
+    @State private var slideDirection: VerticalDirection = .down
+
+    enum VerticalDirection {
+        case up, down
+    }
 
     private var activePalette: Palette? {
         let idx = activePaletteIndex
@@ -237,7 +242,7 @@ struct ColorHistoryDrawer: View {
             HStack(spacing: 0) {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 6) {
-                        ForEach(Array((activePalette?.pairs ?? []).enumerated()), id: \.element.id) { index, pair in
+                        ForEach(Array((activePalette?.pairs ?? []).enumerated()), id: \.element.id) { _, pair in
                             ColorHistoryChip(
                                 pair: pair,
                                 isActive: isActivePair(pair),
@@ -248,15 +253,17 @@ struct ColorHistoryDrawer: View {
                                 onClearAll: isAutoHistory ? { isShowingClearConfirm = true } : nil,
                                 isAutoHistory: isAutoHistory
                             )
-                            .transition(.opacity)
-                            .animation(
-                                .easeInOut(duration: 0.15).delay(Double(index) * 0.03),
-                                value: activePalette?.id
-                            )
                         }
                     }
-                    .animation(.easeInOut(duration: 0.2), value: activePalette?.pairs)
                     .padding(.horizontal, 8)
+                    .animation(.easeInOut(duration: 0.2), value: activePalette?.pairs)
+                    .id(activePalette?.id)
+                    .transition(slideTransition)
+                }
+                .animation(.easeInOut(duration: 0.2), value: activePalette?.id)
+                .clipped()
+                .onChange(of: activePaletteIndex) { oldValue, newValue in
+                    slideDirection = newValue > oldValue ? .down : .up
                 }
 
                 HStack(spacing: 0) {
@@ -319,6 +326,15 @@ struct ColorHistoryDrawer: View {
         } message: {
             Text(PikaText.textHistoryClearConfirm)
         }
+    }
+
+    private var slideTransition: AnyTransition {
+        .asymmetric(
+            insertion: .move(edge: slideDirection == .down ? .bottom : .top)
+                .combined(with: .opacity),
+            removal: .move(edge: slideDirection == .down ? .top : .bottom)
+                .combined(with: .opacity)
+        )
     }
 
     private func isActivePair(_ pair: ColorPair) -> Bool {
