@@ -286,9 +286,12 @@ class Eyedroppers: ObservableObject {
         guard index > 0, index < palettes.count else { return }
         palettes.remove(at: index)
         Defaults[.palettes] = palettes
-        if Defaults[.activePaletteIndex] >= palettes.count {
+        let currentIndex = Defaults[.activePaletteIndex]
+        if currentIndex >= palettes.count {
             Defaults[.activePaletteIndex] = 0
             restoreAutoHistorySelection()
+        } else if currentIndex > index {
+            Defaults[.activePaletteIndex] = currentIndex - 1
         }
     }
 

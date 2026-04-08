@@ -1,6 +1,10 @@
 import Defaults
 import SwiftUI
 
+enum VerticalDirection {
+    case up, down
+}
+
 struct ColorHistoryChip: View {
     let pair: ColorPair
     let isActive: Bool
@@ -105,7 +109,7 @@ struct PaletteTabBar: View {
     @Default(.palettes) var palettes
     @Default(.activePaletteIndex) var activePaletteIndex
     @Default(.historyDrawerVisible) var historyDrawerVisible
-    @Binding var slideDirection: ColorHistoryDrawer.VerticalDirection
+    @Binding var slideDirection: VerticalDirection
 
     @State private var isShowingNewField = false
     @State private var renamingIndex: Int?
@@ -132,6 +136,7 @@ struct PaletteTabBar: View {
                     PaletteNameField(
                         placeholder: PikaText.textPaletteNamePlaceholder,
                         onSubmit: { name in
+                            slideDirection = .down
                             eyedroppers.savePalette(name: name)
                             isShowingNewField = false
                         },
@@ -218,10 +223,6 @@ struct ColorHistoryDrawer: View {
 
     @State private var isShowingClearConfirm = false
     @State private var slideDirection: VerticalDirection = .down
-
-    enum VerticalDirection {
-        case up, down
-    }
 
     private var activePalette: Palette? {
         let idx = activePaletteIndex
