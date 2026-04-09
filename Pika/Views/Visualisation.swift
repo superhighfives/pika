@@ -34,6 +34,7 @@ struct Visualisation: View {
                 }
             }
         }
+        .animation(.easeIn(duration: 0.3), value: isShown)
         .onAppear {
             isShown = true
         }
@@ -48,6 +49,52 @@ struct Visualisation: View {
         }
         .onReceive(NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { _ in
             isShown = false
+        }
+    }
+}
+
+struct VisualisationHeader<Content: View>: View {
+    let height: CGFloat
+    let alignment: Alignment
+    let content: Content
+
+    init(
+        height: CGFloat = 150,
+        alignment: Alignment = .bottomLeading,
+        @ViewBuilder content: () -> Content
+    ) {
+        self.height = height
+        self.alignment = alignment
+        self.content = content()
+    }
+
+    var body: some View {
+        ZStack(alignment: alignment) {
+            ZStack {
+                Color(red: 0.4, green: 0.0, blue: 0.7)
+                Visualisation()
+                    .mask(
+                        LinearGradient(
+                            gradient: Gradient(stops: [
+                                .init(color: .clear, location: 0),
+                                .init(color: .white, location: 0.55),
+                                .init(color: .white, location: 1),
+                            ]),
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                    )
+            }
+            .frame(height: height)
+            Rectangle()
+                .fill(LinearGradient(
+                    gradient: Gradient(colors: [Color.black.opacity(0), Color.black.opacity(0.6)]),
+                    startPoint: .top,
+                    endPoint: .bottom
+                ))
+                .frame(maxWidth: .infinity)
+                .frame(height: height)
+            content
         }
     }
 }

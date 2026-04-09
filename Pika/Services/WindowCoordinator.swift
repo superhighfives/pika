@@ -115,17 +115,18 @@ class WindowCoordinator: NSObject {
     func openPreferencesWindow() {
         if preferencesWindow == nil, let eyedroppers {
             let rootView = PreferencesView()
-                .frame(minWidth: 440, maxWidth: .infinity, minHeight: 400, maxHeight: .infinity)
+                .frame(minWidth: 580, maxWidth: 580, minHeight: 400, maxHeight: .infinity)
                 .edgesIgnoringSafeArea(.all)
                 .environmentObject(eyedroppers)
             let view = NSHostingView(rootView: rootView)
             preferencesWindow = PikaWindow.createSecondaryWindow(
                 title: "Preferences",
-                size: NSRect(x: 0, y: 0, width: 550, height: 600),
+                size: NSRect(x: 0, y: 0, width: 580, height: 600),
                 styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView]
             )
-            preferencesWindow?.minSize = NSSize(width: 440, height: 400)
-            preferencesWindow?.contentMinSize = NSSize(width: 440, height: 400)
+            preferencesWindow?.minSize = NSSize(width: 580, height: 400)
+            preferencesWindow?.maxSize = NSSize(width: 580, height: CGFloat.greatestFiniteMagnitude)
+            preferencesWindow?.contentMinSize = NSSize(width: 580, height: 400)
             preferencesWindow?.contentView = view
         }
         preferencesWindow?.makeKeyAndOrderFront(nil)

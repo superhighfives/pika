@@ -17,7 +17,6 @@ private struct GeneralAndSelectionSection: View {
     @Default(.alwaysShowOnLaunch) var alwaysShowOnLaunch
     @Default(.showColorOverlay) var showColorOverlay
     @Default(.colorOverlayDuration) var colorOverlayDuration
-    @Default(.showColorPreview) var showColorPreview
     @State var disableHideMenuBarIcon = true
 
     var body: some View {
@@ -70,9 +69,6 @@ private struct GeneralAndSelectionSection: View {
                     Text(PikaText.textFloatDescription)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                Toggle(isOn: $showColorPreview) {
-                    Text(PikaText.textShowColorPreview)
-                }
                 Toggle(isOn: $showColorOverlay) {
                     Text(PikaText.textShowColorOverlay)
                 }
@@ -99,12 +95,8 @@ private struct AppModeSection: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10.0) {
             Text(PikaText.textAppTitle).font(.system(size: 16))
-            GeometryReader { geometry in
-                let width = geometry.size.width
-                HStack(spacing: 16.0) {
-                    AppModeButtons(width: width / 2 - 8)
-                }
-                .frame(maxWidth: width)
+            HStack(spacing: 16.0) {
+                AppModeButtons()
             }
             .frame(height: 96)
         }
@@ -177,6 +169,7 @@ private struct CopySettingsSection: View {
                     .pickerStyle(.menu)
                     .labelsHidden()
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
                 ColorExampleRow(copyFormat: copyFormat, eyedropper: eyedroppers.foreground)
             }
             Toggle(isOn: $copyColorOnPick) {
@@ -253,6 +246,7 @@ private struct ColorFormatSection: View {
                     }
                 }
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 24.0)
         }
     }
@@ -269,7 +263,28 @@ private struct GlobalShortcutSection: View {
             }
             .padding(.horizontal, 24.0)
         }
-        .padding(.bottom, 24.0)
+    }
+}
+
+// MARK: - Version Info
+
+private struct PreferencesVersionInfo: View {
+    let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
+    let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            let textVersion = PikaText.textAboutVersion
+            let textBuild = PikaText.textAboutBuild
+            let textUnknown = PikaText.textAboutUnknown
+            Text("\(textVersion) \(appVersion ?? textUnknown)")
+                .fontWeight(.semibold)
+                .foregroundColor(.white)
+                .shadow(color: Color.black.opacity(0.3), radius: 0, x: 0, y: 1)
+            Text("(\(textBuild) \(buildNumber ?? textUnknown))")
+                .foregroundColor(.white.opacity(0.5))
+                .shadow(color: Color.black.opacity(0.3), radius: 0, x: 0, y: 1)
+        }
     }
 }
 
@@ -281,21 +296,19 @@ struct PreferencesView: View {
             VStack(alignment: .leading, spacing: 0) {
                 // MARK: Header
 
-                ZStack(alignment: .bottomLeading) {
-                    Visualisation()
-                        .frame(height: 120)
-                    Rectangle()
-                        .fill(LinearGradient(
-                            gradient: Gradient(colors: [Color.black.opacity(0), Color.black.opacity(0.6)]),
-                            startPoint: .top,
-                            endPoint: .bottom
-                        ))
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 120)
-                    AppVersion(displayOnTransparent: true)
+                VisualisationHeader(height: 150) {
+                    PreferencesVersionInfo()
                         .padding(.horizontal, 20)
                         .padding(.bottom, 14)
                 }
+                .background(
+                    GeometryReader { geo in
+                        Color(red: 0.4, green: 0.0, blue: 0.7)
+                            .frame(height: geo.size.height + 500)
+                            .offset(y: -500)
+                    }
+                )
+                Divider()
 
                 // MARK: Content
 
@@ -333,6 +346,6 @@ struct PreferencesView_Previews: PreviewProvider {
     static var previews: some View {
         PreferencesView()
             .environmentObject(Eyedroppers())
-            .frame(width: 550, height: 600)
+            .frame(width: 580, height: 600)
     }
 }

@@ -5,17 +5,7 @@ struct AboutView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            ZStack(alignment: .bottom) {
-                Visualisation()
-                    .frame(height: 200)
-                Rectangle()
-                    .fill(LinearGradient(
-                        gradient: Gradient(colors: [Color.black.opacity(0), Color.black.opacity(0.5)]),
-                        startPoint: .top,
-                        endPoint: .bottom
-                    ))
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 200)
+            VisualisationHeader(height: 200, alignment: .bottom) {
                 AppVersion(displayOnTransparent: true)
                     .padding(.bottom, 32)
             }

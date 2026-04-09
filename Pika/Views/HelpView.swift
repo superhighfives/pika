@@ -296,17 +296,7 @@ struct HelpView: View {
             VStack(spacing: 0) {
                 // MARK: Header
 
-                ZStack(alignment: .bottomLeading) {
-                    Visualisation()
-                        .frame(height: 120)
-                    Rectangle()
-                        .fill(LinearGradient(
-                            gradient: Gradient(colors: [Color.black.opacity(0), Color.black.opacity(0.6)]),
-                            startPoint: .top,
-                            endPoint: .bottom
-                        ))
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 120)
+                VisualisationHeader(height: 120) {
                     Text(PikaText.textMenuHelp)
                         .font(.title2)
                         .fontWeight(.semibold)
@@ -315,6 +305,13 @@ struct HelpView: View {
                         .padding(.horizontal, 20)
                         .padding(.bottom, 14)
                 }
+                .background(
+                    GeometryReader { geo in
+                        Color(red: 0.4, green: 0.0, blue: 0.7)
+                            .frame(height: geo.size.height + 500)
+                            .offset(y: -500)
+                    }
+                )
 
                 HelpDescriptionRow(text: PikaText.textHelpDescription)
                 Divider()
