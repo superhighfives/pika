@@ -62,8 +62,8 @@ struct ContentView: View {
                     swapTimerSubscription = swapTimer.connect()
                 }
 
-            Divider()
             if showCompliance {
+                Divider()
                 Footer(foreground: eyedroppers.foreground, background: eyedroppers.background)
                     .transition(.move(edge: .bottom).combined(with: .opacity))
             }

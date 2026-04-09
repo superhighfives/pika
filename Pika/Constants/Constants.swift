@@ -361,6 +361,42 @@ enum PikaText {
         comment: "Show color overlay after picking"
     )
     static let textDuration = NSLocalizedString("preferences.overlay.duration", comment: "Duration:")
+
+    // URL Trigger Group Titles
+    static let textUrlGroupPick = NSLocalizedString("help.url.group.pick", comment: "Pick")
+    static let textUrlGroupCopy = NSLocalizedString("help.url.group.copy", comment: "Copy")
+    static let textUrlGroupChangeFormat = NSLocalizedString("help.url.group.change_format", comment: "Change Format")
+    static let textUrlGroupActions = NSLocalizedString("help.url.group.actions", comment: "Actions")
+    static let textUrlGroupSetColor = NSLocalizedString("help.url.group.set_color", comment: "Set Color")
+    static let textUrlGroupHistory = NSLocalizedString("help.url.group.history", comment: "History")
+    static let textUrlGroupWindow = NSLocalizedString("help.url.group.window", comment: "Window")
+    static let textUrlGroupAppearance = NSLocalizedString("help.url.group.appearance", comment: "Appearance")
+
+    // URL Trigger Descriptions — Set Color
+    static let textUrlSetForeground = NSLocalizedString("help.url.set.foreground", comment: "Set foreground color")
+    static let textUrlSetBackground = NSLocalizedString("help.url.set.background", comment: "Set background color")
+
+    // URL Trigger Descriptions — History
+    static let textUrlHistoryShow = NSLocalizedString("help.url.history.show", comment: "Show the history drawer")
+    static let textUrlHistoryHide = NSLocalizedString("help.url.history.hide", comment: "Hide the history drawer")
+    static let textUrlHistoryToggle = NSLocalizedString("help.url.history.toggle", comment: "Toggle the history drawer")
+
+    // URL Trigger Descriptions — Window
+    static let textUrlWindowAbout = NSLocalizedString("help.url.window.about", comment: "Open the About window")
+    static let textUrlWindowHelp = NSLocalizedString("help.url.window.help", comment: "Open the Help window")
+    static let textUrlWindowPreferences = NSLocalizedString(
+        "help.url.window.preferences",
+        comment: "Open the Preferences window"
+    )
+    static let textUrlWindowResize = NSLocalizedString("help.url.window.resize", comment: "Resize window")
+
+    // URL Trigger Descriptions — Appearance
+    static let textUrlAppearanceLight = NSLocalizedString("help.url.appearance.light", comment: "Force light appearance")
+    static let textUrlAppearanceDark = NSLocalizedString("help.url.appearance.dark", comment: "Force dark appearance")
+    static let textUrlAppearanceSystem = NSLocalizedString(
+        "help.url.appearance.system",
+        comment: "Restore system appearance"
+    )
 }
 
 // swiftlint:enable line_length

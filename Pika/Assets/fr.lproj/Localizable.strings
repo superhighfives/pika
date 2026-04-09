@@ -408,3 +408,33 @@
 
 /* Toggle color preview */
 "color.preview.toggle" = "Activer/désactiver l'aperçu des couleurs";
+
+/* URL Trigger Group Titles */
+"help.url.group.pick" = "Sélectionner";
+"help.url.group.copy" = "Copier";
+"help.url.group.change_format" = "Changer le format";
+"help.url.group.actions" = "Actions";
+"help.url.group.set_color" = "Définir la couleur";
+"help.url.group.history" = "Historique";
+"help.url.group.window" = "Fenêtre";
+"help.url.group.appearance" = "Apparence";
+
+/* URL Trigger Descriptions — Set Color */
+"help.url.set.foreground" = "Définir la couleur de premier plan";
+"help.url.set.background" = "Définir la couleur d'arrière-plan";
+
+/* URL Trigger Descriptions — History */
+"help.url.history.show" = "Afficher le tiroir d'historique";
+"help.url.history.hide" = "Masquer le tiroir d'historique";
+"help.url.history.toggle" = "Basculer le tiroir d'historique";
+
+/* URL Trigger Descriptions — Window */
+"help.url.window.about" = "Ouvrir la fenêtre À propos";
+"help.url.window.help" = "Ouvrir la fenêtre d'Aide";
+"help.url.window.preferences" = "Ouvrir la fenêtre des Préférences";
+"help.url.window.resize" = "Redimensionner la fenêtre";
+
+/* URL Trigger Descriptions — Appearance */
+"help.url.appearance.light" = "Forcer l'apparence claire";
+"help.url.appearance.dark" = "Forcer l'apparence sombre";
+"help.url.appearance.system" = "Restaurer l'apparence du système";

@@ -114,48 +114,67 @@ struct PaletteTabBar: View {
     @State private var isShowingNewField = false
     @State private var renamingIndex: Int?
 
-    var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 0) {
-                ForEach(Array(palettes.enumerated()), id: \.element.id) { index, palette in
-                    if renamingIndex == index {
-                        PaletteNameField(
-                            placeholder: palette.name ?? PikaText.textPaletteNamePlaceholder,
-                            onSubmit: { name in
-                                eyedroppers.renamePalette(at: index, to: name)
-                                renamingIndex = nil
-                            },
-                            onCancel: { renamingIndex = nil }
-                        )
-                    } else {
-                        paletteTab(palette: palette, index: index)
-                    }
-                }
-
-                if isShowingNewField {
-                    PaletteNameField(
-                        placeholder: PikaText.textPaletteNamePlaceholder,
-                        onSubmit: { name in
-                            slideDirection = .down
-                            withAnimation(.easeInOut(duration: 0.2)) {
-                                eyedroppers.savePalette(name: name)
-                            }
-                            isShowingNewField = false
-                        },
-                        onCancel: { isShowingNewField = false }
-                    )
-                } else {
-                    Button(action: { isShowingNewField = true }) {
-                        Image(systemName: "plus")
-                            .font(.system(size: 10, weight: .semibold))
-                            .foregroundColor(.secondary)
-                            .frame(width: 28, height: 22)
-                    }
-                    .buttonStyle(.plain)
-                    .help(PikaText.textPaletteNew)
-                }
+    private func scrollToEnd(proxy: ScrollViewProxy) {
+        let target = isShowingNewField ? "newPaletteField" : "addButton"
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+            withAnimation {
+                proxy.scrollTo(target, anchor: .trailing)
             }
-            .padding(.horizontal, 8)
+        }
+    }
+
+    var body: some View {
+        ScrollViewReader { proxy in
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 0) {
+                    ForEach(Array(palettes.enumerated()), id: \.element.id) { index, palette in
+                        if renamingIndex == index {
+                            PaletteNameField(
+                                placeholder: palette.name ?? PikaText.textPaletteNamePlaceholder,
+                                onSubmit: { name in
+                                    eyedroppers.renamePalette(at: index, to: name)
+                                    renamingIndex = nil
+                                },
+                                onCancel: { renamingIndex = nil }
+                            )
+                        } else {
+                            paletteTab(palette: palette, index: index)
+                        }
+                    }
+
+                    if isShowingNewField {
+                        PaletteNameField(
+                            placeholder: PikaText.textPaletteNamePlaceholder,
+                            onSubmit: { name in
+                                slideDirection = .down
+                                withAnimation(.easeInOut(duration: 0.2)) {
+                                    eyedroppers.savePalette(name: name)
+                                }
+                                isShowingNewField = false
+                            },
+                            onCancel: { isShowingNewField = false }
+                        )
+                        .id("newPaletteField")
+                    } else {
+                        Button(action: { isShowingNewField = true }) {
+                            Image(systemName: "plus.circle")
+                                .font(.system(size: 10, weight: .semibold))
+                                .foregroundColor(.secondary)
+                                .frame(width: 28, height: 22)
+                        }
+                        .buttonStyle(.plain)
+                        .help(PikaText.textPaletteNew)
+                        .id("addButton")
+                    }
+                }
+                .padding(.horizontal, 8)
+            }
+            .onChange(of: isShowingNewField) { _, _ in
+                scrollToEnd(proxy: proxy)
+            }
+            .onChange(of: palettes.count) { _, _ in
+                scrollToEnd(proxy: proxy)
+            }
         }
         .frame(height: 28)
         .background(Color.black.opacity(0.05))
@@ -269,10 +288,9 @@ struct ColorHistoryDrawer: View {
                     .id(activePalette?.id)
                     .transition(slideTransition)
                 }
-                .frame(maxHeight: 44)
+                .frame(maxWidth: .infinity, maxHeight: 44)
                 .clipped()
-
-                HStack(spacing: 0) {
+                .overlay(alignment: .trailing) {
                     Rectangle()
                         .fill(
                             LinearGradient(
@@ -282,7 +300,9 @@ struct ColorHistoryDrawer: View {
                             )
                         )
                         .frame(width: 6)
+                }
 
+                HStack(spacing: 0) {
                     Divider()
 
                     if isAutoHistory {

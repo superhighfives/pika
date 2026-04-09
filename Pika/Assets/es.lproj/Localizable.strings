@@ -408,3 +408,33 @@
 
 /* Toggle color preview */
 "color.preview.toggle" = "Alternar vista previa de color";
+
+/* URL Trigger Group Titles */
+"help.url.group.pick" = "Seleccionar";
+"help.url.group.copy" = "Copiar";
+"help.url.group.change_format" = "Cambiar formato";
+"help.url.group.actions" = "Acciones";
+"help.url.group.set_color" = "Establecer color";
+"help.url.group.history" = "Historial";
+"help.url.group.window" = "Ventana";
+"help.url.group.appearance" = "Apariencia";
+
+/* URL Trigger Descriptions — Set Color */
+"help.url.set.foreground" = "Establecer color de primer plano";
+"help.url.set.background" = "Establecer color de fondo";
+
+/* URL Trigger Descriptions — History */
+"help.url.history.show" = "Mostrar el panel de historial";
+"help.url.history.hide" = "Ocultar el panel de historial";
+"help.url.history.toggle" = "Alternar el panel de historial";
+
+/* URL Trigger Descriptions — Window */
+"help.url.window.about" = "Abrir la ventana Acerca de";
+"help.url.window.help" = "Abrir la ventana de Ayuda";
+"help.url.window.preferences" = "Abrir la ventana de Preferencias";
+"help.url.window.resize" = "Redimensionar ventana";
+
+/* URL Trigger Descriptions — Appearance */
+"help.url.appearance.light" = "Forzar apariencia clara";
+"help.url.appearance.dark" = "Forzar apariencia oscura";
+"help.url.appearance.system" = "Restaurar apariencia del sistema";

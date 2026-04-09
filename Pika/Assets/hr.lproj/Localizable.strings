@@ -408,3 +408,33 @@
 
 /* Toggle color preview */
 "color.preview.toggle" = "Uključi/isključi pregled boje";
+
+/* URL Trigger Group Titles */
+"help.url.group.pick" = "Odaberi";
+"help.url.group.copy" = "Kopiraj";
+"help.url.group.change_format" = "Promijeni format";
+"help.url.group.actions" = "Radnje";
+"help.url.group.set_color" = "Postavi boju";
+"help.url.group.history" = "Povijest";
+"help.url.group.window" = "Prozor";
+"help.url.group.appearance" = "Izgled";
+
+/* URL Trigger Descriptions — Set Color */
+"help.url.set.foreground" = "Postavi boju prednjeg plana";
+"help.url.set.background" = "Postavi boju pozadine";
+
+/* URL Trigger Descriptions — History */
+"help.url.history.show" = "Prikaži ladicu povijesti";
+"help.url.history.hide" = "Sakrij ladicu povijesti";
+"help.url.history.toggle" = "Uključi/isključi ladicu povijesti";
+
+/* URL Trigger Descriptions — Window */
+"help.url.window.about" = "Otvori prozor O aplikaciji";
+"help.url.window.help" = "Otvori prozor Pomoć";
+"help.url.window.preferences" = "Otvori prozor Postavke";
+"help.url.window.resize" = "Promijeni veličinu prozora";
+
+/* URL Trigger Descriptions — Appearance */
+"help.url.appearance.light" = "Prisilno svijetli izgled";
+"help.url.appearance.dark" = "Prisilno tamni izgled";
+"help.url.appearance.system" = "Vrati izgled sustava";

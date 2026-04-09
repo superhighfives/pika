@@ -226,7 +226,7 @@ private let shortcutGroups: [ShortcutGroup] = [
 private typealias URLGroup = (title: String, entries: [(url: String, description: String)])
 
 private let urlGroups: [URLGroup] = [
-    ("Pick", [
+    (PikaText.textUrlGroupPick, [
         ("pika://pick/foreground", PikaText.textPickForeground),
         ("pika://pick/background", PikaText.textPickBackground),
     ]),
@@ -234,13 +234,13 @@ private let urlGroups: [URLGroup] = [
         ("pika://system/foreground", PikaText.textColorSystemPickerForegroundSimple),
         ("pika://system/background", PikaText.textColorSystemPickerBackgroundSimple),
     ]),
-    ("Copy", [
+    (PikaText.textUrlGroupCopy, [
         ("pika://copy/foreground", PikaText.textCopyForeground),
         ("pika://copy/background", PikaText.textCopyBackground),
         ("pika://copy/text", PikaText.textMenuCopyAllAsText),
         ("pika://copy/json", PikaText.textMenuCopyAllAsJSON),
     ]),
-    ("Change Format", [
+    (PikaText.textUrlGroupChangeFormat, [
         ("pika://format/hex", PikaText.textFormatHex),
         ("pika://format/rgb", PikaText.textFormatRGB),
         ("pika://format/hsb", PikaText.textFormatHSB),
@@ -249,30 +249,30 @@ private let urlGroups: [URLGroup] = [
         ("pika://format/opengl", PikaText.textFormatOpenGL),
         ("pika://format/oklch", PikaText.textFormatOKLCH),
     ]),
-    ("Actions", [
+    (PikaText.textUrlGroupActions, [
         ("pika://swap", PikaText.textColorSwapDetail),
         ("pika://undo", PikaText.textColorUndo),
         ("pika://redo", PikaText.textColorRedo),
     ]),
-    ("Set Color", [
-        ("pika://set/foreground/<hex>", "Set foreground color (e.g. pika://set/foreground/fbbf24)"),
-        ("pika://set/background/<hex>", "Set background color (e.g. pika://set/background/e74661)"),
+    (PikaText.textUrlGroupSetColor, [
+        ("pika://set/foreground/<hex>", PikaText.textUrlSetForeground),
+        ("pika://set/background/<hex>", PikaText.textUrlSetBackground),
     ]),
-    ("History", [
-        ("pika://history/show", "Show the history drawer"),
-        ("pika://history/hide", "Hide the history drawer"),
-        ("pika://history/toggle", "Toggle the history drawer"),
+    (PikaText.textUrlGroupHistory, [
+        ("pika://history/show", PikaText.textUrlHistoryShow),
+        ("pika://history/hide", PikaText.textUrlHistoryHide),
+        ("pika://history/toggle", PikaText.textUrlHistoryToggle),
     ]),
-    ("Window", [
-        ("pika://window/about", "Open the About window"),
-        ("pika://window/help", "Open the Help window"),
-        ("pika://window/preferences", "Open the Preferences window"),
-        ("pika://window/resize/<w>/<h>", "Resize window (e.g. pika://window/resize/480/300)"),
+    (PikaText.textUrlGroupWindow, [
+        ("pika://window/about", PikaText.textUrlWindowAbout),
+        ("pika://window/help", PikaText.textUrlWindowHelp),
+        ("pika://window/preferences", PikaText.textUrlWindowPreferences),
+        ("pika://window/resize/<w>/<h>", PikaText.textUrlWindowResize),
     ]),
-    ("Appearance", [
-        ("pika://appearance/light", "Force light appearance"),
-        ("pika://appearance/dark", "Force dark appearance"),
-        ("pika://appearance/system", "Restore system appearance"),
+    (PikaText.textUrlGroupAppearance, [
+        ("pika://appearance/light", PikaText.textUrlAppearanceLight),
+        ("pika://appearance/dark", PikaText.textUrlAppearanceDark),
+        ("pika://appearance/system", PikaText.textUrlAppearanceSystem),
     ]),
 ]
 
