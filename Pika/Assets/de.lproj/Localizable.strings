@@ -409,32 +409,62 @@
 /* Toggle color preview */
 "color.preview.toggle" = "Farbvorschau umschalten";
 
-/* URL Trigger Group Titles */
+/* Pick */
 "help.url.group.pick" = "Auswählen";
+
+/* Copy */
 "help.url.group.copy" = "Kopieren";
+
+/* Change Format */
 "help.url.group.change_format" = "Format ändern";
+
+/* Actions */
 "help.url.group.actions" = "Aktionen";
+
+/* Set Color */
 "help.url.group.set_color" = "Farbe setzen";
+
+/* History */
 "help.url.group.history" = "Verlauf";
+
+/* Window */
 "help.url.group.window" = "Fenster";
+
+/* Appearance */
 "help.url.group.appearance" = "Erscheinungsbild";
 
-/* URL Trigger Descriptions — Set Color */
+/* Set foreground color */
 "help.url.set.foreground" = "Vordergrundfarbe setzen";
+
+/* Set background color */
 "help.url.set.background" = "Hintergrundfarbe setzen";
 
-/* URL Trigger Descriptions — History */
+/* Show the history drawer */
 "help.url.history.show" = "Verlaufsleiste anzeigen";
+
+/* Hide the history drawer */
 "help.url.history.hide" = "Verlaufsleiste ausblenden";
+
+/* Toggle the history drawer */
 "help.url.history.toggle" = "Verlaufsleiste umschalten";
 
-/* URL Trigger Descriptions — Window */
+/* Open the About window */
 "help.url.window.about" = "Über-Fenster öffnen";
+
+/* Open the Help window */
 "help.url.window.help" = "Hilfe-Fenster öffnen";
+
+/* Open the Preferences window */
 "help.url.window.preferences" = "Einstellungen-Fenster öffnen";
+
+/* Resize window */
 "help.url.window.resize" = "Fenstergröße ändern";
 
-/* URL Trigger Descriptions — Appearance */
+/* Force light appearance */
 "help.url.appearance.light" = "Helles Erscheinungsbild erzwingen";
+
+/* Force dark appearance */
 "help.url.appearance.dark" = "Dunkles Erscheinungsbild erzwingen";
+
+/* Restore system appearance */
 "help.url.appearance.system" = "Systemerscheinungsbild wiederherstellen";

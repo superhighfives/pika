@@ -442,32 +442,62 @@
 /* Are you sure you want to clear all history? */
 "history.clear.confirm" = "Are you sure you want to clear all history?";
 
-/* URL Trigger Group Titles */
+/* Pick */
 "help.url.group.pick" = "Pick";
+
+/* Copy */
 "help.url.group.copy" = "Copy";
+
+/* Change Format */
 "help.url.group.change_format" = "Change Format";
+
+/* Actions */
 "help.url.group.actions" = "Actions";
+
+/* Set Color */
 "help.url.group.set_color" = "Set Color";
+
+/* History */
 "help.url.group.history" = "History";
+
+/* Window */
 "help.url.group.window" = "Window";
+
+/* Appearance */
 "help.url.group.appearance" = "Appearance";
 
-/* URL Trigger Descriptions — Set Color */
+/* Set foreground color */
 "help.url.set.foreground" = "Set foreground color";
+
+/* Set background color */
 "help.url.set.background" = "Set background color";
 
-/* URL Trigger Descriptions — History */
+/* Show the history drawer */
 "help.url.history.show" = "Show the history drawer";
+
+/* Hide the history drawer */
 "help.url.history.hide" = "Hide the history drawer";
+
+/* Toggle the history drawer */
 "help.url.history.toggle" = "Toggle the history drawer";
 
-/* URL Trigger Descriptions — Window */
+/* Open the About window */
 "help.url.window.about" = "Open the About window";
+
+/* Open the Help window */
 "help.url.window.help" = "Open the Help window";
+
+/* Open the Preferences window */
 "help.url.window.preferences" = "Open the Preferences window";
+
+/* Resize window */
 "help.url.window.resize" = "Resize window";
 
-/* URL Trigger Descriptions — Appearance */
+/* Force light appearance */
 "help.url.appearance.light" = "Force light appearance";
+
+/* Force dark appearance */
 "help.url.appearance.dark" = "Force dark appearance";
+
+/* Restore system appearance */
 "help.url.appearance.system" = "Restore system appearance";
