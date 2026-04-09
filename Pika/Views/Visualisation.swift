@@ -5,6 +5,7 @@ struct Visualisation: View {
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     var device: MTLDevice!
     @State var isShown = false
+    @State var renderID = UUID()
 
     init() {
         guard let device = MTLCreateSystemDefaultDevice() else {
@@ -19,6 +20,7 @@ struct Visualisation: View {
             if isShown {
                 if device != nil {
                     MetalShader()
+                        .id(renderID)
                         .transition(.opacity)
                 } else {
                     GeometryReader { geo in
@@ -33,7 +35,19 @@ struct Visualisation: View {
             }
         }
         .onAppear {
-            isShown.toggle()
+            isShown = true
+        }
+        .onReceive(NotificationCenter.default.publisher(for: NSWindow.didBecomeKeyNotification)) { _ in
+            if !isShown {
+                renderID = UUID()
+                isShown = true
+            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: NSWindow.didMiniaturizeNotification)) { _ in
+            isShown = false
+        }
+        .onReceive(NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { _ in
+            isShown = false
         }
     }
 }

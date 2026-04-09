@@ -276,68 +276,56 @@ private struct GlobalShortcutSection: View {
 // MARK: - Main View
 
 struct PreferencesView: View {
-    @State private var viewHeight: CGFloat = 0.0
-
     var body: some View {
-        HStack(alignment: .top, spacing: 0) {
-            ZStack {
-                Visualisation()
-                AppVersion(displayOnTransparent: true)
-            }
-            .frame(maxWidth: 240.0, maxHeight: .infinity)
-            .background(
-                VisualEffect(
-                    material: NSVisualEffectView.Material.sidebar,
-                    blendingMode: NSVisualEffectView.BlendingMode.behindWindow
-                ))
-
-            Divider()
-
+        ScrollView {
             VStack(alignment: .leading, spacing: 0) {
-                VStack(alignment: .leading, spacing: 0) {
-                    if #available(macOS 26, *) {
-                        Divider()
-                    }
+                // MARK: Header
 
+                ZStack(alignment: .bottomLeading) {
+                    Visualisation()
+                        .frame(height: 120)
+                    Rectangle()
+                        .fill(LinearGradient(
+                            gradient: Gradient(colors: [Color.black.opacity(0), Color.black.opacity(0.6)]),
+                            startPoint: .top,
+                            endPoint: .bottom
+                        ))
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 120)
+                    AppVersion(displayOnTransparent: true)
+                        .padding(.horizontal, 20)
+                        .padding(.bottom, 14)
+                }
+
+                // MARK: Content
+
+                VStack(alignment: .leading, spacing: 0) {
                     GeneralAndSelectionSection()
 
                     Divider().padding(.bottom, 16.0)
 
                     AppModeSection()
+
+                    Divider().padding(.vertical, 16.0)
+
+                    AppearanceSection()
+
+                    Divider().padding(.vertical, 16.0)
+
+                    CopySettingsSection()
+
+                    Divider().padding(.vertical, 16.0)
+
+                    ColorFormatSection()
+
+                    Divider().padding(.vertical, 16.0)
+
+                    GlobalShortcutSection()
                 }
-                .modify {
-                    if #available(macOS 26.0, *) {
-                        $0.padding(.top, 32.0)
-                    } else {
-                        $0.padding(.top, 0.0)
-                    }
-                }
-
-                Divider().padding(.vertical, 16.0)
-
-                AppearanceSection()
-
-                Divider().padding(.vertical, 16.0)
-
-                CopySettingsSection()
-
-                Divider().padding(.vertical, 16.0)
-
-                ColorFormatSection()
-
-                Divider().padding(.vertical, 16.0)
-
-                GlobalShortcutSection()
+                .padding(.bottom, 24.0)
             }
-            .background(
-                GeometryReader { contentGeometry in
-                    Color.clear.onAppear {
-                        viewHeight = contentGeometry.size.height
-                    }
-                }
-            )
-            .useScrollView(when: viewHeight > 750, showsIndicators: true)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 
@@ -345,6 +333,6 @@ struct PreferencesView_Previews: PreviewProvider {
     static var previews: some View {
         PreferencesView()
             .environmentObject(Eyedroppers())
-            .frame(width: 750, height: 750)
+            .frame(width: 550, height: 600)
     }
 }

@@ -137,7 +137,9 @@ struct PaletteTabBar: View {
                         placeholder: PikaText.textPaletteNamePlaceholder,
                         onSubmit: { name in
                             slideDirection = .down
-                            eyedroppers.savePalette(name: name)
+                            withAnimation(.easeInOut(duration: 0.2)) {
+                                eyedroppers.savePalette(name: name)
+                            }
                             isShowingNewField = false
                         },
                         onCancel: { isShowingNewField = false }
@@ -173,7 +175,9 @@ struct PaletteTabBar: View {
 
         Button(action: {
             slideDirection = index > activePaletteIndex ? .down : .up
-            activePaletteIndex = index
+            withAnimation(.easeInOut(duration: 0.2)) {
+                activePaletteIndex = index
+            }
             if index == 0 { eyedroppers.restoreAutoHistorySelection() }
         }) {
             if palette.isAutoHistory {
@@ -243,27 +247,29 @@ struct ColorHistoryDrawer: View {
             PaletteTabBar(slideDirection: $slideDirection)
             Divider()
             HStack(spacing: 0) {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 6) {
-                        ForEach(Array((activePalette?.pairs ?? []).enumerated()), id: \.element.id) { _, pair in
-                            ColorHistoryChip(
-                                pair: pair,
-                                isActive: isActivePair(pair),
-                                onApplyBoth: { applyBoth(pair) },
-                                onApplyForeground: { applyForeground(pair) },
-                                onApplyBackground: { applyBackground(pair) },
-                                onRemove: { removePair(pair) },
-                                onClearAll: isAutoHistory ? { isShowingClearConfirm = true } : nil,
-                                isAutoHistory: isAutoHistory
-                            )
+                ZStack {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 6) {
+                            ForEach(Array((activePalette?.pairs ?? []).enumerated()), id: \.element.id) { _, pair in
+                                ColorHistoryChip(
+                                    pair: pair,
+                                    isActive: isActivePair(pair),
+                                    onApplyBoth: { applyBoth(pair) },
+                                    onApplyForeground: { applyForeground(pair) },
+                                    onApplyBackground: { applyBackground(pair) },
+                                    onRemove: { removePair(pair) },
+                                    onClearAll: isAutoHistory ? { isShowingClearConfirm = true } : nil,
+                                    isAutoHistory: isAutoHistory
+                                )
+                            }
                         }
+                        .padding(.horizontal, 8)
+                        .animation(.easeInOut(duration: 0.2), value: activePalette?.pairs)
                     }
-                    .padding(.horizontal, 8)
-                    .animation(.easeInOut(duration: 0.2), value: activePalette?.pairs)
                     .id(activePalette?.id)
                     .transition(slideTransition)
                 }
-                .animation(.easeInOut(duration: 0.2), value: activePalette?.id)
+                .frame(maxHeight: 44)
                 .clipped()
 
                 HStack(spacing: 0) {
@@ -329,11 +335,10 @@ struct ColorHistoryDrawer: View {
     }
 
     private var slideTransition: AnyTransition {
-        .asymmetric(
-            insertion: .move(edge: slideDirection == .down ? .bottom : .top)
-                .combined(with: .opacity),
-            removal: .move(edge: slideDirection == .down ? .top : .bottom)
-                .combined(with: .opacity)
+        let direction: CGFloat = slideDirection == .down ? 1 : -1
+        return .asymmetric(
+            insertion: .offset(y: 44 * direction),
+            removal: .offset(y: -44 * direction)
         )
     }
 
