@@ -159,17 +159,15 @@ private struct CopySettingsSection: View {
         VStack(alignment: .leading, spacing: 10.0) {
             Text(PikaText.textCopyTitle).font(.system(size: 16))
             VStack(alignment: .leading, spacing: 12.0) {
-                HStack(alignment: .firstTextBaseline, spacing: 8.0) {
-                    Text(PikaText.textCopyExport).fixedSize()
-                    Picker(PikaText.textCopyFormat, selection: $copyFormat) {
+                VStack(alignment: .leading, spacing: 12.0) {
+                    Picker(PikaText.textCopyExport, selection: $copyFormat) {
                         ForEach(CopyFormat.allCases, id: \.self) { value in
                             Text(value.localizedString())
                         }
+                        Divider()
                     }
                     .pickerStyle(.menu)
-                    .labelsHidden()
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
                 ColorExampleRow(copyFormat: copyFormat, eyedropper: eyedroppers.foreground)
             }
             Toggle(isOn: $copyColorOnPick) {
@@ -220,35 +218,31 @@ private struct ColorFormatSection: View {
         let systemDefaultSpace = spaces.systemDefault
 
         VStack(alignment: .leading, spacing: 8.0) {
-            Section(header: Text(PikaText.textFormatTitle).font(.system(size: 16))) {
-                VStack(alignment: .leading, spacing: 12.0) {
-                    Section(header: Text(PikaText.textFormatDescription).font(.system(size: 13, weight: .medium))) {
-                        Picker(
-                            PikaText.textSpaceTitle,
-                            selection: $colorSpace.onChange(perform: {
-                                NSColorPanel.shared.close()
-                                Defaults[.colorSpace] = $0
-                            })
-                        ) {
-                            ForEach(primarySpaces, id: \.self) { value in
-                                if value == systemDefaultSpace {
-                                    Text("\(PikaText.textSystemDefault) (\(value.localizedName!))").tag(value)
-                                } else {
-                                    Text(value.localizedName!).tag(value)
-                                }
-                            }
-                            Divider()
-                            ForEach(availableSpaces, id: \.self) { value in
-                                Text(value.localizedName!).tag(value)
-                            }
+            Text(PikaText.textFormatTitle).font(.system(size: 16))
+            VStack(alignment: .leading, spacing: 12.0) {
+                Picker(
+                    PikaText.textFormatDescription,
+                    selection: $colorSpace.onChange(perform: {
+                        NSColorPanel.shared.close()
+                        Defaults[.colorSpace] = $0
+                    })
+                ) {
+                    ForEach(primarySpaces, id: \.self) { value in
+                        if value == systemDefaultSpace {
+                            Text("\(PikaText.textSystemDefault) (\(value.localizedName!))").tag(value)
+                        } else {
+                            Text(value.localizedName!).tag(value)
                         }
-                        .labelsHidden()
+                    }
+                    Divider()
+                    ForEach(availableSpaces, id: \.self) { value in
+                        Text(value.localizedName!).tag(value)
                     }
                 }
+                .pickerStyle(.menu)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.horizontal, 24.0)
         }
+        .padding(.horizontal, 24.0)
     }
 }
 
@@ -256,7 +250,7 @@ private struct GlobalShortcutSection: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8.0) {
             Section(header: Text(PikaText.textHotkeyTitle).font(.system(size: 16))) {
-                VStack(alignment: .leading, spacing: 12.0) {
+                HStack(spacing: 12.0) {
                     Text(PikaText.textHotkeyDescription).font(.system(size: 13, weight: .medium))
                     KeyboardShortcuts.Recorder(for: .togglePika)
                 }
@@ -296,7 +290,7 @@ struct PreferencesView: View {
             VStack(alignment: .leading, spacing: 0) {
                 // MARK: Header
 
-                VisualisationHeader(height: 150) {
+                VisualisationHeader(height: 180) {
                     PreferencesVersionInfo()
                         .padding(.horizontal, 20)
                         .padding(.bottom, 14)

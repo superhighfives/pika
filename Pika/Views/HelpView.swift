@@ -296,7 +296,7 @@ struct HelpView: View {
             VStack(spacing: 0) {
                 // MARK: Header
 
-                VisualisationHeader(height: 120) {
+                VisualisationHeader(height: 180) {
                     Text(PikaText.textMenuHelp)
                         .font(.title2)
                         .fontWeight(.semibold)
@@ -312,6 +312,7 @@ struct HelpView: View {
                             .offset(y: -500)
                     }
                 )
+                Divider()
 
                 HelpDescriptionRow(text: PikaText.textHelpDescription)
                 Divider()

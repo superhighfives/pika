@@ -5,10 +5,17 @@ struct AboutView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            VisualisationHeader(height: 200, alignment: .bottom) {
+            VisualisationHeader(height: 240, alignment: .bottom) {
                 AppVersion(displayOnTransparent: true)
                     .padding(.bottom, 32)
             }
+            .background(
+                GeometryReader { geo in
+                    Color(red: 0.4, green: 0.0, blue: 0.7)
+                        .frame(height: geo.size.height + 500)
+                        .offset(y: -500)
+                }
+            )
             VStack(spacing: 0) {
                 Divider()
                 HelpExternalLinkRow(title: PikaText.textAboutWebsite, url: PikaConstants.pikaWebsiteURL, shorthand: "superhighfives.com/pika", verticalPadding: 10.0)
