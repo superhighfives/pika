@@ -481,6 +481,30 @@
 /* Toggle the history drawer */
 "help.url.history.toggle" = "Toggle the history drawer";
 
+/* Show compliance */
+"help.url.compliance.show" = "Show compliance";
+
+/* Hide compliance */
+"help.url.compliance.hide" = "Hide compliance";
+
+/* Toggle compliance */
+"help.url.compliance.toggle" = "Toggle compliance";
+
+/* Show colour preview */
+"help.url.preview.show" = "Show colour preview";
+
+/* Hide colour preview */
+"help.url.preview.hide" = "Hide colour preview";
+
+/* Toggle colour preview */
+"help.url.preview.toggle" = "Toggle colour preview";
+
+/* Compliance */
+"help.url.group.compliance" = "Compliance";
+
+/* Preview */
+"help.url.group.preview" = "Preview";
+
 /* Open the About window */
 "help.url.window.about" = "Open the About window";
 

@@ -67,6 +67,7 @@ enum PikaConstants {
     static let ncHistoryDelete = "historyDelete"
     static let ncSavePalette = "savePalette"
     static let ncExportPalette = "exportPalette"
+    static let ncSystemColorChanged = "systemColorChanged"
 
     // Disabled formats for SwiftUI copy format
     static let disabledFormats: [ColorFormat] = [.hex, .hsl, .opengl, .lab, .oklch]
@@ -102,6 +103,7 @@ extension Notification.Name {
     static let historyDelete = Notification.Name(PikaConstants.ncHistoryDelete)
     static let savePalette = Notification.Name(PikaConstants.ncSavePalette)
     static let exportPalette = Notification.Name(PikaConstants.ncExportPalette)
+    static let systemColorChanged = Notification.Name(PikaConstants.ncSystemColorChanged)
 }
 
 enum PikaText {
@@ -371,6 +373,8 @@ enum PikaText {
     static let textUrlGroupHistory = NSLocalizedString("help.url.group.history", comment: "History")
     static let textUrlGroupWindow = NSLocalizedString("help.url.group.window", comment: "Window")
     static let textUrlGroupAppearance = NSLocalizedString("help.url.group.appearance", comment: "Appearance")
+    static let textUrlGroupCompliance = NSLocalizedString("help.url.group.compliance", comment: "Compliance")
+    static let textUrlGroupPreview = NSLocalizedString("help.url.group.preview", comment: "Preview")
 
     // URL Trigger Descriptions — Set Color
     static let textUrlSetForeground = NSLocalizedString("help.url.set.foreground", comment: "Set foreground color")
@@ -389,6 +393,16 @@ enum PikaText {
         comment: "Open the Preferences window"
     )
     static let textUrlWindowResize = NSLocalizedString("help.url.window.resize", comment: "Resize window")
+
+    // URL Trigger Descriptions — Compliance
+    static let textUrlComplianceShow = NSLocalizedString("help.url.compliance.show", comment: "Show compliance")
+    static let textUrlComplianceHide = NSLocalizedString("help.url.compliance.hide", comment: "Hide compliance")
+    static let textUrlComplianceToggle = NSLocalizedString("help.url.compliance.toggle", comment: "Toggle compliance")
+
+    // URL Trigger Descriptions — Preview
+    static let textUrlPreviewShow = NSLocalizedString("help.url.preview.show", comment: "Show colour preview")
+    static let textUrlPreviewHide = NSLocalizedString("help.url.preview.hide", comment: "Hide colour preview")
+    static let textUrlPreviewToggle = NSLocalizedString("help.url.preview.toggle", comment: "Toggle colour preview")
 
     // URL Trigger Descriptions — Appearance
     static let textUrlAppearanceLight = NSLocalizedString("help.url.appearance.light", comment: "Force light appearance")

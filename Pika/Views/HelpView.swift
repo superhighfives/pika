@@ -263,6 +263,16 @@ private let urlGroups: [URLGroup] = [
         ("pika://history/hide", PikaText.textUrlHistoryHide),
         ("pika://history/toggle", PikaText.textUrlHistoryToggle),
     ]),
+    (PikaText.textUrlGroupCompliance, [
+        ("pika://compliance/show", PikaText.textUrlComplianceShow),
+        ("pika://compliance/hide", PikaText.textUrlComplianceHide),
+        ("pika://compliance/toggle", PikaText.textUrlComplianceToggle),
+    ]),
+    (PikaText.textUrlGroupPreview, [
+        ("pika://preview/show", PikaText.textUrlPreviewShow),
+        ("pika://preview/hide", PikaText.textUrlPreviewHide),
+        ("pika://preview/toggle", PikaText.textUrlPreviewToggle),
+    ]),
     (PikaText.textUrlGroupWindow, [
         ("pika://window/about", PikaText.textUrlWindowAbout),
         ("pika://window/help", PikaText.textUrlWindowHelp),

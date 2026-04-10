@@ -82,6 +82,9 @@ struct ContentView: View {
                 eyedroppers.recordHistory()
             }
         }
+        .onReceive(NotificationCenter.default.publisher(for: .systemColorChanged)) { _ in
+            eyedroppers.updateActiveEntry()
+        }
         .onReceive(NotificationCenter.default.publisher(for: .toggleHistory)) { _ in
             withAnimation(.easeInOut(duration: 0.25)) {
                 historyDrawerVisible.toggle()

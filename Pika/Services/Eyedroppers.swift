@@ -59,6 +59,29 @@ class Eyedroppers: ObservableObject {
         return 0
     }
 
+    func updateActiveEntry() {
+        let fgHex = foreground.color.toHexString()
+        let bgHex = background.color.toHexString()
+
+        let paletteIndex = Defaults[.activePaletteIndex]
+        var palettes = Defaults[.palettes]
+        guard paletteIndex >= 0, paletteIndex < palettes.count,
+              let id = activeHistoryID,
+              let index = palettes[paletteIndex].pairs.firstIndex(where: { $0.id == id })
+        else { return }
+
+        let entry = palettes[paletteIndex].pairs[index]
+        if entry.foregroundHex == fgHex, entry.backgroundHex == bgHex { return }
+
+        palettes[paletteIndex].pairs[index] = ColorPair(
+            id: entry.id,
+            foregroundHex: fgHex,
+            backgroundHex: bgHex,
+            date: entry.date
+        )
+        Defaults[.palettes] = palettes
+    }
+
     func recordHistory() {
         let fgHex = foreground.color.toHexString()
         let bgHex = background.color.toHexString()
@@ -403,6 +426,7 @@ class Eyedropper: ObservableObject {
         if let picker = sender as? NSColorPanel {
             guard let srgbColor = picker.color.usingColorSpace(.sRGB) else { return }
             color = srgbColor
+            NotificationCenter.default.post(name: .systemColorChanged, object: nil)
         }
     }
 
