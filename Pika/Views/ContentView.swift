@@ -1,6 +1,7 @@
 import Combine
 import Defaults
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct ContentView: View {
     @EnvironmentObject var eyedroppers: Eyedroppers
@@ -9,6 +10,9 @@ struct ContentView: View {
     @Default(.colorFormat) var colorFormat
     @Default(.historyDrawerVisible) var historyDrawerVisible
     @Default(.showColorPreview) var showColorPreview
+    @Default(.showCompliance) var showCompliance
+    @Default(.palettes) var palettes
+    @Default(.activePaletteIndex) var activePaletteIndex
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     let pasteboard = NSPasteboard.general
 
@@ -58,15 +62,18 @@ struct ContentView: View {
                     swapTimerSubscription = swapTimer.connect()
                 }
 
-            Divider()
-            Footer(foreground: eyedroppers.foreground, background: eyedroppers.background)
+            if showCompliance {
+                Divider()
+                Footer(foreground: eyedroppers.foreground, background: eyedroppers.background)
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+            }
             if historyDrawerVisible {
                 ColorHistoryDrawer(foreground: eyedroppers.foreground, background: eyedroppers.background)
                     .transition(.move(edge: .bottom).combined(with: .opacity))
             }
         }
         .onAppear {
-            if Defaults[.colorHistory].isEmpty {
+            if Defaults[.palettes].first?.pairs.isEmpty ?? true {
                 eyedroppers.recordHistory()
             }
         }
@@ -74,6 +81,9 @@ struct ContentView: View {
             withAnimation(.easeInOut(duration: 0.2)) {
                 eyedroppers.recordHistory()
             }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .systemColorChanged)) { _ in
+            eyedroppers.updateActiveEntry()
         }
         .onReceive(NotificationCenter.default.publisher(for: .toggleHistory)) { _ in
             withAnimation(.easeInOut(duration: 0.25)) {
@@ -83,6 +93,11 @@ struct ContentView: View {
         .onReceive(NotificationCenter.default.publisher(for: .toggleColorPreview)) { _ in
             withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
                 showColorPreview.toggle()
+            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .toggleCompliance)) { _ in
+            withAnimation(.easeInOut(duration: 0.25)) {
+                showCompliance.toggle()
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: .historyPrevious)) { _ in
@@ -96,7 +111,7 @@ struct ContentView: View {
         .onReceive(NotificationCenter.default.publisher(for: .historyDelete)) { _ in
             guard historyDrawerVisible else { return }
             withAnimation(.easeInOut(duration: 0.2)) {
-                eyedroppers.deleteCurrentHistoryEntry()
+                eyedroppers.deleteCurrentEntry()
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: .triggerCopyText)) { _ in
@@ -114,6 +129,39 @@ struct ContentView: View {
                 style: copyFormat
             )
             pasteboard.setString(contents, forType: .string)
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .exportPalette)) { notification in
+            let idx: Int
+            if let paletteIndex = notification.object as? Int {
+                idx = paletteIndex
+            } else if !historyDrawerVisible {
+                idx = 0
+            } else {
+                idx = activePaletteIndex
+            }
+            let palette: Palette? = (idx >= 0 && idx < palettes.count) ? palettes[idx] : palettes.first
+            guard let palette = palette else { return }
+
+            let json = Exporter.paletteToJSON(pairs: palette.pairs, name: palette.name)
+            let invalidChars = CharacterSet(charactersIn: "/:\\")
+            let fileName = (palette.name ?? "color-history")
+                .lowercased()
+                .replacingOccurrences(of: " ", with: "-")
+                .components(separatedBy: invalidChars)
+                .joined()
+
+            let savePanel = NSSavePanel()
+            savePanel.allowedContentTypes = [.json]
+            savePanel.nameFieldStringValue = "\(fileName).json"
+            savePanel.isExtensionHidden = false
+            if savePanel.runModal() == .OK, let url = savePanel.url {
+                do {
+                    try json.write(to: url, atomically: true, encoding: .utf8)
+                } catch {
+                    let alert = NSAlert(error: error)
+                    alert.runModal()
+                }
+            }
         }
     }
 }

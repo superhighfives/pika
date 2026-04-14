@@ -214,6 +214,7 @@ private let shortcutGroups: [ShortcutGroup] = [
     ("Actions", [
         ShortcutEntry(title: PikaText.textColorSwapDetail, keys: ["X"], notificationName: .triggerSwap),
         ShortcutEntry(title: PikaText.textHistoryToggle, keys: ["H"], notificationName: .toggleHistory),
+        ShortcutEntry(title: PikaText.textComplianceToggle, keys: ["C"], notificationName: .toggleCompliance),
         ShortcutEntry(title: PikaText.textColorPreviewToggle, keys: ["P"], notificationName: .toggleColorPreview),
         ShortcutEntry(title: PikaText.textColorUndo, keys: ["⌘", "Z"], notificationName: .triggerUndo),
         ShortcutEntry(title: PikaText.textColorRedo, keys: ["⇧", "⌘", "Z"], notificationName: .triggerRedo),
@@ -225,7 +226,7 @@ private let shortcutGroups: [ShortcutGroup] = [
 private typealias URLGroup = (title: String, entries: [(url: String, description: String)])
 
 private let urlGroups: [URLGroup] = [
-    ("Pick", [
+    (PikaText.textUrlGroupPick, [
         ("pika://pick/foreground", PikaText.textPickForeground),
         ("pika://pick/background", PikaText.textPickBackground),
     ]),
@@ -233,13 +234,13 @@ private let urlGroups: [URLGroup] = [
         ("pika://system/foreground", PikaText.textColorSystemPickerForegroundSimple),
         ("pika://system/background", PikaText.textColorSystemPickerBackgroundSimple),
     ]),
-    ("Copy", [
+    (PikaText.textUrlGroupCopy, [
         ("pika://copy/foreground", PikaText.textCopyForeground),
         ("pika://copy/background", PikaText.textCopyBackground),
         ("pika://copy/text", PikaText.textMenuCopyAllAsText),
         ("pika://copy/json", PikaText.textMenuCopyAllAsJSON),
     ]),
-    ("Change Format", [
+    (PikaText.textUrlGroupChangeFormat, [
         ("pika://format/hex", PikaText.textFormatHex),
         ("pika://format/rgb", PikaText.textFormatRGB),
         ("pika://format/hsb", PikaText.textFormatHSB),
@@ -248,30 +249,40 @@ private let urlGroups: [URLGroup] = [
         ("pika://format/opengl", PikaText.textFormatOpenGL),
         ("pika://format/oklch", PikaText.textFormatOKLCH),
     ]),
-    ("Actions", [
+    (PikaText.textUrlGroupActions, [
         ("pika://swap", PikaText.textColorSwapDetail),
         ("pika://undo", PikaText.textColorUndo),
         ("pika://redo", PikaText.textColorRedo),
     ]),
-    ("Set Color", [
-        ("pika://set/foreground/<hex>", "Set foreground color (e.g. pika://set/foreground/fbbf24)"),
-        ("pika://set/background/<hex>", "Set background color (e.g. pika://set/background/e74661)"),
+    (PikaText.textUrlGroupSetColor, [
+        ("pika://set/foreground/<hex>", PikaText.textUrlSetForeground),
+        ("pika://set/background/<hex>", PikaText.textUrlSetBackground),
     ]),
-    ("History", [
-        ("pika://history/show", "Show the history drawer"),
-        ("pika://history/hide", "Hide the history drawer"),
-        ("pika://history/toggle", "Toggle the history drawer"),
+    (PikaText.textUrlGroupHistory, [
+        ("pika://history/show", PikaText.textUrlHistoryShow),
+        ("pika://history/hide", PikaText.textUrlHistoryHide),
+        ("pika://history/toggle", PikaText.textUrlHistoryToggle),
     ]),
-    ("Window", [
-        ("pika://window/about", "Open the About window"),
-        ("pika://window/help", "Open the Help window"),
-        ("pika://window/preferences", "Open the Preferences window"),
-        ("pika://window/resize/<w>/<h>", "Resize window (e.g. pika://window/resize/480/300)"),
+    (PikaText.textUrlGroupCompliance, [
+        ("pika://compliance/show", PikaText.textUrlComplianceShow),
+        ("pika://compliance/hide", PikaText.textUrlComplianceHide),
+        ("pika://compliance/toggle", PikaText.textUrlComplianceToggle),
     ]),
-    ("Appearance", [
-        ("pika://appearance/light", "Force light appearance"),
-        ("pika://appearance/dark", "Force dark appearance"),
-        ("pika://appearance/system", "Restore system appearance"),
+    (PikaText.textUrlGroupPreview, [
+        ("pika://preview/show", PikaText.textUrlPreviewShow),
+        ("pika://preview/hide", PikaText.textUrlPreviewHide),
+        ("pika://preview/toggle", PikaText.textUrlPreviewToggle),
+    ]),
+    (PikaText.textUrlGroupWindow, [
+        ("pika://window/about", PikaText.textUrlWindowAbout),
+        ("pika://window/help", PikaText.textUrlWindowHelp),
+        ("pika://window/preferences", PikaText.textUrlWindowPreferences),
+        ("pika://window/resize/<w>/<h>", PikaText.textUrlWindowResize),
+    ]),
+    (PikaText.textUrlGroupAppearance, [
+        ("pika://appearance/light", PikaText.textUrlAppearanceLight),
+        ("pika://appearance/dark", PikaText.textUrlAppearanceDark),
+        ("pika://appearance/system", PikaText.textUrlAppearanceSystem),
     ]),
 ]
 
@@ -295,17 +306,7 @@ struct HelpView: View {
             VStack(spacing: 0) {
                 // MARK: Header
 
-                ZStack(alignment: .bottomLeading) {
-                    Visualisation()
-                        .frame(height: 120)
-                    Rectangle()
-                        .fill(LinearGradient(
-                            gradient: Gradient(colors: [Color.black.opacity(0), Color.black.opacity(0.6)]),
-                            startPoint: .top,
-                            endPoint: .bottom
-                        ))
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 120)
+                VisualisationHeader(height: 180) {
                     Text(PikaText.textMenuHelp)
                         .font(.title2)
                         .fontWeight(.semibold)
@@ -314,6 +315,14 @@ struct HelpView: View {
                         .padding(.horizontal, 20)
                         .padding(.bottom, 14)
                 }
+                .background(
+                    GeometryReader { geo in
+                        Color(red: 0.4, green: 0.0, blue: 0.7)
+                            .frame(height: geo.size.height + 500)
+                            .offset(y: -500)
+                    }
+                )
+                Divider()
 
                 HelpDescriptionRow(text: PikaText.textHelpDescription)
                 Divider()

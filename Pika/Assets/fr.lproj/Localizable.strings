@@ -408,3 +408,63 @@
 
 /* Toggle color preview */
 "color.preview.toggle" = "Activer/désactiver l'aperçu des couleurs";
+
+/* Pick */
+"help.url.group.pick" = "Sélectionner";
+
+/* Copy */
+"help.url.group.copy" = "Copier";
+
+/* Change Format */
+"help.url.group.change_format" = "Changer le format";
+
+/* Actions */
+"help.url.group.actions" = "Actions";
+
+/* Set Color */
+"help.url.group.set_color" = "Définir la couleur";
+
+/* History */
+"help.url.group.history" = "Historique";
+
+/* Window */
+"help.url.group.window" = "Fenêtre";
+
+/* Appearance */
+"help.url.group.appearance" = "Apparence";
+
+/* Set foreground color */
+"help.url.set.foreground" = "Définir la couleur de premier plan";
+
+/* Set background color */
+"help.url.set.background" = "Définir la couleur d'arrière-plan";
+
+/* Show the history drawer */
+"help.url.history.show" = "Afficher le tiroir d'historique";
+
+/* Hide the history drawer */
+"help.url.history.hide" = "Masquer le tiroir d'historique";
+
+/* Toggle the history drawer */
+"help.url.history.toggle" = "Basculer le tiroir d'historique";
+
+/* Open the About window */
+"help.url.window.about" = "Ouvrir la fenêtre À propos";
+
+/* Open the Help window */
+"help.url.window.help" = "Ouvrir la fenêtre d'Aide";
+
+/* Open the Preferences window */
+"help.url.window.preferences" = "Ouvrir la fenêtre des Préférences";
+
+/* Resize window */
+"help.url.window.resize" = "Redimensionner la fenêtre";
+
+/* Force light appearance */
+"help.url.appearance.light" = "Forcer l'apparence claire";
+
+/* Force dark appearance */
+"help.url.appearance.dark" = "Forcer l'apparence sombre";
+
+/* Restore system appearance */
+"help.url.appearance.system" = "Restaurer l'apparence du système";

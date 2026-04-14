@@ -61,9 +61,13 @@ enum PikaConstants {
     static let ncColorPicked = "colorPicked"
     static let ncToggleHistory = "toggleHistory"
     static let ncToggleColorPreview = "toggleColorPreview"
+    static let ncToggleCompliance = "toggleCompliance"
     static let ncHistoryPrevious = "historyPrevious"
     static let ncHistoryNext = "historyNext"
     static let ncHistoryDelete = "historyDelete"
+    static let ncSavePalette = "savePalette"
+    static let ncExportPalette = "exportPalette"
+    static let ncSystemColorChanged = "systemColorChanged"
 
     // Disabled formats for SwiftUI copy format
     static let disabledFormats: [ColorFormat] = [.hex, .hsl, .opengl, .lab, .oklch]
@@ -93,9 +97,13 @@ extension Notification.Name {
     static let colorPicked = Notification.Name(PikaConstants.ncColorPicked)
     static let toggleHistory = Notification.Name(PikaConstants.ncToggleHistory)
     static let toggleColorPreview = Notification.Name(PikaConstants.ncToggleColorPreview)
+    static let toggleCompliance = Notification.Name(PikaConstants.ncToggleCompliance)
     static let historyPrevious = Notification.Name(PikaConstants.ncHistoryPrevious)
     static let historyNext = Notification.Name(PikaConstants.ncHistoryNext)
     static let historyDelete = Notification.Name(PikaConstants.ncHistoryDelete)
+    static let savePalette = Notification.Name(PikaConstants.ncSavePalette)
+    static let exportPalette = Notification.Name(PikaConstants.ncExportPalette)
+    static let systemColorChanged = Notification.Name(PikaConstants.ncSystemColorChanged)
 }
 
 enum PikaText {
@@ -195,12 +203,25 @@ enum PikaText {
 
     // History
     static let textHistoryTitle = NSLocalizedString("history.title", comment: "History")
-    static let textHistoryToggle = NSLocalizedString("history.toggle", comment: "Toggle history")
+    static let textHistoryToggle = NSLocalizedString("history.toggle", comment: "Toggle palettes")
     static let textColorPreviewToggle = NSLocalizedString("color.preview.toggle", comment: "Toggle color preview")
+    static let textComplianceToggle = NSLocalizedString("compliance.toggle", comment: "Toggle compliance")
     static let textHistoryApplyForeground = NSLocalizedString("history.apply.foreground", comment: "Apply foreground only")
     static let textHistoryApplyBackground = NSLocalizedString("history.apply.background", comment: "Apply background only")
     static let textHistoryRemove = NSLocalizedString("history.remove", comment: "Remove from history")
     static let textHistoryClear = NSLocalizedString("history.clear", comment: "Clear history")
+
+    // Palettes
+    static let textPaletteNew = NSLocalizedString("palette.new", comment: "New palette…")
+    static let textPaletteRename = NSLocalizedString("palette.rename", comment: "Rename palette")
+    static let textPaletteDelete = NSLocalizedString("palette.delete", comment: "Delete palette")
+    static let textPaletteRemoveChip = NSLocalizedString("palette.remove", comment: "Remove from palette")
+    static let textPaletteNamePrompt = NSLocalizedString("palette.name.prompt", comment: "Palette name")
+    static let textPaletteNamePlaceholder = NSLocalizedString("palette.name.placeholder", comment: "My palette")
+    static let textPaletteAddColor = NSLocalizedString("palette.add", comment: "Add to palette")
+    static let textPaletteExport = NSLocalizedString("palette.export", comment: "Export palette")
+    static let textHistoryExport = NSLocalizedString("history.export", comment: "Export color history")
+    static let textHistoryClearConfirm = NSLocalizedString("history.clear.confirm", comment: "Are you sure you want to clear all history?")
 
     // Keyboard shortcuts
     static let textPickForeground = NSLocalizedString("color.pick.foreground", comment: "Pick foreground")
@@ -342,6 +363,54 @@ enum PikaText {
         comment: "Show color overlay after picking"
     )
     static let textDuration = NSLocalizedString("preferences.overlay.duration", comment: "Duration:")
+
+    // URL Trigger Group Titles
+    static let textUrlGroupPick = NSLocalizedString("help.url.group.pick", comment: "Pick")
+    static let textUrlGroupCopy = NSLocalizedString("help.url.group.copy", comment: "Copy")
+    static let textUrlGroupChangeFormat = NSLocalizedString("help.url.group.change_format", comment: "Change Format")
+    static let textUrlGroupActions = NSLocalizedString("help.url.group.actions", comment: "Actions")
+    static let textUrlGroupSetColor = NSLocalizedString("help.url.group.set_color", comment: "Set Color")
+    static let textUrlGroupHistory = NSLocalizedString("help.url.group.history", comment: "History")
+    static let textUrlGroupWindow = NSLocalizedString("help.url.group.window", comment: "Window")
+    static let textUrlGroupAppearance = NSLocalizedString("help.url.group.appearance", comment: "Appearance")
+    static let textUrlGroupCompliance = NSLocalizedString("help.url.group.compliance", comment: "Compliance")
+    static let textUrlGroupPreview = NSLocalizedString("help.url.group.preview", comment: "Preview")
+
+    // URL Trigger Descriptions — Set Color
+    static let textUrlSetForeground = NSLocalizedString("help.url.set.foreground", comment: "Set foreground color")
+    static let textUrlSetBackground = NSLocalizedString("help.url.set.background", comment: "Set background color")
+
+    // URL Trigger Descriptions — History
+    static let textUrlHistoryShow = NSLocalizedString("help.url.history.show", comment: "Show the history drawer")
+    static let textUrlHistoryHide = NSLocalizedString("help.url.history.hide", comment: "Hide the history drawer")
+    static let textUrlHistoryToggle = NSLocalizedString("help.url.history.toggle", comment: "Toggle the history drawer")
+
+    // URL Trigger Descriptions — Window
+    static let textUrlWindowAbout = NSLocalizedString("help.url.window.about", comment: "Open the About window")
+    static let textUrlWindowHelp = NSLocalizedString("help.url.window.help", comment: "Open the Help window")
+    static let textUrlWindowPreferences = NSLocalizedString(
+        "help.url.window.preferences",
+        comment: "Open the Preferences window"
+    )
+    static let textUrlWindowResize = NSLocalizedString("help.url.window.resize", comment: "Resize window")
+
+    // URL Trigger Descriptions — Compliance
+    static let textUrlComplianceShow = NSLocalizedString("help.url.compliance.show", comment: "Show compliance")
+    static let textUrlComplianceHide = NSLocalizedString("help.url.compliance.hide", comment: "Hide compliance")
+    static let textUrlComplianceToggle = NSLocalizedString("help.url.compliance.toggle", comment: "Toggle compliance")
+
+    // URL Trigger Descriptions — Preview
+    static let textUrlPreviewShow = NSLocalizedString("help.url.preview.show", comment: "Show colour preview")
+    static let textUrlPreviewHide = NSLocalizedString("help.url.preview.hide", comment: "Hide colour preview")
+    static let textUrlPreviewToggle = NSLocalizedString("help.url.preview.toggle", comment: "Toggle colour preview")
+
+    // URL Trigger Descriptions — Appearance
+    static let textUrlAppearanceLight = NSLocalizedString("help.url.appearance.light", comment: "Force light appearance")
+    static let textUrlAppearanceDark = NSLocalizedString("help.url.appearance.dark", comment: "Force dark appearance")
+    static let textUrlAppearanceSystem = NSLocalizedString(
+        "help.url.appearance.system",
+        comment: "Restore system appearance"
+    )
 }
 
 // swiftlint:enable line_length

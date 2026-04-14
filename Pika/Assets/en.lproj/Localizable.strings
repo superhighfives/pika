@@ -388,11 +388,14 @@
 /* History */
 "history.title" = "History";
 
-/* Toggle history */
-"history.toggle" = "Toggle history";
+/* Toggle palettes */
+"history.toggle" = "Toggle palettes";
 
 /* Toggle color preview */
 "color.preview.toggle" = "Toggle color preview";
+
+/* Toggle compliance */
+"compliance.toggle" = "Toggle compliance";
 
 /* Sample preview text */
 "color.preview.sample" = "The quick brown fox jumps over the lazy dog";
@@ -408,3 +411,117 @@
 
 /* Clear history */
 "history.clear" = "Clear history";
+
+/* New palette… */
+"palette.new" = "New palette…";
+
+/* Rename palette */
+"palette.rename" = "Rename palette";
+
+/* Delete palette */
+"palette.delete" = "Delete palette";
+
+/* Remove from palette */
+"palette.remove" = "Remove from palette";
+
+/* Palette name */
+"palette.name.prompt" = "Palette name";
+
+/* My palette */
+"palette.name.placeholder" = "My palette";
+
+/* Add to palette */
+"palette.add" = "Add to palette";
+
+/* Export palette */
+"palette.export" = "Export palette";
+
+/* Export color history */
+"history.export" = "Export color history";
+
+/* Are you sure you want to clear all history? */
+"history.clear.confirm" = "Are you sure you want to clear all history?";
+
+/* Pick */
+"help.url.group.pick" = "Pick";
+
+/* Copy */
+"help.url.group.copy" = "Copy";
+
+/* Change Format */
+"help.url.group.change_format" = "Change Format";
+
+/* Actions */
+"help.url.group.actions" = "Actions";
+
+/* Set Color */
+"help.url.group.set_color" = "Set Color";
+
+/* History */
+"help.url.group.history" = "History";
+
+/* Window */
+"help.url.group.window" = "Window";
+
+/* Appearance */
+"help.url.group.appearance" = "Appearance";
+
+/* Set foreground color */
+"help.url.set.foreground" = "Set foreground color";
+
+/* Set background color */
+"help.url.set.background" = "Set background color";
+
+/* Show the history drawer */
+"help.url.history.show" = "Show the history drawer";
+
+/* Hide the history drawer */
+"help.url.history.hide" = "Hide the history drawer";
+
+/* Toggle the history drawer */
+"help.url.history.toggle" = "Toggle the history drawer";
+
+/* Show compliance */
+"help.url.compliance.show" = "Show compliance";
+
+/* Hide compliance */
+"help.url.compliance.hide" = "Hide compliance";
+
+/* Toggle compliance */
+"help.url.compliance.toggle" = "Toggle compliance";
+
+/* Show colour preview */
+"help.url.preview.show" = "Show colour preview";
+
+/* Hide colour preview */
+"help.url.preview.hide" = "Hide colour preview";
+
+/* Toggle colour preview */
+"help.url.preview.toggle" = "Toggle colour preview";
+
+/* Compliance */
+"help.url.group.compliance" = "Compliance";
+
+/* Preview */
+"help.url.group.preview" = "Preview";
+
+/* Open the About window */
+"help.url.window.about" = "Open the About window";
+
+/* Open the Help window */
+"help.url.window.help" = "Open the Help window";
+
+/* Open the Preferences window */
+"help.url.window.preferences" = "Open the Preferences window";
+
+/* Resize window */
+"help.url.window.resize" = "Resize window";
+
+/* Force light appearance */
+"help.url.appearance.light" = "Force light appearance";
+
+/* Force dark appearance */
+"help.url.appearance.dark" = "Force dark appearance";
+
+/* Restore system appearance */
+"help.url.appearance.system" = "Restore system appearance";

@@ -55,6 +55,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_: Notification) {
         LaunchAtLogin.migrateIfNeeded()
+        migrateHistoryToPalettes()
 
         #if TARGET_MAS
             if let mainMenu = NSApp.mainMenu?.item(withTitle: PikaText.textAppName)?.submenu {
@@ -94,6 +95,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
             guard Defaults[.historyDrawerVisible] else { return event }
+            if let responder = NSApp.keyWindow?.firstResponder,
+               responder is NSTextView || responder is NSTextField
+            {
+                return event
+            }
             switch event.keyCode {
             case 123: // left arrow
                 self.notificationCenter.post(name: .historyNext, object: self)
@@ -119,6 +125,27 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationSupportsSecureRestorableState(_: NSApplication) -> Bool {
         true
+    }
+
+    // MARK: - Migration
+
+    private func migrateHistoryToPalettes() {
+        let existing = Defaults[.colorHistory]
+        guard !existing.isEmpty else { return }
+        let history = Palette(id: UUID(), name: nil, pairs: existing, createdAt: Date())
+        var palettes = Defaults[.palettes]
+        if palettes.isEmpty {
+            palettes = [history]
+        } else {
+            palettes[0] = Palette(
+                id: palettes[0].id,
+                name: palettes[0].name,
+                pairs: existing + palettes[0].pairs,
+                createdAt: palettes[0].createdAt
+            )
+        }
+        Defaults[.palettes] = palettes
+        Defaults[.colorHistory] = []
     }
 
     // MARK: - Window forwarding
@@ -165,6 +192,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBAction func triggerToggleColorPreview(_: Any) {
         notificationCenter.post(name: .toggleColorPreview, object: self)
+    }
+
+    @IBAction func triggerToggleCompliance(_: Any) {
+        notificationCenter.post(name: .toggleCompliance, object: self)
     }
 
     @IBAction func triggerHistoryPrevious(_: Any) {

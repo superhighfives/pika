@@ -88,9 +88,16 @@ struct SwapButtonStyle: ButtonStyle {
             .opacity(isVisible ? (configuration.isPressed ? 0.8 : 1.0) : 0.0)
             .foregroundColor(fgColor.opacity(0.8))
             .frame(height: 32.0)
-            .animation(.timingCurve(0.65, 0, 0.35, 1, duration: 0.4), value: showText)
-            .animation(.timingCurve(0.65, 0, 0.35, 1, duration: 0.4), value: isVisible)
-            .animation(.timingCurve(0.65, 0, 0.35, 1, duration: 0.4), value: configuration.isPressed)
+            .animation(.timingCurve(0.65, 0, 0.35, 1, duration: 0.3), value: showText)
+            .animation(.timingCurve(0.65, 0, 0.35, 1, duration: 0.3), value: isVisible)
+            .animation(.timingCurve(0.65, 0, 0.35, 1, duration: 0.3), value: configuration.isPressed)
+            .onChange(of: isVisible) { _, visible in
+                if !visible {
+                    hoverTask?.cancel()
+                    hoverTask = nil
+                    isHovered = false
+                }
+            }
         }
     }
 

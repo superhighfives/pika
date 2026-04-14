@@ -17,7 +17,6 @@ private struct GeneralAndSelectionSection: View {
     @Default(.alwaysShowOnLaunch) var alwaysShowOnLaunch
     @Default(.showColorOverlay) var showColorOverlay
     @Default(.colorOverlayDuration) var colorOverlayDuration
-    @Default(.showColorPreview) var showColorPreview
     @State var disableHideMenuBarIcon = true
 
     var body: some View {
@@ -70,9 +69,6 @@ private struct GeneralAndSelectionSection: View {
                     Text(PikaText.textFloatDescription)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                Toggle(isOn: $showColorPreview) {
-                    Text(PikaText.textShowColorPreview)
-                }
                 Toggle(isOn: $showColorOverlay) {
                     Text(PikaText.textShowColorOverlay)
                 }
@@ -99,12 +95,8 @@ private struct AppModeSection: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10.0) {
             Text(PikaText.textAppTitle).font(.system(size: 16))
-            GeometryReader { geometry in
-                let width = geometry.size.width
-                HStack(spacing: 16.0) {
-                    AppModeButtons(width: width / 2 - 8)
-                }
-                .frame(maxWidth: width)
+            HStack(spacing: 16.0) {
+                AppModeButtons()
             }
             .frame(height: 96)
         }
@@ -167,15 +159,14 @@ private struct CopySettingsSection: View {
         VStack(alignment: .leading, spacing: 10.0) {
             Text(PikaText.textCopyTitle).font(.system(size: 16))
             VStack(alignment: .leading, spacing: 12.0) {
-                HStack(alignment: .firstTextBaseline, spacing: 8.0) {
-                    Text(PikaText.textCopyExport).fixedSize()
-                    Picker(PikaText.textCopyFormat, selection: $copyFormat) {
+                VStack(alignment: .leading, spacing: 12.0) {
+                    Picker(PikaText.textCopyExport, selection: $copyFormat) {
                         ForEach(CopyFormat.allCases, id: \.self) { value in
                             Text(value.localizedString())
                         }
+                        Divider()
                     }
                     .pickerStyle(.menu)
-                    .labelsHidden()
                 }
                 ColorExampleRow(copyFormat: copyFormat, eyedropper: eyedroppers.foreground)
             }
@@ -227,34 +218,31 @@ private struct ColorFormatSection: View {
         let systemDefaultSpace = spaces.systemDefault
 
         VStack(alignment: .leading, spacing: 8.0) {
-            Section(header: Text(PikaText.textFormatTitle).font(.system(size: 16))) {
-                VStack(alignment: .leading, spacing: 12.0) {
-                    Section(header: Text(PikaText.textFormatDescription).font(.system(size: 13, weight: .medium))) {
-                        Picker(
-                            PikaText.textSpaceTitle,
-                            selection: $colorSpace.onChange(perform: {
-                                NSColorPanel.shared.close()
-                                Defaults[.colorSpace] = $0
-                            })
-                        ) {
-                            ForEach(primarySpaces, id: \.self) { value in
-                                if value == systemDefaultSpace {
-                                    Text("\(PikaText.textSystemDefault) (\(value.localizedName!))").tag(value)
-                                } else {
-                                    Text(value.localizedName!).tag(value)
-                                }
-                            }
-                            Divider()
-                            ForEach(availableSpaces, id: \.self) { value in
-                                Text(value.localizedName!).tag(value)
-                            }
+            Text(PikaText.textFormatTitle).font(.system(size: 16))
+            VStack(alignment: .leading, spacing: 12.0) {
+                Picker(
+                    PikaText.textFormatDescription,
+                    selection: $colorSpace.onChange(perform: {
+                        NSColorPanel.shared.close()
+                        Defaults[.colorSpace] = $0
+                    })
+                ) {
+                    ForEach(primarySpaces, id: \.self) { value in
+                        if value == systemDefaultSpace {
+                            Text("\(PikaText.textSystemDefault) (\(value.localizedName!))").tag(value)
+                        } else {
+                            Text(value.localizedName!).tag(value)
                         }
-                        .labelsHidden()
+                    }
+                    Divider()
+                    ForEach(availableSpaces, id: \.self) { value in
+                        Text(value.localizedName!).tag(value)
                     }
                 }
+                .pickerStyle(.menu)
             }
-            .padding(.horizontal, 24.0)
         }
+        .padding(.horizontal, 24.0)
     }
 }
 
@@ -262,82 +250,89 @@ private struct GlobalShortcutSection: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8.0) {
             Section(header: Text(PikaText.textHotkeyTitle).font(.system(size: 16))) {
-                VStack(alignment: .leading, spacing: 12.0) {
+                HStack(spacing: 12.0) {
                     Text(PikaText.textHotkeyDescription).font(.system(size: 13, weight: .medium))
                     KeyboardShortcuts.Recorder(for: .togglePika)
                 }
             }
             .padding(.horizontal, 24.0)
         }
-        .padding(.bottom, 24.0)
+    }
+}
+
+// MARK: - Version Info
+
+private struct PreferencesVersionInfo: View {
+    let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
+    let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            let textVersion = PikaText.textAboutVersion
+            let textBuild = PikaText.textAboutBuild
+            let textUnknown = PikaText.textAboutUnknown
+            Text("\(textVersion) \(appVersion ?? textUnknown)")
+                .fontWeight(.semibold)
+                .foregroundColor(.white)
+                .shadow(color: Color.black.opacity(0.3), radius: 0, x: 0, y: 1)
+            Text("(\(textBuild) \(buildNumber ?? textUnknown))")
+                .foregroundColor(.white.opacity(0.5))
+                .shadow(color: Color.black.opacity(0.3), radius: 0, x: 0, y: 1)
+        }
     }
 }
 
 // MARK: - Main View
 
 struct PreferencesView: View {
-    @State private var viewHeight: CGFloat = 0.0
-
     var body: some View {
-        HStack(alignment: .top, spacing: 0) {
-            ZStack {
-                Visualisation()
-                AppVersion(displayOnTransparent: true)
-            }
-            .frame(maxWidth: 240.0, maxHeight: .infinity)
-            .background(
-                VisualEffect(
-                    material: NSVisualEffectView.Material.sidebar,
-                    blendingMode: NSVisualEffectView.BlendingMode.behindWindow
-                ))
-
-            Divider()
-
+        ScrollView {
             VStack(alignment: .leading, spacing: 0) {
-                VStack(alignment: .leading, spacing: 0) {
-                    if #available(macOS 26, *) {
-                        Divider()
-                    }
+                // MARK: Header
 
+                VisualisationHeader(height: 180) {
+                    PreferencesVersionInfo()
+                        .padding(.horizontal, 20)
+                        .padding(.bottom, 14)
+                }
+                .background(
+                    GeometryReader { geo in
+                        Color(red: 0.4, green: 0.0, blue: 0.7)
+                            .frame(height: geo.size.height + 500)
+                            .offset(y: -500)
+                    }
+                )
+                Divider()
+
+                // MARK: Content
+
+                VStack(alignment: .leading, spacing: 0) {
                     GeneralAndSelectionSection()
 
                     Divider().padding(.bottom, 16.0)
 
                     AppModeSection()
+
+                    Divider().padding(.vertical, 16.0)
+
+                    AppearanceSection()
+
+                    Divider().padding(.vertical, 16.0)
+
+                    CopySettingsSection()
+
+                    Divider().padding(.vertical, 16.0)
+
+                    ColorFormatSection()
+
+                    Divider().padding(.vertical, 16.0)
+
+                    GlobalShortcutSection()
                 }
-                .modify {
-                    if #available(macOS 26.0, *) {
-                        $0.padding(.top, 32.0)
-                    } else {
-                        $0.padding(.top, 0.0)
-                    }
-                }
-
-                Divider().padding(.vertical, 16.0)
-
-                AppearanceSection()
-
-                Divider().padding(.vertical, 16.0)
-
-                CopySettingsSection()
-
-                Divider().padding(.vertical, 16.0)
-
-                ColorFormatSection()
-
-                Divider().padding(.vertical, 16.0)
-
-                GlobalShortcutSection()
+                .padding(.bottom, 24.0)
             }
-            .background(
-                GeometryReader { contentGeometry in
-                    Color.clear.onAppear {
-                        viewHeight = contentGeometry.size.height
-                    }
-                }
-            )
-            .useScrollView(when: viewHeight > 750, showsIndicators: true)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 
@@ -345,6 +340,6 @@ struct PreferencesView_Previews: PreviewProvider {
     static var previews: some View {
         PreferencesView()
             .environmentObject(Eyedroppers())
-            .frame(width: 750, height: 750)
+            .frame(width: 580, height: 600)
     }
 }

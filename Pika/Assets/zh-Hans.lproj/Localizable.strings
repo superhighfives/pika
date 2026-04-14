@@ -408,3 +408,63 @@
 
 /* Clear history */
 "history.clear" = "清除历史记录";
+
+/* Pick */
+"help.url.group.pick" = "拾取";
+
+/* Copy */
+"help.url.group.copy" = "复制";
+
+/* Change Format */
+"help.url.group.change_format" = "更改格式";
+
+/* Actions */
+"help.url.group.actions" = "操作";
+
+/* Set Color */
+"help.url.group.set_color" = "设置颜色";
+
+/* History */
+"help.url.group.history" = "历史记录";
+
+/* Window */
+"help.url.group.window" = "窗口";
+
+/* Appearance */
+"help.url.group.appearance" = "外观";
+
+/* Set foreground color */
+"help.url.set.foreground" = "设置前景色";
+
+/* Set background color */
+"help.url.set.background" = "设置背景色";
+
+/* Show the history drawer */
+"help.url.history.show" = "显示历史记录面板";
+
+/* Hide the history drawer */
+"help.url.history.hide" = "隐藏历史记录面板";
+
+/* Toggle the history drawer */
+"help.url.history.toggle" = "切换历史记录面板";
+
+/* Open the About window */
+"help.url.window.about" = "打开关于窗口";
+
+/* Open the Help window */
+"help.url.window.help" = "打开帮助窗口";
+
+/* Open the Preferences window */
+"help.url.window.preferences" = "打开偏好设置窗口";
+
+/* Resize window */
+"help.url.window.resize" = "调整窗口大小";
+
+/* Force light appearance */
+"help.url.appearance.light" = "强制浅色外观";
+
+/* Force dark appearance */
+"help.url.appearance.dark" = "强制深色外观";
+
+/* Restore system appearance */
+"help.url.appearance.system" = "恢复系统外观";

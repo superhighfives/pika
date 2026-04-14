@@ -27,8 +27,8 @@ class WindowCoordinator: NSObject {
             .frame(minWidth: 480,
                    idealWidth: 480,
                    maxWidth: 650,
-                   minHeight: 260,
-                   idealHeight: 260,
+                   minHeight: 280,
+                   idealHeight: 280,
                    maxHeight: 400,
                    alignment: .center)
 
@@ -114,22 +114,19 @@ class WindowCoordinator: NSObject {
 
     func openPreferencesWindow() {
         if preferencesWindow == nil, let eyedroppers {
-            let view = NSHostingView(rootView: PreferencesView()
+            let rootView = PreferencesView()
+                .frame(minWidth: 580, maxWidth: 580, minHeight: 400, maxHeight: .infinity)
                 .edgesIgnoringSafeArea(.all)
-                .frame(minWidth: 750,
-                       maxWidth: .infinity,
-                       minHeight: 0,
-                       maxHeight: 750,
-                       alignment: .topLeading)
-                .fixedSize(horizontal: false, vertical: true)
-                .environmentObject(eyedroppers))
-
+                .environmentObject(eyedroppers)
+            let view = NSHostingView(rootView: rootView)
             preferencesWindow = PikaWindow.createSecondaryWindow(
                 title: "Preferences",
-                size: NSRect(x: 0, y: 0, width: 750, height: 750),
-                styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView],
-                maxHeight: 750,
+                size: NSRect(x: 0, y: 0, width: 580, height: 600),
+                styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView]
             )
+            preferencesWindow?.minSize = NSSize(width: 580, height: 400)
+            preferencesWindow?.maxSize = NSSize(width: 580, height: CGFloat.greatestFiniteMagnitude)
+            preferencesWindow?.contentMinSize = NSSize(width: 580, height: 400)
             preferencesWindow?.contentView = view
         }
         preferencesWindow?.makeKeyAndOrderFront(nil)

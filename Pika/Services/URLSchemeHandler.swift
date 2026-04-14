@@ -32,6 +32,9 @@ final class URLSchemeHandler: NSObject {
         case "history": handleHistory(task: task)
         case "window": handleWindow(task: task, arg1: arg1, arg2: arg2)
         case "appearance": handleAppearance(task: task)
+        case "compliance": handleCompliance(task: task)
+        case "preview": handlePreview(task: task)
+        case "seed": handleSeed(url: url)
         case "swap": NSApp.sendAction(#selector(AppDelegate.triggerSwap), to: nil, from: nil)
         case "undo": NSApp.sendAction(#selector(AppDelegate.triggerUndo), to: nil, from: nil)
         case "redo": NSApp.sendAction(#selector(AppDelegate.triggerRedo), to: nil, from: nil)
@@ -83,6 +86,7 @@ final class URLSchemeHandler: NSObject {
         } else if task == "background" {
             appDelegate.eyedroppers.background.set(color)
         }
+        appDelegate.eyedroppers.updateActiveEntry()
     }
 
     private func handleHistory(task: String?) {
@@ -115,6 +119,71 @@ final class URLSchemeHandler: NSObject {
         window.setContentSize(NSSize(width: width, height: height))
     }
 
+    private func handleCompliance(task: String?) {
+        switch task {
+        case "show" where !Defaults[.showCompliance]: Defaults[.showCompliance] = true
+        case "hide" where Defaults[.showCompliance]: Defaults[.showCompliance] = false
+        case "toggle": Defaults[.showCompliance].toggle()
+        default: break
+        }
+    }
+
+    private func handlePreview(task: String?) {
+        switch task {
+        case "show" where !Defaults[.showColorPreview]: Defaults[.showColorPreview] = true
+        case "hide" where Defaults[.showColorPreview]: Defaults[.showColorPreview] = false
+        case "toggle": Defaults[.showColorPreview].toggle()
+        default: break
+        }
+    }
+
+    private func handleSeed(url: URL) {
+        guard
+            let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+            let filePath = components.queryItems?.first(where: { $0.name == "file" })?.value
+        else { return }
+
+        let fileURL = URL(fileURLWithPath: filePath)
+        guard
+            let data = try? Data(contentsOf: fileURL),
+            let seed = try? JSONDecoder().decode(SeedData.self, from: data)
+        else { return }
+
+        // Build palettes: first palette is always auto-history (name = nil)
+        var palettes: [Palette] = []
+        let autoHistory = Palette(
+            id: UUID(),
+            name: nil,
+            pairs: seed.history.map { $0.toColorPair() },
+            createdAt: Date()
+        )
+        palettes.append(autoHistory)
+
+        for seedPalette in seed.palettes ?? [] {
+            let palette = Palette(
+                id: UUID(),
+                name: seedPalette.name,
+                pairs: seedPalette.pairs.map { $0.toColorPair() },
+                createdAt: Date()
+            )
+            palettes.append(palette)
+        }
+
+        Defaults[.palettes] = palettes
+        Defaults[.activePaletteIndex] = 0
+        Defaults[.undoStack] = []
+        Defaults[.redoStack] = []
+
+        // Apply the first history entry as the active colours
+        if let first = autoHistory.pairs.first,
+           let appDelegate = NSApp.delegate as? AppDelegate
+        {
+            appDelegate.eyedroppers.foreground.set(first.foregroundColor)
+            appDelegate.eyedroppers.background.set(first.backgroundColor)
+            appDelegate.eyedroppers.activeHistoryID = first.id
+        }
+    }
+
     private func handleAppearance(task: String?) {
         switch task {
         case "light": NSApp.appearance = NSAppearance(named: .aqua)
@@ -122,5 +191,26 @@ final class URLSchemeHandler: NSObject {
         case "system": NSApp.appearance = nil
         default: break
         }
+    }
+}
+
+// MARK: - Seed data
+
+private struct SeedData: Decodable {
+    let history: [SeedPair]
+    let palettes: [SeedPalette]?
+}
+
+private struct SeedPalette: Decodable {
+    let name: String
+    let pairs: [SeedPair]
+}
+
+private struct SeedPair: Decodable {
+    let fg: String
+    let bg: String
+
+    func toColorPair() -> ColorPair {
+        ColorPair(id: UUID(), foregroundHex: fg, backgroundHex: bg, date: Date())
     }
 }

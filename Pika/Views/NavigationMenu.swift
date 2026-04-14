@@ -6,6 +6,7 @@ struct NavigationMenu: View {
     @Default(.copyFormat) var copyFormat
     @Default(.historyDrawerVisible) var historyDrawerVisible
     @Default(.showColorPreview) var showColorPreview
+    @Default(.showCompliance) var showCompliance
 
     func isFormatDisabled(_ format: ColorFormat) -> Bool {
         if copyFormat == .swiftUI {
@@ -36,7 +37,17 @@ struct NavigationMenu: View {
             .buttonStyle(PlainButtonStyle())
             .padding(.horizontal, 6.0)
             .foregroundColor(showColorPreview ? .accentColor : .primary)
-            .help(PikaText.textColorPreviewToggle)
+            .help("\(PikaText.textColorPreviewToggle) (P)")
+
+            Button(action: {
+                NSApp.sendAction(#selector(AppDelegate.triggerToggleCompliance), to: nil, from: nil)
+            }, label: {
+                IconImage(name: showCompliance ? "checkmark.shield.fill" : "checkmark.shield")
+            })
+            .buttonStyle(PlainButtonStyle())
+            .padding(.horizontal, 6.0)
+            .foregroundColor(showCompliance ? .accentColor : .primary)
+            .help("\(PikaText.textComplianceToggle) (C)")
 
             Button(action: {
                 withAnimation(.easeInOut(duration: 0.25)) {
@@ -48,7 +59,7 @@ struct NavigationMenu: View {
             .buttonStyle(PlainButtonStyle())
             .padding(.horizontal, 6.0)
             .foregroundColor(historyDrawerVisible ? .accentColor : .primary)
-            .help(PikaText.textHistoryToggle)
+            .help("\(PikaText.textHistoryToggle) (H)")
 
             Menu {
                 NavigationMenuItems()
@@ -86,6 +97,10 @@ struct NavigationMenu: View {
                     NSApp.sendAction(#selector(AppDelegate.triggerToggleColorPreview), to: nil, from: nil)
                 })
                 .keyboardShortcut("p", modifiers: [])
+                Button(PikaText.textComplianceToggle, action: {
+                    NSApp.sendAction(#selector(AppDelegate.triggerToggleCompliance), to: nil, from: nil)
+                })
+                .keyboardShortcut("c", modifiers: [])
             }
             .opacity(0)
             .frame(width: 0, height: 0)

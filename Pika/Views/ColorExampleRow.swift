@@ -48,7 +48,7 @@ struct ColorExampleRow: View {
         }
         .padding(.horizontal, 8.0)
         .padding(.vertical, 8.0)
-        .frame(maxWidth: 460.0, alignment: .leading)
+        .frame(maxWidth: 530.0, alignment: .leading)
         .clipShape(RoundedRectangle(cornerRadius: 4.0))
         .background(RoundedRectangle(cornerRadius: 4.0).fill(colorScheme == .dark
                 ? .black.opacity(0.1)

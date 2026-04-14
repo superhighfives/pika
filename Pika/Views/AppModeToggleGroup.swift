@@ -13,10 +13,14 @@ struct AppModeToggleGroup: View {
     var body: some View {
         if theme == .menubar {
             Image("menubar-wide")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
         }
 
         if theme == .regular {
             Image("dock-wide")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
         }
 
 //        if theme == .hidden {
