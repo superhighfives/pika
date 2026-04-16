@@ -44,6 +44,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationWillFinishLaunching(_: Notification) {
+        // Apply saved language preference before any UI / localization is loaded
+        let savedLanguage = UserDefaults.standard.string(forKey: "appLanguage")
+        if let code = savedLanguage {
+            let decoded = AppLanguage(rawValue: code)
+            if let identifier = decoded?.languageIdentifier {
+                UserDefaults.standard.set([identifier], forKey: "AppleLanguages")
+            } else if decoded == .some(.system) {
+                UserDefaults.standard.removeObject(forKey: "AppleLanguages")
+            }
+        }
+
         NSApp.setActivationPolicy(.prohibited)
         NSAppleEventManager.shared().setEventHandler(
             URLSchemeHandler.shared,

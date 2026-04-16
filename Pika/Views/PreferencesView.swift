@@ -18,11 +18,43 @@ private struct GeneralAndSelectionSection: View {
     @Default(.showColorOverlay) var showColorOverlay
     @Default(.colorOverlayDuration) var colorOverlayDuration
     @State var disableHideMenuBarIcon = true
+    @Default(.appLanguage) var appLanguage
+    @State private var showRestartAlert = false
 
     var body: some View {
+        let languageBinding = Binding<AppLanguage>(
+            get: { appLanguage },
+            set: { newValue in
+                appLanguage = newValue
+                if let code = newValue.languageIdentifier {
+                    UserDefaults.standard.set([code], forKey: "AppleLanguages")
+                } else {
+                    UserDefaults.standard.removeObject(forKey: "AppleLanguages")
+                }
+                UserDefaults.standard.synchronize()
+                showRestartAlert = true
+            }
+        )
+
         HStack(alignment: .top, spacing: 0) {
             VStack(alignment: .leading, spacing: 10.0) {
                 Text(PikaText.textGeneralTitle).font(.system(size: 16))
+                
+                VStack(alignment: .leading, spacing: 4.0) {
+                    Picker("Language", selection: languageBinding) {
+                        ForEach(AppLanguage.allCases, id: \.self) { lang in
+                            Text(lang.rawValue).tag(lang)
+                        }
+                    }
+                    
+                    if showRestartAlert {
+                        Text("Restart Pika to apply language changes")
+                            .font(.caption)
+                            .foregroundColor(.red)
+                    }
+                }
+                .padding(.bottom, 8)
+                
                 LaunchAtLogin.Toggle {
                     Text(PikaText.textLaunchDescription)
                 }

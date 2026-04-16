@@ -415,7 +415,20 @@ class Eyedropper: ObservableObject {
     }
 
     func getClosestColor() -> String {
-        colorNames[closestVector.compare(color)].name
+        let englishName = colorNames[closestVector.compare(color)].name
+        
+        let localizedName = NSLocalizedString(
+            englishName, 
+            tableName: "ColorNames", 
+            bundle: .main, 
+            value: englishName, 
+            comment: "Color Name"
+        )
+        
+        if englishName != localizedName {
+            return "\(englishName) - \(localizedName)"
+        }
+        return localizedName
     }
 
     func set(_ selectedColor: NSColor) {

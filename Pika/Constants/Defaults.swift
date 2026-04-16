@@ -46,6 +46,20 @@ enum AppMode: String, Codable, CaseIterable {
     }
 }
 
+enum AppLanguage: String, Codable, CaseIterable {
+    case system = "System Default"
+    case english = "English"
+    case chinese = "简体中文"
+
+    var languageIdentifier: String? {
+        switch self {
+        case .system: return nil
+        case .english: return "en"
+        case .chinese: return "zh-Hans"
+        }
+    }
+}
+
 extension Defaults.Keys {
     static let colorFormat = Key<ColorFormat>("colorFormat", default: .hex)
     static let viewedSplash = Key<Bool>("viewedSplash", default: false)
@@ -76,4 +90,5 @@ extension Defaults.Keys {
     static let historyDrawerVisible = Key<Bool>("historyDrawerVisible", default: false)
     static let showColorPreview = Key<Bool>("showColorPreview", default: false)
     static let showCompliance = Key<Bool>("showCompliance", default: true)
+    static let appLanguage = Key<AppLanguage>("appLanguage", default: .system)
 }
