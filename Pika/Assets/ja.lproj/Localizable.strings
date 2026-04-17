@@ -1,0 +1,527 @@
+/* Pika */
+"app.name" = "Pika";
+
+/* Version */
+"app.version" = "バージョン";
+
+/* Build */
+"app.build" = "ビルド";
+
+/* Unknown */
+"app.unknown" = "不明";
+
+/* Designed by */
+"app.designed" = "制作";
+
+/* Website */
+"app.website" = "ウェブサイト";
+
+/* GitHub */
+"app.github" = "GitHub";
+
+/* Mac App Store */
+"app.store.mas" = "Mac App Store";
+
+/* Downloaded from the internet */
+"app.store.download" = "インターネットからダウンロード";
+
+/* Global Shortcut */
+"preferences.hotkey.title" = "グローバルショートカット";
+
+/* Set a global hotkey shortcut to invoke Pika */
+"preferences.hotkey.description" = "Pikaを起動するグローバルショートカットを設定";
+
+/* Copy Settings */
+"preferences.copy.title" = "コピー設定";
+
+/* Export color for */
+"preferences.copy.export" = "カラーのエクスポートフォーマット";
+
+/* Example output */
+"preferences.copy.export.example" = "出力例";
+
+/* Export Format */
+"preferences.copy.format" = "エクスポートフォーマット";
+
+/* Unformatted */
+"preferences.copy.options.unformatted" = "フォーマットなし";
+
+/* Design Application */
+"preferences.copy.options.design" = "デザインソフトウェア";
+
+/* CSS */
+"preferences.copy.options.css" = "CSS";
+
+/* SwiftUI */
+"preferences.copy.options.swiftui" = "SwiftUI";
+
+/* Automatically copy color to clipboard on pick */
+"preferences.copy.automatic" = "ピック時に自動でクリップボードにコピー";
+
+/* Color Format */
+"preferences.format.title" = "カラーフォーマット";
+
+/* Set your preferred display format for colors */
+"preferences.format.description" = "カラーの表示フォーマットを設定";
+
+/* Set your RGB color space */
+"preferences.space.description" = "RGBカラースペースを設定";
+
+/* System Default */
+"preferences.space.default" = "システムデフォルト";
+
+/* Hide Pika while picking */
+"preferences.pick.hide" = "ピック中はPikaを非表示";
+
+/* General Settings */
+"preferences.general.title" = "一般設定";
+
+/* Selection Settings */
+"preferences.selection.title" = "選択設定";
+
+/* Hide menu bar icon */
+"preferences.icon.description" = "メニューバーアイコンを非表示";
+
+/* Launch at login */
+"preferences.launch.description" = "ログイン時に起動";
+
+/* Hide color names */
+"preferences.names.description" = "カラー名を非表示";
+
+/* Subscribe to beta releases */
+"preferences.beta.description" = "ベータリリースを購読";
+
+/* Float above windows */
+"preferences.float.description" = "ウィンドウを最前面に表示";
+
+/* Always show Pika on launch */
+"preferences.show.description" = "起動時に常にPikaを表示";
+
+/* App Settings */
+"preferences.app.title" = "アプリ設定";
+
+/* Menu bar */
+"preferences.app.menubar.title" = "メニューバー";
+
+/* Show in menu bar */
+"preferences.app.menubar.description" = "メニューバーに表示";
+
+/* Dock */
+"preferences.app.dock.title" = "Dock";
+
+/* Show in dock */
+"preferences.app.dock.description" = "Dockに表示";
+
+/* Hidden */
+"preferences.app.hidden.title" = "非表示";
+
+/* Hide app */
+"preferences.app.hidden.description" = "アプリを非表示";
+
+/* Appearance */
+"preferences.appearance.title" = "外観";
+
+/* Weight */
+"preferences.appearance.weight.title" = "ウェイト";
+
+/* View WCAG compliance by weight, from normal to large */
+"preferences.appearance.weight.description" = "WCAGの準拠をウェイト別に表示（標準〜大）";
+
+/* Contrast */
+"preferences.appearance.contrast.title" = "コントラスト";
+
+/* View WCAG compliance by contrast, from 3:1 to 7:1 */
+"preferences.appearance.contrast.description" = "WCAGの準拠をコントラスト別に表示（3:1〜7:1）";
+
+/* Contrast Value */
+"preferences.appearance.apca.title" = "コントラスト値";
+
+/* View APCA contrast value by lightness contrast (Lc), from 30 to 75 */
+"preferences.appearance.apca.description" = "APCAのコントラスト値を輝度コントラスト（Lc）別に表示（30〜75）";
+
+/* Contrast Calculation Standard */
+"preferences.contrast.standard" = "コントラスト計算基準";
+
+/* Contrast ratio */
+"color.ratio" = "コントラスト比";
+
+/* Contrast ratio is a measure of the difference in perceived brightness between two colors, used to calculate the contrast ratio. */
+"color.ratio.description" = "コントラスト比は2色間の知覚輝度の差を示す指標で、コントラスト比の計算に使用されます。";
+
+/* Contrast Value (Lc) */
+"color.lc" = "コントラスト値（Lc）";
+
+/* Lightness contrast (Lc) is a measure of the lightness difference between two colors, used to calculate the contrast value. */
+"color.lc.description" = "輝度コントラスト（Lc）は2色間の明度差を示す指標で、コントラスト値の計算に使用されます。";
+
+/* WCAG Compliance */
+"color.wcag" = "WCAG準拠";
+
+/* APCA Contrast Reference */
+"color.apca" = "APCAコントラスト参照";
+
+/* Foreground */
+"color.foreground" = "前景色";
+
+/* Background */
+"color.background" = "背景色";
+
+/* WCAG 3:1 */
+"color.wcag.30" = "WCAG 2 レベルAAは、大きなテキスト（18pt / 約24px）または太字テキスト（14pt / 約18.6px）、およびUIなどの非テキストコンテンツに対して、少なくとも3:1のコントラスト比を要求します。";
+
+/* WCAG 4.5:1 */
+"color.wcag.45" = "WCAG 2 レベルAAは通常テキストに少なくとも4.5:1を要求します。レベルAAAは大きなテキスト（18pt / 約24px）または太字テキスト（14pt / 約18.6px）に少なくとも4.5:1を要求します。";
+
+/* WCAG 7:1 */
+"color.wcag.70" = "WCAG 2 レベルAAAは通常テキストに少なくとも7:1のコントラスト比を要求します。";
+
+/* APCA 30 */
+"color.apca.30" = "APCA >= 30 はベースラインテキストと非テキストコンテンツの最小コントラストです。大きなテキスト、プレースホルダー、無効化された要素に適しています。";
+
+/* APCA 45 */
+"color.apca.45" = "APCA >= 45 は見出しテキストの最小コントラストです。大きな見出し、ナビゲーション要素、重要なUIコンポーネントに適しています。";
+
+/* APCA 60 */
+"color.apca.60" = "APCA >= 60 はタイトルテキストの最小コントラストです。サブ見出し、キャプション、明確に読める必要のある補助コンテンツに適しています。";
+
+/* APCA 75 */
+"color.apca.75" = "APCA >= 75 は本文テキストの最小コントラストです。主要コンテンツ、通常サイズのテキスト、長文の読み物に適しています。";
+
+/* Baseline */
+"color.apca.baseline" = "ベースライン";
+
+/* Headline */
+"color.apca.headline" = "ヘッドライン";
+
+/* Title */
+"color.apca.title" = "タイトル";
+
+/* Body Text */
+"color.apca.body" = "本文";
+
+/* Pass */
+"color.wcag.pass" = "合格";
+
+/* Fail */
+"color.wcag.fail" = "不合格";
+
+/* Normal */
+"color.wcag.normal" = "標準";
+
+/* Large */
+"color.wcag.large" = "大";
+
+/* LG */
+"color.wcag.large.abbr" = "大";
+
+/* Global shortcut */
+"splash.hotkey" = "グローバルショートカット";
+
+/* Launch at login */
+"splash.launch" = "ログイン時に起動";
+
+/* Get started */
+"splash.start" = "はじめる";
+
+/* Pick */
+"color.pick" = "ピック";
+
+/* Swap */
+"color.swap" = "入れ替え";
+
+/* Swap colors */
+"color.swap.detail" = "カラーを入れ替え";
+
+/* Undo */
+"color.undo" = "元に戻す";
+
+/* Redo */
+"color.redo" = "やり直す";
+
+/* Pick foreground */
+"color.pick.foreground" = "前景色をピック";
+
+/* Pick background */
+"color.pick.background" = "背景色をピック";
+
+/* Copy */
+"color.copy" = "コピー";
+
+/* Copy foreground */
+"color.copy.foreground" = "前景色をコピー";
+
+/* Copy background */
+"color.copy.background" = "背景色をコピー";
+
+/* Copy all as text */
+"color.copy.text" = "すべてをテキストでコピー";
+
+/* Copy all as JSON */
+"color.copy.data" = "すべてをJSONでコピー";
+
+/* Copied */
+"color.copy.toast" = "コピーしました";
+
+/* Copy current format */
+"color.copy.current" = "現在のフォーマットでコピー";
+
+/* Copy HEX values */
+"color.copy.hex" = "HEX値をコピー";
+
+/* Copy HSB values */
+"color.copy.hsb" = "HSB値をコピー";
+
+/* Copy HSL values */
+"color.copy.hsl" = "HSL値をコピー";
+
+/* Copy RGB values */
+"color.copy.rgb" = "RGB値をコピー";
+
+/* Copy OpenGL values */
+"color.copy.opengl" = "OpenGL値をコピー";
+
+/* Copy LAB values */
+"color.copy.lab" = "LAB値をコピー";
+
+/* System color picker */
+"color.system" = "システムカラーピッカー";
+
+/* Use foreground system color picker */
+"color.system.foreground" = "前景色のシステムカラーピッカーを使用";
+
+/* Use background system color picker */
+"color.system.background" = "背景色のシステムカラーピッカーを使用";
+
+/* System foreground */
+"color.system.foreground.simple" = "システム前景色";
+
+/* System background */
+"color.system.background.simple" = "システム背景色";
+
+/* HEX format */
+"color.format.hex" = "HEXフォーマット";
+
+/* HSB format */
+"color.format.hsb" = "HSBフォーマット";
+
+/* HSL format */
+"color.format.hsl" = "HSLフォーマット";
+
+/* RGB format */
+"color.format.rgb" = "RGBフォーマット";
+
+/* OpenGL format */
+"color.format.opengl" = "OpenGLフォーマット";
+
+/* LAB format */
+"color.format.lab" = "LABフォーマット";
+
+/* OKLCH format */
+"color.format.oklch" = "OKLCHフォーマット";
+
+/* Copy foreground */
+"menu.copy.foreground" = "前景色をコピー";
+
+/* Copy background */
+"menu.copy.background" = "背景色をコピー";
+
+/* Export */
+"menu.export" = "エクスポート";
+
+/* About */
+"menu.about" = "Pikaについて";
+
+/* Help */
+"menu.help" = "ヘルプ";
+
+/* Help description */
+"help.description" = "キーボードショートカットからURL自動化まで、Pikaの使い方をすべて説明します。";
+
+/* Keyboard Shortcuts */
+"help.shortcuts" = "キーボードショートカット";
+
+/* URL Triggers */
+"help.url_triggers" = "URLトリガー";
+
+/* URL Triggers description */
+"help.url_triggers.description" = "pika:// URLスキームを使って他のアプリからPikaを自動化できます。ピックやコピー操作にフォーマットを追加することも可能です（例: pika://pick/foreground/hex）。";
+
+/* Formats */
+"help.formats" = "フォーマット";
+
+/* Open Source */
+"help.open_source" = "オープンソース";
+
+/* Open Source description */
+"help.open_source.description" = "PikaはGitHub上で開発・メンテナンスされている無料のオープンソースアプリです。コントリビューション、バグ報告、機能リクエストを歓迎しています。";
+
+/* View on GitHub */
+"help.github" = "GitHubで見る";
+
+/* Support on the Mac App Store */
+"help.mas" = "Mac App Storeでサポート";
+
+/* Check for updates */
+"menu.updates" = "アップデートを確認";
+
+/* Preferences */
+"menu.preferences" = "設定";
+
+/* Pika Website */
+"menu.website" = "Pikaウェブサイト";
+
+/* Report Bug or Feedback */
+"menu.issue" = "フィードバックを送る";
+
+/* Quit */
+"menu.quit" = "終了";
+
+/* Show foreground color on background color */
+"preferences.preview.show" = "背景色に前景色を重ねて表示";
+
+/* Show color overlay after picking */
+"preferences.overlay.show" = "ピック後にカラーオーバーレイを表示";
+
+/* Duration: */
+"preferences.overlay.duration" = "表示時間";
+
+/* History */
+"history.title" = "履歴";
+
+/* Toggle palettes */
+"history.toggle" = "パレットの切り替え";
+
+/* Toggle color preview */
+"color.preview.toggle" = "カラープレビューの切り替え";
+
+/* Toggle compliance */
+"compliance.toggle" = "準拠表示の切り替え";
+
+/* Sample preview text */
+"color.preview.sample" = "いろはにほへとちりぬるをわかよたれそ";
+
+/* Apply foreground only */
+"history.apply.foreground" = "前景色のみ適用";
+
+/* Apply background only */
+"history.apply.background" = "背景色のみ適用";
+
+/* Remove from history */
+"history.remove" = "履歴から削除";
+
+/* Clear history */
+"history.clear" = "履歴を消去";
+
+/* New palette… */
+"palette.new" = "新規パレット…";
+
+/* Rename palette */
+"palette.rename" = "パレット名を変更";
+
+/* Delete palette */
+"palette.delete" = "パレットを削除";
+
+/* Remove from palette */
+"palette.remove" = "パレットから削除";
+
+/* Palette name */
+"palette.name.prompt" = "パレット名";
+
+/* My palette */
+"palette.name.placeholder" = "マイパレット";
+
+/* Add to palette */
+"palette.add" = "パレットに追加";
+
+/* Export palette */
+"palette.export" = "パレットをエクスポート";
+
+/* Export color history */
+"history.export" = "カラー履歴をエクスポート";
+
+/* Are you sure you want to clear all history? */
+"history.clear.confirm" = "すべての履歴を消去しますか？";
+
+/* Pick */
+"help.url.group.pick" = "ピック";
+
+/* Copy */
+"help.url.group.copy" = "コピー";
+
+/* Change Format */
+"help.url.group.change_format" = "フォーマット変更";
+
+/* Actions */
+"help.url.group.actions" = "アクション";
+
+/* Set Color */
+"help.url.group.set_color" = "カラーを設定";
+
+/* History */
+"help.url.group.history" = "履歴";
+
+/* Window */
+"help.url.group.window" = "ウィンドウ";
+
+/* Appearance */
+"help.url.group.appearance" = "外観";
+
+/* Set foreground color */
+"help.url.set.foreground" = "前景色を設定";
+
+/* Set background color */
+"help.url.set.background" = "背景色を設定";
+
+/* Show the history drawer */
+"help.url.history.show" = "履歴ドロワーを表示";
+
+/* Hide the history drawer */
+"help.url.history.hide" = "履歴ドロワーを非表示";
+
+/* Toggle the history drawer */
+"help.url.history.toggle" = "履歴ドロワーを切り替え";
+
+/* Show compliance */
+"help.url.compliance.show" = "準拠表示を表示";
+
+/* Hide compliance */
+"help.url.compliance.hide" = "準拠表示を非表示";
+
+/* Toggle compliance */
+"help.url.compliance.toggle" = "準拠表示を切り替え";
+
+/* Show colour preview */
+"help.url.preview.show" = "カラープレビューを表示";
+
+/* Hide colour preview */
+"help.url.preview.hide" = "カラープレビューを非表示";
+
+/* Toggle colour preview */
+"help.url.preview.toggle" = "カラープレビューを切り替え";
+
+/* Compliance */
+"help.url.group.compliance" = "準拠";
+
+/* Preview */
+"help.url.group.preview" = "プレビュー";
+
+/* Open the About window */
+"help.url.window.about" = "「Pikaについて」ウィンドウを開く";
+
+/* Open the Help window */
+"help.url.window.help" = "ヘルプウィンドウを開く";
+
+/* Open the Preferences window */
+"help.url.window.preferences" = "設定ウィンドウを開く";
+
+/* Resize window */
+"help.url.window.resize" = "ウィンドウサイズを変更";
+
+/* Force light appearance */
+"help.url.appearance.light" = "ライトモードに固定";
+
+/* Force dark appearance */
+"help.url.appearance.dark" = "ダークモードに固定";
+
+/* Restore system appearance */
+"help.url.appearance.system" = "システムの外観に戻す";
