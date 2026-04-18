@@ -256,6 +256,8 @@
 		EA635DF025B5A6D80014D91A /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		EA64D70A2F25FB6700A3F295 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		EA64D70C2F25FB9B00A3F295 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		FA0000000000000000000A01 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		FA0000000000000000000A02 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Main.strings; sourceTree = "<group>"; };
 		EA72BB8225A5334B008205E7 /* MetalShader.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = MetalShader.metal; sourceTree = "<group>"; };
 		EA72BB8725A53750008205E7 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		EA72BB8A25A537C3008205E7 /* MetalShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalShader.swift; sourceTree = "<group>"; };
@@ -731,6 +733,7 @@
 				"zh-Hant",
 				pl,
 				hr,
+				ja,
 			);
 			mainGroup = EAD0B6BF259CED1C00FA2F67;
 			packageReferences = (
@@ -1032,6 +1035,7 @@
 				B581F92B2EDF40D700392413 /* pl */,
 				EA64D70A2F25FB6700A3F295 /* hr */,
 				EA64D70C2F25FB9B00A3F295 /* en */,
+				FA0000000000000000000A01 /* ja */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -1047,6 +1051,7 @@
 				C1BF641F2C1AE533004D33DD /* zh-Hans */,
 				C1BF64212C1AE53C004D33DD /* zh-Hant */,
 				B581F92C2EDF40D700392413 /* pl */,
+				FA0000000000000000000A02 /* ja */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
