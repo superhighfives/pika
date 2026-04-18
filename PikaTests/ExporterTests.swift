@@ -87,7 +87,7 @@ final class ExporterTests: XCTestCase {
         XCTAssertTrue(colors.isEmpty)
     }
 
-    func test_paletteToJSON_outputIsPrettyPrintedAndSorted() {
+    func test_paletteToJSON_outputIsPrettyPrintedAndSorted() throws {
         // The implementation asks JSONSerialization for both `.prettyPrinted`
         // and `.sortedKeys`. Preserve that contract so CLI diffs of exported
         // palettes stay stable.
@@ -95,8 +95,9 @@ final class ExporterTests: XCTestCase {
         let json = Exporter.paletteToJSON(pairs: [pair], name: "Brand")
         XCTAssertTrue(json.contains("\n"), "Output should be pretty-printed across multiple lines")
         // `colors` sorts alphabetically before `name` when sortedKeys is on.
-        let colorsIndex = json.range(of: "\"colors\"")!.lowerBound
-        let nameIndex = json.range(of: "\"name\"")!.lowerBound
-        XCTAssertLessThan(colorsIndex, nameIndex, "Keys should be alphabetically sorted")
+        let colorsRange = try XCTUnwrap(json.range(of: "\"colors\""))
+        let nameRange = try XCTUnwrap(json.range(of: "\"name\""))
+        XCTAssertLessThan(colorsRange.lowerBound, nameRange.lowerBound,
+                          "Keys should be alphabetically sorted")
     }
 }
