@@ -382,7 +382,7 @@
 /* Show color overlay after picking */
 "preferences.overlay.show" = "ピック後にカラーオーバーレイを表示";
 
-/* Duration: */
+/* Duration */
 "preferences.overlay.duration" = "表示時間";
 
 /* History */
