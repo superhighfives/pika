@@ -1,0 +1,40 @@
+name: Update Color Names
+
+on:
+  schedule:
+    - cron: "0 12 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update:
+    name: Fetch latest color names
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Fetch and transform upstream list
+        run: |
+          set -euo pipefail
+          curl --fail --retry 3 --retry-delay 5 -sSL \
+            https://unpkg.com/color-name-list/dist/colornames.bestof.json \
+            -o upstream.json
+          jq '{colors: [.[] | {name, hex}]}' upstream.json > Pika/Assets/ColorNames.json
+          rm upstream.json
+
+      - name: Open pull request if changed
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: chore/update-color-names
+          commit-message: "chore: update ColorNames.json from color-name-list"
+          title: "chore: update ColorNames.json"
+          body: |
+            Automated refresh of `Pika/Assets/ColorNames.json` from
+            [color-name-list](https://unpkg.com/color-name-list/dist/colornames.bestof.json).
+          labels: dependencies
+          add-paths: Pika/Assets/ColorNames.json
