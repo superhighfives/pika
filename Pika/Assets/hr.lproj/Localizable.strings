@@ -125,13 +125,13 @@
 "preferences.appearance.weight.title" = "Razina";
 
 /* View WCAG compliance by weight, from normal to large */
-"preferences.appearance.weight.description" = "Pogledaj usklađenost s WCAG-om prema razini, od normalne do visoke";
+"preferences.appearance.weight.description" = "Pogledaj WCAG pristupačnost prema razini, od normalne do visoke";
 
 /* Contrast */
 "preferences.appearance.contrast.title" = "Kontrast";
 
 /* View WCAG compliance by contrast, from 3:1 to 7:1 */
-"preferences.appearance.contrast.description" = "Pogledaj usklađenost s WCAG-om prema kontrastu, od 3:1 do 7:1";
+"preferences.appearance.contrast.description" = "Pogledaj WCAG pristupačnost prema kontrastu, od 3:1 do 7:1";
 
 /* Contrast Value */
 "preferences.appearance.apca.title" = "Vrijednost kontrasta";
@@ -149,13 +149,13 @@
 "color.ratio.description" = "Omjer kontrasta je mjera razlike u percipiranoj svjetlini između dviju boja i koristi se za izračun omjera kontrasta.";
 
 /* Contrast Value (Lc) */
-"color.lc" = "Vrijednost kontrasta";
+"color.lc" = "Vrijednost kontrasta svjetline";
 
 /* Lightness contrast (Lc) is a measure of the lightness difference between two colors, used to calculate the contrast value. */
 "color.lc.description" = "Kontrast svjetline je mjera razlike u svjetlini između dviju boja i koristi se za izračun vrijednosti kontrasta.";
 
 /* WCAG Compliance */
-"color.wcag" = "Usklađenost s WCAG-om";
+"color.wcag" = "WCAG pristupačnost";
 
 /* APCA Contrast Reference */
 "color.apca" = "APCA referenca kontrasta";
@@ -167,13 +167,13 @@
 "color.background" = "Boja pozadine";
 
 /* WCAG 3:1 */
-"color.wcag.30" = "WCAG 2 razina AA zahtijeva omjer kontrasta od najmanje 3:1 za veliki tekst (18 pt / ~24 px) ili za podebljani tekst (14 pt / ~18,6 px) te za netekstualni sadržaj poput korisničkog sučelja.";
+"color.wcag.30" = "WCAG 2 razina AA zahtijeva omjer kontrasta od barem 3:1 za veliki tekst (18 pt / ~24 px) ili za podebljani tekst (14 pt / ~18,6 px) te za netekstualni sadržaj poput korisničkog sučelja.";
 
 /* WCAG 4.5:1 */
-"color.wcag.45" = "WCAG 2 razina AA zahtijeva omjer kontrasta od najmanje 4,5:1 za normalan tekst. WCAG 2 razina AAA zahtijeva najmanje 4,5:1 za veliki tekst (18 pt / ~24 px) ili za podebljani tekst (14 pt / ~18,6 px).";
+"color.wcag.45" = "WCAG 2 razina AA zahtijeva omjer kontrasta od barem 4,5:1 za normalan tekst. WCAG 2 razina AAA zahtijeva najmanje 4,5:1 za veliki tekst (18 pt / ~24 px) ili za podebljani tekst (14 pt / ~18,6 px).";
 
 /* WCAG 7:1 */
-"color.wcag.70" = "WCAG 2 razina AAA zahtijeva omjer kontrasta od najmanje 7:1 za normalan tekst.";
+"color.wcag.70" = "WCAG 2 razina AAA zahtijeva omjer kontrasta od barem 7:1 za normalan tekst.";
 
 /* APCA 30 */
 "color.apca.30" = "APCA ≥ 30 je minimalni kontrast za osnovni tekst i netekstualni sadržaj. Pogodno za veći tekst, za rezervirana mjesta i za deaktivirane elemente.";
@@ -188,7 +188,7 @@
 "color.apca.75" = "APCA ≥ 75 je minimalni kontrast za glavni tekst. Pogodno za primarni sadržaj, za tekst normalne veličine i za duže materijale za čitanje.";
 
 /* Baseline */
-"color.apca.baseline" = "Osnovni tekst";
+"color.apca.baseline" = "Osnovno";
 
 /* Headline */
 "color.apca.headline" = "Naslov odlomka";
@@ -209,10 +209,10 @@
 "color.wcag.normal" = "Normalno";
 
 /* Large */
-"color.wcag.large" = "Veliko";
+"color.wcag.large" = "Visoko";
 
 /* LG */
-"color.wcag.large.abbr" = "Veliko";
+"color.wcag.large.abbr" = "Visoko";
 
 /* Global shortcut */
 "splash.hotkey" = "Globalni prečac";
@@ -335,31 +335,31 @@
 "menu.help" = "Pomoć";
 
 /* Help description */
-"help.description" = "Sve što trebate znati o korištenju Pike, od tipkovnih prečaca do URL automatizacije.";
+"help.description" = "Sve što se treba znati o korištenju Pike, od tipkovnih prečaca do automatizacije URL-a.";
 
 /* Keyboard Shortcuts */
 "help.shortcuts" = "Tipkovni prečaci";
 
 /* URL Triggers */
-"help.url_triggers" = "URL okidači";
+"help.url_triggers" = "Pokretači URL-ova";
 
 /* URL Triggers description */
-"help.url_triggers.description" = "Automatizirajte Piku iz drugih aplikacija koristeći pika:// URL shemu. Možete dodati i format akcijama odabira ili kopiranja, npr. pika://pick/foreground/hex.";
+"help.url_triggers.description" = "Pika se može automatizirati iz drugih aplikacija koristeći pika:// URL shemu. Također se može dodati format za radnje biranja ili kopiranja, npr. pika://pick/foreground/hex.";
 
 /* Formats */
 "help.formats" = "Formati";
 
 /* Open Source */
-"help.open_source" = "Otvoreni izvor";
+"help.open_source" = "Otvoreni kod";
 
 /* Open Source description */
-"help.open_source.description" = "Pika je besplatna i otvorenog koda, izgrađena i održavana na GitHubu. Doprinosi, prijave grešaka i zahtjevi za značajkama uvijek su dobrodošli.";
+"help.open_source.description" = "Pika je besplatna aplikacija otvorenog koda, izgrađena i održavana na GitHubu. Doprinosi, prijave grešaka i zahtjevi za značajkama uvijek su dobrodošli.";
 
 /* View on GitHub */
 "help.github" = "Pogledaj na GitHubu";
 
 /* Support on the Mac App Store */
-"help.mas" = "Podržite na Mac App Storeu";
+"help.mas" = "Podrška na Mac App Storeu";
 
 /* Check for updates */
 "menu.updates" = "Traži nove verzije";
@@ -376,6 +376,9 @@
 /* Quit */
 "menu.quit" = "Zatvori aplikaciju";
 
+/* Show foreground color on background color */
+"preferences.preview.show" = "Prikaži prednju boju na boji pozadine";
+
 /* Show color overlay after picking */
 "preferences.overlay.show" = "Prikaži sloj boje nakon biranja";
 
@@ -385,14 +388,23 @@
 /* History */
 "history.title" = "Povijest";
 
-/* Toggle history */
-"history.toggle" = "Uključi/isključi povijest";
+/* Toggle palettes */
+"history.toggle" = "Uključi/Isključi palete boja";
+
+/* Toggle color preview */
+"color.preview.toggle" = "Uključi/Isključi pregled boja";
+
+/* Toggle compliance */
+"compliance.toggle" = "Uključi/Isključi pristupačnost";
+
+/* Sample preview text */
+"color.preview.sample" = "Brza smeđa lisica je preskočila lijenog psa";
 
 /* Apply foreground only */
-"history.apply.foreground" = "Primijeni samo prednji plan";
+"history.apply.foreground" = "Primijeni samo prednju boju";
 
 /* Apply background only */
-"history.apply.background" = "Primijeni samo pozadinu";
+"history.apply.background" = "Primijeni samo boju pozadine";
 
 /* Remove from history */
 "history.remove" = "Ukloni iz povijesti";
@@ -400,14 +412,35 @@
 /* Clear history */
 "history.clear" = "Izbriši povijest";
 
-/* Sample preview text */
-"color.preview.sample" = "Brza smeđa lisica preskočila je lijenog psa";
+/* New palette… */
+"palette.new" = "Nova paleta boja…";
 
-/* Show preview */
-"preferences.preview.show" = "Prikaži boju prednjeg plana na boji pozadine";
+/* Rename palette */
+"palette.rename" = "Preimenuj paletu boja";
 
-/* Toggle color preview */
-"color.preview.toggle" = "Uključi/isključi pregled boje";
+/* Delete palette */
+"palette.delete" = "Izbriši paletu boja";
+
+/* Remove from palette */
+"palette.remove" = "Ukloni iz palete boja";
+
+/* Palette name */
+"palette.name.prompt" = "Ime palete boja";
+
+/* My palette */
+"palette.name.placeholder" = "Moja paleta boja";
+
+/* Add to palette */
+"palette.add" = "Dodaj u paletu boja";
+
+/* Export palette */
+"palette.export" = "Izvezi paletu boja";
+
+/* Export color history */
+"history.export" = "Izvezi povijest boja";
+
+/* Are you sure you want to clear all history? */
+"history.clear.confirm" = "Stvarno želiš izbrisati svu povijest?";
 
 /* Pick */
 "help.url.group.pick" = "Odaberi";
@@ -434,19 +467,43 @@
 "help.url.group.appearance" = "Izgled";
 
 /* Set foreground color */
-"help.url.set.foreground" = "Postavi boju prednjeg plana";
+"help.url.set.foreground" = "Postavi prednju boju";
 
 /* Set background color */
 "help.url.set.background" = "Postavi boju pozadine";
 
 /* Show the history drawer */
-"help.url.history.show" = "Prikaži ladicu povijesti";
+"help.url.history.show" = "Prikaži povijest";
 
 /* Hide the history drawer */
-"help.url.history.hide" = "Sakrij ladicu povijesti";
+"help.url.history.hide" = "Sakrij povijest";
 
 /* Toggle the history drawer */
-"help.url.history.toggle" = "Uključi/isključi ladicu povijesti";
+"help.url.history.toggle" = "Uključi/Isključi povijest";
+
+/* Show compliance */
+"help.url.compliance.show" = "Prikaži pristupačnost";
+
+/* Hide compliance */
+"help.url.compliance.hide" = "Sakrij pristupačnost";
+
+/* Toggle compliance */
+"help.url.compliance.toggle" = "Uključi/Isključi pristupačnost";
+
+/* Show colour preview */
+"help.url.preview.show" = "Prikaži pregled boja";
+
+/* Hide colour preview */
+"help.url.preview.hide" = "Sakrij pregled boja";
+
+/* Toggle colour preview */
+"help.url.preview.toggle" = "Uključi/Isključi pregled boja";
+
+/* Compliance */
+"help.url.group.compliance" = "Pristupačnost";
+
+/* Preview */
+"help.url.group.preview" = "Pregled";
 
 /* Open the About window */
 "help.url.window.about" = "Otvori prozor O aplikaciji";
@@ -461,10 +518,10 @@
 "help.url.window.resize" = "Promijeni veličinu prozora";
 
 /* Force light appearance */
-"help.url.appearance.light" = "Prisilno svijetli izgled";
+"help.url.appearance.light" = "Koristi svijetli izgled";
 
 /* Force dark appearance */
-"help.url.appearance.dark" = "Prisilno tamni izgled";
+"help.url.appearance.dark" = "Koristi tamni izgled";
 
 /* Restore system appearance */
-"help.url.appearance.system" = "Vrati izgled sustava";
+"help.url.appearance.system" = "Obnovi izgled sustava";
