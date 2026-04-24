@@ -1,0 +1,87 @@
+
+/* Class = "NSMenuItem"; title = "Pika"; ObjectID = "1Xt-HY-uBw"; */
+"1Xt-HY-uBw.title" = "Pika";
+
+/* Class = "NSMenuItem"; title = "Quit Pika"; ObjectID = "4sb-4s-VLi"; */
+"4sb-4s-VLi.title" = "Pikaを終了";
+
+/* Class = "NSMenuItem"; title = "Edit"; ObjectID = "5QF-Oa-p0T"; */
+"5QF-Oa-p0T.title" = "編集";
+
+/* Class = "NSMenuItem"; title = "About Pika"; ObjectID = "5kV-Vb-QxS"; */
+"5kV-Vb-QxS.title" = "Pikaについて";
+
+/* Class = "NSMenuItem"; title = "Redo"; ObjectID = "6dh-zS-Vam"; */
+"6dh-zS-Vam.title" = "やり直す";
+
+/* Class = "NSMenuItem"; title = "Swap colors"; ObjectID = "6j0-AT-P3M"; */
+"6j0-AT-P3M.title" = "カラーを入れ替え";
+
+/* Class = "NSMenu"; title = "Main Menu"; ObjectID = "AYu-sK-qS6"; */
+"AYu-sK-qS6.title" = "メインメニュー";
+
+/* Class = "NSMenuItem"; title = "Check for updates…"; ObjectID = "BOF-NM-1cW"; */
+"BOF-NM-1cW.title" = "アップデートを確認…";
+
+/* Class = "NSMenuItem"; title = "Copy all as text"; ObjectID = "D8e-06-QFY"; */
+"D8e-06-QFY.title" = "すべてをテキストでコピー";
+
+/* Class = "NSMenu"; title = "Help"; ObjectID = "F2S-fz-NVQ"; */
+"F2S-fz-NVQ.title" = "ヘルプ";
+
+/* Class = "NSMenuItem"; title = "Pika website"; ObjectID = "FKE-Sm-Kum"; */
+"FKE-Sm-Kum.title" = "Pikaウェブサイト";
+
+/* Class = "NSMenu"; title = "Eyedroppers"; ObjectID = "KHB-9b-hO2"; */
+"KHB-9b-hO2.title" = "スポイト";
+
+/* Class = "NSMenuItem"; title = "Show All"; ObjectID = "Kd2-mp-pUS"; */
+"Kd2-mp-pUS.title" = "すべてを表示";
+
+/* Class = "NSMenuItem"; title = "Services"; ObjectID = "NMo-om-nkz"; */
+"NMo-om-nkz.title" = "サービス";
+
+/* Class = "NSMenuItem"; title = "Preferences…"; ObjectID = "NQA-cg-qc7"; */
+"NQA-cg-qc7.title" = "設定…";
+
+/* Class = "NSMenuItem"; title = "Pick foreground..."; ObjectID = "Nec-cr-B3a"; */
+"Nec-cr-B3a.title" = "前景色をピック...";
+
+/* Class = "NSMenuItem"; title = "Hide Pika"; ObjectID = "Olw-nP-bQN"; */
+"Olw-nP-bQN.title" = "Pikaを非表示";
+
+/* Class = "NSMenuItem"; title = "Copy all as JSON"; ObjectID = "U40-Ip-3Uj"; */
+"U40-Ip-3Uj.title" = "すべてをJSONでコピー";
+
+/* Class = "NSMenuItem"; title = "Hide Others"; ObjectID = "Vdr-fp-XzO"; */
+"Vdr-fp-XzO.title" = "ほかを非表示";
+
+/* Class = "NSMenu"; title = "Edit"; ObjectID = "W48-6f-4Dl"; */
+"W48-6f-4Dl.title" = "編集";
+
+/* Class = "NSMenuItem"; title = "Pick background..."; ObjectID = "YF5-6a-ACB"; */
+"YF5-6a-ACB.title" = "背景色をピック...";
+
+/* Class = "NSMenuItem"; title = "Eyedroppers"; ObjectID = "dNS-BC-3MB"; */
+"dNS-BC-3MB.title" = "スポイト";
+
+/* Class = "NSMenuItem"; title = "Undo"; ObjectID = "dRJ-4n-Yzg"; */
+"dRJ-4n-Yzg.title" = "元に戻す";
+
+/* Class = "NSMenu"; title = "Services"; ObjectID = "hz9-B4-Xy5"; */
+"hz9-B4-Xy5.title" = "サービス";
+
+/* Class = "NSMenuItem"; title = "Copy background"; ObjectID = "p7U-sR-JqZ"; */
+"p7U-sR-JqZ.title" = "背景色をコピー";
+
+/* Class = "NSMenu"; title = "Pika"; ObjectID = "uQy-DD-JDr"; */
+"uQy-DD-JDr.title" = "Pika";
+
+/* Class = "NSMenuItem"; title = "Help"; ObjectID = "wpr-3q-Mcd"; */
+"wpr-3q-Mcd.title" = "ヘルプ";
+
+/* Class = "NSMenuItem"; title = "Copy foreground"; ObjectID = "x3v-GG-iWU"; */
+"x3v-GG-iWU.title" = "前景色をコピー";
+
+/* Class = "NSMenuItem"; title = "Report feedback"; ObjectID = "hxD-2G-mEq.title"; */
+"hxD-2G-mEq.title" = "フィードバックを送る";
