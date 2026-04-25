@@ -28,7 +28,7 @@ jobs:
           rm upstream.json
 
       - name: Open pull request if changed
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8
         with:
           branch: chore/update-color-names
           commit-message: "chore: update ColorNames.json from color-name-list"
