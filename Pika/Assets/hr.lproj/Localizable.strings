@@ -1,6 +1,12 @@
 /* Pika */
 "app.name" = "Pika";
 
+/* Cancel */
+"general.cancel" = "Odustani";
+
+/* Clear */
+"general.clear" = "Izbriši";
+
 /* Version */
 "app.version" = "Verzija";
 

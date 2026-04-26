@@ -345,10 +345,10 @@ struct ColorHistoryDrawer: View {
             }
         )
         .alert(PikaText.textHistoryClear, isPresented: $isShowingClearConfirm) {
-            Button("Clear", role: .destructive) {
+            Button(PikaText.textClear, role: .destructive) {
                 eyedroppers.clearHistory()
             }
-            Button("Cancel", role: .cancel) {}
+            Button(PikaText.textCancel, role: .cancel) {}
         } message: {
             Text(PikaText.textHistoryClearConfirm)
         }

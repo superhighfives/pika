@@ -83,7 +83,7 @@ class WindowCoordinator: NSObject {
             let view = NSHostingView(rootView: AboutView().edgesIgnoringSafeArea(.all))
             view.frame = CGRect(x: 0, y: 0, width: 400, height: 0)
             aboutWindow = PikaWindow.createSecondaryWindow(
-                title: "About",
+                title: PikaText.textMenuAbout,
                 size: NSRect(x: 0, y: 0, width: 400, height: view.fittingSize.height),
                 styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView]
             )
@@ -101,7 +101,7 @@ class WindowCoordinator: NSObject {
                 .edgesIgnoringSafeArea(.all)
             let view = NSHostingView(rootView: rootView)
             helpWindow = PikaWindow.createSecondaryWindow(
-                title: "Help",
+                title: PikaText.textMenuHelp,
                 size: NSRect(x: 0, y: 0, width: 550, height: 600),
                 styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView]
             )
@@ -120,7 +120,7 @@ class WindowCoordinator: NSObject {
                 .environmentObject(eyedroppers)
             let view = NSHostingView(rootView: rootView)
             preferencesWindow = PikaWindow.createSecondaryWindow(
-                title: "Preferences",
+                title: PikaText.textMenuPreferences,
                 size: NSRect(x: 0, y: 0, width: 580, height: 600),
                 styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView]
             )

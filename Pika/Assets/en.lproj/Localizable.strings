@@ -1,6 +1,12 @@
 /* Pika */
 "app.name" = "Pika";
 
+/* Cancel */
+"general.cancel" = "Cancel";
+
+/* Clear */
+"general.clear" = "Clear";
+
 /* Version */
 "app.version" = "Version";
 
