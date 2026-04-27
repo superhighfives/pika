@@ -105,6 +105,7 @@ class WindowCoordinator: NSObject {
                 size: NSRect(x: 0, y: 0, width: 550, height: 600),
                 styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView]
             )
+            helpWindow?.titlebarAppearsTransparent = true
             helpWindow?.minSize = NSSize(width: 440, height: 400)
             helpWindow?.contentMinSize = NSSize(width: 440, height: 400)
             helpWindow?.contentView = view
@@ -124,6 +125,7 @@ class WindowCoordinator: NSObject {
                 size: NSRect(x: 0, y: 0, width: 580, height: 600),
                 styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView]
             )
+            preferencesWindow?.titlebarAppearsTransparent = true
             preferencesWindow?.minSize = NSSize(width: 580, height: 400)
             preferencesWindow?.maxSize = NSSize(width: 580, height: CGFloat.greatestFiniteMagnitude)
             preferencesWindow?.contentMinSize = NSSize(width: 580, height: 400)
