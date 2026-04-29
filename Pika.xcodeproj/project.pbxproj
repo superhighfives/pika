@@ -25,6 +25,10 @@
 		CC2000000000000000000801 /* APCAComplianceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000800 /* APCAComplianceTests.swift */; };
 		CC2000000000000000000901 /* NotificationNamesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000900 /* NotificationNamesTests.swift */; };
 		CC2000000000000000000A01 /* CGFloatFormatTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000A00 /* CGFloatFormatTests.swift */; };
+		CC2000000000000000000B01 /* ColorPairTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000B00 /* ColorPairTests.swift */; };
+		CC2000000000000000000C01 /* ClosestVectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000C00 /* ClosestVectorTests.swift */; };
+		CC2000000000000000000D01 /* SequenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000D00 /* SequenceTests.swift */; };
+		CC2000000000000000000E01 /* ExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000E00 /* ExporterTests.swift */; };
 
 		220D5E9428DB154300B6285E /* AppModeButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220D5E9328DB154300B6285E /* AppModeButtons.swift */; };
 		220D5E9828DB158400B6285E /* AppModeToggleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220D5E9728DB158400B6285E /* AppModeToggleGroup.swift */; };
@@ -206,6 +210,10 @@
 		CC2000000000000000000800 /* APCAComplianceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APCAComplianceTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000000900 /* NotificationNamesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationNamesTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000000A00 /* CGFloatFormatTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGFloatFormatTests.swift; sourceTree = "<group>"; };
+		CC2000000000000000000B00 /* ColorPairTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPairTests.swift; sourceTree = "<group>"; };
+		CC2000000000000000000C00 /* ClosestVectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosestVectorTests.swift; sourceTree = "<group>"; };
+		CC2000000000000000000D00 /* SequenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceTests.swift; sourceTree = "<group>"; };
+		CC2000000000000000000E00 /* ExporterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExporterTests.swift; sourceTree = "<group>"; };
 
 		220D5E9328DB154300B6285E /* AppModeButtons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppModeButtons.swift; sourceTree = "<group>"; };
 		220D5E9728DB158400B6285E /* AppModeToggleGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppModeToggleGroup.swift; sourceTree = "<group>"; };
@@ -505,6 +513,10 @@
 				CC2000000000000000000800 /* APCAComplianceTests.swift */,
 				CC2000000000000000000900 /* NotificationNamesTests.swift */,
 				CC2000000000000000000A00 /* CGFloatFormatTests.swift */,
+				CC2000000000000000000B00 /* ColorPairTests.swift */,
+				CC2000000000000000000C00 /* ClosestVectorTests.swift */,
+				CC2000000000000000000D00 /* SequenceTests.swift */,
+				CC2000000000000000000E00 /* ExporterTests.swift */,
 			);
 			path = PikaTests;
 			sourceTree = "<group>";
@@ -1019,6 +1031,10 @@
 				CC2000000000000000000801 /* APCAComplianceTests.swift in Sources */,
 				CC2000000000000000000901 /* NotificationNamesTests.swift in Sources */,
 				CC2000000000000000000A01 /* CGFloatFormatTests.swift in Sources */,
+				CC2000000000000000000B01 /* ColorPairTests.swift in Sources */,
+				CC2000000000000000000C01 /* ClosestVectorTests.swift in Sources */,
+				CC2000000000000000000D01 /* SequenceTests.swift in Sources */,
+				CC2000000000000000000E01 /* ExporterTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
