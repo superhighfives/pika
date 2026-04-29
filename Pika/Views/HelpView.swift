@@ -95,8 +95,8 @@ struct HelpExternalLinkRow: View {
 
     var body: some View {
         Button {
-            if let u = URL(string: url) {
-                NSWorkspace.shared.open(u)
+            if let parsed = URL(string: url) {
+                NSWorkspace.shared.open(parsed)
             }
         } label: {
             HStack {
@@ -132,8 +132,8 @@ private struct URLTriggerRow: View {
 
     var body: some View {
         Button {
-            if let u = URL(string: url) {
-                NSWorkspace.shared.open(u)
+            if let parsed = URL(string: url) {
+                NSWorkspace.shared.open(parsed)
             }
         } label: {
             HStack {

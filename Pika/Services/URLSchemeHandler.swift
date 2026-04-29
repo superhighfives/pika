@@ -105,18 +105,18 @@ final class URLSchemeHandler: NSObject {
         case "help": NSApp.sendAction(#selector(AppDelegate.openHelpWindow), to: nil, from: nil)
         case "preferences": NSApp.sendAction(#selector(AppDelegate.openPreferencesWindow), to: nil, from: nil)
         case "splash": NSApp.sendAction(#selector(AppDelegate.openSplashWindow), to: nil, from: nil)
-        case "resize": handleWindowResize(w: arg1, h: arg2)
+        case "resize": handleWindowResize(width: arg1, height: arg2)
         default: break
         }
     }
 
-    private func handleWindowResize(w: String?, h: String?) {
+    private func handleWindowResize(width: String?, height: String?) {
         guard
-            let w, let h,
-            let width = Double(w), let height = Double(h),
+            let width, let height,
+            let widthValue = Double(width), let heightValue = Double(height),
             let window = NSApp.windows.first(where: { $0.isVisible && $0.canBecomeKey })
         else { return }
-        window.setContentSize(NSSize(width: width, height: height))
+        window.setContentSize(NSSize(width: widthValue, height: heightValue))
     }
 
     private func handleCompliance(task: String?) {
