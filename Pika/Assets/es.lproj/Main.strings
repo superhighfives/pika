@@ -56,6 +56,9 @@
 /* Class = "NSMenuItem"; title = "Hide Others"; ObjectID = "Vdr-fp-XzO"; */
 "Vdr-fp-XzO.title" = "Hide Others";
 
+/* Class = "NSMenuItem"; title = "Close window"; ObjectID = "VpE-fH-2gc"; */
+"VpE-fH-2gc.title" = "Close window";
+
 /* Class = "NSMenu"; title = "Edit"; ObjectID = "W48-6f-4Dl"; */
 "W48-6f-4Dl.title" = "Edit";
 

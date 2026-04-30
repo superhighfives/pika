@@ -53,6 +53,9 @@
 /* Class = "NSMenuItem"; title = "Copy all as JSON"; ObjectID = "U40-Ip-3Uj"; */
 "U40-Ip-3Uj.title" = "複製全部為 JSON";
 
+/* Class = "NSMenuItem"; title = "Close window"; ObjectID = "VpE-fH-2gc"; */
+"VpE-fH-2gc.title" = "關閉窗口";
+
 /* Class = "NSMenuItem"; title = "Hide Others"; ObjectID = "Vdr-fp-XzO"; */
 "Vdr-fp-XzO.title" = "隱藏其他";
 
@@ -64,6 +67,9 @@
 
 /* Class = "NSMenuItem"; title = "Eyedroppers"; ObjectID = "dNS-BC-3MB"; */
 "dNS-BC-3MB.title" = "吸管工具";
+
+/* Class = "NSMenuItem"* title = "Format"; ObjectId = "jQ5-Ak-Ocb"; */
+"jQ5-Ak-Ocb.title" = "格式";
 
 /* Class = "NSMenuItem"; title = "Undo"; ObjectID = "dRJ-4n-Yzg"; */
 "dRJ-4n-Yzg.title" = "撤銷";
