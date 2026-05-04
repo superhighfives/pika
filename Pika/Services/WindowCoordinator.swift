@@ -45,11 +45,11 @@ class WindowCoordinator: NSObject {
     }
 
     func showMainWindow() {
-        pikaWindow?.makeKeyAndOrderFront(nil)
+        pikaWindow.makeKeyAndOrderFront(nil)
     }
 
     func hideMainWindow() {
-        pikaWindow?.orderOut(nil)
+        pikaWindow.orderOut(nil)
     }
 
     func closeSplashWindow() {

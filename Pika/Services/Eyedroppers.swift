@@ -481,6 +481,8 @@ class Eyedropper: ObservableObject {
 
                     if Defaults[.copyColorOnPick] {
                         NSApp.sendAction(self.type.copySelector, to: nil, from: nil)
+                    } else if Defaults[.appMode].usesPopover {
+                        NSApp.sendAction(#selector(AppDelegate.showPopover), to: nil, from: nil)
                     } else {
                         NSApp.sendAction(#selector(AppDelegate.showPika), to: nil, from: nil)
                     }
@@ -488,7 +490,9 @@ class Eyedropper: ObservableObject {
 
                 if self.forceShow {
                     self.forceShow = false
-                    NSApp.sendAction(#selector(AppDelegate.showPika), to: nil, from: nil)
+                    if !Defaults[.appMode].usesPopover {
+                        NSApp.sendAction(#selector(AppDelegate.showPika), to: nil, from: nil)
+                    }
                 }
 
                 let panel = NSColorPanel.shared

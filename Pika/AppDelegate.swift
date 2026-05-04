@@ -70,6 +70,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         eyedroppers = Eyedroppers()
 
+        statusBarController.attachPopover(rootView: PopoverContentView(eyedroppers: eyedroppers))
+
         windowCoordinator.setupMainWindow(eyedroppers: eyedroppers)
 
         KeyboardShortcuts.onKeyUp(for: .togglePika) { [] in
@@ -157,6 +159,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBAction func openSplashWindow(_: Any?) { windowCoordinator.openSplashWindow() }
     @IBAction func showPika(_: Any) { windowCoordinator.showPika() }
     @IBAction func hidePika(_: Any) { windowCoordinator.hidePika() }
+    @IBAction func showPopover(_: Any) { statusBarController.showPopover() }
 
     // MARK: - Notification dispatch
 

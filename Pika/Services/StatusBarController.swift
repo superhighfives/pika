@@ -1,13 +1,16 @@
 import Cocoa
 import Defaults
+import SwiftUI
 
 /// Owns the status bar item — setup, visibility, and click handling.
-/// Calls `onToggle` when the user left-clicks the icon.
+/// Calls `onToggle` when the user left-clicks the icon (menubar mode).
+/// In popover mode, left-click toggles the attached `NSPopover` instead.
 class StatusBarController: NSObject, NSMenuDelegate {
     private var statusBarItem: NSStatusItem!
     private var statusBarMenu: NSMenu!
+    private var popover: NSPopover?
 
-    /// Called when the user left-clicks the status bar icon.
+    /// Called when the user left-clicks the status bar icon in menubar mode.
     var onToggle: (() -> Void)?
 
     func setup() {
@@ -23,15 +26,46 @@ class StatusBarController: NSObject, NSMenuDelegate {
 
         statusBarMenu = buildMenu()
 
-        statusBarItem.isVisible = Defaults[.hideMenuBarIcon] == false && Defaults[.appMode].usesStatusBarItem
+        statusBarItem.isVisible = isStatusBarItemVisible
 
-        Defaults.observe(.hideMenuBarIcon) { [weak self] change in
-            self?.statusBarItem.isVisible = change.newValue == false && Defaults[.appMode].usesStatusBarItem
+        Defaults.observe(.hideMenuBarIcon) { [weak self] _ in
+            self?.statusBarItem.isVisible = self?.isStatusBarItemVisible ?? false
         }.tieToLifetime(of: self)
 
         Defaults.observe(.appMode) { [weak self] change in
-            self?.statusBarItem.isVisible = Defaults[.hideMenuBarIcon] == false && change.newValue.usesStatusBarItem
+            self?.statusBarItem.isVisible = self?.isStatusBarItemVisible ?? false
+            if !change.newValue.usesPopover {
+                self?.popover?.performClose(nil)
+            }
         }.tieToLifetime(of: self)
+    }
+
+    private var isStatusBarItemVisible: Bool {
+        !Defaults[.hideMenuBarIcon] && Defaults[.appMode].usesStatusBarItem
+    }
+
+    func attachPopover<Content: View>(rootView: Content) {
+        let popover = NSPopover()
+        popover.behavior = .semitransient
+        popover.animates = true
+        popover.contentViewController = NSHostingController(rootView: rootView)
+        self.popover = popover
+    }
+
+    func togglePopover() {
+        guard let popover = popover, let button = statusBarItem.button else { return }
+        if popover.isShown {
+            popover.performClose(nil)
+        } else {
+            popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
+        }
+    }
+
+    func showPopover() {
+        guard let popover = popover, let button = statusBarItem.button else { return }
+        if !popover.isShown {
+            popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
+        }
     }
 
     private func menuItem(
@@ -109,6 +143,8 @@ class StatusBarController: NSObject, NSMenuDelegate {
         if event != nil, event!.type == NSEvent.EventType.rightMouseUp || event!.modifierFlags.contains(.control) {
             statusBarItem.menu = statusBarMenu
             statusBarItem.button?.performClick(nil)
+        } else if Defaults[.appMode].usesPopover {
+            togglePopover()
         } else {
             onToggle?()
         }
