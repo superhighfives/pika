@@ -124,6 +124,12 @@
 /* Hide app */
 "preferences.app.hidden.description" = "Sakrij aplikaciju";
 
+/* Menu bar popover */
+"preferences.app.menubarPopover.title" = "Popover trake izbornika";
+
+/* Show as popover */
+"preferences.app.menubarPopover.description" = "Prikaži kao popover";
+
 /* Appearance */
 "preferences.appearance.title" = "Izgled";
 

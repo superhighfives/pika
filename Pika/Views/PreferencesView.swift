@@ -69,6 +69,7 @@ private struct GeneralAndSelectionSection: View {
                     Text(PikaText.textFloatDescription)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
+                .disabled(appMode == .menubarPopover)
                 Toggle(isOn: $showColorOverlay) {
                     Text(PikaText.textShowColorOverlay)
                 }

@@ -295,6 +295,14 @@ enum PikaText {
     static let textAppDockDescription = NSLocalizedString("preferences.app.dock.description", comment: "Show in dock")
     static let textAppHiddenTitle = NSLocalizedString("preferences.app.hidden.title", comment: "Hidden")
     static let textAppHiddenDescription = NSLocalizedString("preferences.app.hidden.description", comment: "Hide app")
+    static let textAppMenubarPopoverTitle = NSLocalizedString(
+        "preferences.app.menubarPopover.title",
+        comment: "Menu bar popover"
+    )
+    static let textAppMenubarPopoverDescription = NSLocalizedString(
+        "preferences.app.menubarPopover.description",
+        comment: "Show as popover"
+    )
 
     // Appearance Settings
     static let textAppearanceTitle = NSLocalizedString("preferences.appearance.title", comment: "Appearance")

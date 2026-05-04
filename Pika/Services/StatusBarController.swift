@@ -23,14 +23,14 @@ class StatusBarController: NSObject, NSMenuDelegate {
 
         statusBarMenu = buildMenu()
 
-        statusBarItem.isVisible = Defaults[.hideMenuBarIcon] == false && Defaults[.appMode] == .menubar
+        statusBarItem.isVisible = Defaults[.hideMenuBarIcon] == false && Defaults[.appMode].usesStatusBarItem
 
         Defaults.observe(.hideMenuBarIcon) { [weak self] change in
-            self?.statusBarItem.isVisible = change.newValue == false && Defaults[.appMode] == .menubar
+            self?.statusBarItem.isVisible = change.newValue == false && Defaults[.appMode].usesStatusBarItem
         }.tieToLifetime(of: self)
 
         Defaults.observe(.appMode) { [weak self] change in
-            self?.statusBarItem.isVisible = Defaults[.hideMenuBarIcon] == false && change.newValue == .menubar
+            self?.statusBarItem.isVisible = Defaults[.hideMenuBarIcon] == false && change.newValue.usesStatusBarItem
         }.tieToLifetime(of: self)
     }
 

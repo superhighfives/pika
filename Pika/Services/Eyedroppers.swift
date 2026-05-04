@@ -453,6 +453,9 @@ class Eyedropper: ObservableObject {
         }
 
         DispatchQueue.main.asyncAfter(deadline: .now()) {
+            if Defaults[.appMode].usesPopover {
+                NSApp.activate(ignoringOtherApps: true)
+            }
             let sampler = NSColorSampler()
             sampler.show { selectedColor in
 

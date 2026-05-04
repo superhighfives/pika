@@ -7,7 +7,6 @@ import SwiftUI
     import Sparkle
 #endif
 
-@main
 class AppDelegate: NSObject, NSApplicationDelegate {
     var eyedroppers: Eyedroppers!
 
@@ -16,14 +15,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let statusBarController = StatusBarController()
 
     func setupAppMode() {
-        var currentMode = Defaults[.appMode] == .regular
-            ? NSApplication.ActivationPolicy.regular
-            : NSApplication.ActivationPolicy.accessory
+        var currentMode = Defaults[.appMode].activationPolicy
         NSApp.setActivationPolicy(currentMode)
-        Defaults.observe(.appMode) { change in
-            let newMode = change.newValue == .regular
-                ? NSApplication.ActivationPolicy.regular
-                : NSApplication.ActivationPolicy.accessory
+        Defaults.observe(.appMode) { [weak self] change in
+            let newMode = change.newValue.activationPolicy
             if newMode != currentMode {
                 currentMode = newMode
                 NSApp.setActivationPolicy(newMode)
@@ -39,6 +34,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                         }
                     }
                 }
+            }
+            if change.oldValue != change.newValue, change.newValue.usesPopover {
+                self?.windowCoordinator.hideMainWindow()
             }
         }.tieToLifetime(of: self)
     }
@@ -89,7 +87,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             Defaults[.colorSpace] = Defaults.Keys.colorSpace.defaultValue
         }
 
-        if Defaults[.alwaysShowOnLaunch] {
+        if Defaults[.alwaysShowOnLaunch], !Defaults[.appMode].usesPopover {
             showPika(self)
         }
 
