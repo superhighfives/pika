@@ -5,7 +5,7 @@ import SwiftUI
 /// Owns the status bar item — setup, visibility, and click handling.
 /// Calls `onToggle` when the user left-clicks the icon (menubar mode).
 /// In popover mode, left-click toggles the attached `NSPopover` instead.
-class StatusBarController: NSObject, NSMenuDelegate {
+class StatusBarController: NSObject, NSMenuDelegate, NSPopoverDelegate {
     private var statusBarItem: NSStatusItem!
     private var statusBarMenu: NSMenu!
     private var popover: NSPopover?
@@ -49,7 +49,17 @@ class StatusBarController: NSObject, NSMenuDelegate {
         popover.behavior = .semitransient
         popover.animates = true
         popover.contentViewController = NSHostingController(rootView: rootView)
+        popover.delegate = self
         self.popover = popover
+    }
+
+    /// Releases the popover's hosting controller so its SwiftUI tree (and notification
+    /// listeners) goes away when leaving popover mode.
+    func detachPopover() {
+        popover?.performClose(nil)
+        popover?.delegate = nil
+        popover?.contentViewController = nil
+        popover = nil
     }
 
     func togglePopover() {
@@ -57,15 +67,27 @@ class StatusBarController: NSObject, NSMenuDelegate {
         if popover.isShown {
             popover.performClose(nil)
         } else {
-            popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
+            presentPopover(popover, from: button)
         }
     }
 
     func showPopover() {
         guard let popover = popover, let button = statusBarItem.button else { return }
         if !popover.isShown {
-            popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
+            presentPopover(popover, from: button)
         }
+    }
+
+    private func presentPopover(_ popover: NSPopover, from button: NSStatusBarButton) {
+        NSApp.activate(ignoringOtherApps: true)
+        popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
+    }
+
+    // MARK: - NSPopoverDelegate
+
+    func popoverDidShow(_ notification: Notification) {
+        guard let popover = notification.object as? NSPopover else { return }
+        popover.contentViewController?.view.window?.makeKeyAndOrderFront(nil)
     }
 
     private func menuItem(
