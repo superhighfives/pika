@@ -125,10 +125,10 @@
 "preferences.app.hidden.description" = "アプリを非表示";
 
 /* Menu bar popover */
-"preferences.app.menubarPopover.title" = "メニューバーポップオーバー";
+"preferences.app.menubarPopover.title" = "ポップオーバー";
 
-/* Show as popover */
-"preferences.app.menubarPopover.description" = "ポップオーバーとして表示";
+/* Show as menu bar popover */
+"preferences.app.menubarPopover.description" = "メニューバーポップオーバーとして表示";
 
 /* Appearance */
 "preferences.appearance.title" = "外観";

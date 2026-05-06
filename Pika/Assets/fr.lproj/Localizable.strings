@@ -125,10 +125,10 @@
 "preferences.app.hidden.description" = "Masquer l'application";
 
 /* Menu bar popover */
-"preferences.app.menubarPopover.title" = "Popover de la barre de menus";
+"preferences.app.menubarPopover.title" = "Popover";
 
-/* Show as popover */
-"preferences.app.menubarPopover.description" = "Afficher comme popover";
+/* Show as menu bar popover */
+"preferences.app.menubarPopover.description" = "Afficher comme popover de la barre de menus";
 
 /* Appearance */
 "preferences.appearance.title" = "Apparence";

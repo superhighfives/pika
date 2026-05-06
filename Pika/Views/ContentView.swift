@@ -51,8 +51,9 @@ struct ContentView: View {
                         }
                     }
                     .focusable(false)
-                    .padding(16.0)
-                    .frame(maxHeight: .infinity, alignment: .center)
+                    .padding(.horizontal, 16.0)
+                    .padding(.top, 42.0)
+                    .frame(maxHeight: .infinity, alignment: .top)
                 )
                 .onHover { hover in
                     guard !hover, swapTimerSubscription == nil else {

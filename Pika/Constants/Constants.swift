@@ -297,11 +297,11 @@ enum PikaText {
     static let textAppHiddenDescription = NSLocalizedString("preferences.app.hidden.description", comment: "Hide app")
     static let textAppMenubarPopoverTitle = NSLocalizedString(
         "preferences.app.menubarPopover.title",
-        comment: "Menu bar popover"
+        comment: "Popover"
     )
     static let textAppMenubarPopoverDescription = NSLocalizedString(
         "preferences.app.menubarPopover.description",
-        comment: "Show as popover"
+        comment: "Show as menu bar popover"
     )
 
     // Appearance Settings

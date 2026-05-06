@@ -333,6 +333,7 @@ struct PreferencesView: View {
                 .padding(.bottom, 24.0)
             }
         }
+        .forceOverlayScrollers()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
