@@ -14,16 +14,16 @@ final class ColorPairTests: XCTestCase {
     // MARK: - Construction and identity
 
     func test_equality_ignoresIdAndDate() {
-        let a = ColorPair(id: UUID(), foregroundHex: "#ff0000", backgroundHex: "#00ff00", date: Date())
-        let b = ColorPair(id: UUID(), foregroundHex: "#ff0000", backgroundHex: "#00ff00",
-                          date: Date(timeIntervalSince1970: 0))
-        XCTAssertEqual(a, b)
+        let lhs = ColorPair(id: UUID(), foregroundHex: "#ff0000", backgroundHex: "#00ff00", date: Date())
+        let rhs = ColorPair(id: UUID(), foregroundHex: "#ff0000", backgroundHex: "#00ff00",
+                            date: Date(timeIntervalSince1970: 0))
+        XCTAssertEqual(lhs, rhs)
     }
 
     func test_equality_distinguishesByHex() {
-        let a = ColorPair(id: UUID(), foregroundHex: "#ff0000", backgroundHex: "#00ff00", date: Date())
-        let b = ColorPair(id: UUID(), foregroundHex: "#ff0001", backgroundHex: "#00ff00", date: Date())
-        XCTAssertNotEqual(a, b)
+        let lhs = ColorPair(id: UUID(), foregroundHex: "#ff0000", backgroundHex: "#00ff00", date: Date())
+        let rhs = ColorPair(id: UUID(), foregroundHex: "#ff0001", backgroundHex: "#00ff00", date: Date())
+        XCTAssertNotEqual(lhs, rhs)
     }
 
     // MARK: - foregroundColor / backgroundColor

@@ -1,6 +1,12 @@
 /* Pika */
 "app.name" = "Pika";
 
+/* Cancel */
+"general.cancel" = "取消";
+
+/* Clear */
+"general.clear" = "清除";
+
 /* Version */
 "app.version" = "版本";
 
@@ -468,3 +474,60 @@
 
 /* Restore system appearance */
 "help.url.appearance.system" = "恢復系統外觀";
+
+/* Toggle compliance */
+"compliance.toggle" = "切換合規性";
+
+/* New palette… */
+"palette.new" = "新增調色盤…";
+
+/* Rename palette */
+"palette.rename" = "重新命名調色盤";
+
+/* Delete palette */
+"palette.delete" = "刪除調色盤";
+
+/* Remove from palette */
+"palette.remove" = "從調色盤中移除";
+
+/* Palette name */
+"palette.name.prompt" = "調色盤名稱";
+
+/* My palette */
+"palette.name.placeholder" = "我的調色盤";
+
+/* Add to palette */
+"palette.add" = "加入調色盤";
+
+/* Export palette */
+"palette.export" = "匯出調色盤";
+
+/* Export color history */
+"history.export" = "匯出顏色歷史記錄";
+
+/* Are you sure you want to clear all history? */
+"history.clear.confirm" = "確定要清除所有歷史記錄嗎？";
+
+/* Show compliance */
+"help.url.compliance.show" = "顯示合規性";
+
+/* Hide compliance */
+"help.url.compliance.hide" = "隱藏合規性";
+
+/* Toggle compliance */
+"help.url.compliance.toggle" = "切換合規性";
+
+/* Show colour preview */
+"help.url.preview.show" = "顯示顏色預覽";
+
+/* Hide colour preview */
+"help.url.preview.hide" = "隱藏顏色預覽";
+
+/* Toggle colour preview */
+"help.url.preview.toggle" = "切換顏色預覽";
+
+/* Compliance */
+"help.url.group.compliance" = "合規性";
+
+/* Preview */
+"help.url.group.preview" = "預覽";

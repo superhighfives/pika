@@ -110,6 +110,13 @@ enum PikaText {
     static let textAppName = NSLocalizedString("app.name", comment: "Pika")
 
     /*
+     * General
+     */
+
+    static let textCancel = NSLocalizedString("general.cancel", comment: "Cancel")
+    static let textClear = NSLocalizedString("general.clear", comment: "Clear")
+
+    /*
      * Colors
      */
 
