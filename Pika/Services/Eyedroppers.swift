@@ -505,10 +505,15 @@ class Eyedropper: ObservableObject {
                     }
                 } else if self.pendingChainCommit {
                     // Chained background pick was cancelled; commit the foreground change
-                    // that was deferred so it isn't lost.
+                    // that was deferred so it isn't lost. self.type is .background here, so
+                    // route copy-on-pick to the foreground selector explicitly.
                     self.pendingChainCommit = false
                     NotificationCenter.default.post(name: .colorPicked, object: nil)
-                    NSApp.sendAction(#selector(AppDelegate.showPika), to: nil, from: nil)
+                    if Defaults[.copyColorOnPick] {
+                        NSApp.sendAction(Eyedropper.Types.foreground.copySelector, to: nil, from: nil)
+                    } else {
+                        NSApp.sendAction(#selector(AppDelegate.showPika), to: nil, from: nil)
+                    }
                 }
 
                 if self.forceShow {

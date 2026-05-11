@@ -531,3 +531,9 @@
 
 /* Preview */
 "help.url.group.preview" = "預覽";
+
+/* Pick a contrasting background color after the foreground */
+"preferences.pick.contrasting" = "Pick contrasting color after foreground";
+
+/* Pick foreground then background */
+"color.pick.contrast" = "Pick foreground and background";
