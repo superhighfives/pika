@@ -810,7 +810,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${BUILT_PRODUCTS_DIR}/LaunchAtLogin_LaunchAtLogin.bundle/Contents/Resources/copy-helper-swiftpm.sh\"\n";
+			shellScript = "\"${BUILT_PRODUCTS_DIR}/LaunchAtLogin_LaunchAtLogin.bundle/Contents/Resources/copy-helper-swiftpm.sh\"\n\n# Re-sign the helper with the correct identifier.\n# The SPM script sets CFBundleIdentifier but doesn't pass --identifier\n# to codesign, so the Mach-O keeps the upstream identifier\n# (com.sindresorhus.LaunchAtLoginHelper). Apple rejects MAS uploads\n# when the code signature identifier doesn't match the bundle ID.\nHELPER=\"${BUILT_PRODUCTS_DIR}/${CONTENTS_FOLDER_PATH}/Library/LoginItems/LaunchAtLoginHelper.app\"\nENTITLEMENTS=\"${BUILT_PRODUCTS_DIR}/LaunchAtLogin_LaunchAtLogin.bundle/Contents/Resources/LaunchAtLogin.entitlements\"\nif [ -d \"$HELPER\" ] && [ -n \"$EXPANDED_CODE_SIGN_IDENTITY_NAME\" ]; then\n  codesign --force --entitlements=\"$ENTITLEMENTS\" --deep --options=runtime \\\n    --sign=\"$EXPANDED_CODE_SIGN_IDENTITY_NAME\" \\\n    --identifier \"${PRODUCT_BUNDLE_IDENTIFIER}-LaunchAtLoginHelper\" \\\n    \"$HELPER\"\nfi\n";
 		};
 		EAD0B706259CF69900FA2F67 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -866,7 +866,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${BUILT_PRODUCTS_DIR}/LaunchAtLogin_LaunchAtLogin.bundle/Contents/Resources/copy-helper-swiftpm.sh\"\n";
+			shellScript = "\"${BUILT_PRODUCTS_DIR}/LaunchAtLogin_LaunchAtLogin.bundle/Contents/Resources/copy-helper-swiftpm.sh\"\n\n# Re-sign the helper with the correct identifier.\n# The SPM script sets CFBundleIdentifier but doesn't pass --identifier\n# to codesign, so the Mach-O keeps the upstream identifier\n# (com.sindresorhus.LaunchAtLoginHelper). Apple rejects MAS uploads\n# when the code signature identifier doesn't match the bundle ID.\nHELPER=\"${BUILT_PRODUCTS_DIR}/${CONTENTS_FOLDER_PATH}/Library/LoginItems/LaunchAtLoginHelper.app\"\nENTITLEMENTS=\"${BUILT_PRODUCTS_DIR}/LaunchAtLogin_LaunchAtLogin.bundle/Contents/Resources/LaunchAtLogin.entitlements\"\nif [ -d \"$HELPER\" ] && [ -n \"$EXPANDED_CODE_SIGN_IDENTITY_NAME\" ]; then\n  codesign --force --entitlements=\"$ENTITLEMENTS\" --deep --options=runtime \\\n    --sign=\"$EXPANDED_CODE_SIGN_IDENTITY_NAME\" \\\n    --identifier \"${PRODUCT_BUNDLE_IDENTIFIER}-LaunchAtLoginHelper\" \\\n    \"$HELPER\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
