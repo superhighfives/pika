@@ -111,4 +111,24 @@ final class NSColorLuminanceTests: XCTestCase {
         let result = white.toContrastRatioString(with: gray)
         XCTAssertNotNil(Double(result), "Expected numeric string, got '\(result)'")
     }
+
+    // MARK: - toLocalizedContrastRatioString(with:)
+
+    func test_toLocalizedContrastRatioString_whiteOnBlack_returns21() {
+        let white = NSColor(r: 1, g: 1, b: 1)
+        let black = NSColor(r: 0, g: 0, b: 0)
+        let result = white.toLocalizedContrastRatioString(with: black)
+        XCTAssertTrue(result.hasPrefix("21"), "Expected '21...', got '\(result)'")
+    }
+
+    func test_toLocalizedContrastRatioString_usesLocaleDecimalSeparator() {
+        let white = NSColor(r: 1, g: 1, b: 1)
+        let gray = NSColor(r: 128, g: 128, b: 128)
+        let result = white.toLocalizedContrastRatioString(with: gray)
+        let separator = Locale.current.decimalSeparator ?? "."
+        XCTAssertTrue(
+            result.contains(separator) || !result.contains("."),
+            "Expected locale separator '\(separator)' in '\(result)'"
+        )
+    }
 }
