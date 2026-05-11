@@ -34,6 +34,16 @@ enum CopyFormat: String, Codable, CaseIterable {
 enum ContrastStandard: String, Codable, CaseIterable {
     case wcag = "WCAG"
     case apca = "APCA"
+    case both = "BOTH"
+
+    func localizedString() -> String {
+        switch self {
+        case .wcag, .apca:
+            return rawValue
+        case .both:
+            return NSLocalizedString("color.standard.both", comment: "Both")
+        }
+    }
 }
 
 enum AppMode: String, Codable, CaseIterable {

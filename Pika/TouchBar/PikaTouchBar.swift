@@ -124,19 +124,23 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
 
         item.view = view
 
-        let viewBindings: [String: NSView] = ["stackView": view]
-        let hconstraints = NSLayoutConstraint.constraints(
-            withVisualFormat: "H:[stackView(70)]",
-            options: [],
-            metrics: nil,
-            views: viewBindings
-        )
-        NSLayoutConstraint.activate(hconstraints)
+        let widthConstraint = view.widthAnchor.constraint(equalToConstant: 70)
+        widthConstraint.isActive = true
 
         let updateContrastText = {
-            textField.stringValue = self.contrastStandard == .wcag ?
-                foreground.color.toContrastRatioString(with: background.color) :
-                foreground.color.toAPCAcontrastValue(with: background.color)
+            let wcag = foreground.color.toContrastRatioString(with: background.color)
+            let apca = foreground.color.toAPCAcontrastValue(with: background.color)
+            switch self.contrastStandard {
+            case .wcag:
+                textField.stringValue = wcag
+                widthConstraint.constant = 70
+            case .apca:
+                textField.stringValue = apca
+                widthConstraint.constant = 70
+            case .both:
+                textField.stringValue = "\(wcag) / \(apca)"
+                widthConstraint.constant = 140
+            }
         }
 
         foreground.$color.sink { _ in updateContrastText() }

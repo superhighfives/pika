@@ -1,30 +1,35 @@
 import Defaults
 import SwiftUI
 
-struct Footer: View {
-    @Default(.combineCompliance) var combineCompliance
-    @Default(.contrastStandard) var contrastStandard
+private enum FooterRowKind {
+    case wcag
+    case apca
+}
+
+private struct FooterRow: View {
+    let kind: FooterRowKind
     @ObservedObject var foreground: Eyedropper
     @ObservedObject var background: Eyedropper
+    var combineCompliance: Bool
+
+    private var contrastHeader: String {
+        kind == .wcag ? PikaText.textColorRatio : PikaText.textLightnessContrastValue
+    }
+
+    private var complianceLabel: String {
+        kind == .wcag ? PikaText.textColorWCAG : PikaText.textColorAPCA
+    }
 
     private var contrastRatioString: String {
-        contrastStandard == .wcag
+        kind == .wcag
             ? foreground.color.toContrastRatioString(with: background.color)
             : foreground.color.toAPCAcontrastValue(with: background.color)
     }
 
     private var complianceData: ComplianceData {
-        contrastStandard == .wcag
+        kind == .wcag
             ? .wcag(foreground.color.toWCAGCompliance(with: background.color))
             : .apca(foreground.color.toAPCACompliance(with: background.color))
-    }
-
-    private var contrastHeader: String {
-        contrastStandard == .wcag ? PikaText.textColorRatio : PikaText.textLightnessContrastValue
-    }
-
-    private var complianceLabel: String {
-        contrastStandard == .wcag ? PikaText.textColorWCAG : PikaText.textColorAPCA
     }
 
     var body: some View {
@@ -35,7 +40,7 @@ struct Footer: View {
                     .fontWeight(.semibold)
                     .foregroundColor(.secondary)
                     .fixedSize()
-                if contrastStandard == .wcag {
+                if kind == .wcag {
                     HStack(spacing: 2.0) {
                         Text(contrastRatioString)
                             .font(.system(size: 18))
@@ -74,7 +79,46 @@ struct Footer: View {
                 )
             }
         }
-        .frame(maxWidth: .infinity, maxHeight: 50.0, alignment: .leading)
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
+struct Footer: View {
+    @Default(.combineCompliance) var combineCompliance
+    @Default(.contrastStandard) var contrastStandard
+    @ObservedObject var foreground: Eyedropper
+    @ObservedObject var background: Eyedropper
+
+    var body: some View {
+        Group {
+            if contrastStandard == .both {
+                VStack(alignment: .leading, spacing: 8.0) {
+                    FooterRow(
+                        kind: .wcag,
+                        foreground: foreground,
+                        background: background,
+                        combineCompliance: combineCompliance
+                    )
+                    Divider()
+                    FooterRow(
+                        kind: .apca,
+                        foreground: foreground,
+                        background: background,
+                        combineCompliance: combineCompliance
+                    )
+                }
+                .padding(.vertical, 8.0)
+            } else {
+                FooterRow(
+                    kind: contrastStandard == .wcag ? .wcag : .apca,
+                    foreground: foreground,
+                    background: background,
+                    combineCompliance: combineCompliance
+                )
+                .frame(maxHeight: 50.0)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, 12.0)
         .background(VisualEffect(
             material: NSVisualEffectView.Material.underWindowBackground,
