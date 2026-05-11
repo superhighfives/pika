@@ -398,6 +398,7 @@ class Eyedropper: ObservableObject {
 
     let type: Types
     var forceShow = false
+    var pendingChainCommit = false
 
     let colorNames: [ColorName] = loadColors()!
     var closestVector: ClosestVector!
@@ -444,7 +445,7 @@ class Eyedropper: ObservableObject {
         panel.isContinuous = true
     }
 
-    func start() {
+    func start(chainContrasting: Bool = false) {
         if Defaults[.hidePikaWhilePicking] {
             if NSApp.mainWindow?.isVisible == true {
                 forceShow = true
@@ -474,13 +475,40 @@ class Eyedropper: ObservableObject {
 
                     self.set(normalizedColor)
 
-                    NotificationCenter.default.post(name: .colorPicked, object: nil)
-
-                    if Defaults[.copyColorOnPick] {
-                        NSApp.sendAction(self.type.copySelector, to: nil, from: nil)
+                    if chainContrasting,
+                       self.type == .foreground,
+                       let appDelegate = NSApp.delegate as? AppDelegate
+                    {
+                        // Defer committing the foreground pick — we'll record once the
+                        // background is also picked (or the chained pick is cancelled).
+                        let background = appDelegate.eyedroppers.background
+                        background.pendingChainCommit = true
+                        // Don't bounce Pika back into view between picks: forward the
+                        // forceShow intent to the background pick instead.
+                        if self.forceShow {
+                            self.forceShow = false
+                            background.forceShow = true
+                        }
+                        let delay: Double = Defaults[.showColorOverlay] ? 0.4 : 0.05
+                        DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+                            background.start()
+                        }
                     } else {
-                        NSApp.sendAction(#selector(AppDelegate.showPika), to: nil, from: nil)
+                        self.pendingChainCommit = false
+                        NotificationCenter.default.post(name: .colorPicked, object: nil)
+
+                        if Defaults[.copyColorOnPick] {
+                            NSApp.sendAction(self.type.copySelector, to: nil, from: nil)
+                        } else {
+                            NSApp.sendAction(#selector(AppDelegate.showPika), to: nil, from: nil)
+                        }
                     }
+                } else if self.pendingChainCommit {
+                    // Chained background pick was cancelled; commit the foreground change
+                    // that was deferred so it isn't lost.
+                    self.pendingChainCommit = false
+                    NotificationCenter.default.post(name: .colorPicked, object: nil)
+                    NSApp.sendAction(#selector(AppDelegate.showPika), to: nil, from: nil)
                 }
 
                 if self.forceShow {

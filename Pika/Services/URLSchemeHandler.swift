@@ -53,6 +53,10 @@ final class URLSchemeHandler: NSObject {
             NSApp.sendAction(#selector(AppDelegate.triggerPickForeground), to: nil, from: nil)
         } else if task == "background" {
             NSApp.sendAction(#selector(AppDelegate.triggerPickBackground), to: nil, from: nil)
+        } else if task == "contrast" {
+            NotificationCenter.default.post(
+                name: .triggerPickForeground, object: nil, userInfo: ["chain": true]
+            )
         }
     }
 
