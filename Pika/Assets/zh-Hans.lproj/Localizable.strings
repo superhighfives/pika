@@ -148,6 +148,9 @@
 /* Contrast Calculation Standard */
 "preferences.contrast.standard" = "对比度计算标准";
 
+/* Both (combined WCAG and APCA) */
+"color.standard.both" = "Both";
+
 /* Contrast ratio */
 "color.ratio" = "对比度比例";
 

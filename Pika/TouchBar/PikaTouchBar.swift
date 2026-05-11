@@ -118,6 +118,8 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
 
         let stackView = NSStackView(views: [icon, textField])
         let view = NSView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(stackView)
         stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true

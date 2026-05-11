@@ -148,6 +148,9 @@
 /* Contrast Calculation Standard */
 "preferences.contrast.standard" = "Standard de Calcul de Contraste";
 
+/* Both (combined WCAG and APCA) */
+"color.standard.both" = "Both";
+
 /* Contrast ratio */
 "color.ratio" = "Contraste";
 
