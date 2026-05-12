@@ -94,6 +94,18 @@
 /* Hide color names */
 "preferences.names.description" = "Hide color names";
 
+/* Color names display mode */
+"preferences.names.mode" = "Color names display mode";
+
+/* Artistic */
+"preferences.names.mode.artistic" = "Artistic";
+
+/* RAL */
+"preferences.names.mode.ral" = "RAL";
+
+/* Both */
+"preferences.names.mode.both" = "Both (two lines)";
+
 /* Subscribe to beta releases */
 "preferences.beta.description" = "Subscribe to beta releases";
 

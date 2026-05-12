@@ -8,6 +8,7 @@ import SwiftUI
 private struct GeneralAndSelectionSection: View {
     @Default(.hideMenuBarIcon) var hideMenuBarIcon
     @Default(.hideColorNames) var hideColorNames
+    @Default(.colorNameDisplayMode) var colorNameDisplayMode
     #if TARGET_SPARKLE
         @Default(.betaUpdates) var betaUpdates
     #endif
@@ -97,6 +98,12 @@ private struct GeneralAndSelectionSection: View {
                 Toggle(isOn: $hideColorNames) {
                     Text(PikaText.textColorNamesDescription)
                 }
+                Picker(PikaText.textColorNamesMode, selection: $colorNameDisplayMode) {
+                    ForEach(ColorNameDisplayMode.allCases, id: \.self) { value in
+                        Text(value.localizedString()).tag(value)
+                    }
+                }
+                .pickerStyle(.menu)
                 Toggle(isOn: $appFloating) {
                     Text(PikaText.textFloatDescription)
                         .frame(maxWidth: .infinity, alignment: .leading)

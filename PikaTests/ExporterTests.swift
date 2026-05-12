@@ -100,4 +100,54 @@ final class ExporterTests: XCTestCase {
         XCTAssertLessThan(colorsRange.lowerBound, nameRange.lowerBound,
                           "Keys should be alphabetically sorted")
     }
+
+    // MARK: - RAL model decoding
+
+    func test_ralResponseData_decodesSnakeCaseNameKeys() throws {
+        let json = #"""
+        {
+            "colors": [
+                {
+                    "code": "RAL 1000",
+                    "name_en": "Green beige",
+                    "name_zh": "绿色米色",
+                    "hex": "#CCC58F"
+                }
+            ]
+        }
+        """#
+
+        let data = try XCTUnwrap(json.data(using: .utf8))
+        let decoded = try JSONDecoder().decode(RALResponseData.self, from: data)
+        XCTAssertEqual(decoded.colors.count, 1)
+
+        let first = try XCTUnwrap(decoded.colors.first)
+        XCTAssertEqual(first.code, "RAL 1000")
+        XCTAssertEqual(first.nameEn, "Green beige")
+        XCTAssertEqual(first.nameZh, "绿色米色")
+        XCTAssertEqual(first.hex, "#CCC58F")
+    }
+
+    func test_ralColorName_colorParsesHex() throws {
+        let json = #"""
+        {
+            "colors": [
+                {
+                    "code": "RAL 3020",
+                    "name_en": "Traffic red",
+                    "name_zh": "交通红",
+                    "hex": "#C1121C"
+                }
+            ]
+        }
+        """#
+
+        let data = try XCTUnwrap(json.data(using: .utf8))
+        let decoded = try JSONDecoder().decode(RALResponseData.self, from: data)
+        let color = try XCTUnwrap(XCTUnwrap(decoded.colors.first).color.usingColorSpace(.sRGB))
+
+        XCTAssertEqual(color.redComponent, 193.0 / 255.0, accuracy: 0.01)
+        XCTAssertEqual(color.greenComponent, 18.0 / 255.0, accuracy: 0.01)
+        XCTAssertEqual(color.blueComponent, 28.0 / 255.0, accuracy: 0.01)
+    }
 }

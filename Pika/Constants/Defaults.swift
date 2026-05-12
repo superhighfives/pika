@@ -60,6 +60,16 @@ enum AppLanguage: String, Codable, CaseIterable {
     }
 }
 
+enum ColorNameDisplayMode: String, Codable, CaseIterable {
+    case artistic = "preferences.names.mode.artistic"
+    case ral = "preferences.names.mode.ral"
+    case both = "preferences.names.mode.both"
+
+    func localizedString() -> String {
+        NSLocalizedString(rawValue, comment: "Color name display mode")
+    }
+}
+
 extension Defaults.Keys {
     static let colorFormat = Key<ColorFormat>("colorFormat", default: .hex)
     static let viewedSplash = Key<Bool>("viewedSplash", default: false)
@@ -72,6 +82,7 @@ extension Defaults.Keys {
         "colorSpace", default: NSScreen.main!.colorSpace!
     )
     static let hideColorNames = Key<Bool>("hideColorNames", default: false)
+    static let colorNameDisplayMode = Key<ColorNameDisplayMode>("colorNameDisplayMode", default: .artistic)
     static let formatColorsForCSS = Key<Bool>("formatColorsForCSS", default: false)
     static let copyFormat = Key<CopyFormat>("copyFormat", default: .css)
     static let appMode = Key<AppMode>("appMode", default: .menubar)

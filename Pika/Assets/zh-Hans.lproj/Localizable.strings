@@ -94,6 +94,18 @@
 /* Hide color names */
 "preferences.names.description" = "隐藏颜色名称";
 
+/* Color names display mode */
+"preferences.names.mode" = "颜色名称显示模式";
+
+/* Artistic */
+"preferences.names.mode.artistic" = "文艺名称";
+
+/* RAL */
+"preferences.names.mode.ral" = "RAL";
+
+/* Both */
+"preferences.names.mode.both" = "同时显示";
+
 /* Subscribe to beta releases */
 "preferences.beta.description" = "订阅测试版发布";
 

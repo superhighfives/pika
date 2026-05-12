@@ -6,6 +6,7 @@ struct EyedropperButton: View {
     @Default(.colorFormat) var colorFormat
     @Default(.copyFormat) var copyFormat
     @Default(.hideColorNames) var hideColorNames
+    @Default(.colorNameDisplayMode) var colorNameDisplayMode
     @Default(.showColorPreview) var showColorPreview
 
     @State var hoverVisible: Bool = false
@@ -39,9 +40,27 @@ struct EyedropperButton: View {
                                 .padding(.trailing, 32.0)
 
                             if !hideColorNames {
-                                Text(eyedropper.getClosestColor())
-                                    .font(.system(size: 12, weight: .medium))
-                                    .foregroundColor(eyedropper.color.getUIColor())
+                                switch colorNameDisplayMode {
+                                case .artistic:
+                                    Text(eyedropper.getClosestColor())
+                                        .font(.system(size: 12, weight: .medium))
+                                        .foregroundColor(eyedropper.color.getUIColor())
+                                case .ral:
+                                    Text(eyedropper.getClosestRALColor() ?? eyedropper.getClosestColor())
+                                        .font(.system(size: 12, weight: .medium))
+                                        .foregroundColor(eyedropper.color.getUIColor())
+                                case .both:
+                                    VStack(alignment: .leading, spacing: 2.0) {
+                                        Text(eyedropper.getClosestColor())
+                                            .font(.system(size: 12, weight: .medium))
+                                            .foregroundColor(eyedropper.color.getUIColor())
+                                        if let ralName = eyedropper.getClosestRALColor() {
+                                            Text(ralName)
+                                                .font(.system(size: 12, weight: .medium))
+                                                .foregroundColor(eyedropper.color.getUIColor())
+                                        }
+                                    }
+                                }
                             }
                         }
                     }

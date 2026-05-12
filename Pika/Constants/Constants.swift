@@ -276,6 +276,10 @@ enum PikaText {
         "preferences.names.description",
         comment: "Hide color names"
     )
+    static let textColorNamesMode = NSLocalizedString(
+        "preferences.names.mode",
+        comment: "Color names display mode"
+    )
     static let textFloatDescription = NSLocalizedString(
         "preferences.float.description",
         comment: "Float above windows"

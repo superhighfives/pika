@@ -399,8 +399,10 @@ class Eyedropper: ObservableObject {
     let type: Types
     var forceShow = false
 
-    let colorNames: [ColorName] = loadColors()!
+    let colorNames: [ColorName] = loadColors() ?? []
+    let ralColorNames: [RALColorName] = loadRALColors() ?? []
     var closestVector: ClosestVector!
+    var ralClosestVector: ClosestVector?
 
     @objc @Published public var color: NSColor
 
@@ -412,9 +414,16 @@ class Eyedropper: ObservableObject {
 
         // Load colors
         closestVector = ClosestVector(colorNames.map { $0.color.toRGB8BitArray() })
+        if !ralColorNames.isEmpty {
+            ralClosestVector = ClosestVector(ralColorNames.map { $0.color.toRGB8BitArray() })
+        }
     }
 
     func getClosestColor() -> String {
+        guard !colorNames.isEmpty else {
+            return color.toHexString()
+        }
+
         let englishName = colorNames[closestVector.compare(color)].name
 
         let localizedName = NSLocalizedString(
@@ -429,6 +438,28 @@ class Eyedropper: ObservableObject {
             return "\(englishName) - \(localizedName)"
         }
         return localizedName
+    }
+
+    private func prefersChineseRALName() -> Bool {
+        let appLanguage = Defaults[.appLanguage]
+        switch appLanguage {
+        case .chinese:
+            return true
+        case .english:
+            return false
+        case .system:
+            return Locale.preferredLanguages.first?.lowercased().hasPrefix("zh") ?? false
+        }
+    }
+
+    func getClosestRALColor() -> String? {
+        guard let ralClosestVector, !ralColorNames.isEmpty else {
+            return nil
+        }
+
+        let ral = ralColorNames[ralClosestVector.compare(color)]
+        let name = prefersChineseRALName() ? ral.nameZh : ral.nameEn
+        return "\(ral.code) \(name)"
     }
 
     func set(_ selectedColor: NSColor) {

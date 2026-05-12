@@ -47,7 +47,8 @@ class Exporter {
               "hsl": "\(foreground.color.toFormat(format: ColorFormat.hsl, style: style))",
               "opengl": "\(foreground.color.toFormat(format: ColorFormat.opengl, style: style))",
               "oklch": "\(foreground.color.toFormat(format: ColorFormat.oklch, style: style))",
-              "name": "\(foreground.getClosestColor())"
+                            "name": "\(foreground.getClosestColor())",
+                            "name_ral": "\(foreground.getClosestRALColor() ?? "")"
             },
             "background": {
               "hex": "\(background.color.toFormat(format: ColorFormat.hex, style: style))",
@@ -56,7 +57,8 @@ class Exporter {
               "hsl": "\(background.color.toFormat(format: ColorFormat.hsl, style: style))",
               "opengl": "\(background.color.toFormat(format: ColorFormat.opengl, style: style))",
               "oklch": "\(background.color.toFormat(format: ColorFormat.oklch, style: style))",
-              "name": "\(background.getClosestColor())"
+                            "name": "\(background.getClosestColor())",
+                            "name_ral": "\(background.getClosestRALColor() ?? "")"
             }
           },
           "ratio": "\(colorContrastRatio)",
