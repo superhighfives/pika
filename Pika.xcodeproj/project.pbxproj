@@ -7,6 +7,29 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CC1100000000000000000200 /* URLSchemeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1100000000000000000100 /* URLSchemeHandler.swift */; };
+		CC1100000000000000000201 /* WindowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1100000000000000000101 /* WindowCoordinator.swift */; };
+		CC1100000000000000000202 /* StatusBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1100000000000000000102 /* StatusBarController.swift */; };
+		CC1100000000000000000203 /* URLSchemeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1100000000000000000100 /* URLSchemeHandler.swift */; };
+		CC1100000000000000000204 /* WindowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1100000000000000000101 /* WindowCoordinator.swift */; };
+		CC1100000000000000000205 /* StatusBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1100000000000000000102 /* StatusBarController.swift */; };
+
+		CC20000000000000000000F2 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC20000000000000000000D2 /* XCTest.framework */; };
+		CC2000000000000000000101 /* NSColorInitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000100 /* NSColorInitTests.swift */; };
+		CC2000000000000000000201 /* NSColorLuminanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000200 /* NSColorLuminanceTests.swift */; };
+		CC2000000000000000000301 /* NSColorHexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000300 /* NSColorHexTests.swift */; };
+		CC2000000000000000000401 /* NSColorRGBTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000400 /* NSColorRGBTests.swift */; };
+		CC2000000000000000000501 /* NSColorHSLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000500 /* NSColorHSLTests.swift */; };
+		CC2000000000000000000601 /* NSColorLabTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000600 /* NSColorLabTests.swift */; };
+		CC2000000000000000000701 /* WCAGComplianceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000700 /* WCAGComplianceTests.swift */; };
+		CC2000000000000000000801 /* APCAComplianceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000800 /* APCAComplianceTests.swift */; };
+		CC2000000000000000000901 /* NotificationNamesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000900 /* NotificationNamesTests.swift */; };
+		CC2000000000000000000A01 /* CGFloatFormatTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000A00 /* CGFloatFormatTests.swift */; };
+		CC2000000000000000000B01 /* ColorPairTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000B00 /* ColorPairTests.swift */; };
+		CC2000000000000000000C01 /* ClosestVectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000C00 /* ClosestVectorTests.swift */; };
+		CC2000000000000000000D01 /* SequenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000D00 /* SequenceTests.swift */; };
+		CC2000000000000000000E01 /* ExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000E00 /* ExporterTests.swift */; };
+
 		220D5E9428DB154300B6285E /* AppModeButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220D5E9328DB154300B6285E /* AppModeButtons.swift */; };
 		220D5E9828DB158400B6285E /* AppModeToggleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220D5E9728DB158400B6285E /* AppModeToggleGroup.swift */; };
 		221600F925A62E5B00B8B7D9 /* IconImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221600F825A62E5B00B8B7D9 /* IconImage.swift */; };
@@ -181,7 +204,27 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1FDF40189F5A46BDB48545F4 /* HelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpView.swift; sourceTree = "<group>"; };
+		CC1100000000000000000100 /* URLSchemeHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSchemeHandler.swift; sourceTree = "<group>"; };
+		CC1100000000000000000101 /* WindowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowCoordinator.swift; sourceTree = "<group>"; };
+		CC1100000000000000000102 /* StatusBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarController.swift; sourceTree = "<group>"; };
+
+		CC20000000000000000000D2 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_FRAMEWORKS_DIR; };
+		CC20000000000000000000E2 /* PikaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PikaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC2000000000000000000100 /* NSColorInitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSColorInitTests.swift; sourceTree = "<group>"; };
+		CC2000000000000000000200 /* NSColorLuminanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSColorLuminanceTests.swift; sourceTree = "<group>"; };
+		CC2000000000000000000300 /* NSColorHexTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSColorHexTests.swift; sourceTree = "<group>"; };
+		CC2000000000000000000400 /* NSColorRGBTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSColorRGBTests.swift; sourceTree = "<group>"; };
+		CC2000000000000000000500 /* NSColorHSLTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSColorHSLTests.swift; sourceTree = "<group>"; };
+		CC2000000000000000000600 /* NSColorLabTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSColorLabTests.swift; sourceTree = "<group>"; };
+		CC2000000000000000000700 /* WCAGComplianceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCAGComplianceTests.swift; sourceTree = "<group>"; };
+		CC2000000000000000000800 /* APCAComplianceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APCAComplianceTests.swift; sourceTree = "<group>"; };
+		CC2000000000000000000900 /* NotificationNamesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationNamesTests.swift; sourceTree = "<group>"; };
+		CC2000000000000000000A00 /* CGFloatFormatTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGFloatFormatTests.swift; sourceTree = "<group>"; };
+		CC2000000000000000000B00 /* ColorPairTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPairTests.swift; sourceTree = "<group>"; };
+		CC2000000000000000000C00 /* ClosestVectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosestVectorTests.swift; sourceTree = "<group>"; };
+		CC2000000000000000000D00 /* SequenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceTests.swift; sourceTree = "<group>"; };
+		CC2000000000000000000E00 /* ExporterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExporterTests.swift; sourceTree = "<group>"; };
+
 		220D5E9328DB154300B6285E /* AppModeButtons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppModeButtons.swift; sourceTree = "<group>"; };
 		220D5E9728DB158400B6285E /* AppModeToggleGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppModeToggleGroup.swift; sourceTree = "<group>"; };
 		221600F825A62E5B00B8B7D9 /* IconImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconImage.swift; sourceTree = "<group>"; };
@@ -247,6 +290,9 @@
 		EA635DF025B5A6D80014D91A /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		EA64D70A2F25FB6700A3F295 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		EA64D70C2F25FB9B00A3F295 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		EA64D70E2F25FBC500A3F295 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/Main.strings; sourceTree = "<group>"; };
+		FA0000000000000000000A01 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		FA0000000000000000000A02 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Main.strings; sourceTree = "<group>"; };
 		EA72BB8225A5334B008205E7 /* MetalShader.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = MetalShader.metal; sourceTree = "<group>"; };
 		EA72BB8725A53750008205E7 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		EA72BB8A25A537C3008205E7 /* MetalShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalShader.swift; sourceTree = "<group>"; };
@@ -630,15 +676,91 @@
 			path = ButtonStyles;
 			sourceTree = "<group>";
 		};
-/* End PBXGroup section */
+		CC20000000000000000000C2 /* PikaTests */ = {
+			isa = PBXGroup;
+			children = (
+				CC2000000000000000000100 /* NSColorInitTests.swift */,
+				CC2000000000000000000200 /* NSColorLuminanceTests.swift */,
+				CC2000000000000000000300 /* NSColorHexTests.swift */,
+				CC2000000000000000000400 /* NSColorRGBTests.swift */,
+				CC2000000000000000000500 /* NSColorHSLTests.swift */,
+				CC2000000000000000000600 /* NSColorLabTests.swift */,
+				CC2000000000000000000700 /* WCAGComplianceTests.swift */,
+				CC2000000000000000000800 /* APCAComplianceTests.swift */,
+				CC2000000000000000000900 /* NotificationNamesTests.swift */,
+				CC2000000000000000000A00 /* CGFloatFormatTests.swift */,
+				CC2000000000000000000B00 /* ColorPairTests.swift */,
+				CC2000000000000000000C00 /* ClosestVectorTests.swift */,
+				CC2000000000000000000D00 /* SequenceTests.swift */,
+				CC2000000000000000000E00 /* ExporterTests.swift */,
+			);
+			path = PikaTests;
+			sourceTree = "<group>";
+		};
 
-/* Begin PBXNativeTarget section */
-		CC20000000000000000000A1 /* PikaTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = CC20000000000000000000D1 /* Build configuration list for PBXNativeTarget "PikaTests" */;
-			buildPhases = (
-				CC20000000000000000000B1 /* Sources */,
-				CC20000000000000000000C1 /* Frameworks */,
+		CC1100000000000000000001 /* Eyedropper */ = {
+			isa = PBXGroup;
+			children = (
+				EA635DE025B4FC580014D91A /* ColorPickers.swift */,
+				EA0C526E25AB683400AFF716 /* EyedropperButton.swift */,
+				EA635DE925B534C80014D91A /* EyedropperItem.swift */,
+			);
+			name = Eyedropper;
+			sourceTree = "<group>";
+		};
+		CC1100000000000000000002 /* Compliance */ = {
+			isa = PBXGroup;
+			children = (
+				EABAEADF284D50D1000716AE /* ComplianceButtons.swift */,
+				EA801284259F8F480026D5D9 /* ComplianceToggle.swift */,
+				EA424C7C25CDEF98009056A9 /* ComplianceToggleGroup.swift */,
+			);
+			name = Compliance;
+			sourceTree = "<group>";
+		};
+		CC1100000000000000000003 /* Preferences */ = {
+			isa = PBXGroup;
+			children = (
+				220D5E9328DB154300B6285E /* AppModeButtons.swift */,
+				220D5E9728DB158400B6285E /* AppModeToggleGroup.swift */,
+				22903B0228294F49004BB9F0 /* ColorExampleRow.swift */,
+				EAD0B6F4259CF29300FA2F67 /* PreferencesView.swift */,
+			);
+			name = Preferences;
+			sourceTree = "<group>";
+		};
+		CC1100000000000000000004 /* About */ = {
+			isa = PBXGroup;
+			children = (
+				EAD0B6F3259CF29300FA2F67 /* AboutView.swift */,
+				1FDF40189F5A46BDB48545F4 /* HelpView.swift */,
+				EAA8AE1B25B8F03B0049299B /* KeyboardShortcutGrid.swift */,
+				22FE80B225BA0F820063759E /* KeyboardShortcutItem.swift */,
+				EAA8AE1825B8EC070049299B /* KeyboardShortcutKey.swift */,
+				EA72BB8725A53750008205E7 /* SplashView.swift */,
+			);
+			name = About;
+			sourceTree = "<group>";
+		};
+		CC1100000000000000000005 /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				EAD0B71B259D151400FA2F67 /* NavigationMenu.swift */,
+				EA0C525F25AB5A2B00AFF716 /* NavigationMenuItems.swift */,
+			);
+			name = Navigation;
+			sourceTree = "<group>";
+		};
+		CC1100000000000000000006 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				EAD0B6F5259CF29300FA2F67 /* AppVersion.swift */,
+				F8ABAC592EAAD0DF008CD152 /* ColorPickOverlay.swift */,
+				221600F825A62E5B00B8B7D9 /* IconImage.swift */,
+				EA635DF025B5A6D80014D91A /* Toast.swift */,
+				EAF100CC25C785C4006E1EC3 /* TouchBarVisual.swift */,
+				EA0C524F25AA729300AFF716 /* Visualisation.swift */,
+				226FD60F25A940F90021A67F /* VisualEffect.swift */,
 			);
 			buildRules = (
 			);
@@ -728,6 +850,7 @@
 				"zh-Hant",
 				pl,
 				hr,
+				ja,
 			);
 			mainGroup = EAD0B6BF259CED1C00FA2F67;
 			packageReferences = (
@@ -792,7 +915,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${BUILT_PRODUCTS_DIR}/LaunchAtLogin_LaunchAtLogin.bundle/Contents/Resources/copy-helper-swiftpm.sh\"\n";
+			shellScript = "\"${BUILT_PRODUCTS_DIR}/LaunchAtLogin_LaunchAtLogin.bundle/Contents/Resources/copy-helper-swiftpm.sh\"\n\n# Re-sign the helper with the correct identifier.\n# The SPM script sets CFBundleIdentifier but doesn't pass --identifier\n# to codesign, so the Mach-O keeps the upstream identifier\n# (com.sindresorhus.LaunchAtLoginHelper). Apple rejects MAS uploads\n# when the code signature identifier doesn't match the bundle ID.\nHELPER=\"${BUILT_PRODUCTS_DIR}/${CONTENTS_FOLDER_PATH}/Library/LoginItems/LaunchAtLoginHelper.app\"\nENTITLEMENTS=\"${BUILT_PRODUCTS_DIR}/LaunchAtLogin_LaunchAtLogin.bundle/Contents/Resources/LaunchAtLogin.entitlements\"\nif [ -d \"$HELPER\" ] && [ -n \"$EXPANDED_CODE_SIGN_IDENTITY_NAME\" ]; then\n  codesign --force --entitlements=\"$ENTITLEMENTS\" --deep --options=runtime \\\n    --sign=\"$EXPANDED_CODE_SIGN_IDENTITY_NAME\" \\\n    --identifier \"${PRODUCT_BUNDLE_IDENTIFIER}-LaunchAtLoginHelper\" \\\n    \"$HELPER\"\nfi\n";
 		};
 		EAD0B706259CF69900FA2F67 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -848,7 +971,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${BUILT_PRODUCTS_DIR}/LaunchAtLogin_LaunchAtLogin.bundle/Contents/Resources/copy-helper-swiftpm.sh\"\n";
+			shellScript = "\"${BUILT_PRODUCTS_DIR}/LaunchAtLogin_LaunchAtLogin.bundle/Contents/Resources/copy-helper-swiftpm.sh\"\n\n# Re-sign the helper with the correct identifier.\n# The SPM script sets CFBundleIdentifier but doesn't pass --identifier\n# to codesign, so the Mach-O keeps the upstream identifier\n# (com.sindresorhus.LaunchAtLoginHelper). Apple rejects MAS uploads\n# when the code signature identifier doesn't match the bundle ID.\nHELPER=\"${BUILT_PRODUCTS_DIR}/${CONTENTS_FOLDER_PATH}/Library/LoginItems/LaunchAtLoginHelper.app\"\nENTITLEMENTS=\"${BUILT_PRODUCTS_DIR}/LaunchAtLogin_LaunchAtLogin.bundle/Contents/Resources/LaunchAtLogin.entitlements\"\nif [ -d \"$HELPER\" ] && [ -n \"$EXPANDED_CODE_SIGN_IDENTITY_NAME\" ]; then\n  codesign --force --entitlements=\"$ENTITLEMENTS\" --deep --options=runtime \\\n    --sign=\"$EXPANDED_CODE_SIGN_IDENTITY_NAME\" \\\n    --identifier \"${PRODUCT_BUNDLE_IDENTIFIER}-LaunchAtLoginHelper\" \\\n    \"$HELPER\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1016,6 +1139,27 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CC20000000000000000000B1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC2000000000000000000101 /* NSColorInitTests.swift in Sources */,
+				CC2000000000000000000201 /* NSColorLuminanceTests.swift in Sources */,
+				CC2000000000000000000301 /* NSColorHexTests.swift in Sources */,
+				CC2000000000000000000401 /* NSColorRGBTests.swift in Sources */,
+				CC2000000000000000000501 /* NSColorHSLTests.swift in Sources */,
+				CC2000000000000000000601 /* NSColorLabTests.swift in Sources */,
+				CC2000000000000000000701 /* WCAGComplianceTests.swift in Sources */,
+				CC2000000000000000000801 /* APCAComplianceTests.swift in Sources */,
+				CC2000000000000000000901 /* NotificationNamesTests.swift in Sources */,
+				CC2000000000000000000A01 /* CGFloatFormatTests.swift in Sources */,
+				CC2000000000000000000B01 /* ColorPairTests.swift in Sources */,
+				CC2000000000000000000C01 /* ClosestVectorTests.swift in Sources */,
+				CC2000000000000000000D01 /* SequenceTests.swift in Sources */,
+				CC2000000000000000000E01 /* ExporterTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -1046,6 +1190,7 @@
 				B581F92B2EDF40D700392413 /* pl */,
 				EA64D70A2F25FB6700A3F295 /* hr */,
 				EA64D70C2F25FB9B00A3F295 /* en */,
+				FA0000000000000000000A01 /* ja */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -1061,6 +1206,8 @@
 				C1BF641F2C1AE533004D33DD /* zh-Hans */,
 				C1BF64212C1AE53C004D33DD /* zh-Hant */,
 				B581F92C2EDF40D700392413 /* pl */,
+				EA64D70E2F25FBC500A3F295 /* hr */,
+				FA0000000000000000000A02 /* ja */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -1227,7 +1374,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 78;
+				CURRENT_PROJECT_VERSION = 84;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Pika/Preview Content\"";
 				DEVELOPMENT_TEAM = 9YN95W4CUD;
@@ -1241,7 +1388,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.6.0;
+				MARKETING_VERSION = 1.7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.superhighfives.Pika;
 				PRODUCT_NAME = Pika;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG TARGET_SPARKLE";
@@ -1259,7 +1406,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 78;
+				CURRENT_PROJECT_VERSION = 84;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Pika/Preview Content\"";
 				DEVELOPMENT_TEAM = 9YN95W4CUD;
@@ -1273,7 +1420,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.6.0;
+				MARKETING_VERSION = 1.7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.superhighfives.Pika;
 				PRODUCT_NAME = Pika;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = TARGET_SPARKLE;
@@ -1292,7 +1439,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 79;
+				CURRENT_PROJECT_VERSION = 85;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Pika/Preview Content\"";
 				DEVELOPMENT_TEAM = TGHU37N6EX;
@@ -1306,7 +1453,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.6.0;
+				MARKETING_VERSION = 1.7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.superhighfives.Pika;
 				PRODUCT_NAME = Pika;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG TARGET_MAS";
@@ -1325,7 +1472,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 79;
+				CURRENT_PROJECT_VERSION = 85;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Pika/Preview Content\"";
 				DEVELOPMENT_TEAM = TGHU37N6EX;
@@ -1339,7 +1486,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.6.0;
+				MARKETING_VERSION = 1.7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.superhighfives.Pika;
 				PRODUCT_NAME = Pika;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = TARGET_MAS;

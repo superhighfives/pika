@@ -15,9 +15,9 @@ struct ColorPair: Codable, Identifiable, Equatable {
     // hex round-trips exactly.
     private static func colorFromHex(_ hex: String) -> NSColor {
         let fallback = NSColor.black.usingColorSpace(Defaults[.colorSpace]) ?? .black
-        let h = hex.replacingOccurrences(of: "#", with: "")
-        guard h.count == 6 else { return fallback }
-        let scanner = Scanner(string: h)
+        let stripped = hex.replacingOccurrences(of: "#", with: "")
+        guard stripped.count == 6 else { return fallback }
+        let scanner = Scanner(string: stripped)
         var rgb: UInt64 = 0
         guard scanner.scanHexInt64(&rgb) else { return fallback }
         let components: [CGFloat] = [

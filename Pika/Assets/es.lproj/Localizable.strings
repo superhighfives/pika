@@ -1,6 +1,12 @@
 /* Pika */
 "app.name" = "Pika";
 
+/* Cancel */
+"general.cancel" = "Cancelar";
+
+/* Clear */
+"general.clear" = "Borrar";
+
 /* Version */
 "app.version" = "Versión";
 
@@ -468,3 +474,60 @@
 
 /* Restore system appearance */
 "help.url.appearance.system" = "Restaurar apariencia del sistema";
+
+/* Toggle compliance */
+"compliance.toggle" = "Alternar cumplimiento";
+
+/* New palette… */
+"palette.new" = "Nueva paleta…";
+
+/* Rename palette */
+"palette.rename" = "Renombrar paleta";
+
+/* Delete palette */
+"palette.delete" = "Eliminar paleta";
+
+/* Remove from palette */
+"palette.remove" = "Eliminar de la paleta";
+
+/* Palette name */
+"palette.name.prompt" = "Nombre de la paleta";
+
+/* My palette */
+"palette.name.placeholder" = "Mi paleta";
+
+/* Add to palette */
+"palette.add" = "Añadir a la paleta";
+
+/* Export palette */
+"palette.export" = "Exportar paleta";
+
+/* Export color history */
+"history.export" = "Exportar historial de colores";
+
+/* Are you sure you want to clear all history? */
+"history.clear.confirm" = "¿Estás seguro de que quieres borrar todo el historial?";
+
+/* Show compliance */
+"help.url.compliance.show" = "Mostrar cumplimiento";
+
+/* Hide compliance */
+"help.url.compliance.hide" = "Ocultar cumplimiento";
+
+/* Toggle compliance */
+"help.url.compliance.toggle" = "Alternar cumplimiento";
+
+/* Show colour preview */
+"help.url.preview.show" = "Mostrar vista previa de color";
+
+/* Hide colour preview */
+"help.url.preview.hide" = "Ocultar vista previa de color";
+
+/* Toggle colour preview */
+"help.url.preview.toggle" = "Alternar vista previa de color";
+
+/* Compliance */
+"help.url.group.compliance" = "Cumplimiento";
+
+/* Preview */
+"help.url.group.preview" = "Vista previa";
