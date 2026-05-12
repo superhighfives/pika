@@ -39,14 +39,14 @@ private struct GeneralAndSelectionSection: View {
         HStack(alignment: .top, spacing: 0) {
             VStack(alignment: .leading, spacing: 10.0) {
                 Text(PikaText.textGeneralTitle).font(.system(size: 16))
-                
+
                 VStack(alignment: .leading, spacing: 4.0) {
                     Picker("Language", selection: languageBinding) {
                         ForEach(AppLanguage.allCases, id: \.self) { lang in
                             Text(lang.rawValue).tag(lang)
                         }
                     }
-                    
+
                     if showRestartAlert {
                         Text("Restart Pika to apply language changes")
                             .font(.caption)
@@ -54,7 +54,7 @@ private struct GeneralAndSelectionSection: View {
                     }
                 }
                 .padding(.bottom, 8)
-                
+
                 LaunchAtLogin.Toggle {
                     Text(PikaText.textLaunchDescription)
                 }

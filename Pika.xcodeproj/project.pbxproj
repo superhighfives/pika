@@ -227,11 +227,12 @@
 
 		220D5E9328DB154300B6285E /* AppModeButtons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppModeButtons.swift; sourceTree = "<group>"; };
 		220D5E9728DB158400B6285E /* AppModeToggleGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppModeToggleGroup.swift; sourceTree = "<group>"; };
-		221600F825A62E5B00B8B7D9 /* IconImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconImage.swift; sourceTree = "<group>"; };
+		1FDF40189F5A46BDB48545F4 /* HelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpView.swift; sourceTree = "<group>"; };
+			221600F825A62E5B00B8B7D9 /* IconImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconImage.swift; sourceTree = "<group>"; };
 		221600FC25A636D600B8B7D9 /* ConditionalModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionalModifier.swift; sourceTree = "<group>"; };
 		223FDEEE2B038A9B000F89A0 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Main.strings; sourceTree = "<group>"; };
 		223FDEEF2B038A9B000F89A0 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
-		226FD60F25A940F90021A67F /* VisualEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffect.swift; sourceTree = "<group>"; };
+			226FD60F25A940F90021A67F /* VisualEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffect.swift; sourceTree = "<group>"; };
 		22903B0228294F49004BB9F0 /* ColorExampleRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExampleRow.swift; sourceTree = "<group>"; };
 		22D28DB62862377F00FC7DD4 /* OverflowContentViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverflowContentViewModifier.swift; sourceTree = "<group>"; };
 		22EF1D9A25B7AA18001102FA /* Sequence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sequence.swift; sourceTree = "<group>"; };
@@ -273,7 +274,7 @@
 		EA03E39A2F5E618E00998D8B /* ColorPair.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPair.swift; sourceTree = "<group>"; };
 		EA03E39D2F5E619800998D8B /* ColorHistoryDrawer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorHistoryDrawer.swift; sourceTree = "<group>"; };
 		EA03E3A02F5E619800998D8B /* ColorPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPreview.swift; sourceTree = "<group>"; };
-		EA0C524F25AA729300AFF716 /* Visualisation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Visualisation.swift; sourceTree = "<group>"; };
+			EA0C524F25AA729300AFF716 /* Visualisation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Visualisation.swift; sourceTree = "<group>"; };
 		EA0C525F25AB5A2B00AFF716 /* NavigationMenuItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationMenuItems.swift; sourceTree = "<group>"; };
 		EA0C526325AB5D1700AFF716 /* PikaWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PikaWindow.swift; sourceTree = "<group>"; };
 		EA0C526E25AB683400AFF716 /* EyedropperButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyedropperButton.swift; sourceTree = "<group>"; };
@@ -287,7 +288,7 @@
 		EA635DDB25B4E90B0014D91A /* BindingOnChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingOnChange.swift; sourceTree = "<group>"; };
 		EA635DE025B4FC580014D91A /* ColorPickers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickers.swift; sourceTree = "<group>"; };
 		EA635DE925B534C80014D91A /* EyedropperItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyedropperItem.swift; sourceTree = "<group>"; };
-		EA635DF025B5A6D80014D91A /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
+			EA635DF025B5A6D80014D91A /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		EA64D70A2F25FB6700A3F295 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		EA64D70C2F25FB9B00A3F295 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		EA64D70E2F25FBC500A3F295 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/Main.strings; sourceTree = "<group>"; };
@@ -316,7 +317,7 @@
 		EAD0B6F1259CF29300FA2F67 /* Eyedroppers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Eyedroppers.swift; sourceTree = "<group>"; };
 		EAD0B6F3259CF29300FA2F67 /* AboutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		EAD0B6F4259CF29300FA2F67 /* PreferencesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; tabWidth = 4; };
-		EAD0B6F5259CF29300FA2F67 /* AppVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppVersion.swift; sourceTree = "<group>"; };
+			EAD0B6F5259CF29300FA2F67 /* AppVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppVersion.swift; sourceTree = "<group>"; };
 		EAD0B6F6259CF29300FA2F67 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; tabWidth = 4; };
 		EAD0B6FD259CF29C00FA2F67 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		EAD0B704259CF3BA00FA2F67 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -331,8 +332,8 @@
 		EAEBF64625E878A5002999D1 /* CircleButtonStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleButtonStyle.swift; sourceTree = "<group>"; };
 		EAF100C325C59EB3006E1EC3 /* PikaTouchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PikaTouchBar.swift; sourceTree = "<group>"; };
 		EAF100C625C731AD006E1EC3 /* SplashTouchBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashTouchBar.swift; sourceTree = "<group>"; };
-		EAF100CC25C785C4006E1EC3 /* TouchBarVisual.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchBarVisual.swift; sourceTree = "<group>"; };
-		F8ABAC592EAAD0DF008CD152 /* ColorPickOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickOverlay.swift; sourceTree = "<group>"; };
+			EAF100CC25C785C4006E1EC3 /* TouchBarVisual.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchBarVisual.swift; sourceTree = "<group>"; };
+			F8ABAC592EAAD0DF008CD152 /* ColorPickOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickOverlay.swift; sourceTree = "<group>"; };
 		F8ABAC5C2EAAD0F0008CD152 /* ColorPickOverlayWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickOverlayWindow.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -512,23 +513,6 @@
 			name = Modifiers;
 			sourceTree = "<group>";
 		};
-		CC20000000000000000000C2 /* PikaTests */ = {
-			isa = PBXGroup;
-			children = (
-				CC2000000000000000000100 /* NSColorInitTests.swift */,
-				CC2000000000000000000200 /* NSColorLuminanceTests.swift */,
-				CC2000000000000000000300 /* NSColorHexTests.swift */,
-				CC2000000000000000000400 /* NSColorRGBTests.swift */,
-				CC2000000000000000000500 /* NSColorHSLTests.swift */,
-				CC2000000000000000000600 /* NSColorLabTests.swift */,
-				CC2000000000000000000700 /* WCAGComplianceTests.swift */,
-				CC2000000000000000000800 /* APCAComplianceTests.swift */,
-				CC2000000000000000000900 /* NotificationNamesTests.swift */,
-				CC2000000000000000000A00 /* CGFloatFormatTests.swift */,
-			);
-			path = PikaTests;
-			sourceTree = "<group>";
-		};
 		EA0C525725AB576C00AFF716 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
@@ -698,69 +682,12 @@
 			sourceTree = "<group>";
 		};
 
-		CC1100000000000000000001 /* Eyedropper */ = {
-			isa = PBXGroup;
-			children = (
-				EA635DE025B4FC580014D91A /* ColorPickers.swift */,
-				EA0C526E25AB683400AFF716 /* EyedropperButton.swift */,
-				EA635DE925B534C80014D91A /* EyedropperItem.swift */,
-			);
-			name = Eyedropper;
-			sourceTree = "<group>";
-		};
-		CC1100000000000000000002 /* Compliance */ = {
-			isa = PBXGroup;
-			children = (
-				EABAEADF284D50D1000716AE /* ComplianceButtons.swift */,
-				EA801284259F8F480026D5D9 /* ComplianceToggle.swift */,
-				EA424C7C25CDEF98009056A9 /* ComplianceToggleGroup.swift */,
-			);
-			name = Compliance;
-			sourceTree = "<group>";
-		};
-		CC1100000000000000000003 /* Preferences */ = {
-			isa = PBXGroup;
-			children = (
-				220D5E9328DB154300B6285E /* AppModeButtons.swift */,
-				220D5E9728DB158400B6285E /* AppModeToggleGroup.swift */,
-				22903B0228294F49004BB9F0 /* ColorExampleRow.swift */,
-				EAD0B6F4259CF29300FA2F67 /* PreferencesView.swift */,
-			);
-			name = Preferences;
-			sourceTree = "<group>";
-		};
-		CC1100000000000000000004 /* About */ = {
-			isa = PBXGroup;
-			children = (
-				EAD0B6F3259CF29300FA2F67 /* AboutView.swift */,
-				1FDF40189F5A46BDB48545F4 /* HelpView.swift */,
-				EAA8AE1B25B8F03B0049299B /* KeyboardShortcutGrid.swift */,
-				22FE80B225BA0F820063759E /* KeyboardShortcutItem.swift */,
-				EAA8AE1825B8EC070049299B /* KeyboardShortcutKey.swift */,
-				EA72BB8725A53750008205E7 /* SplashView.swift */,
-			);
-			name = About;
-			sourceTree = "<group>";
-		};
-		CC1100000000000000000005 /* Navigation */ = {
-			isa = PBXGroup;
-			children = (
-				EAD0B71B259D151400FA2F67 /* NavigationMenu.swift */,
-				EA0C525F25AB5A2B00AFF716 /* NavigationMenuItems.swift */,
-			);
-			name = Navigation;
-			sourceTree = "<group>";
-		};
-		CC1100000000000000000006 /* Shared */ = {
-			isa = PBXGroup;
-			children = (
-				EAD0B6F5259CF29300FA2F67 /* AppVersion.swift */,
-				F8ABAC592EAAD0DF008CD152 /* ColorPickOverlay.swift */,
-				221600F825A62E5B00B8B7D9 /* IconImage.swift */,
-				EA635DF025B5A6D80014D91A /* Toast.swift */,
-				EAF100CC25C785C4006E1EC3 /* TouchBarVisual.swift */,
-				EA0C524F25AA729300AFF716 /* Visualisation.swift */,
-				226FD60F25A940F90021A67F /* VisualEffect.swift */,
+		CC20000000000000000000A1 /* PikaTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CC20000000000000000000D1 /* Build configuration list for PBXNativeTarget "PikaTests" */;
+			buildPhases = (
+				CC20000000000000000000B1 /* Sources */,
+				CC20000000000000000000C1 /* Frameworks */,
 			);
 			buildRules = (
 			);
