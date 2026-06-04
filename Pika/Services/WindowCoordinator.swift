@@ -21,7 +21,15 @@ class WindowCoordinator: NSObject {
 
     func setupMainWindow(eyedroppers: Eyedroppers) {
         self.eyedroppers = eyedroppers
+        pikaWindow = PikaWindow.createPrimaryWindow()
+        pikaTouchBarController = PikaTouchBarController(window: pikaWindow)
+    }
 
+    /// Mounts the SwiftUI content tree on the main window. Call only when the active mode
+    /// uses the floating window so the tree's notification listeners aren't running
+    /// alongside the popover's copy.
+    func installMainWindowContent() {
+        guard let eyedroppers = eyedroppers else { return }
         let contentView = ContentView()
             .environmentObject(eyedroppers)
             .frame(minWidth: 480,
@@ -31,10 +39,11 @@ class WindowCoordinator: NSObject {
                    idealHeight: 280,
                    maxHeight: 400,
                    alignment: .center)
-
-        pikaWindow = PikaWindow.createPrimaryWindow()
         pikaWindow.contentView = NSHostingView(rootView: contentView)
-        pikaTouchBarController = PikaTouchBarController(window: pikaWindow)
+    }
+
+    func removeMainWindowContent() {
+        pikaWindow.contentView = nil
     }
 
     func startMainWindow() {

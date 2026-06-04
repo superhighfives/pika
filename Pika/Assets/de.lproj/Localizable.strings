@@ -124,6 +124,12 @@
 /* Hide app */
 "preferences.app.hidden.description" = "App verstecken";
 
+/* Menu bar popover */
+"preferences.app.menubarPopover.title" = "Popover";
+
+/* Show as menu bar popover */
+"preferences.app.menubarPopover.description" = "Als Menüleisten-Popover anzeigen";
+
 /* Appearance */
 "preferences.appearance.title" = "Erscheinungsbild";
 

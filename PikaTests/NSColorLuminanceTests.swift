@@ -111,4 +111,29 @@ final class NSColorLuminanceTests: XCTestCase {
         let result = white.toContrastRatioString(with: gray)
         XCTAssertNotNil(Double(result), "Expected numeric string, got '\(result)'")
     }
+
+    // MARK: - toLocalizedContrastRatioString(with:)
+
+    func test_toLocalizedContrastRatioString_whiteOnBlack_returns21() {
+        let white = NSColor(r: 1, g: 1, b: 1)
+        let black = NSColor(r: 0, g: 0, b: 0)
+        let result = white.toLocalizedContrastRatioString(with: black)
+        XCTAssertTrue(result.hasPrefix("21"), "Expected '21...', got '\(result)'")
+    }
+
+    func test_toLocalizedContrastRatioString_commaLocale_usesCommaSeparator() {
+        let white = NSColor(r: 1, g: 1, b: 1)
+        let gray = NSColor(r: 128, g: 128, b: 128)
+        let result = white.toLocalizedContrastRatioString(with: gray, locale: Locale(identifier: "fr_FR"))
+        XCTAssertTrue(result.contains(","), "Expected comma decimal separator in '\(result)'")
+        XCTAssertFalse(result.contains("."), "Did not expect period decimal separator in '\(result)'")
+    }
+
+    func test_toLocalizedContrastRatioString_periodLocale_usesPeriodSeparator() {
+        let white = NSColor(r: 1, g: 1, b: 1)
+        let gray = NSColor(r: 128, g: 128, b: 128)
+        let result = white.toLocalizedContrastRatioString(with: gray, locale: Locale(identifier: "en_US"))
+        XCTAssertTrue(result.contains("."), "Expected period decimal separator in '\(result)'")
+        XCTAssertFalse(result.contains(","), "Did not expect comma decimal separator in '\(result)'")
+    }
 }
