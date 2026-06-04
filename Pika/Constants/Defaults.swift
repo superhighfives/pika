@@ -40,10 +40,22 @@ enum AppMode: String, Codable, CaseIterable {
     case menubar = "preferences.app.mode.menubar"
     case regular = "preferences.app.mode.regular"
     case hidden = "preferences.app.mode.hidden"
+    case menubarPopover = "preferences.app.mode.menubarPopover"
 
     func localizedString() -> String {
         NSLocalizedString(rawValue, comment: "App Mode")
     }
+
+    var activationPolicy: NSApplication.ActivationPolicy {
+        switch self {
+        case .regular: return .regular
+        case .menubar, .menubarPopover, .hidden: return .accessory
+        }
+    }
+
+    var usesStatusBarItem: Bool { self == .menubar || self == .menubarPopover }
+    var usesPopover: Bool { self == .menubarPopover }
+    var usesFloatingWindow: Bool { self == .menubar || self == .regular }
 }
 
 extension Defaults.Keys {

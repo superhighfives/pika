@@ -69,6 +69,7 @@ private struct GeneralAndSelectionSection: View {
                     Text(PikaText.textFloatDescription)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
+                .disabled(appMode == .menubarPopover)
                 Toggle(isOn: $showColorOverlay) {
                     Text(PikaText.textShowColorOverlay)
                 }
@@ -332,6 +333,7 @@ struct PreferencesView: View {
                 .padding(.bottom, 24.0)
             }
         }
+        .forceOverlayScrollers()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }

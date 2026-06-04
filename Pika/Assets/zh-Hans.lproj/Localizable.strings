@@ -124,6 +124,12 @@
 /* Hide app */
 "preferences.app.hidden.description" = "隐藏应用";
 
+/* Menu bar popover */
+"preferences.app.menubarPopover.title" = "弹出窗口";
+
+/* Show as menu bar popover */
+"preferences.app.menubarPopover.description" = "以菜单栏弹出窗口显示";
+
 /* Appearance */
 "preferences.appearance.title" = "外观";
 
