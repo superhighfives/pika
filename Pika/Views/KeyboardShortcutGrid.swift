@@ -38,22 +38,25 @@ struct KeyboardShortcutGrid: View {
                 let width = geometry.size.width
                 let height = geometry.size.height
                 let unitWidth = width / CGFloat(Self.columnsPerRow)
-                let unitHeight = floor(height / 4)
                 let entries = PikaShortcuts.all
+                let rowCount = (entries.count + Self.columnsPerRow - 1) / Self.columnsPerRow
+                let unitHeight = floor(height / CGFloat(rowCount))
+
+                let rows = stride(from: entries.startIndex, to: entries.endIndex, by: Self.columnsPerRow)
+                    .map { start in entries[start ..< min(start + Self.columnsPerRow, entries.endIndex)] }
 
                 VStack(spacing: 0.0) {
-                    ShortcutRow(entries: entries[0 ..< 5], unitWidth: unitWidth, unitHeight: unitHeight)
-                    Divider().frame(maxWidth: .infinity)
-                    ShortcutRow(entries: entries[5 ..< 10], unitWidth: unitWidth, unitHeight: unitHeight)
-                    Divider().frame(maxWidth: .infinity)
-                    ShortcutRow(entries: entries[10 ..< 15], unitWidth: unitWidth, unitHeight: unitHeight)
-                    Divider().frame(maxWidth: .infinity)
-                    ShortcutRow(
-                        entries: entries[15 ..< entries.count],
-                        unitWidth: unitWidth,
-                        unitHeight: unitHeight,
-                        padWithSpacer: entries.count - 15 < Self.columnsPerRow
-                    )
+                    ForEach(Array(rows.enumerated()), id: \.offset) { index, row in
+                        if index > 0 {
+                            Divider().frame(maxWidth: .infinity)
+                        }
+                        ShortcutRow(
+                            entries: row,
+                            unitWidth: unitWidth,
+                            unitHeight: unitHeight,
+                            padWithSpacer: row.count < Self.columnsPerRow
+                        )
+                    }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }

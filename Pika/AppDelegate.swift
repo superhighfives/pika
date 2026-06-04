@@ -149,7 +149,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationShouldHandleReopen(_: NSApplication, hasVisibleWindows: Bool) -> Bool {
         if !hasVisibleWindows {
-            windowCoordinator.pikaWindow.makeKeyAndOrderFront(self)
+            if Defaults[.appMode].usesPopover {
+                statusBarController.showPopover()
+            } else {
+                windowCoordinator.pikaWindow.makeKeyAndOrderFront(self)
+            }
         }
         return true
     }

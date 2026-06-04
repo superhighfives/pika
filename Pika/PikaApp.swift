@@ -33,7 +33,7 @@ private struct PikaCommands: Commands {
             Divider()
 
             Button(PikaText.textColorSwapDetail) { send(#selector(AppDelegate.triggerSwap)) }
-                .keyboardShortcut("x", modifiers: .command)
+                .keyboardShortcut("x", modifiers: [])
 
             Divider()
 
@@ -45,7 +45,7 @@ private struct PikaCommands: Commands {
             Divider()
 
             Button(PikaText.textHistoryToggle) { send(#selector(AppDelegate.triggerToggleHistory)) }
-                .keyboardShortcut("h", modifiers: .command)
+                .keyboardShortcut("h", modifiers: [])
         }
 
         // Help menu — point at Pika's website + GitHub feedback.
