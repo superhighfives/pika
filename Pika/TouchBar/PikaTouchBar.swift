@@ -135,7 +135,7 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
 
         let updateContrastText = {
             textField.stringValue = self.contrastStandard == .wcag ?
-                foreground.color.toContrastRatioString(with: background.color) :
+                foreground.color.toLocalizedContrastRatioString(with: background.color) :
                 foreground.color.toAPCAcontrastValue(with: background.color)
         }
 
