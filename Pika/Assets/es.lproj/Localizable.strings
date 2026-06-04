@@ -124,6 +124,12 @@
 /* Hide app */
 "preferences.app.hidden.description" = "Ocultar aplicación";
 
+/* Menu bar popover */
+"preferences.app.menubarPopover.title" = "Popover";
+
+/* Show as menu bar popover */
+"preferences.app.menubarPopover.description" = "Mostrar como popover de la barra de menú";
+
 /* Appearance */
 "preferences.appearance.title" = "Apariencia";
 
@@ -534,3 +540,9 @@
 
 /* Preview */
 "help.url.group.preview" = "Vista previa";
+
+/* Pick a contrasting background color after the foreground */
+"preferences.pick.contrasting" = "Pick contrasting color after foreground";
+
+/* Pick foreground then background */
+"color.pick.contrast" = "Pick foreground and background";

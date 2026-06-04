@@ -12,6 +12,7 @@ private struct GeneralAndSelectionSection: View {
         @Default(.betaUpdates) var betaUpdates
     #endif
     @Default(.hidePikaWhilePicking) var hidePikaWhilePicking
+    @Default(.pickContrastingColor) var pickContrastingColor
     @Default(.appMode) var appMode
     @Default(.appFloating) var appFloating
     @Default(.alwaysShowOnLaunch) var alwaysShowOnLaunch
@@ -62,6 +63,10 @@ private struct GeneralAndSelectionSection: View {
                 Toggle(isOn: $hidePikaWhilePicking) {
                     Text(PikaText.textPickHide)
                 }
+                Toggle(isOn: $pickContrastingColor) {
+                    Text(PikaText.textPickContrasting)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
                 Toggle(isOn: $hideColorNames) {
                     Text(PikaText.textColorNamesDescription)
                 }
@@ -69,6 +74,7 @@ private struct GeneralAndSelectionSection: View {
                     Text(PikaText.textFloatDescription)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
+                .disabled(appMode == .menubarPopover)
                 Toggle(isOn: $showColorOverlay) {
                     Text(PikaText.textShowColorOverlay)
                 }
@@ -351,6 +357,7 @@ struct PreferencesView: View {
                 .padding(.bottom, 24.0)
             }
         }
+        .forceOverlayScrollers()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }

@@ -22,7 +22,7 @@ private struct FooterRow: View {
 
     private var contrastRatioString: String {
         kind == .wcag
-            ? foreground.color.toContrastRatioString(with: background.color)
+            ? foreground.color.toLocalizedContrastRatioString(with: background.color)
             : foreground.color.toAPCAcontrastValue(with: background.color)
     }
 

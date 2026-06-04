@@ -124,6 +124,12 @@
 /* Hide app */
 "preferences.app.hidden.description" = "Sakrij aplikaciju";
 
+/* Menu bar popover */
+"preferences.app.menubarPopover.title" = "Popover";
+
+/* Show as menu bar popover */
+"preferences.app.menubarPopover.description" = "Prikaži kao popover trake izbornika";
+
 /* Appearance */
 "preferences.appearance.title" = "Izgled";
 
@@ -534,3 +540,9 @@
 
 /* Restore system appearance */
 "help.url.appearance.system" = "Obnovi izgled sustava";
+
+/* Pick a contrasting background color after the foreground */
+"preferences.pick.contrasting" = "Pick contrasting color after foreground";
+
+/* Pick foreground then background */
+"color.pick.contrast" = "Pick foreground and background";

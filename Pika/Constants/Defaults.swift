@@ -50,16 +50,29 @@ enum AppMode: String, Codable, CaseIterable {
     case menubar = "preferences.app.mode.menubar"
     case regular = "preferences.app.mode.regular"
     case hidden = "preferences.app.mode.hidden"
+    case menubarPopover = "preferences.app.mode.menubarPopover"
 
     func localizedString() -> String {
         NSLocalizedString(rawValue, comment: "App Mode")
     }
+
+    var activationPolicy: NSApplication.ActivationPolicy {
+        switch self {
+        case .regular: return .regular
+        case .menubar, .menubarPopover, .hidden: return .accessory
+        }
+    }
+
+    var usesStatusBarItem: Bool { self == .menubar || self == .menubarPopover }
+    var usesPopover: Bool { self == .menubarPopover }
+    var usesFloatingWindow: Bool { self == .menubar || self == .regular }
 }
 
 extension Defaults.Keys {
     static let colorFormat = Key<ColorFormat>("colorFormat", default: .hex)
     static let viewedSplash = Key<Bool>("viewedSplash", default: false)
     static let hidePikaWhilePicking = Key<Bool>("hidePikaWhilePicking", default: false)
+    static let pickContrastingColor = Key<Bool>("pickContrastingColor", default: false)
     static let copyColorOnPick = Key<Bool>("copyColorOnPick", default: false)
     static let hideMenuBarIcon = Key<Bool>("hideMenuBarIcon", default: false)
     static let betaUpdates = Key<Bool>("betaUpdates", default: false)

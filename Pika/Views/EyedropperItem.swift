@@ -19,8 +19,11 @@ struct EyedropperItem: View {
         ZStack {
             EyedropperButton(eyedropper: eyedropper)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .onReceive(NotificationCenter.default.publisher(for: eyedropper.type.pickNotification)) { _ in
-                    eyedropper.start()
+                .onReceive(NotificationCenter.default.publisher(for: eyedropper.type.pickNotification)) { note in
+                    let requestedChain = note.userInfo?["chain"] as? Bool == true
+                    let chain = eyedropper.type == .foreground
+                        && (Defaults[.pickContrastingColor] || requestedChain)
+                    eyedropper.start(chainContrasting: chain)
                 }
                 .onReceive(NotificationCenter.default.publisher(for: eyedropper.type.copyNotification)) { _ in
                     showToast = true

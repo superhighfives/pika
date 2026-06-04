@@ -233,6 +233,10 @@ enum PikaText {
     // Keyboard shortcuts
     static let textPickForeground = NSLocalizedString("color.pick.foreground", comment: "Pick foreground")
     static let textPickBackground = NSLocalizedString("color.pick.background", comment: "Pick background")
+    static let textPickContrast = NSLocalizedString(
+        "color.pick.contrast",
+        comment: "Pick foreground then background"
+    )
     static let textCopyForeground = NSLocalizedString("color.copy.foreground", comment: "Copy foreground")
     static let textCopyBackground = NSLocalizedString("color.copy.background", comment: "Copy background")
     static let textColorSystemPickerForeground = NSLocalizedString(
@@ -268,6 +272,10 @@ enum PikaText {
     )
     static let textSelectionTitle = NSLocalizedString("preferences.selection.title", comment: "Selection Settings")
     static let textPickHide = NSLocalizedString("preferences.pick.hide", comment: "Hide Pika while picking")
+    static let textPickContrasting = NSLocalizedString(
+        "preferences.pick.contrasting",
+        comment: "Pick a contrasting background color after the foreground"
+    )
     static let textIconDescription = NSLocalizedString(
         "preferences.icon.description",
         comment: "Hide menu bar icon"
@@ -295,6 +303,14 @@ enum PikaText {
     static let textAppDockDescription = NSLocalizedString("preferences.app.dock.description", comment: "Show in dock")
     static let textAppHiddenTitle = NSLocalizedString("preferences.app.hidden.title", comment: "Hidden")
     static let textAppHiddenDescription = NSLocalizedString("preferences.app.hidden.description", comment: "Hide app")
+    static let textAppMenubarPopoverTitle = NSLocalizedString(
+        "preferences.app.menubarPopover.title",
+        comment: "Popover"
+    )
+    static let textAppMenubarPopoverDescription = NSLocalizedString(
+        "preferences.app.menubarPopover.description",
+        comment: "Show as menu bar popover"
+    )
 
     // Appearance Settings
     static let textAppearanceTitle = NSLocalizedString("preferences.appearance.title", comment: "Appearance")

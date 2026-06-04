@@ -7,7 +7,6 @@ import SwiftUI
     import Sparkle
 #endif
 
-@main
 class AppDelegate: NSObject, NSApplicationDelegate {
     var eyedroppers: Eyedroppers!
 
@@ -16,14 +15,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let statusBarController = StatusBarController()
 
     func setupAppMode() {
-        var currentMode = Defaults[.appMode] == .regular
-            ? NSApplication.ActivationPolicy.regular
-            : NSApplication.ActivationPolicy.accessory
+        var currentMode = Defaults[.appMode].activationPolicy
         NSApp.setActivationPolicy(currentMode)
-        Defaults.observe(.appMode) { change in
-            let newMode = change.newValue == .regular
-                ? NSApplication.ActivationPolicy.regular
-                : NSApplication.ActivationPolicy.accessory
+        Defaults.observe(.appMode) { [weak self] change in
+            guard let self = self else { return }
+            let newMode = change.newValue.activationPolicy
             if newMode != currentMode {
                 currentMode = newMode
                 NSApp.setActivationPolicy(newMode)
@@ -38,6 +34,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                             window.setIsVisible(true)
                         }
                     }
+                }
+            }
+            if change.oldValue != change.newValue {
+                if change.newValue.usesPopover {
+                    self.windowCoordinator.hideMainWindow()
+                    self.windowCoordinator.removeMainWindowContent()
+                    self.statusBarController.attachPopover(
+                        rootView: PopoverContentView(eyedroppers: self.eyedroppers)
+                    )
+                } else if change.oldValue.usesPopover {
+                    self.statusBarController.detachPopover()
+                    self.windowCoordinator.installMainWindowContent()
                 }
             }
         }.tieToLifetime(of: self)
@@ -65,14 +73,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             }
         #endif
 
-        setupAppMode()
+        eyedroppers = Eyedroppers()
+
+        windowCoordinator.setupMainWindow(eyedroppers: eyedroppers)
 
         statusBarController.setup()
         statusBarController.onToggle = { [weak self] in self?.windowCoordinator.togglePopover() }
 
-        eyedroppers = Eyedroppers()
+        if Defaults[.appMode].usesPopover {
+            statusBarController.attachPopover(rootView: PopoverContentView(eyedroppers: eyedroppers))
+        } else {
+            windowCoordinator.installMainWindowContent()
+        }
 
-        windowCoordinator.setupMainWindow(eyedroppers: eyedroppers)
+        setupAppMode()
 
         KeyboardShortcuts.onKeyUp(for: .togglePika) { [] in
             if Defaults[.viewedSplash] {
@@ -89,36 +103,57 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             Defaults[.colorSpace] = Defaults.Keys.colorSpace.defaultValue
         }
 
-        if Defaults[.alwaysShowOnLaunch] {
+        if Defaults[.alwaysShowOnLaunch], !Defaults[.appMode].usesPopover {
             showPika(self)
         }
 
         NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
-            guard Defaults[.historyDrawerVisible] else { return event }
-            if let responder = NSApp.keyWindow?.firstResponder,
-               responder is NSTextView || responder is NSTextField
+            // History drawer navigation (existing behaviour)
+            if Defaults[.historyDrawerVisible] {
+                let isInTextField = (NSApp.keyWindow?.firstResponder as? NSResponder)
+                    .map { $0 is NSTextView || $0 is NSTextField } ?? false
+                if !isInTextField {
+                    switch event.keyCode {
+                    case 123:
+                        self.notificationCenter.post(name: .historyNext, object: self)
+                        return nil
+                    case 124:
+                        self.notificationCenter.post(name: .historyPrevious, object: self)
+                        return nil
+                    case 51:
+                        self.notificationCenter.post(name: .historyDelete, object: self)
+                        return nil
+                    default:
+                        break
+                    }
+                }
+            }
+
+            // In popover mode neither `NSApp.mainMenu.performKeyEquivalent` nor SwiftUI's
+            // command-bound `.keyboardShortcut` fire while the popover panel is the key
+            // window of an `.accessory` app — only `.keyboardShortcut` bindings attached to
+            // views *inside* the popover are reachable. Dispatch the canonical shortcuts
+            // (`PikaShortcuts.all`) manually here so popover behaviour matches menubar/dock.
+            let isInTextField = (NSApp.keyWindow?.firstResponder as? NSResponder)
+                .map { $0 is NSTextView || $0 is NSTextField } ?? false
+            if Defaults[.appMode].usesPopover, !isInTextField,
+               let shortcut = PikaShortcuts.match(event)
             {
-                return event
+                NSApp.sendAction(shortcut.action, to: nil, from: nil)
+                return nil
             }
-            switch event.keyCode {
-            case 123: // left arrow
-                self.notificationCenter.post(name: .historyNext, object: self)
-                return nil
-            case 124: // right arrow
-                self.notificationCenter.post(name: .historyPrevious, object: self)
-                return nil
-            case 51: // delete key
-                self.notificationCenter.post(name: .historyDelete, object: self)
-                return nil
-            default:
-                return event
-            }
+
+            return event
         }
     }
 
     func applicationShouldHandleReopen(_: NSApplication, hasVisibleWindows: Bool) -> Bool {
         if !hasVisibleWindows {
-            windowCoordinator.pikaWindow.makeKeyAndOrderFront(self)
+            if Defaults[.appMode].usesPopover {
+                statusBarController.showPopover()
+            } else {
+                windowCoordinator.pikaWindow.makeKeyAndOrderFront(self)
+            }
         }
         return true
     }
@@ -159,6 +194,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBAction func openSplashWindow(_: Any?) { windowCoordinator.openSplashWindow() }
     @IBAction func showPika(_: Any) { windowCoordinator.showPika() }
     @IBAction func hidePika(_: Any) { windowCoordinator.hidePika() }
+    @IBAction func showPopover(_: Any) { statusBarController.showPopover() }
 
     // MARK: - Notification dispatch
 
@@ -168,6 +204,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBAction func triggerPickBackground(_: Any) {
         notificationCenter.post(name: .triggerPickBackground, object: self)
+    }
+
+    @IBAction func triggerPickContrast(_: Any) {
+        notificationCenter.post(name: .triggerPickForeground, object: self, userInfo: ["chain": true])
     }
 
     @IBAction func triggerCopyForeground(_: Any) {
