@@ -55,14 +55,7 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
         let stackView = NSStackView(views: [foregroundStackView, backgroundStackView])
         stackView.distribution = .fillEqually
         item.view = stackView
-        let viewBindings: [String: NSView] = ["stackView": stackView]
-        let hconstraints = NSLayoutConstraint.constraints(
-            withVisualFormat: "H:[stackView(420)]",
-            options: [],
-            metrics: nil,
-            views: viewBindings
-        )
-        NSLayoutConstraint.activate(hconstraints)
+        stackView.widthAnchor.constraint(equalToConstant: 420).isActive = true
         return item
     }
 
@@ -94,14 +87,7 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
             target: nil,
             action: action
         )
-        let viewBindings: [String: NSView] = ["button": button]
-        let hconstraints = NSLayoutConstraint.constraints(
-            withVisualFormat: "H:[button(35)]",
-            options: [],
-            metrics: nil,
-            views: viewBindings
-        )
-        NSLayoutConstraint.activate(hconstraints)
+        button.widthAnchor.constraint(equalToConstant: 35).isActive = true
         return button
     }
 
