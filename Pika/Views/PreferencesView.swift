@@ -12,6 +12,7 @@ private struct GeneralAndSelectionSection: View {
         @Default(.betaUpdates) var betaUpdates
     #endif
     @Default(.hidePikaWhilePicking) var hidePikaWhilePicking
+    @Default(.pickContrastingColor) var pickContrastingColor
     @Default(.appMode) var appMode
     @Default(.appFloating) var appFloating
     @Default(.alwaysShowOnLaunch) var alwaysShowOnLaunch
@@ -61,6 +62,10 @@ private struct GeneralAndSelectionSection: View {
                 Text(PikaText.textSelectionTitle).font(.system(size: 16))
                 Toggle(isOn: $hidePikaWhilePicking) {
                     Text(PikaText.textPickHide)
+                }
+                Toggle(isOn: $pickContrastingColor) {
+                    Text(PikaText.textPickContrasting)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
                 Toggle(isOn: $hideColorNames) {
                     Text(PikaText.textColorNamesDescription)

@@ -206,6 +206,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         notificationCenter.post(name: .triggerPickBackground, object: self)
     }
 
+    @IBAction func triggerPickContrast(_: Any) {
+        notificationCenter.post(name: .triggerPickForeground, object: self, userInfo: ["chain": true])
+    }
+
     @IBAction func triggerCopyForeground(_: Any) {
         notificationCenter.post(name: .triggerCopyForeground, object: self)
     }

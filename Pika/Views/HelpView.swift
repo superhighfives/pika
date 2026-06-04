@@ -229,6 +229,7 @@ private let urlGroups: [URLGroup] = [
     (PikaText.textUrlGroupPick, [
         ("pika://pick/foreground", PikaText.textPickForeground),
         ("pika://pick/background", PikaText.textPickBackground),
+        ("pika://pick/contrast", PikaText.textPickContrast),
     ]),
     (PikaText.textColorSystemPicker, [
         ("pika://system/foreground", PikaText.textColorSystemPickerForegroundSimple),
