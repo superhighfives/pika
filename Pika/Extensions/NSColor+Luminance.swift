@@ -38,7 +38,7 @@ extension NSColor {
         let numberFormatter = NumberFormatter()
         numberFormatter.locale = locale
         numberFormatter.numberStyle = .decimal
-        numberFormatter.minimumFractionDigits = 0
+        numberFormatter.minimumFractionDigits = 1
         numberFormatter.maximumFractionDigits = 2
         return numberFormatter.string(from: NSNumber(value: value)) ?? "\(value)"
     }
