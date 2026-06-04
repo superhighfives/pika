@@ -55,14 +55,7 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
         let stackView = NSStackView(views: [foregroundStackView, backgroundStackView])
         stackView.distribution = .fillEqually
         item.view = stackView
-        let viewBindings: [String: NSView] = ["stackView": stackView]
-        let hconstraints = NSLayoutConstraint.constraints(
-            withVisualFormat: "H:[stackView(420)]",
-            options: [],
-            metrics: nil,
-            views: viewBindings
-        )
-        NSLayoutConstraint.activate(hconstraints)
+        stackView.widthAnchor.constraint(equalToConstant: 420).isActive = true
         return item
     }
 
@@ -94,14 +87,7 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
             target: nil,
             action: action
         )
-        let viewBindings: [String: NSView] = ["button": button]
-        let hconstraints = NSLayoutConstraint.constraints(
-            withVisualFormat: "H:[button(35)]",
-            options: [],
-            metrics: nil,
-            views: viewBindings
-        )
-        NSLayoutConstraint.activate(hconstraints)
+        button.widthAnchor.constraint(equalToConstant: 35).isActive = true
         return button
     }
 
@@ -118,25 +104,31 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
 
         let stackView = NSStackView(views: [icon, textField])
         let view = NSView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(stackView)
         stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
 
         item.view = view
 
-        let viewBindings: [String: NSView] = ["stackView": view]
-        let hconstraints = NSLayoutConstraint.constraints(
-            withVisualFormat: "H:[stackView(70)]",
-            options: [],
-            metrics: nil,
-            views: viewBindings
-        )
-        NSLayoutConstraint.activate(hconstraints)
+        let widthConstraint = view.widthAnchor.constraint(equalToConstant: 70)
+        widthConstraint.isActive = true
 
         let updateContrastText = {
-            textField.stringValue = self.contrastStandard == .wcag ?
-                foreground.color.toLocalizedContrastRatioString(with: background.color) :
-                foreground.color.toAPCAcontrastValue(with: background.color)
+            let wcag = foreground.color.toLocalizedContrastRatioString(with: background.color)
+            let apca = foreground.color.toAPCAcontrastValue(with: background.color)
+            switch self.contrastStandard {
+            case .wcag:
+                textField.stringValue = wcag
+                widthConstraint.constant = 70
+            case .apca:
+                textField.stringValue = apca
+                widthConstraint.constant = 70
+            case .both:
+                textField.stringValue = "\(wcag) / \(apca)"
+                widthConstraint.constant = 140
+            }
         }
 
         foreground.$color.sink { _ in updateContrastText() }

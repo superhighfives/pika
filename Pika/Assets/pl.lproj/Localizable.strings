@@ -154,6 +154,9 @@
 /* Contrast Calculation Standard */
 "preferences.contrast.standard" = "Metoda obliczania kontrastu";
 
+/* Both (combined WCAG and APCA) */
+"color.standard.both" = "Both";
+
 /* Contrast ratio */
 "color.ratio" = "Współczynnik kontrastu";
 

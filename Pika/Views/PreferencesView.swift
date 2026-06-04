@@ -120,7 +120,7 @@ private struct AppearanceSection: View {
             HStack(spacing: 16.0) {
                 Picker(PikaText.textContrastStandard, selection: $contrastStandard) {
                     ForEach(ContrastStandard.allCases, id: \.self) { value in
-                        Text(value.rawValue)
+                        Text(value.localizedString())
                     }
                 }
                 .pickerStyle(RadioGroupPickerStyle())
@@ -141,7 +141,7 @@ private struct AppearanceSection: View {
                     .frame(maxWidth: width)
                 }
                 .frame(height: 100)
-            } else {
+            } else if contrastStandard == .apca {
                 GeometryReader { geometry in
                     CompliancePreviewAPCA(
                         foreground: eyedroppers.foreground,
@@ -150,6 +150,25 @@ private struct AppearanceSection: View {
                     .frame(maxWidth: geometry.size.width)
                 }
                 .frame(height: 100)
+            } else {
+                GeometryReader { geometry in
+                    let width = geometry.size.width
+                    VStack(spacing: 12.0) {
+                        HStack(spacing: 16.0) {
+                            CompliancePreviewWCAG(
+                                width: width / 2 - 8,
+                                foreground: eyedroppers.foreground,
+                                background: eyedroppers.background
+                            )
+                        }
+                        CompliancePreviewAPCA(
+                            foreground: eyedroppers.foreground,
+                            background: eyedroppers.background
+                        )
+                        .frame(maxWidth: width)
+                    }
+                }
+                .frame(height: 212)
             }
         }
         .padding(.horizontal, 24.0)
