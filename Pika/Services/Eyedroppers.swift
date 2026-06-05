@@ -502,6 +502,8 @@ class Eyedropper: ObservableObject {
 
                         if Defaults[.copyColorOnPick] {
                             NSApp.sendAction(self.type.copySelector, to: nil, from: nil)
+                        } else if Defaults[.appMode].usesPopover {
+                            NSApp.sendAction(#selector(AppDelegate.showPopover), to: nil, from: nil)
                         } else {
                             NSApp.sendAction(#selector(AppDelegate.showPika), to: nil, from: nil)
                         }
