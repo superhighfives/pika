@@ -155,7 +155,7 @@
 "preferences.contrast.standard" = "Kontrastberechnungsstandard";
 
 /* Both (combined WCAG and APCA) */
-"color.standard.both" = "Both";
+"color.standard.both" = "Beide";
 
 /* Contrast ratio */
 "color.ratio" = "Kontrastverhältnis";
@@ -542,7 +542,7 @@
 "help.url.group.preview" = "Vorschau";
 
 /* Pick a contrasting background color after the foreground */
-"preferences.pick.contrasting" = "Pick contrasting color after foreground";
+"preferences.pick.contrasting" = "Kontrastfarbe nach Vordergrund auswählen";
 
 /* Pick foreground then background */
-"color.pick.contrast" = "Pick foreground and background";
+"color.pick.contrast" = "Vordergrund und Hintergrund auswählen";
