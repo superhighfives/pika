@@ -41,7 +41,9 @@ class StatusBarController: NSObject, NSMenuDelegate, NSPopoverDelegate {
     }
 
     private var isStatusBarItemVisible: Bool {
-        !Defaults[.hideMenuBarIcon] && Defaults[.appMode].usesStatusBarItem
+        let mode = Defaults[.appMode]
+        if mode.usesPopover { return true }
+        return !Defaults[.hideMenuBarIcon] && mode.usesStatusBarItem
     }
 
     func attachPopover<Content: View>(rootView: Content) {

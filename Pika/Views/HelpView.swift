@@ -430,7 +430,6 @@ struct HelpView: View {
             }
             .padding(.bottom, 8)
         }
-        .forceOverlayScrollers()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
