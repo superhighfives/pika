@@ -117,7 +117,7 @@ final class NSColorLuminanceTests: XCTestCase {
     func test_toLocalizedContrastRatioString_whiteOnBlack_returns21() {
         let white = NSColor(r: 1, g: 1, b: 1)
         let black = NSColor(r: 0, g: 0, b: 0)
-        let result = white.toLocalizedContrastRatioString(with: black)
+        let result = white.toLocalizedContrastRatioString(with: black, locale: Locale(identifier: "en_US_POSIX"))
         XCTAssertTrue(result.hasPrefix("21"), "Expected '21...', got '\(result)'")
     }
 
