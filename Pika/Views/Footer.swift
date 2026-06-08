@@ -83,6 +83,95 @@ private struct FooterRow: View {
     }
 }
 
+private struct CompactBadge: View {
+    var title: String
+    var isCompliant: Bool
+    var tooltip: String
+
+    var body: some View {
+        Text(title)
+            .font(.system(size: 11, weight: .medium))
+            .foregroundColor(isCompliant ? .primary : .secondary.opacity(0.5))
+            .help(tooltip)
+            .fixedSize()
+    }
+}
+
+private struct CompactBothFooter: View {
+    @Default(.combineCompliance) var combineCompliance
+    @ObservedObject var foreground: Eyedropper
+    @ObservedObject var background: Eyedropper
+
+    var body: some View {
+        let wcag = foreground.color.toWCAGCompliance(with: background.color)
+        let apca = foreground.color.toAPCACompliance(with: background.color)
+
+        VStack(alignment: .leading, spacing: 4.0) {
+            HStack(spacing: 0) {
+                Text("WCAG")
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundColor(.secondary)
+                    .frame(width: 40, alignment: .leading)
+
+                HStack(spacing: 2.0) {
+                    Text(foreground.color.toLocalizedContrastRatioString(with: background.color))
+                        .font(.system(size: 13, weight: .medium))
+                        .fixedSize()
+                    Text(": 1")
+                        .font(.system(size: 13, weight: .medium))
+                        .foregroundStyle(Color.secondary)
+                        .fixedSize()
+                }
+                .frame(width: 70, alignment: .leading)
+                .help(PikaText.textColorRatioDescription)
+
+                Spacer()
+
+                if combineCompliance {
+                    HStack(spacing: 10.0) {
+                        CompactBadge(title: "AA LG", isCompliant: wcag.ratio30, tooltip: PikaText.textColorWCAG30)
+                        CompactBadge(title: "AA/AAA LG", isCompliant: wcag.ratio45, tooltip: PikaText.textColorWCAG45)
+                        CompactBadge(title: "AAA", isCompliant: wcag.ratio70, tooltip: PikaText.textColorWCAG70)
+                    }
+                } else {
+                    HStack(spacing: 10.0) {
+                        CompactBadge(title: "AA", isCompliant: wcag.ratio45, tooltip: PikaText.textColorWCAG45)
+                        CompactBadge(title: "AAA", isCompliant: wcag.ratio70, tooltip: PikaText.textColorWCAG70)
+                        CompactBadge(title: "AA LG", isCompliant: wcag.ratio30, tooltip: PikaText.textColorWCAG30)
+                        CompactBadge(title: "AAA LG", isCompliant: wcag.ratio45, tooltip: PikaText.textColorWCAG45)
+                    }
+                }
+            }
+
+            Divider()
+
+            HStack(spacing: 0) {
+                Text("APCA")
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundColor(.secondary)
+                    .frame(width: 40, alignment: .leading)
+
+                Text(foreground.color.toAPCAcontrastValue(with: background.color))
+                    .font(.system(size: 13, weight: .medium))
+                    .frame(width: 70, alignment: .leading)
+                    .help(PikaText.textLightnessContrastValueDescription)
+                    .fixedSize()
+
+                Spacer()
+
+                HStack(spacing: 10.0) {
+                    CompactBadge(title: PikaText.textAPCABaseline, isCompliant: abs(apca.value) >= 30, tooltip: PikaText.textColorAPCA30)
+                    CompactBadge(title: PikaText.textAPCAHeadline, isCompliant: abs(apca.value) >= 45, tooltip: PikaText.textColorAPCA45)
+                    CompactBadge(title: PikaText.textAPCATitle, isCompliant: abs(apca.value) >= 60, tooltip: PikaText.textColorAPCA60)
+                    CompactBadge(title: PikaText.textAPCABody, isCompliant: abs(apca.value) >= 75, tooltip: PikaText.textColorAPCA75)
+                }
+            }
+        }
+        .padding(.vertical, 6.0)
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
 struct Footer: View {
     @Default(.combineCompliance) var combineCompliance
     @Default(.contrastStandard) var contrastStandard
@@ -92,22 +181,11 @@ struct Footer: View {
     var body: some View {
         Group {
             if contrastStandard == .both {
-                VStack(alignment: .leading, spacing: 8.0) {
-                    FooterRow(
-                        kind: .wcag,
-                        foreground: foreground,
-                        background: background,
-                        combineCompliance: combineCompliance
-                    )
-                    Divider()
-                    FooterRow(
-                        kind: .apca,
-                        foreground: foreground,
-                        background: background,
-                        combineCompliance: combineCompliance
-                    )
-                }
-                .padding(.vertical, 8.0)
+                CompactBothFooter(
+                    foreground: foreground,
+                    background: background
+                )
+                .frame(maxHeight: 50.0)
             } else {
                 FooterRow(
                     kind: contrastStandard == .wcag ? .wcag : .apca,

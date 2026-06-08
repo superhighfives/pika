@@ -153,22 +153,21 @@ private struct AppearanceSection: View {
             } else {
                 GeometryReader { geometry in
                     let width = geometry.size.width
-                    VStack(spacing: 12.0) {
-                        HStack(spacing: 16.0) {
-                            CompliancePreviewWCAG(
-                                width: width / 2 - 8,
-                                foreground: eyedroppers.foreground,
-                                background: eyedroppers.background
-                            )
-                        }
+                    HStack(spacing: 8.0) {
+                        CompliancePreviewWCAG(
+                            width: (width - 16) / 3,
+                            foreground: eyedroppers.foreground,
+                            background: eyedroppers.background
+                        )
                         CompliancePreviewAPCA(
                             foreground: eyedroppers.foreground,
                             background: eyedroppers.background
                         )
-                        .frame(maxWidth: width)
+                        .frame(maxWidth: (width - 16) / 3)
                     }
+                    .frame(maxWidth: width)
                 }
-                .frame(height: 212)
+                .frame(height: 100)
             }
         }
         .padding(.horizontal, 24.0)
