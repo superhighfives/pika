@@ -151,23 +151,10 @@ private struct AppearanceSection: View {
                 }
                 .frame(height: 100)
             } else {
-                GeometryReader { geometry in
-                    let width = geometry.size.width
-                    HStack(spacing: 8.0) {
-                        CompliancePreviewWCAG(
-                            width: (width - 16) / 3,
-                            foreground: eyedroppers.foreground,
-                            background: eyedroppers.background
-                        )
-                        CompliancePreviewAPCA(
-                            foreground: eyedroppers.foreground,
-                            background: eyedroppers.background
-                        )
-                        .frame(maxWidth: (width - 16) / 3)
-                    }
-                    .frame(maxWidth: width)
-                }
-                .frame(height: 100)
+                CompliancePreviewBoth(
+                    foreground: eyedroppers.foreground,
+                    background: eyedroppers.background
+                )
             }
         }
         .padding(.horizontal, 24.0)

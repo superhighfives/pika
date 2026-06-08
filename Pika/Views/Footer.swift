@@ -89,11 +89,15 @@ private struct CompactBadge: View {
     var tooltip: String
 
     var body: some View {
-        Text(title)
-            .font(.system(size: 11, weight: .medium))
-            .foregroundColor(isCompliant ? .primary : .secondary.opacity(0.5))
-            .help(tooltip)
-            .fixedSize()
+        HStack(alignment: .center, spacing: 2.0) {
+            IconImage(name: isCompliant ? "checkmark.circle.fill" : "xmark.circle", resizable: true)
+                .frame(width: 12.0, height: 12.0)
+            Text(title)
+                .font(.system(size: 11, weight: .medium))
+                .fixedSize()
+        }
+        .foregroundColor(isCompliant ? .primary : .secondary.opacity(0.5))
+        .help(tooltip)
     }
 }
 
@@ -107,22 +111,27 @@ private struct CompactBothFooter: View {
         let apca = foreground.color.toAPCACompliance(with: background.color)
 
         VStack(alignment: .leading, spacing: 4.0) {
-            HStack(spacing: 0) {
+            HStack(spacing: 6.0) {
                 Text("WCAG")
                     .font(.system(size: 11, weight: .semibold))
                     .foregroundColor(.secondary)
-                    .frame(width: 40, alignment: .leading)
+                    .fixedSize()
 
                 HStack(spacing: 2.0) {
                     Text(foreground.color.toLocalizedContrastRatioString(with: background.color))
                         .font(.system(size: 13, weight: .medium))
                         .fixedSize()
-                    Text(": 1")
-                        .font(.system(size: 13, weight: .medium))
-                        .foregroundStyle(Color.secondary)
-                        .fixedSize()
+                    HStack(spacing: 1.0) {
+                        Text(":")
+                            .font(.system(size: 13, weight: .medium))
+                            .foregroundStyle(Color.secondary)
+                            .fixedSize()
+                        Text("1")
+                            .font(.system(size: 13, weight: .medium))
+                            .foregroundStyle(Color.secondary)
+                            .fixedSize()
+                    }
                 }
-                .frame(width: 70, alignment: .leading)
                 .help(PikaText.textColorRatioDescription)
 
                 Spacer()
@@ -144,16 +153,16 @@ private struct CompactBothFooter: View {
             }
 
             Divider()
+                .padding(.horizontal, -12.0)
 
-            HStack(spacing: 0) {
+            HStack(spacing: 6.0) {
                 Text("APCA")
                     .font(.system(size: 11, weight: .semibold))
                     .foregroundColor(.secondary)
-                    .frame(width: 40, alignment: .leading)
+                    .fixedSize()
 
                 Text(foreground.color.toAPCAcontrastValue(with: background.color))
                     .font(.system(size: 13, weight: .medium))
-                    .frame(width: 70, alignment: .leading)
                     .help(PikaText.textLightnessContrastValueDescription)
                     .fixedSize()
 
