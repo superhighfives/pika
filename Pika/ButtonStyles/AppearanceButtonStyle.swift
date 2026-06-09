@@ -60,7 +60,8 @@ struct AppearanceButtonStyle: ButtonStyle {
                 .animation(
                     .easeInOut(duration: 0.1), value: configuration.isPressed
                 )
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .frame(maxWidth: .infinity)
+                .frame(height: 55)
                 .overlay(
                     appearanceSideOverlay(colorScheme: colorScheme)
                 )
@@ -83,8 +84,9 @@ struct AppearanceButtonStyle: ButtonStyle {
                 Text(title).foregroundColor(.primary)
                 Text(description)
                     .font(.caption)
+                    .multilineTextAlignment(.center)
                     .foregroundColor(.secondary)
-                    .lineLimit(1)
+                    .padding(.horizontal, 20.0)
             }
         }
         .contentShape(Rectangle())
@@ -109,7 +111,8 @@ struct StyledContentView<Content: View>: View {
     var body: some View {
         VStack {
             content
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .frame(maxWidth: .infinity)
+                .frame(height: 55)
                 .background(
                     LinearGradient(
                         gradient: .init(
@@ -139,8 +142,8 @@ struct StyledContentView<Content: View>: View {
                 Text(title).foregroundColor(.primary)
                 Text(description)
                     .font(.caption)
+                    .multilineTextAlignment(.center)
                     .foregroundColor(.secondary)
-                    .lineLimit(1)
                     .frame(maxWidth: 260.0)
             }
         }

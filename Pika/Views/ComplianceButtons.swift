@@ -10,33 +10,35 @@ struct CompliancePreviewWCAG: View {
     var body: some View {
         let wcag = foreground.color.toWCAGCompliance(with: background.color)
 
-        Button(
-            action: { combineCompliance = false },
-            label: {
-                ComplianceToggleGroup(complianceData: .wcag(wcag), theme: .weight)
-                    .padding(20.0)
-                    .frame(maxWidth: width, maxHeight: .infinity, alignment: .leading)
-            }
-        )
-        .buttonStyle(AppearanceButtonStyle(
-            title: PikaText.textAppearanceWeightTitle,
-            description: PikaText.textAppearanceWeightDescription,
-            selected: combineCompliance == false
-        ))
+        HStack(spacing: 16.0) {
+            Button(
+                action: { combineCompliance = false },
+                label: {
+                    ComplianceToggleGroup(complianceData: .wcag(wcag), theme: .weight)
+                        .padding(20.0)
+                        .frame(maxWidth: width, maxHeight: .infinity, alignment: .leading)
+                }
+            )
+            .buttonStyle(AppearanceButtonStyle(
+                title: PikaText.textAppearanceWeightTitle,
+                description: PikaText.textAppearanceWeightDescription,
+                selected: combineCompliance == false
+            ))
 
-        Button(
-            action: { combineCompliance = true },
-            label: {
-                ComplianceToggleGroup(complianceData: .wcag(wcag), theme: .contrast)
-                    .padding(20.0)
-                    .frame(maxWidth: width, maxHeight: .infinity, alignment: .leading)
-            }
-        )
-        .buttonStyle(AppearanceButtonStyle(
-            title: PikaText.textAppearanceContrastTitle,
-            description: PikaText.textAppearanceContrastDescription,
-            selected: combineCompliance == true
-        ))
+            Button(
+                action: { combineCompliance = true },
+                label: {
+                    ComplianceToggleGroup(complianceData: .wcag(wcag), theme: .contrast)
+                        .padding(20.0)
+                        .frame(maxWidth: width, maxHeight: .infinity, alignment: .leading)
+                }
+            )
+            .buttonStyle(AppearanceButtonStyle(
+                title: PikaText.textAppearanceContrastTitle,
+                description: PikaText.textAppearanceContrastDescription,
+                selected: combineCompliance == true
+            ))
+        }
     }
 }
 
@@ -87,7 +89,6 @@ struct CompliancePreviewBoth: View {
                 selected: combineCompliance == true
             ))
         }
-        .frame(height: 100)
     }
 
     @ViewBuilder

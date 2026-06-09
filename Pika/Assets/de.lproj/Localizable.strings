@@ -128,7 +128,7 @@
 "preferences.app.menubarPopover.title" = "Popover";
 
 /* Show as menu bar popover */
-"preferences.app.menubarPopover.description" = "Als Menüleisten-Popover anzeigen";
+"preferences.app.menubarPopover.description" = "Menüleisten-Popover";
 
 /* Appearance */
 "preferences.appearance.title" = "Erscheinungsbild";

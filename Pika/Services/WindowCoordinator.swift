@@ -134,7 +134,6 @@ class WindowCoordinator: NSObject {
                 size: NSRect(x: 0, y: 0, width: 580, height: 600),
                 styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView]
             )
-            preferencesWindow?.titlebarAppearsTransparent = true
             preferencesWindow?.minSize = NSSize(width: 580, height: 400)
             preferencesWindow?.maxSize = NSSize(width: 580, height: CGFloat.greatestFiniteMagnitude)
             preferencesWindow?.contentMinSize = NSSize(width: 580, height: 400)

@@ -122,12 +122,14 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
             case .wcag:
                 textField.stringValue = wcag
                 widthConstraint.constant = 70
+                view.isHidden = false
             case .apca:
                 textField.stringValue = apca
                 widthConstraint.constant = 70
+                view.isHidden = false
             case .both:
-                textField.stringValue = "\(wcag) / \(apca)"
-                widthConstraint.constant = 140
+                view.isHidden = true
+                widthConstraint.constant = 0
             }
         }
 

@@ -128,7 +128,7 @@
 "preferences.app.menubarPopover.title" = "弹出窗口";
 
 /* Show as menu bar popover */
-"preferences.app.menubarPopover.description" = "以菜单栏弹出窗口显示";
+"preferences.app.menubarPopover.description" = "菜单栏弹出窗口";
 
 /* Appearance */
 "preferences.appearance.title" = "外观";

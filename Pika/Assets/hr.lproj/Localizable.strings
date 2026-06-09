@@ -128,7 +128,7 @@
 "preferences.app.menubarPopover.title" = "Popover";
 
 /* Show as menu bar popover */
-"preferences.app.menubarPopover.description" = "Prikaži kao popover trake izbornika";
+"preferences.app.menubarPopover.description" = "Popover trake izbornika";
 
 /* Appearance */
 "preferences.appearance.title" = "Izgled";

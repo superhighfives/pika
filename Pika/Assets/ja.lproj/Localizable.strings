@@ -128,7 +128,7 @@
 "preferences.app.menubarPopover.title" = "ポップオーバー";
 
 /* Show as menu bar popover */
-"preferences.app.menubarPopover.description" = "メニューバーポップオーバーとして表示";
+"preferences.app.menubarPopover.description" = "メニューバーポップオーバー";
 
 /* Appearance */
 "preferences.appearance.title" = "外観";

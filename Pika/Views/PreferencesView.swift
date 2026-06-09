@@ -128,34 +128,26 @@ private struct AppearanceSection: View {
                 .fixedSize()
             }
             .padding(.bottom, 8.0)
-            if contrastStandard == .wcag {
-                GeometryReader { geometry in
-                    let width = geometry.size.width
-                    HStack(spacing: 16.0) {
-                        CompliancePreviewWCAG(
-                            width: width / 2 - 8,
-                            foreground: eyedroppers.foreground,
-                            background: eyedroppers.background
-                        )
-                    }
-                    .frame(maxWidth: width)
-                }
-                .frame(height: 100)
-            } else if contrastStandard == .apca {
-                GeometryReader { geometry in
+            Group {
+                if contrastStandard == .wcag {
+                    CompliancePreviewWCAG(
+                        width: 258,
+                        foreground: eyedroppers.foreground,
+                        background: eyedroppers.background
+                    )
+                } else if contrastStandard == .apca {
                     CompliancePreviewAPCA(
                         foreground: eyedroppers.foreground,
                         background: eyedroppers.background
                     )
-                    .frame(maxWidth: geometry.size.width)
+                } else {
+                    CompliancePreviewBoth(
+                        foreground: eyedroppers.foreground,
+                        background: eyedroppers.background
+                    )
                 }
-                .frame(height: 100)
-            } else {
-                CompliancePreviewBoth(
-                    foreground: eyedroppers.foreground,
-                    background: eyedroppers.background
-                )
             }
+            .frame(height: 115)
         }
         .padding(.horizontal, 24.0)
     }
