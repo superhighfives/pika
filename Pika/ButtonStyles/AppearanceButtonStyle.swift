@@ -83,9 +83,8 @@ struct AppearanceButtonStyle: ButtonStyle {
                 Text(title).foregroundColor(.primary)
                 Text(description)
                     .font(.caption)
-                    .multilineTextAlignment(.center)
                     .foregroundColor(.secondary)
-                    .padding(.horizontal, 20.0)
+                    .lineLimit(1)
             }
         }
         .contentShape(Rectangle())
@@ -140,9 +139,8 @@ struct StyledContentView<Content: View>: View {
                 Text(title).foregroundColor(.primary)
                 Text(description)
                     .font(.caption)
-                    .multilineTextAlignment(.center)
                     .foregroundColor(.secondary)
-                    .padding(.horizontal, 20.0)
+                    .lineLimit(1)
                     .frame(maxWidth: 260.0)
             }
         }
