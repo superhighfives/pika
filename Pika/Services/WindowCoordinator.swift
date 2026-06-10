@@ -97,7 +97,12 @@ class WindowCoordinator: NSObject {
                 styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView]
             )
             aboutWindow?.titlebarAppearsTransparent = true
+            aboutWindow?.setFrameAutosaveName("")
             aboutWindow?.contentView = view
+            let titleBarHeight = aboutWindow!.frame.height - aboutWindow!.contentLayoutRect.height
+            let contentHeight = view.fittingSize.height - titleBarHeight
+            aboutWindow?.setContentSize(NSSize(width: 400, height: contentHeight))
+            aboutWindow?.center()
         }
         aboutTouchBarController = SplashTouchBarController(window: aboutWindow!)
         aboutWindow?.makeKeyAndOrderFront(nil)

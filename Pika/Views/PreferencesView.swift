@@ -80,8 +80,6 @@ private struct GeneralAndSelectionSection: View {
                 }
                 if showColorOverlay {
                     HStack(spacing: 8.0) {
-                        Text(PikaText.textDuration)
-                            .font(.system(size: 12))
                         Slider(value: $colorOverlayDuration, in: 1.0 ... 5.0, step: 0.5)
                         Text(String(format: "%.1fs", colorOverlayDuration))
                             .font(.system(size: 11))

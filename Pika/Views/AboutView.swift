@@ -24,6 +24,8 @@ struct AboutView: View {
                 Divider()
                 HelpExternalLinkRow(title: PikaText.textMenuGitHubIssue, url: PikaConstants.gitHubIssueURL, shorthand: "github.com/…/issues", verticalPadding: 10.0)
                 Divider()
+                HelpExternalLinkRow(title: "\(PikaText.textAboutBy) Charlie Gleason", url: PikaConstants.charlieGleasonWebsiteURL, shorthand: "charliegleason.com", verticalPadding: 10.0)
+                Divider()
                 #if TARGET_MAS
                     HStack(spacing: 5.0) {
                         IconImage(name: "storefront.circle", resizable: true)
@@ -31,15 +33,13 @@ struct AboutView: View {
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 14, height: 14)
                         Text(PikaText.textAboutMacAppStore)
+                            .font(.system(size: 12))
                             .foregroundColor(Color.secondary)
                         Spacer()
                     }
                     .padding(.horizontal, 20.0)
                     .padding(.vertical, 10.0)
-                    Divider()
                 #endif
-                HelpExternalLinkRow(title: "\(PikaText.textAboutBy) Charlie Gleason", url: PikaConstants.charlieGleasonWebsiteURL, shorthand: "charliegleason.com", verticalPadding: 10.0)
-                Divider()
                 #if TARGET_SPARKLE
                     HStack(spacing: 5.0) {
                         IconImage(name: "arrow.down.circle", resizable: true)
@@ -47,12 +47,12 @@ struct AboutView: View {
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 14, height: 14)
                         Text(PikaText.textAboutDownloaded)
+                            .font(.system(size: 12))
                             .foregroundColor(Color.secondary)
                         Spacer()
                     }
                     .padding(.horizontal, 20.0)
                     .padding(.vertical, 10.0)
-                    Divider()
                 #endif
             }
         }
