@@ -90,19 +90,14 @@ class WindowCoordinator: NSObject {
     func openAboutWindow() {
         if aboutWindow == nil {
             let view = NSHostingView(rootView: AboutView().edgesIgnoringSafeArea(.all))
-            view.frame = CGRect(x: 0, y: 0, width: 400, height: 0)
             aboutWindow = PikaWindow.createSecondaryWindow(
                 title: PikaText.textMenuAbout,
-                size: NSRect(x: 0, y: 0, width: 400, height: view.fittingSize.height),
+                size: NSRect(x: 0, y: 0, width: 400, height: 420),
                 styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView]
             )
             aboutWindow?.titlebarAppearsTransparent = true
             aboutWindow?.setFrameAutosaveName("")
             aboutWindow?.contentView = view
-            let titleBarHeight = aboutWindow!.frame.height - aboutWindow!.contentLayoutRect.height
-            let contentHeight = view.fittingSize.height - titleBarHeight
-            aboutWindow?.setContentSize(NSSize(width: 400, height: contentHeight))
-            aboutWindow?.center()
         }
         aboutTouchBarController = SplashTouchBarController(window: aboutWindow!)
         aboutWindow?.makeKeyAndOrderFront(nil)
