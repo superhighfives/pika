@@ -85,15 +85,14 @@ struct VisualisationHeader<Content: View>: View {
                         )
                     )
             }
-            .frame(height: height)
+            .frame(maxHeight: .infinity)
             Rectangle()
                 .fill(LinearGradient(
                     gradient: Gradient(colors: [Color.black.opacity(0), Color.black.opacity(0.6)]),
                     startPoint: .top,
                     endPoint: .bottom
                 ))
-                .frame(maxWidth: .infinity)
-                .frame(height: height)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             content
         }
     }

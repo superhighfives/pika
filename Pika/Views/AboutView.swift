@@ -9,6 +9,7 @@ struct AboutView: View {
                 AppVersion(displayOnTransparent: true)
                     .padding(.bottom, 32)
             }
+            .frame(maxHeight: .infinity)
             .background(
                 GeometryReader { geo in
                     Color(red: 0.4, green: 0.0, blue: 0.7)
