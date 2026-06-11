@@ -34,9 +34,11 @@ struct Visualisation: View {
                 }
             }
         }
-        .animation(.easeIn(duration: 0.3), value: isShown)
+        .animation(.easeIn(duration: 0.8), value: isShown)
         .onAppear {
-            isShown = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                isShown = true
+            }
         }
         .onReceive(NotificationCenter.default.publisher(for: NSWindow.didBecomeKeyNotification)) { _ in
             if !isShown {
@@ -85,14 +87,15 @@ struct VisualisationHeader<Content: View>: View {
                         )
                     )
             }
-            .frame(maxHeight: .infinity)
+            .frame(height: height)
             Rectangle()
                 .fill(LinearGradient(
                     gradient: Gradient(colors: [Color.black.opacity(0), Color.black.opacity(0.6)]),
                     startPoint: .top,
                     endPoint: .bottom
                 ))
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .frame(maxWidth: .infinity)
+                .frame(height: height)
             content
         }
     }

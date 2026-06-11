@@ -5,11 +5,14 @@ struct AboutView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            VisualisationHeader(height: 240, alignment: .bottom) {
-                AppVersion(displayOnTransparent: true)
-                    .padding(.bottom, 32)
+            ZStack(alignment: .bottom) {
+                Color(red: 0.4, green: 0.0, blue: 0.7)
+                    .frame(maxHeight: .infinity)
+                VisualisationHeader(height: 240, alignment: .bottom) {
+                    AppVersion(displayOnTransparent: true)
+                        .padding(.bottom, 32)
+                }
             }
-            .frame(maxHeight: .infinity)
             .background(
                 GeometryReader { geo in
                     Color(red: 0.4, green: 0.0, blue: 0.7)
