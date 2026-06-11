@@ -6,6 +6,7 @@ struct SplashView: View {
     var body: some View {
         VStack(spacing: 0) {
             ZStack {
+                Color(red: 0.4, green: 0.0, blue: 0.7)
                 Visualisation()
                 Image("AppSplash")
                     .resizable()
@@ -14,6 +15,7 @@ struct SplashView: View {
                     .offset(x: 0.0, y: 5.0)
                     .padding(.vertical, 48.0)
             }
+            .frame(maxHeight: .infinity)
             Divider()
             HStack(spacing: 16.0) {
                 HStack {

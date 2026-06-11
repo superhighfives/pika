@@ -529,6 +529,9 @@
 /* Open the Preferences window */
 "help.url.window.preferences" = "設定ウィンドウを開く";
 
+/* Open the Splash window */
+"help.url.window.splash" = "スプラッシュウィンドウを開く";
+
 /* Resize window */
 "help.url.window.resize" = "ウィンドウサイズを変更";
 

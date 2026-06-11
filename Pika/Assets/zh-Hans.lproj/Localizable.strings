@@ -472,6 +472,9 @@
 /* Open the Preferences window */
 "help.url.window.preferences" = "打开偏好设置窗口";
 
+/* Open the Splash window */
+"help.url.window.splash" = "打开欢迎窗口";
+
 /* Resize window */
 "help.url.window.resize" = "调整窗口大小";
 

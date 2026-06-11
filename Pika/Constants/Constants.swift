@@ -415,6 +415,7 @@ enum PikaText {
         "help.url.window.preferences",
         comment: "Open the Preferences window"
     )
+    static let textUrlWindowSplash = NSLocalizedString("help.url.window.splash", comment: "Open the Splash window")
     static let textUrlWindowResize = NSLocalizedString("help.url.window.resize", comment: "Resize window")
 
     // URL Trigger Descriptions — Compliance

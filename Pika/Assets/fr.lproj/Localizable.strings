@@ -472,6 +472,9 @@
 /* Open the Preferences window */
 "help.url.window.preferences" = "Ouvrir la fenêtre des Préférences";
 
+/* Open the Splash window */
+"help.url.window.splash" = "Ouvrir la fenêtre d'Accueil";
+
 /* Resize window */
 "help.url.window.resize" = "Redimensionner la fenêtre";
 

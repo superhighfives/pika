@@ -535,6 +535,9 @@
 /* Open the Preferences window */
 "help.url.window.preferences" = "Open the Preferences window";
 
+/* Open the Splash window */
+"help.url.window.splash" = "Open the Splash window";
+
 /* Resize window */
 "help.url.window.resize" = "Resize window";
 

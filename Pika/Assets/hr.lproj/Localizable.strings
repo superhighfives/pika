@@ -529,6 +529,9 @@
 /* Open the Preferences window */
 "help.url.window.preferences" = "Otvori prozor Postavke";
 
+/* Open the Splash window */
+"help.url.window.splash" = "Otvori prozor dobrodošlice";
+
 /* Resize window */
 "help.url.window.resize" = "Promijeni veličinu prozora";
 
