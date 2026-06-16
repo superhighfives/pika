@@ -15,7 +15,15 @@ struct ColorHistoryChip: View {
     let onClearAll: (() -> Void)?
     var isAutoHistory: Bool = true
 
+    @Default(.colorFormat) var colorFormat
+    @Default(.copyFormat) var copyFormat
+
     @State private var isHovered = false
+    @State private var colorSpace = Defaults[.colorSpace]
+
+    private func formatted(_ color: NSColor) -> String {
+        (color.usingColorSpace(colorSpace) ?? color).toFormat(format: colorFormat, style: copyFormat)
+    }
 
     var body: some View {
         RoundedRectangle(cornerRadius: 6)
@@ -50,7 +58,10 @@ struct ColorHistoryChip: View {
                     Button(PikaText.textHistoryClear, action: onClearAll)
                 }
             }
-            .help("\(pair.foregroundHex) / \(pair.backgroundHex)")
+            .help("\(formatted(pair.foregroundColor)) / \(formatted(pair.backgroundColor))")
+            .onReceive(NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification)) { _ in
+                colorSpace = Defaults[.colorSpace]
+            }
     }
 }
 
@@ -169,6 +180,7 @@ struct PaletteTabBar: View {
                 }
                 .padding(.horizontal, 8)
             }
+            .translateVerticalScrollToHorizontal()
             .onChange(of: isShowingNewField) { _, _ in
                 scrollToEnd(proxy: proxy)
             }
@@ -287,6 +299,7 @@ struct ColorHistoryDrawer: View {
                     }
                     .id(activePalette?.id)
                     .transition(slideTransition)
+                    .translateVerticalScrollToHorizontal()
                 }
                 .frame(maxWidth: .infinity, maxHeight: 44)
                 .clipped()
