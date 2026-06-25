@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4839FDCB2FE45E1E00691EFC /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 4839FDCA2FE45E1E00691EFC /* AppIcon.icon */; };
+		4839FDCC2FE45E1E00691EFC /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 4839FDCA2FE45E1E00691EFC /* AppIcon.icon */; };
 		CC1100000000000000000200 /* URLSchemeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1100000000000000000100 /* URLSchemeHandler.swift */; };
 		CC1100000000000000000201 /* WindowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1100000000000000000101 /* WindowCoordinator.swift */; };
 		CC1100000000000000000202 /* StatusBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1100000000000000000102 /* StatusBarController.swift */; };
@@ -202,6 +204,7 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXFileReference section */
+		4839FDCA2FE45E1E00691EFC /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = AppIcon.icon; sourceTree = "<group>"; };
 		CC1100000000000000000100 /* URLSchemeHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSchemeHandler.swift; sourceTree = "<group>"; };
 		CC1100000000000000000101 /* WindowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowCoordinator.swift; sourceTree = "<group>"; };
 		CC1100000000000000000102 /* StatusBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarController.swift; sourceTree = "<group>"; };
@@ -370,6 +373,7 @@
 			children = (
 				EA424CE025CF0328009056A9 /* Localizable.strings */,
 				EAD0B6CF259CED1D00FA2F67 /* Assets.xcassets */,
+				4839FDCA2FE45E1E00691EFC /* AppIcon.icon */,
 				EAD0B6D4259CED1D00FA2F67 /* Main.storyboard */,
 				EA7B199825FBA09300E06D9D /* ColorNames.json */,
 			);
@@ -792,6 +796,7 @@
 				EAD0B6D3259CED1D00FA2F67 /* Preview Assets.xcassets in Resources */,
 				EA7B199925FBA09300E06D9D /* ColorNames.json in Resources */,
 				EAD0B6D0259CED1D00FA2F67 /* Assets.xcassets in Resources */,
+				4839FDCC2FE45E1E00691EFC /* AppIcon.icon in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -804,6 +809,7 @@
 				EAE2EB9D2D03753A00FA9BC9 /* Main.storyboard in Resources */,
 				EAE23DE12D032A38005BB270 /* ColorNames.json in Resources */,
 				EAE23DE22D032A38005BB270 /* Assets.xcassets in Resources */,
+				4839FDCB2FE45E1E00691EFC /* AppIcon.icon in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
