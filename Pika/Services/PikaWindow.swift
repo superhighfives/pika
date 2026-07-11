@@ -5,13 +5,12 @@ import SwiftUI
 class PikaWindow {
     static func createPrimaryWindow() -> NSWindow {
         let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 380, height: 150),
+            contentRect: NSRect(x: 0, y: 0, width: 480, height: 280),
             styleMask: [.titled, .closable, .miniaturizable, .resizable],
             backing: .buffered,
             defer: false
         )
         window.isReleasedWhenClosed = false
-        window.center()
         window.title = PikaText.textAppName
         window.titleVisibility = .hidden
         window.level = Defaults[.appFloating] ? .floating : .normal
@@ -34,8 +33,18 @@ class PikaWindow {
         titlebarAccessory.layoutAttribute = .trailing
         window.addTitlebarAccessoryViewController(titlebarAccessory)
 
-        // Frame and content set up
-        window.setFrameAutosaveName("Pika Window")
+        // Restore the previously saved frame so size and position survive quitting
+        // and reopening. `setFrameAutosaveName` alone does not reliably re-apply a
+        // saved frame, so restore it explicitly and only center on first launch.
+        // From here on AppKit keeps the frame in sync with user defaults as the
+        // user moves or resizes the window.
+        let autosaveName = NSWindow.FrameAutosaveName("Pika Window")
+        let didRestoreFrame = window.setFrameUsingName(autosaveName)
+        window.setFrameAutosaveName(autosaveName)
+        if !didRestoreFrame {
+            window.center()
+        }
+
         return window
     }
 

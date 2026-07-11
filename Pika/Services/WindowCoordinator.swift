@@ -39,7 +39,13 @@ class WindowCoordinator: NSObject {
                    idealHeight: 280,
                    maxHeight: 400,
                    alignment: .center)
-        pikaWindow.contentView = NSHostingView(rootView: contentView)
+        let hostingView = NSHostingView(rootView: contentView)
+        // Apply the SwiftUI min/max as the window's resize limits, but omit
+        // `.intrinsicContentSize` so the hosting view doesn't snap the window back
+        // to its ideal size on install — that would clobber the frame restored from
+        // user defaults each launch and defeat window persistence.
+        hostingView.sizingOptions = [.minSize, .maxSize]
+        pikaWindow.contentView = hostingView
     }
 
     func removeMainWindowContent() {
