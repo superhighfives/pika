@@ -23,6 +23,12 @@ class WindowCoordinator: NSObject {
         self.eyedroppers = eyedroppers
         pikaWindow = PikaWindow.createPrimaryWindow()
         pikaTouchBarController = PikaTouchBarController(window: pikaWindow)
+        // `PikaTouchBarController` is an `NSWindowController`, and taking ownership of
+        // the window resets its `frameAutosaveName` to the controller's own (empty)
+        // `windowFrameAutosaveName`, wiping the name set in `createPrimaryWindow` and
+        // silently disabling frame autosave. Assign the name on the controller so it
+        // sticks and AppKit persists size/position on move and resize.
+        pikaTouchBarController.windowFrameAutosaveName = "Pika Window"
     }
 
     /// Mounts the SwiftUI content tree on the main window. Call only when the active mode
@@ -156,6 +162,11 @@ class WindowCoordinator: NSObject {
             size: NSRect(x: 0, y: 0, width: 650, height: 380),
             styleMask: [.titled, .fullSizeContentView]
         )
+        // `createSecondaryWindow` derives the autosave name from the title, which for
+        // the splash ("Pika") collides with the main window's "Pika Window" name and
+        // would let the transient, always-centered splash pollute the persisted main
+        // window frame. The splash never needs to remember its position, so clear it.
+        splashWindow.setFrameAutosaveName("")
         splashWindow.titlebarAppearsTransparent = true
         splashTouchBarController = SplashTouchBarController(window: splashWindow)
         splashWindow.contentView = NSHostingView(rootView: SplashView().edgesIgnoringSafeArea(.all))

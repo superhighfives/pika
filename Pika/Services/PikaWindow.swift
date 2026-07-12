@@ -36,8 +36,9 @@ class PikaWindow {
         // Restore the previously saved frame so size and position survive quitting
         // and reopening. `setFrameAutosaveName` alone does not reliably re-apply a
         // saved frame, so restore it explicitly and only center on first launch.
-        // From here on AppKit keeps the frame in sync with user defaults as the
-        // user moves or resizes the window.
+        // Note: the autosave name set here is re-asserted on the window's
+        // `NSWindowController` (see `WindowCoordinator.setupMainWindow`), because
+        // taking ownership of the window otherwise clears it and disables autosave.
         let autosaveName = NSWindow.FrameAutosaveName("Pika Window")
         let didRestoreFrame = window.setFrameUsingName(autosaveName)
         window.setFrameAutosaveName(autosaveName)
