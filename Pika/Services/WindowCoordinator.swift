@@ -28,7 +28,7 @@ class WindowCoordinator: NSObject {
         // `windowFrameAutosaveName`, wiping the name set in `createPrimaryWindow` and
         // silently disabling frame autosave. Assign the name on the controller so it
         // sticks and AppKit persists size/position on move and resize.
-        pikaTouchBarController.windowFrameAutosaveName = "Pika Window"
+        pikaTouchBarController.windowFrameAutosaveName = PikaWindow.primaryWindowAutosaveName
     }
 
     /// Mounts the SwiftUI content tree on the main window. Call only when the active mode

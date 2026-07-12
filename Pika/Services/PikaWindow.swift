@@ -3,6 +3,11 @@ import Defaults
 import SwiftUI
 
 class PikaWindow {
+    /// Autosave name for the primary window's frame. Shared so the value set here and
+    /// re-asserted on the window's `NSWindowController` (in `WindowCoordinator`) can
+    /// never drift apart — a mismatch would silently break restore/autosave.
+    static let primaryWindowAutosaveName = NSWindow.FrameAutosaveName("Pika Window")
+
     static func createPrimaryWindow() -> NSWindow {
         let window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 480, height: 280),
@@ -39,9 +44,8 @@ class PikaWindow {
         // Note: the autosave name set here is re-asserted on the window's
         // `NSWindowController` (see `WindowCoordinator.setupMainWindow`), because
         // taking ownership of the window otherwise clears it and disables autosave.
-        let autosaveName = NSWindow.FrameAutosaveName("Pika Window")
-        let didRestoreFrame = window.setFrameUsingName(autosaveName)
-        window.setFrameAutosaveName(autosaveName)
+        let didRestoreFrame = window.setFrameUsingName(primaryWindowAutosaveName)
+        window.setFrameAutosaveName(primaryWindowAutosaveName)
         if !didRestoreFrame {
             window.center()
         }
