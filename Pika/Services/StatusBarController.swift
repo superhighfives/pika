@@ -13,6 +13,11 @@ class StatusBarController: NSObject, NSMenuDelegate, NSPopoverDelegate {
     /// Called when the user left-clicks the status bar icon in menubar mode.
     var onToggle: (() -> Void)?
 
+    /// Whether the popover is currently on screen. Used to scope popover-mode
+    /// keyboard shortcut dispatch so it only fires while the popover is showing,
+    /// not when Preferences/Help/About happens to be the focused window.
+    var isPopoverShown: Bool { popover?.isShown ?? false }
+
     func setup() {
         let statusBar = NSStatusBar.system
         statusBarItem = statusBar.statusItem(withLength: CGFloat(NSStatusItem.variableLength))

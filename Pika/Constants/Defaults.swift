@@ -65,7 +65,6 @@ enum AppMode: String, Codable, CaseIterable {
 
     var usesStatusBarItem: Bool { self == .menubar || self == .menubarPopover }
     var usesPopover: Bool { self == .menubarPopover }
-    var usesFloatingWindow: Bool { self == .menubar || self == .regular }
 }
 
 extension Defaults.Keys {

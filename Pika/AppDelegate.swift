@@ -136,8 +136,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             // (`PikaShortcuts.all`) manually here so popover behaviour matches menubar/dock.
             let isInTextField = (NSApp.keyWindow?.firstResponder as? NSResponder)
                 .map { $0 is NSTextView || $0 is NSTextField } ?? false
-            if Defaults[.appMode].usesPopover, !isInTextField,
-               let shortcut = PikaShortcuts.match(event)
+            if Defaults[.appMode].usesPopover, self.statusBarController.isPopoverShown,
+               !isInTextField, let shortcut = PikaShortcuts.match(event)
             {
                 NSApp.sendAction(shortcut.action, to: nil, from: nil)
                 return nil
