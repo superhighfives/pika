@@ -124,6 +124,12 @@
 /* Hide app */
 "preferences.app.hidden.description" = "Ocultar aplicación";
 
+/* Menu bar popover */
+"preferences.app.menubarPopover.title" = "Popover";
+
+/* Show as menu bar popover */
+"preferences.app.menubarPopover.description" = "Popover de barra de menú";
+
 /* Appearance */
 "preferences.appearance.title" = "Apariencia";
 
@@ -147,6 +153,9 @@
 
 /* Contrast Calculation Standard */
 "preferences.contrast.standard" = "Estándar de Cálculo de Contraste";
+
+/* Both (combined WCAG and APCA) */
+"color.standard.both" = "Ambos";
 
 /* Contrast ratio */
 "color.ratio" = "Proporción de contraste";
@@ -463,6 +472,9 @@
 /* Open the Preferences window */
 "help.url.window.preferences" = "Abrir la ventana de Preferencias";
 
+/* Open the Splash window */
+"help.url.window.splash" = "Abrir la ventana de Bienvenida";
+
 /* Resize window */
 "help.url.window.resize" = "Redimensionar ventana";
 
@@ -531,3 +543,9 @@
 
 /* Preview */
 "help.url.group.preview" = "Vista previa";
+
+/* Pick a contrasting background color after the foreground */
+"preferences.pick.contrasting" = "Seleccionar color de contraste tras el primer plano";
+
+/* Pick foreground then background */
+"color.pick.contrast" = "Seleccionar primer plano y segundo plano";

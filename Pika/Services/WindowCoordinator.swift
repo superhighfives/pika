@@ -21,7 +21,21 @@ class WindowCoordinator: NSObject {
 
     func setupMainWindow(eyedroppers: Eyedroppers) {
         self.eyedroppers = eyedroppers
+        pikaWindow = PikaWindow.createPrimaryWindow()
+        pikaTouchBarController = PikaTouchBarController(window: pikaWindow)
+        // `PikaTouchBarController` is an `NSWindowController`, and taking ownership of
+        // the window resets its `frameAutosaveName` to the controller's own (empty)
+        // `windowFrameAutosaveName`, wiping the name set in `createPrimaryWindow` and
+        // silently disabling frame autosave. Assign the name on the controller so it
+        // sticks and AppKit persists size/position on move and resize.
+        pikaTouchBarController.windowFrameAutosaveName = PikaWindow.primaryWindowAutosaveName
+    }
 
+    /// Mounts the SwiftUI content tree on the main window. Call only when the active mode
+    /// uses the floating window so the tree's notification listeners aren't running
+    /// alongside the popover's copy.
+    func installMainWindowContent() {
+        guard let eyedroppers = eyedroppers else { return }
         let contentView = ContentView()
             .environmentObject(eyedroppers)
             .frame(minWidth: 480,
@@ -31,10 +45,17 @@ class WindowCoordinator: NSObject {
                    idealHeight: 280,
                    maxHeight: 400,
                    alignment: .center)
+        let hostingView = NSHostingView(rootView: contentView)
+        // Apply the SwiftUI min/max as the window's resize limits, but omit
+        // `.intrinsicContentSize` so the hosting view doesn't snap the window back
+        // to its ideal size on install — that would clobber the frame restored from
+        // user defaults each launch and defeat window persistence.
+        hostingView.sizingOptions = [.minSize, .maxSize]
+        pikaWindow.contentView = hostingView
+    }
 
-        pikaWindow = PikaWindow.createPrimaryWindow()
-        pikaWindow.contentView = NSHostingView(rootView: contentView)
-        pikaTouchBarController = PikaTouchBarController(window: pikaWindow)
+    func removeMainWindowContent() {
+        pikaWindow.contentView = nil
     }
 
     func startMainWindow() {
@@ -81,13 +102,13 @@ class WindowCoordinator: NSObject {
     func openAboutWindow() {
         if aboutWindow == nil {
             let view = NSHostingView(rootView: AboutView().edgesIgnoringSafeArea(.all))
-            view.frame = CGRect(x: 0, y: 0, width: 400, height: 0)
             aboutWindow = PikaWindow.createSecondaryWindow(
                 title: PikaText.textMenuAbout,
-                size: NSRect(x: 0, y: 0, width: 400, height: view.fittingSize.height),
+                size: NSRect(x: 0, y: 0, width: 400, height: 420),
                 styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView]
             )
             aboutWindow?.titlebarAppearsTransparent = true
+            aboutWindow?.setFrameAutosaveName("")
             aboutWindow?.contentView = view
         }
         aboutTouchBarController = SplashTouchBarController(window: aboutWindow!)
@@ -125,7 +146,6 @@ class WindowCoordinator: NSObject {
                 size: NSRect(x: 0, y: 0, width: 580, height: 600),
                 styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView]
             )
-            preferencesWindow?.titlebarAppearsTransparent = true
             preferencesWindow?.minSize = NSSize(width: 580, height: 400)
             preferencesWindow?.maxSize = NSSize(width: 580, height: CGFloat.greatestFiniteMagnitude)
             preferencesWindow?.contentMinSize = NSSize(width: 580, height: 400)
@@ -142,6 +162,11 @@ class WindowCoordinator: NSObject {
             size: NSRect(x: 0, y: 0, width: 650, height: 380),
             styleMask: [.titled, .fullSizeContentView]
         )
+        // `createSecondaryWindow` derives the autosave name from the title, which for
+        // the splash ("Pika") collides with the main window's "Pika Window" name and
+        // would let the transient, always-centered splash pollute the persisted main
+        // window frame. The splash never needs to remember its position, so clear it.
+        splashWindow.setFrameAutosaveName("")
         splashWindow.titlebarAppearsTransparent = true
         splashTouchBarController = SplashTouchBarController(window: splashWindow)
         splashWindow.contentView = NSHostingView(rootView: SplashView().edgesIgnoringSafeArea(.all))

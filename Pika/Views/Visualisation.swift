@@ -34,9 +34,11 @@ struct Visualisation: View {
                 }
             }
         }
-        .animation(.easeIn(duration: 0.3), value: isShown)
+        .animation(.easeIn(duration: 0.8), value: isShown)
         .onAppear {
-            isShown = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                isShown = true
+            }
         }
         .onReceive(NotificationCenter.default.publisher(for: NSWindow.didBecomeKeyNotification)) { _ in
             if !isShown {

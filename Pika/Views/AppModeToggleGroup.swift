@@ -7,6 +7,7 @@ struct AppModeToggleGroup: View {
     enum Themes: String, Codable, CaseIterable {
         case menubar
         case regular
+        case menubarPopover
 //        case hidden
     }
 
@@ -19,6 +20,12 @@ struct AppModeToggleGroup: View {
 
         if theme == .regular {
             Image("dock-wide")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+        }
+
+        if theme == .menubarPopover {
+            Image("menubar-popover-wide")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
         }

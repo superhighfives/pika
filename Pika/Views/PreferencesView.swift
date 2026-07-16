@@ -12,6 +12,7 @@ private struct GeneralAndSelectionSection: View {
         @Default(.betaUpdates) var betaUpdates
     #endif
     @Default(.hidePikaWhilePicking) var hidePikaWhilePicking
+    @Default(.pickContrastingColor) var pickContrastingColor
     @Default(.appMode) var appMode
     @Default(.appFloating) var appFloating
     @Default(.alwaysShowOnLaunch) var alwaysShowOnLaunch
@@ -62,6 +63,10 @@ private struct GeneralAndSelectionSection: View {
                 Toggle(isOn: $hidePikaWhilePicking) {
                     Text(PikaText.textPickHide)
                 }
+                Toggle(isOn: $pickContrastingColor) {
+                    Text(PikaText.textPickContrasting)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
                 Toggle(isOn: $hideColorNames) {
                     Text(PikaText.textColorNamesDescription)
                 }
@@ -69,13 +74,12 @@ private struct GeneralAndSelectionSection: View {
                     Text(PikaText.textFloatDescription)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
+                .disabled(appMode == .menubarPopover)
                 Toggle(isOn: $showColorOverlay) {
                     Text(PikaText.textShowColorOverlay)
                 }
                 if showColorOverlay {
                     HStack(spacing: 8.0) {
-                        Text(PikaText.textDuration)
-                            .font(.system(size: 12))
                         Slider(value: $colorOverlayDuration, in: 1.0 ... 5.0, step: 0.5)
                         Text(String(format: "%.1fs", colorOverlayDuration))
                             .font(.system(size: 11))
@@ -114,7 +118,7 @@ private struct AppearanceSection: View {
             HStack(spacing: 16.0) {
                 Picker(PikaText.textContrastStandard, selection: $contrastStandard) {
                     ForEach(ContrastStandard.allCases, id: \.self) { value in
-                        Text(value.rawValue)
+                        Text(value.localizedString())
                     }
                 }
                 .pickerStyle(RadioGroupPickerStyle())
@@ -122,29 +126,26 @@ private struct AppearanceSection: View {
                 .fixedSize()
             }
             .padding(.bottom, 8.0)
-            if contrastStandard == .wcag {
-                GeometryReader { geometry in
-                    let width = geometry.size.width
-                    HStack(spacing: 16.0) {
-                        CompliancePreviewWCAG(
-                            width: width / 2 - 8,
-                            foreground: eyedroppers.foreground,
-                            background: eyedroppers.background
-                        )
-                    }
-                    .frame(maxWidth: width)
-                }
-                .frame(height: 100)
-            } else {
-                GeometryReader { geometry in
+            Group {
+                if contrastStandard == .wcag {
+                    CompliancePreviewWCAG(
+                        width: 258,
+                        foreground: eyedroppers.foreground,
+                        background: eyedroppers.background
+                    )
+                } else if contrastStandard == .apca {
                     CompliancePreviewAPCA(
                         foreground: eyedroppers.foreground,
                         background: eyedroppers.background
                     )
-                    .frame(maxWidth: geometry.size.width)
+                } else {
+                    CompliancePreviewBoth(
+                        foreground: eyedroppers.foreground,
+                        background: eyedroppers.background
+                    )
                 }
-                .frame(height: 100)
             }
+            .frame(height: 115)
         }
         .padding(.horizontal, 24.0)
     }

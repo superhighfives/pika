@@ -229,6 +229,7 @@ private let urlGroups: [URLGroup] = [
     (PikaText.textUrlGroupPick, [
         ("pika://pick/foreground", PikaText.textPickForeground),
         ("pika://pick/background", PikaText.textPickBackground),
+        ("pika://pick/contrast", PikaText.textPickContrast),
     ]),
     (PikaText.textColorSystemPicker, [
         ("pika://system/foreground", PikaText.textColorSystemPickerForegroundSimple),
@@ -277,6 +278,7 @@ private let urlGroups: [URLGroup] = [
         ("pika://window/about", PikaText.textUrlWindowAbout),
         ("pika://window/help", PikaText.textUrlWindowHelp),
         ("pika://window/preferences", PikaText.textUrlWindowPreferences),
+        ("pika://window/splash", PikaText.textUrlWindowSplash),
         ("pika://window/resize/<w>/<h>", PikaText.textUrlWindowResize),
     ]),
     (PikaText.textUrlGroupAppearance, [

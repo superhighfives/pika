@@ -32,4 +32,14 @@ extension NSColor {
     func toContrastRatioString(with color: NSColor) -> String {
         Double(round(100 * contrastRatio(with: color)) / 100).description as String
     }
+
+    func toLocalizedContrastRatioString(with color: NSColor, locale: Locale = .current) -> String {
+        let value = round(100 * contrastRatio(with: color)) / 100
+        let numberFormatter = NumberFormatter()
+        numberFormatter.locale = locale
+        numberFormatter.numberStyle = .decimal
+        numberFormatter.minimumFractionDigits = 1
+        numberFormatter.maximumFractionDigits = 2
+        return numberFormatter.string(from: NSNumber(value: value)) ?? "\(value)"
+    }
 }

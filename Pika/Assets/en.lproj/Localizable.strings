@@ -79,6 +79,9 @@
 /* Hide Pika while picking */
 "preferences.pick.hide" = "Hide Pika while picking";
 
+/* Pick a contrasting background color after the foreground */
+"preferences.pick.contrasting" = "Pick contrasting color after foreground";
+
 /* General Settings */
 "preferences.general.title" = "General Settings";
 
@@ -124,6 +127,12 @@
 /* Hide app */
 "preferences.app.hidden.description" = "Hide app";
 
+/* Popover */
+"preferences.app.menubarPopover.title" = "Popover";
+
+/* Show as menu bar popover */
+"preferences.app.menubarPopover.description" = "Menu bar popover";
+
 /* Appearance */
 "preferences.appearance.title" = "Appearance";
 
@@ -147,6 +156,9 @@
 
 /* Contrast Calculation Standard */
 "preferences.contrast.standard" = "Contrast Calculation Standard";
+
+/* Both (combined WCAG and APCA) */
+"color.standard.both" = "Both";
 
 /* Contrast ratio */
 "color.ratio" = "Contrast Ratio";
@@ -249,6 +261,9 @@
 
 /* Pick background */
 "color.pick.background" = "Pick background";
+
+/* Pick foreground then background */
+"color.pick.contrast" = "Pick foreground and background";
 
 /* Copy */
 "color.copy" = "Copy";
@@ -519,6 +534,9 @@
 
 /* Open the Preferences window */
 "help.url.window.preferences" = "Open the Preferences window";
+
+/* Open the Splash window */
+"help.url.window.splash" = "Open the Splash window";
 
 /* Resize window */
 "help.url.window.resize" = "Resize window";

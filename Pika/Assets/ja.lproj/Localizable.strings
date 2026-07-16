@@ -124,6 +124,12 @@
 /* Hide app */
 "preferences.app.hidden.description" = "アプリを非表示";
 
+/* Menu bar popover */
+"preferences.app.menubarPopover.title" = "ポップオーバー";
+
+/* Show as menu bar popover */
+"preferences.app.menubarPopover.description" = "メニューバーポップオーバー";
+
 /* Appearance */
 "preferences.appearance.title" = "外観";
 
@@ -147,6 +153,9 @@
 
 /* Contrast Calculation Standard */
 "preferences.contrast.standard" = "コントラスト計算基準";
+
+/* Both (combined WCAG and APCA) */
+"color.standard.both" = "両方";
 
 /* Contrast ratio */
 "color.ratio" = "コントラスト比";
@@ -520,6 +529,9 @@
 /* Open the Preferences window */
 "help.url.window.preferences" = "設定ウィンドウを開く";
 
+/* Open the Splash window */
+"help.url.window.splash" = "スプラッシュウィンドウを開く";
+
 /* Resize window */
 "help.url.window.resize" = "ウィンドウサイズを変更";
 
@@ -531,3 +543,9 @@
 
 /* Restore system appearance */
 "help.url.appearance.system" = "システムの外観に戻す";
+
+/* Pick a contrasting background color after the foreground */
+"preferences.pick.contrasting" = "前景色の後にコントラスト色をピック";
+
+/* Pick foreground then background */
+"color.pick.contrast" = "前景色と背景色をピック";

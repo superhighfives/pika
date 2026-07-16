@@ -398,6 +398,7 @@ class Eyedropper: ObservableObject {
 
     let type: Types
     var forceShow = false
+    var pendingChainCommit = false
 
     let colorNames: [ColorName] = loadColors()!
     var closestVector: ClosestVector!
@@ -444,7 +445,7 @@ class Eyedropper: ObservableObject {
         panel.isContinuous = true
     }
 
-    func start() {
+    func start(chainContrasting: Bool = false) {
         if Defaults[.hidePikaWhilePicking] {
             if NSApp.mainWindow?.isVisible == true {
                 forceShow = true
@@ -453,6 +454,9 @@ class Eyedropper: ObservableObject {
         }
 
         DispatchQueue.main.asyncAfter(deadline: .now()) {
+            if Defaults[.appMode].usesPopover {
+                NSApp.activate(ignoringOtherApps: true)
+            }
             let sampler = NSColorSampler()
             sampler.show { selectedColor in
 
@@ -474,10 +478,46 @@ class Eyedropper: ObservableObject {
 
                     self.set(normalizedColor)
 
-                    NotificationCenter.default.post(name: .colorPicked, object: nil)
+                    if chainContrasting,
+                       self.type == .foreground,
+                       let appDelegate = NSApp.delegate as? AppDelegate
+                    {
+                        // Defer committing the foreground pick — we'll record once the
+                        // background is also picked (or the chained pick is cancelled).
+                        let background = appDelegate.eyedroppers.background
+                        background.pendingChainCommit = true
+                        // Don't bounce Pika back into view between picks: forward the
+                        // forceShow intent to the background pick instead.
+                        if self.forceShow {
+                            self.forceShow = false
+                            background.forceShow = true
+                        }
+                        let delay: Double = Defaults[.showColorOverlay] ? 0.4 : 0.05
+                        DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+                            background.start()
+                        }
+                    } else {
+                        self.pendingChainCommit = false
+                        NotificationCenter.default.post(name: .colorPicked, object: nil)
 
+                        if Defaults[.copyColorOnPick] {
+                            NSApp.sendAction(self.type.copySelector, to: nil, from: nil)
+                        } else if Defaults[.appMode].usesPopover {
+                            NSApp.sendAction(#selector(AppDelegate.showPopover), to: nil, from: nil)
+                        } else {
+                            NSApp.sendAction(#selector(AppDelegate.showPika), to: nil, from: nil)
+                        }
+                    }
+                } else if self.pendingChainCommit {
+                    // Chained background pick was cancelled; commit the foreground change
+                    // that was deferred so it isn't lost. self.type is .background here, so
+                    // route copy-on-pick to the foreground selector explicitly.
+                    self.pendingChainCommit = false
+                    NotificationCenter.default.post(name: .colorPicked, object: nil)
                     if Defaults[.copyColorOnPick] {
-                        NSApp.sendAction(self.type.copySelector, to: nil, from: nil)
+                        NSApp.sendAction(Eyedropper.Types.foreground.copySelector, to: nil, from: nil)
+                    } else if Defaults[.appMode].usesPopover {
+                        NSApp.sendAction(#selector(AppDelegate.showPopover), to: nil, from: nil)
                     } else {
                         NSApp.sendAction(#selector(AppDelegate.showPika), to: nil, from: nil)
                     }
@@ -485,7 +525,9 @@ class Eyedropper: ObservableObject {
 
                 if self.forceShow {
                     self.forceShow = false
-                    NSApp.sendAction(#selector(AppDelegate.showPika), to: nil, from: nil)
+                    if !Defaults[.appMode].usesPopover {
+                        NSApp.sendAction(#selector(AppDelegate.showPika), to: nil, from: nil)
+                    }
                 }
 
                 let panel = NSColorPanel.shared

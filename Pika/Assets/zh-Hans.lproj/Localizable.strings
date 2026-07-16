@@ -124,6 +124,12 @@
 /* Hide app */
 "preferences.app.hidden.description" = "隐藏应用";
 
+/* Menu bar popover */
+"preferences.app.menubarPopover.title" = "弹出窗口";
+
+/* Show as menu bar popover */
+"preferences.app.menubarPopover.description" = "菜单栏弹出窗口";
+
 /* Appearance */
 "preferences.appearance.title" = "外观";
 
@@ -147,6 +153,9 @@
 
 /* Contrast Calculation Standard */
 "preferences.contrast.standard" = "对比度计算标准";
+
+/* Both (combined WCAG and APCA) */
+"color.standard.both" = "两者";
 
 /* Contrast ratio */
 "color.ratio" = "对比度比例";
@@ -463,6 +472,9 @@
 /* Open the Preferences window */
 "help.url.window.preferences" = "打开偏好设置窗口";
 
+/* Open the Splash window */
+"help.url.window.splash" = "打开欢迎窗口";
+
 /* Resize window */
 "help.url.window.resize" = "调整窗口大小";
 
@@ -531,3 +543,9 @@
 
 /* Preview */
 "help.url.group.preview" = "预览";
+
+/* Pick a contrasting background color after the foreground */
+"preferences.pick.contrasting" = "在前景色之后选择对比色";
+
+/* Pick foreground then background */
+"color.pick.contrast" = "选择前景色和背景色";

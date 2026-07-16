@@ -1,0 +1,51 @@
+{
+  "color-space-for-untagged-svg-colors" : "display-p3",
+  "fill" : "automatic",
+  "groups" : [
+    {
+      "blur-material" : null,
+      "layers" : [
+        {
+          "image-name" : "Eye.svg",
+          "name" : "Eye"
+        }
+      ],
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 1
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.5
+      }
+    },
+    {
+      "layers" : [
+        {
+          "image-name-specializations" : [
+            {
+              "value" : "Pattern.png"
+            },
+            {
+              "appearance" : "dark",
+              "value" : "Pattern Dark.png"
+            }
+          ],
+          "name" : "Pattern"
+        }
+      ],
+      "shadow" : {
+        "kind" : "none",
+        "opacity" : 0.5
+      },
+      "specular" : false,
+      "translucency" : {
+        "enabled" : false,
+        "value" : 0.5
+      }
+    }
+  ],
+  "supported-platforms" : {
+    "squares" : "shared"
+  }
+}

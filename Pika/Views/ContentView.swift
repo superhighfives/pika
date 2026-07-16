@@ -11,6 +11,7 @@ struct ContentView: View {
     @Default(.historyDrawerVisible) var historyDrawerVisible
     @Default(.showColorPreview) var showColorPreview
     @Default(.showCompliance) var showCompliance
+    @Default(.appMode) var appMode
     @Default(.palettes) var palettes
     @Default(.activePaletteIndex) var activePaletteIndex
     @Environment(\.colorScheme) var colorScheme: ColorScheme
@@ -51,7 +52,8 @@ struct ContentView: View {
                         }
                     }
                     .focusable(false)
-                    .padding(16.0)
+                    .padding(.horizontal, 16.0)
+                    .padding(.top, appMode.usesPopover ? 42.0 : 16.0)
                     .frame(maxHeight: .infinity, alignment: .top)
                 )
                 .onHover { hover in

@@ -7,9 +7,11 @@ struct ColorPickers: View {
         let eyedropperArray: [Eyedropper] = [eyedroppers.foreground, eyedroppers.background]
 
         HStack(spacing: 0.0) {
-            ForEach(eyedropperArray, id: \.type) { eyedropper in
+            ForEach(Array(eyedropperArray.enumerated()), id: \.element.type) { index, eyedropper in
+                if index > 0 {
+                    Divider()
+                }
                 EyedropperItem(eyedropper: eyedropper)
-                Divider()
             }
         }
     }

@@ -14,7 +14,7 @@ struct AppModeButtons: View {
         .buttonStyle(AppearanceButtonStyle(
             title: PikaText.textAppMenubarTitle,
             description: PikaText.textAppMenubarDescription,
-            selected: appMode == .menubar
+            selected: appMode == .menubar,
         ))
         Button(action: {
             appMode = .regular
@@ -25,7 +25,18 @@ struct AppModeButtons: View {
         .buttonStyle(AppearanceButtonStyle(
             title: PikaText.textAppDockTitle,
             description: PikaText.textAppDockDescription,
-            selected: appMode == .regular
+            selected: appMode == .regular,
+        ))
+        Button(action: {
+            appMode = .menubarPopover
+        }, label: {
+            AppModeToggleGroup(theme: .menubarPopover)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        })
+        .buttonStyle(AppearanceButtonStyle(
+            title: PikaText.textAppMenubarPopoverTitle,
+            description: PikaText.textAppMenubarPopoverDescription,
+            selected: appMode == .menubarPopover,
         ))
     }
 }
