@@ -30,7 +30,9 @@ jobs:
         (contains(github.event.issue.body, '@claude') || contains(github.event.issue.title, '@claude')) &&
         contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.issue.author_association)
       )
-    runs-on: ubuntu-latest
+    # macOS so Claude can build/test the app (AppKit/SwiftUI) during a review;
+    # matches tests.yml. GitHub-hosted runners are free on public repos.
+    runs-on: macos-15
     permissions:
       contents: write
       pull-requests: write
@@ -42,6 +44,9 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_16.3.app
 
       - name: Run Claude Code
         id: claude
