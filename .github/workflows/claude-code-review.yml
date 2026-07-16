@@ -23,9 +23,12 @@ jobs:
     #   github.event.pull_request.user.login == 'new-developer' ||
     #   github.event.pull_request.author_association == 'FIRST_TIME_CONTRIBUTOR'
 
-    runs-on: ubuntu-latest
+    # macOS so Claude can build/test the app (AppKit/SwiftUI) during a review;
+    # matches tests.yml. GitHub-hosted runners are free on public repos.
+    runs-on: macos-15
     # Fail loudly instead of hanging up to GitHub's 6h default if a run wedges.
-    timeout-minutes: 20
+    # A touch higher than Linux to allow for Xcode build time during review.
+    timeout-minutes: 30
     permissions:
       contents: read
       pull-requests: write
@@ -37,6 +40,9 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_16.3.app
 
       - name: Run Claude Code Review
         id: claude-review
