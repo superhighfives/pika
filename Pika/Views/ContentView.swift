@@ -23,8 +23,8 @@ enum PikaAdaptiveWidth {
     static let base: CGFloat = 360 // bare minimum content width (matches window frame min)
     // Footer (with its shortened labels) and the palette drawer share one hide width so
     // they appear/disappear together — different values read as a bug.
-    static let palettes: CGFloat = 460
-    static let contrast: CGFloat = 460
+    static let palettes: CGFloat = 410
+    static let contrast: CGFloat = 410
     static let preview: CGFloat = 420 // preview pill
 }
 
@@ -170,8 +170,9 @@ struct ContentView: View {
 
                 if showCompliance, allowContrast {
                     AdaptiveDivider()
+                    // Slide only — no opacity fade, so the footer is always full opacity.
                     Footer(foreground: eyedroppers.foreground, background: eyedroppers.background)
-                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                        .transition(.move(edge: .bottom))
                 }
                 if historyDrawerVisible, allowPalettes {
                     ColorHistoryDrawer(foreground: eyedroppers.foreground, background: eyedroppers.background)

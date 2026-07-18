@@ -89,13 +89,13 @@
 "preferences.window.title" = "Window Settings";
 
 /* Window shadow: always on */
-"preferences.shadow.options.always" = "Shadow";
+"preferences.shadow.options.always" = "Show shadow";
 
 /* Window shadow: hidden while picking */
-"preferences.shadow.options.hiddenWhilePicking" = "No shadow while picking";
+"preferences.shadow.options.hiddenWhilePicking" = "Hide shadow while picking";
 
 /* Window shadow: never */
-"preferences.shadow.options.never" = "No shadow";
+"preferences.shadow.options.never" = "Hide shadow";
 
 /* Expand the window to fit hidden elements */
 "content.expandToFit" = "Expand to fit";
