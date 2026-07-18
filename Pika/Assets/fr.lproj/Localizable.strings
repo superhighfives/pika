@@ -552,9 +552,9 @@
 
 /* Window shadow */
 "preferences.shadow.description" = "Window shadow";
-"preferences.shadow.options.always" = "Shadow";
-"preferences.shadow.options.hiddenWhilePicking" = "No shadow while picking";
-"preferences.shadow.options.never" = "No shadow";
+"preferences.shadow.options.always" = "Show shadow";
+"preferences.shadow.options.hiddenWhilePicking" = "Hide shadow while picking";
+"preferences.shadow.options.never" = "Hide shadow";
 
 /* Expand to fit */
 "content.expandToFit" = "Expand to fit";
