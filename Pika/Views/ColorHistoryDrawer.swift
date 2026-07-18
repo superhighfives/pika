@@ -11,6 +11,7 @@ struct ColorHistoryDrawer: View {
     @ObservedObject var background: Eyedropper
     @Default(.palettes) var palettes
     @Default(.activePaletteIndex) var activePaletteIndex
+    @Environment(\.colorScheme) private var colorScheme
 
     @State private var isShowingClearConfirm = false
     @State private var slideDirection: VerticalDirection = .down
@@ -29,10 +30,10 @@ struct ColorHistoryDrawer: View {
     }
 
     var body: some View {
-        Divider()
+        AdaptiveDivider()
         VStack(spacing: 0) {
             PaletteTabBar(slideDirection: $slideDirection)
-            Divider()
+            AdaptiveDivider()
             HStack(spacing: 0) {
                 ZStack {
                     ScrollView(.horizontal, showsIndicators: false) {
@@ -72,7 +73,7 @@ struct ColorHistoryDrawer: View {
                 }
 
                 HStack(spacing: 0) {
-                    Divider()
+                    AdaptiveDivider(axis: .vertical)
 
                     if isAutoHistory {
                         Button(action: { isShowingClearConfirm = true }) {
@@ -106,11 +107,10 @@ struct ColorHistoryDrawer: View {
         }
         .background(
             ZStack {
-                VisualEffect(
-                    material: NSVisualEffectView.Material.underWindowBackground,
-                    blendingMode: NSVisualEffectView.BlendingMode.behindWindow
-                )
-                Color.black.opacity(0.2)
+                AdaptivePanelBackground()
+                // Barely-there tint so the drawer reads as almost the same surface as the
+                // contrast footer — just a whisper of separation.
+                Color.black.opacity(colorScheme == .dark ? 0.06 : 0.02)
             }
         )
         .alert(PikaText.textHistoryClear, isPresented: $isShowingClearConfirm) {

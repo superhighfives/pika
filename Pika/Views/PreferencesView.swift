@@ -12,6 +12,7 @@ private struct GeneralAndSelectionSection: View {
         @Default(.betaUpdates) var betaUpdates
     #endif
     @Default(.hidePikaWhilePicking) var hidePikaWhilePicking
+    @Default(.windowShadow) var windowShadow
     @Default(.pickContrastingColor) var pickContrastingColor
     @Default(.appMode) var appMode
     @Default(.appFloating) var appFloating
@@ -52,6 +53,18 @@ private struct GeneralAndSelectionSection: View {
                         Text(PikaText.textIconDescription)
                     }
                 }
+
+                Text(PikaText.textWindowSettingsTitle)
+                    .font(.system(size: 16))
+                    .padding(.top, 8.0)
+                Picker("", selection: $windowShadow) {
+                    ForEach(WindowShadow.allCases, id: \.self) { value in
+                        Text(value.localizedString())
+                    }
+                }
+                .labelsHidden()
+                .pickerStyle(.menu)
+                .fixedSize()
             }
             .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
             .padding(.all, 24.0)

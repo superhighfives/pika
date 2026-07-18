@@ -46,6 +46,20 @@ enum ContrastStandard: String, Codable, CaseIterable {
     }
 }
 
+enum WindowShadow: String, Codable, CaseIterable {
+    case always = "preferences.shadow.options.always"
+    case hiddenWhilePicking = "preferences.shadow.options.hiddenWhilePicking"
+    case never = "preferences.shadow.options.never"
+
+    func localizedString() -> String {
+        NSLocalizedString(rawValue, comment: "Window Shadow")
+    }
+
+    /// The window's resting shadow state. `.hiddenWhilePicking` keeps the shadow at
+    /// rest and only drops it during an active pick (handled by the picker).
+    var showsShadowAtRest: Bool { self != .never }
+}
+
 enum AppMode: String, Codable, CaseIterable {
     case menubar = "preferences.app.mode.menubar"
     case regular = "preferences.app.mode.regular"
@@ -71,6 +85,7 @@ extension Defaults.Keys {
     static let colorFormat = Key<ColorFormat>("colorFormat", default: .hex)
     static let viewedSplash = Key<Bool>("viewedSplash", default: false)
     static let hidePikaWhilePicking = Key<Bool>("hidePikaWhilePicking", default: false)
+    static let windowShadow = Key<WindowShadow>("windowShadow", default: .always)
     static let pickContrastingColor = Key<Bool>("pickContrastingColor", default: false)
     static let copyColorOnPick = Key<Bool>("copyColorOnPick", default: false)
     static let hideMenuBarIcon = Key<Bool>("hideMenuBarIcon", default: false)
