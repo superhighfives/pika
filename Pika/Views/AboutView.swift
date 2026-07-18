@@ -9,9 +9,11 @@ struct AboutView: View {
                 Color(red: 0.4, green: 0.0, blue: 0.7)
                     .frame(maxHeight: .infinity)
                 VisualisationHeader(height: 240, alignment: .bottom) {
-                    AppVersion(displayOnTransparent: true)
-                        .padding(.bottom, 32)
+                    EmptyView()
                 }
+                AppVersion(displayOnTransparent: true)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .offset(y: 10.0)
             }
             .background(
                 GeometryReader { geo in

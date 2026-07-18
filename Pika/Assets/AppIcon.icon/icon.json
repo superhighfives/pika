@@ -6,6 +6,7 @@
       "blur-material" : null,
       "layers" : [
         {
+          "hidden" : false,
           "image-name" : "Eye.svg",
           "name" : "Eye"
         }
@@ -22,6 +23,7 @@
     {
       "layers" : [
         {
+          "hidden" : false,
           "image-name-specializations" : [
             {
               "value" : "Pattern.png"
