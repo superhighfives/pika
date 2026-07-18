@@ -7,6 +7,7 @@ struct EyedropperButton: View {
     @Default(.copyFormat) var copyFormat
     @Default(.hideColorNames) var hideColorNames
     @Default(.showColorPreview) var showColorPreview
+    @Environment(\.pikaAdaptiveVisibility) var adaptive
 
     @State var hoverVisible: Bool = false
     @State private var colorSpace = Defaults[.colorSpace]
@@ -20,25 +21,40 @@ struct EyedropperButton: View {
             }, label: {
                 ZStack {
                     VStack(alignment: .leading, spacing: 2.0) {
+                        // Visibility is size-aware (`adaptive.showsTypeLabels` already
+                        // folds in the preview-pill overlap) so labels fade out as the
+                        // window shrinks and return when it grows again.
+                        let showsTypeLabel = adaptive.showsTypeLabels
                         Text(eyedropper.type.description)
                             .font(.caption)
                             .fontWeight(.semibold)
                             .foregroundColor(eyedropper.color.getUIColor().opacity(0.75))
-                            .opacity(showColorPreview ? 0 : 1)
+                            .opacity(showsTypeLabel ? 1 : 0)
                             .animation(
-                                showColorPreview
-                                    ? .easeInOut(duration: 0.2)
-                                    : .easeInOut(duration: 0.25).delay(0.3),
-                                value: showColorPreview
+                                showsTypeLabel
+                                    ? .easeInOut(duration: 0.25).delay(0.3)
+                                    : .easeInOut(duration: 0.2),
+                                value: showsTypeLabel
                             )
 
                         VStack(alignment: .leading, spacing: 6.0) {
                             Text((eyedropper.color.usingColorSpace(colorSpace) ?? eyedropper.color).toFormat(format: colorFormat, style: copyFormat))
                                 .foregroundColor(eyedropper.color.getUIColor())
                                 .font(.system(size: 18, weight: .regular))
+                                // Shrink long formats (OKLCH/RGB) to stay within two
+                                // lines as the window narrows, rather than wrapping to
+                                // three lines or clipping. The trailing padding keeps the
+                                // text clear of the copy / system-picker hover buttons.
+                                .lineLimit(2)
+                                .minimumScaleFactor(0.5)
+                                // Bound the text to the column width (minus the button
+                                // gutter) so it wraps/scales inside its column instead of
+                                // reporting its single-line ideal width and overflowing
+                                // past the window edge.
                                 .padding(.trailing, 32.0)
+                                .frame(maxWidth: .infinity, alignment: .leading)
 
-                            if !hideColorNames {
+                            if !hideColorNames, adaptive.showsColorNames {
                                 Text(eyedropper.getClosestColor())
                                     .font(.system(size: 12, weight: .medium))
                                     .foregroundColor(eyedropper.color.getUIColor())

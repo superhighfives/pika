@@ -29,6 +29,40 @@ class WindowCoordinator: NSObject {
         // silently disabling frame autosave. Assign the name on the controller so it
         // sticks and AppKit persists size/position on move and resize.
         pikaTouchBarController.windowFrameAutosaveName = PikaWindow.primaryWindowAutosaveName
+
+        // The adaptive layout posts this when the user taps "expand to fit"; grow the
+        // window just enough to reveal the elements it's currently suppressing.
+        notificationCenter.addObserver(
+            forName: .expandToFit, object: nil, queue: .main
+        ) { [weak self] note in
+            guard let self, let size = (note.object as? NSValue)?.sizeValue else { return }
+            self.resizeMainWindow(toFitContent: size)
+        }
+    }
+
+    /// Grows the main window so its content area is at least `contentSize`, keeping the
+    /// top-left corner fixed (the natural anchor for a window being enlarged). Clamped to
+    /// the window's own min/max so it never fights the resize limits.
+    private func resizeMainWindow(toFitContent contentSize: NSSize) {
+        // `sizingOptions` mirrors the SwiftUI frame's min/max onto the window's content
+        // size limits, so clamp the request to those before converting to a window frame.
+        let minContent = pikaWindow.contentMinSize
+        let maxContent = pikaWindow.contentMaxSize
+        let targetContentWidth = min(max(contentSize.width, minContent.width), maxContent.width)
+        let targetContentHeight = min(max(contentSize.height, minContent.height), maxContent.height)
+
+        // Chrome (titlebar + toolbar) sits outside the SwiftUI content, so add the live
+        // inset to turn a content height into a window height. Width has no side chrome.
+        let chromeHeight = pikaWindow.frame.height - pikaWindow.contentLayoutRect.height
+
+        var frame = pikaWindow.frame
+        // Only ever grow — never shrink an axis that already has room.
+        let newWidth = max(frame.width, targetContentWidth)
+        let newHeight = max(frame.height, targetContentHeight + chromeHeight)
+        let top = frame.maxY
+        frame.size = NSSize(width: newWidth, height: newHeight)
+        frame.origin.y = top - newHeight
+        pikaWindow.setFrame(frame, display: true, animate: true)
     }
 
     /// Mounts the SwiftUI content tree on the main window. Call only when the active mode
@@ -38,10 +72,13 @@ class WindowCoordinator: NSObject {
         guard let eyedroppers = eyedroppers else { return }
         let contentView = ContentView()
             .environmentObject(eyedroppers)
-            .frame(minWidth: 480,
+            // Floor is well below the "everything visible" height: ContentView sheds
+            // elements adaptively as it shrinks (see PikaAdaptiveHeight), so the window
+            // can get compact again. Ideal stays at the comfortable first-launch size.
+            .frame(minWidth: 360,
                    idealWidth: 480,
                    maxWidth: 650,
-                   minHeight: 280,
+                   minHeight: 160,
                    idealHeight: 280,
                    maxHeight: 400,
                    alignment: .center)
@@ -56,6 +93,14 @@ class WindowCoordinator: NSObject {
 
     func removeMainWindowContent() {
         pikaWindow.contentView = nil
+    }
+
+    /// Drops or restores the main window's drop shadow around an active pick.
+    /// Only takes effect for `.hiddenWhilePicking`; the other modes keep their
+    /// resting shadow, which is owned by `PikaWindow`.
+    func setPickingShadowSuppressed(_ suppressed: Bool) {
+        guard Defaults[.windowShadow] == .hiddenWhilePicking else { return }
+        pikaWindow.hasShadow = !suppressed
     }
 
     func startMainWindow() {

@@ -65,7 +65,7 @@ private struct FooterRow: View {
                 }
             }
 
-            Divider()
+            AdaptiveDivider(axis: .vertical)
 
             VStack(alignment: .leading, spacing: 3.0) {
                 Text(complianceLabel)
@@ -152,7 +152,7 @@ private struct CompactBothFooter: View {
                 }
             }
 
-            Divider()
+            AdaptiveDivider()
                 .padding(.horizontal, -12.0)
 
             HStack(spacing: 6.0) {
@@ -207,10 +207,7 @@ struct Footer: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, 12.0)
-        .background(VisualEffect(
-            material: NSVisualEffectView.Material.underWindowBackground,
-            blendingMode: NSVisualEffectView.BlendingMode.behindWindow
-        ))
+        .background(AdaptivePanelBackground())
     }
 }
 

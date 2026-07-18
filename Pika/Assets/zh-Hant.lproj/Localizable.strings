@@ -549,3 +549,15 @@
 
 /* Pick foreground then background */
 "color.pick.contrast" = "選擇前景色和背景色";
+
+/* Window shadow */
+"preferences.shadow.description" = "Window shadow";
+"preferences.shadow.options.always" = "Shadow";
+"preferences.shadow.options.hiddenWhilePicking" = "No shadow while picking";
+"preferences.shadow.options.never" = "No shadow";
+
+/* Expand to fit */
+"content.expandToFit" = "Expand to fit";
+
+/* Window Settings */
+"preferences.window.title" = "Window Settings";

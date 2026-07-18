@@ -1,11 +1,30 @@
 import MetalKit
 import SwiftUI
 
+/// Reports the hosting `NSWindow` up to SwiftUI so notification handlers can tell this
+/// window's events apart from those of transient popups (e.g. a Picker's menu window).
+private struct WindowAccessor: NSViewRepresentable {
+    @Binding var window: NSWindow?
+
+    func makeNSView(context _: Context) -> NSView {
+        let view = NSView()
+        DispatchQueue.main.async { window = view.window }
+        return view
+    }
+
+    func updateNSView(_ nsView: NSView, context _: Context) {
+        DispatchQueue.main.async {
+            if window == nil { window = nsView.window }
+        }
+    }
+}
+
 struct Visualisation: View {
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     var device: MTLDevice!
     @State var isShown = false
     @State var renderID = UUID()
+    @State private var hostWindow: NSWindow?
 
     init() {
         guard let device = MTLCreateSystemDefaultDevice() else {
@@ -34,24 +53,36 @@ struct Visualisation: View {
                 }
             }
         }
+        .background(WindowAccessor(window: $hostWindow))
         .animation(.easeIn(duration: 0.8), value: isShown)
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 isShown = true
             }
         }
-        .onReceive(NotificationCenter.default.publisher(for: NSWindow.didBecomeKeyNotification)) { _ in
+        // Only react to this view's own window. Otherwise a transient popup — like the
+        // menu window a Picker opens — fires willClose/didBecomeKey and wrongly toggles
+        // the shader (which made the header animation vanish when changing a dropdown).
+        .onReceive(NotificationCenter.default.publisher(for: NSWindow.didBecomeKeyNotification)) { note in
+            guard isHostWindow(note) else { return }
             if !isShown {
                 renderID = UUID()
                 isShown = true
             }
         }
-        .onReceive(NotificationCenter.default.publisher(for: NSWindow.didMiniaturizeNotification)) { _ in
+        .onReceive(NotificationCenter.default.publisher(for: NSWindow.didMiniaturizeNotification)) { note in
+            guard isHostWindow(note) else { return }
             isShown = false
         }
-        .onReceive(NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { _ in
+        .onReceive(NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { note in
+            guard isHostWindow(note) else { return }
             isShown = false
         }
+    }
+
+    private func isHostWindow(_ note: Notification) -> Bool {
+        guard let hostWindow else { return false }
+        return (note.object as? NSWindow) === hostWindow
     }
 }
 
