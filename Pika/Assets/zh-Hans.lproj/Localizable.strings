@@ -551,13 +551,13 @@
 "color.pick.contrast" = "选择前景色和背景色";
 
 /* Window shadow */
-"preferences.shadow.description" = "Window shadow";
-"preferences.shadow.options.always" = "Show shadow";
-"preferences.shadow.options.hiddenWhilePicking" = "Hide shadow while picking";
-"preferences.shadow.options.never" = "Hide shadow";
+"preferences.shadow.description" = "窗口阴影";
+"preferences.shadow.options.always" = "显示阴影";
+"preferences.shadow.options.hiddenWhilePicking" = "选择颜色时隐藏阴影";
+"preferences.shadow.options.never" = "隐藏阴影";
 
 /* Expand to fit */
-"content.expandToFit" = "Expand to fit";
+"content.expandToFit" = "展开以适应";
 
 /* Window Settings */
-"preferences.window.title" = "Window Settings";
+"preferences.window.title" = "窗口设置";
