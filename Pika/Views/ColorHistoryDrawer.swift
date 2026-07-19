@@ -86,7 +86,7 @@ struct PaletteNameField: View {
             Button(action: { submit() }) {
                 Image(systemName: "checkmark.circle.fill")
                     .font(.system(size: 12))
-                    .foregroundStyle(.accentColor)
+                    .foregroundStyle(Color.accentColor)
             }
             .buttonStyle(.plain)
             .disabled(text.trimmingCharacters(in: .whitespaces).isEmpty)
@@ -223,7 +223,7 @@ struct PaletteTabBar: View {
         .buttonStyle(.plain)
         .padding(.horizontal, 8)
         .padding(.vertical, 4)
-        .foregroundStyle(isSelected ? .accentColor : .secondary)
+        .foregroundStyle(isSelected ? Color.accentColor : Color.secondary)
         .background(
             RoundedRectangle(cornerRadius: 4)
                 .fill(isSelected ? Color.accentColor.opacity(0.1) : Color.clear)

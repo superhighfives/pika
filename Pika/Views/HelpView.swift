@@ -106,7 +106,7 @@ struct HelpExternalLinkRow: View {
                 Spacer()
                 Text(shorthand)
                     .font(.system(size: 11, design: .monospaced))
-                    .foregroundStyle(isHovered ? .accentColor : .secondary)
+                    .foregroundStyle(isHovered ? Color.accentColor : Color.secondary)
             }
             .padding(.horizontal, 20.0)
             .padding(.vertical, verticalPadding)
@@ -143,7 +143,7 @@ private struct URLTriggerRow: View {
                 Spacer()
                 Text(url)
                     .font(.system(size: 11, design: .monospaced))
-                    .foregroundStyle(isHovered ? .accentColor : .secondary)
+                    .foregroundStyle(isHovered ? Color.accentColor : Color.secondary)
                     .lineLimit(1)
             }
             .padding(.horizontal, 20.0)
