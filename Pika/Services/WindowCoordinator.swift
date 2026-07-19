@@ -50,6 +50,13 @@ class WindowCoordinator: NSObject {
             self.updateShadowBorder()
         }.tieToLifetime(of: self)
 
+        // Keep the border on the same window level as the main window (which PikaWindow
+        // moves between .floating/.normal), so toggling "float on top" doesn't leave the
+        // border stranded on a stale level.
+        Defaults.observe(.appFloating) { [weak self] change in
+            self?.borderWindow?.level = change.newValue == true ? .floating : .normal
+        }.tieToLifetime(of: self)
+
         // Keep the border aligned to the main window and re-attached whenever it shows.
         for name in [NSWindow.didResizeNotification, NSWindow.didMoveNotification] {
             notificationCenter.addObserver(forName: name, object: pikaWindow, queue: .main) {
@@ -88,9 +95,10 @@ class WindowCoordinator: NSObject {
         if border.parent == nil {
             pikaWindow.addChildWindow(border, ordered: .above)
         }
+        border.level = pikaWindow.level
         if let borderView = border.contentView as? ShadowBorderView {
-            // Push the stroke ~1.5pt beyond the main frame edge so it lands on the visible
-            // glass edge, and match the window's rounded-corner radius.
+            // Sit the stroke on the main window's frame edge (which lines up with the
+            // visible glass edge), and match the window's rounded-corner radius.
             borderView.strokeInset = borderPad
             borderView.cornerRadius = 20
         }
