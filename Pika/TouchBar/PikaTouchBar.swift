@@ -83,7 +83,7 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
 
     func createTouchBarCopyButton(action: Selector) -> NSButton? {
         let button = NSButton(
-            image: NSImage(named: "doc.on.doc")!,
+            image: NSImage(systemSymbolName: "doc.on.doc", accessibilityDescription: nil)!,
             target: nil,
             action: action
         )
