@@ -158,13 +158,13 @@
 "color.standard.both" = "Beide";
 
 /* Contrast ratio */
-"color.ratio" = "Kontrastverhältnis";
+"color.ratio" = "Kontrast";
 
 /* Contrast ratio is a measure of the difference in perceived brightness between two colors, used to calculate the contrast ratio. */
 "color.ratio.description" = "Das Kontrastverhältnis ist ein Maß für den wahrgenommenen Helligkeitsunterschied zwischen zwei Farben, mit dem das Kontrastverhältnis berechnet wird.";
 
 /* Contrast Value (Lc) */
-"color.lc" = "Kontrastwert (Lc)";
+"color.lc" = "Kontrast (Lc)";
 
 /* Lightness contrast (Lc) is a measure of the lightness difference between two colors, used to calculate the contrast value. */
 "color.lc.description" = "Der Helligkeitskontrast (Lc) ist ein Maß für den Helligkeitsunterschied zwischen zwei Farben, mit dem der Kontrastwert berechnet wird.";

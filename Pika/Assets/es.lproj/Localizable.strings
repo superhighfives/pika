@@ -158,13 +158,13 @@
 "color.standard.both" = "Ambos";
 
 /* Contrast ratio */
-"color.ratio" = "Proporción de contraste";
+"color.ratio" = "Contraste";
 
 /* Contrast ratio is a measure of the difference in perceived brightness between two colors, used to calculate the contrast ratio. */
 "color.ratio.description" = "La proporción de contraste es una medida de la diferencia en el brillo percibido entre dos colores, utilizada para calcular la proporción de contraste.";
 
 /* Contrast Value (Lc) */
-"color.lc" = "Valor de Contraste (Lc)";
+"color.lc" = "Contraste (Lc)";
 
 /* Lightness contrast (Lc) is a measure of the lightness difference between two colors, used to calculate the contrast value. */
 "color.lc.description" = "El contraste de luminosidad (Lc) es una medida de la diferencia de luminosidad entre dos colores, utilizada para calcular el valor de contraste.";
@@ -212,7 +212,7 @@
 "color.apca.title" = "Título";
 
 /* Body Text */
-"color.apca.body" = "Texto del cuerpo";
+"color.apca.body" = "Cuerpo";
 
 /* Pass */
 "color.wcag.pass" = "Conforme";
