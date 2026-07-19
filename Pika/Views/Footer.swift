@@ -96,7 +96,7 @@ private struct CompactBadge: View {
                 .font(.system(size: 11, weight: .medium))
                 .fixedSize()
         }
-        .foregroundStyle(isCompliant ? .primary : .secondary.opacity(0.5))
+        .foregroundStyle(isCompliant ? Color.primary : Color.secondary.opacity(0.5))
         .help(tooltip)
     }
 }
