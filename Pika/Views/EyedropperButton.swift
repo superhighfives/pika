@@ -23,7 +23,7 @@ struct EyedropperButton: View {
                         Text(eyedropper.type.description)
                             .font(.caption)
                             .fontWeight(.semibold)
-                            .foregroundColor(eyedropper.color.getUIColor().opacity(0.75))
+                            .foregroundStyle(eyedropper.color.getUIColor().opacity(0.75))
                             .opacity(showColorPreview ? 0 : 1)
                             .animation(
                                 showColorPreview
@@ -34,14 +34,14 @@ struct EyedropperButton: View {
 
                         VStack(alignment: .leading, spacing: 6.0) {
                             Text((eyedropper.color.usingColorSpace(colorSpace) ?? eyedropper.color).toFormat(format: colorFormat, style: copyFormat))
-                                .foregroundColor(eyedropper.color.getUIColor())
+                                .foregroundStyle(eyedropper.color.getUIColor())
                                 .font(.system(size: 18, weight: .regular))
                                 .padding(.trailing, 32.0)
 
                             if !hideColorNames {
                                 Text(eyedropper.getClosestColor())
                                     .font(.system(size: 12, weight: .medium))
-                                    .foregroundColor(eyedropper.color.getUIColor())
+                                    .foregroundStyle(eyedropper.color.getUIColor())
                             }
                         }
                     }

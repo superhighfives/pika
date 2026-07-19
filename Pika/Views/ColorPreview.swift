@@ -17,7 +17,7 @@ struct PreviewPill: View {
                 .lineLimit(1)
                 .truncationMode(.tail)
         }
-        .foregroundColor(fgColor.opacity(0.8))
+        .foregroundStyle(fgColor.opacity(0.8))
         .padding(.horizontal, 10.0)
         .padding(.vertical, 8.0)
         .background(

@@ -32,7 +32,7 @@ struct CircleButtonStyle: ButtonStyle {
                     }
                 )
                 .opacity(isVisible ? (configuration.isPressed ? 0.8 : 1.0) : 0.0)
-                .foregroundColor(fgColor.opacity(0.8))
+                .foregroundStyle(fgColor.opacity(0.8))
                 .animation(.easeInOut, value: isVisible)
                 .animation(.easeInOut, value: configuration.isPressed)
         }

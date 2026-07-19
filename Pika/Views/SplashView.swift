@@ -33,7 +33,7 @@ struct SplashView: View {
                     NSApp.sendAction(#selector(AppDelegate.closeSplashWindow), to: nil, from: nil)
                 }, label: { Text(PikaText.textSplashStart) })
                     .keyboardShortcut(.defaultAction)
-                    .accentColor(.accentColor)
+                    .tint(.accentColor)
             }
             .frame(maxWidth: .infinity, maxHeight: 50.0)
         }

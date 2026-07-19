@@ -38,7 +38,7 @@ private struct FooterRow: View {
                 Text(contrastHeader)
                     .font(.caption)
                     .fontWeight(.semibold)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                     .fixedSize()
                 if kind == .wcag {
                     HStack(spacing: 2.0) {
@@ -71,7 +71,7 @@ private struct FooterRow: View {
                 Text(complianceLabel)
                     .font(.caption)
                     .fontWeight(.semibold)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
 
                 ComplianceToggleGroup(
                     complianceData: complianceData,
@@ -96,7 +96,7 @@ private struct CompactBadge: View {
                 .font(.system(size: 11, weight: .medium))
                 .fixedSize()
         }
-        .foregroundColor(isCompliant ? .primary : .secondary.opacity(0.5))
+        .foregroundStyle(isCompliant ? .primary : .secondary.opacity(0.5))
         .help(tooltip)
     }
 }
@@ -114,7 +114,7 @@ private struct CompactBothFooter: View {
             HStack(spacing: 6.0) {
                 Text("WCAG")
                     .font(.system(size: 11, weight: .semibold))
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                     .fixedSize()
 
                 HStack(spacing: 2.0) {
@@ -158,7 +158,7 @@ private struct CompactBothFooter: View {
             HStack(spacing: 6.0) {
                 Text("APCA")
                     .font(.system(size: 11, weight: .semibold))
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                     .fixedSize()
 
                 Text(foreground.color.toAPCAcontrastValue(with: background.color))

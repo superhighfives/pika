@@ -83,7 +83,7 @@ private struct GeneralAndSelectionSection: View {
                         Slider(value: $colorOverlayDuration, in: 1.0 ... 5.0, step: 0.5)
                         Text(String(format: "%.1fs", colorOverlayDuration))
                             .font(.system(size: 11))
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                     }
                     .padding(.leading, 20.0)
                 }
@@ -274,10 +274,10 @@ private struct PreferencesVersionInfo: View {
             let textUnknown = PikaText.textAboutUnknown
             Text("\(textVersion) \(appVersion ?? textUnknown)")
                 .fontWeight(.semibold)
-                .foregroundColor(.white)
+                .foregroundStyle(.white)
                 .shadow(color: Color.black.opacity(0.3), radius: 0, x: 0, y: 1)
             Text("(\(textBuild) \(buildNumber ?? textUnknown))")
-                .foregroundColor(.white.opacity(0.5))
+                .foregroundStyle(.white.opacity(0.5))
                 .shadow(color: Color.black.opacity(0.3), radius: 0, x: 0, y: 1)
         }
     }

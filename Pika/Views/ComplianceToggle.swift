@@ -40,7 +40,7 @@ struct ComplianceToggle: View {
                 }
             }
         }
-        .foregroundColor(isCompliant ? .primary
+        .foregroundStyle(isCompliant ? .primary
             : .secondary)
         .help(tooltip)
         .fixedSize()

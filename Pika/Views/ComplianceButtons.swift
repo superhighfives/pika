@@ -100,7 +100,7 @@ struct CompliancePreviewBoth: View {
                 HStack(spacing: 0) {
                     Text("WCAG")
                         .font(.system(size: 11, weight: .semibold))
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(.secondary)
                         .frame(width: 40, alignment: .leading)
                     HStack(spacing: 2.0) {
                         Text(foreground.color.toLocalizedContrastRatioString(with: background.color))
@@ -120,7 +120,7 @@ struct CompliancePreviewBoth: View {
                 HStack(spacing: 0) {
                     Text("APCA")
                         .font(.system(size: 11, weight: .semibold))
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(.secondary)
                         .frame(width: 40, alignment: .leading)
                     Text(foreground.color.toAPCAcontrastValue(with: background.color))
                         .font(.system(size: 13, weight: .medium))

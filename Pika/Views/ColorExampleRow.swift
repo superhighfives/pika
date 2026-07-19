@@ -28,7 +28,7 @@ struct ColorExampleRow: View {
                         .strokeBorder(shadowColor.opacity(0.5), lineWidth: 1)
                 )
                 .frame(width: 12.0, height: 12.0)
-            Text("\(PikaText.textCopyExportExample):").fixedSize().foregroundColor(.secondary)
+            Text("\(PikaText.textCopyExportExample):").fixedSize().foregroundStyle(.secondary)
                 .font(.system(size: 11))
 
             HStack(alignment: .bottom, spacing: 8.0) {
@@ -36,11 +36,11 @@ struct ColorExampleRow: View {
                     HStack(alignment: .bottom, spacing: 4.0) {
                         Text(value.rawValue)
                             .font(.system(size: 11))
-                            .foregroundColor(.primary)
+                            .foregroundStyle(.primary)
 
                         Text(value.getExample(color: eyedropper.color, style: copyFormat))
                             .font(.system(size: 11))
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                     }
                 }
             }

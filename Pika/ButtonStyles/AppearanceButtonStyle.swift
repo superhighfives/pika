@@ -81,11 +81,11 @@ struct AppearanceButtonStyle: ButtonStyle {
                         .animation(.easeInOut(duration: 0.3), value: selected)
                 )
             VStack(spacing: 4.0) {
-                Text(title).foregroundColor(.primary)
+                Text(title).foregroundStyle(.primary)
                 Text(description)
                     .font(.caption)
                     .multilineTextAlignment(.center)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                     .padding(.horizontal, 20.0)
             }
         }
@@ -139,11 +139,11 @@ struct StyledContentView<Content: View>: View {
                 )
 
             VStack(spacing: 4.0) {
-                Text(title).foregroundColor(.primary)
+                Text(title).foregroundStyle(.primary)
                 Text(description)
                     .font(.caption)
                     .multilineTextAlignment(.center)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                     .frame(maxWidth: 260.0)
             }
         }
