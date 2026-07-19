@@ -551,13 +551,13 @@
 "color.pick.contrast" = "Odaberi prednju i pozadinsku boju";
 
 /* Window shadow */
-"preferences.shadow.description" = "Window shadow";
-"preferences.shadow.options.always" = "Show shadow";
-"preferences.shadow.options.hiddenWhilePicking" = "Hide shadow while picking";
-"preferences.shadow.options.never" = "Hide shadow";
+"preferences.shadow.description" = "Sjena prozora";
+"preferences.shadow.options.always" = "Prikaži sjenu";
+"preferences.shadow.options.hiddenWhilePicking" = "Sakrij sjenu tijekom biranja";
+"preferences.shadow.options.never" = "Sakrij sjenu";
 
 /* Expand to fit */
-"content.expandToFit" = "Expand to fit";
+"content.expandToFit" = "Proširi za prilagodbu";
 
 /* Window Settings */
-"preferences.window.title" = "Window Settings";
+"preferences.window.title" = "Postavke prozora";

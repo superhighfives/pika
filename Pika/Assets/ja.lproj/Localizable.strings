@@ -551,13 +551,13 @@
 "color.pick.contrast" = "前景色と背景色をピック";
 
 /* Window shadow */
-"preferences.shadow.description" = "Window shadow";
-"preferences.shadow.options.always" = "Show shadow";
-"preferences.shadow.options.hiddenWhilePicking" = "Hide shadow while picking";
-"preferences.shadow.options.never" = "Hide shadow";
+"preferences.shadow.description" = "ウインドウの影";
+"preferences.shadow.options.always" = "影を表示";
+"preferences.shadow.options.hiddenWhilePicking" = "ピック中は影を非表示";
+"preferences.shadow.options.never" = "影を非表示";
 
 /* Expand to fit */
-"content.expandToFit" = "Expand to fit";
+"content.expandToFit" = "広げて表示";
 
 /* Window Settings */
-"preferences.window.title" = "Window Settings";
+"preferences.window.title" = "ウインドウ設定";

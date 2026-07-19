@@ -551,13 +551,13 @@
 "color.pick.contrast" = "Seleccionar primer plano y segundo plano";
 
 /* Window shadow */
-"preferences.shadow.description" = "Window shadow";
-"preferences.shadow.options.always" = "Show shadow";
-"preferences.shadow.options.hiddenWhilePicking" = "Hide shadow while picking";
-"preferences.shadow.options.never" = "Hide shadow";
+"preferences.shadow.description" = "Sombra de la ventana";
+"preferences.shadow.options.always" = "Mostrar sombra";
+"preferences.shadow.options.hiddenWhilePicking" = "Ocultar sombra durante la selección";
+"preferences.shadow.options.never" = "Ocultar sombra";
 
 /* Expand to fit */
-"content.expandToFit" = "Expand to fit";
+"content.expandToFit" = "Expandir para ajustar";
 
 /* Window Settings */
-"preferences.window.title" = "Window Settings";
+"preferences.window.title" = "Ajustes de Ventana";
