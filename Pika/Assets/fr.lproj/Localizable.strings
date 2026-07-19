@@ -164,7 +164,7 @@
 "color.ratio.description" = "Le rapport de contraste est une mesure de la différence de luminosité perçue entre deux couleurs, utilisée pour calculer le rapport de contraste.";
 
 /* Contrast Value (Lc) */
-"color.lc" = "Valeur de Contraste (Lc)";
+"color.lc" = "Contraste (Lc)";
 
 /* Lightness contrast (Lc) is a measure of the lightness difference between two colors, used to calculate the contrast value. */
 "color.lc.description" = "Le contraste de luminosité (Lc) est une mesure de la différence de luminosité entre deux couleurs, utilisée pour calculer la valeur de contraste.";
@@ -212,7 +212,7 @@
 "color.apca.title" = "Titre";
 
 /* Body Text */
-"color.apca.body" = "Corps de texte";
+"color.apca.body" = "Corps";
 
 /* Pass */
 "color.wcag.pass" = "Conforme";

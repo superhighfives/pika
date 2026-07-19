@@ -158,13 +158,13 @@
 "color.standard.both" = "Obje";
 
 /* Contrast ratio */
-"color.ratio" = "Omjer kontrasta";
+"color.ratio" = "Kontrast";
 
 /* Contrast ratio is a measure of the difference in perceived brightness between two colors, used to calculate the contrast ratio. */
 "color.ratio.description" = "Omjer kontrasta je mjera razlike u percipiranoj svjetlini između dviju boja i koristi se za izračun omjera kontrasta.";
 
 /* Contrast Value (Lc) */
-"color.lc" = "Vrijednost kontrasta svjetline";
+"color.lc" = "Kontrast (Lc)";
 
 /* Lightness contrast (Lc) is a measure of the lightness difference between two colors, used to calculate the contrast value. */
 "color.lc.description" = "Kontrast svjetline je mjera razlike u svjetlini između dviju boja i koristi se za izračun vrijednosti kontrasta.";
@@ -212,7 +212,7 @@
 "color.apca.title" = "Naslov";
 
 /* Body Text */
-"color.apca.body" = "Glavni tekst";
+"color.apca.body" = "Tekst";
 
 /* Pass */
 "color.wcag.pass" = "Uspjelo";
