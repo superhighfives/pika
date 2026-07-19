@@ -23,6 +23,13 @@ class PikaWindow {
         window.standardWindowButton(NSWindow.ButtonType.zoomButton)!.isEnabled = false
         window.titlebarAppearsTransparent = true
 
+        // The window's drop shadow can bleed onto pixels beneath its edge and skew
+        // colour readings taken nearby. Honour the user's shadow preference; the
+        // `.hiddenWhilePicking` case keeps the resting shadow and is dropped mid-pick
+        // by `Eyedropper.start`. Setting *changes* (and the companion border shown while
+        // shadowless) are handled in `WindowCoordinator`.
+        window.hasShadow = Defaults[.windowShadow].showsShadowAtRest
+
         Defaults.observe(.appFloating) { change in
             window.level = change.newValue == true ? .floating : .normal
         }.tieToLifetime(of: self)

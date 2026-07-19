@@ -453,12 +453,25 @@ class Eyedropper: ObservableObject {
             NSApp.sendAction(#selector(AppDelegate.hidePika), to: nil, from: nil)
         }
 
+        // Drop the window's shadow while the sampler is up so it can't tint pixels
+        // picked near the window edge. Restored when the pick completes — except when
+        // handing off to a chained background pick, which keeps it suppressed.
+        let suppressShadow = Defaults[.windowShadow] == .hiddenWhilePicking
+        let windowCoordinator = (NSApp.delegate as? AppDelegate)?.windowCoordinator
+        if suppressShadow {
+            windowCoordinator?.setPickingShadowSuppressed(true)
+        }
+
         DispatchQueue.main.asyncAfter(deadline: .now()) {
             if Defaults[.appMode].usesPopover {
                 NSApp.activate(ignoringOtherApps: true)
             }
             let sampler = NSColorSampler()
             sampler.show { selectedColor in
+
+                // Keep the shadow suppressed only when handing off to a chained
+                // background pick; every terminal path restores it below.
+                var handedOff = false
 
                 if let selectedColor = selectedColor {
                     let normalizedColor = selectedColor.usingColorSpace(.sRGB) ?? selectedColor
@@ -486,6 +499,7 @@ class Eyedropper: ObservableObject {
                         // background is also picked (or the chained pick is cancelled).
                         let background = appDelegate.eyedroppers.background
                         background.pendingChainCommit = true
+                        handedOff = true
                         // Don't bounce Pika back into view between picks: forward the
                         // forceShow intent to the background pick instead.
                         if self.forceShow {
@@ -528,6 +542,10 @@ class Eyedropper: ObservableObject {
                     if !Defaults[.appMode].usesPopover {
                         NSApp.sendAction(#selector(AppDelegate.showPika), to: nil, from: nil)
                     }
+                }
+
+                if suppressShadow, !handedOff {
+                    windowCoordinator?.setPickingShadowSuppressed(false)
                 }
 
                 let panel = NSColorPanel.shared

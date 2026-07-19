@@ -68,6 +68,7 @@ enum PikaConstants {
     static let ncSavePalette = "savePalette"
     static let ncExportPalette = "exportPalette"
     static let ncSystemColorChanged = "systemColorChanged"
+    static let ncExpandToFit = "expandToFit"
 
     // Disabled formats for SwiftUI copy format
     static let disabledFormats: [ColorFormat] = [.hex, .hsl, .opengl, .lab, .oklch]
@@ -104,6 +105,7 @@ extension Notification.Name {
     static let savePalette = Notification.Name(PikaConstants.ncSavePalette)
     static let exportPalette = Notification.Name(PikaConstants.ncExportPalette)
     static let systemColorChanged = Notification.Name(PikaConstants.ncSystemColorChanged)
+    static let expandToFit = Notification.Name(PikaConstants.ncExpandToFit)
 }
 
 enum PikaText {
@@ -275,6 +277,18 @@ enum PikaText {
     static let textPickContrasting = NSLocalizedString(
         "preferences.pick.contrasting",
         comment: "Pick a contrasting background color after the foreground"
+    )
+    static let textWindowShadow = NSLocalizedString(
+        "preferences.shadow.description",
+        comment: "Window shadow"
+    )
+    static let textWindowSettingsTitle = NSLocalizedString(
+        "preferences.window.title",
+        comment: "Window Settings"
+    )
+    static let textExpandToFit = NSLocalizedString(
+        "content.expandToFit",
+        comment: "Expand the window to fit hidden elements"
     )
     static let textIconDescription = NSLocalizedString(
         "preferences.icon.description",
