@@ -1,6 +1,50 @@
 import Defaults
 import SwiftUI
 
+private struct ValueWidthKey: PreferenceKey {
+    static var defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) { value = nextValue() }
+}
+
+/// The colour value, shrunk to fit two lines as its column narrows. The font size is
+/// computed deterministically from the (font-independent) column width, so — unlike
+/// `minimumScaleFactor` + `lineLimit` — the wrap can't oscillate between one and two
+/// lines during a resize.
+struct AdaptiveValueText: View {
+    let value: String
+    let color: Color
+    private let baseSize: CGFloat = 18
+    private let minSize: CGFloat = 11
+    @State private var width: CGFloat = 0
+
+    private var fontSize: CGFloat {
+        guard width > 4 else { return baseSize }
+        let full = (value as NSString).size(withAttributes: [.font: NSFont.systemFont(ofSize: baseSize)]).width
+        guard full > 0 else { return baseSize }
+        // Scale the font *proportionally* with the column width so the wrap point stays
+        // put as the window resizes — no bistable jumping. The 1.5 factor (vs a
+        // theoretical 2 for two full lines) leaves slack for word-boundary wrapping, so
+        // long values still fit two lines instead of spilling to a truncated third.
+        let scale = min(1, (1.5 * width) / full)
+        return max(minSize, baseSize * scale)
+    }
+
+    var body: some View {
+        Text(value)
+            .foregroundColor(color)
+            .font(.system(size: fontSize, weight: .regular))
+            .lineLimit(2)
+            .truncationMode(.tail)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(
+                GeometryReader { geo in
+                    Color.clear.preference(key: ValueWidthKey.self, value: geo.size.width)
+                }
+            )
+            .onPreferenceChange(ValueWidthKey.self) { width = $0 }
+    }
+}
+
 struct EyedropperButton: View {
     @ObservedObject var eyedropper: Eyedropper
     @Default(.colorFormat) var colorFormat
@@ -38,21 +82,15 @@ struct EyedropperButton: View {
                             )
 
                         VStack(alignment: .leading, spacing: 6.0) {
-                            Text((eyedropper.color.usingColorSpace(colorSpace) ?? eyedropper.color).toFormat(format: colorFormat, style: copyFormat))
-                                .foregroundColor(eyedropper.color.getUIColor())
-                                .font(.system(size: 18, weight: .regular))
-                                // Shrink long formats (OKLCH/RGB) to stay within two
-                                // lines as the window narrows, rather than wrapping to
-                                // three lines or clipping. The trailing padding keeps the
-                                // text clear of the copy / system-picker hover buttons.
-                                .lineLimit(2)
-                                .minimumScaleFactor(0.5)
-                                // Bound the text to the column width (minus the button
-                                // gutter) so it wraps/scales inside its column instead of
-                                // reporting its single-line ideal width and overflowing
-                                // past the window edge.
-                                .padding(.trailing, 32.0)
-                                .frame(maxWidth: .infinity, alignment: .leading)
+                            // Trailing gutter keeps the value clear of the copy /
+                            // system-picker hover buttons; the value itself shrinks to fit
+                            // two lines (see AdaptiveValueText).
+                            AdaptiveValueText(
+                                value: (eyedropper.color.usingColorSpace(colorSpace) ?? eyedropper.color)
+                                    .toFormat(format: colorFormat, style: copyFormat),
+                                color: Color(eyedropper.color.getUIColor())
+                            )
+                            .padding(.trailing, 32.0)
 
                             if !hideColorNames, adaptive.showsColorNames {
                                 Text(eyedropper.getClosestColor())
