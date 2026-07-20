@@ -158,13 +158,13 @@
 "color.standard.both" = "Oba";
 
 /* Contrast ratio */
-"color.ratio" = "Współczynnik kontrastu";
+"color.ratio" = "Kontrast";
 
 /* Contrast ratio is a measure of the difference in perceived brightness between two colors, used to calculate the contrast ratio. */
 "color.ratio.description" = "Współczynnik kontrastu to miara różnicy w postrzeganej jasności dwóch kolorów, służąca do obliczenia współczynnika kontrastu.";
 
 /* Contrast Value (Lc) */
-"color.lc" = "Wartość kontrastu jasności (Lc)";
+"color.lc" = "Kontrast (Lc)";
 
 /* Lightness contrast (Lc) is a measure of the lightness difference between two colors, used to calculate the contrast value. */
 "color.lc.description" = "Kontrast jasności (Lc) to miara różnicy jasności między dwoma kolorami, służąca do obliczenia wartości kontrastu.";
@@ -212,7 +212,7 @@
 "color.apca.title" = "Tytuł";
 
 /* Body Text */
-"color.apca.body" = "Tekst główny";
+"color.apca.body" = "Tekst";
 
 /* Pass */
 "color.wcag.pass" = "zaliczona";
@@ -551,13 +551,13 @@
 "color.pick.contrast" = "Wybierz pierwszy plan i tło";
 
 /* Window shadow */
-"preferences.shadow.description" = "Window shadow";
-"preferences.shadow.options.always" = "Show shadow";
-"preferences.shadow.options.hiddenWhilePicking" = "Hide shadow while picking";
-"preferences.shadow.options.never" = "Hide shadow";
+"preferences.shadow.description" = "Cień okna";
+"preferences.shadow.options.always" = "Pokaż cień";
+"preferences.shadow.options.hiddenWhilePicking" = "Ukryj cień podczas wybierania";
+"preferences.shadow.options.never" = "Ukryj cień";
 
 /* Expand to fit */
-"content.expandToFit" = "Expand to fit";
+"content.expandToFit" = "Rozwiń, aby dopasować";
 
 /* Window Settings */
-"preferences.window.title" = "Window Settings";
+"preferences.window.title" = "Ustawienia okna";

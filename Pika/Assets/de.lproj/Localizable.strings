@@ -158,13 +158,13 @@
 "color.standard.both" = "Beide";
 
 /* Contrast ratio */
-"color.ratio" = "Kontrastverhältnis";
+"color.ratio" = "Kontrast";
 
 /* Contrast ratio is a measure of the difference in perceived brightness between two colors, used to calculate the contrast ratio. */
 "color.ratio.description" = "Das Kontrastverhältnis ist ein Maß für den wahrgenommenen Helligkeitsunterschied zwischen zwei Farben, mit dem das Kontrastverhältnis berechnet wird.";
 
 /* Contrast Value (Lc) */
-"color.lc" = "Kontrastwert (Lc)";
+"color.lc" = "Kontrast (Lc)";
 
 /* Lightness contrast (Lc) is a measure of the lightness difference between two colors, used to calculate the contrast value. */
 "color.lc.description" = "Der Helligkeitskontrast (Lc) ist ein Maß für den Helligkeitsunterschied zwischen zwei Farben, mit dem der Kontrastwert berechnet wird.";
@@ -551,13 +551,13 @@
 "color.pick.contrast" = "Vordergrund und Hintergrund auswählen";
 
 /* Window shadow */
-"preferences.shadow.description" = "Window shadow";
-"preferences.shadow.options.always" = "Show shadow";
-"preferences.shadow.options.hiddenWhilePicking" = "Hide shadow while picking";
-"preferences.shadow.options.never" = "Hide shadow";
+"preferences.shadow.description" = "Fensterschatten";
+"preferences.shadow.options.always" = "Schatten anzeigen";
+"preferences.shadow.options.hiddenWhilePicking" = "Schatten während dem Auswählen verstecken";
+"preferences.shadow.options.never" = "Schatten verstecken";
 
 /* Expand to fit */
-"content.expandToFit" = "Expand to fit";
+"content.expandToFit" = "Zum Anpassen vergrößern";
 
 /* Window Settings */
-"preferences.window.title" = "Window Settings";
+"preferences.window.title" = "Fenstereinstellungen";

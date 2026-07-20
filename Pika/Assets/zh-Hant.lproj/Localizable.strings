@@ -158,13 +158,13 @@
 "color.standard.both" = "兩者";
 
 /* Contrast ratio */
-"color.ratio" = "對比度比例";
+"color.ratio" = "對比度";
 
 /* Contrast ratio is a measure of the difference in perceived brightness between two colors, used to calculate the contrast ratio. */
 "color.ratio.description" = "對比度比例是衡量兩種顏色之間感知亮度差異的指標，用於計算對比度比例。";
 
 /* Contrast Value (Lc) */
-"color.lc" = "對比值 (Lc)";
+"color.lc" = "對比度 (Lc)";
 
 /* Lightness contrast (Lc) is a measure of the lightness difference between two colors, used to calculate the contrast value. */
 "color.lc.description" = "亮度對比度 (Lc) 是衡量兩種顏色之間亮度差異的指標，用於計算對比值。";
@@ -551,13 +551,13 @@
 "color.pick.contrast" = "選擇前景色和背景色";
 
 /* Window shadow */
-"preferences.shadow.description" = "Window shadow";
-"preferences.shadow.options.always" = "Show shadow";
-"preferences.shadow.options.hiddenWhilePicking" = "Hide shadow while picking";
-"preferences.shadow.options.never" = "Hide shadow";
+"preferences.shadow.description" = "視窗陰影";
+"preferences.shadow.options.always" = "顯示陰影";
+"preferences.shadow.options.hiddenWhilePicking" = "選擇顏色時隱藏陰影";
+"preferences.shadow.options.never" = "隱藏陰影";
 
 /* Expand to fit */
-"content.expandToFit" = "Expand to fit";
+"content.expandToFit" = "展開以適應";
 
 /* Window Settings */
-"preferences.window.title" = "Window Settings";
+"preferences.window.title" = "視窗設置";
