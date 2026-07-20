@@ -54,6 +54,10 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
 
+          # Surface the full run output so a failing tag-mode run reports the
+          # actual API error instead of an opaque "is_error" with no detail.
+          show_full_output: true
+
           # This is an optional setting that allows Claude to read CI results on PRs
           additional_permissions: |
             actions: read
