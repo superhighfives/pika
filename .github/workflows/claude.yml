@@ -65,6 +65,8 @@ jobs:
 
           # Surface the full run output so a failing tag-mode run reports the
           # actual API error instead of an opaque "is_error" with no detail.
+          # Matches the reusable review workflow, which is debuggable for this
+          # exact reason.
           show_full_output: true
 
           # This is an optional setting that allows Claude to read CI results on PRs
