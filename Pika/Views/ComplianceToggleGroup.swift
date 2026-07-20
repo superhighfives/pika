@@ -30,7 +30,7 @@ struct ComplianceToggleGroup: View {
                         if size == .full {
                             Text(PikaText.textColorNormal)
                                 .fontWeight(.semibold)
-                                .foregroundColor((wcag.ratio45 && wcag.ratio70) ? .primary : .secondary)
+                                .foregroundStyle((wcag.ratio45 && wcag.ratio70) ? .primary : .secondary)
                                 .fixedSize()
                         }
                         ComplianceToggle(
@@ -46,7 +46,7 @@ struct ComplianceToggleGroup: View {
                         if size == .full {
                             Text(PikaText.textColorLarge)
                                 .fontWeight(.semibold)
-                                .foregroundColor((wcag.ratio30 && wcag.ratio45) ? .primary : .secondary)
+                                .foregroundStyle((wcag.ratio30 && wcag.ratio45) ? .primary : .secondary)
                                 .fixedSize()
                         }
                         ComplianceToggle(

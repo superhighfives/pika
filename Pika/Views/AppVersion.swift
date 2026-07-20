@@ -11,7 +11,7 @@ struct AppVersion: View {
                 Image("AboutIcon")
                 Text(PikaText.textAppName)
                     .font(.title)
-                    .foregroundColor(colorScheme == .light && !displayOnTransparent ? .black : .white)
+                    .foregroundStyle(colorScheme == .light && !displayOnTransparent ? .black : .white)
                     .modify {
                         if colorScheme == .dark || displayOnTransparent {
                             $0.shadow(color: Color.black.opacity(0.3),
@@ -29,7 +29,7 @@ struct AppVersion: View {
                 let textUnknown = PikaText.textAboutUnknown
                 Text("\(textVersion) \(appVersion ?? textUnknown)")
                     .fontWeight(.semibold)
-                    .foregroundColor(colorScheme == .light && !displayOnTransparent ? .black : .white)
+                    .foregroundStyle(colorScheme == .light && !displayOnTransparent ? .black : .white)
                     .modify {
                         if colorScheme == .dark || displayOnTransparent {
                             $0.shadow(color: Color.black.opacity(0.3),
@@ -42,7 +42,7 @@ struct AppVersion: View {
                     }
 
                 Text("(\(textBuild) \(buildNumber ?? textUnknown))")
-                    .foregroundColor(colorScheme == .light && !displayOnTransparent ? .black : .white).opacity(0.5)
+                    .foregroundStyle(colorScheme == .light && !displayOnTransparent ? .black : .white).opacity(0.5)
                     .modify {
                         if colorScheme == .dark || displayOnTransparent {
                             $0.shadow(color: Color.black.opacity(0.3),

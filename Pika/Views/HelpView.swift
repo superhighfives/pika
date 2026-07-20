@@ -8,7 +8,7 @@ private struct HelpDescriptionRow: View {
     var body: some View {
         Text(text)
             .font(.system(size: 13))
-            .foregroundColor(.secondary)
+            .foregroundStyle(.secondary)
             .lineSpacing(5)
             .fixedSize(horizontal: false, vertical: true)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -28,7 +28,7 @@ private struct HelpSectionHeader: View {
         HStack {
             Text(title)
                 .font(.system(size: 11, weight: .semibold))
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
                 .textCase(.uppercase)
                 .tracking(0.5)
             Spacer()
@@ -57,7 +57,7 @@ private struct HelpShortcutRow: View {
         HStack {
             Text(entry.title)
                 .font(.system(size: 12))
-                .foregroundColor(.primary)
+                .foregroundStyle(.primary)
             Spacer()
             HStack(spacing: 3) {
                 ForEach(entry.keys, id: \.self) { key in
@@ -102,11 +102,11 @@ struct HelpExternalLinkRow: View {
             HStack {
                 Text(title)
                     .font(.system(size: 12))
-                    .foregroundColor(.primary)
+                    .foregroundStyle(.primary)
                 Spacer()
                 Text(shorthand)
                     .font(.system(size: 11, design: .monospaced))
-                    .foregroundColor(isHovered ? .accentColor : .secondary)
+                    .foregroundStyle(isHovered ? Color.accentColor : Color.secondary)
             }
             .padding(.horizontal, 20.0)
             .padding(.vertical, verticalPadding)
@@ -139,11 +139,11 @@ private struct URLTriggerRow: View {
             HStack {
                 Text(description)
                     .font(.system(size: 12))
-                    .foregroundColor(.primary)
+                    .foregroundStyle(.primary)
                 Spacer()
                 Text(url)
                     .font(.system(size: 11, design: .monospaced))
-                    .foregroundColor(isHovered ? .accentColor : .secondary)
+                    .foregroundStyle(isHovered ? Color.accentColor : Color.secondary)
                     .lineLimit(1)
             }
             .padding(.horizontal, 20.0)
@@ -170,10 +170,10 @@ private struct FormatRow: View {
         HStack {
             Text(name)
                 .font(.system(size: 12))
-                .foregroundColor(.primary)
+                .foregroundStyle(.primary)
             Text(example)
                 .font(.system(size: 11, design: .monospaced))
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
             Spacer()
             HStack(spacing: 3) {
                 KeyboardShortcutKey { Text("⌘").font(.system(size: 11, weight: .semibold, design: .rounded)) }
@@ -312,7 +312,7 @@ struct HelpView: View {
                     Text(PikaText.textMenuHelp)
                         .font(.title2)
                         .fontWeight(.semibold)
-                        .foregroundColor(.white)
+                        .foregroundStyle(.white)
                         .shadow(color: .black.opacity(0.4), radius: 0, x: 0, y: 1)
                         .padding(.horizontal, 20)
                         .padding(.bottom, 14)
@@ -339,7 +339,7 @@ struct HelpView: View {
                         HStack {
                             Text(group.title)
                                 .font(.system(size: 10, weight: .semibold))
-                                .foregroundColor(.secondary)
+                                .foregroundStyle(.secondary)
                                 .textCase(.uppercase)
                                 .tracking(0.3)
                             Spacer()
@@ -374,7 +374,7 @@ struct HelpView: View {
                         HStack {
                             Text(group.title)
                                 .font(.system(size: 10, weight: .semibold))
-                                .foregroundColor(.secondary)
+                                .foregroundStyle(.secondary)
                                 .textCase(.uppercase)
                                 .tracking(0.3)
                             Spacer()

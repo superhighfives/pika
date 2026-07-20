@@ -28,8 +28,8 @@ struct Toast<Presenting>: View where Presenting: View {
                 .padding(.vertical, 5.0)
                 .padding(.horizontal, 10.0)
                 .font(.system(size: 11.0))
-                .foregroundColor(color)
-                .cornerRadius(4)
+                .foregroundStyle(color)
+                .clipShape(.rect(cornerRadius: 4))
                 .overlay(
                     RoundedRectangle(cornerRadius: 4)
                         .stroke(color.opacity(0.4), lineWidth: 1)

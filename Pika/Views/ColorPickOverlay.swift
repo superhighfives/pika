@@ -34,7 +34,7 @@ struct ColorPickOverlay: View {
     var body: some View {
         Text(colorText)
             .font(.system(size: 12, weight: .semibold, design: .monospaced))
-            .foregroundColor(contrastColor)
+            .foregroundStyle(contrastColor)
             .padding(.horizontal, 16)
             .padding(.vertical, 8)
             .background(

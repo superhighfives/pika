@@ -86,7 +86,7 @@ struct PaletteNameField: View {
             Button(action: { submit() }) {
                 Image(systemName: "checkmark.circle.fill")
                     .font(.system(size: 12))
-                    .foregroundColor(.accentColor)
+                    .foregroundStyle(Color.accentColor)
             }
             .buttonStyle(.plain)
             .disabled(text.trimmingCharacters(in: .whitespaces).isEmpty)
@@ -94,7 +94,7 @@ struct PaletteNameField: View {
             Button(action: { onCancel() }) {
                 Image(systemName: "xmark.circle.fill")
                     .font(.system(size: 12))
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
             }
             .buttonStyle(.plain)
         }
@@ -170,7 +170,7 @@ struct PaletteTabBar: View {
                         Button(action: { isShowingNewField = true }) {
                             Image(systemName: "plus.circle")
                                 .font(.system(size: 10, weight: .semibold))
-                                .foregroundColor(.secondary)
+                                .foregroundStyle(.secondary)
                                 .frame(width: 28, height: 22)
                         }
                         .buttonStyle(.plain)
@@ -223,7 +223,7 @@ struct PaletteTabBar: View {
         .buttonStyle(.plain)
         .padding(.horizontal, 8)
         .padding(.vertical, 4)
-        .foregroundColor(isSelected ? .accentColor : .secondary)
+        .foregroundStyle(isSelected ? Color.accentColor : Color.secondary)
         .background(
             RoundedRectangle(cornerRadius: 4)
                 .fill(isSelected ? Color.accentColor.opacity(0.1) : Color.clear)
@@ -322,7 +322,7 @@ struct ColorHistoryDrawer: View {
                         Button(action: { isShowingClearConfirm = true }) {
                             Image(systemName: "trash.fill")
                                 .font(.system(size: 14))
-                                .foregroundColor(.secondary)
+                                .foregroundStyle(.secondary)
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                                 .offset(x: -2, y: -2)
                                 .contentShape(Rectangle())
@@ -335,7 +335,7 @@ struct ColorHistoryDrawer: View {
                         }) {
                             Image(systemName: "plus")
                                 .font(.system(size: 16, weight: .semibold))
-                                .foregroundColor(.secondary)
+                                .foregroundStyle(.secondary)
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                                 .offset(x: -2, y: -2)
                                 .contentShape(Rectangle())

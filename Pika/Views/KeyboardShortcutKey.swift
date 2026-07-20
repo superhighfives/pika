@@ -15,7 +15,7 @@ struct KeyboardShortcutKey<Content: View>: View {
             .padding(.vertical, 3.0)
             .padding(.horizontal, 7.0)
             .border(colorScheme == .light ? Color.gray.opacity(0.5) : Color.gray.opacity(0.5), width: 1)
-            .cornerRadius(2)
+            .clipShape(.rect(cornerRadius: 2))
     }
 }
 

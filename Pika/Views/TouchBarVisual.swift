@@ -17,7 +17,7 @@ struct TouchBarVisual: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .cornerRadius(10)
+        .clipShape(.rect(cornerRadius: 10))
     }
 }
 

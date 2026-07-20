@@ -35,12 +35,12 @@ struct AboutView: View {
                 #if TARGET_MAS
                     HStack(spacing: 5.0) {
                         IconImage(name: "storefront.circle", resizable: true)
-                            .foregroundColor(Color.secondary)
+                            .foregroundStyle(Color.secondary)
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 14, height: 14)
                         Text(PikaText.textAboutMacAppStore)
                             .font(.system(size: 12))
-                            .foregroundColor(Color.secondary)
+                            .foregroundStyle(Color.secondary)
                         Spacer()
                     }
                     .padding(.horizontal, 20.0)
@@ -49,12 +49,12 @@ struct AboutView: View {
                 #if TARGET_SPARKLE
                     HStack(spacing: 5.0) {
                         IconImage(name: "arrow.down.circle", resizable: true)
-                            .foregroundColor(Color.secondary)
+                            .foregroundStyle(Color.secondary)
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 14, height: 14)
                         Text(PikaText.textAboutDownloaded)
                             .font(.system(size: 12))
-                            .foregroundColor(Color.secondary)
+                            .foregroundStyle(Color.secondary)
                         Spacer()
                     }
                     .padding(.horizontal, 20.0)

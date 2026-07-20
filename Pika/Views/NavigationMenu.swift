@@ -36,7 +36,7 @@ struct NavigationMenu: View {
             })
             .buttonStyle(PlainButtonStyle())
             .padding(.horizontal, 6.0)
-            .foregroundColor(showColorPreview ? .accentColor : .primary)
+            .foregroundStyle(showColorPreview ? Color.accentColor : Color.primary)
             .help("\(PikaText.textColorPreviewToggle) (P)")
 
             Button(action: {
@@ -46,7 +46,7 @@ struct NavigationMenu: View {
             })
             .buttonStyle(PlainButtonStyle())
             .padding(.horizontal, 6.0)
-            .foregroundColor(showCompliance ? .accentColor : .primary)
+            .foregroundStyle(showCompliance ? Color.accentColor : Color.primary)
             .help("\(PikaText.textComplianceToggle) (C)")
 
             Button(action: {
@@ -58,7 +58,7 @@ struct NavigationMenu: View {
             })
             .buttonStyle(PlainButtonStyle())
             .padding(.horizontal, 6.0)
-            .foregroundColor(historyDrawerVisible ? .accentColor : .primary)
+            .foregroundStyle(historyDrawerVisible ? Color.accentColor : Color.primary)
             .help("\(PikaText.textHistoryToggle) (H)")
 
             Menu {

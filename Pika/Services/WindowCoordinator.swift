@@ -101,7 +101,7 @@ class WindowCoordinator: NSObject {
 
     func openAboutWindow() {
         if aboutWindow == nil {
-            let view = NSHostingView(rootView: AboutView().edgesIgnoringSafeArea(.all))
+            let view = NSHostingView(rootView: AboutView().ignoresSafeArea())
             aboutWindow = PikaWindow.createSecondaryWindow(
                 title: PikaText.textMenuAbout,
                 size: NSRect(x: 0, y: 0, width: 400, height: 420),
@@ -119,7 +119,7 @@ class WindowCoordinator: NSObject {
         if helpWindow == nil {
             let rootView = HelpView()
                 .frame(minWidth: 440, maxWidth: .infinity, minHeight: 400, maxHeight: .infinity)
-                .edgesIgnoringSafeArea(.all)
+                .ignoresSafeArea()
             let view = NSHostingView(rootView: rootView)
             helpWindow = PikaWindow.createSecondaryWindow(
                 title: PikaText.textMenuHelp,
@@ -138,7 +138,7 @@ class WindowCoordinator: NSObject {
         if preferencesWindow == nil, let eyedroppers {
             let rootView = PreferencesView()
                 .frame(minWidth: 580, maxWidth: 580, minHeight: 400, maxHeight: .infinity)
-                .edgesIgnoringSafeArea(.all)
+                .ignoresSafeArea()
                 .environmentObject(eyedroppers)
             let view = NSHostingView(rootView: rootView)
             preferencesWindow = PikaWindow.createSecondaryWindow(
@@ -169,7 +169,7 @@ class WindowCoordinator: NSObject {
         splashWindow.setFrameAutosaveName("")
         splashWindow.titlebarAppearsTransparent = true
         splashTouchBarController = SplashTouchBarController(window: splashWindow)
-        splashWindow.contentView = NSHostingView(rootView: SplashView().edgesIgnoringSafeArea(.all))
+        splashWindow.contentView = NSHostingView(rootView: SplashView().ignoresSafeArea())
         splashWindow.fadeIn(nil)
     }
 }
