@@ -10,6 +10,15 @@ on:
   pull_request_review:
     types: [submitted]
 
+# Serialise runs per issue/PR so rapid-fire @claude comments don't spawn
+# concurrent runs that race on context assembly (which yields an empty
+# formatted_context and an immediate is_error failure). Unlike the review
+# workflow we don't cancel in-progress runs — each @claude request is distinct
+# and worth completing.
+concurrency:
+  group: claude-${{ github.event.issue.number || github.event.pull_request.number }}
+  cancel-in-progress: false
+
 jobs:
   claude:
     if: |
