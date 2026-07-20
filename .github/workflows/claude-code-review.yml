@@ -3,55 +3,32 @@ name: Claude Code Review
 on:
   pull_request:
     types: [opened, synchronize, ready_for_review, reopened]
-    # Optional: Only run on specific file changes
-    # paths:
-    #   - "src/**/*.ts"
-    #   - "src/**/*.tsx"
-    #   - "src/**/*.js"
-    #   - "src/**/*.jsx"
 
-# Newest push to a PR wins; cancel stale review runs instead of piling up.
-concurrency:
-  group: claude-review-${{ github.event.pull_request.number }}
-  cancel-in-progress: true
+# A called workflow can only narrow the caller's permissions, never widen them.
+# Without this block the run fails at startup before any job is created.
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+  id-token: write
+  actions: read
 
 jobs:
-  claude-review:
-    # Optional: Filter by PR author
-    # if: |
-    #   github.event.pull_request.user.login == 'external-contributor' ||
-    #   github.event.pull_request.user.login == 'new-developer' ||
-    #   github.event.pull_request.author_association == 'FIRST_TIME_CONTRIBUTOR'
-
-    # macOS so Claude can build/test the app (AppKit/SwiftUI) during a review;
-    # matches tests.yml. GitHub-hosted runners are free on public repos.
-    runs-on: macos-15
-    # Fail loudly instead of hanging up to GitHub's 6h default if a run wedges.
-    # A touch higher than Linux to allow for Xcode build time during review.
-    timeout-minutes: 30
-    permissions:
-      contents: read
-      pull-requests: write
-      issues: write
-      id-token: write
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v7
-        with:
-          fetch-depth: 1
-
-      - name: Select Xcode
-        run: sudo xcode-select -s /Applications/Xcode_16.3.app
-
-      - name: Run Claude Code Review
-        id: claude-review
-        uses: anthropics/claude-code-action@v1
-        with:
-          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          plugin_marketplaces: 'https://github.com/anthropics/claude-code.git'
-          plugins: 'code-review@claude-code-plugins'
-          # --comment makes findings post as inline PR comments (default is silent).
-          prompt: '/code-review:code-review ${{ github.repository }}/pull/${{ github.event.pull_request.number }} --comment'
-          # See https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
-          # or https://code.claude.com/docs/en/cli-reference for available options
+  review:
+    # Standard lives in superhighfives/control-room so every repo reviews the
+    # same way. Repo-specific rules go in CLAUDE.md.
+    uses: superhighfives/control-room/.github/workflows/review.yml@main
+    with:
+      # Pinned to match tests.yml — macos-latest doesn't ship Xcode 16.3, so
+      # xcode-select fails there. Bump both together.
+      runs_on: macos-15
+      runtime: none
+      setup_command: sudo xcode-select -s /Applications/Xcode_16.3.app
+      # Build for testing rather than a full test run: it catches the compile
+      # errors that matter for review without the runtime cost of the suite,
+      # which tests.yml already covers.
+      verify_commands: |
+        set -o pipefail && xcodebuild build-for-testing -project Pika.xcodeproj -scheme Pika -destination 'platform=macOS' -derivedDataPath build/DerivedData CODE_SIGNING_ALLOWED=NO CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO 2>&1 | tail -40
+      timeout_minutes: 30
+    secrets:
+      CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
