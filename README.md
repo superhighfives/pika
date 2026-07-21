@@ -47,89 +47,82 @@ Learn more about the [motivations behind the project](https://medium.com/superhi
 
 ## Keyboard Shortcuts
 
-As of version `0.0.18`, Pika supports the following keyboard shortcuts:
+Pika supports the following keyboard shortcuts:
 
-### Pick colors
-- <kbd>⌘ D</kbd>: Pick foreground
-- <kbd>⌘ ⇧ D</kbd>: Pick background
-
-### Copy colors
-- <kbd>⌘ C</kbd>: Copy foreground
-- <kbd>⌘ ⇧ C</kbd>: Copy background
-
-### Use the system colour picker
-- <kbd>⌘ S</kbd>: Use for foreground
-- <kbd>⌘ ⇧ S</kbd>: Use for background
-
-### Change formats
-- <kbd>⌘ 1</kbd>: Format Hex
-- <kbd>⌘ 2</kbd>: Format RGB
-- <kbd>⌘ 3</kbd>: Format HSB
-- <kbd>⌘ 4</kbd>: Format HSL
-- <kbd>⌘ 5</kbd>: Format LAB
-- <kbd>⌘ 6</kbd>: Format OpenGL
-- <kbd>⌘ 7</kbd>: Format OKLCH
-
-### Change colors
-- <kbd>⌘ Z</kbd>: Undo last pick
-- <kbd>⌘ ⇧ Z</kbd>: Redo last pick
-- <kbd>X</kbd>: Swap colors
+| Group | Shortcut | Action |
+| --- | --- | --- |
+| Pick | <kbd>⌘ D</kbd> | Pick foreground |
+| Pick | <kbd>⌘ ⇧ D</kbd> | Pick background |
+| Copy | <kbd>⌘ C</kbd> | Copy foreground |
+| Copy | <kbd>⌘ ⇧ C</kbd> | Copy background |
+| System picker | <kbd>⌘ S</kbd> | Use for foreground |
+| System picker | <kbd>⌘ ⇧ S</kbd> | Use for background |
+| Change format | <kbd>⌘ 1</kbd> | Format Hex |
+| Change format | <kbd>⌘ 2</kbd> | Format RGB |
+| Change format | <kbd>⌘ 3</kbd> | Format HSB |
+| Change format | <kbd>⌘ 4</kbd> | Format HSL |
+| Change format | <kbd>⌘ 5</kbd> | Format LAB |
+| Change format | <kbd>⌘ 6</kbd> | Format OpenGL |
+| Change format | <kbd>⌘ 7</kbd> | Format OKLCH |
+| Actions | <kbd>X</kbd> | Swap colors |
+| Actions | <kbd>H</kbd> | Toggle history |
+| Actions | <kbd>C</kbd> | Toggle compliance |
+| Actions | <kbd>P</kbd> | Toggle colour preview |
+| Actions | <kbd>⌘ Z</kbd> | Undo last pick |
+| Actions | <kbd>⌘ ⇧ Z</kbd> | Redo last pick |
+| Actions | <kbd>⌘ ,</kbd> | Preferences |
+| Actions | <kbd>⌘ Q</kbd> | Quit Pika |
 
 ## URL Triggers
 
-As of version `0.0.17`, you can trigger Pika using the `pika://` URL scheme.
+You can also trigger Pika using the `pika://` URL scheme.
 
-You can also change the format by appending it to the URL when picking or copying. For example, `pika://pick/foreground/hex` (or rgb, hsl, hsb).
+When picking or copying, you can append a format to the URL — `<format>` is one of `hex`, `rgb`, `hsb`, `hsl`, `lab`, `opengl`, or `oklch`. For example, `pika://pick/foreground/hex`.
 
-### Pick colors
-- Pick foreground:
-  - `pika://pick/foreground`
-- Pick background:
-  - `pika://pick/background`
-- Pick colour with specific format:
-  - `pika://pick/foreground/hex` (or hex, rgb, hsb, hsl, lab, opengl, oklch)
-  - `pika://pick/background/hex` (or hex, rgb, hsb, hsl, lab, opengl, oklch)
-- Use the system color picker for foreground:
-  - `pika://system/foreground`
-- Use the system color picker for background:
-  - `pika://system/background`
-
-### Copy colors
-- Copy foreground:
-  - `pika://copy/foreground`
-- Copy background:
-  - `pika://copy/background`
-- Copy colour with specific format:
-  - `pika://copy/foreground/hex` (or hex, rgb, hsb, hsl, lab, opengl, oklch)
-  - `pika://copy/background/hex` (or hex, rgb, hsb, hsl, lab, opengl, oklch)
-- Copy text
-  - `pika://copy/text`
-- Copy JSON
-  - `pika://copy/json`
-
-### Change formats
-- Format Hex
-  - `pika://format/hex`
-- Format RGB
-  - `pika://format/rgb`
-- Format HSB
-  - `pika://format/hsb`
-- Format HSL
-  - `pika://format/hsl`
-- Format LAB
-  - `pika://format/lab`
-- Format OpenGL
-  - `pika://format/opengl`
-- Format OKLCH
-  - `pika://format/oklch`
-
-### Change colors
-- Undo last pick
-  - `pika://undo`
-- Redo last pick
-  - `pika://redo`
-- Swap colors
-  - `pika://swap`
+| Group | URL | Action |
+| --- | --- | --- |
+| Pick | `pika://pick/foreground` | Pick foreground |
+| Pick | `pika://pick/background` | Pick background |
+| Pick | `pika://pick/contrast` | Pick foreground and background |
+| Pick | `pika://pick/foreground/<format>` | Pick foreground in a specific format |
+| Pick | `pika://pick/background/<format>` | Pick background in a specific format |
+| System picker | `pika://system/foreground` | Use for foreground |
+| System picker | `pika://system/background` | Use for background |
+| Copy | `pika://copy/foreground` | Copy foreground |
+| Copy | `pika://copy/background` | Copy background |
+| Copy | `pika://copy/foreground/<format>` | Copy foreground in a specific format |
+| Copy | `pika://copy/background/<format>` | Copy background in a specific format |
+| Copy | `pika://copy/text` | Copy all colours as text |
+| Copy | `pika://copy/json` | Copy all colours as JSON |
+| Change format | `pika://format/hex` | Format Hex |
+| Change format | `pika://format/rgb` | Format RGB |
+| Change format | `pika://format/hsb` | Format HSB |
+| Change format | `pika://format/hsl` | Format HSL |
+| Change format | `pika://format/lab` | Format LAB |
+| Change format | `pika://format/opengl` | Format OpenGL |
+| Change format | `pika://format/oklch` | Format OKLCH |
+| Actions | `pika://swap` | Swap colors |
+| Actions | `pika://undo` | Undo last pick |
+| Actions | `pika://redo` | Redo last pick |
+| Set colour | `pika://set/foreground/<hex>` | Set foreground |
+| Set colour | `pika://set/background/<hex>` | Set background |
+| History | `pika://history/show` | Show history |
+| History | `pika://history/hide` | Hide history |
+| History | `pika://history/toggle` | Toggle history |
+| Compliance | `pika://compliance/show` | Show compliance |
+| Compliance | `pika://compliance/hide` | Hide compliance |
+| Compliance | `pika://compliance/toggle` | Toggle compliance |
+| Preview | `pika://preview/show` | Show colour preview |
+| Preview | `pika://preview/hide` | Hide colour preview |
+| Preview | `pika://preview/toggle` | Toggle colour preview |
+| Windows | `pika://window/about` | Open About |
+| Windows | `pika://window/help` | Open Help |
+| Windows | `pika://window/preferences` | Open Preferences |
+| Windows | `pika://window/splash` | Open Splash |
+| Windows | `pika://window/resize/<w>/<h>` | Resize window |
+| Appearance | `pika://appearance/light` | Force light appearance |
+| Appearance | `pika://appearance/dark` | Force dark appearance |
+| Appearance | `pika://appearance/system` | Restore system appearance |
 
 ## Development
 
