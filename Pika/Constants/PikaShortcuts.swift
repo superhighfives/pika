@@ -30,6 +30,12 @@ enum PikaShortcuts {
             notificationName: .triggerPickBackground
         ),
         PikaShortcut(
+            title: PikaText.textPickPair,
+            displayKeys: ["⌥", "⌘", "D"], character: "d", modifiers: [.command, .option],
+            action: #selector(AppDelegate.triggerPickContrast),
+            notificationName: .triggerPickForeground
+        ),
+        PikaShortcut(
             title: PikaText.textCopyForeground,
             displayKeys: ["⌘", "C"], character: "c", modifiers: .command,
             action: #selector(AppDelegate.triggerCopyForeground),
