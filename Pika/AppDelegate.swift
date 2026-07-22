@@ -113,6 +113,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 NSApp.sendAction(#selector(AppDelegate.triggerPickForeground), to: nil, from: nil)
             }
         }
+        KeyboardShortcuts.onKeyUp(for: .pickPair) { [] in
+            if Defaults[.viewedSplash] {
+                NSApp.sendAction(#selector(AppDelegate.triggerPickContrast), to: nil, from: nil)
+            }
+        }
     }
 
     private func presentSplashIfNeeded() {

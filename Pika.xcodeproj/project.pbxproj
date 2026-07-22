@@ -193,6 +193,14 @@
 		F8ABAC5B2EAAD0DF008CD152 /* ColorPickOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8ABAC592EAAD0DF008CD152 /* ColorPickOverlay.swift */; };
 		F8ABAC5D2EAAD0F0008CD152 /* ColorPickOverlayWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8ABAC5C2EAAD0F0008CD152 /* ColorPickOverlayWindow.swift */; };
 		F8ABAC5E2EAAD0F0008CD152 /* ColorPickOverlayWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8ABAC5C2EAAD0F0008CD152 /* ColorPickOverlayWindow.swift */; };
+		CCB1CA0000000000000000F2 /* ColorPickSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CA0000000000000000F1 /* ColorPickSession.swift */; };
+		CCB1CA0000000000000000F3 /* ColorPickSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CA0000000000000000F1 /* ColorPickSession.swift */; };
+		CCB1CA0000000000000000F5 /* CustomColorPickSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CA0000000000000000F4 /* CustomColorPickSession.swift */; };
+		CCB1CA0000000000000000F6 /* CustomColorPickSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CA0000000000000000F4 /* CustomColorPickSession.swift */; };
+		CCB1CA0000000000000000F8 /* PickerLoupePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CA0000000000000000F7 /* PickerLoupePanel.swift */; };
+		CCB1CA0000000000000000F9 /* PickerLoupePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CA0000000000000000F7 /* PickerLoupePanel.swift */; };
+		CCB1CA000000000000000101 /* PickerLoupeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CA000000000000000100 /* PickerLoupeView.swift */; };
+		CCB1CA000000000000000102 /* PickerLoupeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CA000000000000000100 /* PickerLoupeView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -339,6 +347,10 @@
 		EAF100CC25C785C4006E1EC3 /* TouchBarVisual.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchBarVisual.swift; sourceTree = "<group>"; };
 		F8ABAC592EAAD0DF008CD152 /* ColorPickOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickOverlay.swift; sourceTree = "<group>"; };
 		F8ABAC5C2EAAD0F0008CD152 /* ColorPickOverlayWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickOverlayWindow.swift; sourceTree = "<group>"; };
+		CCB1CA0000000000000000F1 /* ColorPickSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickSession.swift; sourceTree = "<group>"; };
+		CCB1CA0000000000000000F4 /* CustomColorPickSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColorPickSession.swift; sourceTree = "<group>"; };
+		CCB1CA0000000000000000F7 /* PickerLoupePanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerLoupePanel.swift; sourceTree = "<group>"; };
+		CCB1CA000000000000000100 /* PickerLoupeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerLoupeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -493,6 +505,8 @@
 			isa = PBXGroup;
 			children = (
 				EA03E39A2F5E618E00998D8B /* ColorPair.swift */,
+				CCB1CA0000000000000000F1 /* ColorPickSession.swift */,
+				CCB1CA0000000000000000F4 /* CustomColorPickSession.swift */,
 				CC1100000000000000000007 /* Models */,
 				CC1100000000000000000008 /* Export */,
 				CC1100000000000000000009 /* Windows */,
@@ -510,6 +524,7 @@
 			children = (
 				EA03E39D2F5E619800998D8B /* ColorHistoryDrawer.swift */,
 				35086BCEF529498582A432A1 /* PaletteComponents.swift */,
+				CCB1CA000000000000000100 /* PickerLoupeView.swift */,
 				EA03E3A02F5E619800998D8B /* ColorPreview.swift */,
 				EAD0B6F6259CF29300FA2F67 /* ContentView.swift */,
 				CCFEED0010000000000000B1 /* PopoverContentView.swift */,
@@ -648,6 +663,7 @@
 			isa = PBXGroup;
 			children = (
 				F8ABAC5C2EAAD0F0008CD152 /* ColorPickOverlayWindow.swift */,
+				CCB1CA0000000000000000F7 /* PickerLoupePanel.swift */,
 				EA0C526325AB5D1700AFF716 /* PikaWindow.swift */,
 				CC1100000000000000000101 /* WindowCoordinator.swift */,
 			);
@@ -977,6 +993,10 @@
 				EAD0B718259D146200FA2F67 /* EyedropperButtonStyle.swift in Sources */,
 				EAEBF64725E878A5002999D1 /* CircleButtonStyle.swift in Sources */,
 				F8ABAC5D2EAAD0F0008CD152 /* ColorPickOverlayWindow.swift in Sources */,
+				CCB1CA0000000000000000F2 /* ColorPickSession.swift in Sources */,
+				CCB1CA0000000000000000F5 /* CustomColorPickSession.swift in Sources */,
+				CCB1CA0000000000000000F8 /* PickerLoupePanel.swift in Sources */,
+				CCB1CA000000000000000101 /* PickerLoupeView.swift in Sources */,
 				EA635DE125B4FC580014D91A /* ColorPickers.swift in Sources */,
 				EACA8A45260501210064035C /* Exporter.swift in Sources */,
 				221600F925A62E5B00B8B7D9 /* IconImage.swift in Sources */,
@@ -1023,6 +1043,10 @@
 				EAE23DB02D032A38005BB270 /* KeyboardShortcutGrid.swift in Sources */,
 				EAE2EBA32D03C40000FA9BC9 /* LatestAppStoreVersion+ShouldUpdate.swift in Sources */,
 				F8ABAC5E2EAAD0F0008CD152 /* ColorPickOverlayWindow.swift in Sources */,
+				CCB1CA0000000000000000F3 /* ColorPickSession.swift in Sources */,
+				CCB1CA0000000000000000F6 /* CustomColorPickSession.swift in Sources */,
+				CCB1CA0000000000000000F9 /* PickerLoupePanel.swift in Sources */,
+				CCB1CA000000000000000102 /* PickerLoupeView.swift in Sources */,
 				EAE23DB12D032A38005BB270 /* AppModeToggleGroup.swift in Sources */,
 				EAE23DB22D032A38005BB270 /* Visualisation.swift in Sources */,
 				EA03E39C2F5E618E00998D8B /* ColorPair.swift in Sources */,

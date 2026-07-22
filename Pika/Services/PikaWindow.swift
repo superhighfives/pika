@@ -79,7 +79,12 @@ class PikaWindow {
         }
 
         window.title = title
-        window.level = (Defaults[.appFloating] ? .floating : .normal) + 1
+        // Secondary windows (splash, About, Help, Preferences) stay at the standard
+        // window level. Only the main Pika window rides `.floating` when "float on top"
+        // is enabled — secondary windows shouldn't sit above other apps, and crucially
+        // shouldn't sit above system dialogs like the Screen Recording permission prompt.
+        // They already come to the front when opened via `makeKeyAndOrderFront`.
+        window.level = .normal
         window.isMovableByWindowBackground = true
         window.center()
         window.setFrameAutosaveName("\(title) Window")
