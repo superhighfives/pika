@@ -17,8 +17,3 @@ identifier_name:
 # worse when wrapped. 200 still catches genuinely unwieldy code lines.
 line_length:
   warning: 200
-
-# Constants.swift and ColorHistoryDrawer.swift are data-heavy and sit just over the
-# default 400; both are future split candidates (Tier 2). Everything else is well under.
-file_length:
-  warning: 450
