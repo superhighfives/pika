@@ -5,6 +5,9 @@ import Defaults
 final class URLSchemeHandler: NSObject {
     static let shared = URLSchemeHandler()
 
+    // Complexity is inherent to routing every `pika://` host to its handler; a dispatch
+    // table would obscure more than it simplifies.
+    // swiftlint:disable:next cyclomatic_complexity
     @objc func handle(event: NSAppleEventDescriptor, withReplyEvent _: NSAppleEventDescriptor) {
         guard
             let urlString = event.forKeyword(AEKeyword(keyDirectObject))?.stringValue,

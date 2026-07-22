@@ -111,7 +111,6 @@ final class NSColorHexTests: XCTestCase {
         let originalHex = srgbColor.toHex()
         let roundTrippedHex = reconstructed.toHex()
 
-        // swiftlint:disable:next line_length
         XCTAssertEqual(originalHex, roundTrippedHex, "P3 color normalized to sRGB should round-trip without channel drift")
     }
 
