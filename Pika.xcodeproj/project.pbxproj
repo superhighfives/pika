@@ -92,6 +92,8 @@
 		EAA8AE1925B8EC070049299B /* KeyboardShortcutKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA8AE1825B8EC070049299B /* KeyboardShortcutKey.swift */; };
 		EAA8AE1C25B8F03B0049299B /* KeyboardShortcutGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA8AE1B25B8F03B0049299B /* KeyboardShortcutGrid.swift */; };
 		7687E869E9824D6984708A9E /* HelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FDF40189F5A46BDB48545F4 /* HelpView.swift */; };
+		98AF0BDC94FB1AF12AE8D6A0 /* HelpRows.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB588DF2557AA70C30847A7 /* HelpRows.swift */; };
+		D7A654201EA6A4B42232DD47 /* HelpData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D72C85601A3AE7B5530A1D8 /* HelpData.swift */; };
 		EABAEAE0284D50D1000716AE /* ComplianceButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = EABAEADF284D50D1000716AE /* ComplianceButtons.swift */; };
 		EACA8A45260501210064035C /* Exporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EACA8A44260501210064035C /* Exporter.swift */; };
 		EAD0B6CC259CED1C00FA2F67 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6CB259CED1C00FA2F67 /* AppDelegate.swift */; };
@@ -108,6 +110,7 @@
 		EAD0B6E5259CED6000FA2F67 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = EAD0B6E4259CED6000FA2F67 /* KeyboardShortcuts */; };
 		EAD0B6E9259CEF8600FA2F67 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = EAD0B6E8259CEF8600FA2F67 /* Sparkle */; };
 		EAD0B6F7259CF29300FA2F67 /* Eyedroppers.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6F1259CF29300FA2F67 /* Eyedroppers.swift */; };
+		413AD9045375F1A69DF028EE /* Eyedropper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29B3A0542137F4BE565044A5 /* Eyedropper.swift */; };
 		EAD0B6F8259CF29300FA2F67 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6F3259CF29300FA2F67 /* AboutView.swift */; };
 		EAD0B6F9259CF29300FA2F67 /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6F4259CF29300FA2F67 /* PreferencesView.swift */; };
 		EAD0B6FA259CF29300FA2F67 /* AppVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6F5259CF29300FA2F67 /* AppVersion.swift */; };
@@ -128,6 +131,8 @@
 		EAE23DAF2D032A38005BB270 /* OverflowContentViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D28DB62862377F00FC7DD4 /* OverflowContentViewModifier.swift */; };
 		EAE23DB02D032A38005BB270 /* KeyboardShortcutGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA8AE1B25B8F03B0049299B /* KeyboardShortcutGrid.swift */; };
 		E2298A573187471D9484E53E /* HelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FDF40189F5A46BDB48545F4 /* HelpView.swift */; };
+		F9CA49DC85C434F912A92DB4 /* HelpRows.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB588DF2557AA70C30847A7 /* HelpRows.swift */; };
+		EE533AFB48773D69ABE335B4 /* HelpData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D72C85601A3AE7B5530A1D8 /* HelpData.swift */; };
 		EAE23DB12D032A38005BB270 /* AppModeToggleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220D5E9728DB158400B6285E /* AppModeToggleGroup.swift */; };
 		EAE23DB22D032A38005BB270 /* Visualisation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C524F25AA729300AFF716 /* Visualisation.swift */; };
 		EAE23DB32D032A38005BB270 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6F6259CF29300FA2F67 /* ContentView.swift */; };
@@ -137,6 +142,7 @@
 		EAE23DB72D032A38005BB270 /* ComplianceToggleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA424C7C25CDEF98009056A9 /* ComplianceToggleGroup.swift */; };
 		EAE23DB92D032A38005BB270 /* ClosestVector.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7B199B25FBA0E600E06D9D /* ClosestVector.swift */; };
 		EAE23DBA2D032A38005BB270 /* Eyedroppers.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6F1259CF29300FA2F67 /* Eyedroppers.swift */; };
+		AFBE6ECB20804EA9BF904805 /* Eyedropper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29B3A0542137F4BE565044A5 /* Eyedropper.swift */; };
 		EAE23DBB2D032A38005BB270 /* NavigationMenuItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C525F25AB5A2B00AFF716 /* NavigationMenuItems.swift */; };
 		EAE23DBC2D032A38005BB270 /* AppModeButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220D5E9328DB154300B6285E /* AppModeButtons.swift */; };
 		EAE23DBD2D032A38005BB270 /* PikaWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C526325AB5D1700AFF716 /* PikaWindow.swift */; };
@@ -291,6 +297,8 @@
 		EAA8AE1825B8EC070049299B /* KeyboardShortcutKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardShortcutKey.swift; sourceTree = "<group>"; };
 		EAA8AE1B25B8F03B0049299B /* KeyboardShortcutGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardShortcutGrid.swift; sourceTree = "<group>"; };
 		1FDF40189F5A46BDB48545F4 /* HelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpView.swift; sourceTree = "<group>"; };
+		BAB588DF2557AA70C30847A7 /* HelpRows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpRows.swift; sourceTree = "<group>"; };
+		9D72C85601A3AE7B5530A1D8 /* HelpData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpData.swift; sourceTree = "<group>"; };
 		EABAEADF284D50D1000716AE /* ComplianceButtons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComplianceButtons.swift; sourceTree = "<group>"; };
 		EACA8A44260501210064035C /* Exporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exporter.swift; sourceTree = "<group>"; };
 		EAD0B6C8259CED1C00FA2F67 /* Pika.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pika.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -304,6 +312,7 @@
 		EAD0B6D7259CED1D00FA2F67 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EAD0B6D8259CED1D00FA2F67 /* Pika.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Pika.entitlements; sourceTree = "<group>"; };
 		EAD0B6F1259CF29300FA2F67 /* Eyedroppers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Eyedroppers.swift; sourceTree = "<group>"; };
+		29B3A0542137F4BE565044A5 /* Eyedropper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Eyedropper.swift; sourceTree = "<group>"; };
 		EAD0B6F3259CF29300FA2F67 /* AboutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		EAD0B6F4259CF29300FA2F67 /* PreferencesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; tabWidth = 4; };
 		EAD0B6F5259CF29300FA2F67 /* AppVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppVersion.swift; sourceTree = "<group>"; };
@@ -577,6 +586,8 @@
 			children = (
 				EAD0B6F3259CF29300FA2F67 /* AboutView.swift */,
 				1FDF40189F5A46BDB48545F4 /* HelpView.swift */,
+				BAB588DF2557AA70C30847A7 /* HelpRows.swift */,
+				9D72C85601A3AE7B5530A1D8 /* HelpData.swift */,
 				EAA8AE1B25B8F03B0049299B /* KeyboardShortcutGrid.swift */,
 				22FE80B225BA0F820063759E /* KeyboardShortcutItem.swift */,
 				EAA8AE1825B8EC070049299B /* KeyboardShortcutKey.swift */,
@@ -612,6 +623,7 @@
 			isa = PBXGroup;
 			children = (
 				EAD0B6F1259CF29300FA2F67 /* Eyedroppers.swift */,
+				29B3A0542137F4BE565044A5 /* Eyedropper.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -920,6 +932,7 @@
 				EA424C7D25CDEF98009056A9 /* ComplianceToggleGroup.swift in Sources */,
 				EA7B199C25FBA0E600E06D9D /* ClosestVector.swift in Sources */,
 				EAD0B6F7259CF29300FA2F67 /* Eyedroppers.swift in Sources */,
+				413AD9045375F1A69DF028EE /* Eyedropper.swift in Sources */,
 				EA0C526025AB5A2B00AFF716 /* NavigationMenuItems.swift in Sources */,
 				220D5E9428DB154300B6285E /* AppModeButtons.swift in Sources */,
 				EA0C526425AB5D1700AFF716 /* PikaWindow.swift in Sources */,
@@ -936,6 +949,8 @@
 				F8ABAC5A2EAAD0DF008CD152 /* ColorPickOverlay.swift in Sources */,
 				EAD0B6F8259CF29300FA2F67 /* AboutView.swift in Sources */,
 				7687E869E9824D6984708A9E /* HelpView.swift in Sources */,
+				98AF0BDC94FB1AF12AE8D6A0 /* HelpRows.swift in Sources */,
+				D7A654201EA6A4B42232DD47 /* HelpData.swift in Sources */,
 				C49A11482DB394F500EE7E80 /* APCACompliance.swift in Sources */,
 				CC000001000000000000AAA1 /* Color+PikaControl.swift in Sources */,
 				CC000001000000000000AAB1 /* NSColor+HSL.swift in Sources */,
@@ -1010,6 +1025,7 @@
 				EAE23DB72D032A38005BB270 /* ComplianceToggleGroup.swift in Sources */,
 				EAE23DB92D032A38005BB270 /* ClosestVector.swift in Sources */,
 				EAE23DBA2D032A38005BB270 /* Eyedroppers.swift in Sources */,
+				AFBE6ECB20804EA9BF904805 /* Eyedropper.swift in Sources */,
 				EAE23DBB2D032A38005BB270 /* NavigationMenuItems.swift in Sources */,
 				EAE23DBC2D032A38005BB270 /* AppModeButtons.swift in Sources */,
 				EAE23DBD2D032A38005BB270 /* PikaWindow.swift in Sources */,
@@ -1022,6 +1038,8 @@
 				EAE23DC42D032A38005BB270 /* KeyboardShortcutItem.swift in Sources */,
 				EAE23DC52D032A38005BB270 /* AboutView.swift in Sources */,
 				E2298A573187471D9484E53E /* HelpView.swift in Sources */,
+				F9CA49DC85C434F912A92DB4 /* HelpRows.swift in Sources */,
+				EE533AFB48773D69ABE335B4 /* HelpData.swift in Sources */,
 				EAE23DC62D032A38005BB270 /* KeyboardShortcutKey.swift in Sources */,
 				F8ABAC5B2EAAD0DF008CD152 /* ColorPickOverlay.swift in Sources */,
 				EAE23DC72D032A38005BB270 /* EyedropperButton.swift in Sources */,

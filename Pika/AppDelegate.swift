@@ -64,7 +64,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_: Notification) {
         LaunchAtLogin.migrateIfNeeded()
         migrateHistoryToPalettes()
+        removeUpdatesMenuItemIfNeeded()
 
+        eyedroppers = Eyedroppers()
+        setupInterface()
+        setupAppMode()
+        registerTogglePikaShortcut()
+        presentSplashIfNeeded()
+        validateColorSpace()
+        showPikaIfConfigured()
+        registerGlobalKeyMonitor()
+    }
+
+    private func removeUpdatesMenuItemIfNeeded() {
         #if TARGET_MAS
             if let mainMenu = NSApp.mainMenu?.item(withTitle: PikaText.textAppName)?.submenu {
                 if let checkForUpdatesMenuItem = mainMenu.item(withTitle: "\(PikaText.textMenuUpdates)…") {
@@ -72,9 +84,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 }
             }
         #endif
+    }
 
-        eyedroppers = Eyedroppers()
-
+    private func setupInterface() {
         windowCoordinator.setupMainWindow(eyedroppers: eyedroppers)
 
         statusBarController.setup()
@@ -85,28 +97,36 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         } else {
             windowCoordinator.installMainWindowContent()
         }
+    }
 
-        setupAppMode()
-
+    private func registerTogglePikaShortcut() {
         KeyboardShortcuts.onKeyUp(for: .togglePika) { [] in
             if Defaults[.viewedSplash] {
                 NSApp.sendAction(#selector(AppDelegate.triggerPickForeground), to: nil, from: nil)
             }
         }
+    }
 
+    private func presentSplashIfNeeded() {
         if !Defaults[.viewedSplash] {
             openSplashWindow(nil)
             NSApp.activate(ignoringOtherApps: true)
         }
+    }
 
+    private func validateColorSpace() {
         if !NSColorSpace.availableColorSpaces(with: .rgb).contains(Defaults[.colorSpace]) {
             Defaults[.colorSpace] = Defaults.Keys.colorSpace.defaultValue
         }
+    }
 
+    private func showPikaIfConfigured() {
         if Defaults[.alwaysShowOnLaunch], !Defaults[.appMode].usesPopover {
             showPika(self)
         }
+    }
 
+    private func registerGlobalKeyMonitor() {
         NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
             // History drawer navigation (existing behaviour)
             if Defaults[.historyDrawerVisible] {
@@ -182,9 +202,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         Defaults[.palettes] = palettes
         Defaults[.colorHistory] = []
     }
+}
 
-    // MARK: - Window forwarding
+// MARK: - Window forwarding
 
+extension AppDelegate {
     @objc func closeSplashWindow() { windowCoordinator.closeSplashWindow() }
     @objc func togglePopover(_: AnyObject?) { windowCoordinator.togglePopover() }
 
@@ -195,9 +217,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBAction func showPika(_: Any) { windowCoordinator.showPika() }
     @IBAction func hidePika(_: Any) { windowCoordinator.hidePika() }
     @IBAction func showPopover(_: Any) { statusBarController.showPopover() }
+}
 
-    // MARK: - Notification dispatch
+// MARK: - Notification dispatch
 
+extension AppDelegate {
     @IBAction func triggerPickForeground(_: Any) {
         notificationCenter.post(name: .triggerPickForeground, object: self)
     }
@@ -299,9 +323,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBAction func triggerFormatOKLCH(_: Any) {
         notificationCenter.post(name: .triggerFormatOKLCH, object: self)
     }
+}
 
-    // MARK: - App actions
+// MARK: - App actions
 
+extension AppDelegate {
     #if TARGET_SPARKLE
         @IBAction func updateFeedURL(_: Any) {
             SUUpdater.shared().feedURL = URL(string: PikaConstants.url())

@@ -1,3 +1,24 @@
 disabled_rules: # rule identifiers turned on by default to exclude from running
   - opening_brace
   - trailing_comma
+  - multiple_closures_with_trailing_closure # trailing-closure syntax reads fine in SwiftUI
+
+excluded: # paths to ignore during linting; keeps SwiftLint out of dependency checkouts
+  - build
+  - .build
+
+# Short names like fg/bg/cv/gi/ei are domain-conventional (foreground/background,
+# closest-vector, group/entry indices) — the default 3-char floor is noise here.
+identifier_name:
+  min_length:
+    warning: 2
+
+# Most long lines are user-facing string literals (About/Help/Footer copy) that read
+# worse when wrapped. 200 still catches genuinely unwieldy code lines.
+line_length:
+  warning: 200
+
+# Constants.swift and ColorHistoryDrawer.swift are data-heavy and sit just over the
+# default 400; both are future split candidates (Tier 2). Everything else is well under.
+file_length:
+  warning: 450
