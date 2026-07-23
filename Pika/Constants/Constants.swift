@@ -66,6 +66,7 @@ enum PikaConstants {
     static let ncSavePalette = "savePalette"
     static let ncExportPalette = "exportPalette"
     static let ncSystemColorChanged = "systemColorChanged"
+    static let ncExpandToFit = "expandToFit"
 
     // Disabled formats for SwiftUI copy format
     static let disabledFormats: [ColorFormat] = [.hex, .hsl, .opengl, .lab, .oklch]
@@ -102,4 +103,5 @@ extension Notification.Name {
     static let savePalette = Notification.Name(PikaConstants.ncSavePalette)
     static let exportPalette = Notification.Name(PikaConstants.ncExportPalette)
     static let systemColorChanged = Notification.Name(PikaConstants.ncSystemColorChanged)
+    static let expandToFit = Notification.Name(PikaConstants.ncExpandToFit)
 }

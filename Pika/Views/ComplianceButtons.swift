@@ -1,6 +1,39 @@
 import Defaults
 import SwiftUI
 
+private struct NaturalWidthKey: PreferenceKey {
+    static var defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) { value = max(value, nextValue()) }
+}
+
+/// Renders `content` at its natural (untruncated) width, then uniformly scales it down to
+/// fit the available width. The preview tiles are narrower than the full compliance badges
+/// need, and laying the badges out at the tile width just truncates them ("AA…La…"); this
+/// keeps them whole and legible by shrinking instead.
+private struct ScaleToFitWidth<Content: View>: View {
+    var alignment: Alignment = .leading
+    @ViewBuilder var content: Content
+    @State private var naturalWidth: CGFloat = 0
+
+    private var anchor: UnitPoint { alignment == .center ? .center : .leading }
+
+    var body: some View {
+        GeometryReader { geo in
+            let scale = naturalWidth > 0 ? min(1, geo.size.width / naturalWidth) : 1
+            content
+                .fixedSize()
+                .background(
+                    GeometryReader { proxy in
+                        Color.clear.preference(key: NaturalWidthKey.self, value: proxy.size.width)
+                    }
+                )
+                .scaleEffect(scale, anchor: anchor)
+                .frame(width: geo.size.width, height: geo.size.height, alignment: alignment)
+        }
+        .onPreferenceChange(NaturalWidthKey.self) { naturalWidth = $0 }
+    }
+}
+
 struct CompliancePreviewWCAG: View {
     @Default(.combineCompliance) var combineCompliance
     var width: CGFloat
@@ -14,9 +47,11 @@ struct CompliancePreviewWCAG: View {
             Button(
                 action: { combineCompliance = false },
                 label: {
-                    ComplianceToggleGroup(complianceData: .wcag(wcag), theme: .weight)
-                        .padding(20.0)
-                        .frame(maxWidth: width, maxHeight: .infinity, alignment: .leading)
+                    ScaleToFitWidth {
+                        ComplianceToggleGroup(complianceData: .wcag(wcag), theme: .weight)
+                            .padding(20.0)
+                    }
+                    .frame(maxWidth: width, maxHeight: .infinity, alignment: .leading)
                 }
             )
             .buttonStyle(AppearanceButtonStyle(
@@ -28,9 +63,11 @@ struct CompliancePreviewWCAG: View {
             Button(
                 action: { combineCompliance = true },
                 label: {
-                    ComplianceToggleGroup(complianceData: .wcag(wcag), theme: .contrast)
-                        .padding(20.0)
-                        .frame(maxWidth: width, maxHeight: .infinity, alignment: .leading)
+                    ScaleToFitWidth {
+                        ComplianceToggleGroup(complianceData: .wcag(wcag), theme: .contrast)
+                            .padding(20.0)
+                    }
+                    .frame(maxWidth: width, maxHeight: .infinity, alignment: .leading)
                 }
             )
             .buttonStyle(AppearanceButtonStyle(
@@ -54,9 +91,11 @@ struct CompliancePreviewAPCA: View {
             title: PikaText.textAppearanceAPCATitle,
             description: PikaText.textAppearanceAPCADescription
         ) {
-            ComplianceToggleGroup(complianceData: .apca(apca), theme: .weight)
-                .padding(20.0)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+            ScaleToFitWidth(alignment: .center) {
+                ComplianceToggleGroup(complianceData: .apca(apca), theme: .weight)
+                    .padding(20.0)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
 }
@@ -94,7 +133,11 @@ struct CompliancePreviewBoth: View {
     @ViewBuilder
     private func footerPreview(wcag: NSColor.WCAG, apca: NSColor.APCA, theme: ComplianceToggleGroup.Themes) -> some View {
         GeometryReader { geometry in
-            let scale = min(1.0, geometry.size.width / 380)
+            // Lay the row out at its full natural width so the Spacer-aligned badges keep
+            // their real size, then scale the whole thing down to the tile — otherwise the
+            // badges compress and truncate at the tile width before the scale is applied.
+            let reference: CGFloat = 430
+            let scale = min(1.0, geometry.size.width / reference)
 
             VStack(alignment: .leading, spacing: 4.0) {
                 HStack(spacing: 0) {
@@ -130,8 +173,9 @@ struct CompliancePreviewBoth: View {
                 }
             }
             .padding(.horizontal, 10.0)
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+            .frame(width: reference, alignment: .leading)
             .scaleEffect(scale, anchor: .leading)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
         }
     }
 }

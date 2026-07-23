@@ -10,6 +10,15 @@ on:
   pull_request_review:
     types: [submitted]
 
+# Serialise runs per issue/PR so rapid-fire @claude comments don't spawn
+# concurrent runs that race on context assembly (which yields an empty
+# formatted_context and an immediate is_error failure). Unlike the review
+# workflow we don't cancel in-progress runs — each @claude request is distinct
+# and worth completing.
+concurrency:
+  group: claude-${{ github.event.issue.number || github.event.pull_request.number }}
+  cancel-in-progress: false
+
 jobs:
   claude:
     if: |
@@ -56,6 +65,8 @@ jobs:
 
           # Surface the full run output so a failing tag-mode run reports the
           # actual API error instead of an opaque "is_error" with no detail.
+          # Matches the reusable review workflow, which is debuggable for this
+          # exact reason.
           show_full_output: true
 
           # This is an optional setting that allows Claude to read CI results on PRs

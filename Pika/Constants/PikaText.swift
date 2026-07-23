@@ -172,6 +172,18 @@ enum PikaText {
         "preferences.pick.contrasting",
         comment: "Pick a contrasting background color after the foreground"
     )
+    static let textWindowShadow = NSLocalizedString(
+        "preferences.shadow.description",
+        comment: "Window shadow"
+    )
+    static let textWindowSettingsTitle = NSLocalizedString(
+        "preferences.window.title",
+        comment: "Window Settings"
+    )
+    static let textExpandToFit = NSLocalizedString(
+        "content.expandToFit",
+        comment: "Expand the window to fit hidden elements"
+    )
     static let textIconDescription = NSLocalizedString(
         "preferences.icon.description",
         comment: "Hide menu bar icon"

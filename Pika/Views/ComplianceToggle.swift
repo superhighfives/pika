@@ -12,8 +12,12 @@ struct ComplianceToggle: View {
         HStack(alignment: .center, spacing: 2.0) {
             IconImage(name: isCompliant ? "checkmark.circle.fill" : "xmark.circle", resizable: true)
                 .frame(width: size == .small ? 13.0 : 14.0, height: size == .small ? 13.0 : 14.0)
+                .layoutPriority(1)
+            // Truncate (e.g. "Bo…") when the footer is too narrow to fit the full label,
+            // rather than clipping. Full size otherwise.
             Text(title)
-                .fixedSize()
+                .lineLimit(1)
+                .truncationMode(.tail)
 
             if combined {
                 if large {
@@ -43,7 +47,6 @@ struct ComplianceToggle: View {
         .foregroundStyle(isCompliant ? .primary
             : .secondary)
         .help(tooltip)
-        .fixedSize()
     }
 }
 

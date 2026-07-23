@@ -83,7 +83,7 @@ final class URLSchemeHandler: NSObject {
         guard
             let hex,
             hex.count == 6,
-            let appDelegate = NSApp.delegate as? AppDelegate
+            let appDelegate = AppDelegate.shared
         else { return }
         let color = NSColor(hex: hex)
         if task == "foreground" {
@@ -181,7 +181,7 @@ final class URLSchemeHandler: NSObject {
 
         // Apply the first history entry as the active colours
         if let first = autoHistory.pairs.first,
-           let appDelegate = NSApp.delegate as? AppDelegate
+           let appDelegate = AppDelegate.shared
         {
             appDelegate.eyedroppers.foreground.set(first.foregroundColor)
             appDelegate.eyedroppers.background.set(first.backgroundColor)

@@ -148,7 +148,7 @@ class PikaTouchBarController: NSWindowController, NSTouchBarDelegate {
         _: NSTouchBar,
         makeItemForIdentifier identifier: NSTouchBarItem.Identifier
     ) -> NSTouchBarItem? {
-        let delegate = NSApplication.shared.delegate as? AppDelegate
+        let delegate = AppDelegate.shared
         let foreground = delegate!.eyedroppers.foreground
         let background = delegate!.eyedroppers.background
 

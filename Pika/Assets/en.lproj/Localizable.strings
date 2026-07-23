@@ -82,6 +82,24 @@
 /* Pick a contrasting background color after the foreground */
 "preferences.pick.contrasting" = "Pick contrasting color after foreground";
 
+/* Window shadow */
+"preferences.shadow.description" = "Window shadow";
+
+/* Window Settings */
+"preferences.window.title" = "Window Settings";
+
+/* Window shadow: always on */
+"preferences.shadow.options.always" = "Show shadow";
+
+/* Window shadow: hidden while picking */
+"preferences.shadow.options.hiddenWhilePicking" = "Hide shadow while picking";
+
+/* Window shadow: never */
+"preferences.shadow.options.never" = "Hide shadow";
+
+/* Expand the window to fit hidden elements */
+"content.expandToFit" = "Expand to fit";
+
 /* General Settings */
 "preferences.general.title" = "General Settings";
 
@@ -161,13 +179,13 @@
 "color.standard.both" = "Both";
 
 /* Contrast ratio */
-"color.ratio" = "Contrast Ratio";
+"color.ratio" = "Contrast";
 
 /* Contrast ratio is a measure of the difference in perceived brightness between two colors, used to calculate the contrast ratio. */
 "color.ratio.description" = "Contrast ratio is a measure of the difference in perceived brightness between two colors, used to calculate the contrast ratio.";
 
 /* Contrast Value (Lc) */
-"color.lc" = "Contrast Value (Lc)";
+"color.lc" = "Contrast (Lc)";
 
 /* Lightness contrast (Lc) is a measure of the lightness difference between two colors, used to calculate the contrast value. */
 "color.lc.description" = "Lightness contrast (Lc) is a measure of the lightness difference between two colors, used to calculate the contrast value.";
@@ -215,7 +233,7 @@
 "color.apca.title" = "Title";
 
 /* Body Text */
-"color.apca.body" = "Body Text";
+"color.apca.body" = "Body";
 
 /* Pass */
 "color.wcag.pass" = "Pass";
