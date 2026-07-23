@@ -19,6 +19,7 @@ private struct GeneralAndSelectionSection: View {
     @Default(.alwaysShowOnLaunch) var alwaysShowOnLaunch
     @Default(.showColorOverlay) var showColorOverlay
     @Default(.colorOverlayDuration) var colorOverlayDuration
+    @Default(.pickerStyle) var pickerStyle
     @State var disableHideMenuBarIcon = true
 
     var body: some View {
@@ -88,17 +89,21 @@ private struct GeneralAndSelectionSection: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 .disabled(appMode == .menubarPopover)
-                Toggle(isOn: $showColorOverlay) {
-                    Text(PikaText.textShowColorOverlay)
-                }
-                if showColorOverlay {
-                    HStack(spacing: 8.0) {
-                        Slider(value: $colorOverlayDuration, in: 1.0 ... 5.0, step: 0.5)
-                        Text(String(format: "%.1fs", colorOverlayDuration))
-                            .font(.system(size: 11))
-                            .foregroundStyle(.secondary)
+                // The custom picker shows the colour live in the loupe, so the post-pick
+                // overlay (and its duration) is redundant and hidden while it's active.
+                if pickerStyle != .custom {
+                    Toggle(isOn: $showColorOverlay) {
+                        Text(PikaText.textShowColorOverlay)
                     }
-                    .padding(.leading, 20.0)
+                    if showColorOverlay {
+                        HStack(spacing: 8.0) {
+                            Slider(value: $colorOverlayDuration, in: 1.0 ... 5.0, step: 0.5)
+                            Text(String(format: "%.1fs", colorOverlayDuration))
+                                .font(.system(size: 11))
+                                .foregroundStyle(.secondary)
+                        }
+                        .padding(.leading, 20.0)
+                    }
                 }
             }
             .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
@@ -116,6 +121,35 @@ private struct AppModeSection: View {
                 AppModeButtons()
             }
             .frame(height: 96)
+        }
+        .padding(.horizontal, 24.0)
+    }
+}
+
+private struct PickerStyleSection: View {
+    @Default(.pickerStyle) var pickerStyle
+    @Default(.pickMode) var pickMode
+    @State private var pendingRelaunch = false
+
+    // Pair mode only applies when the custom picker is actually usable.
+    private var customActive: Bool { CustomColorPickSession.isAvailable && pickerStyle == .custom }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10.0) {
+            Text(PikaText.textPickerStyleTitle).font(.system(size: 16))
+
+            // Same gated System/Custom comparison as the first-run splash.
+            PickerChoiceView(pendingRelaunch: $pendingRelaunch)
+
+            if customActive {
+                Toggle(isOn: Binding(
+                    get: { pickMode == .pair },
+                    set: { pickMode = $0 ? .pair : .single }
+                )) {
+                    Text(PikaText.textPickerPairMode)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+            }
         }
         .padding(.horizontal, 24.0)
     }
@@ -326,6 +360,10 @@ struct PreferencesView: View {
                     Divider().padding(.bottom, 16.0)
 
                     AppModeSection()
+
+                    Divider().padding(.vertical, 16.0)
+
+                    PickerStyleSection()
 
                     Divider().padding(.vertical, 16.0)
 

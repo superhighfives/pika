@@ -60,6 +60,16 @@ enum WindowShadow: String, Codable, CaseIterable {
     var showsShadowAtRest: Bool { self != .never }
 }
 
+enum PickerStyle: String, Codable, CaseIterable, Equatable {
+    case system // NSColorSampler (default, today's behaviour)
+    case custom // Pika-native loupe
+}
+
+enum PickMode: String, Codable, CaseIterable, Equatable {
+    case single // one pick per trigger (default)
+    case pair // trigger picks foreground, then chains to background
+}
+
 enum AppMode: String, Codable, CaseIterable {
     case menubar = "preferences.app.mode.menubar"
     case regular = "preferences.app.mode.regular"
@@ -87,6 +97,8 @@ extension Defaults.Keys {
     static let hidePikaWhilePicking = Key<Bool>("hidePikaWhilePicking", default: false)
     static let windowShadow = Key<WindowShadow>("windowShadow", default: .always)
     static let pickContrastingColor = Key<Bool>("pickContrastingColor", default: false)
+    static let pickerStyle = Key<PickerStyle>("pickerStyle", default: .system)
+    static let pickMode = Key<PickMode>("pickMode", default: .single)
     static let copyColorOnPick = Key<Bool>("copyColorOnPick", default: false)
     static let hideMenuBarIcon = Key<Bool>("hideMenuBarIcon", default: false)
     static let betaUpdates = Key<Bool>("betaUpdates", default: false)

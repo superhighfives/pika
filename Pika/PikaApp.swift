@@ -22,6 +22,10 @@ private struct PikaCommands: Commands {
                 .keyboardShortcut("d", modifiers: .command)
             Button(PikaText.textPickBackground + "…") { send(#selector(AppDelegate.triggerPickBackground)) }
                 .keyboardShortcut("d", modifiers: [.command, .shift])
+            // No key equivalent here: pick-pair is now a global, rebindable shortcut
+            // (KeyboardShortcuts.Name.pickPair). A menu accelerator would double-fire
+            // with the global hotkey and wouldn't track user rebindings.
+            Button(PikaText.textPickPair + "…") { send(#selector(AppDelegate.triggerPickContrast)) }
 
             Divider()
 
