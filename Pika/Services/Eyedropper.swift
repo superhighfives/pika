@@ -121,7 +121,7 @@ extension Eyedropper {
         // picked near the window edge. Restored on every terminal pick path below;
         // a chained background pick simply re-suppresses when it starts. The call is
         // a no-op unless the shadow preference is `.hiddenWhilePicking`.
-        (NSApp.delegate as? AppDelegate)?.windowCoordinator.setPickingShadowSuppressed(true)
+        AppDelegate.shared?.windowCoordinator.setPickingShadowSuppressed(true)
 
         DispatchQueue.main.asyncAfter(deadline: .now()) {
             if Defaults[.appMode].usesPopover {
@@ -135,8 +135,7 @@ extension Eyedropper {
                     self.commitCancelledChain()
                 } else {
                     // Fresh pick cancelled: restore the shadow the sampler suppressed.
-                    (NSApp.delegate as? AppDelegate)?.windowCoordinator
-                        .setPickingShadowSuppressed(false)
+                    AppDelegate.shared?.windowCoordinator.setPickingShadowSuppressed(false)
                 }
 
                 if self.forceShow {
@@ -174,7 +173,7 @@ extension Eyedropper {
 
         if chainContrasting,
            type == .foreground,
-           let appDelegate = NSApp.delegate as? AppDelegate
+           let appDelegate = AppDelegate.shared
         {
             startChainedBackgroundPick(using: appDelegate)
         } else {
@@ -221,6 +220,6 @@ extension Eyedropper {
 
         // Terminal path for a committed pick (or a cancelled chain): bring the
         // window's shadow back. No-op unless the shadow preference suppressed it.
-        (NSApp.delegate as? AppDelegate)?.windowCoordinator.setPickingShadowSuppressed(false)
+        AppDelegate.shared?.windowCoordinator.setPickingShadowSuppressed(false)
     }
 }

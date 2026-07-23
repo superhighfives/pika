@@ -11,6 +11,9 @@ private struct FooterRow: View {
     @ObservedObject var foreground: Eyedropper
     @ObservedObject var background: Eyedropper
     var combineCompliance: Bool
+    /// When false there isn't the width for the compliance badges, so the whole right-hand
+    /// side (divider + toggle group) drops and only the left-most ratio value remains.
+    var showsCompliance: Bool = true
 
     private var contrastHeader: String {
         kind == .wcag ? PikaText.textColorRatio : PikaText.textLightnessContrastValue
@@ -65,18 +68,20 @@ private struct FooterRow: View {
                 }
             }
 
-            AdaptiveDivider(axis: .vertical)
+            if showsCompliance {
+                AdaptiveDivider(axis: .vertical)
 
-            VStack(alignment: .leading, spacing: 3.0) {
-                Text(complianceLabel)
-                    .font(.caption)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(.secondary)
+                VStack(alignment: .leading, spacing: 3.0) {
+                    Text(complianceLabel)
+                        .font(.caption)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.secondary)
 
-                ComplianceToggleGroup(
-                    complianceData: complianceData,
-                    theme: combineCompliance ? .contrast : .weight
-                )
+                    ComplianceToggleGroup(
+                        complianceData: complianceData,
+                        theme: combineCompliance ? .contrast : .weight
+                    )
+                }
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -186,6 +191,9 @@ struct Footer: View {
     @Default(.contrastStandard) var contrastStandard
     @ObservedObject var foreground: Eyedropper
     @ObservedObject var background: Eyedropper
+    /// Whether there's width for the compliance badges. WCAG/APCA drop the badges entirely
+    /// when there isn't; the denser "both" view instead clips its right edge (below).
+    var showsCompliance: Bool = true
 
     var body: some View {
         Group {
@@ -200,13 +208,19 @@ struct Footer: View {
                     kind: contrastStandard == .wcag ? .wcag : .apca,
                     foreground: foreground,
                     background: background,
-                    combineCompliance: combineCompliance
+                    combineCompliance: combineCompliance,
+                    showsCompliance: showsCompliance
                 )
                 .frame(maxHeight: 50.0)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, 12.0)
+        // Only the dense "both" view can overflow (its badges pack right against a Spacer);
+        // when narrow they spill past the edge and clip rather than compressing the value.
+        // WCAG/APCA instead drop their badges outright (see `showsCompliance`), so nothing
+        // there overflows and the clip is a harmless no-op for them.
+        .clipped()
         .background(AdaptivePanelBackground())
     }
 }

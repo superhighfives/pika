@@ -98,7 +98,13 @@ struct ContentView: View {
             // clips. ANDed with user preferences below so the saved toggles survive
             // resizing (suppress-but-remember).
             let allowPreview = height >= PikaAdaptiveHeight.preview && width >= PikaAdaptiveWidth.preview
-            let allowContrast = height >= PikaAdaptiveHeight.contrast && width >= PikaAdaptiveWidth.contrast
+            // The contrast footer clings on far longer than the other elements. On height it
+            // stays until the window is short enough that the expand affordance tucks into
+            // the corner; on width it never hides outright — instead the WCAG/APCA rows drop
+            // just their right-hand compliance badges, keeping the left-most ratio value.
+            let allowContrastHeight = height >= PikaAdaptiveHeight.expandCornerBelow
+            let allowContrastWidth = width >= PikaAdaptiveWidth.contrast
+            let allowContrast = allowContrastHeight && allowContrastWidth
             let allowPalettes = height >= PikaAdaptiveHeight.palettes && width >= PikaAdaptiveWidth.palettes
             // The preview pill overlaps the type labels, so labels only show when the
             // pill is effectively hidden.
@@ -109,9 +115,9 @@ struct ContentView: View {
             let suppressed = (showColorPreview && !allowPreview)
                 || (showCompliance && !allowContrast)
                 || (historyDrawerVisible && !allowPalettes)
-            // Centre the affordance normally, but at very short heights tuck it into the
-            // top-right corner so it doesn't sit on top of the colour values.
-            let expandAlignment: Alignment = height < PikaAdaptiveHeight.expandCornerBelow ? .topTrailing : .center
+            // Always tuck the expand affordance into the top-right corner so it never sits
+            // on top of the colour values.
+            let expandAlignment: Alignment = .topTrailing
 
             VStack(alignment: .trailing, spacing: 0) {
                 Divider()
@@ -169,11 +175,17 @@ struct ContentView: View {
                         swapTimerSubscription = swapTimer.connect()
                     }
 
-                if showCompliance, allowContrast {
+                if showCompliance, allowContrastHeight {
                     AdaptiveDivider()
                     // Slide only — no opacity fade, so the footer is always full opacity.
-                    Footer(foreground: eyedroppers.foreground, background: eyedroppers.background)
-                        .transition(.move(edge: .bottom))
+                    // `showsCompliance` drops the right-hand badges when there isn't the
+                    // width for them, so the footer stays put and only sheds on height.
+                    Footer(
+                        foreground: eyedroppers.foreground,
+                        background: eyedroppers.background,
+                        showsCompliance: allowContrastWidth
+                    )
+                    .transition(.move(edge: .bottom))
                 }
                 if historyDrawerVisible, allowPalettes {
                     ColorHistoryDrawer(foreground: eyedroppers.foreground, background: eyedroppers.background)
@@ -196,7 +208,8 @@ struct ContentView: View {
                 case .ended: isHovering = false
                 }
             }
-            .animation(.easeInOut(duration: 0.2), value: allowContrast)
+            .animation(.easeInOut(duration: 0.2), value: allowContrastHeight)
+            .animation(.easeInOut(duration: 0.2), value: allowContrastWidth)
             .animation(.easeInOut(duration: 0.2), value: allowPalettes)
             .animation(.easeInOut(duration: 0.15), value: suppressed)
             .animation(.easeInOut(duration: 0.15), value: isHovering)

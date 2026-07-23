@@ -8,6 +8,13 @@ import SwiftUI
 #endif
 
 class AppDelegate: NSObject, NSApplicationDelegate {
+    /// The live app delegate. `NSApp.delegate` cannot be relied on here: under
+    /// `@NSApplicationDelegateAdaptor`, AppKit's `NSApp.delegate` is SwiftUI's own
+    /// forwarding wrapper (`SwiftUI.AppDelegate`), so `NSApp.delegate as? AppDelegate`
+    /// is always `nil` and any call chained off it silently no-ops. Capture the real
+    /// instance on launch and reach it through here instead.
+    weak static var shared: AppDelegate?
+
     var eyedroppers: Eyedroppers!
 
     let notificationCenter = NotificationCenter.default
@@ -52,6 +59,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationWillFinishLaunching(_: Notification) {
+        AppDelegate.shared = self
         NSApp.setActivationPolicy(.prohibited)
         NSAppleEventManager.shared().setEventHandler(
             URLSchemeHandler.shared,

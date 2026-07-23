@@ -12,6 +12,31 @@ class WindowCoordinator: NSObject {
     /// The border window extends this far beyond the main window frame so its outline can
     /// be drawn out on the window's visible glass edge (which sits just past the frame).
     private let borderPad: CGFloat = 6.0
+
+    /// A companion window that renders the main window's drop shadow ourselves, used only
+    /// in `.hiddenWhilePicking`. AppKit's native `hasShadow` is a plain on/off flag with no
+    /// public opacity control, so a *fade* on pick is impossible with it. This layer-backed
+    /// window sits behind the main window (its opaque fill is occluded; only the soft shadow
+    /// spills past the edges) and its `shadowOpacity` animates 1↔0 as picking starts/ends.
+    private var shadowWindow: NSWindow?
+    /// Room around the main frame for the soft shadow to spill without the window clipping it.
+    private let shadowPad: CGFloat = 60.0
+    /// Radius of the main window's visible rounded corners; the border stroke and the custom
+    /// shadow both trace this so they line up with the glass edge.
+    private let windowCornerRadius: CGFloat = 20.0
+    /// Resting opacity of the custom shadow when the window is focused, tuned to sit close
+    /// to the native macOS shadow.
+    private let focusedShadowOpacity: Float = 0.30
+    /// Resting opacity when the window isn't key — a lighter shadow, mirroring how AppKit
+    /// softens a native window's shadow once it loses focus.
+    private let unfocusedShadowOpacity: Float = 0.13
+    /// The resting opacity for the current focus state (ignores picking suppression).
+    private var restingShadowOpacity: Float {
+        pikaWindow?.isKeyWindow == true ? focusedShadowOpacity : unfocusedShadowOpacity
+    }
+
+    /// Whether an active pick currently wants the shadow suppressed. Drives the fade target.
+    private var isPickingSuppressed = false
     private var splashWindow: NSWindow!
     private var aboutWindow: NSWindow?
     private var helpWindow: NSWindow?
@@ -43,72 +68,175 @@ class WindowCoordinator: NSObject {
             self.resizeMainWindow(toFitContent: size)
         }
 
-        // Apply the shadow setting and show/hide the companion border to match.
-        Defaults.observe(.windowShadow) { [weak self] change in
-            guard let self else { return }
-            self.pikaWindow.hasShadow = change.newValue.showsShadowAtRest
-            self.updateShadowBorder()
+        // Re-apply the whole shadow configuration when the setting changes.
+        Defaults.observe(.windowShadow) { [weak self] _ in
+            self?.applyShadowState(animated: false)
         }.tieToLifetime(of: self)
 
-        // Keep the border on the same window level as the main window (which PikaWindow
-        // moves between .floating/.normal), so toggling "float on top" doesn't leave the
-        // border stranded on a stale level.
+        // Keep the companion windows on the same level as the main window (which PikaWindow
+        // moves between .floating/.normal), so toggling "float on top" doesn't leave them
+        // stranded on a stale level.
         Defaults.observe(.appFloating) { [weak self] change in
-            self?.borderWindow?.level = change.newValue == true ? .floating : .normal
+            let level: NSWindow.Level = change.newValue == true ? .floating : .normal
+            self?.borderWindow?.level = level
+            self?.shadowWindow?.level = level
         }.tieToLifetime(of: self)
 
-        // Keep the border aligned to the main window and re-attached whenever it shows.
+        // Keep the companion windows aligned to the main window as it resizes and moves.
         for name in [NSWindow.didResizeNotification, NSWindow.didMoveNotification] {
             notificationCenter.addObserver(forName: name, object: pikaWindow, queue: .main) {
                 [weak self] _ in
-                guard let self, let border = self.borderWindow, border.parent != nil else { return }
-                border.setFrame(self.borderFrame(), display: true)
+                self?.positionCompanionWindows()
             }
         }
-        notificationCenter.addObserver(
-            forName: NSWindow.didBecomeKeyNotification, object: pikaWindow, queue: .main
-        ) { [weak self] _ in
-            self?.updateShadowBorder()
+        // Focus changes fade the custom shadow between its focused and unfocused resting
+        // strengths (`didBecomeKey` also re-asserts the whole configuration on show).
+        for name in [NSWindow.didBecomeKeyNotification, NSWindow.didResignKeyNotification] {
+            notificationCenter.addObserver(forName: name, object: pikaWindow, queue: .main) {
+                [weak self] _ in
+                self?.applyShadowState(animated: true)
+            }
         }
 
-        updateShadowBorder()
+        applyShadowState(animated: false)
     }
 
-    /// The main window can lose its drop shadow (either via the setting or while picking),
-    /// which lets it blend into the desktop. A `.borderless`, click-through child window
-    /// laid exactly over it draws a hairline outline (matching the in-window dividers) so
-    /// the edge stays defined. Shown only while the window is shadowless.
-    func updateShadowBorder() {
+    /// Applies the full shadow configuration for the current setting and picking state.
+    /// Each mode owns a coherent trio of decisions — native shadow, the custom (fadeable)
+    /// shadow, and the hairline edge border:
+    ///   • `.always`  — native drop shadow, no companions.
+    ///   • `.never`   — no shadow; the hairline border keeps the (otherwise blending) edge.
+    ///   • `.hiddenWhilePicking` — native shadow off, custom shadow drawn instead so it can
+    ///     fade to nothing while the sampler is up (and the border fades in to hold the edge).
+    /// `animated` is `true` only for the pick transition; setting changes and re-asserts snap.
+    func applyShadowState(animated: Bool = false) {
         guard pikaWindow != nil else { return }
 
-        guard !pikaWindow.hasShadow else {
-            if let border = borderWindow {
-                pikaWindow.removeChildWindow(border)
-                border.orderOut(nil)
-            }
-            return
+        switch Defaults[.windowShadow] {
+        case .always:
+            setNativeShadow(true)
+            teardownCustomShadow()
+            setBorderVisible(false, animated: animated)
+        case .never:
+            setNativeShadow(false)
+            teardownCustomShadow()
+            setBorderVisible(true, animated: animated)
+        case .hiddenWhilePicking:
+            // The native shadow can't animate, so we render our own and fade it.
+            setNativeShadow(false)
+            ensureCustomShadow()
+            setCustomShadowOpacity(isPickingSuppressed ? 0 : restingShadowOpacity, animated: animated)
+            // The edge only needs the hairline while the shadow is gone; crossfade it in.
+            setBorderVisible(isPickingSuppressed, animated: animated)
         }
+    }
 
-        let border = borderWindow ?? makeBorderWindow()
-        borderWindow = border
-        border.setFrame(borderFrame(), display: true)
-        if border.parent == nil {
-            pikaWindow.addChildWindow(border, ordered: .above)
+    private func setNativeShadow(_ hasShadow: Bool) {
+        pikaWindow.hasShadow = hasShadow
+        // AppKit caches a visible window's drop shadow: flipping `hasShadow` on an
+        // already-onscreen window doesn't take effect until it's moved, resized, or
+        // reordered. Force the recompute so the change lands immediately.
+        pikaWindow.invalidateShadow()
+    }
+
+    // MARK: Companion windows (hairline border + custom shadow)
+
+    /// Repositions both companion windows to track the main window's current frame.
+    private func positionCompanionWindows() {
+        if let border = borderWindow, border.parent != nil {
+            border.setFrame(borderFrame(), display: true)
         }
-        border.level = pikaWindow.level
+        if let shadow = shadowWindow, shadow.parent != nil {
+            shadow.setFrame(shadowFrame(), display: true)
+        }
+    }
+
+    /// Shows or hides the hairline edge border, fading its alpha when `animated`. Never
+    /// creates the border just to hide it.
+    private func setBorderVisible(_ visible: Bool, animated: Bool) {
+        if !visible, borderWindow == nil { return }
+        let border = ensureBorderWindow()
+        border.setFrame(borderFrame(), display: true)
+        let target: CGFloat = visible ? 1 : 0
+        if animated {
+            NSAnimationContext.runAnimationGroup { context in
+                context.duration = 0.28
+                context.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+                border.animator().alphaValue = target
+            }
+        } else {
+            border.alphaValue = target
+        }
+    }
+
+    private func ensureBorderWindow() -> NSWindow {
+        if let border = borderWindow {
+            if border.parent == nil { pikaWindow.addChildWindow(border, ordered: .above) }
+            return border
+        }
+        let border = makeBorderWindow()
+        border.alphaValue = 0
         if let borderView = border.contentView as? ShadowBorderView {
             // Sit the stroke on the main window's frame edge (which lines up with the
             // visible glass edge), and match the window's rounded-corner radius.
             borderView.strokeInset = borderPad
-            borderView.cornerRadius = 20
+            borderView.cornerRadius = windowCornerRadius
         }
-        border.orderFront(nil)
-        border.contentView?.needsDisplay = true
+        borderWindow = border
+        pikaWindow.addChildWindow(border, ordered: .above)
+        border.level = pikaWindow.level
+        return border
+    }
+
+    private func ensureCustomShadow() {
+        let shadow = shadowWindow ?? makeShadowWindow()
+        shadowWindow = shadow
+        shadow.setFrame(shadowFrame(), display: true)
+        if shadow.parent == nil { pikaWindow.addChildWindow(shadow, ordered: .below) }
+        shadow.level = pikaWindow.level
+    }
+
+    private func teardownCustomShadow() {
+        guard let shadow = shadowWindow else { return }
+        pikaWindow.removeChildWindow(shadow)
+        shadow.orderOut(nil)
+        shadowWindow = nil
+    }
+
+    private func setCustomShadowOpacity(_ opacity: Float, animated: Bool) {
+        (shadowWindow?.contentView as? ShadowCasterView)?.setShadowOpacity(opacity, animated: animated)
     }
 
     /// The border window frame — the main window's frame grown by `borderPad` on all sides.
     private func borderFrame() -> NSRect {
         pikaWindow.frame.insetBy(dx: -borderPad, dy: -borderPad)
+    }
+
+    /// The shadow window frame — the main window's frame grown by `shadowPad` so the soft
+    /// shadow has room to spill without the window clipping it.
+    private func shadowFrame() -> NSRect {
+        pikaWindow.frame.insetBy(dx: -shadowPad, dy: -shadowPad)
+    }
+
+    private func makeShadowWindow() -> NSWindow {
+        let window = NSWindow(
+            contentRect: shadowFrame(),
+            styleMask: .borderless,
+            backing: .buffered,
+            defer: false
+        )
+        window.isOpaque = false
+        window.backgroundColor = .clear
+        window.hasShadow = false
+        window.ignoresMouseEvents = true
+        window.isReleasedWhenClosed = false
+        window.level = pikaWindow.level
+        let caster = ShadowCasterView(frame: shadowFrame())
+        caster.pad = shadowPad
+        caster.cornerRadius = windowCornerRadius
+        caster.restingOpacity = restingShadowOpacity
+        window.contentView = caster
+        return window
     }
 
     private func makeBorderWindow() -> NSWindow {
@@ -185,26 +313,26 @@ class WindowCoordinator: NSObject {
         pikaWindow.contentView = nil
     }
 
-    /// Drops or restores the main window's drop shadow around an active pick.
-    /// Only takes effect for `.hiddenWhilePicking`; the other modes keep their
-    /// resting shadow, which is owned by `PikaWindow`.
+    /// Fades the main window's drop shadow out (and the edge border in) around an active
+    /// pick, and back when it ends. Only `.hiddenWhilePicking` reacts; the other modes have
+    /// no custom shadow to fade, so this is a no-op for them.
     func setPickingShadowSuppressed(_ suppressed: Bool) {
-        guard Defaults[.windowShadow] == .hiddenWhilePicking else { return }
-        pikaWindow.hasShadow = !suppressed
-        updateShadowBorder()
+        guard isPickingSuppressed != suppressed else { return }
+        isPickingSuppressed = suppressed
+        applyShadowState(animated: true)
     }
 
     func startMainWindow() {
         if !pikaWindow.isVisible {
             pikaWindow.fadeIn(nil)
         }
-        updateShadowBorder()
+        applyShadowState()
         Defaults[.viewedSplash] = true
     }
 
     func showMainWindow() {
         pikaWindow.makeKeyAndOrderFront(nil)
-        updateShadowBorder()
+        applyShadowState()
     }
 
     func hideMainWindow() {
@@ -232,7 +360,7 @@ class WindowCoordinator: NSObject {
         } else {
             pikaWindow.fadeIn(sender: nil, duration: 0.2)
         }
-        updateShadowBorder()
+        applyShadowState()
         NSApp.activate(ignoringOtherApps: true)
     }
 
@@ -344,5 +472,86 @@ private final class ShadowBorderView: NSView {
         path.lineWidth = 1.0
         color.setStroke()
         path.stroke()
+    }
+}
+
+/// Casts the main window's drop shadow ourselves so its opacity can animate — AppKit's
+/// native `hasShadow` can't. A rounded-rect fill (sized to the main window and occluded by
+/// it, since this window sits just behind) throws a soft `CALayer` shadow that spills past
+/// the window edges into the surrounding `shadowPad`. Only `shadowOpacity` is animated.
+private final class ShadowCasterView: NSView {
+    /// Distance from the view edge in to the fill rect — matches `WindowCoordinator.shadowPad`
+    /// so the fill lines up exactly with the main window and the shadow spills into the rest.
+    var pad: CGFloat = 60.0 { didSet { needsLayout = true } }
+    /// Corner radius of the main window's visible edge, traced by the fill and shadow.
+    var cornerRadius: CGFloat = 20.0 { didSet { needsLayout = true } }
+    /// Full-strength (resting) shadow opacity; the initial value before any fade.
+    var restingOpacity: Float = 0.30 {
+        didSet { fillLayer.shadowOpacity = restingOpacity }
+    }
+
+    private let fillLayer = CALayer()
+
+    override init(frame frameRect: NSRect) {
+        super.init(frame: frameRect)
+        wantsLayer = true
+        layer?.masksToBounds = false
+        // Fill colour is irrelevant to the shadow and is occluded by the main window; a
+        // sliver could show at the very corners, so use the window background rather than a
+        // stark black so any leak blends in. The shadow itself is always black.
+        fillLayer.backgroundColor = NSColor.windowBackgroundColor.cgColor
+        fillLayer.shadowColor = NSColor.black.cgColor
+        fillLayer.shadowOffset = CGSize(width: 0, height: -8)
+        fillLayer.shadowRadius = 18
+        fillLayer.shadowOpacity = restingOpacity
+        layer?.addSublayer(fillLayer)
+    }
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) { fatalError("init(coder:) has not been implemented") }
+
+    override func viewDidChangeEffectiveAppearance() {
+        super.viewDidChangeEffectiveAppearance()
+        withoutImplicitAnimation {
+            fillLayer.backgroundColor = NSColor.windowBackgroundColor.cgColor
+        }
+    }
+
+    override func layout() {
+        super.layout()
+        // Nudge the fill 0.5pt inside the main window's edge so its corners stay tucked
+        // under the (opaque) window even if the real corner radius differs slightly.
+        let rect = bounds.insetBy(dx: pad + 0.5, dy: pad + 0.5)
+        withoutImplicitAnimation {
+            fillLayer.frame = rect
+            fillLayer.cornerRadius = cornerRadius
+            fillLayer.shadowPath = CGPath(
+                roundedRect: CGRect(origin: .zero, size: rect.size),
+                cornerWidth: cornerRadius, cornerHeight: cornerRadius, transform: nil
+            )
+        }
+    }
+
+    /// Fades (or snaps) the shadow to `opacity`. Reads the presentation layer so a fade that
+    /// interrupts another lands smoothly rather than jumping to the model value first.
+    func setShadowOpacity(_ opacity: Float, animated: Bool) {
+        if animated {
+            let animation = CABasicAnimation(keyPath: "shadowOpacity")
+            animation.fromValue = fillLayer.presentation()?.shadowOpacity ?? fillLayer.shadowOpacity
+            animation.toValue = opacity
+            animation.duration = 0.28
+            animation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+            fillLayer.add(animation, forKey: "shadowOpacity")
+            fillLayer.shadowOpacity = opacity
+        } else {
+            withoutImplicitAnimation { fillLayer.shadowOpacity = opacity }
+        }
+    }
+
+    private func withoutImplicitAnimation(_ body: () -> Void) {
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        body()
+        CATransaction.commit()
     }
 }
