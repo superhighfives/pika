@@ -184,17 +184,28 @@ struct ColorListPickerView: View {
     }
 
     var body: some View {
-        Picker("", selection: Binding(
-            get: { colorNameList },
-            set: { ColorNamesManager.shared.selectList($0) }
-        )) {
-            ForEach(options) { info in
-                Text(info.title).tag(info.key)
+        HStack(spacing: 8.0) {
+            Picker("", selection: Binding(
+                get: { colorNameList },
+                set: { ColorNamesManager.shared.selectList($0) }
+            )) {
+                ForEach(options) { info in
+                    Text(info.title).tag(info.key)
+                }
+            }
+            .labelsHidden()
+            .pickerStyle(.menu)
+            .fixedSize()
+
+            // Show a spinner while the catalogue / colours refresh so a fetch isn't silent.
+            if manager.isFetching {
+                ProgressView()
+                    .progressViewStyle(.circular)
+                    .controlSize(.small)
             }
         }
-        .labelsHidden()
-        .pickerStyle(.menu)
-        .fixedSize()
+        // Surface the last-updated time, an in-progress check, or an offline error on hover.
+        .help(manager.statusDescription)
         .onAppear { manager.loadAvailableListsIfNeeded() }
     }
 }

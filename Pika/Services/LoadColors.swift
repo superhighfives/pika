@@ -55,10 +55,42 @@ final class ColorNamesManager: ObservableObject {
     /// Lists offered by the API, for the picker UI. Empty until fetched from the network.
     @Published private(set) var availableLists: [ColorListInfo] = []
 
+    /// True while a catalogue or colour fetch is in flight. Drives the picker's spinner.
+    @Published private(set) var isFetching = false
+
+    /// When the active list's cached colours were last refreshed from the network (the
+    /// cache file's modification date), or nil if only the bundled default is in use.
+    @Published private(set) var lastUpdated: Date?
+
+    /// A friendly description of the most recent refresh failure, cleared on success. Shown
+    /// in the picker's tooltip so an offline / API problem is visible rather than silent.
+    @Published private(set) var lastErrorMessage: String?
+
     private let session = URLSession.shared
     private let apiBase = "https://api.color.pizza/v1"
 
+    /// How often to re-check the API while the app keeps running.
+    private let refreshInterval: TimeInterval = 6 * 60 * 60
+    /// Skip a foreground-triggered refresh if one was attempted within this window.
+    private let foregroundThrottle: TimeInterval = 30 * 60
+    private var refreshTimer: Timer?
+    private var didBecomeActiveObserver: NSObjectProtocol?
+    private var lastRefreshAttempt: Date?
+    /// Count of in-flight requests, so overlapping fetches keep `isFetching` accurate.
+    private var inFlight = 0
+
     private init() {}
+
+    /// A human-readable summary of the current refresh state, for the picker's tooltip.
+    var statusDescription: String {
+        if isFetching { return PikaText.textColorListStatusChecking }
+        if let lastErrorMessage { return lastErrorMessage }
+        if let lastUpdated {
+            return String(format: PikaText.textColorListStatusUpdatedFormat,
+                          Self.statusDateFormatter.string(from: lastUpdated))
+        }
+        return PikaText.textColorListStatusBuiltIn
+    }
 
     // MARK: - Loading names for the current list
 
@@ -76,11 +108,22 @@ final class ColorNamesManager: ObservableObject {
         return loadColors() ?? []
     }
 
-    // MARK: - Launch update
+    // MARK: - Launch & periodic update
 
-    /// Refreshes the list catalogue and the selected list's colours from the network. Safe
-    /// to call on every launch; any failure leaves the cached / bundled data untouched.
+    /// Kicks off the first refresh, then keeps the data current: a repeating timer re-checks
+    /// the API every few hours, and re-activating the app triggers a (throttled) refresh.
+    /// Safe to call once on launch; any failure leaves the cached / bundled data untouched.
     func updateOnLaunch() {
+        refreshLastUpdated()
+        refreshAll()
+        schedulePeriodicRefresh()
+        observeAppActivation()
+    }
+
+    /// Refreshes the catalogue and the selected list's colours. Falls the selection back to
+    /// `default` if the chosen list is no longer offered. Safe to call repeatedly.
+    func refreshAll() {
+        lastRefreshAttempt = Date()
         fetchLists { [weak self] infos, availableKeys in
             guard let self else { return }
             if !infos.isEmpty { self.availableLists = infos }
@@ -90,9 +133,32 @@ final class ColorNamesManager: ObservableObject {
             if !availableKeys.isEmpty, !availableKeys.contains(key) {
                 key = defaultColorListKey
                 Defaults[.colorNameList] = key
+                self.refreshLastUpdated()
                 NotificationCenter.default.post(name: .colorNamesUpdated, object: nil)
             }
             self.refreshColors(for: key)
+        }
+    }
+
+    private func schedulePeriodicRefresh() {
+        guard refreshTimer == nil else { return }
+        let timer = Timer(timeInterval: refreshInterval, repeats: true) { [weak self] _ in
+            self?.refreshAll()
+        }
+        RunLoop.main.add(timer, forMode: .common)
+        refreshTimer = timer
+    }
+
+    private func observeAppActivation() {
+        guard didBecomeActiveObserver == nil else { return }
+        didBecomeActiveObserver = NotificationCenter.default.addObserver(
+            forName: NSApplication.didBecomeActiveNotification, object: nil, queue: .main
+        ) { [weak self] _ in
+            guard let self else { return }
+            // Don't hammer the API every time focus returns — refresh at most twice an hour.
+            if let last = self.lastRefreshAttempt,
+               Date().timeIntervalSince(last) < self.foregroundThrottle { return }
+            self.refreshAll()
         }
     }
 
@@ -109,48 +175,85 @@ final class ColorNamesManager: ObservableObject {
     func selectList(_ key: String) {
         guard key != Defaults[.colorNameList] else { return }
         Defaults[.colorNameList] = key
+        refreshLastUpdated()
         NotificationCenter.default.post(name: .colorNamesUpdated, object: nil)
         refreshColors(for: key)
     }
 
     private func refreshColors(for key: String) {
-        fetchColors(for: key) { success in
-            // Only signal a reload if this is still the active list when the fetch lands.
-            guard success, Defaults[.colorNameList] == key else { return }
-            DispatchQueue.main.async {
+        fetchColors(for: key) { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case .success:
+                self.lastErrorMessage = nil
+                // Only signal a reload if this is still the active list when the fetch lands.
+                guard Defaults[.colorNameList] == key else { return }
+                self.refreshLastUpdated()
                 NotificationCenter.default.post(name: .colorNamesUpdated, object: nil)
+            case let .failure(message):
+                self.lastErrorMessage = message
             }
         }
     }
 
+    /// Recomputes `lastUpdated` from the active list's cache file modification date.
+    private func refreshLastUpdated() {
+        lastUpdated = Self.cacheModificationDate(for: Defaults[.colorNameList])
+    }
+
+    // MARK: - Fetch-state tracking
+
+    private func beginFetch() {
+        inFlight += 1
+        isFetching = true
+    }
+
+    private func endFetch() {
+        inFlight = max(0, inFlight - 1)
+        if inFlight == 0 { isFetching = false }
+    }
+
     // MARK: - Networking
+
+    private enum FetchResult {
+        case success
+        case failure(String)
+    }
 
     private func fetchLists(completion: @escaping ([ColorListInfo], Set<String>) -> Void) {
         guard let url = URL(string: "\(apiBase)/lists/") else { completion([], []); return }
-        session.dataTask(with: url) { data, _, _ in
-            guard let data, let parsed = Self.parseLists(data) else {
-                DispatchQueue.main.async { completion([], []) }
-                return
+        beginFetch()
+        session.dataTask(with: url) { [weak self] data, _, _ in
+            let parsed = data.flatMap { Self.parseLists($0) }
+            DispatchQueue.main.async {
+                self?.endFetch()
+                completion(parsed?.0 ?? [], parsed?.1 ?? [])
             }
-            DispatchQueue.main.async { completion(parsed.0, parsed.1) }
         }.resume()
     }
 
-    private func fetchColors(for key: String, completion: @escaping (Bool) -> Void) {
+    private func fetchColors(for key: String, completion: @escaping (FetchResult) -> Void) {
         guard let escaped = key.addingPercentEncoding(withAllowedCharacters: .urlQueryValueAllowed),
               let url = URL(string: "\(apiBase)/?list=\(escaped)")
-        else { completion(false); return }
-        session.dataTask(with: url) { data, _, _ in
-            guard let data,
-                  let decoded = try? JSONDecoder().decode(ResponseData.self, from: data),
-                  !decoded.colors.isEmpty,
-                  let cacheURL = Self.cacheURL(for: key)
-            else { completion(false); return }
-            do {
-                try data.write(to: cacheURL, options: .atomic)
-                completion(true)
-            } catch {
-                completion(false)
+        else { completion(.failure(PikaText.textColorListStatusOffline)); return }
+        beginFetch()
+        session.dataTask(with: url) { [weak self] data, _, error in
+            let result: FetchResult
+            if error != nil {
+                result = .failure(PikaText.textColorListStatusOffline)
+            } else if let data,
+                      let decoded = try? JSONDecoder().decode(ResponseData.self, from: data),
+                      !decoded.colors.isEmpty,
+                      let cacheURL = Self.cacheURL(for: key),
+                      (try? data.write(to: cacheURL, options: .atomic)) != nil
+            {
+                result = .success
+            } else {
+                result = .failure(PikaText.textColorListStatusOffline)
+            }
+            DispatchQueue.main.async {
+                self?.endFetch()
+                completion(result)
             }
         }.resume()
     }
@@ -223,6 +326,22 @@ final class ColorNamesManager: ObservableObject {
         let safeKey = key.replacingOccurrences(of: "/", with: "_")
         return cacheDirectory()?.appendingPathComponent("\(safeKey).json")
     }
+
+    private static func cacheModificationDate(for key: String) -> Date? {
+        guard let url = cacheURL(for: key),
+              let attributes = try? FileManager.default.attributesOfItem(atPath: url.path)
+        else { return nil }
+        return attributes[.modificationDate] as? Date
+    }
+
+    // MARK: - Formatting
+
+    private static let statusDateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
+        return formatter
+    }()
 }
 
 private extension CharacterSet {

@@ -262,6 +262,23 @@ enum PikaText {
     static let textColorListDefault = NSLocalizedString(
         "preferences.colornames.default", value: "Default", comment: "Default colour list name"
     )
+    static let textColorListStatusChecking = NSLocalizedString(
+        "preferences.colornames.status.checking", value: "Checking color.pizza for updates…",
+        comment: "Colour list tooltip: a refresh is in progress"
+    )
+    static let textColorListStatusUpdatedFormat = NSLocalizedString(
+        "preferences.colornames.status.updated", value: "Updated %@",
+        comment: "Colour list tooltip: when the list was last refreshed (%@ is a date)"
+    )
+    static let textColorListStatusOffline = NSLocalizedString(
+        "preferences.colornames.status.offline",
+        value: "Couldn’t reach color.pizza. Using the saved colour list.",
+        comment: "Colour list tooltip: the last refresh failed, cached/bundled names are in use"
+    )
+    static let textColorListStatusBuiltIn = NSLocalizedString(
+        "preferences.colornames.status.builtin", value: "Using the built-in colour list.",
+        comment: "Colour list tooltip: no network refresh has happened yet"
+    )
     static let textFloatDescription = NSLocalizedString(
         "preferences.float.description",
         comment: "Float above windows"
