@@ -711,7 +711,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = EAD0B6DB259CED1D00FA2F67 /* Build configuration list for PBXNativeTarget "Pika" */;
 			buildPhases = (
-				CC4000000000000000000001 /* Download Color Names */,
 				EAD0B6C4259CED1C00FA2F67 /* Sources */,
 				EAD0B6C5259CED1C00FA2F67 /* Frameworks */,
 				EAD0B6C6259CED1C00FA2F67 /* Resources */,
@@ -737,7 +736,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = EAE23DE52D032A38005BB270 /* Build configuration list for PBXNativeTarget "Pika (Mac App Store)" */;
 			buildPhases = (
-				CC4000000000000000000002 /* Download Color Names */,
 				EAE23DA62D032A38005BB270 /* Sources */,
 				EAE23DD82D032A38005BB270 /* Frameworks */,
 				EAE23DDD2D032A38005BB270 /* Resources */,
@@ -854,44 +852,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		CC4000000000000000000001 /* Download Color Names */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Download Color Names";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "DEST=\"${SRCROOT}/Pika/Assets/ColorNames.json\"\nTMP=\"$(mktemp)\"\nURL=\"https://api.color.pizza/v1/?list=default\"\necho \"note: downloading default colour names from ${URL}\"\nif curl -fsSL --max-time 30 \"${URL}\" -o \"${TMP}\" && [ -s \"${TMP}\" ] && grep -q '\"colors\"' \"${TMP}\"; then\n  mv \"${TMP}\" \"${DEST}\"\n  echo \"note: updated ${DEST}\"\nelse\n  rm -f \"${TMP}\"\n  echo \"warning: could not download colour names; keeping committed ColorNames.json\"\nfi\nexit 0\n";
-		};
-		CC4000000000000000000002 /* Download Color Names */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Download Color Names";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "DEST=\"${SRCROOT}/Pika/Assets/ColorNames.json\"\nTMP=\"$(mktemp)\"\nURL=\"https://api.color.pizza/v1/?list=default\"\necho \"note: downloading default colour names from ${URL}\"\nif curl -fsSL --max-time 30 \"${URL}\" -o \"${TMP}\" && [ -s \"${TMP}\" ] && grep -q '\"colors\"' \"${TMP}\"; then\n  mv \"${TMP}\" \"${DEST}\"\n  echo \"note: updated ${DEST}\"\nelse\n  rm -f \"${TMP}\"\n  echo \"warning: could not download colour names; keeping committed ColorNames.json\"\nfi\nexit 0\n";
-		};
 		EA8124BC259D699A00033F0B /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
