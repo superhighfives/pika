@@ -261,7 +261,7 @@ final class ColorNamesManager: ObservableObject {
     // MARK: - Parsing
 
     private struct ListsResponse: Decodable {
-        let available: [String]?
+        let availableColorNameLists: [String]?
         let listDescriptions: [String: ListDescription]?
     }
 
@@ -270,14 +270,14 @@ final class ColorNamesManager: ObservableObject {
     }
 
     /// Parses `/v1/lists/` into `(orderedInfos, availableKeys)`, tolerating either the
-    /// `available` array or the `listDescriptions` map being absent, and guaranteeing that
-    /// `default` is always present and listed first.
+    /// `availableColorNameLists` array or the `listDescriptions` map being absent, and
+    /// guaranteeing that `default` is always present and listed first.
     private static func parseLists(_ data: Data) -> ([ColorListInfo], Set<String>)? {
         guard let response = try? JSONDecoder().decode(ListsResponse.self, from: data) else { return nil }
 
         let descriptions = response.listDescriptions ?? [:]
-        // Prefer the authoritative `available` ordering; otherwise use the described keys.
-        var keys = response.available ?? Array(descriptions.keys).sorted()
+        // Prefer the authoritative `availableColorNameLists` ordering; otherwise use the described keys.
+        var keys = response.availableColorNameLists ?? Array(descriptions.keys).sorted()
         guard !keys.isEmpty else { return nil }
 
         // Ensure the bundled default is always offered and appears first.

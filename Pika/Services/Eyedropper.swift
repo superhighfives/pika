@@ -98,8 +98,14 @@ class Eyedropper: ObservableObject {
     }
 
     private func reloadColorNames() {
-        colorNames = ColorNamesManager.shared.currentColorNames()
-        closestVector = ClosestVector(colorNames.map { $0.color.toRGB8BitArray() })
+        DispatchQueue.global(qos: .utility).async { [weak self] in
+            let names = ColorNamesManager.shared.currentColorNames()
+            let vector = ClosestVector(names.map { $0.color.toRGB8BitArray() })
+            DispatchQueue.main.async {
+                self?.colorNames = names
+                self?.closestVector = vector
+            }
+        }
     }
 
     func getClosestColor() -> String {
