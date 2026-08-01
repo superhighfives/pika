@@ -47,9 +47,9 @@ final class CustomColorPickSession: ColorPickSession {
             completion(true)
             return
         }
-        // The system permission dialog appears above the requesting window because
-        // Pika's secondary windows sit at `.normal` level (see `createSecondaryWindow`),
-        // not elevated above system dialogs.
+        // The system permission dialog appears above the requesting window: even
+        // when Pika's secondary windows ride `.floating` (see `createSecondaryWindow`),
+        // system dialogs sit above that level.
         DispatchQueue.global(qos: .userInitiated).async {
             let granted = CGRequestScreenCaptureAccess()
             DispatchQueue.main.async { completion(granted) }
@@ -415,8 +415,11 @@ final class PickerLoupeController {
     /// Capture in a known colour space and convert deliberately in the commit path —
     /// sRGB by default, Display P3 when the accuracy preference calls for it.
     private func captureColorSpaceName() -> CFString {
-        let name = Defaults[.colorSpace].localizedName ?? ""
-        return name.localizedCaseInsensitiveContains("P3") ? CGColorSpace.displayP3 : CGColorSpace.sRGB
+        // Compare the NSColorSpace directly, the way the rest of the app does
+        // (see PreferencesView `space == NSColorSpace.displayP3`). Substring-
+        // matching `localizedName` for "P3" was fragile — e.g. "Adobe RGB (1998)"
+        // never matched and silently fell through to sRGB.
+        Defaults[.colorSpace] == .displayP3 ? CGColorSpace.displayP3 : CGColorSpace.sRGB
     }
 
     static func centerPixelColor(of image: CGImage) -> NSColor? {

@@ -13,6 +13,29 @@ struct PikaShortcut {
     let modifiers: NSEvent.ModifierFlags
     let action: Selector
     let notificationName: Notification.Name
+    /// True when this shortcut is also registered as a global `KeyboardShortcuts`
+    /// hotkey (see `AppDelegate.registerTogglePikaShortcut`). Such shortcuts fire
+    /// regardless of focus, so the popover local monitor must NOT dispatch them
+    /// again — otherwise the action double-fires. Still shown in the Help grid.
+    let hasGlobalBinding: Bool
+
+    init(
+        title: String,
+        displayKeys: [String],
+        character: String,
+        modifiers: NSEvent.ModifierFlags,
+        action: Selector,
+        notificationName: Notification.Name,
+        hasGlobalBinding: Bool = false
+    ) {
+        self.title = title
+        self.displayKeys = displayKeys
+        self.character = character
+        self.modifiers = modifiers
+        self.action = action
+        self.notificationName = notificationName
+        self.hasGlobalBinding = hasGlobalBinding
+    }
 }
 
 enum PikaShortcuts {
@@ -33,7 +56,11 @@ enum PikaShortcuts {
             title: PikaText.textPickPair,
             displayKeys: ["⌥", "⌘", "D"], character: "d", modifiers: [.command, .option],
             action: #selector(AppDelegate.triggerPickContrast),
-            notificationName: .triggerPickForeground
+            notificationName: .triggerPickForeground,
+            // Already bound globally as `KeyboardShortcuts.Name.pickPair`, which
+            // fires regardless of focus — skip local-monitor dispatch to avoid a
+            // double pick (mirrors the menu-accelerator omission in PikaApp.swift).
+            hasGlobalBinding: true
         ),
         PikaShortcut(
             title: PikaText.textCopyForeground,
@@ -139,10 +166,12 @@ enum PikaShortcuts {
         ),
     ]
 
-    /// Returns the shortcut matching the given key event, if any.
+    /// Returns the shortcut matching the given key event, if any. Shortcuts that
+    /// are also globally bound are excluded — the global hotkey already dispatches
+    /// them regardless of focus, so matching here would double-fire the action.
     static func match(_ event: NSEvent) -> PikaShortcut? {
         let chars = event.charactersIgnoringModifiers?.lowercased() ?? ""
         let mods = event.modifierFlags.intersection(.deviceIndependentFlagsMask)
-        return all.first { $0.character == chars && $0.modifiers == mods }
+        return all.first { $0.character == chars && $0.modifiers == mods && !$0.hasGlobalBinding }
     }
 }

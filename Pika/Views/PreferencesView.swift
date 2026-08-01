@@ -128,11 +128,7 @@ private struct AppModeSection: View {
 
 private struct PickerStyleSection: View {
     @Default(.pickerStyle) var pickerStyle
-    @Default(.pickMode) var pickMode
     @State private var pendingRelaunch = false
-
-    // Pair mode only applies when the custom picker is actually usable.
-    private var customActive: Bool { CustomColorPickSession.isAvailable && pickerStyle == .custom }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10.0) {
@@ -141,15 +137,10 @@ private struct PickerStyleSection: View {
             // Same gated System/Custom comparison as the first-run splash.
             PickerChoiceView(pendingRelaunch: $pendingRelaunch)
 
-            if customActive {
-                Toggle(isOn: Binding(
-                    get: { pickMode == .pair },
-                    set: { pickMode = $0 ? .pair : .single }
-                )) {
-                    Text(PikaText.textPickerPairMode)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-            }
+            // Pair picking is controlled by the single "Pick a contrasting
+            // background color after the foreground" toggle in the Selection
+            // section — it applies to both picker styles, so it isn't duplicated
+            // here per picker.
         }
         .padding(.horizontal, 24.0)
     }
