@@ -53,6 +53,9 @@ enum PikaText {
     static let textHelpSupportOnMAS = NSLocalizedString("help.mas", comment: "Support on the Mac App Store")
 
     static let textMenuAbout = NSLocalizedString("menu.about", comment: "About")
+    static let textMenuShowSplash = NSLocalizedString(
+        "menu.showSplash", value: "Show splash", comment: "Show the welcome splash"
+    )
     static let textMenuUpdates = NSLocalizedString("menu.updates", comment: "Check for updates")
     static let textMenuPreferences = NSLocalizedString("menu.preferences", comment: "Preferences")
     static let textMenuWebsite = NSLocalizedString("menu.website", comment: "Pika website")
@@ -101,6 +104,10 @@ enum PikaText {
     )
     static let textSplashPickerRecommended = NSLocalizedString(
         "splash.picker.recommended", value: "Recommended", comment: "Custom picker recommended badge"
+    )
+    static let textPickerRequiresScreenRecording = NSLocalizedString(
+        "picker.requiresScreenRecording", value: "Requires Screen Recording",
+        comment: "Pro picker capability note: needs the Screen Recording permission"
     )
     static let textSplashPickerPermission = NSLocalizedString(
         "splash.picker.permission", value: "Needs Screen Recording permission",

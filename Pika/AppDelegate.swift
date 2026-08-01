@@ -142,6 +142,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func showPikaIfConfigured() {
+        // Pika should only ever appear once the splash has been dismissed. When the splash
+        // is up, defer the main window until `closeSplashWindow` fires; otherwise show it now.
+        guard Defaults[.hideSplashOnLaunch] else { return }
+        presentConfiguredPika()
+    }
+
+    private func presentConfiguredPika() {
         if Defaults[.alwaysShowOnLaunch], !Defaults[.appMode].usesPopover {
             showPika(self)
         }
@@ -228,7 +235,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 // MARK: - Window forwarding
 
 extension AppDelegate {
-    @objc func closeSplashWindow() { windowCoordinator.closeSplashWindow() }
+    @objc func closeSplashWindow() {
+        windowCoordinator.closeSplashWindow()
+        // Now that onboarding is dismissed, show Pika if the user has it set to launch shown.
+        presentConfiguredPika()
+    }
+
     @objc func togglePopover(_: AnyObject?) { windowCoordinator.togglePopover() }
 
     @IBAction func openAboutWindow(_: Any?) { windowCoordinator.openAboutWindow() }

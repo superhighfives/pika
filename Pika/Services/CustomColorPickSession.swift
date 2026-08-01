@@ -84,15 +84,20 @@ final class CustomColorPickSession: ColorPickSession {
     }
 }
 
-/// Shared owner of the loupe UI, ScreenCaptureKit capture loop, and global/local event
-/// monitors used to track the cursor and observe the committing click.
+/// Shared owner of the loupe UI, ScreenCaptureKit capture loop, and the full-screen
+/// catcher that drives cursor tracking and swallows the committing click.
 final class PickerLoupeController {
     static let shared = PickerLoupeController()
     private init() {}
 
     let viewModel = LoupeViewModel()
 
-    private var panel: PickerLoupePanel?
+    // The loupe is three stacked panels: a circular magnifier centred on the cursor, a
+    // readout card beside it, and a full-screen catcher beneath both that swallows the
+    // committing click so it never reaches the desktop.
+    private var circlePanel: LoupeCirclePanel?
+    private var cardPanel: LoupeCardPanel?
+    private var catcher: LoupeClickCatcherPanel?
     private var completion: ((NSColor?) -> Void)?
     private var willChain = false
 
@@ -100,14 +105,20 @@ final class PickerLoupeController {
     // to re-arm for the background almost immediately, so we don't tear the panel down.
     private var rearmSafety: Timer?
 
-    // Event monitors (retained so they can be removed on teardown).
-    private var globalMonitors: [Any] = []
+    // Key-event monitor (retained so it can be removed on teardown).
     private var localMonitors: [Any] = []
+
+    // True while the loupe is up (shown, not torn down). A pair pick keeps this set across
+    // the foreground → background handoff; a cancel/commit teardown clears it. `begin` uses
+    // it to tell a re-arm (reuse the visible loupe) from a fresh pick (build it again) —
+    // panels are held for reuse and stay non-nil after teardown, so their presence alone
+    // can't distinguish the two.
+    private var isActive = false
 
     // Capture state.
     private var configuredDisplayID: CGDirectDisplayID?
     private var baseFilter: SCContentFilter?
-    private var loupeWindowID: CGWindowID?
+    private var loupeWindowIDs: [CGWindowID] = []
     private var isCapturing = false
     private var pendingCapture = false
     private var currentCursor: NSPoint = .zero
@@ -136,7 +147,7 @@ final class PickerLoupeController {
         currentCursor = NSEvent.mouseLocation
 
         // Pair-pick re-arm: the loupe is already up, so just refresh it.
-        if panel != nil, !globalMonitors.isEmpty {
+        if isActive {
             reposition()
             requestCapture()
             return
@@ -178,18 +189,36 @@ final class PickerLoupeController {
     // MARK: - Panel
 
     private func showPanel() {
-        if panel == nil {
-            let panel = PickerLoupePanel(viewModel: viewModel)
-            self.panel = panel
+        if circlePanel == nil { circlePanel = LoupeCirclePanel(viewModel: viewModel) }
+        if cardPanel == nil { cardPanel = LoupeCardPanel(viewModel: viewModel) }
+        if catcher == nil {
+            let catcher = LoupeClickCatcherPanel()
+            catcher.onCommit = { [weak self] in self?.commit() }
+            catcher.onCancel = { [weak self] in self?.cancel() }
+            catcher.onMoved = { [weak self] in self?.handlePointerMoved() }
+            catcher.onScroll = { [weak self] event in self?.handleScroll(event) }
+            self.catcher = catcher
         }
-        guard let panel = panel else { return }
-        panel.orderFrontRegardless()
-        panel.makeKey()
-        loupeWindowID = CGWindowID(panel.windowNumber)
+
+        // Order the catcher beneath the loupe (same window level) so it covers every other
+        // app while the circle and card stay visible on top. The full-screen catcher takes
+        // key status so Escape / zoom / nudge reach us without activating Pika.
+        catcher?.cover(screens: NSScreen.screens)
+        catcher?.orderFrontRegardless()
+        cardPanel?.orderFrontRegardless()
+        circlePanel?.orderFrontRegardless()
+        catcher?.makeKey()
+
+        loupeWindowIDs = [circlePanel?.windowNumber, cardPanel?.windowNumber, catcher?.windowNumber]
+            .compactMap { $0 }
+            .map { CGWindowID($0) }
+
+        isActive = true
     }
 
     private func reposition() {
-        panel?.position(near: currentCursor)
+        circlePanel?.center(on: currentCursor)
+        cardPanel?.position(near: currentCursor, circleRadius: (circlePanel?.diameter ?? 140) / 2)
     }
 
     // MARK: - Commit / cancel / teardown
@@ -217,6 +246,7 @@ final class PickerLoupeController {
     }
 
     private func teardown() {
+        isActive = false
         rearmSafety?.invalidate()
         rearmSafety = nil
         removeMonitors()
@@ -224,61 +254,31 @@ final class PickerLoupeController {
         pendingCapture = false
         configuredDisplayID = nil
         baseFilter = nil
-        panel?.orderOut(nil)
+        circlePanel?.orderOut(nil)
+        cardPanel?.orderOut(nil)
+        catcher?.orderOut(nil)
     }
 
     // MARK: - Event monitors
 
     private func installMonitors() {
-        guard globalMonitors.isEmpty, localMonitors.isEmpty else { return }
+        guard localMonitors.isEmpty else { return }
 
-        let moveMask: NSEvent.EventTypeMask = [.mouseMoved, .leftMouseDragged]
-        let clickMask: NSEvent.EventTypeMask = [.leftMouseDown]
-        let cancelMask: NSEvent.EventTypeMask = [.rightMouseDown]
-
-        globalMonitors.append(contentsOf: [
-            NSEvent.addGlobalMonitorForEvents(matching: moveMask) { [weak self] _ in
-                self?.handlePointerMoved()
-            },
-            NSEvent.addGlobalMonitorForEvents(matching: clickMask) { [weak self] _ in
-                self?.commit()
-            },
-            NSEvent.addGlobalMonitorForEvents(matching: cancelMask) { [weak self] _ in
-                self?.cancel()
-            },
-            NSEvent.addGlobalMonitorForEvents(matching: [.scrollWheel]) { [weak self] event in
-                self?.handleScroll(event)
-            },
-        ].compactMap { $0 })
-
-        // Local monitors cover events delivered to Pika's own windows (including our
-        // key loupe panel — that's where the Escape / zoom / nudge keys arrive).
-        let localMove = NSEvent.addLocalMonitorForEvents(matching: moveMask) { [weak self] event in
-            self?.handlePointerMoved()
-            return event
-        }
-        let localClick = NSEvent.addLocalMonitorForEvents(matching: clickMask) { [weak self] event in
-            self?.commit()
-            return event
-        }
+        // Pointer movement, the committing click, scroll-to-zoom and right-click cancel are
+        // all handled by the full-screen catcher (see `LoupeClickCatcherPanel`), which sits
+        // in front of every other app and so receives — and can swallow — those events.
+        // Only key events still need a monitor: they arrive at our key loupe panel, and we
+        // swallow the ones we handle (Escape / zoom / nudge).
         let localKey = NSEvent.addLocalMonitorForEvents(matching: [.keyDown]) { [weak self] event in
             (self?.handleKeyDown(event) ?? false) ? nil : event
         }
-        let localScroll = NSEvent.addLocalMonitorForEvents(matching: [.scrollWheel]) { [weak self] event in
-            self?.handleScroll(event)
-            return event
-        }
-        localMonitors.append(contentsOf: [localMove, localClick, localKey, localScroll].compactMap { $0 })
+        localMonitors.append(contentsOf: [localKey].compactMap { $0 })
     }
 
     private func removeMonitors() {
-        for monitor in globalMonitors {
-            NSEvent.removeMonitor(monitor)
-        }
         for monitor in localMonitors {
             NSEvent.removeMonitor(monitor)
         }
-        globalMonitors.removeAll()
         localMonitors.removeAll()
     }
 
@@ -387,7 +387,7 @@ final class PickerLoupeController {
         do {
             let content = try await SCShareableContent.current
             guard let display = content.displays.first(where: { $0.displayID == displayID }) else { return }
-            let excluded = content.windows.filter { $0.windowID == loupeWindowID }
+            let excluded = content.windows.filter { loupeWindowIDs.contains($0.windowID) }
             baseFilter = SCContentFilter(display: display, excludingWindows: excluded)
             configuredDisplayID = displayID
         } catch {
@@ -404,12 +404,13 @@ final class PickerLoupeController {
         let localX = cursorGlobal.x - screen.frame.minX
         let localYBottom = cursorGlobal.y - screen.frame.minY
         let localYTop = screen.frame.height - localYBottom
-        return CGRect(
-            x: localX - regionPts / 2,
-            y: localYTop - regionPts / 2,
-            width: regionPts,
-            height: regionPts
-        )
+        // Snap the origin to the device-pixel grid so each captured pixel maps 1:1 to a real
+        // pixel. Without this the region straddles pixel boundaries, so ScreenCaptureKit
+        // resamples — the magnified view looks soft/muddy and shimmers as the cursor moves
+        // sub-pixel. Snapped, it steps cleanly one hard pixel at a time.
+        let originX = ((localX - regionPts / 2) * scale).rounded() / scale
+        let originY = ((localYTop - regionPts / 2) * scale).rounded() / scale
+        return CGRect(x: originX, y: originY, width: regionPts, height: regionPts)
     }
 
     /// Capture in a known colour space and convert deliberately in the commit path —

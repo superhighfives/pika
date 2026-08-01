@@ -8,6 +8,7 @@ private struct PikaCommands: Commands {
     var body: some Commands {
         // Pika menu items added before the first divider after .appInfo (About Pika).
         CommandGroup(after: .appInfo) {
+            Button(PikaText.textMenuShowSplash) { send(#selector(AppDelegate.openSplashWindow)) }
             Button(PikaText.textMenuUpdates) { send(#selector(AppDelegate.checkForUpdates)) }
             Button(PikaText.textMenuPreferences) { send(#selector(AppDelegate.openPreferencesWindow)) }
                 .keyboardShortcut(",", modifiers: .command)

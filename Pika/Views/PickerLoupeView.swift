@@ -1,52 +1,41 @@
 import Defaults
 import SwiftUI
 
-/// The loupe card contents: a magnified pixel grid with a crosshair on top, then the
-/// v1 overlays stacked in the card body — slot indicator, live format reading, and live
-/// contrast against the paired colour (mirroring the main window's active metric).
+/// The circular magnifier that sits directly on the cursor, in the style of the system
+/// colour sampler: a round window of magnified pixels with the sampled centre pixel
+/// outlined. Paired with `LoupeReadoutCard`, which carries the live readouts beside it.
 ///
 /// See `plans/ready/2026-07-19-custom-color-picker.md`.
-struct PickerLoupeView: View {
+struct LoupeCircle: View {
     @ObservedObject var viewModel: LoupeViewModel
-    @Default(.colorFormat) private var colorFormat
-    @Default(.copyFormat) private var copyFormat
-    @Default(.contrastStandard) private var contrastStandard
 
-    private let gridSize: CGFloat = 180
+    /// Diameter of the magnified disc (excludes the shadow padding around it).
+    var diameter: CGFloat = 140
+    /// Breathing room so the drop shadow isn't clipped by the hosting panel.
+    static let shadowPadding: CGFloat = 10
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            magnifiedGrid
-            body(width: gridSize)
-        }
-        .frame(width: gridSize)
-        .background(.regularMaterial)
-        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-        .overlay(
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .strokeBorder(Color.primary.opacity(0.12), lineWidth: 1)
-        )
-    }
-
-    // MARK: - Magnified grid + crosshair
-
-    private var magnifiedGrid: some View {
         ZStack {
             Color(nsColor: viewModel.sampleColor)
             if let image = viewModel.image {
                 Image(decorative: image, scale: 1.0)
-                    .interpolation(.none)
                     .resizable()
+                    .interpolation(.none)
+                    .antialiased(false)
             }
-            crosshair
+            centerCell
         }
-        .frame(width: gridSize, height: gridSize)
-        .clipped()
+        .frame(width: diameter, height: diameter)
+        .clipShape(Circle())
+        .overlay(Circle().strokeBorder(Color.white.opacity(0.9), lineWidth: 3))
+        .overlay(Circle().strokeBorder(Color.black.opacity(0.22), lineWidth: 1).padding(1.5))
+        .shadow(color: .black.opacity(0.35), radius: 8, y: 2)
+        .padding(Self.shadowPadding)
     }
 
-    private var crosshair: some View {
-        // One magnified pixel cell, outlined, marking the sampled centre pixel.
-        let cell = gridSize / CGFloat(max(1, viewModel.pixelCount))
+    /// One magnified pixel cell, outlined, marking the sampled centre pixel.
+    private var centerCell: some View {
+        let cell = diameter / CGFloat(max(1, viewModel.pixelCount))
         return Rectangle()
             .strokeBorder(Color.white, lineWidth: 1)
             .frame(width: cell, height: cell)
@@ -56,17 +45,33 @@ struct PickerLoupeView: View {
                     .padding(-1)
             )
     }
+}
 
-    // MARK: - Card body
+/// The readout card tucked beside the loupe circle: the target slot, the live format
+/// reading, and — during a pair pick — the live contrast against the paired colour
+/// (mirroring the main window's active metric).
+struct LoupeReadoutCard: View {
+    @ObservedObject var viewModel: LoupeViewModel
+    @Default(.colorFormat) private var colorFormat
+    @Default(.copyFormat) private var copyFormat
+    @Default(.contrastStandard) private var contrastStandard
 
-    private func body(width _: CGFloat) -> some View {
+    private let cardWidth: CGFloat = 176
+
+    var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             slotIndicator
             formatReading
             if viewModel.comparison != nil { contrastReading }
         }
         .padding(12)
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(width: cardWidth, alignment: .leading)
+        .background(.regularMaterial)
+        .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                .strokeBorder(Color.primary.opacity(0.12), lineWidth: 1)
+        )
     }
 
     private var slotIndicator: some View {

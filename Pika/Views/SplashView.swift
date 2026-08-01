@@ -31,13 +31,19 @@ struct SplashView: View {
             // Right: explained setup list with a pinned footer.
             VStack(spacing: 0) {
                 ScrollView {
-                    VStack(alignment: .leading, spacing: 20.0) {
-                        VStack(alignment: .leading, spacing: 4.0) {
-                            Text(PikaText.textSplashSetupTitle)
-                                .font(.system(size: 20, weight: .bold))
-                            Text(PikaText.textSplashSetupSubtitle)
-                                .font(.system(size: 12))
-                                .foregroundStyle(.secondary)
+                    VStack(alignment: .leading, spacing: 16.0) {
+                        VStack(alignment: .leading, spacing: 10.0) {
+                            Image("AboutIcon")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 52.0, height: 52.0)
+                            VStack(alignment: .leading, spacing: 4.0) {
+                                Text(PikaText.textSplashSetupTitle)
+                                    .font(.system(size: 20, weight: .bold))
+                                Text(PikaText.textSplashSetupSubtitle)
+                                    .font(.system(size: 12))
+                                    .foregroundStyle(.secondary)
+                            }
                         }
 
                         SplashSettingRow(
@@ -69,14 +75,17 @@ struct SplashView: View {
                             PickerChoiceView(pendingRelaunch: $pendingRelaunch)
                         }
 
-                        SplashSettingRow(
-                            title: PikaText.textColorListTitle,
-                            subtitle: PikaText.textColorListSubtitle
-                        ) {
-                            ColorListPickerView()
-                        }
+                        // Label above a full-width dropdown (the component owns its heading),
+                        // matching the picker block above and the Settings layout.
+                        ColorListPickerView()
                     }
-                    .padding(24.0)
+                    // Fill the column so children lay out against a definite width (a
+                    // ScrollView otherwise proposes an ambiguous width, which let flexible
+                    // rows collapse to their minimum on re-layout).
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, 20.0)
+                    .padding(.top, 36.0)
+                    .padding(.bottom, 20.0)
                 }
 
                 Divider()
@@ -167,6 +176,13 @@ private struct SplashSettingRow<Control: View>: View {
 /// the network when reachable. Selecting a list is handled by `ColorNamesManager`, which
 /// also falls the choice back to Default if the API stops offering it.
 struct ColorListPickerView: View {
+    // Callers set the heading sizes (splash uses smaller type than Settings).
+    var titleFont: Font = .system(size: 13, weight: .semibold)
+    var subtitleFont: Font = .system(size: 11)
+
+    // Height of the custom dropdown pill.
+    private let pickerHeight: CGFloat = 24.0
+
     @ObservedObject private var manager = ColorNamesManager.shared
     @Default(.colorNameList) private var colorNameList
 
@@ -183,27 +199,79 @@ struct ColorListPickerView: View {
         return infos
     }
 
+    private var selectedTitle: String {
+        options.first { $0.key == colorNameList }?.title ?? colorNameList
+    }
+
     var body: some View {
-        HStack(spacing: 8.0) {
-            Picker("", selection: Binding(
-                get: { colorNameList },
-                set: { ColorNamesManager.shared.selectList($0) }
-            )) {
-                ForEach(options) { info in
-                    Text(info.title).tag(info.key)
+        VStack(alignment: .leading, spacing: 8.0) {
+            // Heading + description, with the refresh spinner pinned to the top-right of the
+            // text — keeping it out of the dropdown's row so it can't change its width.
+            HStack(alignment: .top, spacing: 12.0) {
+                VStack(alignment: .leading, spacing: 2.0) {
+                    Text(PikaText.textColorListTitle).font(titleFont)
+                    Text(PikaText.textColorListSubtitle)
+                        .font(subtitleFont)
+                        .foregroundStyle(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                // Claim the row's width so the text can't collapse to its minimum (one char
+                // per line) during a re-layout — a greedy `Spacer` here would let it. The
+                // spinner then sits at the trailing edge.
+                .frame(maxWidth: .infinity, alignment: .leading)
+                // Show a spinner while the catalogue / colours refresh so a fetch isn't silent.
+                if manager.isFetching {
+                    ProgressView()
+                        .progressViewStyle(.circular)
+                        .controlSize(.small)
                 }
             }
-            .labelsHidden()
-            .pickerStyle(.menu)
-            .fixedSize()
 
-            // Show a spinner while the catalogue / colours refresh so a fetch isn't silent.
-            if manager.isFetching {
-                ProgressView()
-                    .progressViewStyle(.circular)
-                    .controlSize(.small)
+            // A custom pill instead of a native `Picker`: the macOS `.menu` pop-up bezel
+            // hugs its content and won't span the container edge-to-edge no matter how its
+            // frame is sized, so it always read as inset. This `Menu` with a full-width
+            // rounded label fills the column and matches the picker-comparison block above.
+            Menu {
+                Picker("", selection: Binding(
+                    get: { colorNameList },
+                    set: { ColorNamesManager.shared.selectList($0) }
+                )) {
+                    ForEach(options) { info in
+                        Text(info.title).tag(info.key)
+                    }
+                }
+                .labelsHidden()
+                .pickerStyle(.inline)
+            } label: {
+                HStack(spacing: 6.0) {
+                    Text(selectedTitle)
+                        .lineLimit(1)
+                        .truncationMode(.tail)
+                    Spacer(minLength: 8.0)
+                    Image(systemName: "chevron.up.chevron.down")
+                        .font(.system(size: 10.0, weight: .semibold))
+                        .foregroundStyle(.secondary)
+                }
+                .padding(.horizontal, 10.0)
+                .frame(height: pickerHeight)
+                .frame(maxWidth: .infinity)
+                .background(
+                    RoundedRectangle(cornerRadius: 6.0, style: .continuous)
+                        .fill(Color.primary.opacity(0.06))
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 6.0, style: .continuous)
+                        .strokeBorder(Color.primary.opacity(0.12), lineWidth: 1.0)
+                )
+                .contentShape(Rectangle())
             }
+            // `.plain` renders the label exactly as given (full-width pill) instead of the
+            // default bordered menu button, which hugged its content and ignored the fill.
+            .buttonStyle(.plain)
+            .menuIndicator(.hidden)
         }
+        // Keep the whole block full width so its children lay out against a definite width.
+        .frame(maxWidth: .infinity, alignment: .leading)
         // Surface the last-updated time, an in-progress check, or an offline error on hover.
         .help(manager.statusDescription)
         .onAppear { manager.loadAvailableListsIfNeeded() }
@@ -225,7 +293,7 @@ struct PickerChoiceView: View {
 
     var body: some View {
         VStack(spacing: 10.0) {
-            HStack(spacing: 16.0) {
+            HStack(alignment: .top, spacing: 16.0) {
                 PickerComparisonTile(
                     style: .system,
                     title: PikaText.textPickerSystemTitle,
@@ -240,10 +308,11 @@ struct PickerChoiceView: View {
                     description: PikaText.textPickerCustomDescription,
                     selected: customActive,
                     disabled: !hasPermission,
+                    badge: PikaText.textSplashPickerRecommended,
+                    footnote: (icon: "record.circle", text: PikaText.textPickerRequiresScreenRecording),
                     onSelect: { pickerStyle = .custom }
                 )
             }
-            .frame(height: 96.0)
 
             permissionArea
         }
@@ -313,16 +382,43 @@ private struct PickerComparisonTile: View {
     let description: String
     let selected: Bool
     let disabled: Bool
+    var badge: String? = nil
+    var footnote: (icon: String, text: String)? = nil
     let onSelect: () -> Void
 
     var body: some View {
-        Button(action: onSelect, label: {
-            preview.frame(maxWidth: .infinity, maxHeight: .infinity)
-        })
-        .buttonStyle(AppearanceButtonStyle(title: title, description: description, selected: selected))
-        .disabled(disabled)
-        .opacity(disabled ? 0.4 : 1.0)
-        .animation(.easeInOut(duration: 0.18), value: selected)
+        VStack(spacing: 6.0) {
+            Button(action: onSelect, label: {
+                preview.frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .overlay(alignment: .topTrailing) {
+                        if let badge { badgeView(badge) }
+                    }
+            })
+            .buttonStyle(AppearanceButtonStyle(title: title, description: description, selected: selected))
+            .disabled(disabled)
+            .opacity(disabled ? 0.4 : 1.0)
+            .animation(.easeInOut(duration: 0.18), value: selected)
+
+            // Optional footnote (e.g. the Pro picker's Screen Recording requirement). The
+            // tiles top-align, so a footnote just extends its tile lower.
+            if let footnote {
+                HStack(spacing: 4.0) {
+                    Image(systemName: footnote.icon).font(.system(size: 9.0))
+                    Text(footnote.text).font(.system(size: 10.0))
+                }
+                .foregroundStyle(.secondary)
+            }
+        }
+    }
+
+    private func badgeView(_ text: String) -> some View {
+        Text(text)
+            .font(.system(size: 9.0, weight: .semibold))
+            .foregroundStyle(.white)
+            .padding(.horizontal, 5.0)
+            .padding(.vertical, 2.0)
+            .background(Capsule().fill(Color.accentColor))
+            .padding(6.0)
     }
 
     @ViewBuilder private var preview: some View {
@@ -350,15 +446,15 @@ private struct PickerComparisonTile: View {
         VStack(spacing: 3.0) {
             ZStack {
                 RoundedRectangle(cornerRadius: 3.0, style: .continuous)
-                    .fill(Color.white.opacity(0.22))
-                crosshair(opacity: 0.7)
+                    .fill(Color.white.opacity(0.12))
+                crosshair(opacity: 0.35)
             }
             .frame(height: 18.0)
 
             HStack(spacing: 4.0) {
-                skeletonBar(width: 24.0, opacity: 0.4)
+                skeletonBar(width: 24.0, opacity: 0.3)
                 Spacer(minLength: 0.0)
-                Circle().fill(Color.white.opacity(0.55)).frame(width: 5.0, height: 5.0)
+                Circle().fill(Color.white.opacity(0.35)).frame(width: 5.0, height: 5.0)
             }
         }
         .padding(.horizontal, 5.0)
@@ -367,7 +463,7 @@ private struct PickerComparisonTile: View {
         .frame(width: 52.0)
         .background(
             RoundedRectangle(cornerRadius: 6.0, style: .continuous)
-                .fill(Color.white.opacity(0.1))
+                .fill(Color.white.opacity(0.06))
         )
     }
 

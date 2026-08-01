@@ -148,14 +148,11 @@ private struct PickerStyleSection: View {
 
 private struct ColorNamesSection: View {
     var body: some View {
-        VStack(alignment: .leading, spacing: 10.0) {
-            Text(PikaText.textColorListTitle).font(.system(size: 16))
-            Text(PikaText.textColorListSubtitle)
-                .font(.system(size: 12))
-                .foregroundStyle(.secondary)
-                .fixedSize(horizontal: false, vertical: true)
-            ColorListPickerView()
-        }
+        // The picker owns its heading and description (with the refresh state on the right).
+        ColorListPickerView(
+            titleFont: .system(size: 16),
+            subtitleFont: .system(size: 12)
+        )
         .padding(.horizontal, 24.0)
     }
 }
