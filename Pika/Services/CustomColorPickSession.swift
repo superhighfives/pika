@@ -1,4 +1,5 @@
 import AppKit
+import ApplicationServices
 import Defaults
 import ScreenCaptureKit
 import SwiftUI
@@ -115,6 +116,10 @@ final class PickerLoupeController {
     // can't distinguish the two.
     private var isActive = false
 
+    // Set when we activated Pika (Accessibility not granted) to receive keys during a pick;
+    // its value is the app to restore focus to on teardown.
+    private var appToRestore: NSRunningApplication?
+
     // Capture state.
     private var configuredDisplayID: CGDirectDisplayID?
     private var baseFilter: SCContentFilter?
@@ -207,13 +212,26 @@ final class PickerLoupeController {
         catcher?.orderFrontRegardless()
         cardPanel?.orderFrontRegardless()
         circlePanel?.orderFrontRegardless()
-        catcher?.makeKey()
 
         loupeWindowIDs = [circlePanel?.windowNumber, cardPanel?.windowNumber, catcher?.windowNumber]
             .compactMap { $0 }
             .map { CGWindowID($0) }
 
+        // Activate (fallback) before taking key status so the catcher stays key afterwards.
+        activateForKeysIfNeeded()
+        catcher?.makeKey()
         isActive = true
+    }
+
+    /// A non-activating panel only receives keys while Pika is frontmost. If Pika is trusted
+    /// for Accessibility the global key monitor covers Escape/zoom/nudge without stealing
+    /// focus; otherwise fall back to briefly activating Pika (restoring focus on teardown) so
+    /// the local key monitor works — the pick already covers the screen with the catcher, so
+    /// the sampled app going inactive for the pick's duration is acceptable.
+    private func activateForKeysIfNeeded() {
+        guard appToRestore == nil, !AXIsProcessTrusted() else { return }
+        appToRestore = NSWorkspace.shared.frontmostApplication
+        NSApp.activate(ignoringOtherApps: true)
     }
 
     private func reposition() {
@@ -257,6 +275,12 @@ final class PickerLoupeController {
         circlePanel?.orderOut(nil)
         cardPanel?.orderOut(nil)
         catcher?.orderOut(nil)
+
+        // Restore focus to whatever app we took it from for key handling.
+        if let appToRestore {
+            appToRestore.activate()
+            self.appToRestore = nil
+        }
     }
 
     // MARK: - Event monitors
@@ -267,12 +291,20 @@ final class PickerLoupeController {
         // Pointer movement, the committing click, scroll-to-zoom and right-click cancel are
         // all handled by the full-screen catcher (see `LoupeClickCatcherPanel`), which sits
         // in front of every other app and so receives — and can swallow — those events.
-        // Only key events still need a monitor: they arrive at our key loupe panel, and we
-        // swallow the ones we handle (Escape / zoom / nudge).
+        //
+        // Keys need two monitors. The local one fires when Pika holds keyboard focus (and can
+        // swallow the keys it handles). The global one fires when another app is frontmost —
+        // it only delivers events if Pika is trusted for Accessibility, and can't swallow, so
+        // it's a best-effort path for Escape/zoom/nudge while picking over another app. When
+        // Accessibility isn't granted, `showPanel` activates Pika instead so the local monitor
+        // covers everything (see `activateForKeysIfNeeded`).
         let localKey = NSEvent.addLocalMonitorForEvents(matching: [.keyDown]) { [weak self] event in
             (self?.handleKeyDown(event) ?? false) ? nil : event
         }
-        localMonitors.append(contentsOf: [localKey].compactMap { $0 })
+        let globalKey = NSEvent.addGlobalMonitorForEvents(matching: [.keyDown]) { [weak self] event in
+            _ = self?.handleKeyDown(event)
+        }
+        localMonitors.append(contentsOf: [localKey, globalKey].compactMap { $0 })
     }
 
     private func removeMonitors() {
@@ -363,19 +395,31 @@ final class PickerLoupeController {
         guard let filter = baseFilter else { return }
 
         let pixelCount = viewModel.pixelCount
+        let scale = screen.backingScaleFactor
+
+        // Capture a generous region at *native* resolution (output pixels == source device
+        // pixels, so ScreenCaptureKit does no scaling), then crop the exact centre pixels
+        // ourselves. Asking SCK for a tiny `pixelCount`-sized output made it resample and
+        // blend neighbours — the magnified view looked soft and the sampled colour drifted
+        // with the cursor's sub-pixel position. A pixel-exact crop is crisp and stable.
+        let captureExtent = max(pixelCount + 8, 128) // device pixels captured around the cursor
         let config = SCStreamConfiguration()
-        config.width = pixelCount
-        config.height = pixelCount
+        config.width = captureExtent
+        config.height = captureExtent
         config.showsCursor = false
-        config.sourceRect = sourceRect(forCursor: cursor, screen: screen, pixelCount: pixelCount)
+        config.sourceRect = sourceRect(centeredOn: cursor, screen: screen, extentPixels: captureExtent, scale: scale)
         config.colorSpaceName = captureColorSpaceName()
 
         do {
-            let image = try await SCScreenshotManager.captureImage(
+            let full = try await SCScreenshotManager.captureImage(
                 contentFilter: filter, configuration: config
             )
-            viewModel.image = image
-            viewModel.sampleColor = Self.centerPixelColor(of: image) ?? viewModel.sampleColor
+            let cropX = (full.width - pixelCount) / 2
+            let cropY = (full.height - pixelCount) / 2
+            let region = CGRect(x: cropX, y: cropY, width: pixelCount, height: pixelCount)
+            let cropped = full.cropping(to: region) ?? full
+            viewModel.image = cropped
+            viewModel.sampleColor = Self.centerPixelColor(of: cropped) ?? viewModel.sampleColor
         } catch {
             // Transient capture failures (display reconfigured, filter stale) are ignored;
             // the next mouse move retries. Force a filter rebuild so we recover.
@@ -396,21 +440,17 @@ final class PickerLoupeController {
         }
     }
 
-    /// The source region to capture, in points, in the display's top-left coordinate
-    /// space. Sized so it holds exactly `pixelCount` device pixels centred on the cursor.
-    private func sourceRect(forCursor cursorGlobal: NSPoint, screen: NSScreen, pixelCount: Int) -> CGRect {
-        let scale = screen.backingScaleFactor
-        let regionPts = CGFloat(pixelCount) / scale
+    /// The source region to capture, in points, in the display's top-left coordinate space —
+    /// `extentPixels` device pixels centred on the cursor, snapped to the device-pixel grid
+    /// so the capture maps 1:1 to real pixels (no sub-pixel straddling, so no resampling).
+    private func sourceRect(centeredOn cursorGlobal: NSPoint, screen: NSScreen, extentPixels: Int, scale: CGFloat) -> CGRect {
+        let extentPts = CGFloat(extentPixels) / scale
         let localX = cursorGlobal.x - screen.frame.minX
         let localYBottom = cursorGlobal.y - screen.frame.minY
         let localYTop = screen.frame.height - localYBottom
-        // Snap the origin to the device-pixel grid so each captured pixel maps 1:1 to a real
-        // pixel. Without this the region straddles pixel boundaries, so ScreenCaptureKit
-        // resamples — the magnified view looks soft/muddy and shimmers as the cursor moves
-        // sub-pixel. Snapped, it steps cleanly one hard pixel at a time.
-        let originX = ((localX - regionPts / 2) * scale).rounded() / scale
-        let originY = ((localYTop - regionPts / 2) * scale).rounded() / scale
-        return CGRect(x: originX, y: originY, width: regionPts, height: regionPts)
+        let originX = ((localX - extentPts / 2) * scale).rounded() / scale
+        let originY = ((localYTop - extentPts / 2) * scale).rounded() / scale
+        return CGRect(x: originX, y: originY, width: extentPts, height: extentPts)
     }
 
     /// Capture in a known colour space and convert deliberately in the commit path —
