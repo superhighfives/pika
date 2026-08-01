@@ -75,11 +75,16 @@ class WindowCoordinator: NSObject {
 
         // Keep the companion windows on the same level as the main window (which PikaWindow
         // moves between .floating/.normal), so toggling "float on top" doesn't leave them
-        // stranded on a stale level.
+        // stranded on a stale level. About/Help/Preferences are cached after first open
+        // (see setupAbout/Help/Preferences below), so without this they'd stay stuck at
+        // whatever level they were created with.
         Defaults.observe(.appFloating) { [weak self] change in
             let level: NSWindow.Level = change.newValue == true ? .floating : .normal
             self?.borderWindow?.level = level
             self?.shadowWindow?.level = level
+            self?.aboutWindow?.level = level
+            self?.helpWindow?.level = level
+            self?.preferencesWindow?.level = level
         }.tieToLifetime(of: self)
 
         // Keep the companion windows aligned to the main window as it resizes and moves.
