@@ -64,8 +64,10 @@ class Eyedropper: ObservableObject {
     // (and its event monitors / capture engine, for the custom loupe) stays alive.
     private var activeSession: ColorPickSession?
 
-    let colorNames: [ColorName] = loadColors()!
-    var closestVector: ClosestVector!
+    // Colour names come from the shared manager (cached network list, or the bundled
+    // default offline). Rebuilt whenever the manager broadcasts `.colorNamesUpdated`.
+    private var colorNames: [ColorName] = []
+    private var closestVector: ClosestVector?
 
     @objc @Published public var color: NSColor
 
@@ -75,12 +77,40 @@ class Eyedropper: ObservableObject {
         self.type = type
         self.color = color.usingColorSpace(.sRGB) ?? color
 
-        // Load colors
-        closestVector = ClosestVector(colorNames.map { $0.color.toRGB8BitArray() })
+        // Load colours and rebuild whenever the active list changes or a refresh lands.
+        reloadColorNames()
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleColorNamesUpdated),
+            name: .colorNamesUpdated,
+            object: nil
+        )
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    @objc private func handleColorNamesUpdated() {
+        reloadColorNames()
+        // Nudge observing views (the eyedropper label) to recompute the name.
+        DispatchQueue.main.async { self.objectWillChange.send() }
+    }
+
+    private func reloadColorNames() {
+        DispatchQueue.global(qos: .utility).async { [weak self] in
+            let names = ColorNamesManager.shared.currentColorNames()
+            let vector = ClosestVector(names.map { $0.color.toRGB8BitArray() })
+            DispatchQueue.main.async {
+                self?.colorNames = names
+                self?.closestVector = vector
+            }
+        }
     }
 
     func getClosestColor() -> String {
-        colorNames[closestVector.compare(color)].name
+        guard let closestVector, !colorNames.isEmpty else { return "" }
+        return colorNames[closestVector.compare(color)].name
     }
 
     func set(_ selectedColor: NSColor) {

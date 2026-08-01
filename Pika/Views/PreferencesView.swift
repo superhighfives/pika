@@ -155,6 +155,20 @@ private struct PickerStyleSection: View {
     }
 }
 
+private struct ColorNamesSection: View {
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10.0) {
+            Text(PikaText.textColorListTitle).font(.system(size: 16))
+            Text(PikaText.textColorListSubtitle)
+                .font(.system(size: 12))
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+            ColorListPickerView()
+        }
+        .padding(.horizontal, 24.0)
+    }
+}
+
 private struct AppearanceSection: View {
     @Default(.contrastStandard) var contrastStandard
     @EnvironmentObject var eyedroppers: Eyedroppers
@@ -364,6 +378,10 @@ struct PreferencesView: View {
                     Divider().padding(.vertical, 16.0)
 
                     PickerStyleSection()
+
+                    Divider().padding(.vertical, 16.0)
+
+                    ColorNamesSection()
 
                     Divider().padding(.vertical, 16.0)
 

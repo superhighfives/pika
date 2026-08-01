@@ -7,6 +7,9 @@ struct SplashView: View {
     @Default(.pickerStyle) var pickerStyle
     @State private var hostWindow: NSWindow?
     @State private var pendingRelaunch = false
+    // Pre-selected: the common case is to see the splash once and not again. Unchecking it
+    // keeps the splash appearing on launch. Persisted to `hideSplashOnLaunch` on dismissal.
+    @State private var dontShowAgain = true
 
     // The custom picker is only the active choice once permission exists. "Get started" is
     // the primary action only then — otherwise Grant Permission is the primary call.
@@ -65,6 +68,13 @@ struct SplashView: View {
                                 .font(.system(size: 13, weight: .semibold))
                             PickerChoiceView(pendingRelaunch: $pendingRelaunch)
                         }
+
+                        SplashSettingRow(
+                            title: PikaText.textColorListTitle,
+                            subtitle: PikaText.textColorListSubtitle
+                        ) {
+                            ColorListPickerView()
+                        }
                     }
                     .padding(24.0)
                 }
@@ -72,10 +82,12 @@ struct SplashView: View {
                 Divider()
 
                 HStack(spacing: 12.0) {
-                    Text(PikaText.textSplashFooter)
-                        .font(.system(size: 11))
-                        .foregroundStyle(.secondary)
-                        .fixedSize(horizontal: false, vertical: true)
+                    Toggle(isOn: $dontShowAgain) {
+                        Text(PikaText.textSplashDontShowAgain)
+                            .font(.system(size: 11))
+                            .foregroundStyle(.secondary)
+                    }
+                    .toggleStyle(.checkbox)
                     Spacer(minLength: 12.0)
                     if customActive {
                         Button(action: handleGetStarted, label: { Text(PikaText.textSplashStart) })
@@ -96,6 +108,8 @@ struct SplashView: View {
     }
 
     private func closeSplash() {
+        // Persist the pre-selected checkbox: leave it ticked and the splash won't return.
+        Defaults[.hideSplashOnLaunch] = dontShowAgain
         NSApp.sendAction(#selector(AppDelegate.closeSplashWindow), to: nil, from: nil)
     }
 
@@ -144,6 +158,55 @@ private struct SplashSettingRow<Control: View>: View {
             Spacer(minLength: 12.0)
             control
         }
+    }
+}
+
+/// The colour-name list chooser, shared by the splash and Settings. Shows the active list
+/// (Default by default) and lets the user pick any list published by color.pizza. Offline,
+/// only Default (and any list already cached) is guaranteed; the full catalogue loads from
+/// the network when reachable. Selecting a list is handled by `ColorNamesManager`, which
+/// also falls the choice back to Default if the API stops offering it.
+struct ColorListPickerView: View {
+    @ObservedObject private var manager = ColorNamesManager.shared
+    @Default(.colorNameList) private var colorNameList
+
+    private var options: [ColorListInfo] {
+        var infos = manager.availableLists
+        // Before the catalogue loads, still offer Default so the control is usable offline.
+        if infos.isEmpty {
+            infos = [ColorListInfo(key: defaultColorListKey, title: PikaText.textColorListDefault)]
+        }
+        // Keep a stored non-default selection renderable even if it's not (yet) in the list.
+        if !infos.contains(where: { $0.key == colorNameList }) {
+            infos.append(ColorListInfo(key: colorNameList, title: colorNameList))
+        }
+        return infos
+    }
+
+    var body: some View {
+        HStack(spacing: 8.0) {
+            Picker("", selection: Binding(
+                get: { colorNameList },
+                set: { ColorNamesManager.shared.selectList($0) }
+            )) {
+                ForEach(options) { info in
+                    Text(info.title).tag(info.key)
+                }
+            }
+            .labelsHidden()
+            .pickerStyle(.menu)
+            .fixedSize()
+
+            // Show a spinner while the catalogue / colours refresh so a fetch isn't silent.
+            if manager.isFetching {
+                ProgressView()
+                    .progressViewStyle(.circular)
+                    .controlSize(.small)
+            }
+        }
+        // Surface the last-updated time, an in-progress check, or an offline error on hover.
+        .help(manager.statusDescription)
+        .onAppear { manager.loadAvailableListsIfNeeded() }
     }
 }
 

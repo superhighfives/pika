@@ -94,6 +94,12 @@ enum AppMode: String, Codable, CaseIterable {
 extension Defaults.Keys {
     static let colorFormat = Key<ColorFormat>("colorFormat", default: .hex)
     static let viewedSplash = Key<Bool>("viewedSplash", default: false)
+    // The colour-name list to use, keyed to color.pizza's `/v1/lists/`. `default` is the
+    // list bundled at build time as the offline fallback.
+    static let colorNameList = Key<String>("colorNameList", default: "default")
+    // When false, the splash is shown on launch. The splash's pre-selected "Don't show
+    // this again" checkbox sets this to true on dismissal.
+    static let hideSplashOnLaunch = Key<Bool>("hideSplashOnLaunch", default: false)
     static let hidePikaWhilePicking = Key<Bool>("hidePikaWhilePicking", default: false)
     static let windowShadow = Key<WindowShadow>("windowShadow", default: .always)
     static let pickContrastingColor = Key<Bool>("pickContrastingColor", default: false)

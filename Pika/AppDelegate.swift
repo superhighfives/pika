@@ -82,6 +82,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         validateColorSpace()
         showPikaIfConfigured()
         registerGlobalKeyMonitor()
+
+        // Refresh the colour-name list from color.pizza (catalogue + selected list) and cache
+        // it; the eyedroppers rebuild via `.colorNamesUpdated`. Best-effort — falls back to
+        // the bundled default offline.
+        ColorNamesManager.shared.updateOnLaunch()
     }
 
     private func removeUpdatesMenuItemIfNeeded() {
@@ -121,7 +126,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func presentSplashIfNeeded() {
-        if !Defaults[.viewedSplash] {
+        // The splash shows on every launch unless the user ticked its (pre-selected)
+        // "Don't show this again" checkbox. `viewedSplash` still records the first run so
+        // the pick shortcuts stay gated until onboarding is dismissed the first time.
+        if !Defaults[.hideSplashOnLaunch] {
             openSplashWindow(nil)
             NSApp.activate(ignoringOtherApps: true)
         }

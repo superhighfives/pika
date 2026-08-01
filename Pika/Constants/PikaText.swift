@@ -114,6 +114,10 @@ enum PikaText {
         "splash.footer", value: "You can change all of this in Settings.",
         comment: "Splash footer note"
     )
+    static let textSplashDontShowAgain = NSLocalizedString(
+        "splash.dontShowAgain", value: "Don’t show this again",
+        comment: "Splash: pre-selected checkbox to stop showing the splash on launch"
+    )
     static let textSplashConfirmTitle = NSLocalizedString(
         "splash.confirm.title", value: "Use Pika’s Pro picker?",
         comment: "Get started confirmation title when the Basic picker is selected"
@@ -245,6 +249,35 @@ enum PikaText {
     static let textColorNamesDescription = NSLocalizedString(
         "preferences.names.description",
         comment: "Hide color names"
+    )
+    static let textColorListTitle = NSLocalizedString(
+        "preferences.colornames.title", value: "Colour Names", comment: "Colour name list section title"
+    )
+    static let textColorListSubtitle = NSLocalizedString(
+        "preferences.colornames.subtitle",
+        value: "Choose the list Pika uses to name colours. Lists come from color.pizza and "
+            + "update automatically; the default works offline.",
+        comment: "Colour name list section subtitle"
+    )
+    static let textColorListDefault = NSLocalizedString(
+        "preferences.colornames.default", value: "Default", comment: "Default colour list name"
+    )
+    static let textColorListStatusChecking = NSLocalizedString(
+        "preferences.colornames.status.checking", value: "Checking color.pizza for updates…",
+        comment: "Colour list tooltip: a refresh is in progress"
+    )
+    static let textColorListStatusUpdatedFormat = NSLocalizedString(
+        "preferences.colornames.status.updated", value: "Updated %@",
+        comment: "Colour list tooltip: when the list was last refreshed (%@ is a date)"
+    )
+    static let textColorListStatusOffline = NSLocalizedString(
+        "preferences.colornames.status.offline",
+        value: "Couldn’t reach color.pizza. Using the saved colour list.",
+        comment: "Colour list tooltip: the last refresh failed, cached/bundled names are in use"
+    )
+    static let textColorListStatusBuiltIn = NSLocalizedString(
+        "preferences.colornames.status.builtin", value: "Using the built-in colour list.",
+        comment: "Colour list tooltip: no network refresh has happened yet"
     )
     static let textFloatDescription = NSLocalizedString(
         "preferences.float.description",
