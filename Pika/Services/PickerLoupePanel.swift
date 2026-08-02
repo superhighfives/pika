@@ -45,9 +45,18 @@ final class LoupeCirclePanel: NSPanel {
 
     /// Centres the disc on the cursor. The padded frame is symmetric, so centring the
     /// window centres the circle (and its sampled centre pixel) on the cursor.
-    func center(on cursor: NSPoint) {
+    ///
+    /// The origin is snapped to the device-pixel grid: the magnified image is nearest-
+    /// neighbour pixel-art, and a fractional window origin composites it at a sub-pixel
+    /// offset, which the compositor anti-aliases — so it looks crisp at some cursor
+    /// positions and blurs when the cursor sits half a device pixel over. Snapping keeps it
+    /// hard-edged everywhere. (`NSEvent.mouseLocation` is sub-pixel, hence the fractional origin.)
+    func center(on cursor: NSPoint, scale: CGFloat) {
         let size = frame.size
-        setFrameOrigin(NSPoint(x: cursor.x - size.width / 2, y: cursor.y - size.height / 2))
+        let rawX = cursor.x - size.width / 2
+        let rawY = cursor.y - size.height / 2
+        setFrameOrigin(NSPoint(x: (rawX * scale).rounded() / scale,
+                               y: (rawY * scale).rounded() / scale))
     }
 }
 

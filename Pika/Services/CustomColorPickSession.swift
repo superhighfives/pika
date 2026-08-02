@@ -235,7 +235,8 @@ final class PickerLoupeController {
     }
 
     private func reposition() {
-        circlePanel?.center(on: currentCursor)
+        let scale = screenUnderCursor()?.backingScaleFactor ?? 2.0
+        circlePanel?.center(on: currentCursor, scale: scale)
         cardPanel?.position(near: currentCursor, circleRadius: (circlePanel?.diameter ?? 140) / 2)
     }
 
