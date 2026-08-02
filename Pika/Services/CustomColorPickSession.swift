@@ -333,6 +333,8 @@ final class PickerLoupeController {
 
     /// Returns `true` when the key was handled (and should be swallowed).
     private func handleKeyDown(_ event: NSEvent) -> Bool {
+        // Arrow keys nudge one device pixel; Shift+arrow jumps ten for coarser moves.
+        let step = event.modifierFlags.contains(.shift) ? 10 : 1
         switch event.keyCode {
         case 53: // Escape
             cancel()
@@ -341,10 +343,10 @@ final class PickerLoupeController {
             viewModel.zoomIn(); requestCapture(); return true
         case 27, 78: // - and keypad -
             viewModel.zoomOut(); requestCapture(); return true
-        case 123: nudge(dx: -1, dy: 0); return true // left
-        case 124: nudge(dx: 1, dy: 0); return true // right
-        case 125: nudge(dx: 0, dy: -1); return true // down
-        case 126: nudge(dx: 0, dy: 1); return true // up
+        case 123: nudge(dx: -step, dy: 0); return true // left
+        case 124: nudge(dx: step, dy: 0); return true // right
+        case 125: nudge(dx: 0, dy: -step); return true // down
+        case 126: nudge(dx: 0, dy: step); return true // up
         default:
             return false
         }
