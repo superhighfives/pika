@@ -109,6 +109,15 @@ enum PikaText {
         "picker.requiresScreenRecording", value: "Requires Screen Recording",
         comment: "Pro picker capability note: needs the Screen Recording permission"
     )
+    static let textPickerGrantAccessibilityButton = NSLocalizedString(
+        "picker.grantAccessibility", value: "Grant Accessibility",
+        comment: "Button to grant the optional Accessibility permission for the Pro picker"
+    )
+    static let textPickerAccessibilityNote = NSLocalizedString(
+        "picker.accessibilityNote",
+        value: "Optional — lets Escape and arrow-key nudging work while picking over other apps.",
+        comment: "Explains what the optional Accessibility permission adds to the Pro picker"
+    )
     static let textSplashPickerPermission = NSLocalizedString(
         "splash.picker.permission", value: "Needs Screen Recording permission",
         comment: "Custom picker permission note"

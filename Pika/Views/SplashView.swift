@@ -1,3 +1,4 @@
+import ApplicationServices
 import Defaults
 import KeyboardShortcuts
 import LaunchAtLogin
@@ -287,6 +288,8 @@ struct PickerChoiceView: View {
     @Default(.pickerStyle) private var pickerStyle
 
     private var hasPermission: Bool { CustomColorPickSession.isAvailable }
+    // Optional: unlocks global Escape / arrow-nudge while picking over other apps.
+    private var hasAccessibility: Bool { AXIsProcessTrusted() }
     // Custom is only truly active once permission exists; until then System stays selected
     // and the Custom tile is disabled.
     private var customActive: Bool { hasPermission && pickerStyle == .custom }
@@ -357,6 +360,22 @@ struct PickerChoiceView: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
             .frame(maxWidth: .infinity)
+        } else if customActive, !hasAccessibility {
+            // Screen Recording is live and the Pro picker is chosen — offer the optional
+            // Accessibility grant so Escape/arrow-nudge work while picking over other apps
+            // (without it the picker briefly activates Pika to receive keys instead).
+            VStack(spacing: 6.0) {
+                Button(action: { Self.requestAccessibility() }, label: {
+                    Text(PikaText.textPickerGrantAccessibilityButton).frame(maxWidth: .infinity)
+                })
+                .buttonStyle(.bordered)
+                Text(PikaText.textPickerAccessibilityNote)
+                    .font(.system(size: 10))
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .frame(maxWidth: .infinity)
         }
     }
 
@@ -368,6 +387,14 @@ struct PickerChoiceView: View {
             Defaults[.pickerStyle] = .custom
             pendingRelaunch.wrappedValue = !granted
         }
+    }
+
+    // Prompts for the optional Accessibility permission (System Settings → Privacy &
+    // Security → Accessibility). It takes effect live — the global key monitor starts
+    // firing once trusted — so no relaunch is needed.
+    static func requestAccessibility() {
+        let promptKey = kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String
+        _ = AXIsProcessTrustedWithOptions([promptKey: true] as CFDictionary)
     }
 }
 
