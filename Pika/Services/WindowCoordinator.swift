@@ -433,8 +433,9 @@ class WindowCoordinator: NSObject {
     func openSplashWindow() {
         splashWindow = PikaWindow.createSecondaryWindow(
             title: PikaText.textAppName,
-            // Sized to fit the full setup list without scrolling.
-            size: NSRect(x: 0, y: 0, width: 720, height: 650),
+            // Sized to fit the full setup list without scrolling, including a permission
+            // step (Grant Screen Recording / Grant Accessibility) when one is shown.
+            size: NSRect(x: 0, y: 0, width: 720, height: 720),
             styleMask: [.titled, .fullSizeContentView]
         )
         // `createSecondaryWindow` derives the autosave name from the title, which for

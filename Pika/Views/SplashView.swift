@@ -85,7 +85,7 @@ struct SplashView: View {
                     // rows collapse to their minimum on re-layout).
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal, 20.0)
-                    .padding(.top, 36.0)
+                    .padding(.top, 52.0)
                     .padding(.bottom, 20.0)
                 }
 
@@ -393,6 +393,20 @@ struct PickerChoiceView: View {
     // Security → Accessibility). It takes effect live — the global key monitor starts
     // firing once trusted — so no relaunch is needed.
     static func requestAccessibility() {
+        // The Accessibility prompt is a regular app alert (unlike the Screen Recording
+        // system dialog, which sits above floating windows), so a floating splash/Settings
+        // window would cover it. Drop the key window to normal level for the prompt and
+        // restore its floating level once the user returns to it.
+        if let window = NSApp.keyWindow, window.level == .floating {
+            window.level = .normal
+            var token: NSObjectProtocol?
+            token = NotificationCenter.default.addObserver(
+                forName: NSWindow.didBecomeKeyNotification, object: window, queue: .main
+            ) { _ in
+                window.level = Defaults[.appFloating] ? .floating : .normal
+                if let token { NotificationCenter.default.removeObserver(token) }
+            }
+        }
         let promptKey = kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String
         _ = AXIsProcessTrustedWithOptions([promptKey: true] as CFDictionary)
     }
