@@ -7,9 +7,9 @@ import SwiftUI
 struct CircularText: View {
     let text: String
     var radius: CGFloat
-    var font: Font = .system(size: 12, weight: .semibold, design: .monospaced)
+    var font: Font = .system(size: 11, weight: .regular, design: .monospaced)
     var centerAngle: Double = 0
-    var charSpacing: Double = 0.13 // radians between glyph centres
+    var charSpacing: Double = 0.082 // radians between glyph centres
     var flip: Bool = false
 
     var body: some View {
@@ -47,14 +47,14 @@ struct LoupeCircle: View {
     /// Total square side of the view (and its hosting panel).
     static func totalSize(diameter: CGFloat = 150) -> CGFloat { diameter + inset * 2 }
 
-    private var textRadius: CGFloat { diameter / 2 + 18 }
-    private let engraved: Font = .system(size: 12, weight: .semibold, design: .monospaced)
+    private var textRadius: CGFloat { diameter / 2 + 16 }
+    private let engraved: Font = .system(size: 11, weight: .regular, design: .monospaced)
 
     var body: some View {
         ZStack {
             // Lens barrel: the dark rim the text is engraved on.
             Circle()
-                .stroke(Color.black.opacity(0.82), lineWidth: 34)
+                .stroke(Color.black.opacity(0.82), lineWidth: 28)
                 .frame(width: textRadius * 2, height: textRadius * 2)
 
             glass
