@@ -472,10 +472,37 @@ final class PickerLoupeController {
     }
 
     static func centerPixelColor(of image: CGImage) -> NSColor? {
-        let rep = NSBitmapImageRep(cgImage: image)
-        let centerX = max(0, image.width / 2)
-        let centerY = max(0, image.height / 2)
-        return rep.colorAt(x: centerX, y: centerY)
+        let x = max(0, image.width / 2)
+        let y = max(0, image.height / 2)
+
+        // Read the raw pixel and build the colour in the image's *exact* colour space (the
+        // one we captured in — sRGB or Display P3). `NSBitmapImageRep.colorAt` reinterprets
+        // the pixel through an intermediate device/calibrated space, so the sampled colour
+        // didn't match what was on screen and drifted when re-picking Pika's own rendered
+        // swatch. Anything but the standard ScreenCaptureKit layout falls back to colorAt.
+        func fallback() -> NSColor? {
+            NSBitmapImageRep(cgImage: image).colorAt(x: x, y: y)
+        }
+
+        guard image.bitsPerComponent == 8, image.bitsPerPixel == 32,
+              let cgColorSpace = image.colorSpace,
+              let colorSpace = NSColorSpace(cgColorSpace: cgColorSpace),
+              let data = image.dataProvider?.data,
+              let ptr = CFDataGetBytePtr(data)
+        else { return fallback() }
+
+        // ScreenCaptureKit hands back 32-bit BGRA (little-endian, alpha-first); screen
+        // pixels are opaque, so no un-premultiply is needed.
+        let alphaFirst = image.alphaInfo == .premultipliedFirst || image.alphaInfo == .first
+            || image.alphaInfo == .noneSkipFirst
+        guard image.bitmapInfo.intersection(.byteOrderMask) == .byteOrder32Little, alphaFirst
+        else { return fallback() }
+
+        let offset = y * image.bytesPerRow + x * 4
+        let blue = CGFloat(ptr[offset]) / 255.0
+        let green = CGFloat(ptr[offset + 1]) / 255.0
+        let red = CGFloat(ptr[offset + 2]) / 255.0
+        return NSColor(colorSpace: colorSpace, components: [red, green, blue, 1.0], count: 4)
     }
 }
 
