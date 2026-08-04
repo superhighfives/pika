@@ -11,8 +11,9 @@ struct LoupeCircle: View {
 
     /// Diameter of the magnified disc (excludes the shadow padding around it).
     var diameter: CGFloat = 140
-    /// Breathing room so the drop shadow isn't clipped by the hosting panel.
-    static let shadowPadding: CGFloat = 10
+    /// Breathing room so the drop shadow isn't clipped by the hosting panel (needs to clear
+    /// the shadow's blur radius plus its y-offset).
+    static let shadowPadding: CGFloat = 18
 
     var body: some View {
         ZStack {

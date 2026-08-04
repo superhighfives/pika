@@ -120,6 +120,9 @@ final class PickerLoupeController {
     // its value is the app to restore focus to on teardown.
     private var appToRestore: NSRunningApplication?
 
+    // Tracks whether we've hidden the system cursor for the pick, so hide/show stay balanced.
+    private var cursorHidden = false
+
     // Capture state.
     private var configuredDisplayID: CGDirectDisplayID?
     private var baseFilter: SCContentFilter?
@@ -127,12 +130,6 @@ final class PickerLoupeController {
     private var isCapturing = false
     private var pendingCapture = false
     private var currentCursor: NSPoint = .zero
-
-    // macOS shows its screen-capture consent the first time an app captures in a launch
-    // session. We prime it on the first pick — capturing a frame *before* the loupe is
-    // shown — so the prompt appears ahead of the loupe rather than over a black one.
-    // Once primed, later picks show the loupe immediately. Reset each launch.
-    private static var didPrimeConsent = false
 
     // MARK: - Session lifecycle
 
@@ -158,29 +155,19 @@ final class PickerLoupeController {
             return
         }
 
-        // Consent already primed this launch: show the loupe immediately (original flow).
-        if Self.didPrimeConsent {
-            showPanel()
-            installMonitors()
-            reposition()
-            requestCapture()
-            return
-        }
-
-        // First pick of the launch: capture one frame *before* showing the loupe so the
-        // macOS screen-capture consent prompt appears ahead of the loupe, not over a black
-        // one. The loupe then appears already showing a sample.
+        // Fresh pick: capture one frame *before* showing the loupe, so it appears already
+        // showing the live sample — no flash of the previous pick's colour, no black frame,
+        // and on a launch's first pick the macOS consent prompt appears ahead of the loupe.
         isCapturing = true
         Task { @MainActor in
             await self.performCapture()
             self.isCapturing = false
-            Self.didPrimeConsent = true
             // The pick may have been cancelled while the consent prompt was up.
             guard self.completion != nil else { self.teardown(); return }
             self.showPanel()
             self.installMonitors()
-            // The priming frame was captured before the loupe existed; rebuild the filter
-            // so the loupe window is excluded from subsequent frames.
+            // That frame was captured before the loupe existed; rebuild the filter so the
+            // loupe windows are excluded from subsequent frames.
             self.configuredDisplayID = nil
             self.reposition()
             self.requestCapture()
@@ -220,6 +207,13 @@ final class PickerLoupeController {
         // Activate (fallback) before taking key status so the catcher stays key afterwards.
         activateForKeysIfNeeded()
         catcher?.makeKey()
+
+        // The loupe circle sits on the cursor, so hide the system cursor for the pick.
+        if !cursorHidden {
+            CGDisplayHideCursor(CGMainDisplayID())
+            cursorHidden = true
+        }
+
         isActive = true
     }
 
@@ -266,6 +260,10 @@ final class PickerLoupeController {
 
     private func teardown() {
         isActive = false
+        if cursorHidden {
+            CGDisplayShowCursor(CGMainDisplayID())
+            cursorHidden = false
+        }
         rearmSafety?.invalidate()
         rearmSafety = nil
         removeMonitors()
