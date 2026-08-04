@@ -8,14 +8,12 @@ import SwiftUI
 ///
 /// See `plans/ready/2026-07-19-custom-color-picker.md`.
 final class LoupeCirclePanel: NSPanel {
-    let diameter: CGFloat
     private let hostingView: NSHostingView<LoupeCircle>
 
-    init(viewModel: LoupeViewModel, diameter: CGFloat = 150) {
-        self.diameter = diameter
-        hostingView = NSHostingView(rootView: LoupeCircle(viewModel: viewModel, diameter: diameter))
+    init(viewModel: LoupeViewModel) {
+        hostingView = NSHostingView(rootView: LoupeCircle(viewModel: viewModel))
 
-        let side = LoupeCircle.totalSize(diameter: diameter)
+        let side = LoupeCircle.totalSize
         super.init(
             contentRect: NSRect(x: 0, y: 0, width: side, height: side),
             styleMask: [.borderless, .nonactivatingPanel],

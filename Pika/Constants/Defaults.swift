@@ -65,6 +65,18 @@ enum PickerStyle: String, Codable, CaseIterable, Equatable {
     case custom // Pika-native loupe
 }
 
+enum LoupeTheme: String, Codable, CaseIterable, Equatable {
+    case lens // colour-filled rim engraved with the format + colour name (SF Pro)
+    case badge // white rounded badges hugging the inside edge (monospaced)
+
+    var localizedName: String {
+        switch self {
+        case .lens: return PikaText.textLoupeThemeLens
+        case .badge: return PikaText.textLoupeThemeBadge
+        }
+    }
+}
+
 enum AppMode: String, Codable, CaseIterable {
     case menubar = "preferences.app.mode.menubar"
     case regular = "preferences.app.mode.regular"
@@ -99,6 +111,7 @@ extension Defaults.Keys {
     static let windowShadow = Key<WindowShadow>("windowShadow", default: .always)
     static let pickContrastingColor = Key<Bool>("pickContrastingColor", default: false)
     static let pickerStyle = Key<PickerStyle>("pickerStyle", default: .system)
+    static let loupeTheme = Key<LoupeTheme>("loupeTheme", default: .lens)
     static let copyColorOnPick = Key<Bool>("copyColorOnPick", default: false)
     static let hideMenuBarIcon = Key<Bool>("hideMenuBarIcon", default: false)
     static let betaUpdates = Key<Bool>("betaUpdates", default: false)

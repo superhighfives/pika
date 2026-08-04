@@ -122,6 +122,10 @@ final class PickerLoupeController {
     // Tracks whether we've hidden the system cursor for the pick, so hide/show stay balanced.
     private var cursorHidden = false
 
+    // Closest-colour-name lookup for the lens theme, built once per pick from the active list.
+    private var colorNames: [ColorName] = []
+    private var closestVector: ClosestVector?
+
     // Capture state.
     private var configuredDisplayID: CGDirectDisplayID?
     private var baseFilter: SCContentFilter?
@@ -267,6 +271,9 @@ final class PickerLoupeController {
         pendingCapture = false
         configuredDisplayID = nil
         baseFilter = nil
+        // Rebuild the name lookup next pick so it reflects the active colour list.
+        closestVector = nil
+        colorNames = []
         circlePanel?.orderOut(nil)
         catcher?.orderOut(nil)
 
@@ -421,10 +428,29 @@ final class PickerLoupeController {
             let cropped = full.cropping(to: region) ?? full
             viewModel.image = cropped
             viewModel.sampleColor = Self.centerPixelColor(of: cropped) ?? viewModel.sampleColor
+            updateColorName()
         } catch {
             // Transient capture failures (display reconfigured, filter stale) are ignored;
             // the next mouse move retries. Force a filter rebuild so we recover.
             configuredDisplayID = nil
+        }
+    }
+
+    /// Updates the closest colour name for the sample (used by the lens theme). The lookup
+    /// vector is built once per pick from the active colour list.
+    private func updateColorName() {
+        guard Defaults[.loupeTheme] == .lens else { return }
+        if closestVector == nil {
+            colorNames = ColorNamesManager.shared.currentColorNames()
+            closestVector = ClosestVector(colorNames.map { $0.color.toRGB8BitArray() })
+        }
+        guard let closestVector, !colorNames.isEmpty else {
+            viewModel.colorName = ""
+            return
+        }
+        let index = closestVector.compare(viewModel.sampleColor)
+        if colorNames.indices.contains(index) {
+            viewModel.colorName = colorNames[index].name
         }
     }
 
@@ -511,6 +537,7 @@ extension NSScreen {
 final class LoupeViewModel: ObservableObject {
     @Published var image: CGImage?
     @Published var sampleColor: NSColor = .black
+    @Published var colorName: String = ""
     @Published var target: Eyedropper.Types = .foreground
     @Published var comparison: NSColor?
     @Published var pixelCount: Int = 15

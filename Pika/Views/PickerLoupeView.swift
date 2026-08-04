@@ -1,26 +1,34 @@
+import AppKit
 import Defaults
 import SwiftUI
 
-/// Text laid out along a circular arc, engraved-lens style. `centerAngle` is measured
-/// clockwise from the top (0 = 12 o'clock); set `flip` for the bottom half so glyphs stay
+/// Curved text laid out along an arc. Each glyph is advanced by its measured width, so
+/// proportional (SF Pro) and monospaced fonts both space evenly. `centerAngle` is measured
+/// clockwise from the top (0 = 12 o'clock); set `flip` on the bottom half so glyphs stay
 /// upright and read left-to-right.
 struct CircularText: View {
     let text: String
     var radius: CGFloat
-    var font: Font = .system(size: 11, weight: .regular, design: .monospaced)
+    var nsFont: NSFont
     var centerAngle: Double = 0
-    var charSpacing: Double = 0.082 // radians between glyph centres
     var flip: Bool = false
 
     var body: some View {
-        let chars = Array(text)
-        let count = chars.count
-        ZStack {
+        let chars = text.map { String($0) }
+        let widths = chars.map { ($0 as NSString).size(withAttributes: [.font: nsFont]).width }
+        let total = widths.reduce(0, +)
+        var running: CGFloat = 0
+        var centers: [CGFloat] = []
+        for width in widths {
+            centers.append(running + width / 2); running += width
+        }
+
+        return ZStack {
             ForEach(Array(chars.enumerated()), id: \.offset) { index, character in
-                let step = (Double(index) - Double(count - 1) / 2.0) * charSpacing
-                let theta = centerAngle + (flip ? -step : step)
-                Text(String(character))
-                    .font(font)
+                let offset = centers[index] - total / 2
+                let theta = centerAngle + (flip ? -1.0 : 1.0) * Double(offset / max(radius, 1))
+                Text(character)
+                    .font(Font(nsFont))
                     .rotationEffect(.radians(flip ? theta + .pi : theta))
                     .offset(x: radius * sin(theta), y: -radius * cos(theta))
             }
@@ -28,9 +36,12 @@ struct CircularText: View {
     }
 }
 
-/// The loupe, styled like a camera lens: a circular window of magnified pixels (the sampled
-/// centre pixel outlined) set into a dark rim engraved with the live readouts — the colour
-/// format around the top, the target slot and contrast around the bottom.
+/// The loupe: a circular window of magnified pixels (the sampled centre pixel outlined) with
+/// the live readouts wrapped around it. Two themes (see `LoupeTheme`):
+/// - `.lens`: the rim is filled with the hovered colour and engraved, SF Pro, with the format
+///   around the top and the colour name around the bottom.
+/// - `.badge`: two white rounded badges hug the inside edge — format on top, slot + contrast
+///   on the bottom.
 ///
 /// See `plans/ready/2026-07-19-custom-color-picker.md`.
 struct LoupeCircle: View {
@@ -38,47 +49,104 @@ struct LoupeCircle: View {
     @Default(.colorFormat) private var colorFormat
     @Default(.copyFormat) private var copyFormat
     @Default(.contrastStandard) private var contrastStandard
+    @Default(.loupeTheme) private var theme
 
-    /// Diameter of the magnified glass (excludes the rim and engraved text around it).
-    var diameter: CGFloat = 150
-    /// Room around the glass for the rim, engraved text and drop shadow.
-    static let inset: CGFloat = 50
+    /// Fixed square side of the view (and its hosting panel), sized for the larger theme.
+    static let totalSize: CGFloat = 240
 
-    /// Total square side of the view (and its hosting panel).
-    static func totalSize(diameter: CGFloat = 150) -> CGFloat { diameter + inset * 2 }
-
-    private var textRadius: CGFloat { diameter / 2 + 16 }
-    private let engraved: Font = .system(size: 11, weight: .regular, design: .monospaced)
+    private let lensGlass: CGFloat = 150
+    private let badgeGlass: CGFloat = 200
+    private let lensFont = NSFont.systemFont(ofSize: 12, weight: .medium)
+    private let badgeFont = NSFont.monospacedSystemFont(ofSize: 10, weight: .medium)
 
     var body: some View {
         ZStack {
-            // Lens barrel: the dark rim the text is engraved on.
-            Circle()
-                .stroke(Color.black.opacity(0.82), lineWidth: 28)
-                .frame(width: textRadius * 2, height: textRadius * 2)
-
-            glass
-
-            // Bright inner edge where the glass meets the rim.
-            Circle()
-                .strokeBorder(Color.white.opacity(0.9), lineWidth: 3)
-                .frame(width: diameter, height: diameter)
-
-            // Engraved readouts.
-            CircularText(text: topText, radius: textRadius, font: engraved)
-                .foregroundStyle(.white)
-                .shadow(color: .black.opacity(0.5), radius: 1)
-            CircularText(text: bottomText, radius: textRadius, font: engraved, centerAngle: .pi, flip: true)
-                .foregroundStyle(.white.opacity(0.9))
-                .shadow(color: .black.opacity(0.5), radius: 1)
+            switch theme {
+            case .lens: lens
+            case .badge: badge
+            }
         }
-        .frame(width: Self.totalSize(diameter: diameter), height: Self.totalSize(diameter: diameter))
+        .frame(width: Self.totalSize, height: Self.totalSize)
         .shadow(color: .black.opacity(0.35), radius: 10, y: 3)
+    }
+
+    // MARK: - Lens theme
+
+    private var lens: some View {
+        let textRadius = lensGlass / 2 + 16
+        return ZStack {
+            // Rim filled with the hovered colour, engraved with the readouts.
+            Circle()
+                .stroke(Color(nsColor: viewModel.sampleColor), lineWidth: 28)
+                .frame(width: textRadius * 2, height: textRadius * 2)
+            glass(diameter: lensGlass)
+            Circle()
+                .strokeBorder(Color.white.opacity(0.5), lineWidth: 2)
+                .frame(width: lensGlass, height: lensGlass)
+            CircularText(text: formatText, radius: textRadius, nsFont: lensFont)
+                .foregroundStyle(lensTextColor)
+            CircularText(text: lensBottomText, radius: textRadius, nsFont: lensFont,
+                         centerAngle: .pi, flip: true)
+                .foregroundStyle(lensTextColor)
+        }
+    }
+
+    /// White on dark colours, black on light ones, so the engraving stays legible.
+    private var lensTextColor: Color {
+        let srgb = viewModel.sampleColor.usingColorSpace(.sRGB) ?? viewModel.sampleColor
+        let luminance = 0.2126 * srgb.redComponent + 0.7152 * srgb.greenComponent + 0.0722 * srgb.blueComponent
+        return luminance < 0.55 ? .white : .black
+    }
+
+    private var lensBottomText: String {
+        guard let comparison = viewModel.comparison else { return viewModel.colorName }
+        let metric = contrastMetric(sample: viewModel.sampleColor, comparison: comparison)
+        return viewModel.colorName.isEmpty ? metric.label : "\(viewModel.colorName) · \(metric.label)"
+    }
+
+    // MARK: - Badge theme
+
+    private var badge: some View {
+        let badgeRadius = badgeGlass / 2 - 18
+        return ZStack {
+            glass(diameter: badgeGlass)
+            Circle()
+                .strokeBorder(Color.white.opacity(0.85), lineWidth: 3)
+                .frame(width: badgeGlass, height: badgeGlass)
+            badgePill(badgeTopText, radius: badgeRadius, top: true)
+            badgePill(badgeBottomText, radius: badgeRadius, top: false)
+        }
+    }
+
+    /// A white rounded band (the badge) with dark curved text engraved on it.
+    private func badgePill(_ text: String, radius: CGFloat, top: Bool) -> some View {
+        let width = text.reduce(CGFloat.zero) { $0 + (String($1) as NSString).size(withAttributes: [.font: badgeFont]).width }
+        let arc = Double(width / radius) + 0.42 // text arc + rounded-cap padding
+        let fraction = min(0.95, arc / (2 * .pi))
+        let centre = top ? 0.75 : 0.25
+        return ZStack {
+            Circle()
+                .trim(from: centre - fraction / 2, to: centre + fraction / 2)
+                .stroke(Color.white, style: StrokeStyle(lineWidth: 20, lineCap: .round))
+                .frame(width: radius * 2, height: radius * 2)
+            CircularText(text: text, radius: radius, nsFont: badgeFont,
+                         centerAngle: top ? 0 : .pi, flip: !top)
+                .foregroundStyle(Color.black.opacity(0.85))
+        }
+    }
+
+    private var badgeTopText: String { formatText.uppercased() }
+
+    private var badgeBottomText: String {
+        let slot = slotLabel.uppercased()
+        guard let comparison = viewModel.comparison else { return slot }
+        let metric = contrastMetric(sample: viewModel.sampleColor, comparison: comparison)
+        return "\(slot) · \(metric.label) \(metric.passes ? "✓" : "✗")"
     }
 
     // MARK: - Glass
 
-    private var glass: some View {
+    private func glass(diameter: CGFloat) -> some View {
         ZStack {
             Color(nsColor: viewModel.sampleColor)
             if let image = viewModel.image {
@@ -87,14 +155,14 @@ struct LoupeCircle: View {
                     .interpolation(.none)
                     .antialiased(false)
             }
-            centerCell
+            centerCell(diameter: diameter)
         }
         .frame(width: diameter, height: diameter)
         .clipShape(Circle())
     }
 
     /// One magnified pixel cell, outlined, marking the sampled centre pixel.
-    private var centerCell: some View {
+    private func centerCell(diameter: CGFloat) -> some View {
         let cell = diameter / CGFloat(max(1, viewModel.pixelCount))
         return Rectangle()
             .strokeBorder(Color.white, lineWidth: 1)
@@ -106,17 +174,10 @@ struct LoupeCircle: View {
             )
     }
 
-    // MARK: - Engraved text
+    // MARK: - Readouts
 
-    private var topText: String {
-        viewModel.sampleColor.toFormat(format: colorFormat, style: copyFormat).uppercased()
-    }
-
-    private var bottomText: String {
-        let slot = slotLabel.uppercased()
-        guard let comparison = viewModel.comparison else { return slot }
-        let metric = contrastMetric(sample: viewModel.sampleColor, comparison: comparison)
-        return "\(slot) · \(metric.label) \(metric.passes ? "✓" : "✗")"
+    private var formatText: String {
+        viewModel.sampleColor.toFormat(format: colorFormat, style: copyFormat)
     }
 
     private var slotLabel: String {

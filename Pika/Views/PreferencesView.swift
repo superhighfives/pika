@@ -128,6 +128,7 @@ private struct AppModeSection: View {
 
 private struct PickerStyleSection: View {
     @Default(.pickerStyle) var pickerStyle
+    @Default(.loupeTheme) var loupeTheme
     @State private var pendingRelaunch = false
 
     var body: some View {
@@ -136,6 +137,22 @@ private struct PickerStyleSection: View {
 
             // Same gated System/Custom comparison as the first-run splash.
             PickerChoiceView(pendingRelaunch: $pendingRelaunch)
+
+            // The Pro loupe's style. Only relevant when the custom picker is chosen.
+            if pickerStyle == .custom {
+                HStack(spacing: 8.0) {
+                    Text(PikaText.textLoupeTheme).font(.system(size: 13))
+                    Spacer(minLength: 12.0)
+                    Picker("", selection: $loupeTheme) {
+                        ForEach(LoupeTheme.allCases, id: \.self) { theme in
+                            Text(theme.localizedName).tag(theme)
+                        }
+                    }
+                    .labelsHidden()
+                    .pickerStyle(.menu)
+                    .fixedSize()
+                }
+            }
 
             // Pair picking is controlled by the single "Pick a contrasting
             // background color after the foreground" toggle in the Selection

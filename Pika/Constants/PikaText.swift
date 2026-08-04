@@ -113,6 +113,15 @@ enum PikaText {
         "picker.grantAccessibility", value: "Grant Accessibility",
         comment: "Button to grant the optional Accessibility permission for the Pro picker"
     )
+    static let textLoupeTheme = NSLocalizedString(
+        "loupe.theme", value: "Loupe style", comment: "Label for the Pro picker loupe theme setting"
+    )
+    static let textLoupeThemeLens = NSLocalizedString(
+        "loupe.theme.lens", value: "Lens", comment: "Loupe theme: coloured rim with engraved text"
+    )
+    static let textLoupeThemeBadge = NSLocalizedString(
+        "loupe.theme.badge", value: "Badge", comment: "Loupe theme: white badges on the inside edge"
+    )
     static let textPickerPermScreenRecording = NSLocalizedString(
         "picker.perm.screenRecording", value: "Screen Recording",
         comment: "Permission pill label: Screen Recording"
