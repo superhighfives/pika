@@ -88,6 +88,10 @@ struct SplashView: View {
                     .padding(.top, 52.0)
                     .padding(.bottom, 20.0)
                 }
+                // Anchor to the bottom: when the list is taller than the window it starts
+                // scrolled to the end (the last settings + footer stay in view) rather than
+                // hiding them below the fold.
+                .defaultScrollAnchor(.bottom)
 
                 Divider()
 
@@ -332,8 +336,14 @@ struct PickerChoiceView: View {
                 .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1.0)
                 .allowsHitTesting(false)
         )
-        .onReceive(Timer.publish(every: 1.5, on: .main, in: .common).autoconnect()) { _ in
-            permissionTick += 1
+        // Poll on a loop that survives re-renders (an inline Timer.publish would be reset by
+        // the colour-name fetcher's frequent republishing before it ever fires). This re-reads
+        // the non-observable permission status so the pills confirm — or revert — on their own.
+        .task {
+            while !Task.isCancelled {
+                permissionTick += 1
+                try? await Task.sleep(nanoseconds: 1_000_000_000)
+            }
         }
     }
 
