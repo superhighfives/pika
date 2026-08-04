@@ -113,6 +113,14 @@ enum PikaText {
         "picker.grantAccessibility", value: "Grant Accessibility",
         comment: "Button to grant the optional Accessibility permission for the Pro picker"
     )
+    static let textPickerPermScreenRecording = NSLocalizedString(
+        "picker.perm.screenRecording", value: "Screen Recording",
+        comment: "Permission pill label: Screen Recording"
+    )
+    static let textPickerPermAccessibility = NSLocalizedString(
+        "picker.perm.accessibility", value: "Accessibility",
+        comment: "Permission pill label: Accessibility"
+    )
     static let textPickerAccessibilityNote = NSLocalizedString(
         "picker.accessibilityNote",
         value: "Optional — lets Escape and arrow-key nudging work while picking over other apps.",

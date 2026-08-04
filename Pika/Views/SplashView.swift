@@ -286,6 +286,9 @@ struct ColorListPickerView: View {
 struct PickerChoiceView: View {
     @Binding var pendingRelaunch: Bool
     @Default(.pickerStyle) private var pickerStyle
+    // Bumped on a timer so the permission pills re-read their (non-observable) status and
+    // flip to the granted state without a relaunch when the user allows them in Settings.
+    @State private var permissionTick = 0
 
     private var hasPermission: Bool { CustomColorPickSession.isAvailable }
     // Optional: unlocks global Escape / arrow-nudge while picking over other apps.
@@ -329,54 +332,82 @@ struct PickerChoiceView: View {
                 .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1.0)
                 .allowsHitTesting(false)
         )
+        .onReceive(Timer.publish(every: 1.5, on: .main, in: .common).autoconnect()) { _ in
+            permissionTick += 1
+        }
     }
 
-    // Beneath the tiles: the primary permission CTA until Screen Recording is granted (and
-    // relaunch guidance once requested). Once permission is live the tiles are the whole
-    // control, so there's nothing more to show.
-    @ViewBuilder private var permissionArea: some View {
-        if !hasPermission, pendingRelaunch {
-            VStack(spacing: 6.0) {
-                Text(PikaText.textPickerRelaunchNote)
-                    .font(.system(size: 10))
-                    .foregroundStyle(.secondary)
-                    .multilineTextAlignment(.center)
-                    .fixedSize(horizontal: false, vertical: true)
-                Button(action: { CustomColorPickSession.relaunch() },
-                       label: { Text(PikaText.textPickerRelaunchButton) })
-                    .controlSize(.small)
-            }
-            .frame(maxWidth: .infinity)
-        } else if !hasPermission {
-            VStack(spacing: 6.0) {
-                Button(action: { Self.requestAccess(pendingRelaunch: $pendingRelaunch) }, label: {
-                    Text(PikaText.textPickerGrantButton).frame(maxWidth: .infinity)
-                })
-                .buttonStyle(.borderedProminent)
-                Text(PikaText.textSplashPickerPermission)
-                    .font(.system(size: 10))
-                    .foregroundStyle(.secondary)
-                    .multilineTextAlignment(.center)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-            .frame(maxWidth: .infinity)
-        } else if customActive, !hasAccessibility {
-            // Screen Recording is live and the Pro picker is chosen — offer the optional
-            // Accessibility grant so Escape/arrow-nudge work while picking over other apps
-            // (without it the picker briefly activates Pika to receive keys instead).
-            VStack(spacing: 6.0) {
-                Button(action: { Self.requestAccessibility() }, label: {
-                    Text(PikaText.textPickerGrantAccessibilityButton).frame(maxWidth: .infinity)
-                })
-                .buttonStyle(.bordered)
-                Text(PikaText.textPickerAccessibilityNote)
-                    .font(.system(size: 10))
-                    .foregroundStyle(.secondary)
-                    .multilineTextAlignment(.center)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-            .frame(maxWidth: .infinity)
+    // Beneath the tiles: the two permissions the Pro picker uses, always side by side.
+    // Each is a tappable "grant" pill until allowed, then a non-clickable green "granted"
+    // pill. Screen Recording is required; Accessibility is optional (for global keys).
+    private var permissionArea: some View {
+        HStack(spacing: 10.0) {
+            screenRecordingPill
+            accessibilityPill
         }
+        .frame(maxWidth: .infinity)
+    }
+
+    @ViewBuilder private var screenRecordingPill: some View {
+        if hasPermission {
+            grantedPill(PikaText.textPickerPermScreenRecording)
+        } else if pendingRelaunch {
+            // A first-time grant only takes effect after relaunch, so offer that instead.
+            grantPill(PikaText.textPickerRelaunchButton, systemImage: "arrow.clockwise") {
+                CustomColorPickSession.relaunch()
+            }
+        } else {
+            grantPill(PikaText.textPickerPermScreenRecording, systemImage: "lock") {
+                Self.requestAccess(pendingRelaunch: $pendingRelaunch)
+            }
+        }
+    }
+
+    @ViewBuilder private var accessibilityPill: some View {
+        if hasAccessibility {
+            grantedPill(PikaText.textPickerPermAccessibility)
+        } else {
+            grantPill(PikaText.textPickerPermAccessibility, systemImage: "lock") {
+                Self.requestAccessibility()
+            }
+        }
+    }
+
+    // A tappable, accent-tinted pill that requests a permission.
+    private func grantPill(_ label: String, systemImage: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Label(label, systemImage: systemImage)
+                .font(.system(size: 11, weight: .medium))
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 6.0)
+                .background(
+                    RoundedRectangle(cornerRadius: 6.0, style: .continuous)
+                        .fill(Color.accentColor.opacity(0.16))
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 6.0, style: .continuous)
+                        .strokeBorder(Color.accentColor.opacity(0.4), lineWidth: 1.0)
+                )
+        }
+        .buttonStyle(.plain)
+        .foregroundStyle(Color.accentColor)
+    }
+
+    // A non-clickable, green-tinted pill confirming a permission is granted.
+    private func grantedPill(_ label: String) -> some View {
+        Label(label, systemImage: "checkmark.circle.fill")
+            .font(.system(size: 11, weight: .medium))
+            .foregroundStyle(.green)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 6.0)
+            .background(
+                RoundedRectangle(cornerRadius: 6.0, style: .continuous)
+                    .fill(Color.green.opacity(0.15))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 6.0, style: .continuous)
+                    .strokeBorder(Color.green.opacity(0.35), lineWidth: 1.0)
+            )
     }
 
     // Requests Screen Recording permission and persists the intent (`.custom`) so that once
