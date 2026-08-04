@@ -93,11 +93,10 @@ final class PickerLoupeController {
 
     let viewModel = LoupeViewModel()
 
-    // The loupe is three stacked panels: a circular magnifier centred on the cursor, a
-    // readout card beside it, and a full-screen catcher beneath both that swallows the
-    // committing click so it never reaches the desktop.
+    // The loupe is two stacked panels: the lens (a circular magnifier with the readouts
+    // engraved around its rim) centred on the cursor, and a full-screen catcher beneath it
+    // that swallows the committing click so it never reaches the desktop.
     private var circlePanel: LoupeCirclePanel?
-    private var cardPanel: LoupeCardPanel?
     private var catcher: LoupeClickCatcherPanel?
     private var completion: ((NSColor?) -> Void)?
     private var willChain = false
@@ -182,7 +181,6 @@ final class PickerLoupeController {
 
     private func showPanel() {
         if circlePanel == nil { circlePanel = LoupeCirclePanel(viewModel: viewModel) }
-        if cardPanel == nil { cardPanel = LoupeCardPanel(viewModel: viewModel) }
         if catcher == nil {
             let catcher = LoupeClickCatcherPanel()
             catcher.onCommit = { [weak self] in self?.commit() }
@@ -193,14 +191,13 @@ final class PickerLoupeController {
         }
 
         // Order the catcher beneath the loupe (same window level) so it covers every other
-        // app while the circle and card stay visible on top. The full-screen catcher takes
-        // key status so Escape / zoom / nudge reach us without activating Pika.
+        // app while the lens stays visible on top. The full-screen catcher takes key status
+        // so Escape / zoom / nudge reach us without activating Pika.
         catcher?.cover(screens: NSScreen.screens)
         catcher?.orderFrontRegardless()
-        cardPanel?.orderFrontRegardless()
         circlePanel?.orderFrontRegardless()
 
-        loupeWindowIDs = [circlePanel?.windowNumber, cardPanel?.windowNumber, catcher?.windowNumber]
+        loupeWindowIDs = [circlePanel?.windowNumber, catcher?.windowNumber]
             .compactMap { $0 }
             .map { CGWindowID($0) }
 
@@ -231,7 +228,6 @@ final class PickerLoupeController {
     private func reposition() {
         let scale = screenUnderCursor()?.backingScaleFactor ?? 2.0
         circlePanel?.center(on: currentCursor, scale: scale)
-        cardPanel?.position(near: currentCursor, circleRadius: (circlePanel?.diameter ?? 140) / 2)
     }
 
     // MARK: - Commit / cancel / teardown
@@ -272,7 +268,6 @@ final class PickerLoupeController {
         configuredDisplayID = nil
         baseFilter = nil
         circlePanel?.orderOut(nil)
-        cardPanel?.orderOut(nil)
         catcher?.orderOut(nil)
 
         // Restore focus to whatever app we took it from for key handling.
