@@ -345,6 +345,16 @@ struct PickerChoiceView: View {
                 try? await Task.sleep(nanoseconds: 1_000_000_000)
             }
         }
+        // Re-check the moment the user returns from System Settings (the most common way a
+        // permission changes), and on the system's accessibility-changed broadcast.
+        .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
+            permissionTick += 1
+        }
+        .onReceive(DistributedNotificationCenter.default().publisher(
+            for: Notification.Name("com.apple.accessibility.api")))
+        { _ in
+            permissionTick += 1
+        }
     }
 
     // Beneath the tiles: an intro line, then the two permissions the Pro picker needs, side
@@ -393,7 +403,7 @@ struct PickerChoiceView: View {
         }
     }
 
-    // A standard prominent button that requests a permission (or relaunches).
+    // A raised, prominent button that requests a permission (or relaunches).
     private func actionButton(_ label: String, systemImage: String, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Label(label, systemImage: systemImage).frame(maxWidth: .infinity)
@@ -402,15 +412,21 @@ struct PickerChoiceView: View {
         .controlSize(.large)
     }
 
-    // A non-clickable, green button confirming a permission is granted.
+    // A flat, non-clickable green "success" state confirming a permission is granted — knocked
+    // back next to the raised action buttons.
     private func grantedButton(_ label: String) -> some View {
-        Button(action: {}) {
-            Label(label, systemImage: "checkmark.circle.fill").frame(maxWidth: .infinity)
-        }
-        .buttonStyle(.borderedProminent)
-        .tint(.green)
-        .controlSize(.large)
-        .allowsHitTesting(false)
+        Label(label, systemImage: "checkmark.circle.fill")
+            .font(.system(size: 13, weight: .medium))
+            .foregroundStyle(.green)
+            .frame(maxWidth: .infinity, minHeight: 34.0)
+            .background(
+                RoundedRectangle(cornerRadius: 6.0, style: .continuous)
+                    .fill(Color.green.opacity(0.12))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 6.0, style: .continuous)
+                    .strokeBorder(Color.green.opacity(0.4), lineWidth: 1.0)
+            )
     }
 
     // Requests Screen Recording permission and persists the intent (`.custom`) so that once
