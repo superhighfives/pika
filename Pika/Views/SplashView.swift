@@ -403,12 +403,12 @@ struct PickerChoiceView: View {
         }
     }
 
-    // A raised, prominent button that requests a permission (or relaunches).
+    // A regular button that requests a permission (or relaunches).
     private func actionButton(_ label: String, systemImage: String, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Label(label, systemImage: systemImage).frame(maxWidth: .infinity)
         }
-        .buttonStyle(.borderedProminent)
+        .buttonStyle(.bordered)
         .controlSize(.large)
     }
 
