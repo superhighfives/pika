@@ -122,6 +122,9 @@ enum PikaText {
     static let textLoupeThemeBadge = NSLocalizedString(
         "loupe.theme.badge", value: "Badge", comment: "Loupe theme: white badges on the inside edge"
     )
+    static let textLoupeThemeCard = NSLocalizedString(
+        "loupe.theme.card", value: "Card", comment: "Loupe theme: plain magnifier with a readout card beside it"
+    )
     static let textPickerPermissionsIntro = NSLocalizedString(
         "picker.permissions.intro", value: "To enable the Pro picker, you’ll need to grant the following permissions:",
         comment: "Intro line above the Pro picker permission buttons"
@@ -543,13 +546,6 @@ enum PikaText {
     )
 
     // Loupe slot indicator
-    static let textPickerLoupeForeground = NSLocalizedString(
-        "picker.loupe.foreground", value: "Picking Foreground", comment: "Loupe slot indicator (foreground)"
-    )
-    static let textPickerLoupeBackground = NSLocalizedString(
-        "picker.loupe.background", value: "Picking Background", comment: "Loupe slot indicator (background)"
-    )
-
     // Splash picker choice
     static let textSplashPickerPrompt = NSLocalizedString(
         "splash.picker.prompt", value: "Colour picker", comment: "Splash picker choice label"

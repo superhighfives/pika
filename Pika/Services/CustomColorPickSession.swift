@@ -98,6 +98,8 @@ final class PickerLoupeController {
     // that swallows the committing click so it never reaches the desktop.
     private var circlePanel: LoupeCirclePanel?
     private var catcher: LoupeClickCatcherPanel?
+    // Only shown for the `.card` theme: the readout card tucked beside the magnifier.
+    private var cardPanel: LoupeCardPanel?
     private var completion: ((NSColor?) -> Void)?
     private var willChain = false
 
@@ -185,6 +187,7 @@ final class PickerLoupeController {
 
     private func showPanel() {
         if circlePanel == nil { circlePanel = LoupeCirclePanel(viewModel: viewModel) }
+        if cardPanel == nil { cardPanel = LoupeCardPanel(viewModel: viewModel) }
         if catcher == nil {
             let catcher = LoupeClickCatcherPanel()
             catcher.onCommit = { [weak self] in self?.commit() }
@@ -200,8 +203,9 @@ final class PickerLoupeController {
         catcher?.cover(screens: NSScreen.screens)
         catcher?.orderFrontRegardless()
         circlePanel?.orderFrontRegardless()
+        updateCardPanel()
 
-        loupeWindowIDs = [circlePanel?.windowNumber, catcher?.windowNumber]
+        loupeWindowIDs = [circlePanel?.windowNumber, cardPanel?.windowNumber, catcher?.windowNumber]
             .compactMap { $0 }
             .map { CGWindowID($0) }
 
@@ -232,6 +236,19 @@ final class PickerLoupeController {
     private func reposition() {
         let scale = screenUnderCursor()?.backingScaleFactor ?? 2.0
         circlePanel?.center(on: currentCursor, scale: scale)
+        updateCardPanel()
+    }
+
+    /// Shows the readout card beside the cursor for the `.card` theme (and positions it as the
+    /// cursor moves); orders it away for the other themes, which carry their readouts on the disc.
+    private func updateCardPanel() {
+        guard let cardPanel else { return }
+        if Defaults[.loupeTheme] == .card {
+            cardPanel.position(near: currentCursor, circleRadius: LoupeCircle.cardGlass / 2)
+            cardPanel.orderFrontRegardless()
+        } else {
+            cardPanel.orderOut(nil)
+        }
     }
 
     // MARK: - Commit / cancel / teardown
@@ -275,6 +292,7 @@ final class PickerLoupeController {
         closestVector = nil
         colorNames = []
         circlePanel?.orderOut(nil)
+        cardPanel?.orderOut(nil)
         catcher?.orderOut(nil)
 
         // Restore focus to whatever app we took it from for key handling.
@@ -347,9 +365,24 @@ final class PickerLoupeController {
         case 124: nudge(dx: step, dy: 0); return true // right
         case 125: nudge(dx: 0, dy: -step); return true // down
         case 126: nudge(dx: 0, dy: step); return true // up
+        case 48: cycleLoupeTheme(reverse: event.modifierFlags.contains(.shift)); return true // Tab
         default:
             return false
         }
+    }
+
+    /// Steps the live loupe through the available themes (Shift+Tab reverses), so you can
+    /// switch styles mid-pick without going into Settings. Persists the choice.
+    private func cycleLoupeTheme(reverse: Bool) {
+        let themes = LoupeTheme.allCases
+        guard let index = themes.firstIndex(of: Defaults[.loupeTheme]) else { return }
+        let next = (index + (reverse ? -1 : 1) + themes.count) % themes.count
+        Defaults[.loupeTheme] = themes[next]
+        // Show/hide the card beside the disc for the new theme, and rebuild the capture
+        // filter so a newly-shown card panel is excluded from the magnified image.
+        updateCardPanel()
+        configuredDisplayID = nil
+        requestCapture()
     }
 
     /// Nudges the sample point by one device pixel by warping the cursor, for precise

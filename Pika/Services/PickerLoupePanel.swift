@@ -58,6 +58,70 @@ final class LoupeCirclePanel: NSPanel {
     }
 }
 
+/// The readout card panel, tucked beside the loupe circle for the `.card` theme. Display-only:
+/// borderless, non-activating, and ignores mouse events.
+final class LoupeCardPanel: NSPanel {
+    private let hostingView: NSHostingView<LoupeReadoutCard>
+    /// Gap between the circle's edge and the nearest card edge.
+    private let gap: CGFloat = 14
+
+    init(viewModel: LoupeViewModel) {
+        hostingView = NSHostingView(rootView: LoupeReadoutCard(viewModel: viewModel))
+
+        super.init(
+            contentRect: NSRect(x: 0, y: 0, width: 176, height: 96),
+            styleMask: [.borderless, .nonactivatingPanel],
+            backing: .buffered,
+            defer: false
+        )
+
+        isFloatingPanel = true
+        level = .screenSaver
+        backgroundColor = .clear
+        isOpaque = false
+        hasShadow = true
+        titlebarAppearsTransparent = true
+        titleVisibility = .hidden
+        isMovable = false
+        ignoresMouseEvents = true
+        hidesOnDeactivate = false
+        collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary, .stationary, .ignoresCycle]
+
+        contentView = hostingView
+    }
+
+    override var canBecomeKey: Bool { false }
+    override var canBecomeMain: Bool { false }
+
+    /// Positions the card beside the cursor, clear of the circle, flipping and clamping so
+    /// it stays on the screen under the cursor.
+    func position(near cursor: NSPoint, circleRadius: CGFloat) {
+        let size = hostingView.fittingSize
+        setContentSize(size)
+
+        let clearance = circleRadius + gap
+        let screen = NSScreen.screens.first { NSMouseInRect(cursor, $0.frame, false) } ?? NSScreen.main
+        guard let frame = screen?.visibleFrame else {
+            setFrameOrigin(NSPoint(x: cursor.x + clearance, y: cursor.y - size.height / 2))
+            return
+        }
+
+        // Prefer to the right of the circle, vertically centred on the cursor; flip to the
+        // left near the right edge, then clamp on both axes.
+        var originX = cursor.x + clearance
+        var originY = cursor.y - size.height / 2
+
+        if originX + size.width > frame.maxX { originX = cursor.x - clearance - size.width }
+        if originX < frame.minX { originX = frame.minX + 8 }
+        if originX + size.width > frame.maxX { originX = frame.maxX - size.width - 8 }
+
+        if originY < frame.minY { originY = frame.minY + 8 }
+        if originY + size.height > frame.maxY { originY = frame.maxY - size.height - 8 }
+
+        setFrameOrigin(NSPoint(x: originX, y: originY))
+    }
+}
+
 /// A full-screen, transparent panel that sits above every other app (but below the loupe)
 /// while a pick is active. Its whole job is to *consume* the committing click so it never
 /// reaches the desktop / app underneath — global `NSEvent` monitors can only observe the

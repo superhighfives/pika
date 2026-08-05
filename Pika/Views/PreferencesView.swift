@@ -149,7 +149,7 @@ private struct PickerStyleSection: View {
                         }
                     }
                     .labelsHidden()
-                    .pickerStyle(.menu)
+                    .pickerStyle(.segmented)
                     .fixedSize()
                 }
             }

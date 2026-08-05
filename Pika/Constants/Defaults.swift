@@ -68,11 +68,13 @@ enum PickerStyle: String, Codable, CaseIterable, Equatable {
 enum LoupeTheme: String, Codable, CaseIterable, Equatable {
     case lens // colour-filled rim engraved with the format + colour name (SF Pro)
     case badge // white rounded badges hugging the inside edge (monospaced)
+    case card // plain magnifier with a readout card beside it
 
     var localizedName: String {
         switch self {
         case .lens: return PikaText.textLoupeThemeLens
         case .badge: return PikaText.textLoupeThemeBadge
+        case .card: return PikaText.textLoupeThemeCard
         }
     }
 }
