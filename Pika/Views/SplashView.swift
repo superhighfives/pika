@@ -347,27 +347,37 @@ struct PickerChoiceView: View {
         }
     }
 
-    // Beneath the tiles: the two permissions the Pro picker uses, always side by side.
-    // Each is a tappable "grant" pill until allowed, then a non-clickable green "granted"
-    // pill. Screen Recording is required; Accessibility is optional (for global keys).
-    private var permissionArea: some View {
-        HStack(spacing: 10.0) {
-            screenRecordingPill
-            accessibilityPill
+    // Beneath the tiles: an intro line, then the two permissions the Pro picker needs, side
+    // by side. Each is a standard button that requests the permission, then flips to a
+    // non-clickable green "granted" button. Screen Recording is required; Accessibility is
+    // optional (for global keys).
+    @ViewBuilder private var permissionArea: some View {
+        VStack(spacing: 10.0) {
+            Divider()
+            if !hasPermission || !hasAccessibility {
+                Text(PikaText.textPickerPermissionsIntro)
+                    .font(.system(size: 11))
+                    .foregroundStyle(.secondary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            HStack(spacing: 10.0) {
+                screenRecordingPill
+                accessibilityPill
+            }
         }
-        .frame(maxWidth: .infinity)
     }
 
     @ViewBuilder private var screenRecordingPill: some View {
         if hasPermission {
-            grantedPill(PikaText.textPickerPermScreenRecording)
+            grantedButton(PikaText.textPickerPermScreenRecording)
         } else if pendingRelaunch {
             // A first-time grant only takes effect after relaunch, so offer that instead.
-            grantPill(PikaText.textPickerRelaunchButton, systemImage: "arrow.clockwise") {
+            actionButton(PikaText.textPickerRelaunchButton, systemImage: "arrow.clockwise") {
                 CustomColorPickSession.relaunch()
             }
         } else {
-            grantPill(PikaText.textPickerPermScreenRecording, systemImage: "lock") {
+            actionButton(PikaText.textPickerPermScreenRecording, systemImage: "lock") {
                 Self.requestAccess(pendingRelaunch: $pendingRelaunch)
             }
         }
@@ -375,49 +385,32 @@ struct PickerChoiceView: View {
 
     @ViewBuilder private var accessibilityPill: some View {
         if hasAccessibility {
-            grantedPill(PikaText.textPickerPermAccessibility)
+            grantedButton(PikaText.textPickerPermAccessibility)
         } else {
-            grantPill(PikaText.textPickerPermAccessibility, systemImage: "lock") {
+            actionButton(PikaText.textPickerPermAccessibility, systemImage: "lock") {
                 Self.requestAccessibility()
             }
         }
     }
 
-    // A tappable, accent-tinted pill that requests a permission.
-    private func grantPill(_ label: String, systemImage: String, action: @escaping () -> Void) -> some View {
+    // A standard prominent button that requests a permission (or relaunches).
+    private func actionButton(_ label: String, systemImage: String, action: @escaping () -> Void) -> some View {
         Button(action: action) {
-            Label(label, systemImage: systemImage)
-                .font(.system(size: 11, weight: .medium))
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 6.0)
-                .background(
-                    RoundedRectangle(cornerRadius: 6.0, style: .continuous)
-                        .fill(Color.accentColor.opacity(0.16))
-                )
-                .overlay(
-                    RoundedRectangle(cornerRadius: 6.0, style: .continuous)
-                        .strokeBorder(Color.accentColor.opacity(0.4), lineWidth: 1.0)
-                )
+            Label(label, systemImage: systemImage).frame(maxWidth: .infinity)
         }
-        .buttonStyle(.plain)
-        .foregroundStyle(Color.accentColor)
+        .buttonStyle(.borderedProminent)
+        .controlSize(.large)
     }
 
-    // A non-clickable, green-tinted pill confirming a permission is granted.
-    private func grantedPill(_ label: String) -> some View {
-        Label(label, systemImage: "checkmark.circle.fill")
-            .font(.system(size: 11, weight: .medium))
-            .foregroundStyle(.green)
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 6.0)
-            .background(
-                RoundedRectangle(cornerRadius: 6.0, style: .continuous)
-                    .fill(Color.green.opacity(0.15))
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: 6.0, style: .continuous)
-                    .strokeBorder(Color.green.opacity(0.35), lineWidth: 1.0)
-            )
+    // A non-clickable, green button confirming a permission is granted.
+    private func grantedButton(_ label: String) -> some View {
+        Button(action: {}) {
+            Label(label, systemImage: "checkmark.circle.fill").frame(maxWidth: .infinity)
+        }
+        .buttonStyle(.borderedProminent)
+        .tint(.green)
+        .controlSize(.large)
+        .allowsHitTesting(false)
     }
 
     // Requests Screen Recording permission and persists the intent (`.custom`) so that once
@@ -427,6 +420,14 @@ struct PickerChoiceView: View {
         CustomColorPickSession.requestAccess { granted in
             Defaults[.pickerStyle] = .custom
             pendingRelaunch.wrappedValue = !granted
+            // The system only shows its prompt the first time; once the choice has been made
+            // (e.g. the user revoked it), the request is a no-op — so open the Screen
+            // Recording pane directly so they can toggle it back on.
+            if !granted, let url = URL(string:
+                "x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture")
+            {
+                NSWorkspace.shared.open(url)
+            }
         }
     }
 

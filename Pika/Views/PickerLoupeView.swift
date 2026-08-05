@@ -48,6 +48,7 @@ struct LoupeCircle: View {
     @ObservedObject var viewModel: LoupeViewModel
     @Default(.colorFormat) private var colorFormat
     @Default(.copyFormat) private var copyFormat
+    @Default(.contrastStandard) private var contrastStandard
     @Default(.loupeTheme) private var theme
 
     /// Fixed square side of the view (and its hosting panel), sized for the larger theme.
@@ -98,7 +99,10 @@ struct LoupeCircle: View {
     }
 
     private var lensBottomText: String {
-        viewModel.colorName.isEmpty ? slotLabel : "\(slotLabel) · \(viewModel.colorName)"
+        var parts = [slotLabel]
+        if !viewModel.colorName.isEmpty { parts.append(viewModel.colorName) }
+        if let contrast = contrastLabel { parts.append(contrast) }
+        return parts.joined(separator: " · ")
     }
 
     // MARK: - Badge theme
@@ -139,9 +143,23 @@ struct LoupeCircle: View {
     private var badgeTopText: String { formatText.uppercased() }
 
     private var badgeBottomText: String {
-        let slot = slotLabel.uppercased()
-        let name = viewModel.colorName.uppercased()
-        return name.isEmpty ? slot : "\(slot) · \(name)"
+        var parts = [slotLabel.uppercased()]
+        if !viewModel.colorName.isEmpty { parts.append(viewModel.colorName.uppercased()) }
+        if let contrast = contrastLabel { parts.append(contrast) }
+        return parts.joined(separator: " · ")
+    }
+
+    /// The contrast reading (WCAG ratio or APCA Lc) against the paired colour — only during a
+    /// pair pick, when there's a comparison colour.
+    private var contrastLabel: String? {
+        guard let comparison = viewModel.comparison else { return nil }
+        let sample = viewModel.sampleColor
+        switch contrastStandard {
+        case .apca, .both:
+            return "Lc \(sample.toAPCAcontrastValue(with: comparison))"
+        case .wcag:
+            return String(format: "%.2f:1", sample.contrastRatio(with: comparison))
+        }
     }
 
     // MARK: - Glass

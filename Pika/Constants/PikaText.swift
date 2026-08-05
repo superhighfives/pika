@@ -122,6 +122,10 @@ enum PikaText {
     static let textLoupeThemeBadge = NSLocalizedString(
         "loupe.theme.badge", value: "Badge", comment: "Loupe theme: white badges on the inside edge"
     )
+    static let textPickerPermissionsIntro = NSLocalizedString(
+        "picker.permissions.intro", value: "To enable the Pro picker, you’ll need to grant the following permissions:",
+        comment: "Intro line above the Pro picker permission buttons"
+    )
     static let textPickerPermScreenRecording = NSLocalizedString(
         "picker.perm.screenRecording", value: "Screen Recording",
         comment: "Permission pill label: Screen Recording"
