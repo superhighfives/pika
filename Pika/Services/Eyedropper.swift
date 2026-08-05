@@ -167,7 +167,10 @@ extension Eyedropper {
             // downstream behaviour (set / history / undo / overlay / chaining)
             // cannot fork. With `.system` this is byte-for-byte today's flow.
             let willChain = chainContrasting && self.type == .foreground
-            let comparison: NSColor? = (NSApp.delegate as? AppDelegate).map {
+            // `AppDelegate.shared`, not `NSApp.delegate` — the latter is SwiftUI's forwarding
+            // wrapper under `@NSApplicationDelegateAdaptor`, so `as? AppDelegate` is always
+            // nil and the loupe would never get a comparison colour (no live contrast).
+            let comparison: NSColor? = AppDelegate.shared.map {
                 self.type == .foreground ? $0.eyedroppers.background.color : $0.eyedroppers.foreground.color
             }
             let useCustom = Defaults[.pickerStyle] == .custom && CustomColorPickSession.isAvailable
