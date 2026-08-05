@@ -50,6 +50,13 @@ struct LoupeCircle: View {
     @Default(.copyFormat) private var copyFormat
     @Default(.contrastStandard) private var contrastStandard
     @Default(.loupeTheme) private var theme
+    @Environment(\.colorScheme) private var colorScheme
+
+    // Adapt to the system appearance: outline is black on light, white on dark; the badge is
+    // the inverse (white on light, black on dark) with matching text.
+    private var outlineColor: Color { colorScheme == .dark ? .white : .black }
+    private var badgeFill: Color { colorScheme == .dark ? .black : .white }
+    private var badgeTextColor: Color { (colorScheme == .dark ? Color.white : Color.black).opacity(0.85) }
 
     /// Fixed square side of the view (and its hosting panel), sized for the larger theme.
     static let totalSize: CGFloat = 240
@@ -81,7 +88,7 @@ struct LoupeCircle: View {
                 .frame(width: textRadius * 2, height: textRadius * 2)
             glass(diameter: lensGlass)
             Circle()
-                .strokeBorder(Color.white.opacity(0.5), lineWidth: 2)
+                .strokeBorder(outlineColor.opacity(0.6), lineWidth: 2)
                 .frame(width: lensGlass, height: lensGlass)
             CircularText(text: formatText, radius: textRadius, nsFont: lensFont)
                 .foregroundStyle(lensTextColor)
@@ -112,7 +119,7 @@ struct LoupeCircle: View {
         return ZStack {
             glass(diameter: badgeGlass)
             Circle()
-                .strokeBorder(Color.white.opacity(0.85), lineWidth: 3)
+                .strokeBorder(outlineColor.opacity(0.85), lineWidth: 3)
                 .frame(width: badgeGlass, height: badgeGlass)
             // Rotated 45°: top badge at 1:30, bottom badge at 7:30.
             badgePill(badgeTopText, radius: badgeRadius, centerAngle: .pi / 4, flip: false)
@@ -132,11 +139,11 @@ struct LoupeCircle: View {
         return ZStack {
             Circle()
                 .trim(from: centre - fraction / 2, to: centre + fraction / 2)
-                .stroke(Color.white, style: StrokeStyle(lineWidth: 20, lineCap: .round))
+                .stroke(badgeFill, style: StrokeStyle(lineWidth: 20, lineCap: .round))
                 .frame(width: radius * 2, height: radius * 2)
             CircularText(text: text, radius: radius, nsFont: badgeFont,
                          centerAngle: centerAngle, flip: flip)
-                .foregroundStyle(Color.black.opacity(0.85))
+                .foregroundStyle(badgeTextColor)
         }
     }
 
