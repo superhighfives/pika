@@ -418,7 +418,7 @@ struct PickerChoiceView: View {
         Label(label, systemImage: "checkmark.circle.fill")
             .font(.system(size: 13, weight: .medium))
             .foregroundStyle(.green)
-            .frame(maxWidth: .infinity, minHeight: 34.0)
+            .frame(maxWidth: .infinity, minHeight: 29.0)
             .background(
                 RoundedRectangle(cornerRadius: 6.0, style: .continuous)
                     .fill(Color.green.opacity(0.12))
