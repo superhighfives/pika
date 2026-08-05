@@ -436,10 +436,9 @@ final class PickerLoupeController {
         }
     }
 
-    /// Updates the closest colour name for the sample (used by the lens theme). The lookup
+    /// Updates the closest colour name for the sample (both themes show it). The lookup
     /// vector is built once per pick from the active colour list.
     private func updateColorName() {
-        guard Defaults[.loupeTheme] == .lens else { return }
         if closestVector == nil {
             colorNames = ColorNamesManager.shared.currentColorNames()
             closestVector = ClosestVector(colorNames.map { $0.color.toRGB8BitArray() })

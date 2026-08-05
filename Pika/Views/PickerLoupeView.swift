@@ -39,16 +39,15 @@ struct CircularText: View {
 /// The loupe: a circular window of magnified pixels (the sampled centre pixel outlined) with
 /// the live readouts wrapped around it. Two themes (see `LoupeTheme`):
 /// - `.lens`: the rim is filled with the hovered colour and engraved, SF Pro, with the format
-///   around the top and the colour name around the bottom.
-/// - `.badge`: two white rounded badges hug the inside edge — format on top, slot + contrast
-///   on the bottom.
+///   around the top and the slot + colour name around the bottom.
+/// - `.badge`: two white rounded badges (rotated 45°) hug the inside edge — format on one,
+///   slot + colour name on the other.
 ///
 /// See `plans/ready/2026-07-19-custom-color-picker.md`.
 struct LoupeCircle: View {
     @ObservedObject var viewModel: LoupeViewModel
     @Default(.colorFormat) private var colorFormat
     @Default(.copyFormat) private var copyFormat
-    @Default(.contrastStandard) private var contrastStandard
     @Default(.loupeTheme) private var theme
 
     /// Fixed square side of the view (and its hosting panel), sized for the larger theme.
@@ -67,7 +66,7 @@ struct LoupeCircle: View {
             }
         }
         .frame(width: Self.totalSize, height: Self.totalSize)
-        .shadow(color: .black.opacity(0.35), radius: 10, y: 3)
+        .shadow(color: .black.opacity(0.3), radius: 5, y: 2)
     }
 
     // MARK: - Lens theme
@@ -99,9 +98,7 @@ struct LoupeCircle: View {
     }
 
     private var lensBottomText: String {
-        guard let comparison = viewModel.comparison else { return viewModel.colorName }
-        let metric = contrastMetric(sample: viewModel.sampleColor, comparison: comparison)
-        return viewModel.colorName.isEmpty ? metric.label : "\(viewModel.colorName) · \(metric.label)"
+        viewModel.colorName.isEmpty ? slotLabel : "\(slotLabel) · \(viewModel.colorName)"
     }
 
     // MARK: - Badge theme
@@ -113,24 +110,28 @@ struct LoupeCircle: View {
             Circle()
                 .strokeBorder(Color.white.opacity(0.85), lineWidth: 3)
                 .frame(width: badgeGlass, height: badgeGlass)
-            badgePill(badgeTopText, radius: badgeRadius, top: true)
-            badgePill(badgeBottomText, radius: badgeRadius, top: false)
+            // Rotated 45°: top badge at 1:30, bottom badge at 7:30.
+            badgePill(badgeTopText, radius: badgeRadius, centerAngle: .pi / 4, flip: false)
+            badgePill(badgeBottomText, radius: badgeRadius, centerAngle: .pi + .pi / 4, flip: true)
         }
     }
 
-    /// A white rounded band (the badge) with dark curved text engraved on it.
-    private func badgePill(_ text: String, radius: CGFloat, top: Bool) -> some View {
+    /// A white rounded band (the badge) with dark curved text engraved on it, centred at
+    /// `centerAngle` (clockwise from the top).
+    private func badgePill(_ text: String, radius: CGFloat, centerAngle: Double, flip: Bool) -> some View {
         let width = text.reduce(CGFloat.zero) { $0 + (String($1) as NSString).size(withAttributes: [.font: badgeFont]).width }
         let arc = Double(width / radius) + 0.42 // text arc + rounded-cap padding
         let fraction = min(0.95, arc / (2 * .pi))
-        let centre = top ? 0.75 : 0.25
+        // Circle().trim starts at 3 o'clock and runs clockwise, so the top (12 o'clock) is
+        // 0.75; convert the clockwise-from-top centre angle to that space.
+        let centre = (0.75 + centerAngle / (2 * .pi)).truncatingRemainder(dividingBy: 1)
         return ZStack {
             Circle()
                 .trim(from: centre - fraction / 2, to: centre + fraction / 2)
                 .stroke(Color.white, style: StrokeStyle(lineWidth: 20, lineCap: .round))
                 .frame(width: radius * 2, height: radius * 2)
             CircularText(text: text, radius: radius, nsFont: badgeFont,
-                         centerAngle: top ? 0 : .pi, flip: !top)
+                         centerAngle: centerAngle, flip: flip)
                 .foregroundStyle(Color.black.opacity(0.85))
         }
     }
@@ -139,9 +140,8 @@ struct LoupeCircle: View {
 
     private var badgeBottomText: String {
         let slot = slotLabel.uppercased()
-        guard let comparison = viewModel.comparison else { return slot }
-        let metric = contrastMetric(sample: viewModel.sampleColor, comparison: comparison)
-        return "\(slot) · \(metric.label) \(metric.passes ? "✓" : "✗")"
+        let name = viewModel.colorName.uppercased()
+        return name.isEmpty ? slot : "\(slot) · \(name)"
     }
 
     // MARK: - Glass
@@ -184,18 +184,6 @@ struct LoupeCircle: View {
         switch viewModel.target {
         case .foreground: return PikaText.textPickerLoupeForeground
         case .background: return PikaText.textPickerLoupeBackground
-        }
-    }
-
-    private func contrastMetric(sample: NSColor, comparison: NSColor) -> (label: String, passes: Bool) {
-        switch contrastStandard {
-        case .apca, .both:
-            let value = sample.toAPCACompliance(with: comparison).value
-            let display = sample.toAPCAcontrastValue(with: comparison)
-            return ("Lc \(display)", abs(value) >= 60)
-        case .wcag:
-            let ratio = sample.contrastRatio(with: comparison)
-            return (String(format: "%.2f:1", ratio), ratio >= 4.5)
         }
     }
 }
