@@ -469,6 +469,9 @@ final class PickerLoupeController {
         case 53: // Escape
             cancel()
             return true
+        case 36, 76: // Return and keypad Enter — commit the current sample (pairs with arrow nudging)
+            commit()
+            return true
         case 24, 69: // = / + and keypad +
             viewModel.zoomIn(); requestCapture(); return true
         case 27, 78: // - and keypad -
