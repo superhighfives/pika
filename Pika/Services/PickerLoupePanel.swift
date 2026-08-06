@@ -142,8 +142,11 @@ final class LoupeClickCatcherPanel: NSPanel {
         )
 
         isFloatingPanel = true
-        // Same band as the loupe panels; the controller orders the loupe in front so the
-        // catcher stays just beneath it while still covering every other app.
+        // Same level as the loupe panels. The controller keeps the catcher ordered front-most
+        // (re-asserting it after the card panel re-orders itself on cursor moves) so it always
+        // swallows clicks/scroll; being transparent, it doesn't hide the lens. A non-activating
+        // panel at this level can still become key for Escape/zoom/nudge — pushing it to a
+        // higher level breaks that, leaking scroll and keys to the app behind.
         level = .screenSaver
         backgroundColor = .clear
         isOpaque = false

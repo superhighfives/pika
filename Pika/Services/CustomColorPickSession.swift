@@ -107,7 +107,12 @@ final class PickerLoupeController {
     // to re-arm for the background almost immediately, so we don't tear the panel down.
     private var rearmSafety: Timer?
 
-    // Key-event monitor (retained so it can be removed on teardown).
+    // Event capture. Preferred: a session `CGEventTap` that intercepts (and swallows) clicks,
+    // scroll and keys globally — the only reliable way to catch input over *other* apps, which
+    // needs Accessibility. Fallback (no Accessibility): `NSEvent` monitors, which only see input
+    // dispatched to Pika (so they work over Pika's own window but not over other apps).
+    private var eventTap: CFMachPort?
+    private var eventTapSource: CFRunLoopSource?
     private var localMonitors: [Any] = []
 
     // True while the loupe is up (shown, not torn down). A pair pick keeps this set across
@@ -127,6 +132,13 @@ final class PickerLoupeController {
     // Closest-colour-name lookup for the lens theme, built once per pick from the active list.
     private var colorNames: [ColorName] = []
     private var closestVector: ClosestVector?
+
+    // Live preview: while picking, the sampled colour is pushed into the target eyedropper so
+    // the main window (swatches, colour names, and the contrast footer) updates in realtime.
+    // `previewOriginal` is the target's colour at the start of the pick, restored on cancel.
+    // History is gated on the `.colorPicked` notification (posted only at commit), so these
+    // live writes never record undo steps.
+    private var previewOriginal: NSColor?
 
     // Capture state.
     private var configuredDisplayID: CGDirectDisplayID?
@@ -151,6 +163,10 @@ final class PickerLoupeController {
 
         viewModel.target = target
         viewModel.comparison = comparison
+        viewModel.comparisonName = comparison.map { closestColorName(for: $0) } ?? ""
+        // Snapshot the target's colour so a cancelled pick can restore it (we mutate it live
+        // for the realtime preview below).
+        previewOriginal = targetEyedropper?.color
         currentCursor = NSEvent.mouseLocation
 
         // Pair-pick re-arm: the loupe is already up, so just refresh it.
@@ -193,17 +209,18 @@ final class PickerLoupeController {
             catcher.onCommit = { [weak self] in self?.commit() }
             catcher.onCancel = { [weak self] in self?.cancel() }
             catcher.onMoved = { [weak self] in self?.handlePointerMoved() }
-            catcher.onScroll = { [weak self] event in self?.handleScroll(event) }
+            catcher.onScroll = { [weak self] event in self?.handleScroll(deltaY: Double(event.deltaY)) }
             self.catcher = catcher
         }
 
-        // Order the catcher beneath the loupe (same window level) so it covers every other
-        // app while the lens stays visible on top. The full-screen catcher takes key status
-        // so Escape / zoom / nudge reach us without activating Pika.
+        // The catcher must be the front-most surface so it swallows clicks/scroll; it's ordered
+        // last (after the circle and card) and re-fronted on every cursor move (see
+        // `updateCardPanel`). Being transparent, it doesn't hide the lens. It also takes key
+        // status so Escape / zoom / nudge reach us without activating Pika.
         catcher?.cover(screens: NSScreen.screens)
-        catcher?.orderFrontRegardless()
         circlePanel?.orderFrontRegardless()
         updateCardPanel()
+        catcher?.orderFrontRegardless()
 
         loupeWindowIDs = [circlePanel?.windowNumber, cardPanel?.windowNumber, catcher?.windowNumber]
             .compactMap { $0 }
@@ -246,6 +263,9 @@ final class PickerLoupeController {
         if Defaults[.loupeTheme] == .card {
             cardPanel.position(near: currentCursor, circleRadius: LoupeCircle.cardGlass / 2)
             cardPanel.orderFrontRegardless()
+            // The card just jumped to the front; keep the click-catcher above it so clicks and
+            // scroll still land on the catcher rather than falling through.
+            catcher?.orderFrontRegardless()
         } else {
             cardPanel.orderOut(nil)
         }
@@ -253,11 +273,25 @@ final class PickerLoupeController {
 
     // MARK: - Commit / cancel / teardown
 
+    /// The eyedropper being picked into, for the live preview. Resolved live so it always
+    /// reflects `viewModel.target` (which flips to `.background` on a chained pair pick).
+    private var targetEyedropper: Eyedropper? {
+        guard let eyedroppers = AppDelegate.shared?.eyedroppers else { return nil }
+        return viewModel.target == .foreground ? eyedroppers.foreground : eyedroppers.background
+    }
+
     private func commit() {
         finish(with: viewModel.sampleColor)
     }
 
     private func finish(with color: NSColor?) {
+        // A cancelled pick reverts the live preview; a committed one keeps it (the caller's
+        // completion re-sets the same colour and posts `.colorPicked`, which records history).
+        if color == nil, let previewOriginal {
+            targetEyedropper?.set(previewOriginal)
+        }
+        previewOriginal = nil
+
         let callback = completion
         completion = nil
 
@@ -305,28 +339,87 @@ final class PickerLoupeController {
     // MARK: - Event monitors
 
     private func installMonitors() {
-        guard localMonitors.isEmpty else { return }
-
-        // Pointer movement, the committing click, scroll-to-zoom and right-click cancel are
-        // all handled by the full-screen catcher (see `LoupeClickCatcherPanel`), which sits
-        // in front of every other app and so receives — and can swallow — those events.
-        //
-        // Keys need two monitors. The local one fires when Pika holds keyboard focus (and can
-        // swallow the keys it handles). The global one fires when another app is frontmost —
-        // it only delivers events if Pika is trusted for Accessibility, and can't swallow, so
-        // it's a best-effort path for Escape/zoom/nudge while picking over another app. When
-        // Accessibility isn't granted, `showPanel` activates Pika instead so the local monitor
-        // covers everything (see `activateForKeysIfNeeded`).
+        guard localMonitors.isEmpty, eventTap == nil else { return }
+        // Prefer the global event tap; fall back to NSEvent monitors only if it can't be created
+        // (Accessibility not granted). NSEvent monitors only see input dispatched to Pika, so
+        // they work over Pika's own window but NOT over other apps — the tap works everywhere.
+        // Pointer *movement* always rides the catcher's tracking area (`onMoved`).
+        if installEventTap() { return }
         let localKey = NSEvent.addLocalMonitorForEvents(matching: [.keyDown]) { [weak self] event in
             (self?.handleKeyDown(event) ?? false) ? nil : event
         }
         let globalKey = NSEvent.addGlobalMonitorForEvents(matching: [.keyDown]) { [weak self] event in
             _ = self?.handleKeyDown(event)
         }
-        localMonitors.append(contentsOf: [localKey, globalKey].compactMap { $0 })
+        let scroll = NSEvent.addLocalMonitorForEvents(matching: [.scrollWheel]) { [weak self] event in
+            self?.handleScroll(deltaY: Double(event.deltaY)); return nil
+        }
+        let leftDown = NSEvent.addLocalMonitorForEvents(matching: [.leftMouseDown]) { [weak self] _ in
+            self?.commit(); return nil
+        }
+        let rightDown = NSEvent.addLocalMonitorForEvents(matching: [.rightMouseDown]) { [weak self] _ in
+            self?.cancel(); return nil
+        }
+        localMonitors.append(contentsOf: [localKey, globalKey, scroll, leftDown, rightDown].compactMap { $0 })
+    }
+
+    /// Installs a session-level event tap that intercepts and swallows clicks/scroll/keys for the
+    /// duration of the pick, over ANY app. Returns false if it can't be created (no Accessibility).
+    private func installEventTap() -> Bool {
+        let mask: CGEventMask = (1 << CGEventType.leftMouseDown.rawValue)
+            | (1 << CGEventType.rightMouseDown.rawValue)
+            | (1 << CGEventType.scrollWheel.rawValue)
+            | (1 << CGEventType.keyDown.rawValue)
+        // A capture-less closure so it bridges to a C function pointer; `self` arrives via refcon.
+        let callback: CGEventTapCallBack = { _, type, event, refcon in
+            guard let refcon else { return Unmanaged.passUnretained(event) }
+            let controller = Unmanaged<PickerLoupeController>.fromOpaque(refcon).takeUnretainedValue()
+            return controller.handleTapEvent(type: type, event: event)
+        }
+        guard let tap = CGEvent.tapCreate(
+            tap: .cgSessionEventTap,
+            place: .headInsertEventTap,
+            options: .defaultTap, // .defaultTap can alter/discard events; requires Accessibility
+            eventsOfInterest: mask,
+            callback: callback,
+            userInfo: Unmanaged.passUnretained(self).toOpaque()
+        ) else { return false }
+
+        eventTap = tap
+        let source = CFMachPortCreateRunLoopSource(nil, tap, 0)
+        eventTapSource = source
+        CFRunLoopAddSource(CFRunLoopGetMain(), source, .commonModes)
+        CGEvent.tapEnable(tap: tap, enable: true)
+        return true
+    }
+
+    /// Handles a tapped event on the main run loop. Returns nil to swallow, or the event to pass.
+    private func handleTapEvent(type: CGEventType, event: CGEvent) -> Unmanaged<CGEvent>? {
+        switch type {
+        case .leftMouseDown:
+            commit(); return nil
+        case .rightMouseDown:
+            cancel(); return nil
+        case .scrollWheel:
+            handleScroll(deltaY: event.getDoubleValueField(.scrollWheelEventDeltaAxis1)); return nil
+        case .keyDown:
+            let handled = NSEvent(cgEvent: event).map { handleKeyDown($0) } ?? false
+            return handled ? nil : Unmanaged.passUnretained(event)
+        case .tapDisabledByTimeout, .tapDisabledByUserInput:
+            if let eventTap { CGEvent.tapEnable(tap: eventTap, enable: true) }
+            return Unmanaged.passUnretained(event)
+        default:
+            return Unmanaged.passUnretained(event)
+        }
     }
 
     private func removeMonitors() {
+        if let eventTap {
+            CGEvent.tapEnable(tap: eventTap, enable: false)
+            if let eventTapSource { CFRunLoopRemoveSource(CFRunLoopGetMain(), eventTapSource, .commonModes) }
+            self.eventTap = nil
+            eventTapSource = nil
+        }
         for monitor in localMonitors {
             NSEvent.removeMonitor(monitor)
         }
@@ -339,11 +432,11 @@ final class PickerLoupeController {
         requestCapture()
     }
 
-    private func handleScroll(_ event: NSEvent) {
+    private func handleScroll(deltaY: Double) {
         // Scroll up zooms in (fewer pixels across), down zooms out.
-        if event.deltaY > 0 {
+        if deltaY > 0 {
             viewModel.zoomIn()
-        } else if event.deltaY < 0 {
+        } else if deltaY < 0 {
             viewModel.zoomOut()
         }
         requestCapture()
@@ -367,7 +460,9 @@ final class PickerLoupeController {
         case 126: nudge(dx: 0, dy: step); return true // up
         case 48: cycleLoupeTheme(reverse: event.modifierFlags.contains(.shift)); return true // Tab
         default:
-            return false
+            // Swallow bare keys so the app's single-key shortcuts (x to swap, h/p/c, the format
+            // keys) can't fire mid-pick. Let Command combos through for system shortcuts.
+            return !event.modifierFlags.contains(.command)
         }
     }
 
@@ -404,6 +499,17 @@ final class PickerLoupeController {
 
     private func screenUnderCursor() -> NSScreen? {
         NSScreen.screens.first { NSMouseInRect(currentCursor, $0.frame, false) } ?? NSScreen.main
+    }
+
+    /// Whether the cursor is over one of Pika's own windows (excluding the loupe panels). Used to
+    /// fall back to the current colours instead of sampling — and feeding back — Pika's own UI.
+    private func isCursorOverAppWindow() -> Bool {
+        let loupeNumbers = Set(loupeWindowIDs.map { Int($0) })
+        return NSApp.windows.contains { window in
+            window.isVisible
+                && !loupeNumbers.contains(window.windowNumber)
+                && window.frame.contains(currentCursor)
+        }
     }
 
     private func requestCapture() {
@@ -460,7 +566,18 @@ final class PickerLoupeController {
             let region = CGRect(x: originX, y: originY, width: pixelCount, height: pixelCount)
             let cropped = full.cropping(to: region) ?? full
             viewModel.image = cropped
-            viewModel.sampleColor = Self.centerPixelColor(of: cropped) ?? viewModel.sampleColor
+            let pixel = Self.centerPixelColor(of: cropped) ?? viewModel.sampleColor
+            if isCursorOverAppWindow(), let previewOriginal {
+                // Over Pika's own UI: sampling it would just feed the swatch back into itself.
+                // Fall back to the colour the pick started with (readout and live preview both).
+                viewModel.sampleColor = previewOriginal
+                targetEyedropper?.set(previewOriginal)
+            } else {
+                viewModel.sampleColor = pixel
+                // Live-preview the sample into the app so the contrast footer / swatches track
+                // the cursor. Not recorded to history (see `previewOriginal`).
+                targetEyedropper?.set(pixel)
+            }
             updateColorName()
         } catch {
             // Transient capture failures (display reconfigured, filter stale) are ignored;
@@ -472,18 +589,18 @@ final class PickerLoupeController {
     /// Updates the closest colour name for the sample (both themes show it). The lookup
     /// vector is built once per pick from the active colour list.
     private func updateColorName() {
+        viewModel.colorName = closestColorName(for: viewModel.sampleColor)
+    }
+
+    /// Closest colour name for `color`, building the lookup vector on first use.
+    private func closestColorName(for color: NSColor) -> String {
         if closestVector == nil {
             colorNames = ColorNamesManager.shared.currentColorNames()
             closestVector = ClosestVector(colorNames.map { $0.color.toRGB8BitArray() })
         }
-        guard let closestVector, !colorNames.isEmpty else {
-            viewModel.colorName = ""
-            return
-        }
-        let index = closestVector.compare(viewModel.sampleColor)
-        if colorNames.indices.contains(index) {
-            viewModel.colorName = colorNames[index].name
-        }
+        guard let closestVector, !colorNames.isEmpty else { return "" }
+        let index = closestVector.compare(color)
+        return colorNames.indices.contains(index) ? colorNames[index].name : ""
     }
 
     private func configureFilter(for displayID: CGDirectDisplayID) async {
@@ -572,6 +689,8 @@ final class LoupeViewModel: ObservableObject {
     @Published var colorName: String = ""
     @Published var target: Eyedropper.Types = .foreground
     @Published var comparison: NSColor?
+    /// Closest-colour name for `comparison`, resolved once per pick (the pair doesn't change).
+    @Published var comparisonName: String = ""
     @Published var pixelCount: Int = 15
 
     private let minPixels = 5
