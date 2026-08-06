@@ -95,9 +95,12 @@ struct LoupeCircle: View {
         }
         .frame(width: Self.totalSize, height: Self.totalSize)
         .shadow(color: .black.opacity(0.3), radius: 5, y: 2)
+        // Fade to half over Pika's own windows: a cue that it won't pick there.
+        .opacity(viewModel.isOverApp ? 0.15 : 1)
         .animation(.easeInOut(duration: 0.2), value: theme)
         .animation(.easeInOut(duration: 0.2), value: viewModel.comparison)
         .animation(.easeInOut(duration: 0.2), value: viewModel.target)
+        .animation(.easeInOut(duration: 0.15), value: viewModel.isOverApp)
     }
 
     // MARK: - Card theme
@@ -327,9 +330,12 @@ struct LoupeReadoutCard: View {
             RoundedRectangle(cornerRadius: 14, style: .continuous)
                 .strokeBorder(Color.primary.opacity(0.12), lineWidth: 1)
         )
+        // Match the disc: fade over Pika's own windows (won't pick there).
+        .opacity(viewModel.isOverApp ? 0.15 : 1)
         // Crossfade the panels and reflow between single/pair layouts as the readout changes.
         .animation(.easeInOut(duration: 0.2), value: viewModel.sampleColor)
         .animation(.easeInOut(duration: 0.2), value: viewModel.comparison)
+        .animation(.easeInOut(duration: 0.15), value: viewModel.isOverApp)
     }
 
     /// One colour panel: filled with the colour, its value (and the picking colour's name)

@@ -139,6 +139,10 @@ final class PickerLoupeController {
     // History is gated on the `.colorPicked` notification (posted only at commit), so these
     // live writes never record undo steps.
     private var previewOriginal: NSColor?
+    // Bumped whenever a pick begins or ends. `performCapture` is async, so a grab can resume
+    // after the pick it belongs to was cancelled/committed; it applies its result only if the
+    // generation still matches, so a straggler can't write a colour into a finished pick.
+    private var pickGeneration = 0
 
     // Capture state.
     private var configuredDisplayID: CGDirectDisplayID?
@@ -156,6 +160,7 @@ final class PickerLoupeController {
         willChain: Bool,
         completion: @escaping (NSColor?) -> Void
     ) {
+        pickGeneration += 1
         self.completion = completion
         self.willChain = willChain
         rearmSafety?.invalidate()
@@ -281,10 +286,15 @@ final class PickerLoupeController {
     }
 
     private func commit() {
+        // Ignore stray events once the pick has ended (e.g. an orphaned catcher tracking area
+        // still delivering after teardown): only a live pick has a completion.
+        guard completion != nil else { return }
         finish(with: viewModel.sampleColor)
     }
 
     private func finish(with color: NSColor?) {
+        guard completion != nil else { return }
+        pickGeneration += 1 // invalidate any in-flight capture belonging to this pick
         // A cancelled pick reverts the live preview; a committed one keeps it (the caller's
         // completion re-sets the same colour and posts `.colorPicked`, which records history).
         if color == nil, let previewOriginal {
@@ -303,7 +313,13 @@ final class PickerLoupeController {
                 self?.teardown()
             }
         } else {
-            teardown()
+            // Commit/cancel can arrive from inside the CGEventTap callback (click, right-click,
+            // Escape). Tearing down there removes the tap and its run-loop source from within the
+            // tap's own callback, which leaves teardown half-done — the catcher keeps tracking and
+            // the tap keeps firing. Mark inactive now (so nothing re-arms), and run teardown on the
+            // next tick, cleanly outside the callback.
+            isActive = false
+            DispatchQueue.main.async { [weak self] in self?.teardown() }
         }
 
         callback?(color)
@@ -427,6 +443,9 @@ final class PickerLoupeController {
     }
 
     private func handlePointerMoved() {
+        // The catcher's tracking area can keep firing after teardown (orderOut doesn't always
+        // stop it); ignore moves unless a pick is live so the preview can't drift afterwards.
+        guard isActive else { return }
         currentCursor = NSEvent.mouseLocation
         reposition()
         requestCapture()
@@ -513,6 +532,7 @@ final class PickerLoupeController {
     }
 
     private func requestCapture() {
+        guard isActive else { return } // no captures once the pick has ended
         guard !isCapturing else { pendingCapture = true; return }
         isCapturing = true
         Task { @MainActor in
@@ -527,6 +547,7 @@ final class PickerLoupeController {
 
     @MainActor
     private func performCapture() async {
+        let generation = pickGeneration
         let cursor = currentCursor
         guard let screen = screenUnderCursor() else { return }
         let displayID = screen.displayID
@@ -564,19 +585,26 @@ final class PickerLoupeController {
             let originX = min(max(0, Int(localX.rounded()) - half), maxX)
             let originY = min(max(0, Int(localYTop.rounded()) - half), maxY)
             let region = CGRect(x: originX, y: originY, width: pixelCount, height: pixelCount)
+            // The grab is async: if the pick was cancelled/committed (or a new one began) while
+            // it was in flight, this result is stale — discard it so it can't write a colour
+            // into a finished pick (the cause of a straggler landing on Escape or a drag).
+            guard generation == pickGeneration else { return }
             let cropped = full.cropping(to: region) ?? full
             viewModel.image = cropped
             let pixel = Self.centerPixelColor(of: cropped) ?? viewModel.sampleColor
-            if isCursorOverAppWindow(), let previewOriginal {
-                // Over Pika's own UI: sampling it would just feed the swatch back into itself.
-                // Fall back to the colour the pick started with (readout and live preview both).
+            // Over Pika's own UI, fall back to the colour the pick started with so sampling
+            // doesn't feed the swatch back into itself (and fade the loupe to signal that).
+            let overApp = isCursorOverAppWindow()
+            viewModel.isOverApp = overApp
+            if overApp, let previewOriginal {
                 viewModel.sampleColor = previewOriginal
-                targetEyedropper?.set(previewOriginal)
             } else {
                 viewModel.sampleColor = pixel
-                // Live-preview the sample into the app so the contrast footer / swatches track
-                // the cursor. Not recorded to history (see `previewOriginal`).
-                targetEyedropper?.set(pixel)
+            }
+            // Live-preview the sample into the app (footer / swatches track the cursor) once the
+            // pick is visible. Not recorded to history (see `previewOriginal`).
+            if isActive {
+                targetEyedropper?.set(viewModel.sampleColor)
             }
             updateColorName()
         } catch {
@@ -692,6 +720,9 @@ final class LoupeViewModel: ObservableObject {
     /// Closest-colour name for `comparison`, resolved once per pick (the pair doesn't change).
     @Published var comparisonName: String = ""
     @Published var pixelCount: Int = 15
+    /// True while the cursor is over one of Pika's own windows — the loupe fades to signal it
+    /// won't sample there (it falls back to the current colours instead).
+    @Published var isOverApp: Bool = false
 
     private let minPixels = 5
     private let maxPixels = 41
