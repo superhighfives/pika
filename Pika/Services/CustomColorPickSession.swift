@@ -173,6 +173,12 @@ final class PickerLoupeController {
         // for the realtime preview below).
         previewOriginal = targetEyedropper?.color
         currentCursor = NSEvent.mouseLocation
+        // Set the over-app state (dismiss disc vs picker) BEFORE the loupe is shown, without
+        // animation — otherwise a reused panel starts in the picker state and visibly flashes
+        // the loupe before animating to the dismiss disc when the pick begins over Pika.
+        var noAnimation = Transaction()
+        noAnimation.disablesAnimations = true
+        withTransaction(noAnimation) { viewModel.isOverApp = isCursorOverAppWindow() }
 
         // Pair-pick re-arm: the loupe is already up, so just refresh it.
         if isActive {

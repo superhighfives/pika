@@ -7,15 +7,31 @@ import SwiftUI
 /// clockwise from the top (0 = 12 o'clock); set `flip` on the bottom half so glyphs stay
 /// upright and read left-to-right.
 struct CircularText: View {
-    let text: String
+    /// A run of text in one font; a label can mix fonts (e.g. mono value + sans name).
+    struct Segment { let text: String; let font: NSFont }
+
+    let segments: [Segment]
     var radius: CGFloat
-    var nsFont: NSFont
     var centerAngle: Double = 0
     var flip: Bool = false
 
+    init(segments: [Segment], radius: CGFloat, centerAngle: Double = 0, flip: Bool = false) {
+        self.segments = segments
+        self.radius = radius
+        self.centerAngle = centerAngle
+        self.flip = flip
+    }
+
+    init(text: String, radius: CGFloat, nsFont: NSFont, centerAngle: Double = 0, flip: Bool = false) {
+        self.init(segments: [Segment(text: text, font: nsFont)],
+                  radius: radius, centerAngle: centerAngle, flip: flip)
+    }
+
     var body: some View {
-        let chars = text.map { String($0) }
-        let widths = chars.map { ($0 as NSString).size(withAttributes: [.font: nsFont]).width }
+        let glyphs: [(char: String, font: NSFont)] = segments.flatMap { seg in
+            seg.text.map { (String($0), seg.font) }
+        }
+        let widths = glyphs.map { ($0.char as NSString).size(withAttributes: [.font: $0.font]).width }
         let total = widths.reduce(0, +)
         var running: CGFloat = 0
         var centers: [CGFloat] = []
@@ -24,11 +40,11 @@ struct CircularText: View {
         }
 
         return ZStack {
-            ForEach(Array(chars.enumerated()), id: \.offset) { index, character in
+            ForEach(Array(glyphs.enumerated()), id: \.offset) { index, glyph in
                 let offset = centers[index] - total / 2
                 let theta = centerAngle + (flip ? -1.0 : 1.0) * Double(offset / max(radius, 1))
-                Text(character)
-                    .font(Font(nsFont))
+                Text(glyph.char)
+                    .font(Font(glyph.font))
                     .rotationEffect(.radians(flip ? theta + .pi : theta))
                     .offset(x: radius * sin(theta), y: -radius * cos(theta))
             }
@@ -49,6 +65,19 @@ private func fittedFont(_ text: String, base: NSFont, radius: CGFloat, maxArc: D
     guard width > maxLength, width > 0 else { return base }
     let size = max(7.5, base.pointSize * (maxLength / width))
     return NSFont(descriptor: base.fontDescriptor, size: size) ?? base
+}
+
+/// Like `fittedFont` but for a multi-font label: scales every part by the same factor so the
+/// whole run fits `maxArc` while keeping the mono/sans mix.
+private func fittedSegments(_ parts: [(String, NSFont)], radius: CGFloat, maxArc: Double) -> [CircularText.Segment] {
+    let maxLength = CGFloat(maxArc) * radius
+    let total = parts.reduce(CGFloat.zero) { $0 + ($1.0 as NSString).size(withAttributes: [.font: $1.1]).width }
+    let scale = (total > maxLength && total > 0) ? maxLength / total : 1
+    return parts.map { text, font in
+        guard scale < 1 else { return CircularText.Segment(text: text, font: font) }
+        let size = max(7.5, font.pointSize * scale)
+        return CircularText.Segment(text: text, font: NSFont(descriptor: font.fontDescriptor, size: size) ?? font)
+    }
 }
 
 /// The loupe: a circular window of magnified pixels (the sampled centre pixel outlined) with
@@ -82,25 +111,51 @@ struct LoupeCircle: View {
     /// Diameter of the plain magnifier used by the `.card` theme (the readout sits in a
     /// separate panel beside it). Exposed so the controller can compute the card's clearance.
     static let cardGlass: CGFloat = 140
-    private let lensFont = NSFont.systemFont(ofSize: 12, weight: .medium)
-    private let badgeFont = NSFont.monospacedSystemFont(ofSize: 10, weight: .medium)
+    // Values are monospaced, colour names sans-serif (matching the card readout).
+    private let lensValueFont = NSFont.monospacedSystemFont(ofSize: 12, weight: .medium)
+    private let lensNameFont = NSFont.systemFont(ofSize: 12, weight: .medium)
+    private let badgeValueFont = NSFont.monospacedSystemFont(ofSize: 10, weight: .medium)
+    private let badgeNameFont = NSFont.systemFont(ofSize: 10, weight: .semibold)
 
     var body: some View {
         ZStack {
-            switch theme {
-            case .lens: lens
-            case .badge: badge
-            case .card: card
+            if viewModel.isOverApp {
+                // Over Pika's own windows the picker won't sample; show a distinct frosted
+                // "dismiss" disc instead of a faded picker so the intent is unambiguous.
+                dismissIndicator
+            } else {
+                switch theme {
+                case .lens: lens
+                case .badge: badge
+                case .card: card
+                }
             }
         }
         .frame(width: Self.totalSize, height: Self.totalSize)
         .shadow(color: .black.opacity(0.3), radius: 5, y: 2)
-        // Fade to half over Pika's own windows: a cue that it won't pick there.
-        .opacity(viewModel.isOverApp ? 0.15 : 1)
         .animation(.easeInOut(duration: 0.2), value: theme)
         .animation(.easeInOut(duration: 0.2), value: viewModel.comparison)
         .animation(.easeInOut(duration: 0.2), value: viewModel.target)
-        .animation(.easeInOut(duration: 0.15), value: viewModel.isOverApp)
+        .animation(.easeInOut(duration: 0.2), value: viewModel.isOverApp)
+    }
+
+    /// Shown while the cursor is over one of Pika's own windows: a small liquid-glass disc with
+    /// a dismiss glyph. Clicking here commits the current colours (i.e. dismisses the pick).
+    private var dismissIndicator: some View {
+        let size: CGFloat = 74
+        let mark = Image(systemName: "xmark")
+            .font(.system(size: 22, weight: .semibold))
+            .foregroundStyle(.secondary)
+        return Group {
+            if #available(macOS 26.0, *) {
+                mark.frame(width: size, height: size)
+                    .glassEffect(.clear.interactive(), in: .circle)
+            } else {
+                mark.frame(width: size, height: size)
+                    .background(.ultraThinMaterial, in: Circle())
+                    .overlay(Circle().strokeBorder(.white.opacity(0.25), lineWidth: 1))
+            }
+        }
     }
 
     // MARK: - Card theme
@@ -118,13 +173,23 @@ struct LoupeCircle: View {
     // MARK: - Lens theme
 
     private var lens: some View {
-        let textRadius = lensGlass / 2 + 16
         let rimWidth: CGFloat = 28
+        // Rim inner edge sits flush on the glass (no gap between magnifier and colour band).
+        let textRadius = lensGlass / 2 + rimWidth / 2
         let rimOuter = (textRadius + rimWidth / 2) * 2
         // Bottom half of the rim is the colour you're picking; the top half is the other
         // colour of the pair, so you can compare them side by side.
         let other = viewModel.comparison ?? viewModel.sampleColor
         let anim = Animation.easeInOut(duration: 0.15)
+        let pairName = viewModel.comparison != nil ? viewModel.comparisonName : viewModel.colorName
+        let topSegments = fittedSegments(
+            lensParts(value: other.toFormat(format: colorFormat, style: copyFormat), name: pairName),
+            radius: textRadius, maxArc: 0.9 * .pi
+        )
+        let bottomSegments = fittedSegments(
+            lensParts(value: formatText, name: viewModel.colorName),
+            radius: textRadius, maxArc: 0.9 * .pi
+        )
         return ZStack {
             Circle().trim(from: 0, to: 0.5)
                 .stroke(Color(nsColor: viewModel.sampleColor), lineWidth: rimWidth)
@@ -146,13 +211,10 @@ struct LoupeCircle: View {
             // Each half carries its own colour's value + name: the pair on the top (other-colour)
             // half, the picking colour on the bottom half — coloured for legibility on its own
             // half, and shrunk to stay within its arc so long values (OKLCH) never spill over.
-            CircularText(text: lensTopText, radius: textRadius,
-                         nsFont: fittedFont(lensTopText, base: lensFont, radius: textRadius, maxArc: 0.9 * .pi))
+            CircularText(segments: topSegments, radius: textRadius)
                 .foregroundStyle(adaptiveText(on: other))
                 .animation(anim, value: other)
-            CircularText(text: lensBottomText, radius: textRadius,
-                         nsFont: fittedFont(lensBottomText, base: lensFont, radius: textRadius, maxArc: 0.9 * .pi),
-                         centerAngle: .pi, flip: true)
+            CircularText(segments: bottomSegments, radius: textRadius, centerAngle: .pi, flip: true)
                 .foregroundStyle(adaptiveText(on: viewModel.sampleColor))
                 .animation(anim, value: viewModel.sampleColor)
         }
@@ -165,20 +227,12 @@ struct LoupeCircle: View {
         return luminance < 0.55 ? .white : .black
     }
 
-    // Each half shows its colour's value and name ("value · name"). Contrast now updates live
-    // in the main window's footer instead of on the rim.
-    private var lensTopText: String {
-        let pair = viewModel.comparison ?? viewModel.sampleColor
-        let name = viewModel.comparison != nil ? viewModel.comparisonName : viewModel.colorName
-        return lensLabel(value: pair.toFormat(format: colorFormat, style: copyFormat), name: name)
-    }
-
-    private var lensBottomText: String {
-        lensLabel(value: formatText, name: viewModel.colorName)
-    }
-
-    private func lensLabel(value: String, name: String) -> String {
-        name.isEmpty ? value : "\(value) · \(name)"
+    // Each half shows its colour's value (monospaced) then name (sans), joined by " · ".
+    // Contrast now updates live in the main window's footer instead of on the rim.
+    private func lensParts(value: String, name: String) -> [(String, NSFont)] {
+        var parts: [(String, NSFont)] = [(value, lensValueFont)]
+        if !name.isEmpty { parts.append((" · \(name)", lensNameFont)) }
+        return parts
     }
 
     // MARK: - Badge theme
@@ -197,18 +251,19 @@ struct LoupeCircle: View {
                 .strokeBorder(Color(nsColor: pair), lineWidth: 3)
                 .frame(width: badgeGlass, height: badgeGlass)
                 .animation(.easeInOut(duration: 0.15), value: pair)
-            badgePill(badgeTopText, fill: viewModel.sampleColor, radius: badgeRadius,
-                      centerAngle: .pi / 4, flip: false)
-            badgePill(badgeBottomText, fill: viewModel.sampleColor, radius: badgeRadius,
-                      centerAngle: bottomBadgeCenter, flip: true)
+            // Value pill in mono, name pill in sans — matching the card readout.
+            badgePill(badgeTopText, fill: viewModel.sampleColor, base: badgeValueFont,
+                      radius: badgeRadius, centerAngle: .pi / 4, flip: false)
+            badgePill(badgeBottomText, fill: viewModel.sampleColor, base: badgeNameFont,
+                      radius: badgeRadius, centerAngle: bottomBadgeCenter, flip: true)
         }
     }
 
     /// The fitted font and band fraction for a badge label.
-    private func badgeArc(_ text: String, radius: CGFloat) -> (font: NSFont, fraction: Double) {
+    private func badgeArc(_ text: String, base: NSFont, radius: CGFloat) -> (font: NSFont, fraction: Double) {
         let pad: CGFloat = 18
         let padArc = Double(2 * pad / radius)
-        let font = fittedFont(text, base: badgeFont, radius: radius, maxArc: 0.44 * 2 * .pi - padArc)
+        let font = fittedFont(text, base: base, radius: radius, maxArc: 0.44 * 2 * .pi - padArc)
         let width = (text as NSString).size(withAttributes: [.font: font]).width
         let fraction = min(0.44, (Double(width / radius) + padArc) / (2 * .pi))
         return (font, fraction)
@@ -218,14 +273,14 @@ struct LoupeCircle: View {
     /// legibility), centred at `centerAngle` (clockwise from the top). The font shrinks to keep
     /// the text inside the band — the two pills are each capped to ~44% of the ring so they
     /// never collide and glyphs never overrun the rounded caps.
-    private func badgePill(_ text: String, fill: NSColor, radius: CGFloat,
+    private func badgePill(_ text: String, fill: NSColor, base: NSFont, radius: CGFloat,
                            centerAngle: Double, flip: Bool) -> some View
     {
         let lineWidth = badgeLineWidth
         // The font shrinks to keep the text within ~44% of the ring (see `badgeArc`): that
         // caps the arc so the two pills never collide AND — combined with drawing the band
         // around the top (0.75) — keeps the trim range inside [0, 1].
-        let (font, fraction) = badgeArc(text, radius: radius)
+        let (font, fraction) = badgeArc(text, base: base, radius: radius)
         // The band is a trimmed circle centred on the top (0.75). `Circle().trim` CLAMPS to
         // [0, 1] rather than wrapping across the 3-o'clock seam, so a band whose range straddled
         // the seam would be silently truncated (the cause of text spilling past the cap). Anchor
@@ -330,8 +385,8 @@ struct LoupeReadoutCard: View {
             RoundedRectangle(cornerRadius: 14, style: .continuous)
                 .strokeBorder(Color.primary.opacity(0.12), lineWidth: 1)
         )
-        // Match the disc: fade over Pika's own windows (won't pick there).
-        .opacity(viewModel.isOverApp ? 0.15 : 1)
+        // Hidden over Pika's own windows — the disc shows the dismiss indicator instead.
+        .opacity(viewModel.isOverApp ? 0 : 1)
         // Crossfade the panels and reflow between single/pair layouts as the readout changes.
         .animation(.easeInOut(duration: 0.2), value: viewModel.sampleColor)
         .animation(.easeInOut(duration: 0.2), value: viewModel.comparison)
