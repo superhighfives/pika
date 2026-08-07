@@ -486,7 +486,8 @@ final class PickerLoupeController {
         case 124: nudge(dx: step, dy: 0); return true // right
         case 125: nudge(dx: 0, dy: -step); return true // down
         case 126: nudge(dx: 0, dy: step); return true // up
-        case 48: cycleLoupeTheme(reverse: event.modifierFlags.contains(.shift)); return true // Tab
+        case 48 where !event.modifierFlags.contains(.command):
+            cycleLoupeTheme(reverse: event.modifierFlags.contains(.shift)); return true // Tab
         default:
             // Swallow bare keys so the app's single-key shortcuts (x to swap, h/p/c, the format
             // keys) can't fire mid-pick. Let Command combos through for system shortcuts.
