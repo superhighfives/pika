@@ -328,7 +328,10 @@ class WindowCoordinator: NSObject {
     }
 
     func startMainWindow() {
-        if !pikaWindow.isVisible {
+        // Popover mode clears `pikaWindow.contentView` (see `removeMainWindowContent()`),
+        // so fading it in here — as this completion handler used to unconditionally do —
+        // would show a blank floating window whenever the splash is dismissed in that mode.
+        if !Defaults[.appMode].usesPopover, !pikaWindow.isVisible {
             pikaWindow.fadeIn(nil)
         }
         applyShadowState()
@@ -431,21 +434,24 @@ class WindowCoordinator: NSObject {
     }
 
     func openSplashWindow() {
-        splashWindow = PikaWindow.createSecondaryWindow(
-            title: PikaText.textAppName,
-            // Sized to fit the full setup list without scrolling, including a permission
-            // step (Grant Screen Recording / Grant Accessibility) when one is shown.
-            size: NSRect(x: 0, y: 0, width: 720, height: 720),
-            styleMask: [.titled, .fullSizeContentView]
-        )
-        // `createSecondaryWindow` derives the autosave name from the title, which for
-        // the splash ("Pika") collides with the main window's "Pika Window" name and
-        // would let the transient, always-centered splash pollute the persisted main
-        // window frame. The splash never needs to remember its position, so clear it.
-        splashWindow.setFrameAutosaveName("")
-        splashWindow.titlebarAppearsTransparent = true
-        splashTouchBarController = SplashTouchBarController(window: splashWindow)
-        splashWindow.contentView = NSHostingView(rootView: SplashView().ignoresSafeArea())
+        if splashWindow == nil {
+            splashWindow = PikaWindow.createSecondaryWindow(
+                title: PikaText.textAppName,
+                // Sized to fit the full setup list without scrolling, including a permission
+                // step (Grant Screen Recording / Grant Accessibility) when one is shown.
+                size: NSRect(x: 0, y: 0, width: 720, height: 720),
+                styleMask: [.titled, .fullSizeContentView]
+            )
+            // `createSecondaryWindow` derives the autosave name from the title, which for
+            // the splash ("Pika") collides with the main window's "Pika Window" name and
+            // would let the transient, always-centered splash pollute the persisted main
+            // window frame. The splash never needs to remember its position, so clear it.
+            splashWindow.setFrameAutosaveName("")
+            splashWindow.titlebarAppearsTransparent = true
+            splashTouchBarController = SplashTouchBarController(window: splashWindow)
+            splashWindow.contentView = NSHostingView(rootView: SplashView().ignoresSafeArea())
+        }
+        splashWindow.makeKeyAndOrderFront(nil)
         splashWindow.fadeIn(nil)
     }
 }

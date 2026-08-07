@@ -656,16 +656,6 @@ final class PickerLoupeController {
     /// The source region to capture, in points, in the display's top-left coordinate space —
     /// `extentPixels` device pixels centred on the cursor, snapped to the device-pixel grid
     /// so the capture maps 1:1 to real pixels (no sub-pixel straddling, so no resampling).
-    private func sourceRect(centeredOn cursorGlobal: NSPoint, screen: NSScreen, extentPixels: Int, scale: CGFloat) -> CGRect {
-        let extentPts = CGFloat(extentPixels) / scale
-        let localX = cursorGlobal.x - screen.frame.minX
-        let localYBottom = cursorGlobal.y - screen.frame.minY
-        let localYTop = screen.frame.height - localYBottom
-        let originX = ((localX - extentPts / 2) * scale).rounded() / scale
-        let originY = ((localYTop - extentPts / 2) * scale).rounded() / scale
-        return CGRect(x: originX, y: originY, width: extentPts, height: extentPts)
-    }
-
     /// Capture in a known colour space and convert deliberately in the commit path —
     /// sRGB by default, Display P3 when the accuracy preference calls for it.
     private func captureColorSpaceName() -> CFString {

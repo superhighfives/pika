@@ -147,14 +147,23 @@ struct LoupeCircle: View {
             .font(.system(size: 22, weight: .semibold))
             .foregroundStyle(.secondary)
         return Group {
-            if #available(macOS 26.0, *) {
-                mark.frame(width: size, height: size)
-                    .glassEffect(.clear.interactive(), in: .circle)
-            } else {
+            // `glassEffect` isn't declared in SDKs older than Xcode 26 (CI's pinned Xcode
+            // 16.3 among them) — `#available` alone doesn't help there, since the symbol
+            // is missing at compile time, not just unsupported at runtime.
+            #if compiler(>=6.2)
+                if #available(macOS 26.0, *) {
+                    mark.frame(width: size, height: size)
+                        .glassEffect(.clear.interactive(), in: .circle)
+                } else {
+                    mark.frame(width: size, height: size)
+                        .background(.ultraThinMaterial, in: Circle())
+                        .overlay(Circle().strokeBorder(.white.opacity(0.25), lineWidth: 1))
+                }
+            #else
                 mark.frame(width: size, height: size)
                     .background(.ultraThinMaterial, in: Circle())
                     .overlay(Circle().strokeBorder(.white.opacity(0.25), lineWidth: 1))
-            }
+            #endif
         }
     }
 
