@@ -125,11 +125,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
+    /// The splash shows on every launch unless the user ticked its (pre-selected) "Don't show
+    /// this again" checkbox — EXCEPT when a new onboarding version hasn't been seen yet, in which
+    /// case it shows once for everyone (see `PikaConstants.currentSplashVersion`).
+    private var shouldShowSplash: Bool {
+        !Defaults[.hideSplashOnLaunch]
+            || Defaults[.lastSeenSplashVersion] < PikaConstants.currentSplashVersion
+    }
+
     private func presentSplashIfNeeded() {
-        // The splash shows on every launch unless the user ticked its (pre-selected)
-        // "Don't show this again" checkbox. `viewedSplash` still records the first run so
-        // the pick shortcuts stay gated until onboarding is dismissed the first time.
-        if !Defaults[.hideSplashOnLaunch] {
+        // `viewedSplash` still records the first run so the pick shortcuts stay gated until
+        // onboarding is dismissed the first time. `lastSeenSplashVersion` is recorded on
+        // dismissal (`closeSplashWindow`), not here — recording it now would make
+        // `showPikaIfConfigured` reveal the main window behind the splash.
+        if shouldShowSplash {
             openSplashWindow(nil)
             NSApp.activate(ignoringOtherApps: true)
         }
@@ -144,7 +153,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private func showPikaIfConfigured() {
         // Pika should only ever appear once the splash has been dismissed. When the splash
         // is up, defer the main window until `closeSplashWindow` fires; otherwise show it now.
-        guard Defaults[.hideSplashOnLaunch] else { return }
+        guard !shouldShowSplash else { return }
         presentConfiguredPika()
     }
 
@@ -237,6 +246,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 extension AppDelegate {
     @objc func closeSplashWindow() {
         windowCoordinator.closeSplashWindow()
+        // Record that this onboarding version has been seen, so the version gate doesn't
+        // re-show it next launch (the user's "Don't show again" choice governs from here).
+        Defaults[.lastSeenSplashVersion] = PikaConstants.currentSplashVersion
         // Now that onboarding is dismissed, show Pika if the user has it set to launch shown.
         presentConfiguredPika()
     }

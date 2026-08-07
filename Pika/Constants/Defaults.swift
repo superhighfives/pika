@@ -109,6 +109,10 @@ extension Defaults.Keys {
     // When false, the splash is shown on launch. The splash's pre-selected "Don't show
     // this again" checkbox sets this to true on dismissal.
     static let hideSplashOnLaunch = Key<Bool>("hideSplashOnLaunch", default: false)
+    // The `PikaConstants.currentSplashVersion` last shown to the user. Bumping that constant
+    // re-shows the splash once for everyone (even those who ticked "Don't show again"), so a
+    // release with new onboarding gets in front of existing users.
+    static let lastSeenSplashVersion = Key<Int>("lastSeenSplashVersion", default: 0)
     static let hidePikaWhilePicking = Key<Bool>("hidePikaWhilePicking", default: false)
     static let windowShadow = Key<WindowShadow>("windowShadow", default: .always)
     static let pickContrastingColor = Key<Bool>("pickContrastingColor", default: false)

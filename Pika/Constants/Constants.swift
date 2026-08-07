@@ -17,6 +17,11 @@ enum PikaConstants {
             : "https://superhighfives.com/releases/pika"
     }
 
+    // Bump when a release has onboarding worth re-showing: the splash then appears once for
+    // everyone (even those who ticked "Don't show again") whose `lastSeenSplashVersion` is lower.
+    // v1: the custom (Pro) colour picker.
+    static let currentSplashVersion = 1
+
     static let pikaWebsiteURL = "https://superhighfives.com/pika"
     static let gitHubRepoURL = "https://github.com/superhighfives/pika"
     static let gitHubIssueURL = "https://github.com/superhighfives/pika/issues/new/choose"
