@@ -64,12 +64,17 @@ extension NSColor {
         }
     }
 
+    // Black or white — whichever has the higher WCAG contrast against this colour — for legible
+    // text/UI drawn on top of it. The crossover (equal contrast to black and white) is at a
+    // relative luminance of ~0.179, not 0.5: black wins for everything brighter than that.
+    private static let uiColorCrossover: CGFloat = 0.179
+
     func getUIColor() -> Color {
-        luminance < 0.5 ? Color.white : Color.black
+        luminance < Self.uiColorCrossover ? Color.white : Color.black
     }
 
     func getUIColor() -> NSColor {
-        luminance < 0.5 ? NSColor.white : NSColor.black
+        luminance < Self.uiColorCrossover ? NSColor.white : NSColor.black
     }
 }
 
