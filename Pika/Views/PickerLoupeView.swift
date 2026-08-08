@@ -101,11 +101,13 @@ private func truncateToFit(_ segments: [CircularText.Segment], maxLength: CGFloa
 }
 
 /// The loupe: a circular window of magnified pixels (the sampled centre pixel outlined) with
-/// the live readouts wrapped around it. Two themes (see `LoupeTheme`):
+/// the live readouts wrapped around it. Three themes (see `LoupeTheme`):
 /// - `.lens`: the rim is filled with the hovered colour and engraved, SF Pro, with the format
 ///   around the top and the slot + colour name around the bottom.
 /// - `.badge`: two white rounded badges (rotated 45°) hug the inside edge — format on one,
 ///   slot + colour name on the other.
+/// - `.card`: a plain magnifier with no rim readouts; the format and slot + colour name sit in
+///   a `LoupeReadoutCard` tucked beside the loupe circle instead.
 ///
 /// See `plans/ready/2026-07-19-custom-color-picker.md`.
 struct LoupeCircle: View {
