@@ -570,36 +570,38 @@ final class PickerLoupeController {
         let pixelCount = viewModel.pixelCount
         let scale = screen.backingScaleFactor
 
-        // Capture the whole display at its *native* size and crop the exact pixels around the
-        // cursor ourselves. Any `sourceRect` capture — even at a nominal 1:1 — makes
-        // ScreenCaptureKit run a scaling pass that blends neighbours, so the magnifier looked
-        // soft and the sampled colour drifted with the cursor's sub-pixel position. A
-        // full-size capture uses no scaling pass, and `CGImage.cropping` is a pure pixel op,
-        // so the pixels are hard-edged and the sample is the exact device pixel.
+        // Capture ONLY the magnifier's device-pixel window around the cursor — not the whole
+        // display (tens of MB per frame on a large screen). The `sourceRect` is snapped to the
+        // device-pixel grid and `width`/`height` are set to its exact pixel size, so
+        // ScreenCaptureKit maps it 1:1 with no resampling pass — which would soften the magnifier
+        // and drift the sampled colour. The result is already the exact pixels we show; its
+        // centre is the exact device pixel under the cursor.
+        let displayWpx = Int((screen.frame.width * scale).rounded())
+        let displayHpx = Int((screen.frame.height * scale).rounded())
+        // Cursor in device pixels within the display (top-left origin), clamped so the window
+        // stays on-screen near an edge.
+        let localX = (cursor.x - screen.frame.minX) * scale
+        let localYTop = (screen.frame.height - (cursor.y - screen.frame.minY)) * scale
+        let half = pixelCount / 2
+        let originX = min(max(0, Int(localX.rounded()) - half), max(0, displayWpx - pixelCount))
+        let originY = min(max(0, Int(localYTop.rounded()) - half), max(0, displayHpx - pixelCount))
+
         let config = SCStreamConfiguration()
-        config.width = Int((screen.frame.width * scale).rounded())
-        config.height = Int((screen.frame.height * scale).rounded())
+        config.sourceRect = CGRect(x: Double(originX) / scale, y: Double(originY) / scale,
+                                   width: Double(pixelCount) / scale, height: Double(pixelCount) / scale)
+        config.width = pixelCount
+        config.height = pixelCount
         config.showsCursor = false
         config.colorSpaceName = captureColorSpaceName()
 
         do {
-            let full = try await SCScreenshotManager.captureImage(
+            let cropped = try await SCScreenshotManager.captureImage(
                 contentFilter: filter, configuration: config
             )
-            // Cursor position within the captured image (top-left origin, device pixels).
-            let localX = (cursor.x - screen.frame.minX) * scale
-            let localYTop = (screen.frame.height - (cursor.y - screen.frame.minY)) * scale
-            let half = pixelCount / 2
-            let maxX = max(0, full.width - pixelCount)
-            let maxY = max(0, full.height - pixelCount)
-            let originX = min(max(0, Int(localX.rounded()) - half), maxX)
-            let originY = min(max(0, Int(localYTop.rounded()) - half), maxY)
-            let region = CGRect(x: originX, y: originY, width: pixelCount, height: pixelCount)
             // The grab is async: if the pick was cancelled/committed (or a new one began) while
             // it was in flight, this result is stale — discard it so it can't write a colour
             // into a finished pick (the cause of a straggler landing on Escape or a drag).
             guard generation == pickGeneration else { return }
-            let cropped = full.cropping(to: region) ?? full
             viewModel.image = cropped
             let pixel = Self.centerPixelColor(of: cropped) ?? viewModel.sampleColor
             // Over Pika's own UI, fall back to the colour the pick started with so sampling
