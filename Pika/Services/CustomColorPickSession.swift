@@ -489,9 +489,12 @@ final class PickerLoupeController {
         case 48 where !event.modifierFlags.contains(.command):
             cycleLoupeTheme(reverse: event.modifierFlags.contains(.shift)); return true // Tab
         default:
-            // Swallow bare keys so the app's single-key shortcuts (x to swap, h/p/c, the format
-            // keys) can't fire mid-pick. Let Command combos through for system shortcuts.
-            return !event.modifierFlags.contains(.command)
+            // Swallow bare keys so Pika's own single-key shortcuts (x to swap, h/p/c, the
+            // format keys) can't fire mid-pick — but ONLY while Pika is frontmost. The
+            // CGEventTap is session-wide, so if the user ⌘-Tabs to another app during a pick we
+            // must let that app's keystrokes through: they aren't ours to eat, and Pika's
+            // shortcuts can't fire when it isn't active anyway. Command combos always pass.
+            return NSApp.isActive && !event.modifierFlags.contains(.command)
         }
     }
 
@@ -613,9 +616,12 @@ final class PickerLoupeController {
             } else {
                 viewModel.sampleColor = pixel
             }
-            // Live-preview the sample into the app (footer / swatches track the cursor) once the
-            // pick is visible. Not recorded to history (see `previewOriginal`).
-            if isActive {
+            // Live-preview the sample into the app (footer / swatches track the cursor) only
+            // while a leg is actively sampling. `completion` is nil between the foreground commit
+            // and the deferred background `begin()` of a pair pick — the loupe stays up
+            // (`isActive`) but `viewModel.target` is still `.foreground`, so pushing here would
+            // overwrite the just-committed foreground colour with whatever's under the cursor.
+            if isActive, completion != nil {
                 targetEyedropper?.set(viewModel.sampleColor)
             }
             updateColorName()
