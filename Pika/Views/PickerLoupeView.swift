@@ -391,27 +391,21 @@ struct LoupeCircle: View {
 }
 
 /// The readout card tucked beside the loupe circle for the `.card` theme: the two colours of
-/// the pair side by side, each with its value; the picking colour also carries its name.
-/// Contrast now updates live in the main window's footer rather than here.
+/// the pair stacked, each full width with its value and name. Contrast now updates live in the
+/// main window's footer rather than here.
 struct LoupeReadoutCard: View {
     @ObservedObject var viewModel: LoupeViewModel
     @Default(.colorFormat) private var colorFormat
     @Default(.copyFormat) private var copyFormat
 
-    private let cardWidth: CGFloat = 248
-    private let panelHeight: CGFloat = 60
+    private let cardWidth: CGFloat = 240
 
-    // A wide, short infographic: the two colours fill the card side by side, each engraved with
-    // its own value.
+    // Colours stacked so each gets the full width — plenty of room for the value and name.
     var body: some View {
-        Group {
+        VStack(spacing: 0) {
+            panel(viewModel.sampleColor, name: viewModel.colorName)
             if let comparison = viewModel.comparison {
-                HStack(spacing: 0) {
-                    panel(viewModel.sampleColor, name: viewModel.colorName)
-                    panel(comparison, name: nil)
-                }
-            } else {
-                panel(viewModel.sampleColor, name: viewModel.colorName)
+                panel(comparison, name: viewModel.comparisonName)
             }
         }
         .frame(width: cardWidth)
@@ -428,27 +422,26 @@ struct LoupeReadoutCard: View {
         .animation(.easeInOut(duration: 0.15), value: viewModel.isOverApp)
     }
 
-    /// One colour panel: filled with the colour, its value (and the picking colour's name)
-    /// centred in the legible contrast colour.
-    private func panel(_ color: NSColor, name: String?) -> some View {
-        VStack(spacing: 2) {
+    /// One full-width colour panel: the colour fill, its value (monospaced) and name (sans),
+    /// in the legible contrast colour.
+    private func panel(_ color: NSColor, name: String) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
             Text(color.toFormat(format: colorFormat, style: copyFormat))
-                .font(.system(size: 11, weight: .semibold, design: .monospaced))
-                .lineLimit(2)
-                .minimumScaleFactor(0.5)
-                .multilineTextAlignment(.center)
-            if let name, !name.isEmpty {
+                .font(.system(size: 13, weight: .semibold, design: .monospaced))
+                .lineLimit(1)
+                .minimumScaleFactor(0.6)
+            if !name.isEmpty {
                 Text(name)
-                    .font(.system(size: 10, weight: .medium))
+                    .font(.system(size: 11, weight: .medium))
+                    .opacity(0.8)
                     .lineLimit(1)
-                    .minimumScaleFactor(0.6)
-                    .opacity(0.75)
+                    .minimumScaleFactor(0.7)
             }
         }
         .foregroundStyle(Color(nsColor: color.getUIColor()))
-        .padding(.horizontal, 10)
-        .frame(maxWidth: .infinity)
-        .frame(height: panelHeight)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, 14)
+        .padding(.vertical, 12)
         .background(Color(nsColor: color))
     }
 }
