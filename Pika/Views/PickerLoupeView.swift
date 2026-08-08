@@ -67,6 +67,16 @@ private func fittedFont(_ text: String, base: NSFont, radius: CGFloat, maxArc: D
     return NSFont(descriptor: base.fontDescriptor, size: size) ?? base
 }
 
+/// White text on dark colours, black on light ones, so a readout engraved on a colour fill stays
+/// legible. Shared by all three loupe themes so their text colour is consistent (the card used to
+/// use `NSColor.getUIColor()`, whose different luminance formula/threshold disagreed near the
+/// mid-tones — e.g. it put white on a light blue where the rim correctly uses black).
+private func adaptiveTextColor(on color: NSColor) -> Color {
+    let srgb = color.usingColorSpace(.sRGB) ?? color
+    let luminance = 0.2126 * srgb.redComponent + 0.7152 * srgb.greenComponent + 0.0722 * srgb.blueComponent
+    return luminance < 0.55 ? .white : .black
+}
+
 /// Like `fittedFont` but for a multi-font label: scales every part by the same factor so the
 /// whole run fits `maxArc` while keeping the mono/sans mix. Below the 7.5pt floor, scaling alone
 /// can't bound the run any further (e.g. a long colour name combined with a verbose format), so
@@ -251,12 +261,7 @@ struct LoupeCircle: View {
         }
     }
 
-    /// White on dark colours, black on light ones, so the engraving stays legible on its half.
-    private func adaptiveText(on color: NSColor) -> Color {
-        let srgb = color.usingColorSpace(.sRGB) ?? color
-        let luminance = 0.2126 * srgb.redComponent + 0.7152 * srgb.greenComponent + 0.0722 * srgb.blueComponent
-        return luminance < 0.55 ? .white : .black
-    }
+    private func adaptiveText(on color: NSColor) -> Color { adaptiveTextColor(on: color) }
 
     // Each half shows its colour's value (monospaced) then name (sans), joined by " · ".
     // Contrast now updates live in the main window's footer instead of on the rim.
@@ -440,7 +445,7 @@ struct LoupeReadoutCard: View {
                     .minimumScaleFactor(0.7)
             }
         }
-        .foregroundStyle(Color(nsColor: color.getUIColor()))
+        .foregroundStyle(adaptiveTextColor(on: color))
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, 14)
         .padding(.vertical, 12)
