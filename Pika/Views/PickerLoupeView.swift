@@ -68,16 +68,36 @@ private func fittedFont(_ text: String, base: NSFont, radius: CGFloat, maxArc: D
 }
 
 /// Like `fittedFont` but for a multi-font label: scales every part by the same factor so the
-/// whole run fits `maxArc` while keeping the mono/sans mix.
+/// whole run fits `maxArc` while keeping the mono/sans mix. Below the 7.5pt floor, scaling alone
+/// can't bound the run any further (e.g. a long colour name combined with a verbose format), so
+/// any remaining overrun is ellipsized off the trailing segment rather than left to spill.
 private func fittedSegments(_ parts: [(String, NSFont)], radius: CGFloat, maxArc: Double) -> [CircularText.Segment] {
     let maxLength = CGFloat(maxArc) * radius
     let total = parts.reduce(CGFloat.zero) { $0 + ($1.0 as NSString).size(withAttributes: [.font: $1.1]).width }
     let scale = (total > maxLength && total > 0) ? maxLength / total : 1
-    return parts.map { text, font in
+    let segments = parts.map { text, font -> CircularText.Segment in
         guard scale < 1 else { return CircularText.Segment(text: text, font: font) }
         let size = max(7.5, font.pointSize * scale)
         return CircularText.Segment(text: text, font: NSFont(descriptor: font.fontDescriptor, size: size) ?? font)
     }
+    return truncateToFit(segments, maxLength: maxLength)
+}
+
+/// Ellipsizes segments from the end until the run's total width fits `maxLength`, for when
+/// scaling has already floored and the text still overruns its arc.
+private func truncateToFit(_ segments: [CircularText.Segment], maxLength: CGFloat) -> [CircularText.Segment] {
+    func width(_ segs: [CircularText.Segment]) -> CGFloat {
+        segs.reduce(0) { $0 + ($1.text as NSString).size(withAttributes: [.font: $1.font]).width }
+    }
+    var result = segments
+    while width(result) > maxLength, let last = result.last {
+        var text = last.text
+        if text.hasSuffix("…") { text.removeLast() }
+        guard !text.isEmpty else { result.removeLast(); continue }
+        text.removeLast()
+        result[result.count - 1] = CircularText.Segment(text: text + "…", font: last.font)
+    }
+    return result
 }
 
 /// The loupe: a circular window of magnified pixels (the sampled centre pixel outlined) with
