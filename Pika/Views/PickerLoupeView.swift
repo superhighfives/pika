@@ -288,14 +288,20 @@ struct LoupeCircle: View {
         }
     }
 
-    /// The fitted font and band fraction for a badge label.
-    private func badgeArc(_ text: String, base: NSFont, radius: CGFloat) -> (font: NSFont, fraction: Double) {
+    /// The fitted font, band fraction, and (possibly ellipsized) text for a badge label. Below
+    /// the font's 7.5pt floor, scaling alone can't bound the run any further, so any remaining
+    /// overrun is ellipsized — same fallback as the lens theme's `fittedSegments`.
+    private func badgeArc(_ text: String, base: NSFont, radius: CGFloat) -> (text: String, font: NSFont, fraction: Double) {
         let pad: CGFloat = 18
         let padArc = Double(2 * pad / radius)
-        let font = fittedFont(text, base: base, radius: radius, maxArc: 0.44 * 2 * .pi - padArc)
-        let width = (text as NSString).size(withAttributes: [.font: font]).width
+        let maxArc = 0.44 * 2 * .pi - padArc
+        let font = fittedFont(text, base: base, radius: radius, maxArc: maxArc)
+        let maxLength = CGFloat(maxArc) * radius
+        let fitted = truncateToFit([CircularText.Segment(text: text, font: font)], maxLength: maxLength)
+            .first ?? CircularText.Segment(text: text, font: font)
+        let width = (fitted.text as NSString).size(withAttributes: [.font: fitted.font]).width
         let fraction = min(0.44, (Double(width / radius) + padArc) / (2 * .pi))
-        return (font, fraction)
+        return (fitted.text, fitted.font, fraction)
     }
 
     /// A rounded band filled with `fill` and engraved with curved text (auto-flipped for
@@ -309,7 +315,7 @@ struct LoupeCircle: View {
         // The font shrinks to keep the text within ~44% of the ring (see `badgeArc`): that
         // caps the arc so the two pills never collide AND — combined with drawing the band
         // around the top (0.75) — keeps the trim range inside [0, 1].
-        let (font, fraction) = badgeArc(text, base: base, radius: radius)
+        let (fittedText, font, fraction) = badgeArc(text, base: base, radius: radius)
         // The band is a trimmed circle centred on the top (0.75). `Circle().trim` CLAMPS to
         // [0, 1] rather than wrapping across the 3-o'clock seam, so a band whose range straddled
         // the seam would be silently truncated (the cause of text spilling past the cap). Anchor
@@ -332,7 +338,7 @@ struct LoupeCircle: View {
             }
             .frame(width: radius * 2, height: radius * 2)
             .rotationEffect(.radians(centerAngle))
-            CircularText(text: text, radius: radius, nsFont: font,
+            CircularText(text: fittedText, radius: radius, nsFont: font,
                          centerAngle: centerAngle, flip: flip)
                 .foregroundStyle(adaptiveText(on: fill))
         }
