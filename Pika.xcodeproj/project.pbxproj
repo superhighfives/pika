@@ -28,6 +28,7 @@
 		CC2000000000000000000901 /* NotificationNamesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000900 /* NotificationNamesTests.swift */; };
 		CC2000000000000000000A01 /* CGFloatFormatTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000A00 /* CGFloatFormatTests.swift */; };
 		CC2000000000000000000B01 /* ColorPairTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000B00 /* ColorPairTests.swift */; };
+		DEC0FACE0000000000000011 /* ColorDecompositionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC0FACE0000000000000010 /* ColorDecompositionTests.swift */; };
 		CC2000000000000000000C01 /* ClosestVectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000C00 /* ClosestVectorTests.swift */; };
 		CC2000000000000000000D01 /* SequenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000D00 /* SequenceTests.swift */; };
 		CC2000000000000000000E01 /* ExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000E00 /* ExporterTests.swift */; };
@@ -63,6 +64,8 @@
 		CC000001000000000000AB12 /* CGFloat+Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000001000000000000AB10 /* CGFloat+Format.swift */; };
 		EA03E39B2F5E618E00998D8B /* ColorPair.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA03E39A2F5E618E00998D8B /* ColorPair.swift */; };
 		EA03E39C2F5E618E00998D8B /* ColorPair.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA03E39A2F5E618E00998D8B /* ColorPair.swift */; };
+		DEC0FACE0000000000000002 /* ColorDecomposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC0FACE0000000000000001 /* ColorDecomposition.swift */; };
+		DEC0FACE0000000000000003 /* ColorDecomposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC0FACE0000000000000001 /* ColorDecomposition.swift */; };
 		EA03E39E2F5E619800998D8B /* ColorHistoryDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA03E39D2F5E619800998D8B /* ColorHistoryDrawer.swift */; };
 		5A49CEF4F87747CDB61A3CBD /* PaletteComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35086BCEF529498582A432A1 /* PaletteComponents.swift */; };
 		EA03E39F2F5E619800998D8B /* ColorHistoryDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA03E39D2F5E619800998D8B /* ColorHistoryDrawer.swift */; };
@@ -240,6 +243,7 @@
 		CC2000000000000000000900 /* NotificationNamesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationNamesTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000000A00 /* CGFloatFormatTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGFloatFormatTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000000B00 /* ColorPairTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPairTests.swift; sourceTree = "<group>"; };
+		DEC0FACE0000000000000010 /* ColorDecompositionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorDecompositionTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000000C00 /* ClosestVectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosestVectorTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000000D00 /* SequenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000000E00 /* ExporterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExporterTests.swift; sourceTree = "<group>"; };
@@ -275,6 +279,7 @@
 		CC000001000000000000AB00 /* NSColor+RGB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+RGB.swift"; sourceTree = "<group>"; };
 		CC000001000000000000AB10 /* CGFloat+Format.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+Format.swift"; sourceTree = "<group>"; };
 		EA03E39A2F5E618E00998D8B /* ColorPair.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPair.swift; sourceTree = "<group>"; };
+		DEC0FACE0000000000000001 /* ColorDecomposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorDecomposition.swift; sourceTree = "<group>"; };
 		EA03E39D2F5E619800998D8B /* ColorHistoryDrawer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorHistoryDrawer.swift; sourceTree = "<group>"; };
 		35086BCEF529498582A432A1 /* PaletteComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteComponents.swift; sourceTree = "<group>"; };
 		EA03E3A02F5E619800998D8B /* ColorPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPreview.swift; sourceTree = "<group>"; };
@@ -505,6 +510,7 @@
 			isa = PBXGroup;
 			children = (
 				EA03E39A2F5E618E00998D8B /* ColorPair.swift */,
+				DEC0FACE0000000000000001 /* ColorDecomposition.swift */,
 				CCB1CA0000000000000000F1 /* ColorPickSession.swift */,
 				CCB1CA0000000000000000F4 /* CustomColorPickSession.swift */,
 				CC1100000000000000000007 /* Models */,
@@ -565,6 +571,7 @@
 				CC2000000000000000000900 /* NotificationNamesTests.swift */,
 				CC2000000000000000000A00 /* CGFloatFormatTests.swift */,
 				CC2000000000000000000B00 /* ColorPairTests.swift */,
+				DEC0FACE0000000000000010 /* ColorDecompositionTests.swift */,
 				CC2000000000000000000C00 /* ClosestVectorTests.swift */,
 				CC2000000000000000000D00 /* SequenceTests.swift */,
 				CC2000000000000000000E00 /* ExporterTests.swift */,
@@ -964,6 +971,7 @@
 				EAF100CD25C785C4006E1EC3 /* TouchBarVisual.swift in Sources */,
 				EA801285259F8F480026D5D9 /* ComplianceToggle.swift in Sources */,
 				EA03E39B2F5E618E00998D8B /* ColorPair.swift in Sources */,
+				DEC0FACE0000000000000002 /* ColorDecomposition.swift in Sources */,
 				221600FD25A636D600B8B7D9 /* ConditionalModifier.swift in Sources */,
 				EA03E39E2F5E619800998D8B /* ColorHistoryDrawer.swift in Sources */,
 				5A49CEF4F87747CDB61A3CBD /* PaletteComponents.swift in Sources */,
@@ -1050,6 +1058,7 @@
 				EAE23DB12D032A38005BB270 /* AppModeToggleGroup.swift in Sources */,
 				EAE23DB22D032A38005BB270 /* Visualisation.swift in Sources */,
 				EA03E39C2F5E618E00998D8B /* ColorPair.swift in Sources */,
+				DEC0FACE0000000000000003 /* ColorDecomposition.swift in Sources */,
 				EAE23DB32D032A38005BB270 /* ContentView.swift in Sources */,
 				EAE23DB42D032A38005BB270 /* AppDelegate.swift in Sources */,
 				CCFEED0003000000000000A3 /* PikaApp.swift in Sources */,
@@ -1116,6 +1125,7 @@
 				CC2000000000000000000901 /* NotificationNamesTests.swift in Sources */,
 				CC2000000000000000000A01 /* CGFloatFormatTests.swift in Sources */,
 				CC2000000000000000000B01 /* ColorPairTests.swift in Sources */,
+				DEC0FACE0000000000000011 /* ColorDecompositionTests.swift in Sources */,
 				CC2000000000000000000C01 /* ClosestVectorTests.swift in Sources */,
 				CC2000000000000000000D01 /* SequenceTests.swift in Sources */,
 				CC2000000000000000000E01 /* ExporterTests.swift in Sources */,
