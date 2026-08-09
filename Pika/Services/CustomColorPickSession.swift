@@ -673,9 +673,6 @@ final class PickerLoupeController {
         }
     }
 
-    /// The source region to capture, in points, in the display's top-left coordinate space —
-    /// `extentPixels` device pixels centred on the cursor, snapped to the device-pixel grid
-    /// so the capture maps 1:1 to real pixels (no sub-pixel straddling, so no resampling).
     /// Capture in a known colour space and convert deliberately in the commit path —
     /// sRGB by default, Display P3 when the accuracy preference calls for it.
     private func captureColorSpaceName() -> CFString {
