@@ -296,7 +296,7 @@ final class ColorNamesManager: ObservableObject {
 
     /// A readable title for a list key the API didn't describe: `sanzoWadaI` -> `Sanzo Wada I`.
     private static func prettify(_ key: String) -> String {
-        if key == defaultColorListKey { return PikaText.textColorListDefault }
+        if key == defaultColorListKey { return "Default" }
         var result = ""
         for (index, character) in key.enumerated() {
             if index == 0 {
