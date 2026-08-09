@@ -281,6 +281,7 @@ extension AppDelegate {
 
     @IBAction func triggerPickContrast(_: Any) {
         notificationCenter.post(name: .triggerPickForeground, object: self, userInfo: ["chain": true])
+        notificationCenter.post(name: .triggerPickPair, object: self)
     }
 
     @IBAction func triggerCopyForeground(_: Any) {

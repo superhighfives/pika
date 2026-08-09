@@ -56,7 +56,7 @@ enum PikaShortcuts {
             title: PikaText.textPickPair,
             displayKeys: ["⌥", "⌘", "D"], character: "d", modifiers: [.command, .option],
             action: #selector(AppDelegate.triggerPickContrast),
-            notificationName: .triggerPickForeground,
+            notificationName: .triggerPickPair,
             // Already bound globally as `KeyboardShortcuts.Name.pickPair`, which
             // fires regardless of focus — skip local-monitor dispatch to avoid a
             // double pick (mirrors the menu-accelerator omission in PikaApp.swift).

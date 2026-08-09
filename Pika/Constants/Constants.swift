@@ -50,6 +50,7 @@ enum PikaConstants {
     static let ncTriggerCopyData = "triggerCopyData"
     static let ncTriggerPickForeground = "triggerPickForeground"
     static let ncTriggerPickBackground = "triggerPickBackground"
+    static let ncTriggerPickPair = "triggerPickPair"
     static let ncTriggerSystemPickerForeground = "triggerSystemPickerForeground"
     static let ncTriggerSystemPickerBackground = "triggerSystemPickerBackground"
     static let ncTriggerSwap = "triggerSwap"
@@ -84,6 +85,9 @@ enum PikaConstants {
 extension Notification.Name {
     static let triggerPickForeground = Notification.Name(PikaConstants.ncTriggerPickForeground)
     static let triggerPickBackground = Notification.Name(PikaConstants.ncTriggerPickBackground)
+    /// Help-grid-only: fired alongside the chained `.triggerPickForeground` post so
+    /// "Pick pair"'s own row highlights instead of piggybacking on "Pick foreground"'s.
+    static let triggerPickPair = Notification.Name(PikaConstants.ncTriggerPickPair)
     static let triggerCopyForeground = Notification.Name(PikaConstants.ncTriggerCopyForeground)
     static let triggerCopyBackground = Notification.Name(PikaConstants.ncTriggerCopyBackground)
     static let triggerCopyText = Notification.Name(PikaConstants.ncTriggerCopyText)
