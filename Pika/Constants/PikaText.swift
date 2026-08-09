@@ -545,7 +545,6 @@ enum PikaText {
         comment: "Permission revoked alert body"
     )
 
-    // Loupe slot indicator
     // Splash picker choice
     static let textSplashPickerPrompt = NSLocalizedString(
         "splash.picker.prompt", value: "Colour picker", comment: "Splash picker choice label"
