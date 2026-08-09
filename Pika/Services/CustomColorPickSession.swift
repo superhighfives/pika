@@ -573,38 +573,49 @@ final class PickerLoupeController {
         let pixelCount = viewModel.pixelCount
         let scale = screen.backingScaleFactor
 
-        // Capture ONLY the magnifier's device-pixel window around the cursor — not the whole
-        // display (tens of MB per frame on a large screen). The `sourceRect` is snapped to the
-        // device-pixel grid and `width`/`height` are set to its exact pixel size, so
-        // ScreenCaptureKit maps it 1:1 with no resampling pass — which would soften the magnifier
-        // and drift the sampled colour. The result is already the exact pixels we show; its
-        // centre is the exact device pixel under the cursor.
+        // Capture ONLY a small window around the cursor — not the whole display (tens of MB per
+        // frame on a large screen). But a `sourceRect` with a SUB-POINT origin makes
+        // ScreenCaptureKit sample *between* pixels and softens the magnifier. So snap the rect to
+        // WHOLE POINTS that fully enclose the magnifier window and capture at its exact
+        // device-pixel size (1:1, no resample), then crop the exact window out of the result with
+        // `CGImage.cropping` — a pure pixel op that keeps it hard-edged and the sample exact.
         let displayWpx = Int((screen.frame.width * scale).rounded())
         let displayHpx = Int((screen.frame.height * scale).rounded())
-        // Cursor in device pixels within the display (top-left origin), clamped so the window
-        // stays on-screen near an edge.
+        // Magnifier window in device pixels (top-left origin), clamped so it stays on-screen.
         let localX = (cursor.x - screen.frame.minX) * scale
         let localYTop = (screen.frame.height - (cursor.y - screen.frame.minY)) * scale
         let half = pixelCount / 2
-        let originX = min(max(0, Int(localX.rounded()) - half), max(0, displayWpx - pixelCount))
-        let originY = min(max(0, Int(localYTop.rounded()) - half), max(0, displayHpx - pixelCount))
+        let winX = min(max(0, Int(localX.rounded()) - half), max(0, displayWpx - pixelCount))
+        let winY = min(max(0, Int(localYTop.rounded()) - half), max(0, displayHpx - pixelCount))
+
+        // Whole-point rect (top-left origin, points) that encloses the window, so SCK samples on
+        // point boundaries with no sub-point blend.
+        let originPtX = (Double(winX) / scale).rounded(.down)
+        let originPtY = (Double(winY) / scale).rounded(.down)
+        let regionPtW = (Double(winX + pixelCount) / scale).rounded(.up) - originPtX
+        let regionPtH = (Double(winY + pixelCount) / scale).rounded(.up) - originPtY
 
         let config = SCStreamConfiguration()
-        config.sourceRect = CGRect(x: Double(originX) / scale, y: Double(originY) / scale,
-                                   width: Double(pixelCount) / scale, height: Double(pixelCount) / scale)
-        config.width = pixelCount
-        config.height = pixelCount
+        config.sourceRect = CGRect(x: originPtX, y: originPtY, width: regionPtW, height: regionPtH)
+        config.width = Int((regionPtW * scale).rounded())
+        config.height = Int((regionPtH * scale).rounded())
         config.showsCursor = false
         config.colorSpaceName = captureColorSpaceName()
 
         do {
-            let cropped = try await SCScreenshotManager.captureImage(
+            let region = try await SCScreenshotManager.captureImage(
                 contentFilter: filter, configuration: config
             )
             // The grab is async: if the pick was cancelled/committed (or a new one began) while
             // it was in flight, this result is stale — discard it so it can't write a colour
             // into a finished pick (the cause of a straggler landing on Escape or a drag).
             guard generation == pickGeneration else { return }
+            // Crop the exact magnifier window out of the whole-point capture (pure pixel op).
+            let offsetX = winX - Int((originPtX * scale).rounded())
+            let offsetY = winY - Int((originPtY * scale).rounded())
+            let cropped = region.cropping(
+                to: CGRect(x: offsetX, y: offsetY, width: pixelCount, height: pixelCount)
+            ) ?? region
             viewModel.image = cropped
             let pixel = Self.centerPixelColor(of: cropped) ?? viewModel.sampleColor
             // Over Pika's own UI, fall back to the colour the pick started with so sampling
