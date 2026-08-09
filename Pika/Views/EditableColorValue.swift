@@ -46,6 +46,10 @@ struct EditableColorValue: View {
     @State private var values: [String] = []
     @State private var isEditing = false
     @State private var preEditColor: NSColor?
+    /// The colour we last pushed to `eyedropper` ourselves (live preview or commit). Lets
+    /// `onChange(of: eyedropper.color)` tell our own writes apart from an external pick landing
+    /// mid-edit, so the latter can abort the session instead of being silently overwritten.
+    @State private var lastPreviewedColor: NSColor?
     @FocusState private var focusedIndex: Int?
 
     private var decomposed: DecomposedColor {
@@ -96,7 +100,15 @@ struct EditableColorValue: View {
         .onPreferenceChange(EditableWidthKey.self) { width = $0 }
         .onAppear { syncValuesFromColor(layout) }
         .onChange(of: focusedIndex) { newValue in handleFocusChange(to: newValue, layout: layout) }
-        .onChange(of: eyedropper.color) { _ in if !isEditing { syncValuesFromColor(decomposed) } }
+        .onChange(of: eyedropper.color) { newValue in
+            if isEditing {
+                // A change we didn't push ourselves is an external pick landing mid-edit —
+                // abort the session so the external colour wins, matching pre-edit behaviour.
+                if newValue != lastPreviewedColor { abortEditingForExternalPick() }
+            } else {
+                syncValuesFromColor(decomposed)
+            }
+        }
         .onChange(of: format) { _ in if !isEditing { syncValuesFromColor(decomposed) } }
         .onChange(of: style) { _ in if !isEditing { syncValuesFromColor(decomposed) } }
     }
@@ -146,6 +158,7 @@ struct EditableColorValue: View {
         let allValid = zip(layout.components, values).allSatisfy { $0.isValid($1) }
         isInvalid = !allValid
         guard allValid, let color = format.recompose(values, style: style, in: colorSpace) else { return }
+        lastPreviewedColor = color
         eyedropper.set(color)
     }
 
@@ -158,16 +171,28 @@ struct EditableColorValue: View {
         let layout = decomposed
         let allValid = zip(layout.components, values).allSatisfy { $0.isValid($1) }
         if allValid, let color = format.recompose(values, style: style, in: colorSpace) {
+            lastPreviewedColor = color
             eyedropper.set(color)
             NotificationCenter.default.post(name: .colorPicked, object: nil)
         } else if let preEditColor {
+            lastPreviewedColor = preEditColor
             eyedropper.set(preEditColor)
         }
         endSession()
     }
 
     private func revertEditing() {
-        if let preEditColor { eyedropper.set(preEditColor) }
+        if let preEditColor {
+            lastPreviewedColor = preEditColor
+            eyedropper.set(preEditColor)
+        }
+        focusedIndex = nil
+        endSession()
+    }
+
+    /// An external eyedropper pick landed while a field was focused — abort the edit so the
+    /// pick wins, rather than letting a later blur silently overwrite it with typed values.
+    private func abortEditingForExternalPick() {
         focusedIndex = nil
         endSession()
     }
@@ -176,6 +201,7 @@ struct EditableColorValue: View {
         isEditing = false
         isInvalid = false
         preEditColor = nil
+        lastPreviewedColor = nil
         values = decomposed.values
     }
 }
