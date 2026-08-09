@@ -12,9 +12,12 @@ struct ColorPair: Codable, Identifiable, Equatable {
 
     // Reconstructs the color in Defaults[.colorSpace] — the same space toHexString()
     // reads from. This makes set() a no-op (colorSpace → colorSpace) so the stored
-    // hex round-trips exactly. Invalid/short hex falls back to black.
+    // hex round-trips exactly. Stored hex is always 6 digits (from toHexString), so
+    // anything else is treated as corrupt and falls back to black.
     private static func colorFromHex(_ hex: String) -> NSColor {
-        NSColor.fromHex(hex) ?? NSColor.black.usingColorSpace(Defaults[.colorSpace]) ?? .black
+        let fallback = NSColor.black.usingColorSpace(Defaults[.colorSpace]) ?? .black
+        guard hex.replacingOccurrences(of: "#", with: "").count == 6 else { return fallback }
+        return NSColor.fromHex(hex) ?? fallback
     }
 
     static let maxHistory = 20
