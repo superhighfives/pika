@@ -200,9 +200,19 @@ private final class LoupeClickCatcherView: NSView {
         trackingAreaRef = area
     }
 
+    // `mouseMoved`/`mouseDragged` are the live path: pointer movement isn't tapped or monitored,
+    // so cursor tracking always rides these.
     override func mouseMoved(with _: NSEvent) { owner?.onMoved?() }
     override func mouseDragged(with _: NSEvent) { owner?.onMoved?() }
-    override func mouseDown(with _: NSEvent) { owner?.onCommit?() } // consumed (no super).
-    override func rightMouseDown(with _: NSEvent) { owner?.onCancel?() } // consumed (no super).
+
+    // The click/scroll overrides are a best-effort fallback, not the primary path. With the
+    // CGEventTap active it swallows these at the session level before AppKit dispatches them
+    // here; in the no-Accessibility fallback the local NSEvent monitors intercept them first —
+    // BUT those local monitors only fire while Pika is the active app. If a pick is running
+    // without Accessibility and over another app (Pika not frontmost), neither fires, and this
+    // front-most catcher receiving the click via `acceptsFirstMouse` is the only commit path
+    // left. Kept intentionally for that case; consumed (no `super`) so the click dies here.
+    override func mouseDown(with _: NSEvent) { owner?.onCommit?() }
+    override func rightMouseDown(with _: NSEvent) { owner?.onCancel?() }
     override func scrollWheel(with event: NSEvent) { owner?.onScroll?(event) }
 }
