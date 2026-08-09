@@ -158,8 +158,8 @@ struct EditableColorValue: View {
         let allValid = zip(layout.components, values).allSatisfy { $0.isValid($1) }
         isInvalid = !allValid
         guard allValid, let color = format.recompose(values, style: style, in: colorSpace) else { return }
-        lastPreviewedColor = color
         eyedropper.set(color)
+        lastPreviewedColor = eyedropper.color
     }
 
     private func commitEditing() {
@@ -171,12 +171,12 @@ struct EditableColorValue: View {
         let layout = decomposed
         let allValid = zip(layout.components, values).allSatisfy { $0.isValid($1) }
         if allValid, let color = format.recompose(values, style: style, in: colorSpace) {
-            lastPreviewedColor = color
             eyedropper.set(color)
+            lastPreviewedColor = eyedropper.color
             NotificationCenter.default.post(name: .colorPicked, object: nil)
         } else if let preEditColor {
-            lastPreviewedColor = preEditColor
             eyedropper.set(preEditColor)
+            lastPreviewedColor = eyedropper.color
         }
         endSession()
     }
