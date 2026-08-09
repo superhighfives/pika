@@ -60,8 +60,14 @@ class Eyedropper: ObservableObject {
     var forceShow = false
     var pendingChainCommit = false
 
-    let colorNames: [ColorName] = loadColors()!
-    var closestVector: ClosestVector!
+    // Retains the in-flight pick session for the duration of an async pick so it
+    // (and its event monitors / capture engine, for the custom loupe) stays alive.
+    private var activeSession: ColorPickSession?
+
+    // Colour names come from the shared manager (cached network list, or the bundled
+    // default offline). Rebuilt whenever the manager broadcasts `.colorNamesUpdated`.
+    private var colorNames: [ColorName] = []
+    private var closestVector: ClosestVector?
 
     @objc @Published public var color: NSColor
 
@@ -71,12 +77,40 @@ class Eyedropper: ObservableObject {
         self.type = type
         self.color = color.usingColorSpace(.sRGB) ?? color
 
-        // Load colors
-        closestVector = ClosestVector(colorNames.map { $0.color.toRGB8BitArray() })
+        // Load colours and rebuild whenever the active list changes or a refresh lands.
+        reloadColorNames()
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleColorNamesUpdated),
+            name: .colorNamesUpdated,
+            object: nil
+        )
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    @objc private func handleColorNamesUpdated() {
+        reloadColorNames()
+        // Nudge observing views (the eyedropper label) to recompute the name.
+        DispatchQueue.main.async { self.objectWillChange.send() }
+    }
+
+    private func reloadColorNames() {
+        DispatchQueue.global(qos: .utility).async { [weak self] in
+            let names = ColorNamesManager.shared.currentColorNames()
+            let vector = ClosestVector(names.map { $0.color.toRGB8BitArray() })
+            DispatchQueue.main.async {
+                self?.colorNames = names
+                self?.closestVector = vector
+            }
+        }
     }
 
     func getClosestColor() -> String {
-        colorNames[closestVector.compare(color)].name
+        guard let closestVector, !colorNames.isEmpty else { return "" }
+        return colorNames[closestVector.compare(color)].name
     }
 
     func set(_ selectedColor: NSColor) {
@@ -127,10 +161,33 @@ extension Eyedropper {
             if Defaults[.appMode].usesPopover {
                 NSApp.activate(ignoringOtherApps: true)
             }
-            let sampler = NSColorSampler()
-            sampler.show { selectedColor in
+
+            // Choose the picking UI by preference. The commit path below is shared
+            // and identical for both sessions — only the pick surface differs, so
+            // downstream behaviour (set / history / undo / overlay / chaining)
+            // cannot fork. With `.system` this is byte-for-byte today's flow.
+            let willChain = chainContrasting && self.type == .foreground
+            // `AppDelegate.shared`, not `NSApp.delegate` — the latter is SwiftUI's forwarding
+            // wrapper under `@NSApplicationDelegateAdaptor`, so `as? AppDelegate` is always
+            // nil and the loupe would never get a comparison colour (no live contrast).
+            let comparison: NSColor? = AppDelegate.shared.map {
+                self.type == .foreground ? $0.eyedroppers.background.color : $0.eyedroppers.foreground.color
+            }
+            let useCustom = Defaults[.pickerStyle] == .custom && CustomColorPickSession.isAvailable
+            if Defaults[.pickerStyle] == .custom, !useCustom {
+                // Permission was revoked since the picker was enabled: fall back to
+                // the system sampler for this pick and revert the preference, telling
+                // the user once. A pick must never fail because custom is unavailable.
+                Defaults[.pickerStyle] = .system
+                CustomColorPickSession.notePermissionRevertedOnce()
+            }
+            let session: ColorPickSession = useCustom
+                ? CustomColorPickSession()
+                : SystemColorPickSession()
+            self.activeSession = session
+            session.begin(target: self.type, comparison: comparison, willChain: willChain) { selectedColor in
                 if let selectedColor = selectedColor {
-                    self.commitPick(selectedColor, chainContrasting: chainContrasting)
+                    self.commitPick(selectedColor, chainContrasting: chainContrasting, useCustom: useCustom)
                 } else if self.pendingChainCommit {
                     self.commitCancelledChain()
                 } else {
@@ -149,14 +206,18 @@ extension Eyedropper {
                 if panel.isVisible {
                     self.picker()
                 }
+
+                self.activeSession = nil
             }
         }
     }
 
-    private func commitPick(_ selectedColor: NSColor, chainContrasting: Bool) {
+    private func commitPick(_ selectedColor: NSColor, chainContrasting: Bool, useCustom: Bool) {
         let normalizedColor = selectedColor.usingColorSpace(.sRGB) ?? selectedColor
 
-        if Defaults[.showColorOverlay] {
+        // The custom loupe already shows the colour live during the pick, so the
+        // post-pick overlay is redundant when it's active.
+        if Defaults[.showColorOverlay], !useCustom {
             let colorText = normalizedColor.toFormat(
                 format: Defaults[.colorFormat], style: Defaults[.copyFormat]
             )
@@ -175,7 +236,7 @@ extension Eyedropper {
            type == .foreground,
            let appDelegate = AppDelegate.shared
         {
-            startChainedBackgroundPick(using: appDelegate)
+            startChainedBackgroundPick(using: appDelegate, useCustom: useCustom)
         } else {
             pendingChainCommit = false
             NotificationCenter.default.post(name: .colorPicked, object: nil)
@@ -183,7 +244,7 @@ extension Eyedropper {
         }
     }
 
-    private func startChainedBackgroundPick(using appDelegate: AppDelegate) {
+    private func startChainedBackgroundPick(using appDelegate: AppDelegate, useCustom: Bool) {
         // Defer committing the foreground pick — we'll record once the
         // background is also picked (or the chained pick is cancelled).
         let background = appDelegate.eyedroppers.background
@@ -194,7 +255,7 @@ extension Eyedropper {
             forceShow = false
             background.forceShow = true
         }
-        let delay: Double = Defaults[.showColorOverlay] ? 0.4 : 0.05
+        let delay: Double = (Defaults[.showColorOverlay] && !useCustom) ? 0.4 : 0.05
         DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
             background.start()
         }

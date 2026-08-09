@@ -8,6 +8,7 @@ private struct PikaCommands: Commands {
     var body: some Commands {
         // Pika menu items added before the first divider after .appInfo (About Pika).
         CommandGroup(after: .appInfo) {
+            Button(PikaText.textMenuShowSplash) { send(#selector(AppDelegate.openSplashWindow)) }
             Button(PikaText.textMenuUpdates) { send(#selector(AppDelegate.checkForUpdates)) }
             Button(PikaText.textMenuPreferences) { send(#selector(AppDelegate.openPreferencesWindow)) }
                 .keyboardShortcut(",", modifiers: .command)
@@ -22,6 +23,10 @@ private struct PikaCommands: Commands {
                 .keyboardShortcut("d", modifiers: .command)
             Button(PikaText.textPickBackground + "…") { send(#selector(AppDelegate.triggerPickBackground)) }
                 .keyboardShortcut("d", modifiers: [.command, .shift])
+            // No key equivalent here: pick-pair is now a global, rebindable shortcut
+            // (KeyboardShortcuts.Name.pickPair). A menu accelerator would double-fire
+            // with the global hotkey and wouldn't track user rebindings.
+            Button(PikaText.textPickPair + "…") { send(#selector(AppDelegate.triggerPickContrast)) }
 
             Divider()
 

@@ -53,6 +53,9 @@ enum PikaText {
     static let textHelpSupportOnMAS = NSLocalizedString("help.mas", comment: "Support on the Mac App Store")
 
     static let textMenuAbout = NSLocalizedString("menu.about", comment: "About")
+    static let textMenuShowSplash = NSLocalizedString(
+        "menu.showSplash", value: "Show splash", comment: "Show the welcome splash"
+    )
     static let textMenuUpdates = NSLocalizedString("menu.updates", comment: "Check for updates")
     static let textMenuPreferences = NSLocalizedString("menu.preferences", comment: "Preferences")
     static let textMenuWebsite = NSLocalizedString("menu.website", comment: "Pika website")
@@ -78,6 +81,101 @@ enum PikaText {
     static let textSplashLaunch = NSLocalizedString("splash.hotkey", comment: "Global shortcut")
     static let textSplashHotkey = NSLocalizedString("splash.launch", comment: "Launch at login")
     static let textSplashStart = NSLocalizedString("splash.start", comment: "Get started")
+
+    // Splash setup list (two-column redesign)
+    static let textSplashSetupTitle = NSLocalizedString(
+        "splash.setup.title", value: "Welcome to Pika", comment: "Splash setup heading"
+    )
+    static let textSplashSetupSubtitle = NSLocalizedString(
+        "splash.setup.subtitle", value: "A few quick choices to get you started.",
+        comment: "Splash setup subheading"
+    )
+    static let textSplashShortcutSubtitle = NSLocalizedString(
+        "splash.shortcut.subtitle", value: "Show and hide Pika from anywhere",
+        comment: "Global shortcut row subtitle"
+    )
+    static let textSplashPairSubtitle = NSLocalizedString(
+        "splash.pair.subtitle", value: "Grab a foreground, then a background",
+        comment: "Pick-pair shortcut row subtitle"
+    )
+    static let textSplashLaunchSubtitle = NSLocalizedString(
+        "splash.launch.subtitle", value: "Open Pika when you log in",
+        comment: "Launch at login row subtitle"
+    )
+    static let textSplashPickerRecommended = NSLocalizedString(
+        "splash.picker.recommended", value: "Recommended", comment: "Custom picker recommended badge"
+    )
+    static let textPickerRequiresScreenRecording = NSLocalizedString(
+        "picker.requiresScreenRecording", value: "Requires Screen Recording",
+        comment: "Pro picker capability note: needs the Screen Recording permission"
+    )
+    static let textPickerGrantAccessibilityButton = NSLocalizedString(
+        "picker.grantAccessibility", value: "Grant Accessibility",
+        comment: "Button to grant the optional Accessibility permission for the Pro picker"
+    )
+    static let textLoupeTheme = NSLocalizedString(
+        "loupe.theme", value: "Loupe style", comment: "Label for the Pro picker loupe theme setting"
+    )
+    static let textLoupeThemeLens = NSLocalizedString(
+        "loupe.theme.lens", value: "Lens", comment: "Loupe theme: coloured rim with engraved text"
+    )
+    static let textLoupeThemeBadge = NSLocalizedString(
+        "loupe.theme.badge", value: "Badge", comment: "Loupe theme: white badges on the inside edge"
+    )
+    static let textLoupeThemeCard = NSLocalizedString(
+        "loupe.theme.card", value: "Card", comment: "Loupe theme: plain magnifier with a readout card beside it"
+    )
+    static let textPickerPermissionsIntro = NSLocalizedString(
+        "picker.permissions.intro", value: "To enable the Pro picker, you’ll need to grant the following permissions:",
+        comment: "Intro line above the Pro picker permission buttons"
+    )
+    static let textPickerPermScreenRecording = NSLocalizedString(
+        "picker.perm.screenRecording", value: "Screen Recording",
+        comment: "Permission pill label: Screen Recording"
+    )
+    static let textPickerPermAccessibility = NSLocalizedString(
+        "picker.perm.accessibility", value: "Accessibility",
+        comment: "Permission pill label: Accessibility"
+    )
+    static let textPickerAccessibilityNote = NSLocalizedString(
+        "picker.accessibilityNote",
+        value: "Optional — lets Escape and arrow-key nudging work while picking over other apps.",
+        comment: "Explains what the optional Accessibility permission adds to the Pro picker"
+    )
+    static let textSplashPickerPermission = NSLocalizedString(
+        "splash.picker.permission", value: "Needs Screen Recording permission",
+        comment: "Custom picker permission note"
+    )
+    static let textSplashPickerFallback = NSLocalizedString(
+        "splash.picker.fallback", value: "Not now? You’ll use the Basic picker.",
+        comment: "Pro picker declined fallback note"
+    )
+    static let textSplashFooter = NSLocalizedString(
+        "splash.footer", value: "You can change all of this in Settings.",
+        comment: "Splash footer note"
+    )
+    static let textSplashDontShowAgain = NSLocalizedString(
+        "splash.dontShowAgain", value: "Don’t show this again",
+        comment: "Splash: pre-selected checkbox to stop showing the splash on launch"
+    )
+    static let textSplashConfirmTitle = NSLocalizedString(
+        "splash.confirm.title", value: "Use Pika’s Pro picker?",
+        comment: "Get started confirmation title when the Basic picker is selected"
+    )
+    static let textSplashConfirmBody = NSLocalizedString(
+        "splash.confirm.body",
+        value: "The Pro picker shows the colour, its format, and live contrast right in the "
+            + "loupe as you pick — a much nicer experience than the macOS sampler. "
+            + "You can always switch later in Settings.",
+        comment: "Get started confirmation body"
+    )
+    static let textSplashConfirmEnable = NSLocalizedString(
+        "splash.confirm.enable", value: "Enable Pro Picker", comment: "Confirmation: enable Pro picker"
+    )
+    static let textSplashConfirmContinue = NSLocalizedString(
+        "splash.confirm.continue", value: "Continue with Basic Picker",
+        comment: "Confirmation: keep the Basic picker"
+    )
 
     /*
      * About
@@ -191,6 +289,35 @@ enum PikaText {
     static let textColorNamesDescription = NSLocalizedString(
         "preferences.names.description",
         comment: "Hide color names"
+    )
+    static let textColorListTitle = NSLocalizedString(
+        "preferences.colornames.title", value: "Colour Names", comment: "Colour name list section title"
+    )
+    static let textColorListSubtitle = NSLocalizedString(
+        "preferences.colornames.subtitle",
+        value: "Choose the list Pika uses to name colours. Lists come from color.pizza and "
+            + "update automatically; the default works offline.",
+        comment: "Colour name list section subtitle"
+    )
+    static let textColorListDefault = NSLocalizedString(
+        "preferences.colornames.default", value: "Default", comment: "Default colour list name"
+    )
+    static let textColorListStatusChecking = NSLocalizedString(
+        "preferences.colornames.status.checking", value: "Checking color.pizza for updates…",
+        comment: "Colour list tooltip: a refresh is in progress"
+    )
+    static let textColorListStatusUpdatedFormat = NSLocalizedString(
+        "preferences.colornames.status.updated", value: "Updated %@",
+        comment: "Colour list tooltip: when the list was last refreshed (%@ is a date)"
+    )
+    static let textColorListStatusOffline = NSLocalizedString(
+        "preferences.colornames.status.offline",
+        value: "Couldn’t reach color.pizza. Using the saved colour list.",
+        comment: "Colour list tooltip: the last refresh failed, cached/bundled names are in use"
+    )
+    static let textColorListStatusBuiltIn = NSLocalizedString(
+        "preferences.colornames.status.builtin", value: "Using the built-in colour list.",
+        comment: "Colour list tooltip: no network refresh has happened yet"
     )
     static let textFloatDescription = NSLocalizedString(
         "preferences.float.description",
@@ -360,5 +487,72 @@ enum PikaText {
     static let textUrlAppearanceSystem = NSLocalizedString(
         "help.url.appearance.system",
         comment: "Restore system appearance"
+    )
+
+    /*
+     * Custom colour picker
+     */
+
+    // Settings — picker style tiles
+    static let textPickerStyleTitle = NSLocalizedString(
+        "preferences.picker.title", value: "Colour Picker", comment: "Colour picker style section title"
+    )
+    static let textPickerSystemTitle = NSLocalizedString(
+        "preferences.picker.system.title", value: "Basic picker", comment: "Basic picker tile title"
+    )
+    static let textPickerSystemDescription = NSLocalizedString(
+        "preferences.picker.system.description", value: "macOS colour sampler", comment: "Basic picker tile subtitle"
+    )
+    static let textPickerCustomTitle = NSLocalizedString(
+        "preferences.picker.custom.title", value: "Pro picker", comment: "Pro picker tile title"
+    )
+    static let textPickerCustomDescription = NSLocalizedString(
+        "preferences.picker.custom.description",
+        value: "Live contrast & format", comment: "Pro picker tile subtitle"
+    )
+    static let textPickerPairMode = NSLocalizedString(
+        "preferences.picker.pair",
+        value: "Pick a background straight after the foreground", comment: "Pair pick mode toggle"
+    )
+    static let textPickerPermissionNeeded = NSLocalizedString(
+        "preferences.picker.permission",
+        value: "Pika needs Screen Recording permission to sample pixels for the Pro picker.",
+        comment: "Screen recording permission explanation"
+    )
+    static let textPickerRelaunchNote = NSLocalizedString(
+        "preferences.picker.relaunch.note",
+        value: "Allow Screen Recording for Pika in System Settings, then relaunch Pika to finish enabling the Pro picker.",
+        comment: "Screen recording relaunch guidance"
+    )
+    static let textPickerRelaunchButton = NSLocalizedString(
+        "preferences.picker.relaunch.button", value: "Relaunch Pika",
+        comment: "Relaunch Pika button"
+    )
+    static let textPickerGrantButton = NSLocalizedString(
+        "preferences.picker.grant.button", value: "Grant Permission",
+        comment: "Grant Screen Recording permission button"
+    )
+
+    // Permission revoked alert
+    static let textPickerCustomRevertedTitle = NSLocalizedString(
+        "picker.reverted.title", value: "Switched to the Basic picker",
+        comment: "Permission revoked alert title"
+    )
+    static let textPickerCustomRevertedBody = NSLocalizedString(
+        "picker.reverted.body",
+        value: "Pika’s Pro picker needs Screen Recording permission, which isn’t currently granted. "
+            + "You can re-enable it in Settings once permission is allowed.",
+        comment: "Permission revoked alert body"
+    )
+
+    // Loupe slot indicator
+    // Splash picker choice
+    static let textSplashPickerPrompt = NSLocalizedString(
+        "splash.picker.prompt", value: "Colour picker", comment: "Splash picker choice label"
+    )
+
+    // Pick pair shortcut
+    static let textPickPair = NSLocalizedString(
+        "color.pick.pair", value: "Pick pair", comment: "Pick a foreground then background pair"
     )
 }
