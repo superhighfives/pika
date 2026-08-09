@@ -76,6 +76,7 @@
 		EA0C526025AB5A2B00AFF716 /* NavigationMenuItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C525F25AB5A2B00AFF716 /* NavigationMenuItems.swift */; };
 		EA0C526425AB5D1700AFF716 /* PikaWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C526325AB5D1700AFF716 /* PikaWindow.swift */; };
 		EA0C526F25AB683400AFF716 /* EyedropperButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C526E25AB683400AFF716 /* EyedropperButton.swift */; };
+		DEC0FACE0000000000000022 /* EditableColorValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC0FACE0000000000000020 /* EditableColorValue.swift */; };
 		EA136072284887E9004F1630 /* AppearanceButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA136071284887E9004F1630 /* AppearanceButtonStyle.swift */; };
 		EA257BD125D8629300C3FC54 /* SwapButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA257BD025D8629300C3FC54 /* SwapButtonStyle.swift */; };
 		EA424C7D25CDEF98009056A9 /* ComplianceToggleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA424C7C25CDEF98009056A9 /* ComplianceToggleGroup.swift */; };
@@ -162,6 +163,7 @@
 		EAE23DC52D032A38005BB270 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6F3259CF29300FA2F67 /* AboutView.swift */; };
 		EAE23DC62D032A38005BB270 /* KeyboardShortcutKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA8AE1825B8EC070049299B /* KeyboardShortcutKey.swift */; };
 		EAE23DC72D032A38005BB270 /* EyedropperButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C526E25AB683400AFF716 /* EyedropperButton.swift */; };
+		DEC0FACE0000000000000023 /* EditableColorValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC0FACE0000000000000020 /* EditableColorValue.swift */; };
 		EAE23DC82D032A38005BB270 /* MetalShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = EA72BB8225A5334B008205E7 /* MetalShader.metal */; };
 		EAE23DC92D032A38005BB270 /* SwapButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA257BD025D8629300C3FC54 /* SwapButtonStyle.swift */; };
 		EAE23DCA2D032A38005BB270 /* NSWindowFade.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA72BBA825A7CE9C008205E7 /* NSWindowFade.swift */; };
@@ -287,6 +289,7 @@
 		EA0C525F25AB5A2B00AFF716 /* NavigationMenuItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationMenuItems.swift; sourceTree = "<group>"; };
 		EA0C526325AB5D1700AFF716 /* PikaWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PikaWindow.swift; sourceTree = "<group>"; };
 		EA0C526E25AB683400AFF716 /* EyedropperButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyedropperButton.swift; sourceTree = "<group>"; };
+		DEC0FACE0000000000000020 /* EditableColorValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableColorValue.swift; sourceTree = "<group>"; };
 		EA0F36AE2929138E00BFC7EB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
 		EA0F36B02929139000BFC7EB /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
 		EA136071284887E9004F1630 /* AppearanceButtonStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppearanceButtonStyle.swift; sourceTree = "<group>"; };
@@ -585,6 +588,7 @@
 			children = (
 				EA635DE025B4FC580014D91A /* ColorPickers.swift */,
 				EA0C526E25AB683400AFF716 /* EyedropperButton.swift */,
+				DEC0FACE0000000000000020 /* EditableColorValue.swift */,
 				EA635DE925B534C80014D91A /* EyedropperItem.swift */,
 			);
 			name = Eyedropper;
@@ -995,6 +999,7 @@
 				CC000001000000000000AB11 /* CGFloat+Format.swift in Sources */,
 				EAA8AE1925B8EC070049299B /* KeyboardShortcutKey.swift in Sources */,
 				EA0C526F25AB683400AFF716 /* EyedropperButton.swift in Sources */,
+				DEC0FACE0000000000000022 /* EditableColorValue.swift in Sources */,
 				EA72BB8425A5334B008205E7 /* MetalShader.metal in Sources */,
 				EA257BD125D8629300C3FC54 /* SwapButtonStyle.swift in Sources */,
 				EA72BBA925A7CE9C008205E7 /* NSWindowFade.swift in Sources */,
@@ -1087,6 +1092,7 @@
 				EAE23DC62D032A38005BB270 /* KeyboardShortcutKey.swift in Sources */,
 				F8ABAC5B2EAAD0DF008CD152 /* ColorPickOverlay.swift in Sources */,
 				EAE23DC72D032A38005BB270 /* EyedropperButton.swift in Sources */,
+				DEC0FACE0000000000000023 /* EditableColorValue.swift in Sources */,
 				EAE23DC82D032A38005BB270 /* MetalShader.metal in Sources */,
 				EAE2EB9F2D03C3DE00FA9BC9 /* LookUpAPI.swift in Sources */,
 				EAE23DC92D032A38005BB270 /* SwapButtonStyle.swift in Sources */,

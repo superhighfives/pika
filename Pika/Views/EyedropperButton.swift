@@ -1,50 +1,6 @@
 import Defaults
 import SwiftUI
 
-private struct ValueWidthKey: PreferenceKey {
-    static var defaultValue: CGFloat = 0
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) { value = nextValue() }
-}
-
-/// The colour value, shrunk to fit two lines as its column narrows. The font size is
-/// computed deterministically from the (font-independent) column width, so — unlike
-/// `minimumScaleFactor` + `lineLimit` — the wrap can't oscillate between one and two
-/// lines during a resize.
-struct AdaptiveValueText: View {
-    let value: String
-    let color: Color
-    private let baseSize: CGFloat = 18
-    private let minSize: CGFloat = 11
-    @State private var width: CGFloat = 0
-
-    private var fontSize: CGFloat {
-        guard width > 4 else { return baseSize }
-        let full = (value as NSString).size(withAttributes: [.font: NSFont.systemFont(ofSize: baseSize)]).width
-        guard full > 0 else { return baseSize }
-        // Scale the font *proportionally* with the column width so the wrap point stays
-        // put as the window resizes — no bistable jumping. The 1.5 factor (vs a
-        // theoretical 2 for two full lines) leaves slack for word-boundary wrapping, so
-        // long values still fit two lines instead of spilling to a truncated third.
-        let scale = min(1, (1.5 * width) / full)
-        return max(minSize, baseSize * scale)
-    }
-
-    var body: some View {
-        Text(value)
-            .foregroundStyle(color)
-            .font(.system(size: fontSize, weight: .regular))
-            .lineLimit(2)
-            .truncationMode(.tail)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(
-                GeometryReader { geo in
-                    Color.clear.preference(key: ValueWidthKey.self, value: geo.size.width)
-                }
-            )
-            .onPreferenceChange(ValueWidthKey.self) { width = $0 }
-    }
-}
-
 struct EyedropperButton: View {
     @ObservedObject var eyedropper: Eyedropper
     @Default(.colorFormat) var colorFormat
@@ -57,60 +13,76 @@ struct EyedropperButton: View {
     @State private var colorSpace = Defaults[.colorSpace]
     @State private var hoverTask: Task<Void, Never>?
     @State private var childHovered: Bool = false
+    @State private var valueInvalid: Bool = false
 
     var body: some View {
         ZStack {
+            // Background pick target: a click anywhere that isn't the editable value (or the
+            // non-interactive labels above it, which fall through) starts a pick.
             Button(action: {
                 NSApp.sendAction(eyedropper.type.pickSelector, to: nil, from: nil)
             }, label: {
-                ZStack {
-                    VStack(alignment: .leading, spacing: 2.0) {
-                        // Visibility is size-aware (`adaptive.showsTypeLabels` already
-                        // folds in the preview-pill overlap) so labels fade out as the
-                        // window shrinks and return when it grows again.
-                        let showsTypeLabel = adaptive.showsTypeLabels
-                        Text(eyedropper.type.description)
-                            .font(.caption)
-                            .fontWeight(.semibold)
-                            .foregroundStyle(eyedropper.color.getUIColor().opacity(0.75))
-                            .opacity(showsTypeLabel ? 1 : 0)
-                            .animation(
-                                showsTypeLabel
-                                    ? .easeInOut(duration: 0.25).delay(0.3)
-                                    : .easeInOut(duration: 0.2),
-                                value: showsTypeLabel
-                            )
-
-                        VStack(alignment: .leading, spacing: 6.0) {
-                            // Trailing gutter keeps the value clear of the copy /
-                            // system-picker hover buttons; the value itself shrinks to fit
-                            // two lines (see AdaptiveValueText).
-                            AdaptiveValueText(
-                                value: (eyedropper.color.usingColorSpace(colorSpace) ?? eyedropper.color)
-                                    .toFormat(format: colorFormat, style: copyFormat),
-                                color: Color(eyedropper.color.getUIColor())
-                            )
-                            .padding(.trailing, 32.0)
-
-                            if !hideColorNames, adaptive.showsColorNames {
-                                Text(eyedropper.getClosestColor())
-                                    .font(.system(size: 12, weight: .medium))
-                                    .foregroundStyle(eyedropper.color.getUIColor())
-                            }
-                        }
-                    }
-                    .padding(.all, 10.0)
-                    .modify {
-                        let shadowColor: Color = eyedropper.color.getUIColor() == .white ? .black : .white
-                        $0
-                            .shadow(color: shadowColor.opacity(0.30), radius: 0, x: 0, y: 1)
-                            .shadow(color: shadowColor.opacity(0.10), radius: 3, x: 0, y: 0)
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
-                }
+                Color.clear
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .contentShape(Rectangle())
             })
             .buttonStyle(EyedropperButtonStyle(color: Color(eyedropper.color)))
             .focusable(false)
+
+            // Content overlay, lifted out of the pick button so the value's fields receive
+            // clicks. The type label and colour name disable hit-testing so clicks fall
+            // through to the pick button behind them.
+            VStack(alignment: .leading, spacing: 2.0) {
+                // Visibility is size-aware (`adaptive.showsTypeLabels` already folds in the
+                // preview-pill overlap) so labels fade out as the window shrinks and return
+                // when it grows again. The invalid pill overrides the fade so it's never hidden.
+                let showsTypeLabel = adaptive.showsTypeLabels
+                HStack(spacing: 6.0) {
+                    Text(eyedropper.type.description)
+                        .font(.caption)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(eyedropper.color.getUIColor().opacity(0.75))
+                    if valueInvalid {
+                        InvalidInputPill(uiColor: eyedropper.color.getUIColor())
+                    }
+                }
+                .opacity(showsTypeLabel || valueInvalid ? 1 : 0)
+                .animation(
+                    showsTypeLabel
+                        ? .easeInOut(duration: 0.25).delay(0.3)
+                        : .easeInOut(duration: 0.2),
+                    value: showsTypeLabel
+                )
+                .allowsHitTesting(false)
+
+                VStack(alignment: .leading, spacing: 6.0) {
+                    // Trailing gutter keeps the value clear of the copy / system-picker hover
+                    // buttons; the value shrinks to fit as its column narrows.
+                    EditableColorValue(
+                        eyedropper: eyedropper,
+                        format: colorFormat,
+                        style: copyFormat,
+                        colorSpace: colorSpace,
+                        isInvalid: $valueInvalid
+                    )
+                    .padding(.trailing, 32.0)
+
+                    if !hideColorNames, adaptive.showsColorNames {
+                        Text(eyedropper.getClosestColor())
+                            .font(.system(size: 12, weight: .medium))
+                            .foregroundStyle(eyedropper.color.getUIColor())
+                            .allowsHitTesting(false)
+                    }
+                }
+            }
+            .padding(.all, 10.0)
+            .modify {
+                let shadowColor: Color = eyedropper.color.getUIColor() == .white ? .black : .white
+                $0
+                    .shadow(color: shadowColor.opacity(0.30), radius: 0, x: 0, y: 1)
+                    .shadow(color: shadowColor.opacity(0.10), radius: 3, x: 0, y: 0)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
 
             VStack(spacing: 4.0) {
                 Button(action: {
