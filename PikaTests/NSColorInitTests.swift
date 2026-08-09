@@ -56,6 +56,14 @@ final class NSColorInitTests: XCTestCase {
         XCTAssertEqual(rgba.b, 0.0, accuracy: 0.01)
     }
 
+    func test_initHex_invalidLength_fallsBackToBlack() {
+        let color = NSColor(hex: "12345")
+        let rgba = color.toRGBAComponents(in: .sRGB)
+        XCTAssertEqual(rgba.r, 0.0, accuracy: 0.01)
+        XCTAssertEqual(rgba.g, 0.0, accuracy: 0.01)
+        XCTAssertEqual(rgba.b, 0.0, accuracy: 0.01)
+    }
+
     func test_initHex_3Char_expandedCorrectly() {
         // "F00" should expand to "FF0000"
         let color = NSColor(hex: "F00")

@@ -16,12 +16,16 @@ extension NSColor {
 
      - parameter hex:     The hex color, i.e. "FF0072" or "#FF0072".
      - parameter alpha:   The opacity of the color, value between [0,1]. Optional. Default: 1
+
+     Invalid input (wrong length) falls back to black rather than crashing — this is fed
+     remote and user-facing strings (URL schemes, fetched colour lists).
      */
     convenience init(hex: String, alpha: CGFloat = 1) {
         var hex = hex.replacingOccurrences(of: "#", with: "")
 
         guard hex.count == 3 || hex.count == 6 else {
-            fatalError("Hex characters must be either 3 or 6 characters.")
+            self.init(red: 0, green: 0, blue: 0, alpha: alpha)
+            return
         }
 
         if hex.count == 3 {
