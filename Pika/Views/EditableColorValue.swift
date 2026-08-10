@@ -40,10 +40,19 @@ struct EditableColorValue: View {
     private let baseSize: CGFloat = 18
     private let minSize: CGFloat = 11
 
+    /// Identifies which (format, style) a cached `values` array was decomposed for, so a
+    /// format/style switch is detected even when the component count doesn't change (every
+    /// non-hex format always has exactly 3 components).
+    private struct FormatStyleKey: Equatable {
+        let format: ColorFormat
+        let style: CopyFormat
+    }
+
     @State private var width: CGFloat = 0
     /// Working component strings. Kept in sync with the colour when idle; owned by the user
     /// while a field is focused.
     @State private var values: [String] = []
+    @State private var valuesKey: FormatStyleKey?
     @State private var isEditing = false
     @State private var preEditColor: NSColor?
     /// The colour we last pushed to `eyedropper` ourselves (live preview or commit). Lets
@@ -83,7 +92,9 @@ struct EditableColorValue: View {
                     fontSize: size,
                     focusedIndex: $focusedIndex,
                     onSubmit: commitEditing,
-                    onCancel: revertEditing
+                    onCancel: revertEditing,
+                    onDragBegin: { beginDragSession(layout: layout) },
+                    onDragEnd: finishEditing
                 )
                 if index < layout.separators.count {
                     affix(layout.separators[index], size: size)
@@ -109,27 +120,37 @@ struct EditableColorValue: View {
                 syncValuesFromColor(decomposed)
             }
         }
-        .onChange(of: format) { _ in if !isEditing { syncValuesFromColor(decomposed) } }
-        .onChange(of: style) { _ in if !isEditing { syncValuesFromColor(decomposed) } }
+        .onChange(of: format) { _ in handleFormatOrStyleChange() }
+        .onChange(of: style) { _ in handleFormatOrStyleChange() }
     }
 
     private func affix(_ text: String, size: CGFloat) -> some View {
         Text(text)
             .font(.system(size: size, weight: .regular))
             .foregroundStyle(Color(uiColor).opacity(0.5))
+            .lineLimit(1)
+            .fixedSize(horizontal: true, vertical: false)
     }
 
     // MARK: - Values ↔ colour
 
     private func syncValuesFromColor(_ layout: DecomposedColor) {
         values = layout.values
+        valuesKey = FormatStyleKey(format: format, style: style)
     }
 
     private func binding(for index: Int, layout: DecomposedColor) -> Binding<String> {
-        Binding(
-            get: { index < values.count ? values[index] : layout.values[index] },
+        let currentKey = FormatStyleKey(format: format, style: style)
+        return Binding(
+            get: {
+                guard valuesKey == currentKey, index < values.count else { return layout.values[index] }
+                return values[index]
+            },
             set: { newValue in
-                if values.count != layout.components.count { values = layout.values }
+                if valuesKey != currentKey || values.count != layout.components.count {
+                    values = layout.values
+                    valuesKey = currentKey
+                }
                 guard index < values.count else { return }
                 values[index] = newValue
                 previewIfValid(layout: layout)
@@ -139,6 +160,25 @@ struct EditableColorValue: View {
 
     // MARK: - Editing lifecycle
 
+    /// A format or copy-style switch changes how the same colour is *displayed*, not the colour
+    /// itself. Mid-edit, the typed values are in the old format's units and can't be reinterpreted
+    /// safely, so abort the session rather than risk a bogus commit; otherwise just resync.
+    private func handleFormatOrStyleChange() {
+        if isEditing {
+            abortEditingForExternalPick()
+        } else {
+            syncValuesFromColor(decomposed)
+        }
+    }
+
+    private func beginDragSession(layout: DecomposedColor) {
+        guard !isEditing else { return }
+        isEditing = true
+        preEditColor = eyedropper.color
+        values = layout.values
+        valuesKey = FormatStyleKey(format: format, style: style)
+    }
+
     private func handleFocusChange(to newValue: Int?, layout: DecomposedColor) {
         if newValue != nil {
             // Entering (or moving between) fields — start a session on the first focus.
@@ -146,6 +186,7 @@ struct EditableColorValue: View {
                 isEditing = true
                 preEditColor = eyedropper.color
                 values = layout.values
+                valuesKey = FormatStyleKey(format: format, style: style)
             }
         } else if isEditing {
             // Focus left every field (blur / tab-out) — commit if valid, otherwise revert.
@@ -202,7 +243,7 @@ struct EditableColorValue: View {
         isInvalid = false
         preEditColor = nil
         lastPreviewedColor = nil
-        values = decomposed.values
+        syncValuesFromColor(decomposed)
     }
 }
 
@@ -217,11 +258,19 @@ private struct ColorComponentField: View {
     @FocusState.Binding var focusedIndex: Int?
     let onSubmit: () -> Void
     let onCancel: () -> Void
+    /// Fired when a drag-to-scrub gesture starts/ends, so the parent can wrap it in the same
+    /// live-preview/commit session used for typed edits (one history entry per drag, not per pixel).
+    let onDragBegin: () -> Void
+    let onDragEnd: () -> Void
 
     @State private var isHovering = false
+    /// Non-nil while a drag-to-scrub gesture owns this field; holds the value at drag start.
+    @State private var dragOrigin: Double?
 
     private var isFocused: Bool { focusedIndex == index }
     private var isInvalid: Bool { isFocused && !component.isValid(text) }
+    /// Hex is a single opaque string with no natural min/max to scrub between.
+    private var isDraggable: Bool { component.kind != .hex }
 
     var body: some View {
         TextField("", text: $text)
@@ -231,6 +280,9 @@ private struct ColorComponentField: View {
             .fixedSize()
             .multilineTextAlignment(.center)
             .focused($focusedIndex, equals: index)
+            // We already draw a custom focus outline below; the system's own focus ring is wider
+            // than that outline and made focused fields look larger than their neighbours.
+            .focusEffectDisabled()
             .onSubmit(onSubmit)
             .onExitCommand(perform: onCancel)
             .padding(.horizontal, 3)
@@ -247,8 +299,56 @@ private struct ColorComponentField: View {
                     )
             )
             .contentShape(Rectangle())
-            .onHover { isHovering = $0 }
+            .onHover { hovering in
+                isHovering = hovering
+                guard isDraggable, !isFocused else { return }
+                if hovering { NSCursor.resizeLeftRight.set() } else { NSCursor.arrow.set() }
+            }
             .animation(.easeInOut(duration: 0.12), value: isHovering)
             .animation(.easeInOut(duration: 0.12), value: isFocused)
+            // Only competes with the TextField's own click/drag-to-select while unfocused, so
+            // typing and text selection inside an already-focused field are unaffected.
+            .gesture(
+                DragGesture(minimumDistance: 2)
+                    .onChanged(handleDragChanged)
+                    .onEnded(handleDragEnded),
+                including: isDraggable && !isFocused ? .all : .subviews
+            )
+    }
+
+    /// Click-and-drag left/right nudges the value: 1 unit per pixel, or 0.1 per pixel while
+    /// holding Option for fine adjustment. Clamped to the component's range when it has one.
+    private func handleDragChanged(_ value: DragGesture.Value) {
+        guard isDraggable else { return }
+        if dragOrigin == nil {
+            dragOrigin = Double(text.trimmingCharacters(in: .whitespaces)) ?? 0
+            NSCursor.resizeLeftRight.set()
+            onDragBegin()
+        }
+        guard let origin = dragOrigin else { return }
+        let fine = NSEvent.modifierFlags.contains(.option)
+        var newValue = origin + Double(value.translation.width) * (fine ? 0.1 : 1.0)
+        if let range = component.range {
+            newValue = min(max(newValue, range.lowerBound), range.upperBound)
+        }
+        text = Self.formattedDragValue(newValue, kind: component.kind)
+    }
+
+    private func handleDragEnded(_: DragGesture.Value) {
+        guard dragOrigin != nil else { return }
+        dragOrigin = nil
+        NSCursor.arrow.set()
+        onDragEnd()
+    }
+
+    private static func formattedDragValue(_ value: Double, kind: ComponentKind) -> String {
+        switch kind {
+        case .hex:
+            return ""
+        case .integer:
+            return String(Int(value.rounded()))
+        case .decimal:
+            return CGFloat(value).strippedDecimalString(maxDecimalPlaces: 4)
+        }
     }
 }
