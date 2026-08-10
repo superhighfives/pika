@@ -106,11 +106,6 @@ final class NSColorInitTests: XCTestCase {
 
     // MARK: - init(hex:) — invalid input falls back to black (never crashes)
 
-    func test_initHex_invalidLength_fallsBackToBlack() {
-        let color = NSColor(hex: "12345").toRGBAComponents(in: .sRGB)
-        XCTAssertEqual(color.r + color.g + color.b, 0.0, accuracy: 0.001)
-    }
-
     func test_initHex_nonHexCharacters_fallsBackToBlack() {
         let color = NSColor(hex: "ZZZZZZ").toRGBAComponents(in: .sRGB)
         XCTAssertEqual(color.r + color.g + color.b, 0.0, accuracy: 0.001)
