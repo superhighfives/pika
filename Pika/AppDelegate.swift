@@ -112,10 +112,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
-    // KeyboardShortcuts 3.x isolates `onKeyUp(for:action:)` to the main actor, so this
-    // registration must run there too. Its only caller, `applicationDidFinishLaunching`,
-    // is already main-actor isolated.
-    @MainActor
     private func registerTogglePikaShortcut() {
         KeyboardShortcuts.onKeyUp(for: .togglePika) { [] in
             if Defaults[.viewedSplash] {
