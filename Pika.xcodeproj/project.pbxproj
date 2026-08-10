@@ -1495,7 +1495,7 @@
 			repositoryURL = "https://github.com/sindresorhus/KeyboardShortcuts";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 3.0.0;
+				minimumVersion = 2.0.0;
 			};
 		};
 		EAD0B6E7259CEF8600FA2F67 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
