@@ -93,7 +93,7 @@ struct EditableColorValue: View {
                     focusedIndex: $focusedIndex,
                     onSubmit: commitEditing,
                     onCancel: revertEditing,
-                    onDragBegin: { beginDragSession(layout: layout) },
+                    onDragBegin: { beginDragSession(index: index, layout: layout) },
                     onDragEnd: finishEditing
                 )
                 if index < layout.separators.count {
@@ -171,12 +171,20 @@ struct EditableColorValue: View {
         }
     }
 
-    private func beginDragSession(layout: DecomposedColor) {
-        guard !isEditing else { return }
+    /// Starting a drag on a field that isn't the one currently owning the edit session (if any)
+    /// joins that session by moving focus to it, the same way clicking a new field mid-edit does
+    /// in `handleFocusChange` — rather than letting a second, session-less drag mutate the shared
+    /// `values` array and then tear down the first field's session on release.
+    private func beginDragSession(index: Int, layout: DecomposedColor) {
+        if isEditing {
+            focusedIndex = index
+            return
+        }
         isEditing = true
         preEditColor = eyedropper.color
         values = layout.values
         valuesKey = FormatStyleKey(format: format, style: style)
+        focusedIndex = index
     }
 
     private func handleFocusChange(to newValue: Int?, layout: DecomposedColor) {
