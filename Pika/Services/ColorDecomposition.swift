@@ -31,7 +31,9 @@ struct ColorComponent: Equatable {
             guard let n = Int(trimmed) else { return false }
             return range.map { $0.contains(Double(n)) } ?? true
         case .decimal:
-            guard let n = Double(trimmed) else { return false }
+            // `Double("inf")`/`Double("nan")` parse successfully but aren't valid colour
+            // values, and a nil range (e.g. Lab a/b) wouldn't otherwise reject them.
+            guard let n = Double(trimmed), n.isFinite else { return false }
             return range.map { $0.contains(n) } ?? true
         }
     }
@@ -65,7 +67,7 @@ extension ColorFormat {
     func decompose(_ color: NSColor, style: CopyFormat, in cs: NSColorSpace) -> DecomposedColor {
         switch self {
         case .hex:
-            let digits = String(format: "%06x", color.toHex())
+            let digits = String(format: "%06x", color.toHex(in: cs))
             return DecomposedColor(
                 leading: style == .css ? "#" : "",
                 components: [ColorComponent(value: digits, kind: .hex, range: nil)],

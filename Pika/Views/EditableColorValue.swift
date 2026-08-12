@@ -1,3 +1,4 @@
+import AppKit
 import Defaults
 import SwiftUI
 
@@ -175,31 +176,38 @@ struct EditableColorValue: View {
     /// joins that session by moving focus to it, the same way clicking a new field mid-edit does
     /// in `handleFocusChange` — rather than letting a second, session-less drag mutate the shared
     /// `values` array and then tear down the first field's session on release.
+    ///
+    /// A *fresh* session deliberately does NOT set `focusedIndex`: scrubbing (drag or scroll)
+    /// must never focus the real `TextField`, or its AppKit field editor becomes first responder
+    /// and fights the scrub with click-to-edit/select-all behaviour. An unfocused `TextField`
+    /// with a changing `text` binding just renders like a label — no editor involved.
     private func beginDragSession(index: Int, layout: DecomposedColor) {
         if isEditing {
             focusedIndex = index
             return
         }
-        isEditing = true
-        preEditColor = eyedropper.color
-        values = layout.values
-        valuesKey = FormatStyleKey(format: format, style: style)
-        focusedIndex = index
+        startSession(layout: layout)
     }
 
     private func handleFocusChange(to newValue: Int?, layout: DecomposedColor) {
         if newValue != nil {
             // Entering (or moving between) fields — start a session on the first focus.
             if !isEditing {
-                isEditing = true
-                preEditColor = eyedropper.color
-                values = layout.values
-                valuesKey = FormatStyleKey(format: format, style: style)
+                startSession(layout: layout)
             }
         } else if isEditing {
             // Focus left every field (blur / tab-out) — commit if valid, otherwise revert.
             finishEditing()
         }
+    }
+
+    /// Snapshot the colour and working values at the start of an edit or drag session, so
+    /// `finishEditing`/`abortEditingForExternalPick` have a consistent point to commit or revert to.
+    private func startSession(layout: DecomposedColor) {
+        isEditing = true
+        preEditColor = eyedropper.color
+        values = layout.values
+        valuesKey = FormatStyleKey(format: format, style: style)
     }
 
     /// Recompose the working values and preview them live; flag invalid input for the pill.
@@ -257,6 +265,13 @@ struct EditableColorValue: View {
 
 /// A single focusable numeric/hex field styled to the swatch's UI colour, with the four design
 /// states: default (bare), hover (filled), focus (outlined), invalid (dashed outline).
+///
+/// Backed by a custom `NSTextField` (`ScrubTextField`, below) rather than a plain SwiftUI
+/// `TextField`. Three attempts to bolt click-drag-to-scrub onto a native `TextField` via
+/// SwiftUI `DragGesture`/local event monitors all lost the race against AppKit's own
+/// click-to-focus — a raw mouseDown on a real `TextField` always focuses/selects it immediately,
+/// before any gesture recognizer gets a chance to see the drag. Owning `mouseDown` directly is
+/// the only way to decide click-vs-drag *before* anything focuses.
 private struct ColorComponentField: View {
     @Binding var text: String
     let component: ColorComponent
@@ -272,8 +287,10 @@ private struct ColorComponentField: View {
     let onDragEnd: () -> Void
 
     @State private var isHovering = false
-    /// Non-nil while a drag-to-scrub gesture owns this field; holds the value at drag start.
-    @State private var dragOrigin: Double?
+    /// Non-nil while a two-finger scroll-to-scrub gesture owns this field; holds the value at
+    /// scroll start. `scrollAccumulated` tracks total vertical scroll since then.
+    @State private var scrollOrigin: Double?
+    @State private var scrollAccumulated: CGFloat = 0
 
     private var isFocused: Bool { focusedIndex == index }
     private var isInvalid: Bool { isFocused && !component.isValid(text) }
@@ -281,75 +298,85 @@ private struct ColorComponentField: View {
     private var isDraggable: Bool { component.kind != .hex }
 
     var body: some View {
-        TextField("", text: $text)
-            .textFieldStyle(.plain)
-            .font(.system(size: fontSize, weight: .regular))
-            .foregroundStyle(Color(uiColor))
-            .fixedSize()
-            .multilineTextAlignment(.center)
-            .focused($focusedIndex, equals: index)
-            // We already draw a custom focus outline below; the system's own focus ring is wider
-            // than that outline and made focused fields look larger than their neighbours.
-            .focusEffectDisabled()
-            .onSubmit(onSubmit)
-            .onExitCommand(perform: onCancel)
-            .padding(.horizontal, 3)
-            .padding(.vertical, 1)
-            .background(
-                RoundedRectangle(cornerRadius: 5)
-                    .fill(Color(uiColor).opacity(isHovering && !isFocused ? 0.18 : 0))
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: 5)
-                    .strokeBorder(
-                        Color(uiColor).opacity(isFocused ? 0.9 : 0),
-                        style: StrokeStyle(lineWidth: 1, dash: isInvalid ? [2, 2] : [])
+        ScrubbableColorField(
+            text: $text,
+            fontSize: fontSize,
+            textColor: uiColor,
+            isDraggable: isDraggable,
+            range: component.range,
+            kind: component.kind,
+            isFocused: isFocused,
+            onFocusChange: { focused in focusedIndex = focused ? index : (focusedIndex == index ? nil : focusedIndex) },
+            onSubmit: onSubmit,
+            onCancel: onCancel,
+            onDragBegin: onDragBegin,
+            onDragEnd: onDragEnd
+        )
+        .fixedSize()
+        .padding(.horizontal, 1)
+        .padding(.vertical, 1)
+        .background(
+            RoundedRectangle(cornerRadius: 5)
+                .fill(Color(uiColor).opacity(isHovering && !isFocused ? 0.18 : 0))
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 5)
+                .strokeBorder(
+                    Color(uiColor).opacity(isFocused ? 0.9 : 0),
+                    style: StrokeStyle(lineWidth: 1, dash: isInvalid ? [2, 2] : [])
+                )
+        )
+        .contentShape(Rectangle())
+        .onHover { hovering in
+            isHovering = hovering
+            guard !isFocused else { return }
+            // Only show the scrub cursor where scrubbing is actually possible; hex has no
+            // natural min/max to scrub between, so it keeps the ordinary text cursor.
+            if hovering { (isDraggable ? NSCursor.resizeLeftRight : NSCursor.iBeam).set() } else { NSCursor.arrow.set() }
+        }
+        .animation(.easeInOut(duration: 0.12), value: isHovering)
+        .animation(.easeInOut(duration: 0.12), value: isFocused)
+        .background(
+            Group {
+                if isDraggable {
+                    ScrollValueAdapter(
+                        isEnabled: !isFocused,
+                        onScroll: handleScrollDelta,
+                        onScrollEnd: handleScrollEnded
                     )
-            )
-            .contentShape(Rectangle())
-            .onHover { hovering in
-                isHovering = hovering
-                guard isDraggable, !isFocused else { return }
-                if hovering { NSCursor.resizeLeftRight.set() } else { NSCursor.arrow.set() }
+                }
             }
-            .animation(.easeInOut(duration: 0.12), value: isHovering)
-            .animation(.easeInOut(duration: 0.12), value: isFocused)
-            // Only competes with the TextField's own click/drag-to-select while unfocused, so
-            // typing and text selection inside an already-focused field are unaffected.
-            .gesture(
-                DragGesture(minimumDistance: 2)
-                    .onChanged(handleDragChanged)
-                    .onEnded(handleDragEnded),
-                including: isDraggable && !isFocused ? .all : .subviews
-            )
+            .allowsHitTesting(false)
+        )
     }
 
-    /// Click-and-drag left/right nudges the value: 1 unit per pixel, or 0.1 per pixel while
-    /// holding Option for fine adjustment. Clamped to the component's range when it has one.
-    private func handleDragChanged(_ value: DragGesture.Value) {
+    /// Two-finger trackpad scroll nudges the value the same way click-drag does: accumulated
+    /// vertical scroll maps 1 unit per point (0.1 while holding Option), clamped to range.
+    private func handleScrollDelta(_ deltaY: CGFloat) {
         guard isDraggable else { return }
-        if dragOrigin == nil {
-            dragOrigin = Double(text.trimmingCharacters(in: .whitespaces)) ?? 0
-            NSCursor.resizeLeftRight.set()
+        if scrollOrigin == nil {
+            scrollOrigin = Double(text.trimmingCharacters(in: .whitespaces)) ?? 0
+            scrollAccumulated = 0
             onDragBegin()
         }
-        guard let origin = dragOrigin else { return }
+        guard let origin = scrollOrigin else { return }
+        scrollAccumulated += deltaY
         let fine = NSEvent.modifierFlags.contains(.option)
-        var newValue = origin + Double(value.translation.width) * (fine ? 0.1 : 1.0)
+        var newValue = origin + Double(scrollAccumulated) * (fine ? 0.1 : 1.0)
         if let range = component.range {
             newValue = min(max(newValue, range.lowerBound), range.upperBound)
         }
         text = Self.formattedDragValue(newValue, kind: component.kind)
     }
 
-    private func handleDragEnded(_: DragGesture.Value) {
-        guard dragOrigin != nil else { return }
-        dragOrigin = nil
-        NSCursor.arrow.set()
+    private func handleScrollEnded() {
+        guard scrollOrigin != nil else { return }
+        scrollOrigin = nil
+        scrollAccumulated = 0
         onDragEnd()
     }
 
-    private static func formattedDragValue(_ value: Double, kind: ComponentKind) -> String {
+    fileprivate static func formattedDragValue(_ value: Double, kind: ComponentKind) -> String {
         switch kind {
         case .hex:
             return ""
@@ -358,5 +385,307 @@ private struct ColorComponentField: View {
         case .decimal:
             return CGFloat(value).strippedDecimalString(maxDecimalPlaces: 4)
         }
+    }
+}
+
+/// Captures two-finger trackpad scroll events landing within the wrapped view's bounds and
+/// reports vertical delta/end, mirroring `HorizontalScrollWheelAdapter`'s local-monitor approach
+/// so a scrub field can be nudged the same way click-drag nudges it.
+private struct ScrollValueAdapter: NSViewRepresentable {
+    let isEnabled: Bool
+    let onScroll: (CGFloat) -> Void
+    let onScrollEnd: () -> Void
+
+    func makeNSView(context _: Context) -> ScrollCaptureView {
+        let view = ScrollCaptureView()
+        view.isEnabled = isEnabled
+        view.onScroll = onScroll
+        view.onScrollEnd = onScrollEnd
+        return view
+    }
+
+    func updateNSView(_ view: ScrollCaptureView, context _: Context) {
+        view.isEnabled = isEnabled
+        view.onScroll = onScroll
+        view.onScrollEnd = onScrollEnd
+    }
+
+    final class ScrollCaptureView: NSView {
+        var isEnabled = true
+        var onScroll: ((CGFloat) -> Void)?
+        var onScrollEnd: (() -> Void)?
+        private var monitor: Any?
+        private var isScrolling = false
+
+        override func viewDidMoveToWindow() {
+            super.viewDidMoveToWindow()
+            if window != nil, monitor == nil {
+                monitor = NSEvent.addLocalMonitorForEvents(matching: .scrollWheel) { [weak self] event in
+                    self?.handle(event) ?? event
+                }
+            } else if window == nil, let monitor {
+                NSEvent.removeMonitor(monitor)
+                self.monitor = nil
+            }
+        }
+
+        deinit {
+            if let monitor { NSEvent.removeMonitor(monitor) }
+        }
+
+        private func handle(_ event: NSEvent) -> NSEvent? {
+            guard isEnabled, event.window === window, let window else { return event }
+
+            // Once we own an in-progress scroll, keep tracking it no matter where the cursor
+            // goes: trackpad momentum keeps delivering events (often with a final `.ended`
+            // phase) after the user's fingers leave the trackpad, and by then the cursor has
+            // frequently drifted off this field. Gating termination on `bounds.contains` meant
+            // that final event was silently dropped, `onScrollEnd` never fired, and the parent's
+            // edit session leaked open — so the *next* field touched would find a stale
+            // "already editing" session and force-focus itself.
+            if isScrolling {
+                if event.phase == .ended || event.phase == .cancelled || event.momentumPhase == .ended {
+                    isScrolling = false
+                    onScrollEnd?()
+                    return event
+                }
+                guard event.hasPreciseScrollingDeltas else { return event }
+                let deltaY = event.scrollingDeltaY
+                guard deltaY != 0 else { return event }
+                onScroll?(deltaY)
+                return nil
+            }
+
+            let pointInSelf = convert(event.locationInWindow, from: nil)
+            guard bounds.contains(pointInSelf) else { return event }
+
+            // Only intervene for trackpad/Magic Mouse gesture scrolling, which carries
+            // phase/precise deltas; classic scroll wheels should keep their default behaviour.
+            guard event.hasPreciseScrollingDeltas else { return event }
+            guard event.phase != .ended, event.phase != .cancelled, event.momentumPhase != .ended else { return event }
+
+            let deltaY = event.scrollingDeltaY
+            guard deltaY != 0 else { return event }
+            isScrolling = true
+            onScroll?(deltaY)
+            return nil
+        }
+    }
+}
+
+/// Wraps `ScrubTextField` (below) for SwiftUI. Owns focus explicitly via `isFocused`/
+/// `onFocusChange` rather than `@FocusState`/`.focused()` (which don't bridge to a custom
+/// `NSViewRepresentable`), synced through the field's own `NSTextFieldDelegate` callbacks so it
+/// stays correct however focus changes — click, Tab, or a programmatic request.
+private struct ScrubbableColorField: NSViewRepresentable {
+    @Binding var text: String
+    let fontSize: CGFloat
+    let textColor: NSColor
+    let isDraggable: Bool
+    let range: ClosedRange<Double>?
+    let kind: ComponentKind
+    let isFocused: Bool
+    let onFocusChange: (Bool) -> Void
+    let onSubmit: () -> Void
+    let onCancel: () -> Void
+    /// Fired when a click-drag-to-scrub gesture starts/ends, so the parent can wrap it in the
+    /// same live-preview/commit session used for typed edits.
+    let onDragBegin: () -> Void
+    let onDragEnd: () -> Void
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(text: $text, onSubmit: onSubmit, onCancel: onCancel, onFocusChange: onFocusChange)
+    }
+
+    func makeNSView(context: Context) -> ScrubTextField {
+        let field = ScrubTextField()
+        field.isBordered = false
+        field.drawsBackground = false
+        field.focusRingType = .none
+        field.alignment = .center
+        field.usesSingleLineMode = true
+        field.cell?.wraps = false
+        field.delegate = context.coordinator
+        field.font = NSFont.systemFont(ofSize: fontSize, weight: .regular)
+        field.stringValue = text
+        return field
+    }
+
+    func updateNSView(_ nsView: ScrubTextField, context: Context) {
+        context.coordinator.text = $text
+        if nsView.font?.pointSize != fontSize {
+            nsView.font = NSFont.systemFont(ofSize: fontSize, weight: .regular)
+            nsView.invalidateIntrinsicContentSize()
+        }
+        nsView.textColor = textColor
+        nsView.isDraggable = isDraggable
+        nsView.range = range
+        nsView.kind = kind
+        nsView.onDragBegin = onDragBegin
+        nsView.onDragChanged = { [weak nsView] newValue in
+            nsView?.stringValue = ColorComponentField.formattedDragValue(newValue, kind: kind)
+            text = nsView?.stringValue ?? text
+        }
+        nsView.onDragEnd = onDragEnd
+
+        if nsView.stringValue != text {
+            nsView.stringValue = text
+            nsView.invalidateIntrinsicContentSize()
+            // A programmatic change (drag/scroll, or an external colour landing mid-edit) while
+            // this field is still first responder — keep the caret collapsed at the end rather
+            // than whatever AppKit does by default when `stringValue` changes underneath it.
+            if let editor = nsView.currentEditor() as? NSTextView {
+                let length = (text as NSString).length
+                editor.selectedRange = NSRange(location: length, length: 0)
+            }
+        }
+
+        let editorIsActive = nsView.currentEditor() != nil && nsView.window?.firstResponder === nsView.currentEditor()
+        if isFocused, !editorIsActive {
+            nsView.window?.makeFirstResponder(nsView)
+        } else if !isFocused, editorIsActive {
+            nsView.window?.makeFirstResponder(nil)
+        }
+    }
+
+    final class Coordinator: NSObject, NSTextFieldDelegate {
+        var text: Binding<String>
+        let onSubmit: () -> Void
+        let onCancel: () -> Void
+        let onFocusChange: (Bool) -> Void
+
+        init(text: Binding<String>, onSubmit: @escaping () -> Void, onCancel: @escaping () -> Void, onFocusChange: @escaping (Bool) -> Void) {
+            self.text = text
+            self.onSubmit = onSubmit
+            self.onCancel = onCancel
+            self.onFocusChange = onFocusChange
+        }
+
+        func controlTextDidChange(_ obj: Notification) {
+            guard let field = obj.object as? NSTextField else { return }
+            text.wrappedValue = field.stringValue
+        }
+
+        func controlTextDidBeginEditing(_: Notification) { onFocusChange(true) }
+        func controlTextDidEndEditing(_: Notification) { onFocusChange(false) }
+
+        func control(_: NSControl, textView _: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
+            if commandSelector == #selector(NSResponder.insertNewline(_:)) {
+                onSubmit()
+                return true
+            }
+            if commandSelector == #selector(NSResponder.cancelOperation(_:)) {
+                onCancel()
+                return true
+            }
+            return false
+        }
+    }
+}
+
+/// A plain `NSTextField` subclass that owns its own `mouseDown`, so click-vs-drag is resolved
+/// *before* anything can focus — no second view or event monitor racing the field's native click
+/// handling. A resolved drag never touches first-responder status at all, so the field just
+/// displays a changing string like a label while scrubbing (no editor, no selection, no caret).
+/// A resolved click focuses normally; `becomeFirstResponder` then deterministically collapses
+/// AppKit's default select-all in the same call stack, rather than reacting to it after the fact.
+private final class ScrubTextField: NSTextField {
+    var isDraggable = false
+    var range: ClosedRange<Double>?
+    var kind: ComponentKind = .integer
+    var onDragBegin: (() -> Void)?
+    var onDragChanged: ((Double) -> Void)?
+    var onDragEnd: (() -> Void)?
+
+    private var dragOrigin: Double?
+
+    // The default NSTextFieldCell intrinsic size proved unreliable once `.fixedSize()` queried
+    // it eagerly (fields collapsed to ~0pt wide) — compute it directly from the string and font
+    // instead of trusting the cell's own layout pass.
+    override var intrinsicContentSize: NSSize {
+        let currentFont = font ?? NSFont.systemFont(ofSize: NSFont.systemFontSize)
+        let size = (stringValue as NSString).size(withAttributes: [.font: currentFont])
+        return NSSize(width: ceil(size.width) + 2, height: ceil(size.height))
+    }
+
+    override func becomeFirstResponder() -> Bool {
+        let result = super.becomeFirstResponder()
+        if result, let editor = currentEditor() {
+            let length = (editor.string as NSString).length
+            editor.selectedRange = NSRange(location: length, length: 0)
+        }
+        return result
+    }
+
+    override func mouseDown(with event: NSEvent) {
+        guard isDraggable else {
+            super.mouseDown(with: event)
+            return
+        }
+
+        let startPoint = event.locationInWindow
+        var didBeginDrag = false
+        let threshold: CGFloat = 2
+
+        // Every exit path below must resolve exactly one of "focus" or a paired
+        // onDragBegin/onDragEnd — an orphaned "began but never ended" session would leave the
+        // parent's edit session stuck open, making the next interaction silently join it instead
+        // of starting fresh.
+        while true {
+            guard let next = NSApp.nextEvent(
+                matching: [.leftMouseDragged, .leftMouseUp],
+                until: .distantFuture,
+                inMode: .eventTracking,
+                dequeue: true
+            ) else {
+                if didBeginDrag { finishDrag() }
+                return
+            }
+
+            switch next.type {
+            case .leftMouseDragged:
+                let translationX = next.locationInWindow.x - startPoint.x
+                if !didBeginDrag {
+                    guard abs(translationX) >= threshold else { continue }
+                    didBeginDrag = true
+                    beginDrag()
+                }
+                updateDrag(translationX: translationX)
+            case .leftMouseUp:
+                if didBeginDrag {
+                    finishDrag()
+                } else {
+                    // A genuine click: focus normally, exactly like a plain click on any
+                    // ordinary text field would.
+                    window?.makeFirstResponder(self)
+                }
+                return
+            default:
+                if didBeginDrag { finishDrag() }
+                return
+            }
+        }
+    }
+
+    private func beginDrag() {
+        dragOrigin = Double(stringValue.trimmingCharacters(in: .whitespaces)) ?? 0
+        NSCursor.resizeLeftRight.set()
+        onDragBegin?()
+    }
+
+    private func updateDrag(translationX: CGFloat) {
+        guard let origin = dragOrigin else { return }
+        let fine = NSEvent.modifierFlags.contains(.option)
+        var newValue = origin + Double(translationX) * (fine ? 0.1 : 1.0)
+        if let range {
+            newValue = min(max(newValue, range.lowerBound), range.upperBound)
+        }
+        onDragChanged?(newValue)
+    }
+
+    private func finishDrag() {
+        dragOrigin = nil
+        NSCursor.arrow.set()
+        onDragEnd?()
     }
 }

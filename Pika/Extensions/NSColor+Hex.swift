@@ -14,7 +14,8 @@ extension NSColor {
         in colorSpace: NSColorSpace = Defaults[.colorSpace],
         alpha: CGFloat = 1
     ) -> NSColor? {
-        var stripped = hex.hasPrefix("#") ? String(hex.dropFirst()) : hex
+        let trimmed = hex.trimmingCharacters(in: .whitespaces)
+        var stripped = trimmed.hasPrefix("#") ? String(trimmed.dropFirst()) : trimmed
         guard stripped.count == 3 || stripped.count == 6,
               stripped.allSatisfy(\.isHexDigit) else { return nil }
 
@@ -40,8 +41,8 @@ extension NSColor {
         return UInt32(rounded)
     }
 
-    func toHex() -> UInt32 {
-        let rgba = toRGBAComponents()
+    func toHex(in colorSpace: NSColorSpace = Defaults[.colorSpace]) -> UInt32 {
+        let rgba = toRGBAComponents(in: colorSpace)
         return roundToHex(rgba.r) << 16 | roundToHex(rgba.g) << 8 | roundToHex(rgba.b)
     }
 

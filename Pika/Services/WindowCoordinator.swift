@@ -85,6 +85,7 @@ class WindowCoordinator: NSObject {
             self?.aboutWindow?.level = level
             self?.helpWindow?.level = level
             self?.preferencesWindow?.level = level
+            self?.splashWindow?.level = level
         }.tieToLifetime(of: self)
 
         // Keep the companion windows aligned to the main window as it resizes and moves.
