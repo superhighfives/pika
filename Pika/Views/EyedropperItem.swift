@@ -11,13 +11,14 @@ public extension NSPopUpButtonCell {
 struct EyedropperItem: View {
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     @ObservedObject var eyedropper: Eyedropper
+    @Binding var dismissEditingTrigger: Int
     @State private var showToast: Bool = false
     @Default(.colorFormat) var colorFormat
     @Default(.copyFormat) var copyFormat
     let pasteboard = NSPasteboard.general
     var body: some View {
         ZStack {
-            EyedropperButton(eyedropper: eyedropper)
+            EyedropperButton(eyedropper: eyedropper, dismissEditingTrigger: $dismissEditingTrigger)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .onReceive(NotificationCenter.default.publisher(for: eyedropper.type.pickNotification)) { note in
                     let requestedChain = note.userInfo?["chain"] as? Bool == true
@@ -88,7 +89,10 @@ struct EyedropperItem: View {
 
 struct EyedropperItem_Previews: PreviewProvider {
     static var previews: some View {
-        EyedropperItem(eyedropper: Eyedropper(type: .foreground, color: NSColor.black))
-            .frame(width: 180.0)
+        EyedropperItem(
+            eyedropper: Eyedropper(type: .foreground, color: NSColor.black),
+            dismissEditingTrigger: .constant(0)
+        )
+        .frame(width: 180.0)
     }
 }

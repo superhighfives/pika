@@ -110,10 +110,32 @@ final class ColorDecompositionTests: XCTestCase {
         XCTAssertFalse(c.isValid("gggggg"))
     }
 
+    // Regression test: pasting a hex value with surrounding whitespace shouldn't flag the
+    // field invalid or fail to recompose — `isValid` and `recompose` both trim first.
+    func test_componentValidity_hex_trimsWhitespace() {
+        let c = ColorComponent(value: "ff0000", kind: .hex, range: nil)
+        XCTAssertTrue(c.isValid("  ff0000  "))
+        XCTAssertNotNil(ColorFormat.hex.recompose(["  ff0000  "], style: .css, in: space))
+    }
+
     func test_componentValidity_decimalUnbounded() {
         let c = ColorComponent(value: "-12.5", kind: .decimal, range: nil)
         XCTAssertTrue(c.isValid("-12.5"))
         XCTAssertTrue(c.isValid("100"))
         XCTAssertFalse(c.isValid("abc"))
+    }
+
+    // `Double("inf")`/`Double("nan")` parse successfully but aren't valid colour values — a nil
+    // range (e.g. Lab a/b) wouldn't otherwise reject them, so `isValid` must check `isFinite`
+    // explicitly. Regression test for a non-finite value silently reaching `recompose`.
+    func test_componentValidity_decimalRejectsInfAndNaN() {
+        let unbounded = ColorComponent(value: "0", kind: .decimal, range: nil)
+        XCTAssertFalse(unbounded.isValid("inf"))
+        XCTAssertFalse(unbounded.isValid("-inf"))
+        XCTAssertFalse(unbounded.isValid("nan"))
+
+        let bounded = ColorComponent(value: "0", kind: .decimal, range: 0 ... 100)
+        XCTAssertFalse(bounded.isValid("inf"))
+        XCTAssertFalse(bounded.isValid("nan"))
     }
 }

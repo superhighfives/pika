@@ -75,6 +75,14 @@ struct EditableColorValue: View {
     /// window/focus churn — e.g. a sibling's hover state changing — dropping the outline and
     /// ending the edit the moment the mouse left the field, even mid-session.
     @State private var focusedIndex: Int?
+    /// Which field the currently-open session (if any) belongs to — always non-nil whenever
+    /// `isEditing` is true, kept in sync with `focusedIndex` whenever focus moves but, unlike
+    /// `focusedIndex`, also set for a fresh unfocused scrub session (drag/scroll deliberately
+    /// never focuses the real field — see `beginDragSession`'s comment). Exists so a scrub
+    /// session's end — `onDragEnd`, which for scroll-to-scrub can arrive late via trailing
+    /// trackpad momentum — can tell "this is still my session" apart from "a different field
+    /// has since taken over, or this session already ended and a new one started elsewhere."
+    @State private var sessionOwner: Int?
 
     private var decomposed: DecomposedColor {
         format.decompose(eyedropper.color, style: style, in: colorSpace)
@@ -109,7 +117,7 @@ struct EditableColorValue: View {
                     onSubmit: commitEditing,
                     onCancel: revertEditing,
                     onDragBegin: { beginDragSession(index: index, layout: layout) },
-                    onDragEnd: finishEditing
+                    onDragEnd: { finishDragOrScrollSession(index: index) }
                 )
                 if index < layout.separators.count {
                     affix(layout.separators[index], size: size)
@@ -202,6 +210,7 @@ struct EditableColorValue: View {
     /// and fights the scrub with click-to-edit/select-all behaviour. An unfocused `TextField`
     /// with a changing `text` binding just renders like a label — no editor involved.
     private func beginDragSession(index: Int, layout: DecomposedColor) {
+        sessionOwner = index
         if isEditing {
             focusedIndex = index
             return
@@ -210,8 +219,10 @@ struct EditableColorValue: View {
     }
 
     private func handleFocusChange(to newValue: Int?, layout: DecomposedColor) {
-        if newValue != nil {
-            // Entering (or moving between) fields — start a session on the first focus.
+        if let newValue {
+            // Entering (or moving between) fields — start a session on the first focus, or
+            // (per the comment on `sessionOwner`) take over an existing unfocused scrub session.
+            sessionOwner = newValue
             if !isEditing {
                 startSession(layout: layout)
             }
@@ -219,6 +230,17 @@ struct EditableColorValue: View {
             // Focus left every field (blur / tab-out) — commit if valid, otherwise revert.
             finishEditing()
         }
+    }
+
+    /// `onDragEnd` for click-drag scrub is driven by a synchronous, blocking event-tracking loop
+    /// (`ScrubTextField.mouseDown`), so it can never fire late — nothing else can run until it
+    /// returns. Scroll-to-scrub's end can, though: trailing trackpad momentum can deliver
+    /// `onScrollEnd` well after a different field has taken over the session (a plain click
+    /// focusing it, or a fresh drag/scroll on it), or after this session already ended and a new
+    /// one started elsewhere. Only finish if `index` is still the session's current owner.
+    private func finishDragOrScrollSession(index: Int) {
+        guard isEditing, sessionOwner == index else { return }
+        finishEditing()
     }
 
     /// Snapshot the colour and working values at the start of an edit or drag session, so
@@ -286,8 +308,17 @@ struct EditableColorValue: View {
         isEditing = false
         isInvalid = false
         preEditColor = nil
-        lastPreviewedColor = nil
-        if resync { syncValuesFromColor(decomposed) }
+        sessionOwner = nil
+        // Only clear the own-write marker when we're about to resync anyway. A `resync: false`
+        // commit (see `finishEditing`'s success path) deliberately keeps `values` as typed rather
+        // than the freshly (and possibly lossily) decomposed colour — clearing this unconditionally
+        // made the very next `onChange(of: eyedropper.color)` pass see `newValue != nil` and
+        // resync anyway, undoing that on the next render and silently discarding what was just
+        // committed (e.g. hue snapping back to 0 once brightness/saturation round-trip through it).
+        if resync {
+            lastPreviewedColor = nil
+            syncValuesFromColor(decomposed)
+        }
     }
 }
 

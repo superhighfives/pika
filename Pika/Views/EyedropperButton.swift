@@ -68,6 +68,12 @@ private struct PickTarget: NSViewRepresentable {
 
 struct EyedropperButton: View {
     @ObservedObject var eyedropper: Eyedropper
+    /// Shared with the other swatch (owned by `ColorPickers`) rather than local: a click on
+    /// *this* swatch's `PickTarget` can be dismissing a field focused on the *other* swatch,
+    /// since the first-responder check that decides "dismiss vs. pick" is window-wide, not
+    /// scoped to this button. Bumping a trigger only this button's own `EditableColorValue`
+    /// hears would silently drop that edit instead of committing or reverting it.
+    @Binding var dismissEditingTrigger: Int
     @Default(.colorFormat) var colorFormat
     @Default(.copyFormat) var copyFormat
     @Default(.hideColorNames) var hideColorNames
@@ -80,7 +86,6 @@ struct EyedropperButton: View {
     @State private var childHovered: Bool = false
     @State private var valueInvalid: Bool = false
     @State private var isPressed: Bool = false
-    @State private var dismissEditingTrigger: Int = 0
     @State private var flashOpacity: Double = 0
 
     var body: some View {
@@ -242,7 +247,8 @@ struct EyedropperButton: View {
 struct EyedropperButton_Previews: PreviewProvider {
     static var previews: some View {
         EyedropperButton(
-            eyedropper: Eyedropper(type: .foreground, color: PikaConstants.initialColors.randomElement()!)
+            eyedropper: Eyedropper(type: .foreground, color: PikaConstants.initialColors.randomElement()!),
+            dismissEditingTrigger: .constant(0)
         )
         .frame(width: 170.0)
     }

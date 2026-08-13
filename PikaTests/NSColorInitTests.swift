@@ -144,4 +144,17 @@ final class NSColorInitTests: XCTestCase {
         XCTAssertNil(NSColor.fromHex("GGGGGG", in: .sRGB))
         XCTAssertNil(NSColor.fromHex("12 45 6", in: .sRGB))
     }
+
+    // Regression test: leading/trailing whitespace (e.g. from pasting) must not make an
+    // otherwise-valid hex string fail to parse, and must round-trip to the same colour.
+    func test_fromHex_leadingAndTrailingWhitespace_isTrimmed() {
+        let untrimmed = NSColor.fromHex("  FF0000  ", in: .sRGB)
+        let trimmed = NSColor.fromHex("FF0000", in: .sRGB)
+        XCTAssertNotNil(untrimmed)
+        XCTAssertEqual(
+            untrimmed?.toRGBAComponents(in: .sRGB).r, trimmed?.toRGBAComponents(in: .sRGB).r
+        )
+
+        XCTAssertNotNil(NSColor.fromHex(" #00FF00 ", in: .sRGB))
+    }
 }
