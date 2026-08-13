@@ -1,5 +1,70 @@
+import AppKit
 import Defaults
 import SwiftUI
+
+/// The full-size background pick target: owns its own `mouseDown` (mirroring `ScrubTextField`'s
+/// approach in `EditableColorValue.swift`) so it can check the window's first responder *before*
+/// deciding what a click means. A plain SwiftUI `Button` can't make that distinction — its action
+/// fires unconditionally on tap, so a click intended to dismiss a focused colour-value field would
+/// also fall through and start a new pick. If a field is currently being edited, this click's only
+/// job is to end that edit (matching standard click-away-to-blur behaviour); otherwise it starts
+/// a pick, same as before.
+private struct PickTarget: NSViewRepresentable {
+    let onPick: () -> Void
+    let onPressChange: (Bool) -> Void
+    /// Called instead of `onPick` when the click's only job is to end an active edit session.
+    /// AppKit's own `endEditing(for:)` resigns the field editor, but doesn't reliably notify
+    /// `EditableColorValue`'s own focus-tracking state back up (its outline stays stuck showing
+    /// "focused") — so the parent also needs an explicit nudge to clear that state itself.
+    let onDismissEditing: () -> Void
+
+    func makeNSView(context _: Context) -> PickTargetView {
+        let view = PickTargetView()
+        view.onPick = onPick
+        view.onPressChange = onPressChange
+        view.onDismissEditing = onDismissEditing
+        return view
+    }
+
+    func updateNSView(_ view: PickTargetView, context _: Context) {
+        view.onPick = onPick
+        view.onPressChange = onPressChange
+        view.onDismissEditing = onDismissEditing
+    }
+
+    final class PickTargetView: NSView {
+        var onPick: (() -> Void)?
+        var onPressChange: ((Bool) -> Void)?
+        var onDismissEditing: (() -> Void)?
+
+        override func mouseDown(with _: NSEvent) {
+            if window?.firstResponder is NSText {
+                window?.endEditing(for: nil)
+                onDismissEditing?()
+                return
+            }
+
+            onPressChange?(true)
+            while true {
+                guard let next = NSApp.nextEvent(
+                    matching: [.leftMouseDragged, .leftMouseUp],
+                    until: .distantFuture,
+                    inMode: .eventTracking,
+                    dequeue: true
+                ) else {
+                    onPressChange?(false)
+                    return
+                }
+                if next.type == .leftMouseUp {
+                    let point = convert(next.locationInWindow, from: nil)
+                    onPressChange?(false)
+                    if bounds.contains(point) { onPick?() }
+                    return
+                }
+            }
+        }
+    }
+}
 
 struct EyedropperButton: View {
     @ObservedObject var eyedropper: Eyedropper
@@ -14,20 +79,26 @@ struct EyedropperButton: View {
     @State private var hoverTask: Task<Void, Never>?
     @State private var childHovered: Bool = false
     @State private var valueInvalid: Bool = false
+    @State private var isPressed: Bool = false
+    @State private var dismissEditingTrigger: Int = 0
+    @State private var flashOpacity: Double = 0
 
     var body: some View {
         ZStack {
             // Background pick target: a click anywhere that isn't the editable value (or the
-            // non-interactive labels above it, which fall through) starts a pick.
-            Button(action: {
-                NSApp.sendAction(eyedropper.type.pickSelector, to: nil, from: nil)
-            }, label: {
-                Color.clear
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .contentShape(Rectangle())
-            })
-            .buttonStyle(EyedropperButtonStyle(color: Color(eyedropper.color)))
-            .focusable(false)
+            // non-interactive labels above it, which fall through) starts a pick — unless a
+            // colour-value field is currently focused, in which case it just dismisses that
+            // field. See `PickTarget` above.
+            PickTarget(
+                onPick: { NSApp.sendAction(eyedropper.type.pickSelector, to: nil, from: nil) },
+                onPressChange: { isPressed = $0 },
+                onDismissEditing: { dismissEditingTrigger += 1 }
+            )
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color(eyedropper.color))
+            .opacity(isPressed ? 0.8 : 1.0)
+            .animation(.easeIn(duration: 0.15), value: Color(eyedropper.color))
+            .animation(.easeIn(duration: 0.15), value: isPressed)
 
             // Content overlay, lifted out of the pick button so the value's fields receive
             // clicks. The type label and colour name disable hit-testing so clicks fall
@@ -73,7 +144,8 @@ struct EyedropperButton: View {
                         format: colorFormat,
                         style: copyFormat,
                         colorSpace: colorSpace,
-                        isInvalid: $valueInvalid
+                        isInvalid: $valueInvalid,
+                        dismissEditingTrigger: dismissEditingTrigger
                     )
                     .padding(.trailing, 32.0)
 
@@ -133,6 +205,19 @@ struct EyedropperButton: View {
             }
             .padding(.all, 8.0)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+
+            // Subtle affordance for a genuine screen pick landing on this swatch — most useful
+            // mid pick-pair, where it's otherwise a silent colour swap with nothing to tell you
+            // "that was the foreground" versus "that was the background".
+            Color.white
+                .opacity(flashOpacity)
+                .allowsHitTesting(false)
+        }
+        .onReceive(eyedropper.pickFlash) {
+            flashOpacity = 0.35
+            withAnimation(.easeOut(duration: 0.35)) {
+                flashOpacity = 0
+            }
         }
         .onReceive(NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification)) { _ in
             colorSpace = Defaults[.colorSpace]

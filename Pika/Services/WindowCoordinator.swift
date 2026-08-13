@@ -334,6 +334,7 @@ class WindowCoordinator: NSObject {
         // would show a blank floating window whenever the splash is dismissed in that mode.
         if !Defaults[.appMode].usesPopover, !pikaWindow.isVisible {
             pikaWindow.fadeIn(nil)
+            steerFirstResponderAwayFromFields()
         }
         applyShadowState()
         Defaults[.viewedSplash] = true
@@ -341,7 +342,21 @@ class WindowCoordinator: NSObject {
 
     func showMainWindow() {
         pikaWindow.makeKeyAndOrderFront(nil)
+        steerFirstResponderAwayFromFields()
         applyShadowState()
+    }
+
+    /// AppKit's own auto-focus (`_setUpFirstResponder`/`_selectFirstKeyView`) is meant to be
+    /// headed off once and for all by pointing `initialFirstResponder` at the content view (see
+    /// the comment at that assignment in `EditableColorValue.ScrubTextField.viewDidMoveToWindow`).
+    /// That holds for the window's very first appearance, but re-showing a window that was
+    /// previously ordered out (e.g. a pick landing while Pika was closed, which unconditionally
+    /// re-shows it via `showPika`) can still land on the first colour-value field instead —
+    /// resigning key status on hide appears to drop the current first responder, and re-deriving
+    /// one on the way back in doesn't always respect `initialFirstResponder`. Rather than chase
+    /// that AppKit-internal quirk, force it back every time the window is (re)shown.
+    private func steerFirstResponderAwayFromFields() {
+        pikaWindow.makeFirstResponder(pikaWindow.contentView)
     }
 
     func hideMainWindow() {
@@ -369,6 +384,7 @@ class WindowCoordinator: NSObject {
         } else {
             pikaWindow.fadeIn(sender: nil, duration: 0.2)
         }
+        steerFirstResponderAwayFromFields()
         applyShadowState()
         NSApp.activate(ignoringOtherApps: true)
     }

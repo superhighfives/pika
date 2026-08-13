@@ -37,6 +37,14 @@ struct EditableColorValue: View {
     let colorSpace: NSColorSpace
     /// Raised while the focused field holds unparseable input, so the parent can show the pill.
     @Binding var isInvalid: Bool
+    /// Bumped by the parent to end any active edit session (e.g. a click landing elsewhere in the
+    /// swatch that's meant to dismiss a focused field rather than act on it). Driving this
+    /// straight through `focusedIndex` rather than via AppKit's responder chain (e.g.
+    /// `window.endEditing(for:)`) matters: that resigns the field editor, but `ScrubTextField`'s
+    /// own `resignFirstResponder` override — the thing that actually reports the blur back up
+    /// via `onFocusChange` — doesn't reliably fire for it, leaving this view's local state (and
+    /// its focus outline) stuck showing "focused" even once AppKit itself has moved on.
+    var dismissEditingTrigger: Int = 0
 
     private let baseSize: CGFloat = 18
     private let minSize: CGFloat = 11
@@ -123,12 +131,18 @@ struct EditableColorValue: View {
                 // A change we didn't push ourselves is an external pick landing mid-edit —
                 // abort the session so the external colour wins, matching pre-edit behaviour.
                 if newValue != lastPreviewedColor { abortEditingForExternalPick() }
-            } else {
+            } else if newValue != lastPreviewedColor {
+                // Only resync from a colour we didn't just set ourselves. Without this check,
+                // this handler fires right after our own commit lands (isEditing has already
+                // flipped false by then) and undoes finishEditing's deliberate `resync: false` —
+                // e.g. snapping a just-typed hue back to 0 once brightness/saturation round-trips
+                // it through a colour where hue is undefined.
                 syncValuesFromColor(decomposed)
             }
         }
         .onChange(of: format) { _ in handleFormatOrStyleChange() }
         .onChange(of: style) { _ in handleFormatOrStyleChange() }
+        .onChange(of: dismissEditingTrigger) { _ in focusedIndex = nil }
     }
 
     private func affix(_ text: String, size: CGFloat) -> some View {
