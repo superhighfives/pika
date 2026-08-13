@@ -60,7 +60,13 @@ struct EditableColorValue: View {
     /// `onChange(of: eyedropper.color)` tell our own writes apart from an external pick landing
     /// mid-edit, so the latter can abort the session instead of being silently overwritten.
     @State private var lastPreviewedColor: NSColor?
-    @FocusState private var focusedIndex: Int?
+    /// Plain `@State`, not `@FocusState`: nothing here is bound via `.focused()` to an actual
+    /// SwiftUI-focusable view (the field is a raw AppKit `NSTextField`, focus is driven by hand
+    /// through `ColorComponentField`'s `onFocusChange`). `@FocusState` expects to reconcile
+    /// against the real focus environment and would get silently reset to `nil` by unrelated
+    /// window/focus churn — e.g. a sibling's hover state changing — dropping the outline and
+    /// ending the edit the moment the mouse left the field, even mid-session.
+    @State private var focusedIndex: Int?
 
     private var decomposed: DecomposedColor {
         format.decompose(eyedropper.color, style: style, in: colorSpace)
@@ -278,7 +284,7 @@ private struct ColorComponentField: View {
     let index: Int
     let uiColor: NSColor
     let fontSize: CGFloat
-    @FocusState.Binding var focusedIndex: Int?
+    @Binding var focusedIndex: Int?
     let onSubmit: () -> Void
     let onCancel: () -> Void
     /// Fired when a drag-to-scrub gesture starts/ends, so the parent can wrap it in the same
@@ -360,7 +366,9 @@ private struct ColorComponentField: View {
             onDragBegin()
         }
         guard let origin = scrollOrigin else { return }
-        scrollAccumulated += deltaY
+        // Inverted: scrolling up (negative deltaY) increases the value, matching the direction
+        // users expect when nudging a number via a scroll gesture.
+        scrollAccumulated -= deltaY
         let fine = NSEvent.modifierFlags.contains(.option)
         var newValue = origin + Double(scrollAccumulated) * (fine ? 0.1 : 1.0)
         if let range = component.range {
@@ -590,7 +598,10 @@ private struct ScrubbableColorField: NSViewRepresentable {
 /// A resolved click focuses normally; `becomeFirstResponder` then deterministically collapses
 /// AppKit's default select-all in the same call stack, rather than reacting to it after the fact.
 private final class ScrubTextField: NSTextField {
-    var isDraggable = false
+    var isDraggable = false {
+        didSet { window?.invalidateCursorRects(for: self) }
+    }
+
     var range: ClosedRange<Double>?
     var kind: ComponentKind = .integer
     var onDragBegin: (() -> Void)?
@@ -610,11 +621,37 @@ private final class ScrubTextField: NSTextField {
 
     override func becomeFirstResponder() -> Bool {
         let result = super.becomeFirstResponder()
-        if result, let editor = currentEditor() {
-            let length = (editor.string as NSString).length
-            editor.selectedRange = NSRange(location: length, length: 0)
+        if result {
+            if let editor = currentEditor() {
+                let length = (editor.string as NSString).length
+                editor.selectedRange = NSRange(location: length, length: 0)
+            }
+            window?.invalidateCursorRects(for: self)
         }
         return result
+    }
+
+    override func resignFirstResponder() -> Bool {
+        let result = super.resignFirstResponder()
+        if result { window?.invalidateCursorRects(for: self) }
+        return result
+    }
+
+    override func viewDidMoveToWindow() {
+        super.viewDidMoveToWindow()
+        window?.invalidateCursorRects(for: self)
+    }
+
+    // NSTextField's own `resetCursorRects()` covers `bounds` with an I-beam cursor rect, which
+    // wins over the SwiftUI `.onHover`-driven `NSCursor.set()` the moment the mouse enters this
+    // AppKit view — that's why the resize cursor from the parent's hover handling was reverting
+    // to `|` over the text itself. Claim the rect ourselves while draggable and not being edited.
+    override func resetCursorRects() {
+        guard isDraggable, currentEditor() == nil else {
+            super.resetCursorRects()
+            return
+        }
+        addCursorRect(bounds, cursor: .resizeLeftRight)
     }
 
     override func mouseDown(with event: NSEvent) {
