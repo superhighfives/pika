@@ -590,8 +590,18 @@ private struct ScrubbableColorField: NSViewRepresentable {
         nsView.kind = kind
         nsView.onDragBegin = onDragBegin
         nsView.onDragChanged = { [weak nsView] newValue in
-            nsView?.stringValue = ColorComponentField.formattedDragValue(newValue, kind: kind)
-            text = nsView?.stringValue ?? text
+            guard let nsView else { return }
+            nsView.stringValue = ColorComponentField.formattedDragValue(newValue, kind: kind)
+            // Setting `stringValue` on a field that still has a live field editor attached
+            // (see `beginDrag`'s comment) resets the editor's selection to select-all every
+            // time — so every step of the drag re-selects the newly-set text, and whichever
+            // step happens to be the last one is what's left visibly selected once the drag
+            // ends. Collapse it again after every step, not just the first.
+            if let editor = nsView.currentEditor() {
+                let length = (editor.string as NSString).length
+                editor.selectedRange = NSRange(location: length, length: 0)
+            }
+            text = nsView.stringValue
         }
         nsView.onDragEnd = onDragEnd
 
