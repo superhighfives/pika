@@ -37,7 +37,7 @@ struct EyedropperButton: View {
                 // preview-pill overlap) so labels fade out as the window shrinks and return
                 // when it grows again. The invalid pill overrides the fade so it's never hidden.
                 let showsTypeLabel = adaptive.showsTypeLabels
-                HStack(spacing: 6.0) {
+                HStack(alignment: .firstTextBaseline, spacing: 6.0) {
                     Text(eyedropper.type.description)
                         .font(.caption)
                         .fontWeight(.semibold)
@@ -45,6 +45,16 @@ struct EyedropperButton: View {
                     if valueInvalid {
                         InvalidInputPill(uiColor: eyedropper.color.getUIColor())
                     }
+                    // Reserves the pill's height in this row at all times (zero width, so it
+                    // never otherwise affects layout) so toggling the pill doesn't change the
+                    // row's height. The content below is anchored `.bottomLeading` in its parent
+                    // frame, so any height change here shifts this label — the "Foreground" /
+                    // "Background" text visibly jumping by a pixel each time invalid state was
+                    // entered or exited.
+                    InvalidInputPill(uiColor: .clear)
+                        .fixedSize()
+                        .frame(width: 0)
+                        .accessibilityHidden(true)
                 }
                 .opacity(showsTypeLabel || valueInvalid ? 1 : 0)
                 .animation(

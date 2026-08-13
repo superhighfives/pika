@@ -237,11 +237,19 @@ struct EditableColorValue: View {
             eyedropper.set(color)
             lastPreviewedColor = eyedropper.color
             NotificationCenter.default.post(name: .colorPicked, object: nil)
+            // Don't resync `values` from the just-committed colour: some formats are lossy at
+            // their extremes (e.g. HSB hue/saturation are undefined at brightness 0), so
+            // decomposing straight back can silently discard what was just typed — e.g. typing
+            // hsb(0, 50%, 0%) round-trips through black and reports back 0% saturation. `values`
+            // already holds exactly what was committed, which is the more faithful thing to show.
+            endSession(resync: false)
         } else if let preEditColor {
             eyedropper.set(preEditColor)
             lastPreviewedColor = eyedropper.color
+            endSession(resync: true)
+        } else {
+            endSession(resync: true)
         }
-        endSession()
     }
 
     private func revertEditing() {
@@ -250,22 +258,22 @@ struct EditableColorValue: View {
             eyedropper.set(preEditColor)
         }
         focusedIndex = nil
-        endSession()
+        endSession(resync: true)
     }
 
     /// An external eyedropper pick landed while a field was focused — abort the edit so the
     /// pick wins, rather than letting a later blur silently overwrite it with typed values.
     private func abortEditingForExternalPick() {
         focusedIndex = nil
-        endSession()
+        endSession(resync: true)
     }
 
-    private func endSession() {
+    private func endSession(resync: Bool) {
         isEditing = false
         isInvalid = false
         preEditColor = nil
         lastPreviewedColor = nil
-        syncValuesFromColor(decomposed)
+        if resync { syncValuesFromColor(decomposed) }
     }
 }
 
@@ -297,6 +305,9 @@ private struct ColorComponentField: View {
     /// scroll start. `scrollAccumulated` tracks total vertical scroll since then.
     @State private var scrollOrigin: Double?
     @State private var scrollAccumulated: CGFloat = 0
+    /// Bumped on every focus event (begin or end) this field reports; see the deferred-blur
+    /// comment at its use in `onFocusChange` below.
+    @State private var focusVersion = 0
 
     private var isFocused: Bool { focusedIndex == index }
     private var isInvalid: Bool { isFocused && !component.isValid(text) }
@@ -312,11 +323,35 @@ private struct ColorComponentField: View {
             range: component.range,
             kind: component.kind,
             isFocused: isFocused,
-            onFocusChange: { focused in focusedIndex = focused ? index : (focusedIndex == index ? nil : focusedIndex) },
+            onFocusChange: { focused in
+                // AppKit doesn't always report a clean single "begin": both a direct
+                // field-to-field focus move (old field resigns before the new one becomes first
+                // responder) *and*, it turns out, a field gaining focus from nothing at all
+                // (its own internal resign/become choreography when a click lands on it) can
+                // report a spurious "end" immediately before — or, in the from-nothing case,
+                // interleaved with — the real "begin". Reacting to an "end" synchronously would
+                // tear the whole edit session down for a frame (dropping the outline, ending
+                // editing) only to immediately restart it — or, worse, incorrectly cancel a
+                // "begin" for the very same field that arrives a moment later. Defer the "end"
+                // one runloop turn and only apply it if nothing else has touched focus since:
+                // `focusVersion` is bumped on every focus event, so a later event (for this
+                // field or another) invalidates a stale deferred "end".
+                focusVersion += 1
+                if focused {
+                    focusedIndex = index
+                } else {
+                    let expectedVersion = focusVersion
+                    DispatchQueue.main.async {
+                        guard focusVersion == expectedVersion, focusedIndex == index else { return }
+                        focusedIndex = nil
+                    }
+                }
+            },
             onSubmit: onSubmit,
             onCancel: onCancel,
             onDragBegin: onDragBegin,
-            onDragEnd: onDragEnd
+            onDragEnd: onDragEnd,
+            onStep: isDraggable ? stepValue : nil
         )
         .fixedSize()
         .padding(.horizontal, 1)
@@ -354,6 +389,19 @@ private struct ColorComponentField: View {
             }
             .allowsHitTesting(false)
         )
+    }
+
+    /// Up/Down arrow keys nudge the focused field by ±1 (±0.1 with Option), same as a single
+    /// step of click-drag or scroll scrubbing — applied straight to the live-preview binding
+    /// since the field is already mid-edit (it has to be focused to receive the key at all).
+    private func stepValue(_ direction: CGFloat) {
+        let current = Double(text.trimmingCharacters(in: .whitespaces)) ?? 0
+        let fine = NSEvent.modifierFlags.contains(.option)
+        var newValue = current + Double(direction) * (fine ? 0.1 : 1.0)
+        if let range = component.range {
+            newValue = min(max(newValue, range.lowerBound), range.upperBound)
+        }
+        text = Self.formattedDragValue(newValue, kind: component.kind)
     }
 
     /// Two-finger trackpad scroll nudges the value the same way click-drag does: accumulated
@@ -500,9 +548,11 @@ private struct ScrubbableColorField: NSViewRepresentable {
     /// same live-preview/commit session used for typed edits.
     let onDragBegin: () -> Void
     let onDragEnd: () -> Void
+    /// Fired with +1/-1 for Up/Down arrow keys, `nil` for non-draggable (hex) fields.
+    let onStep: ((CGFloat) -> Void)?
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(text: $text, onSubmit: onSubmit, onCancel: onCancel, onFocusChange: onFocusChange)
+        Coordinator(text: $text, onSubmit: onSubmit, onCancel: onCancel, onStep: onStep)
     }
 
     func makeNSView(context: Context) -> ScrubTextField {
@@ -521,6 +571,15 @@ private struct ScrubbableColorField: NSViewRepresentable {
 
     func updateNSView(_ nsView: ScrubTextField, context: Context) {
         context.coordinator.text = $text
+        // Driven off `becomeFirstResponder`/`resignFirstResponder` directly rather than the
+        // `NSTextFieldDelegate` controlTextDidBeginEditing/EndEditing notifications: a click that
+        // lands on a not-yet-focused field goes through AppKit's own private pre-focus path
+        // (`NSWindow._handleMouseDownEvent:` → `NSTextFieldCell _selectOrEdit:…`) *before* this
+        // view's `mouseDown` override ever runs, and that path never posts the notifications the
+        // delegate relies on — so `focusedIndex` silently never got set, and the focus outline
+        // never appeared. The responder overrides fire reliably however focus changes.
+        nsView.onFocusChange = onFocusChange
+        context.coordinator.onStep = onStep
         if nsView.font?.pointSize != fontSize {
             nsView.font = NSFont.systemFont(ofSize: fontSize, weight: .regular)
             nsView.invalidateIntrinsicContentSize()
@@ -560,22 +619,38 @@ private struct ScrubbableColorField: NSViewRepresentable {
         var text: Binding<String>
         let onSubmit: () -> Void
         let onCancel: () -> Void
-        let onFocusChange: (Bool) -> Void
+        var onStep: ((CGFloat) -> Void)?
 
-        init(text: Binding<String>, onSubmit: @escaping () -> Void, onCancel: @escaping () -> Void, onFocusChange: @escaping (Bool) -> Void) {
+        init(
+            text: Binding<String>, onSubmit: @escaping () -> Void, onCancel: @escaping () -> Void,
+            onStep: ((CGFloat) -> Void)?
+        ) {
             self.text = text
             self.onSubmit = onSubmit
             self.onCancel = onCancel
-            self.onFocusChange = onFocusChange
+            self.onStep = onStep
         }
 
         func controlTextDidChange(_ obj: Notification) {
-            guard let field = obj.object as? NSTextField else { return }
+            guard let field = obj.object as? ScrubTextField else { return }
+            // Clearing a ranged field (select-all + delete, or backspacing the last digit)
+            // leaves it both empty and invalid — effectively a dead end, since an empty
+            // `.fixedSize()` field also collapses to no width, hiding the invalid-state dashes
+            // that would otherwise show. Snap it to the component's lowest value instead, and
+            // select it, so the field stays visible, valid, and ready to be typed straight over
+            // — mirroring what a fresh click-to-select does. Hex has no natural minimum
+            // (`range` is nil), so it keeps the plain empty/invalid state.
+            if field.stringValue.isEmpty, let range = field.range {
+                let lowest = ColorComponentField.formattedDragValue(range.lowerBound, kind: field.kind)
+                field.stringValue = lowest
+                text.wrappedValue = lowest
+                if let editor = field.currentEditor() {
+                    editor.selectedRange = NSRange(location: 0, length: (lowest as NSString).length)
+                }
+                return
+            }
             text.wrappedValue = field.stringValue
         }
-
-        func controlTextDidBeginEditing(_: Notification) { onFocusChange(true) }
-        func controlTextDidEndEditing(_: Notification) { onFocusChange(false) }
 
         func control(_: NSControl, textView _: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
             if commandSelector == #selector(NSResponder.insertNewline(_:)) {
@@ -584,6 +659,14 @@ private struct ScrubbableColorField: NSViewRepresentable {
             }
             if commandSelector == #selector(NSResponder.cancelOperation(_:)) {
                 onCancel()
+                return true
+            }
+            if commandSelector == #selector(NSResponder.moveUp(_:)), let onStep {
+                onStep(1)
+                return true
+            }
+            if commandSelector == #selector(NSResponder.moveDown(_:)), let onStep {
+                onStep(-1)
                 return true
             }
             return false
@@ -595,8 +678,9 @@ private struct ScrubbableColorField: NSViewRepresentable {
 /// *before* anything can focus — no second view or event monitor racing the field's native click
 /// handling. A resolved drag never touches first-responder status at all, so the field just
 /// displays a changing string like a label while scrubbing (no editor, no selection, no caret).
-/// A resolved click focuses normally; `becomeFirstResponder` then deterministically collapses
-/// AppKit's default select-all in the same call stack, rather than reacting to it after the fact.
+/// A resolved click focuses normally; `becomeFirstResponder` then deterministically selects the
+/// whole value in the same call stack (matching the click-to-select-all behaviour of a spreadsheet
+/// cell), rather than reacting to AppKit's own click-positions-the-caret behaviour after the fact.
 private final class ScrubTextField: NSTextField {
     var isDraggable = false {
         didSet { window?.invalidateCursorRects(for: self) }
@@ -607,6 +691,10 @@ private final class ScrubTextField: NSTextField {
     var onDragBegin: (() -> Void)?
     var onDragChanged: ((Double) -> Void)?
     var onDragEnd: (() -> Void)?
+    /// Reports true/false as this field becomes/resigns first responder. Driven from these
+    /// overrides rather than `NSTextFieldDelegate`'s controlTextDidBeginEditing/EndEditing —
+    /// see the note at the `onFocusChange` assignment in `ScrubbableColorField.updateNSView`.
+    var onFocusChange: ((Bool) -> Void)?
 
     private var dragOrigin: Double?
 
@@ -620,26 +708,46 @@ private final class ScrubTextField: NSTextField {
     }
 
     override func becomeFirstResponder() -> Bool {
+        // AppKit's own `_setUpFirstResponder`/`_selectFirstKeyView` auto-focuses the first key
+        // view in the window while it's still being ordered onto screen — before it's key —
+        // which would open an edit session (and select-all) on the hue field before the user
+        // has clicked anything. Reject that call outright; genuine focus (click, Tab, or our
+        // own `updateNSView` reconciliation) only ever happens once the window is already key.
+        guard window?.isKeyWindow == true else { return false }
         let result = super.becomeFirstResponder()
         if result {
             if let editor = currentEditor() {
                 let length = (editor.string as NSString).length
-                editor.selectedRange = NSRange(location: length, length: 0)
+                editor.selectedRange = NSRange(location: 0, length: length)
             }
             window?.invalidateCursorRects(for: self)
+            onFocusChange?(true)
         }
         return result
     }
 
     override func resignFirstResponder() -> Bool {
         let result = super.resignFirstResponder()
-        if result { window?.invalidateCursorRects(for: self) }
+        if result {
+            window?.invalidateCursorRects(for: self)
+            onFocusChange?(false)
+        }
         return result
     }
 
     override func viewDidMoveToWindow() {
         super.viewDidMoveToWindow()
         window?.invalidateCursorRects(for: self)
+        // Without this, AppKit's own `_setUpFirstResponder`/`_selectFirstKeyView` auto-focuses
+        // the first key view in the window (i.e. this field, if it's first in the hierarchy) the
+        // moment the window becomes key — opening an edit session on the hue field before the
+        // user has clicked anything. `becomeFirstResponder` reports that focus like any other
+        // (correctly, so genuine focus changes stay in sync), so SwiftUI accepts it and shows the
+        // outline. Steer AppKit's auto-pick to the content view instead, which never becomes an
+        // editing session. Harmless to set repeatedly (once per field that attaches).
+        if let window, window.initialFirstResponder !== window.contentView {
+            window.initialFirstResponder = window.contentView
+        }
     }
 
     // NSTextField's own `resetCursorRects()` covers `bounds` with an I-beam cursor rect, which
@@ -693,8 +801,19 @@ private final class ScrubTextField: NSTextField {
                     finishDrag()
                 } else {
                     // A genuine click: focus normally, exactly like a plain click on any
-                    // ordinary text field would.
-                    window?.makeFirstResponder(self)
+                    // ordinary text field would. AppKit's own event routing
+                    // (`_handleMouseDownEvent:` → `NSTextFieldCell _selectOrEdit:`) already
+                    // focuses the field before this override even runs — calling
+                    // `makeFirstResponder` again here forces a redundant resign/become pair
+                    // that corrupts the field editor's begin-editing bookkeeping, so
+                    // `controlTextDidBeginEditing` silently never fires and the field never
+                    // reports itself focused to SwiftUI (no outline, no edit session). Once
+                    // focused, first responder is the *field editor* (an NSTextView), not this
+                    // control itself, so check against `currentEditor()` rather than `self`.
+                    let editorIsActive = currentEditor() != nil && window?.firstResponder === currentEditor()
+                    if !editorIsActive {
+                        window?.makeFirstResponder(self)
+                    }
                 }
                 return
             default:
@@ -707,6 +826,17 @@ private final class ScrubTextField: NSTextField {
     private func beginDrag() {
         dragOrigin = Double(stringValue.trimmingCharacters(in: .whitespaces)) ?? 0
         NSCursor.resizeLeftRight.set()
+        // AppKit's own event routing (`_handleMouseDownEvent:` → `NSTextFieldCell
+        // _selectOrEdit:`) already focused and select-all'd this field as part of routing the
+        // mouseDown that's turning out to be this drag — before this override's loop could
+        // tell click from drag apart. Collapse that selection now that we know it's a drag, so
+        // releasing the mouse doesn't leave the dragged-to value shown text-selected. Just the
+        // selection, not the focus itself — resigning first responder here would race the
+        // deferred focus-loss handling in `EditableColorValue` and could end the drag's edit
+        // session (commit/revert) while the user is still mid-drag.
+        if let editor = currentEditor() {
+            editor.selectedRange = NSRange(location: (editor.string as NSString).length, length: 0)
+        }
         onDragBegin?()
     }
 
