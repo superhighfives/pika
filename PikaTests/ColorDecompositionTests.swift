@@ -95,8 +95,10 @@ final class ColorDecompositionTests: XCTestCase {
         let c = ColorComponent(value: "128", kind: .integer, range: 0 ... 255)
         XCTAssertTrue(c.isValid("0"))
         XCTAssertTrue(c.isValid("255"))
-        XCTAssertFalse(c.isValid("256"))
-        XCTAssertFalse(c.isValid("-1"))
+        // Out-of-range numbers are still valid input — they're clamped to the nearest bound on
+        // commit (see `EditableColorValue.clampValuesToRange`) rather than rejected outright.
+        XCTAssertTrue(c.isValid("256"))
+        XCTAssertTrue(c.isValid("-1"))
         XCTAssertFalse(c.isValid("12.5"))
         XCTAssertFalse(c.isValid("abc"))
         XCTAssertFalse(c.isValid(""))
@@ -123,6 +125,15 @@ final class ColorDecompositionTests: XCTestCase {
         XCTAssertTrue(c.isValid("-12.5"))
         XCTAssertTrue(c.isValid("100"))
         XCTAssertFalse(c.isValid("abc"))
+    }
+
+    // Same "clamped, not rejected" rule as `.integer` — see test_componentValidity_integerRange.
+    func test_componentValidity_decimalRange() {
+        let c = ColorComponent(value: "0.5", kind: .decimal, range: 0 ... 1)
+        XCTAssertTrue(c.isValid("0"))
+        XCTAssertTrue(c.isValid("1"))
+        XCTAssertTrue(c.isValid("1.5"))
+        XCTAssertTrue(c.isValid("-0.5"))
     }
 
     // `Double("inf")`/`Double("nan")` parse successfully but aren't valid colour values — a nil

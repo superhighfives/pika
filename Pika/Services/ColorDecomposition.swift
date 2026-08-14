@@ -27,14 +27,17 @@ struct ColorComponent: Equatable {
         case .hex:
             return NSColor.fromHex(trimmed) != nil
         case .integer:
-            // Reject decimals/exponents for integer fields; only a plain whole number.
-            guard let n = Int(trimmed) else { return false }
-            return range.map { $0.contains(Double(n)) } ?? true
+            // Reject decimals/exponents for integer fields; only a plain whole number. A
+            // number outside `range` is still valid input, not rejected — it's clamped to the
+            // nearest bound on commit (see `EditableColorValue.clampValuesToRange`), matching
+            // `recompose`'s own clamping rather than reverting the whole edit.
+            return Int(trimmed) != nil
         case .decimal:
             // `Double("inf")`/`Double("nan")` parse successfully but aren't valid colour
-            // values, and a nil range (e.g. Lab a/b) wouldn't otherwise reject them.
-            guard let n = Double(trimmed), n.isFinite else { return false }
-            return range.map { $0.contains(n) } ?? true
+            // values, and a nil range (e.g. Lab a/b) wouldn't otherwise reject them. As with
+            // `.integer`, a finite out-of-range number is valid input — clamped on commit.
+            guard let n = Double(trimmed) else { return false }
+            return n.isFinite
         }
     }
 }

@@ -241,6 +241,20 @@ struct EditableColorValue: View {
     private func finishDragOrScrollSession(index: Int) {
         guard isEditing, sessionOwner == index else { return }
         finishEditing()
+        // AppKit implicitly focuses (and select-alls) a field as part of routing the mouseDown
+        // that turns out to be a click-drag (see `ScrubTextField.beginDrag`'s comment) —
+        // regardless of whether the drag started fresh or on an already-focused field. A scrub
+        // must never leave the field looking like an active text edit once it's done (the
+        // "renders like a label" intent documented on `beginDragSession` above); `finishEditing`/
+        // `endSession` only manage `isEditing`, not `focusedIndex`. Clearing it here — rather
+        // than resigning first responder directly from AppKit — routes through the same
+        // `updateNSView` reconciliation (`isFocused`/`editorIsActive`) that already reliably
+        // drives real focus changes elsewhere, instead of depending on `resignFirstResponder`
+        // firing for a resign that didn't originate from `self` becoming first responder, which
+        // proved unreliable (see `PickTarget`'s `dismissEditingTrigger`).
+        if focusedIndex == index {
+            focusedIndex = nil
+        }
     }
 
     /// Snapshot the colour and working values at the start of an edit or drag session, so
@@ -261,6 +275,23 @@ struct EditableColorValue: View {
         lastPreviewedColor = eyedropper.color
     }
 
+    /// Snaps any component whose typed value fell outside its range to the nearest bound,
+    /// in place, using the same string formatting `ColorComponentField`'s drag/scroll scrub
+    /// uses. Only touches components that actually have a range and are out of it — hex and
+    /// unbounded fields (e.g. Lab a/b) are untouched.
+    private func clampValuesToRange(layout: DecomposedColor) {
+        for (i, component) in layout.components.enumerated() where i < values.count {
+            guard let range = component.range,
+                  let n = Double(values[i].trimmingCharacters(in: .whitespaces))
+            else {
+                continue
+            }
+            let clamped = min(max(n, range.lowerBound), range.upperBound)
+            guard clamped != n else { continue }
+            values[i] = ColorComponentField.formattedDragValue(clamped, kind: component.kind)
+        }
+    }
+
     private func commitEditing() {
         // Called on Return: drop focus, which routes through finishEditing().
         focusedIndex = nil
@@ -273,11 +304,17 @@ struct EditableColorValue: View {
             eyedropper.set(color)
             lastPreviewedColor = eyedropper.color
             NotificationCenter.default.post(name: .colorPicked, object: nil)
-            // Don't resync `values` from the just-committed colour: some formats are lossy at
-            // their extremes (e.g. HSB hue/saturation are undefined at brightness 0), so
-            // decomposing straight back can silently discard what was just typed — e.g. typing
-            // hsb(0, 50%, 0%) round-trips through black and reports back 0% saturation. `values`
-            // already holds exactly what was committed, which is the more faithful thing to show.
+            // `recompose` already clamps an out-of-range number rather than rejecting it (see
+            // `ColorComponent.isValid`); snap the displayed text to match what was actually
+            // used, rather than leaving e.g. a typed "400" showing next to a hue that's
+            // actually 360.
+            clampValuesToRange(layout: layout)
+            // Don't otherwise resync `values` from the just-committed colour: some formats are
+            // lossy at their extremes (e.g. HSB hue/saturation are undefined at brightness 0),
+            // so decomposing straight back can silently discard what was just typed — e.g.
+            // typing hsb(0, 50%, 0%) round-trips through black and reports back 0% saturation.
+            // `values` already holds exactly what was committed, which is the more faithful
+            // thing to show.
             endSession(resync: false)
         } else if let preEditColor {
             eyedropper.set(preEditColor)
