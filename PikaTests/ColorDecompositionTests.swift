@@ -89,6 +89,28 @@ final class ColorDecompositionTests: XCTestCase {
         XCTAssertEqual(rgba.r, 1.0, accuracy: 0.01)
     }
 
+    // Regression test: the committed colour must match what `clampValuesToRange` snaps the
+    // field's displayed text to — an out-of-range Lab `l` or OKLCH `l`/`c`/`h` used to be passed
+    // straight through to `fromLab`/`fromOklch` unclamped, silently committing a colour that
+    // disagreed with the clamped value shown in the UI.
+    func test_recompose_outOfRange_clampsForLabAndOklch() {
+        let labOverRange = ColorFormat.lab.recompose(["1000", "50", "0"], style: .css, in: space)
+        let labClamped = ColorFormat.lab.recompose(["100", "50", "0"], style: .css, in: space)
+        XCTAssertNotNil(labOverRange)
+        XCTAssertEqual(
+            labOverRange?.toHex(in: .sRGB), labClamped?.toHex(in: .sRGB),
+            "an out-of-range Lab l should commit the same colour the clamped display value shows"
+        )
+
+        let oklchOverRange = ColorFormat.oklch.recompose(["50", "0.1", "400"], style: .css, in: space)
+        let oklchClamped = ColorFormat.oklch.recompose(["50", "0.1", "360"], style: .css, in: space)
+        XCTAssertNotNil(oklchOverRange)
+        XCTAssertEqual(
+            oklchOverRange?.toHex(in: .sRGB), oklchClamped?.toHex(in: .sRGB),
+            "an out-of-range OKLCH h must clamp (matching the displayed value), not wrap via cos/sin"
+        )
+    }
+
     // MARK: - ColorComponent validity
 
     func test_componentValidity_integerRange() {

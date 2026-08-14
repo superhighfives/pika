@@ -253,11 +253,22 @@ extension ColorFormat {
 
         case .lab:
             guard let triple = doubles(values, count: 3) else { return nil }
-            return NSColor.fromLab(l: triple[0], a: triple[1], b: triple[2])
+            // Only `l` has a range (0...100, matching `decompose`'s `labComponent`); `a`/`b`
+            // are intentionally unbounded, so nothing to clamp for them.
+            return NSColor.fromLab(l: clamp(triple[0], 0, 100), a: triple[1], b: triple[2])
 
         case .oklch:
             guard let triple = doubles(values, count: 3) else { return nil }
-            return NSColor.fromOklch(l: triple[0] / 100, c: triple[1], h: triple[2])
+            // Clamp all three to the same ranges `decompose` declares (l: 0...100, c: 0...1,
+            // h: 0...360) before computing — `fromOklch` derives RGB via `cos`/`sin` on `h` and
+            // has no clamping of its own, so an out-of-range value here silently computes a
+            // *different* colour than the one `EditableColorValue.clampValuesToRange` displays
+            // after snapping the typed text to those same bounds (e.g. h=400° would otherwise
+            // wrap to 40° instead of matching the clamped, displayed 360°/red).
+            let l = clamp(triple[0], 0, 100) / 100
+            let c = clamp(triple[1], 0, 1)
+            let h = clamp(triple[2], 0, 360)
+            return NSColor.fromOklch(l: l, c: c, h: h)
         }
     }
 }
