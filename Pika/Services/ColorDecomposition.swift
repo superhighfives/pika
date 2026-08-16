@@ -67,6 +67,7 @@ struct DecomposedColor: Equatable {
 extension ColorFormat {
     /// Split a colour into fixed scaffolding + editable components for `(self, style)`.
     /// Mirrors the matching `to…String` formatter exactly (see `joined()` invariant).
+    // swiftlint:disable:next cyclomatic_complexity function_body_length
     func decompose(_ color: NSColor, style: CopyFormat, in cs: NSColorSpace) -> DecomposedColor {
         switch self {
         case .hex:

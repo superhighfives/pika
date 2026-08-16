@@ -1,5 +1,6 @@
 import Foundation
 
+// swiftlint:disable:next type_body_length
 enum PikaText {
     static let textAppName = NSLocalizedString("app.name", comment: "Pika")
 

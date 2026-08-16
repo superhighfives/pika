@@ -87,6 +87,7 @@ final class CustomColorPickSession: ColorPickSession {
 
 /// Shared owner of the loupe UI, ScreenCaptureKit capture loop, and the full-screen
 /// catcher that drives cursor tracking and swallows the committing click.
+// swiftlint:disable:next type_body_length
 final class PickerLoupeController {
     static let shared = PickerLoupeController()
     private init() {}
