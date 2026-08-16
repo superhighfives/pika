@@ -12,21 +12,12 @@ struct ColorPair: Codable, Identifiable, Equatable {
 
     // Reconstructs the color in Defaults[.colorSpace] — the same space toHexString()
     // reads from. This makes set() a no-op (colorSpace → colorSpace) so the stored
-    // hex round-trips exactly.
+    // hex round-trips exactly. Stored hex is always 6 digits (from toHexString), so
+    // anything else is treated as corrupt and falls back to black.
     private static func colorFromHex(_ hex: String) -> NSColor {
         let fallback = NSColor.black.usingColorSpace(Defaults[.colorSpace]) ?? .black
-        let stripped = hex.replacingOccurrences(of: "#", with: "")
-        guard stripped.count == 6 else { return fallback }
-        let scanner = Scanner(string: stripped)
-        var rgb: UInt64 = 0
-        guard scanner.scanHexInt64(&rgb) else { return fallback }
-        let components: [CGFloat] = [
-            CGFloat((rgb >> 16) & 0xFF) / 255,
-            CGFloat((rgb >> 8) & 0xFF) / 255,
-            CGFloat(rgb & 0xFF) / 255,
-            1.0,
-        ]
-        return NSColor(colorSpace: Defaults[.colorSpace], components: components, count: 4)
+        guard hex.replacingOccurrences(of: "#", with: "").count == 6 else { return fallback }
+        return NSColor.fromHex(hex) ?? fallback
     }
 
     static let maxHistory = 20

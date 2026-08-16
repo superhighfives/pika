@@ -103,4 +103,58 @@ final class NSColorInitTests: XCTestCase {
         XCTAssertEqual(lRGBA.g, uRGBA.g, accuracy: 0.001)
         XCTAssertEqual(lRGBA.b, uRGBA.b, accuracy: 0.001)
     }
+
+    // MARK: - init(hex:) — invalid input falls back to black (never crashes)
+
+    func test_initHex_nonHexCharacters_fallsBackToBlack() {
+        let color = NSColor(hex: "ZZZZZZ").toRGBAComponents(in: .sRGB)
+        XCTAssertEqual(color.r + color.g + color.b, 0.0, accuracy: 0.001)
+    }
+
+    // MARK: - fromHex(_:) — validating parser (nil on invalid)
+
+    func test_fromHex_valid6Char_parses() {
+        let color = NSColor.fromHex("FF0000", in: .sRGB)
+        XCTAssertNotNil(color)
+        let rgba = color!.toRGBAComponents(in: .sRGB)
+        XCTAssertEqual(rgba.r, 1.0, accuracy: 0.01)
+        XCTAssertEqual(rgba.g, 0.0, accuracy: 0.01)
+        XCTAssertEqual(rgba.b, 0.0, accuracy: 0.01)
+    }
+
+    func test_fromHex_valid3Char_expands() {
+        let short = NSColor.fromHex("F00", in: .sRGB)!.toRGBAComponents(in: .sRGB)
+        let long = NSColor.fromHex("FF0000", in: .sRGB)!.toRGBAComponents(in: .sRGB)
+        XCTAssertEqual(short.r, long.r, accuracy: 0.001)
+        XCTAssertEqual(short.g, long.g, accuracy: 0.001)
+        XCTAssertEqual(short.b, long.b, accuracy: 0.001)
+    }
+
+    func test_fromHex_withHashPrefix_parses() {
+        XCTAssertNotNil(NSColor.fromHex("#00FF00", in: .sRGB))
+    }
+
+    func test_fromHex_invalidLength_returnsNil() {
+        XCTAssertNil(NSColor.fromHex("12345", in: .sRGB))
+        XCTAssertNil(NSColor.fromHex("", in: .sRGB))
+        XCTAssertNil(NSColor.fromHex("1234567", in: .sRGB))
+    }
+
+    func test_fromHex_nonHexCharacters_returnsNil() {
+        XCTAssertNil(NSColor.fromHex("GGGGGG", in: .sRGB))
+        XCTAssertNil(NSColor.fromHex("12 45 6", in: .sRGB))
+    }
+
+    // Regression test: leading/trailing whitespace (e.g. from pasting) must not make an
+    // otherwise-valid hex string fail to parse, and must round-trip to the same colour.
+    func test_fromHex_leadingAndTrailingWhitespace_isTrimmed() {
+        let untrimmed = NSColor.fromHex("  FF0000  ", in: .sRGB)
+        let trimmed = NSColor.fromHex("FF0000", in: .sRGB)
+        XCTAssertNotNil(untrimmed)
+        XCTAssertEqual(
+            untrimmed?.toRGBAComponents(in: .sRGB).r, trimmed?.toRGBAComponents(in: .sRGB).r
+        )
+
+        XCTAssertNotNil(NSColor.fromHex(" #00FF00 ", in: .sRGB))
+    }
 }

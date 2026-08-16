@@ -116,4 +116,48 @@ final class NSColorHSLTests: XCTestCase {
         let color = NSColor(hex: "3A7BD5")
         XCTAssertFalse(color.toHSLString().isEmpty)
     }
+
+    // MARK: - fromHSB / fromHSL — inverse round-trips (colorSpace pinned to sRGB in setUp)
+
+    private let roundTripSamples = ["3A7BD5", "E32C88", "00FF00", "808080", "FF8800", "123456"]
+
+    func test_fromHSB_roundTrip_matchesOriginalRGB() {
+        for hex in roundTripSamples {
+            let original = NSColor(hex: hex)
+            let hsb = original.toHSBComponents()
+            let rebuilt = NSColor.fromHSB(h: hsb.h, s: hsb.s, b: hsb.b)
+            let o = original.toRGBAComponents(in: .sRGB)
+            let r = rebuilt.toRGBAComponents(in: .sRGB)
+            XCTAssertEqual(r.r, o.r, accuracy: 0.005, "R mismatch for \(hex)")
+            XCTAssertEqual(r.g, o.g, accuracy: 0.005, "G mismatch for \(hex)")
+            XCTAssertEqual(r.b, o.b, accuracy: 0.005, "B mismatch for \(hex)")
+        }
+    }
+
+    func test_fromHSL_roundTrip_matchesOriginalRGB() {
+        for hex in roundTripSamples {
+            let original = NSColor(hex: hex)
+            let hsl = original.toHSLComponents()
+            let rebuilt = NSColor.fromHSL(h: hsl.h, s: hsl.s, l: hsl.l)
+            let o = original.toRGBAComponents(in: .sRGB)
+            let r = rebuilt.toRGBAComponents(in: .sRGB)
+            XCTAssertEqual(r.r, o.r, accuracy: 0.005, "R mismatch for \(hex)")
+            XCTAssertEqual(r.g, o.g, accuracy: 0.005, "G mismatch for \(hex)")
+            XCTAssertEqual(r.b, o.b, accuracy: 0.005, "B mismatch for \(hex)")
+        }
+    }
+
+    func test_fromHSB_zeroSaturation_isGray() {
+        let rebuilt = NSColor.fromHSB(h: 0.5, s: 0, b: 0.6).toRGBAComponents(in: .sRGB)
+        XCTAssertEqual(rebuilt.r, 0.6, accuracy: 0.005)
+        XCTAssertEqual(rebuilt.g, 0.6, accuracy: 0.005)
+        XCTAssertEqual(rebuilt.b, 0.6, accuracy: 0.005)
+    }
+
+    func test_fromHSL_zeroSaturation_isGray() {
+        let rebuilt = NSColor.fromHSL(h: 0.5, s: 0, l: 0.4).toRGBAComponents(in: .sRGB)
+        XCTAssertEqual(rebuilt.r, 0.4, accuracy: 0.005)
+        XCTAssertEqual(rebuilt.g, 0.4, accuracy: 0.005)
+        XCTAssertEqual(rebuilt.b, 0.4, accuracy: 0.005)
+    }
 }

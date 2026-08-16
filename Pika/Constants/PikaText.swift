@@ -16,6 +16,7 @@ enum PikaText {
 
     static let textColorForeground = NSLocalizedString("color.foreground", comment: "Foreground")
     static let textColorBackground = NSLocalizedString("color.background", comment: "Background")
+    static let textColorEditInvalid = NSLocalizedString("color.edit.invalid", comment: "Invalid input")
     static let textColorPass = NSLocalizedString("color.wcag.pass", comment: "Pass")
     static let textColorFail = NSLocalizedString("color.wcag.fail", comment: "Fail")
     static let textColorRatio = NSLocalizedString("color.ratio", comment: "Contrast Ratio")

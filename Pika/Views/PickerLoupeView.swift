@@ -398,11 +398,20 @@ struct LoupeReadoutCard: View {
     private let cardWidth: CGFloat = 240
 
     // Colours stacked so each gets the full width — plenty of room for the value and name.
+    // Foreground always sits on top: `sampleColor` is whichever type is currently being
+    // picked, so during a chained pick's background leg that would otherwise put background
+    // above foreground, flipping the order the two colours read in between the two legs of
+    // the same pick.
     var body: some View {
+        let samplePanel = panel(viewModel.sampleColor, name: viewModel.colorName)
+        let comparisonPanel = viewModel.comparison.map { panel($0, name: viewModel.comparisonName) }
         VStack(spacing: 0) {
-            panel(viewModel.sampleColor, name: viewModel.colorName)
-            if let comparison = viewModel.comparison {
-                panel(comparison, name: viewModel.comparisonName)
+            if viewModel.target == .foreground {
+                samplePanel
+                comparisonPanel
+            } else {
+                comparisonPanel
+                samplePanel
             }
         }
         .frame(width: cardWidth)
