@@ -49,12 +49,14 @@ struct EditableColorValue: View {
     private let baseSize: CGFloat = 18
     private let minSize: CGFloat = 11
 
-    /// Identifies which (format, style) a cached `values` array was decomposed for, so a
-    /// format/style switch is detected even when the component count doesn't change (every
-    /// non-hex format always has exactly 3 components).
+    /// Identifies which (format, style, colorSpace) a cached `values` array was decomposed for,
+    /// so a format/style switch — or a display colour-space switch in Preferences, which changes
+    /// `decompose`'s output just as much — is detected even when the component count doesn't
+    /// change (every non-hex format always has exactly 3 components).
     private struct FormatStyleKey: Equatable {
         let format: ColorFormat
         let style: CopyFormat
+        let colorSpace: NSColorSpace
     }
 
     @State private var width: CGFloat = 0
@@ -150,6 +152,7 @@ struct EditableColorValue: View {
         }
         .onChange(of: format) { _ in handleFormatOrStyleChange() }
         .onChange(of: style) { _ in handleFormatOrStyleChange() }
+        .onChange(of: colorSpace) { _ in handleFormatOrStyleChange() }
         .onChange(of: dismissEditingTrigger) { _ in focusedIndex = nil }
     }
 
@@ -165,11 +168,11 @@ struct EditableColorValue: View {
 
     private func syncValuesFromColor(_ layout: DecomposedColor) {
         values = layout.values
-        valuesKey = FormatStyleKey(format: format, style: style)
+        valuesKey = FormatStyleKey(format: format, style: style, colorSpace: colorSpace)
     }
 
     private func binding(for index: Int, layout: DecomposedColor) -> Binding<String> {
-        let currentKey = FormatStyleKey(format: format, style: style)
+        let currentKey = FormatStyleKey(format: format, style: style, colorSpace: colorSpace)
         return Binding(
             get: {
                 guard valuesKey == currentKey, index < values.count else { return layout.values[index] }
@@ -189,9 +192,10 @@ struct EditableColorValue: View {
 
     // MARK: - Editing lifecycle
 
-    /// A format or copy-style switch changes how the same colour is *displayed*, not the colour
-    /// itself. Mid-edit, the typed values are in the old format's units and can't be reinterpreted
-    /// safely, so abort the session rather than risk a bogus commit; otherwise just resync.
+    /// A format, copy-style, or display colour-space switch changes how the same colour is
+    /// *displayed*, not the colour itself. Mid-edit, the typed values are in the old units and
+    /// can't be reinterpreted safely, so abort the session rather than risk a bogus commit;
+    /// otherwise just resync.
     private func handleFormatOrStyleChange() {
         if isEditing {
             abortEditingForExternalPick()
@@ -263,7 +267,7 @@ struct EditableColorValue: View {
         isEditing = true
         preEditColor = eyedropper.color
         values = layout.values
-        valuesKey = FormatStyleKey(format: format, style: style)
+        valuesKey = FormatStyleKey(format: format, style: style, colorSpace: colorSpace)
     }
 
     /// Recompose the working values and preview them live; flag invalid input for the pill.
