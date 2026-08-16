@@ -646,7 +646,13 @@ private struct ScrubbableColorField: NSViewRepresentable {
         field.isBordered = false
         field.drawsBackground = false
         field.focusRingType = .none
-        field.alignment = .center
+        // Left, not center: the field's frame is already sized to fit its text almost exactly
+        // (`intrinsicContentSize`, below), so centring only has ~2pt of slack to distribute. The
+        // static cell measures that slack with `NSString.size(withAttributes:)`; the live field
+        // editor lays the same string out via TextKit, which can measure it a device pixel
+        // narrower/wider — enough to visibly shift the centred text the moment editing begins.
+        // Left alignment anchors the text to the same edge under both renderers, so it doesn't move.
+        field.alignment = .left
         field.usesSingleLineMode = true
         field.cell?.wraps = false
         field.delegate = context.coordinator
@@ -815,6 +821,13 @@ private final class ScrubTextField: NSTextField {
             if let editor = currentEditor() {
                 let length = (editor.string as NSString).length
                 editor.selectedRange = NSRange(location: 0, length: length)
+                // The shared field editor's default `textContainerInset` doesn't match the metrics
+                // the static `NSTextFieldCell` used to draw the same string, so the text visibly
+                // jumps by a device pixel the instant editing begins. Zero it so the editor draws
+                // the text in exactly the same place the cell did.
+                if let textView = editor as? NSTextView {
+                    textView.textContainerInset = .zero
+                }
             }
             window?.invalidateCursorRects(for: self)
             onFocusChange?(true)
