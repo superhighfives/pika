@@ -106,7 +106,7 @@ struct EditableColorValue: View {
         let layout = decomposed
         let size = fontSize(for: layout.joined())
 
-        HStack(alignment: .firstTextBaseline, spacing: 0) {
+        FlowLayout {
             affix(layout.leading, size: size)
             ForEach(Array(layout.components.enumerated()), id: \.offset) { index, component in
                 ColorComponentField(
@@ -161,7 +161,6 @@ struct EditableColorValue: View {
             .font(.system(size: size, weight: .regular))
             .foregroundStyle(Color(uiColor).opacity(0.5))
             .lineLimit(1)
-            .fixedSize(horizontal: true, vertical: false)
     }
 
     // MARK: - Values ↔ colour
