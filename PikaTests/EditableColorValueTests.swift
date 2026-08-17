@@ -23,4 +23,28 @@ final class EditableColorValueTests: XCTestCase {
         // 0...720 is twice the reference span.
         XCTAssertEqual(dragUnitsPerPixel(for: 0 ... 720), 2.0)
     }
+
+    func test_stableDecimalPlaces_noDot_defaultsToTwo() {
+        XCTAssertEqual(ColorComponentField.stableDecimalPlaces(for: "5"), 2)
+    }
+
+    func test_stableDecimalPlaces_trailingDotNoDigits_clampsUpToTwo() {
+        XCTAssertEqual(ColorComponentField.stableDecimalPlaces(for: "5."), 2)
+    }
+
+    func test_stableDecimalPlaces_oneDecimal_clampsUpToTwo() {
+        XCTAssertEqual(ColorComponentField.stableDecimalPlaces(for: "5.1"), 2)
+    }
+
+    func test_stableDecimalPlaces_twoDecimals_keepsTwo() {
+        XCTAssertEqual(ColorComponentField.stableDecimalPlaces(for: "5.12"), 2)
+    }
+
+    func test_stableDecimalPlaces_fourDecimals_keepsFour() {
+        XCTAssertEqual(ColorComponentField.stableDecimalPlaces(for: "5.1234"), 4)
+    }
+
+    func test_stableDecimalPlaces_moreThanFourDecimals_clampsDownToFour() {
+        XCTAssertEqual(ColorComponentField.stableDecimalPlaces(for: "5.123456"), 4)
+    }
 }
