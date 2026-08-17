@@ -113,18 +113,20 @@ struct EditableColorValue: View {
 
     private var uiColor: NSColor { eyedropper.color.getUIColor() }
 
-    /// `FlowLayout` should never need more than this many lines — beyond a shrunk single line,
-    /// the value is meant to wrap onto exactly one more, not keep spilling.
+    /// `FlowLayout` should never need more than this many lines.
     private let maxLines: CGFloat = 2
+    /// Shrink target, deliberately less than `maxLines`: wrapping happens at fragment boundaries,
+    /// not the halfway character, so a greedy 2-line wrap rarely splits content 50/50 — leave
+    /// slack instead of clipping the fuller line.
+    private let wrapShrinkTarget: CGFloat = 1.7
 
-    // Deterministic font size from the full string width vs the width `maxLines` rows of the
-    // column can hold — same approach as the read-only AdaptiveValueText, generalized from a
-    // single line so the row shrinks just enough that `FlowLayout` wraps to at most `maxLines`.
+    // Deterministic font size vs `wrapShrinkTarget` rows of column width, so the row shrinks
+    // just enough that `FlowLayout` wraps to at most `maxLines`.
     private func fontSize(for text: String) -> CGFloat {
         guard effectiveWidth > 4 else { return baseSize }
         let full = (text as NSString).size(withAttributes: [.font: NSFont.systemFont(ofSize: baseSize)]).width
         guard full > 0 else { return baseSize }
-        let scale = min(1, (effectiveWidth * maxLines) / full)
+        let scale = min(1, (effectiveWidth * wrapShrinkTarget) / full)
         return max(minSize, baseSize * scale)
     }
 

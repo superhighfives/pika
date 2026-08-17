@@ -4,7 +4,7 @@ import SwiftUI
 /// fragment is measured and placed atomically) onto a new line once a fragment no longer fits —
 /// so a squeezed row grows to two lines instead of clipping.
 struct FlowLayout: Layout {
-    var lineSpacing: CGFloat = 2
+    var lineSpacing: CGFloat = 0
     /// Backstop for a caller that's already sized its content to fit in this many lines (e.g. by
     /// shrinking its font to target `maxLines * width`): once reached, remaining fragments pack
     /// onto the last line instead of starting a new one, so a rounding/estimation miss overflows
