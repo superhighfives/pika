@@ -26,9 +26,9 @@ struct InvalidInputPill: View {
 /// `0...360` (which felt right at a flat 1 unit/px) is the reference; without this, OKLCH
 /// chroma's `0...1` range would swing end-to-end in a single pixel. Unranged components (e.g.
 /// Lab a/b) fall back to the flat 1 unit/px, having no span to scale against.
-private let dragSensitivityReferenceSpan: Double = 360
+let dragSensitivityReferenceSpan: Double = 360
 
-private func dragUnitsPerPixel(for range: ClosedRange<Double>?) -> Double {
+func dragUnitsPerPixel(for range: ClosedRange<Double>?) -> Double {
     guard let range else { return 1.0 }
     return (range.upperBound - range.lowerBound) / dragSensitivityReferenceSpan
 }
