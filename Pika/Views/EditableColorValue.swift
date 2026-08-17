@@ -305,10 +305,51 @@ struct EditableColorValue: View {
     /// `finishEditing`/`abortEditingForExternalPick` have a consistent point to commit or revert to.
     private func startSession(layout: DecomposedColor) {
         isEditing = true
-        frozenSize = fontSize(for: layout.joined())
+        // Sized to the *widest possible* value for this format, not the current one: keeping
+        // `frozenSize` in step with the live value (as it started out) only froze the font size,
+        // not the wrap decision — a component can still change digit count as it's scrubbed
+        // (e.g. "0.25" → "0.3"), which shifts where FlowLayout breaks the line even at a fixed
+        // font size. Sizing conservatively for the worst case up front means no value this
+        // format can ever produce needs more room than what's already budgeted, so the number of
+        // lines genuinely can't change for the rest of the session, however the digits move.
+        frozenSize = fontSize(for: worstCaseJoined(layout))
         preEditColor = eyedropper.color
         values = layout.values
         valuesKey = FormatStyleKey(format: format, style: style, colorSpace: colorSpace)
+    }
+
+    /// The longest string this format's layout could ever produce: same scaffolding (leading/
+    /// separators/trailing) as `layout.joined()`, but each component replaced with its own
+    /// worst-case placeholder — see `worstCaseComponentString`.
+    private func worstCaseJoined(_ layout: DecomposedColor) -> String {
+        var result = layout.leading
+        for (index, component) in layout.components.enumerated() {
+            result += worstCaseComponentString(component)
+            if index < layout.separators.count { result += layout.separators[index] }
+        }
+        return result + layout.trailing
+    }
+
+    /// The widest value a component could ever display. Integers use the range's most digits;
+    /// decimals use the range's most integer-part digits plus 4 decimal places (the original
+    /// stripped format's max — still the true worst case even though scrubbing now defaults to
+    /// coarser 2-place rounding, since finer starting precision is preserved up to 4). A leading
+    /// "-" is budgeted for any component whose range allows (or has no range, e.g. Lab a/b) a
+    /// negative value. Hex is already fixed-length, so it's left as-is.
+    private func worstCaseComponentString(_ component: ColorComponent) -> String {
+        let sign = (component.range?.lowerBound ?? -1) < 0 ? "-" : ""
+        switch component.kind {
+        case .hex:
+            return component.value
+        case .integer:
+            let digits = component.range.map { String(Int($0.upperBound.rounded())).count } ?? 3
+            return sign + String(repeating: "9", count: max(digits, 1))
+        case .decimal:
+            let intDigits = component.range.map {
+                max(String(Int($0.upperBound)).count, String(Int($0.lowerBound)).count)
+            } ?? 1
+            return sign + String(repeating: "9", count: max(intDigits, 1)) + "." + String(repeating: "9", count: 4)
+        }
     }
 
     /// Recompose the working values and preview them live; flag invalid input for the pill.
