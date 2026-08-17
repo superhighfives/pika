@@ -335,7 +335,10 @@ struct EditableColorValue: View {
     /// stripped format's max — still the true worst case even though scrubbing now defaults to
     /// coarser 2-place rounding, since finer starting precision is preserved up to 4). A leading
     /// "-" is budgeted for any component whose range allows (or has no range, e.g. Lab a/b) a
-    /// negative value. Hex is already fixed-length, so it's left as-is.
+    /// negative value. Unranged decimals (Lab a/b) have no clamp and are genuinely unbounded, so
+    /// there's no true worst case to size to; 3 int digits is a practical bound that covers real
+    /// sRGB-gamut a*/b* extremes (b* reaches roughly -107) without reserving excessive width.
+    /// Hex is already fixed-length, so it's left as-is.
     private func worstCaseComponentString(_ component: ColorComponent) -> String {
         let sign = (component.range?.lowerBound ?? -1) < 0 ? "-" : ""
         switch component.kind {
@@ -347,7 +350,7 @@ struct EditableColorValue: View {
         case .decimal:
             let intDigits = component.range.map {
                 max(String(Int($0.upperBound)).count, String(Int($0.lowerBound)).count)
-            } ?? 1
+            } ?? 3
             return sign + String(repeating: "9", count: max(intDigits, 1)) + "." + String(repeating: "9", count: 4)
         }
     }
