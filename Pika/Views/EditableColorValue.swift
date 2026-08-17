@@ -21,9 +21,16 @@ struct InvalidInputPill: View {
     }
 }
 
-private struct EditableWidthKey: PreferenceKey {
-    static var defaultValue: CGFloat = 0
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) { value = nextValue() }
+/// Units nudged per pixel of drag/scroll (or per arrow-key press), scaled to a component's own
+/// range so every field's full span takes about the same drag distance to traverse — hue's
+/// `0...360` (which felt right at a flat 1 unit/px) is the reference; without this, OKLCH
+/// chroma's `0...1` range would swing end-to-end in a single pixel. Unranged components (e.g.
+/// Lab a/b) fall back to the flat 1 unit/px, having no span to scale against.
+private let dragSensitivityReferenceSpan: Double = 360
+
+private func dragUnitsPerPixel(for range: ClosedRange<Double>?) -> Double {
+    guard let range else { return 1.0 }
+    return (range.upperBound - range.lowerBound) / dragSensitivityReferenceSpan
 }
 
 /// The editable colour readout. Fixed format scaffolding renders as dimmed, non-editable text;
@@ -35,6 +42,11 @@ struct EditableColorValue: View {
     let format: ColorFormat
     let style: CopyFormat
     let colorSpace: NSColorSpace
+    /// The swatch's own content width, measured by the caller from `PickTarget`'s reliably-sized
+    /// background — a plain `GeometryReader`/preference round trip *inside* this view's own
+    /// `FlowLayout` was found to intermittently never fire, silently overflowing the row past the
+    /// window edge instead of wrapping. 0 until the caller's first layout pass reports a value.
+    let availableWidth: CGFloat
     /// Raised while the focused field holds unparseable input, so the parent can show the pill.
     @Binding var isInvalid: Bool
     /// Bumped by the parent to end any active edit session (e.g. a click landing elsewhere in the
@@ -59,7 +71,13 @@ struct EditableColorValue: View {
         let colorSpace: NSColorSpace
     }
 
-    @State private var width: CGFloat = 0
+    /// The outer VStack's `.padding(.all, 10)` plus the trailing gutter this view is given at
+    /// its call site (`.padding(.trailing, 32)`, reserved for the copy/system-picker hover
+    /// buttons) — both applied *outside* this view, so `availableWidth` (measured at the swatch
+    /// content's outer edge) has to have them subtracted back out here.
+    private let horizontalInset: CGFloat = 52
+    private var effectiveWidth: CGFloat { max(availableWidth - horizontalInset, 0) }
+
     /// Working component strings. Kept in sync with the colour when idle; owned by the user
     /// while a field is focused.
     @State private var values: [String] = []
@@ -93,12 +111,12 @@ struct EditableColorValue: View {
     private var uiColor: NSColor { eyedropper.color.getUIColor() }
 
     // Deterministic font size from the full string width vs column width — same approach as the
-    // read-only AdaptiveValueText, but single-line (a wrapping row of fields reads poorly).
+    // read-only AdaptiveValueText. `FlowLayout` picks up any remaining overflow by wrapping.
     private func fontSize(for text: String) -> CGFloat {
-        guard width > 4 else { return baseSize }
+        guard effectiveWidth > 4 else { return baseSize }
         let full = (text as NSString).size(withAttributes: [.font: NSFont.systemFont(ofSize: baseSize)]).width
         guard full > 0 else { return baseSize }
-        let scale = min(1, width / full)
+        let scale = min(1, effectiveWidth / full)
         return max(minSize, baseSize * scale)
     }
 
@@ -127,13 +145,13 @@ struct EditableColorValue: View {
             }
             affix(layout.trailing, size: size)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(
-            GeometryReader { geo in
-                Color.clear.preference(key: EditableWidthKey.self, value: geo.size.width)
-            }
-        )
-        .onPreferenceChange(EditableWidthKey.self) { width = $0 }
+        // An explicit width, not `.frame(maxWidth: .infinity)`: a plain flexible frame was found
+        // to sometimes only ever be queried for its *ideal* size in this view's position in the
+        // hierarchy, never its true constrained size, so `FlowLayout` never wrapped and the row
+        // silently overflowed past the window edge instead. Until the caller's first layout pass
+        // reports a real `availableWidth`, fall back to flexible so nothing collapses to zero.
+        .frame(width: availableWidth > 0 ? effectiveWidth : nil, alignment: .leading)
+        .frame(maxWidth: availableWidth > 0 ? nil : .infinity, alignment: .leading)
         .onAppear { syncValuesFromColor(layout) }
         .onChange(of: focusedIndex) { newValue in handleFocusChange(to: newValue, layout: layout) }
         .onChange(of: eyedropper.color) { newValue in
@@ -476,13 +494,15 @@ private struct ColorComponentField: View {
         )
     }
 
-    /// Up/Down arrow keys nudge the focused field by ±1 (±0.1 with Option), same as a single
-    /// step of click-drag or scroll scrubbing — applied straight to the live-preview binding
-    /// since the field is already mid-edit (it has to be focused to receive the key at all).
+    /// Up/Down arrow keys nudge the focused field by one `dragUnitsPerPixel` step (a tenth of
+    /// that with Option), same as a single step of click-drag or scroll scrubbing — applied
+    /// straight to the live-preview binding since the field is already mid-edit (it has to be
+    /// focused to receive the key at all).
     private func stepValue(_ direction: CGFloat) {
         let current = Double(text.trimmingCharacters(in: .whitespaces)) ?? 0
         let fine = NSEvent.modifierFlags.contains(.option)
-        var newValue = current + Double(direction) * (fine ? 0.1 : 1.0)
+        let unitsPerStep = dragUnitsPerPixel(for: component.range)
+        var newValue = current + Double(direction) * unitsPerStep * (fine ? 0.1 : 1.0)
         if let range = component.range {
             newValue = min(max(newValue, range.lowerBound), range.upperBound)
         }
@@ -490,7 +510,8 @@ private struct ColorComponentField: View {
     }
 
     /// Two-finger trackpad scroll nudges the value the same way click-drag does: accumulated
-    /// vertical scroll maps 1 unit per point (0.1 while holding Option), clamped to range.
+    /// vertical scroll maps to `dragUnitsPerPixel` units per point (a tenth of that while
+    /// holding Option), clamped to range.
     private func handleScrollDelta(_ deltaY: CGFloat) {
         guard isDraggable else { return }
         if scrollOrigin == nil {
@@ -503,7 +524,8 @@ private struct ColorComponentField: View {
         // users expect when nudging a number via a scroll gesture.
         scrollAccumulated -= deltaY
         let fine = NSEvent.modifierFlags.contains(.option)
-        var newValue = origin + Double(scrollAccumulated) * (fine ? 0.1 : 1.0)
+        let unitsPerStep = dragUnitsPerPixel(for: component.range)
+        var newValue = origin + Double(scrollAccumulated) * unitsPerStep * (fine ? 0.1 : 1.0)
         if let range = component.range {
             newValue = min(max(newValue, range.lowerBound), range.upperBound)
         }
@@ -951,7 +973,8 @@ private final class ScrubTextField: NSTextField {
     private func updateDrag(translationX: CGFloat) {
         guard let origin = dragOrigin else { return }
         let fine = NSEvent.modifierFlags.contains(.option)
-        var newValue = origin + Double(translationX) * (fine ? 0.1 : 1.0)
+        let unitsPerStep = dragUnitsPerPixel(for: range)
+        var newValue = origin + Double(translationX) * unitsPerStep * (fine ? 0.1 : 1.0)
         if let range {
             newValue = min(max(newValue, range.lowerBound), range.upperBound)
         }

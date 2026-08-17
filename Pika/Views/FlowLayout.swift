@@ -4,7 +4,7 @@ import SwiftUI
 /// fragment is measured and placed atomically) onto a new line once a fragment no longer fits —
 /// so a squeezed row grows to two lines instead of clipping.
 struct FlowLayout: Layout {
-    var lineSpacing: CGFloat = 4
+    var lineSpacing: CGFloat = 2
 
     func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache _: inout ()) -> CGSize {
         let maxWidth = proposal.width ?? .infinity
