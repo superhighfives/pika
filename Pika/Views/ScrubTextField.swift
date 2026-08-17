@@ -105,6 +105,10 @@ struct ScrubbableColorField: NSViewRepresentable {
     /// same live-preview/commit session used for typed edits.
     let onDragBegin: () -> Void
     let onDragEnd: () -> Void
+    /// Live value as the drag moves, or `nil` once it ends — drives a floating preview pill
+    /// instead of the field's own text, which stays frozen for the whole drag (see
+    /// `EditableColorValue.scrubPreviewText`).
+    let onScrubPreview: (String?) -> Void
     /// Fired with +1/-1 for Up/Down arrow keys, `nil` for non-draggable (hex) fields.
     let onStep: ((CGFloat) -> Void)?
 
@@ -152,23 +156,23 @@ struct ScrubbableColorField: NSViewRepresentable {
         nsView.range = range
         nsView.kind = kind
         nsView.onDragBegin = onDragBegin
+        // The field's own `stringValue` is deliberately never touched here — it stays frozen at
+        // whatever it showed when the drag began, for `FlowLayout`'s benefit (see
+        // `EditableColorValue.scrubPreviewText`). Only the floating pill sees the live value.
         nsView.onDragChanged = { [weak nsView] newValue in
             guard let nsView else { return }
-            nsView.stringValue = ColorComponentField.formattedDragValue(
+            onScrubPreview(ColorComponentField.formattedDragValue(
                 newValue, kind: kind, stableDecimalPlaces: nsView.dragDecimalPlaces
-            )
-            // Setting `stringValue` on a field that still has a live field editor attached
-            // (see `beginDrag`'s comment) resets the editor's selection to select-all every
-            // time — so every step of the drag re-selects the newly-set text, and whichever
-            // step happens to be the last one is what's left visibly selected once the drag
-            // ends. Collapse it again after every step, not just the first.
-            if let editor = nsView.currentEditor() {
-                let length = (editor.string as NSString).length
-                editor.selectedRange = NSRange(location: length, length: 0)
-            }
-            text = nsView.stringValue
+            ))
         }
-        nsView.onDragEnd = onDragEnd
+        nsView.onDragEnd = { [weak nsView] finalValue in
+            guard let nsView else { return }
+            text = ColorComponentField.formattedDragValue(
+                finalValue, kind: kind, stableDecimalPlaces: nsView.dragDecimalPlaces
+            )
+            onScrubPreview(nil)
+            onDragEnd()
+        }
 
         if nsView.stringValue != text {
             nsView.stringValue = text
@@ -265,13 +269,18 @@ final class ScrubTextField: NSTextField {
     var kind: ComponentKind = .integer
     var onDragBegin: (() -> Void)?
     var onDragChanged: ((Double) -> Void)?
-    var onDragEnd: (() -> Void)?
+    /// Fires with the drag's final value once it ends.
+    var onDragEnd: ((Double) -> Void)?
     /// Reports true/false as this field becomes/resigns first responder. Driven from these
     /// overrides rather than `NSTextFieldDelegate`'s controlTextDidBeginEditing/EndEditing —
     /// see the note at the `onFocusChange` assignment in `ScrubbableColorField.updateNSView`.
     var onFocusChange: ((Bool) -> Void)?
 
     private var dragOrigin: Double?
+    /// The most recent value `onDragChanged` reported — always set by the time `finishDrag` can
+    /// run, since `updateDrag` fires at least once (immediately after `beginDrag`) before a
+    /// `mouseUp` can be reached. Read once, then cleared, to hand `onDragEnd` its final value.
+    private var lastDragValue: Double?
     /// Decimal places to hold this drag's live display at — captured once at drag start (see
     /// `ColorComponentField.stableDecimalPlaces(for:)`) and held fixed for the drag, rather than
     /// recomputed every pixel of movement, so the value's own live-updating string never itself
@@ -436,12 +445,16 @@ final class ScrubTextField: NSTextField {
         if let range {
             newValue = min(max(newValue, range.lowerBound), range.upperBound)
         }
+        lastDragValue = newValue
         onDragChanged?(newValue)
     }
 
     private func finishDrag() {
         dragOrigin = nil
         NSCursor.arrow.set()
-        onDragEnd?()
+        if let lastDragValue {
+            onDragEnd?(lastDragValue)
+        }
+        lastDragValue = nil
     }
 }

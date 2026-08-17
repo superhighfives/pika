@@ -469,10 +469,22 @@ struct ColorComponentField: View {
     /// scroll start. `scrollAccumulated` tracks total vertical scroll since then.
     @State private var scrollOrigin: Double?
     @State private var scrollAccumulated: CGFloat = 0
+    /// The last value computed during an active scroll — nil once no scroll is in progress.
+    /// Committed to `text` in `handleScrollEnded`, since the field's own text stays frozen
+    /// (see `scrubPreviewText`) for the live-updating part of the gesture.
+    @State private var scrollLastValue: Double?
     /// Decimal places to hold this scroll session's live display at — captured once at scroll
     /// start (see `stableDecimalPlaces(for:)`) and held fixed for the session, same reasoning as
     /// `ScrubTextField.dragDecimalPlaces`.
     @State private var scrollDecimalPlaces = 2
+    /// Non-nil while a click-drag or scroll scrub is live: the value the field's own text stays
+    /// completely frozen against (no re-shrink/re-wrap risk, since nothing about the row's text
+    /// changes for the rest of the session) is instead shown here, in a floating pill above the
+    /// field — a value's own rendered width still isn't perfectly stable digit-for-digit even at
+    /// a fixed decimal-place count (e.g. "0.0000" vs "0.1111" in a proportional font), so a
+    /// preview that doesn't participate in `FlowLayout`'s sizing at all is the only way to fully
+    /// rule out wrap flicker while scrubbing.
+    @State private var scrubPreviewText: String?
     /// Bumped on every focus event (begin or end) this field reports; see the deferred-blur
     /// comment at its use in `onFocusChange` below.
     @State private var focusVersion = 0
@@ -519,6 +531,7 @@ struct ColorComponentField: View {
             onCancel: onCancel,
             onDragBegin: onDragBegin,
             onDragEnd: onDragEnd,
+            onScrubPreview: { scrubPreviewText = $0 },
             onStep: isDraggable ? stepValue : nil
         )
         .fixedSize()
@@ -535,6 +548,24 @@ struct ColorComponentField: View {
                     style: StrokeStyle(lineWidth: 1, dash: isInvalid ? [2, 2] : [])
                 )
         )
+        // Purely decorative: an `.overlay` doesn't feed back into this view's own reported size,
+        // so the pill can appear, change text, and disappear without ever perturbing `FlowLayout`.
+        .overlay(alignment: .top) {
+            if let scrubPreviewText {
+                Text(scrubPreviewText)
+                    .font(.system(size: 12, weight: .semibold, design: .rounded))
+                    .monospacedDigit()
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 3)
+                    .background(Capsule().fill(.black.opacity(0.85)))
+                    .fixedSize()
+                    .offset(y: -26)
+                    .transition(.opacity.combined(with: .scale(scale: 0.9)))
+                    .allowsHitTesting(false)
+            }
+        }
+        .animation(.easeOut(duration: 0.1), value: scrubPreviewText)
         .contentShape(Rectangle())
         .onHover { hovering in
             isHovering = hovering
@@ -596,13 +627,19 @@ struct ColorComponentField: View {
         if let range = component.range {
             newValue = min(max(newValue, range.lowerBound), range.upperBound)
         }
-        text = Self.formattedDragValue(newValue, kind: component.kind, stableDecimalPlaces: scrollDecimalPlaces)
+        scrollLastValue = newValue
+        scrubPreviewText = Self.formattedDragValue(newValue, kind: component.kind, stableDecimalPlaces: scrollDecimalPlaces)
     }
 
     private func handleScrollEnded() {
         guard scrollOrigin != nil else { return }
+        if let scrollLastValue {
+            text = Self.formattedDragValue(scrollLastValue, kind: component.kind, stableDecimalPlaces: scrollDecimalPlaces)
+        }
         scrollOrigin = nil
         scrollAccumulated = 0
+        scrollLastValue = nil
+        scrubPreviewText = nil
         onDragEnd()
     }
 
