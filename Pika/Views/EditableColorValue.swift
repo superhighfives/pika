@@ -86,6 +86,11 @@ struct EditableColorValue: View {
     @State private var values: [String] = []
     @State private var valuesKey: FormatStyleKey?
     @State private var isEditing = false
+    /// Font size pinned for the duration of a session, so scrubbing (which changes the value's
+    /// digit count, and so its rendered width, on essentially every frame) doesn't repeatedly
+    /// re-shrink/re-wrap the row — the flicker that made the value visibly flick between one and
+    /// two lines while dragging. Captured once at session start, cleared once it ends.
+    @State private var frozenSize: CGFloat?
     @State private var preEditColor: NSColor?
     /// The colour we last pushed to `eyedropper` ourselves (live preview or commit). Lets
     /// `onChange(of: eyedropper.color)` tell our own writes apart from an external pick landing
@@ -132,7 +137,7 @@ struct EditableColorValue: View {
 
     var body: some View {
         let layout = decomposed
-        let size = fontSize(for: layout.joined())
+        let size = frozenSize ?? fontSize(for: layout.joined())
 
         FlowLayout(maxLines: Int(maxLines)) {
             affix(layout.leading, size: size)
@@ -300,6 +305,7 @@ struct EditableColorValue: View {
     /// `finishEditing`/`abortEditingForExternalPick` have a consistent point to commit or revert to.
     private func startSession(layout: DecomposedColor) {
         isEditing = true
+        frozenSize = fontSize(for: layout.joined())
         preEditColor = eyedropper.color
         values = layout.values
         valuesKey = FormatStyleKey(format: format, style: style, colorSpace: colorSpace)
@@ -382,6 +388,7 @@ struct EditableColorValue: View {
 
     private func endSession(resync: Bool) {
         isEditing = false
+        frozenSize = nil
         isInvalid = false
         preEditColor = nil
         sessionOwner = nil
