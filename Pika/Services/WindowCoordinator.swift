@@ -348,7 +348,7 @@ class WindowCoordinator: NSObject {
 
     /// AppKit's own auto-focus (`_setUpFirstResponder`/`_selectFirstKeyView`) is meant to be
     /// headed off once and for all by pointing `initialFirstResponder` at the content view (see
-    /// the comment at that assignment in `EditableColorValue.ScrubTextField.viewDidMoveToWindow`).
+    /// the comment at that assignment in `ScrubTextField.viewDidMoveToWindow`).
     /// That holds for the window's very first appearance, but re-showing a window that was
     /// previously ordered out (e.g. a pick landing while Pika was closed, which unconditionally
     /// re-shows it via `showPika`) can still land on the first colour-value field instead —
