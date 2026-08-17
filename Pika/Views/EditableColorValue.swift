@@ -320,19 +320,14 @@ struct EditableColorValue: View {
         lastPreviewedColor = eyedropper.color
     }
 
-    /// Snaps any component whose typed value fell outside its range to the nearest bound,
-    /// in place, using the same string formatting `ColorComponentField`'s drag/scroll scrub
-    /// uses. Only touches components that actually have a range and are out of it — hex and
-    /// unbounded fields (e.g. Lab a/b) are untouched.
-    private func clampValuesToRange(layout: DecomposedColor) {
+    /// Snaps any component whose typed value fell outside its range to the nearest bound, and
+    /// restrips every numeric value's trailing zeros back to its normal compact form — undoing
+    /// the fixed-decimal-places padding a scrub session keeps live (see `formattedDragValue`) now
+    /// that it's ending. Hex is skipped naturally: it doesn't parse as a `Double`.
+    private func finalizeValues(layout: DecomposedColor) {
         for (i, component) in layout.components.enumerated() where i < values.count {
-            guard let range = component.range,
-                  let n = Double(values[i].trimmingCharacters(in: .whitespaces))
-            else {
-                continue
-            }
-            let clamped = min(max(n, range.lowerBound), range.upperBound)
-            guard clamped != n else { continue }
+            guard let n = Double(values[i].trimmingCharacters(in: .whitespaces)) else { continue }
+            let clamped = component.range.map { min(max(n, $0.lowerBound), $0.upperBound) } ?? n
             values[i] = ColorComponentField.formattedDragValue(clamped, kind: component.kind)
         }
     }
@@ -353,7 +348,7 @@ struct EditableColorValue: View {
             // `ColorComponent.isValid`); snap the displayed text to match what was actually
             // used, rather than leaving e.g. a typed "400" showing next to a hue that's
             // actually 360.
-            clampValuesToRange(layout: layout)
+            finalizeValues(layout: layout)
             // Don't otherwise resync `values` from the just-committed colour: some formats are
             // lossy at their extremes (e.g. HSB hue/saturation are undefined at brightness 0),
             // so decomposing straight back can silently discard what was just typed — e.g.
@@ -433,6 +428,10 @@ struct ColorComponentField: View {
     /// scroll start. `scrollAccumulated` tracks total vertical scroll since then.
     @State private var scrollOrigin: Double?
     @State private var scrollAccumulated: CGFloat = 0
+    /// Decimal places to hold this scroll session's live display at — captured once at scroll
+    /// start (see `stableDecimalPlaces(for:)`) and held fixed for the session, same reasoning as
+    /// `ScrubTextField.dragDecimalPlaces`.
+    @State private var scrollDecimalPlaces = 2
     /// Bumped on every focus event (begin or end) this field reports; see the deferred-blur
     /// comment at its use in `onFocusChange` below.
     @State private var focusVersion = 0
@@ -531,7 +530,8 @@ struct ColorComponentField: View {
         if let range = component.range {
             newValue = min(max(newValue, range.lowerBound), range.upperBound)
         }
-        text = Self.formattedDragValue(newValue, kind: component.kind)
+        let places = Self.stableDecimalPlaces(for: text)
+        text = Self.formattedDragValue(newValue, kind: component.kind, stableDecimalPlaces: places)
     }
 
     /// Two-finger trackpad scroll nudges the value the same way click-drag does: accumulated
@@ -542,6 +542,7 @@ struct ColorComponentField: View {
         if scrollOrigin == nil {
             scrollOrigin = Double(text.trimmingCharacters(in: .whitespaces)) ?? 0
             scrollAccumulated = 0
+            scrollDecimalPlaces = Self.stableDecimalPlaces(for: text)
             onDragBegin()
         }
         guard let origin = scrollOrigin else { return }
@@ -554,7 +555,7 @@ struct ColorComponentField: View {
         if let range = component.range {
             newValue = min(max(newValue, range.lowerBound), range.upperBound)
         }
-        text = Self.formattedDragValue(newValue, kind: component.kind)
+        text = Self.formattedDragValue(newValue, kind: component.kind, stableDecimalPlaces: scrollDecimalPlaces)
     }
 
     private func handleScrollEnded() {
@@ -564,14 +565,34 @@ struct ColorComponentField: View {
         onDragEnd()
     }
 
-    static func formattedDragValue(_ value: Double, kind: ComponentKind) -> String {
+    /// A non-nil `stableDecimalPlaces` rounds every decimal to that many fixed places instead of
+    /// the usual zero-stripped up-to-4 (e.g. "0.22" rather than "0.2200" or "0.2263") — pass it
+    /// while a scrub session is live: the zero-stripped form's length changes with the value,
+    /// which shifts `FlowLayout`'s wrap points on essentially every frame of the drag. Fixed
+    /// places holds that length steady; see `stableDecimalPlaces(for:)` for how many. The caller
+    /// restrips to the normal compact form once the session ends (`finalizeValues`).
+    static func formattedDragValue(_ value: Double, kind: ComponentKind, stableDecimalPlaces: Int? = nil) -> String {
         switch kind {
         case .hex:
             return ""
         case .integer:
             return String(Int(value.rounded()))
         case .decimal:
-            return CGFloat(value).strippedDecimalString(maxDecimalPlaces: 4)
+            guard let places = stableDecimalPlaces else {
+                return CGFloat(value).strippedDecimalString(maxDecimalPlaces: 4)
+            }
+            return String(format: "%.\(places)f", value)
         }
+    }
+
+    /// Decimal places for a scrub session's live display: 2 by default — finer than that isn't a
+    /// meaningful step to scrub by (0.0001 of a 0...1 range is imperceptible per pixel) — unless
+    /// the value already displays with more precision than that, in which case keep it. Otherwise
+    /// starting a scrub would itself immediately truncate the value and reflow the row, before
+    /// any actual dragging has happened.
+    static func stableDecimalPlaces(for text: String) -> Int {
+        guard let dotIndex = text.firstIndex(of: ".") else { return 2 }
+        let decimals = text.distance(from: text.index(after: dotIndex), to: text.endIndex)
+        return max(2, min(4, decimals))
     }
 }

@@ -154,7 +154,9 @@ struct ScrubbableColorField: NSViewRepresentable {
         nsView.onDragBegin = onDragBegin
         nsView.onDragChanged = { [weak nsView] newValue in
             guard let nsView else { return }
-            nsView.stringValue = ColorComponentField.formattedDragValue(newValue, kind: kind)
+            nsView.stringValue = ColorComponentField.formattedDragValue(
+                newValue, kind: kind, stableDecimalPlaces: nsView.dragDecimalPlaces
+            )
             // Setting `stringValue` on a field that still has a live field editor attached
             // (see `beginDrag`'s comment) resets the editor's selection to select-all every
             // time — so every step of the drag re-selects the newly-set text, and whichever
@@ -270,6 +272,11 @@ final class ScrubTextField: NSTextField {
     var onFocusChange: ((Bool) -> Void)?
 
     private var dragOrigin: Double?
+    /// Decimal places to hold this drag's live display at — captured once at drag start (see
+    /// `ColorComponentField.stableDecimalPlaces(for:)`) and held fixed for the drag, rather than
+    /// recomputed every pixel of movement, so the value's own live-updating string never itself
+    /// becomes the thing shifting the row's wrap point mid-drag.
+    var dragDecimalPlaces = 2
 
     // The default NSTextFieldCell intrinsic size proved unreliable once `.fixedSize()` queried
     // it eagerly (fields collapsed to ~0pt wide) — compute it directly from the string and font
@@ -405,6 +412,7 @@ final class ScrubTextField: NSTextField {
 
     private func beginDrag() {
         dragOrigin = Double(stringValue.trimmingCharacters(in: .whitespaces)) ?? 0
+        dragDecimalPlaces = ColorComponentField.stableDecimalPlaces(for: stringValue)
         NSCursor.resizeLeftRight.set()
         // AppKit's own event routing (`_handleMouseDownEvent:` → `NSTextFieldCell
         // _selectOrEdit:`) already focused and select-all'd this field as part of routing the
