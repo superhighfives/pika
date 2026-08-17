@@ -444,7 +444,7 @@ struct EditableColorValue: View {
 /// A single focusable numeric/hex field styled to the swatch's UI colour, with the four design
 /// states: default (bare), hover (filled), focus (outlined), invalid (dashed outline).
 ///
-/// Backed by a custom `NSTextField` (`ScrubTextField`, below) rather than a plain SwiftUI
+/// Backed by a custom `NSTextField` (`ScrubTextField`, in `ScrubTextField.swift`) rather than a plain SwiftUI
 /// `TextField`. Three attempts to bolt click-drag-to-scrub onto a native `TextField` via
 /// SwiftUI `DragGesture`/local event monitors all lost the race against AppKit's own
 /// click-to-focus — a raw mouseDown on a real `TextField` always focuses/selects it immediately,

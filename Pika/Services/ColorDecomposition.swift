@@ -29,7 +29,7 @@ struct ColorComponent: Equatable {
         case .integer:
             // Reject decimals/exponents for integer fields; only a plain whole number. A
             // number outside `range` is still valid input, not rejected — it's clamped to the
-            // nearest bound on commit (see `EditableColorValue.clampValuesToRange`), matching
+            // nearest bound on commit (see `EditableColorValue.finalizeValues`), matching
             // `recompose`'s own clamping rather than reverting the whole edit.
             return Int(trimmed) != nil
         case .decimal:
@@ -263,7 +263,7 @@ extension ColorFormat {
             // Clamp all three to the same ranges `decompose` declares (l: 0...100, c: 0...1,
             // h: 0...360) before computing — `fromOklch` derives RGB via `cos`/`sin` on `h` and
             // has no clamping of its own, so an out-of-range value here silently computes a
-            // *different* colour than the one `EditableColorValue.clampValuesToRange` displays
+            // *different* colour than the one `EditableColorValue.finalizeValues` displays
             // after snapping the typed text to those same bounds (e.g. h=400° would otherwise
             // wrap to 40° instead of matching the clamped, displayed 360°/red).
             let l = clamp(triple[0], 0, 100) / 100

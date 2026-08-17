@@ -89,7 +89,7 @@ final class ColorDecompositionTests: XCTestCase {
         XCTAssertEqual(rgba.r, 1.0, accuracy: 0.01)
     }
 
-    // Regression test: the committed colour must match what `clampValuesToRange` snaps the
+    // Regression test: the committed colour must match what `finalizeValues` snaps the
     // field's displayed text to — an out-of-range Lab `l` or OKLCH `l`/`c`/`h` used to be passed
     // straight through to `fromLab`/`fromOklch` unclamped, silently committing a colour that
     // disagreed with the clamped value shown in the UI.
@@ -118,7 +118,7 @@ final class ColorDecompositionTests: XCTestCase {
         XCTAssertTrue(c.isValid("0"))
         XCTAssertTrue(c.isValid("255"))
         // Out-of-range numbers are still valid input — they're clamped to the nearest bound on
-        // commit (see `EditableColorValue.clampValuesToRange`) rather than rejected outright.
+        // commit (see `EditableColorValue.finalizeValues`) rather than rejected outright.
         XCTAssertTrue(c.isValid("256"))
         XCTAssertTrue(c.isValid("-1"))
         XCTAssertFalse(c.isValid("12.5"))
