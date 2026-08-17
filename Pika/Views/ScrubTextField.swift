@@ -109,6 +109,9 @@ struct ScrubbableColorField: NSViewRepresentable {
     /// instead of the field's own text, which stays frozen for the whole drag (see
     /// `EditableColorValue.scrubPreviewText`).
     let onScrubPreview: (String?) -> Void
+    /// Fired with the raw live value on every drag step, so the parent can preview the eyedropper
+    /// colour without touching `text` (which stays frozen — see `onScrubPreview` above).
+    let onLiveValue: (Double) -> Void
     /// Fired with +1/-1 for Up/Down arrow keys, `nil` for non-draggable (hex) fields.
     let onStep: ((CGFloat) -> Void)?
 
@@ -164,6 +167,7 @@ struct ScrubbableColorField: NSViewRepresentable {
             onScrubPreview(ColorComponentField.formattedDragValue(
                 newValue, kind: kind, stableDecimalPlaces: nsView.dragDecimalPlaces
             ))
+            onLiveValue(newValue)
         }
         nsView.onDragEnd = { [weak nsView] finalValue in
             guard let nsView else { return }

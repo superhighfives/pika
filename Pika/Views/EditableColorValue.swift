@@ -157,7 +157,8 @@ struct EditableColorValue: View {
                         onSubmit: commitEditing,
                         onCancel: revertEditing,
                         onDragBegin: { beginDragSession(index: index, layout: layout) },
-                        onDragEnd: { finishDragOrScrollSession(index: index) }
+                        onDragEnd: { finishDragOrScrollSession(index: index) },
+                        onLiveValue: { value in previewLiveScrub(index: index, layout: layout, value: value) }
                     )
                     if index < layout.separators.count {
                         affix(layout.separators[index], size: size)
@@ -364,6 +365,21 @@ struct EditableColorValue: View {
         lastPreviewedColor = eyedropper.color
     }
 
+    /// Live-previews the eyedropper colour for a single component's in-progress drag/scroll
+    /// value, mirroring `previewIfValid`'s recompose-and-set against a substituted value —
+    /// without touching `values`/`text`, which stay frozen for the whole gesture so `FlowLayout`
+    /// never reflows mid-scrub (see `scrubPreviewText`).
+    private func previewLiveScrub(index: Int, layout: DecomposedColor, value: Double) {
+        guard index < layout.components.count else { return }
+        let currentKey = FormatStyleKey(format: format, style: style, colorSpace: colorSpace)
+        var liveValues = (valuesKey == currentKey && values.count == layout.components.count) ? values : layout.values
+        guard index < liveValues.count else { return }
+        liveValues[index] = ColorComponentField.formattedDragValue(value, kind: layout.components[index].kind)
+        guard let color = format.recompose(liveValues, style: style, in: colorSpace) else { return }
+        eyedropper.set(color)
+        lastPreviewedColor = eyedropper.color
+    }
+
     /// Snaps any component whose typed value fell outside its range to the nearest bound, and
     /// restrips every numeric value's trailing zeros back to its normal compact form — undoing
     /// the fixed-decimal-places padding a scrub session keeps live (see `formattedDragValue`) now
@@ -466,6 +482,10 @@ struct ColorComponentField: View {
     /// live-preview/commit session used for typed edits (one history entry per drag, not per pixel).
     let onDragBegin: () -> Void
     let onDragEnd: () -> Void
+    /// Fired with the raw live value on every drag/scroll step, so the parent can preview the
+    /// eyedropper colour without touching `text` (which stays frozen for the gesture — see
+    /// `scrubPreviewText`).
+    let onLiveValue: (Double) -> Void
 
     @State private var isHovering = false
     /// Non-nil while a two-finger scroll-to-scrub gesture owns this field; holds the value at
@@ -535,6 +555,7 @@ struct ColorComponentField: View {
             onDragBegin: onDragBegin,
             onDragEnd: onDragEnd,
             onScrubPreview: { scrubPreviewText = $0 },
+            onLiveValue: onLiveValue,
             onStep: isDraggable ? stepValue : nil
         )
         .fixedSize()
@@ -632,6 +653,7 @@ struct ColorComponentField: View {
         }
         scrollLastValue = newValue
         scrubPreviewText = Self.formattedDragValue(newValue, kind: component.kind, stableDecimalPlaces: scrollDecimalPlaces)
+        onLiveValue(newValue)
     }
 
     private func handleScrollEnded() {
