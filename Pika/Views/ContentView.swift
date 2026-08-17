@@ -36,6 +36,11 @@ enum PikaAdaptiveWidth {
 struct PikaAdaptiveVisibility: Equatable {
     var showsTypeLabels: Bool = true
     var showsColorNames: Bool = true
+    /// Width of a single swatch (half the window's content width — the two panels split it
+    /// evenly with no gap). Read from this outer `GeometryReader`, not measured again lower in
+    /// the tree: a `GeometryReader`/preference round trip placed inside `EyedropperButton`'s own
+    /// `ZStack` was found to never fire past its initial (zero) value.
+    var swatchWidth: CGFloat = 0
 }
 
 private struct PikaAdaptiveVisibilityKey: EnvironmentKey {
@@ -197,7 +202,8 @@ struct ContentView: View {
                 // Type labels sit behind the preview pill, so they hide only when it shows
                 // — the window floor keeps height above any threshold that would drop them.
                 showsTypeLabels: !previewVisible,
-                showsColorNames: height >= PikaAdaptiveHeight.colorNames
+                showsColorNames: height >= PikaAdaptiveHeight.colorNames,
+                swatchWidth: width / 2
             ))
             // Continuous hover is stable when the button appears under the cursor —
             // plain `.onHover` re-fires enter/exit as the overlay mounts, which flickers

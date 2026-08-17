@@ -66,11 +66,6 @@ private struct PickTarget: NSViewRepresentable {
     }
 }
 
-private struct SwatchContentWidthKey: PreferenceKey {
-    static var defaultValue: CGFloat = 0
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) { value = nextValue() }
-}
-
 struct EyedropperButton: View {
     @ObservedObject var eyedropper: Eyedropper
     /// Shared with the other swatch (owned by `ColorPickers`) rather than local: a click on
@@ -91,7 +86,6 @@ struct EyedropperButton: View {
     @State private var childHovered: Bool = false
     @State private var valueInvalid: Bool = false
     @State private var isPressed: Bool = false
-    @State private var contentWidth: CGFloat = 0
     @State private var flashOpacity: Double = 0
 
     var body: some View {
@@ -107,15 +101,6 @@ struct EyedropperButton: View {
             )
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color(eyedropper.color))
-            .background(
-                // Measured here, not inside `EditableColorValue` itself: a `GeometryReader` /
-                // preference round trip placed around its own `FlowLayout` was found to
-                // intermittently never fire. `PickTarget`'s frame is reliably resolved to the
-                // swatch's true content width on every render, so read it from here instead.
-                GeometryReader { geo in
-                    Color.clear.preference(key: SwatchContentWidthKey.self, value: geo.size.width)
-                }
-            )
             .opacity(isPressed ? 0.8 : 1.0)
             .animation(.easeIn(duration: 0.15), value: Color(eyedropper.color))
             .animation(.easeIn(duration: 0.15), value: isPressed)
@@ -164,7 +149,7 @@ struct EyedropperButton: View {
                         format: colorFormat,
                         style: copyFormat,
                         colorSpace: colorSpace,
-                        availableWidth: contentWidth,
+                        availableWidth: adaptive.swatchWidth,
                         isInvalid: $valueInvalid,
                         dismissEditingTrigger: dismissEditingTrigger
                     )
@@ -234,7 +219,6 @@ struct EyedropperButton: View {
                 .opacity(flashOpacity)
                 .allowsHitTesting(false)
         }
-        .onPreferenceChange(SwatchContentWidthKey.self) { contentWidth = $0 }
         .onReceive(eyedropper.pickFlash) {
             flashOpacity = 0.35
             withAnimation(.easeOut(duration: 0.35)) {

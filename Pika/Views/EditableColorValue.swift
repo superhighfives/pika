@@ -42,10 +42,13 @@ struct EditableColorValue: View {
     let format: ColorFormat
     let style: CopyFormat
     let colorSpace: NSColorSpace
-    /// The swatch's own content width, measured by the caller from `PickTarget`'s reliably-sized
-    /// background — a plain `GeometryReader`/preference round trip *inside* this view's own
-    /// `FlowLayout` was found to intermittently never fire, silently overflowing the row past the
-    /// window edge instead of wrapping. 0 until the caller's first layout pass reports a value.
+    /// Width of this swatch (half the window's content width), read from `ContentView`'s own
+    /// outer `GeometryReader` via `PikaAdaptiveVisibility.swatchWidth` and threaded down through
+    /// `EyedropperButton`. Not measured again here or in `EyedropperButton`: a `GeometryReader`/
+    /// preference round trip placed lower in the tree — around this view's own `FlowLayout`, and
+    /// separately around `PickTarget`'s frame — was found in both cases to never fire past its
+    /// initial zero value, so the row's width fell back to an ambiguous `.frame(maxWidth: .infinity)`
+    /// that was itself sometimes only ever queried for its ideal size, never wrapping.
     let availableWidth: CGFloat
     /// Raised while the focused field holds unparseable input, so the parent can show the pill.
     @Binding var isInvalid: Bool
@@ -110,13 +113,18 @@ struct EditableColorValue: View {
 
     private var uiColor: NSColor { eyedropper.color.getUIColor() }
 
-    // Deterministic font size from the full string width vs column width — same approach as the
-    // read-only AdaptiveValueText. `FlowLayout` picks up any remaining overflow by wrapping.
+    /// `FlowLayout` should never need more than this many lines — beyond a shrunk single line,
+    /// the value is meant to wrap onto exactly one more, not keep spilling.
+    private let maxLines: CGFloat = 2
+
+    // Deterministic font size from the full string width vs the width `maxLines` rows of the
+    // column can hold — same approach as the read-only AdaptiveValueText, generalized from a
+    // single line so the row shrinks just enough that `FlowLayout` wraps to at most `maxLines`.
     private func fontSize(for text: String) -> CGFloat {
         guard effectiveWidth > 4 else { return baseSize }
         let full = (text as NSString).size(withAttributes: [.font: NSFont.systemFont(ofSize: baseSize)]).width
         guard full > 0 else { return baseSize }
-        let scale = min(1, effectiveWidth / full)
+        let scale = min(1, (effectiveWidth * maxLines) / full)
         return max(minSize, baseSize * scale)
     }
 
@@ -124,7 +132,7 @@ struct EditableColorValue: View {
         let layout = decomposed
         let size = fontSize(for: layout.joined())
 
-        FlowLayout {
+        FlowLayout(maxLines: Int(maxLines)) {
             affix(layout.leading, size: size)
             ForEach(Array(layout.components.enumerated()), id: \.offset) { index, component in
                 ColorComponentField(
@@ -148,10 +156,11 @@ struct EditableColorValue: View {
         // An explicit width, not `.frame(maxWidth: .infinity)`: a plain flexible frame was found
         // to sometimes only ever be queried for its *ideal* size in this view's position in the
         // hierarchy, never its true constrained size, so `FlowLayout` never wrapped and the row
-        // silently overflowed past the window edge instead. Until the caller's first layout pass
-        // reports a real `availableWidth`, fall back to flexible so nothing collapses to zero.
-        .frame(width: availableWidth > 0 ? effectiveWidth : nil, alignment: .leading)
-        .frame(maxWidth: availableWidth > 0 ? nil : .infinity, alignment: .leading)
+        // silently overflowed past the window edge instead. `availableWidth` comes from
+        // `ContentView`'s own outer `GeometryReader` (see its doc comment), so it's already
+        // non-zero on this view's very first render — no separate zero-width bootstrap state
+        // to fall back from.
+        .frame(width: effectiveWidth, alignment: .leading)
         .onAppear { syncValuesFromColor(layout) }
         .onChange(of: focusedIndex) { newValue in handleFocusChange(to: newValue, layout: layout) }
         .onChange(of: eyedropper.color) { newValue in
