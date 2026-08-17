@@ -111,7 +111,7 @@ struct ScrubbableColorField: NSViewRepresentable {
     let onScrubPreview: (String?) -> Void
     /// Fired with the raw live value on every drag step, so the parent can preview the eyedropper
     /// colour without touching `text` (which stays frozen — see `onScrubPreview` above).
-    let onLiveValue: (Double) -> Void
+    let onLiveValue: (Double) -> Double
     /// Fired with +1/-1 for Up/Down arrow keys, `nil` for non-draggable (hex) fields.
     let onStep: ((CGFloat) -> Void)?
 
@@ -164,16 +164,20 @@ struct ScrubbableColorField: NSViewRepresentable {
         // `EditableColorValue.scrubPreviewText`). Only the floating pill sees the live value.
         nsView.onDragChanged = { [weak nsView] newValue in
             guard let nsView else { return }
+            // The achieved value, not the requested one: a drag past the sRGB gamut boundary
+            // clamps, and the pill must show what the swatch actually is.
+            let achieved = onLiveValue(newValue)
+            nsView.lastAchievedValue = achieved
             onScrubPreview(ColorComponentField.formattedDragValue(
-                newValue, kind: kind, stableDecimalPlaces: nsView.dragDecimalPlaces
+                achieved, kind: kind, stableDecimalPlaces: nsView.dragDecimalPlaces
             ))
-            onLiveValue(newValue)
         }
         nsView.onDragEnd = { [weak nsView] finalValue in
             guard let nsView else { return }
             text = ColorComponentField.formattedDragValue(
-                finalValue, kind: kind, stableDecimalPlaces: nsView.dragDecimalPlaces
+                nsView.lastAchievedValue ?? finalValue, kind: kind, stableDecimalPlaces: nsView.dragDecimalPlaces
             )
+            nsView.lastAchievedValue = nil
             onScrubPreview(nil)
             onDragEnd()
         }
@@ -285,6 +289,10 @@ final class ScrubTextField: NSTextField {
     /// run, since `updateDrag` fires at least once (immediately after `beginDrag`) before a
     /// `mouseUp` can be reached. Read once, then cleared, to hand `onDragEnd` its final value.
     private var lastDragValue: Double?
+    /// The gamut-clamped value the last drag step actually achieved (see
+    /// `EditableColorValue.previewLiveScrub`), so the commit uses reality rather than the raw
+    /// requested value. Cleared once the drag ends.
+    var lastAchievedValue: Double?
     /// Decimal places to hold this drag's live display at — captured once at drag start (see
     /// `ColorComponentField.stableDecimalPlaces(for:)`) and held fixed for the drag, rather than
     /// recomputed every pixel of movement, so the value's own live-updating string never itself

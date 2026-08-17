@@ -371,15 +371,32 @@ struct EditableColorValue: View {
     /// value, mirroring `previewIfValid`'s recompose-and-set against a substituted value —
     /// without touching `values`/`text`, which stay frozen for the whole gesture so `FlowLayout`
     /// never reflows mid-scrub (see `scrubPreviewText`).
-    private func previewLiveScrub(index: Int, layout: DecomposedColor, value: Double) {
-        guard index < layout.components.count else { return }
+    /// Returns the value actually achieved — which is not always the one requested. Lab/OKLCH can
+    /// express colours outside sRGB, and `recompose` clamps those to the nearest displayable
+    /// channel (see `NSColor.encodeSRGB`), so e.g. `oklch(30% 0.2 230)` really lands on chroma
+    /// ~0.137. Reading the value back off the resulting colour means the readout can only ever
+    /// show a colour the screen can genuinely produce: a drag past the gamut boundary simply
+    /// stops there instead of displaying a number that silently disagrees with the swatch (and
+    /// then appearing to "jump" when a later interaction resynced from the real colour).
+    @discardableResult
+    private func previewLiveScrub(index: Int, layout: DecomposedColor, value: Double) -> Double {
+        guard index < layout.components.count else { return value }
         let currentKey = FormatStyleKey(format: format, style: style, colorSpace: colorSpace)
         var liveValues = (valuesKey == currentKey && values.count == layout.components.count) ? values : layout.values
-        guard index < liveValues.count else { return }
+        guard index < liveValues.count else { return value }
         liveValues[index] = ColorComponentField.formattedDragValue(value, kind: layout.components[index].kind)
-        guard let color = format.recompose(liveValues, style: style, in: colorSpace) else { return }
+        guard let color = format.recompose(liveValues, style: style, in: colorSpace) else { return value }
         eyedropper.set(color)
         lastPreviewedColor = eyedropper.color
+        // Round-trip the committed colour back through `decompose` to see what this component
+        // actually became. Only meaningful for numeric components; hex has no scrub path.
+        let achieved = format.decompose(color, style: style, in: colorSpace)
+        guard index < achieved.components.count,
+              let effective = Double(achieved.components[index].value.trimmingCharacters(in: .whitespaces))
+        else {
+            return value
+        }
+        return effective
     }
 
     /// Snaps any component whose typed value fell outside its range to the nearest bound, and
@@ -487,7 +504,7 @@ struct ColorComponentField: View {
     /// Fired with the raw live value on every drag/scroll step, so the parent can preview the
     /// eyedropper colour without touching `text` (which stays frozen for the gesture — see
     /// `scrubPreviewText`).
-    let onLiveValue: (Double) -> Void
+    let onLiveValue: (Double) -> Double
 
     @State private var isHovering = false
     /// Non-nil while a two-finger scroll-to-scrub gesture owns this field; holds the value at
@@ -653,9 +670,9 @@ struct ColorComponentField: View {
         if let range = component.range {
             newValue = min(max(newValue, range.lowerBound), range.upperBound)
         }
-        scrollLastValue = newValue
-        scrubPreviewText = Self.formattedDragValue(newValue, kind: component.kind, stableDecimalPlaces: scrollDecimalPlaces)
-        onLiveValue(newValue)
+        let achieved = onLiveValue(newValue)
+        scrollLastValue = achieved
+        scrubPreviewText = Self.formattedDragValue(achieved, kind: component.kind, stableDecimalPlaces: scrollDecimalPlaces)
     }
 
     private func handleScrollEnded() {
