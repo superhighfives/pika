@@ -346,7 +346,9 @@ struct EditableColorValue: View {
         case .hex:
             return component.value
         case .integer:
-            let digits = component.range.map { String(abs(Int($0.upperBound.rounded()))).count } ?? 3
+            let digits = component.range.map {
+                max(String(abs(Int($0.upperBound.rounded()))).count, String(abs(Int($0.lowerBound.rounded()))).count)
+            } ?? 3
             return sign + String(repeating: "9", count: max(digits, 1))
         case .decimal:
             let intDigits = component.range.map {
