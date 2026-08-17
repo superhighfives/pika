@@ -324,7 +324,14 @@ struct PickerChoiceView: View {
                 )
             }
 
-            permissionArea
+            // `.id` (not just the poll/notification handlers bumping `permissionTick` below):
+            // `hasPermission`/`hasAccessibility` call non-observable system APIs, so nothing
+            // about reading them establishes a SwiftUI dependency on its own — without forcing
+            // this subtree's identity to change on each tick, a bumped `permissionTick` wasn't
+            // reliably refreshing the pills; that only happened to work when some other state
+            // change (e.g. picking a tile) forced a re-render anyway. Scoped to `permissionArea`
+            // alone, which owns no state of its own to lose on the identity change.
+            permissionArea.id(permissionTick)
         }
         .padding(12.0)
         .background(
@@ -364,13 +371,11 @@ struct PickerChoiceView: View {
     @ViewBuilder private var permissionArea: some View {
         VStack(spacing: 10.0) {
             Divider()
-            if !hasPermission || !hasAccessibility {
-                Text(PikaText.textPickerPermissionsIntro)
-                    .font(.system(size: 11))
-                    .foregroundStyle(.secondary)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
+            Text(PikaText.textPickerPermissionsIntro)
+                .font(.system(size: 11))
+                .foregroundStyle(.secondary)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .fixedSize(horizontal: false, vertical: true)
             HStack(spacing: 10.0) {
                 screenRecordingPill
                 accessibilityPill
