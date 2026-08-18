@@ -495,7 +495,10 @@ final class ScrubTextField: NSTextField {
         let fine = NSEvent.modifierFlags.contains(.option)
         // Scale the per-pixel step against the precision on show, so one pixel moves roughly one
         // unit of the last visible digit at every precision.
-        let scale = pow(10.0, Double(dragBaseDecimalPlaces - dragDecimalPlaces))
+        // Only ever *finer* than the drag started: going coarser keeps the original step, so
+        // rounding the readout off doesn't also make the drag 10x faster and slam the value into
+        // its range bound (chroma pinned at 1.0 renders as magenta, nowhere near the hue shown).
+        let scale = pow(10.0, Double(min(0, dragBaseDecimalPlaces - dragDecimalPlaces)))
         let unitsPerStep = dragUnitsPerPixel(for: range) * scale
         var newValue = anchorValue + Double(location.x - dragAnchorX) * unitsPerStep * (fine ? 0.1 : 1.0)
         if let range {

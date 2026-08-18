@@ -286,6 +286,11 @@ struct EditableColorValue: View {
     private func finishDragOrScrollSession(index: Int) {
         guard isEditing, sessionOwner == index else { return }
         finishEditing()
+        // A scrub's committed colour is the clamped, displayable one, which may not decompose
+        // back to exactly the values that produced it. Resync the whole readout from the real
+        // colour so what's shown is what's on screen — otherwise the next interaction resyncs
+        // instead, and the values appear to change on their own.
+        syncValuesFromColor(decomposed)
         // AppKit implicitly focuses (and select-alls) a field as part of routing the mouseDown
         // that turns out to be a click-drag (see `ScrubTextField.beginDrag`'s comment) —
         // regardless of whether the drag started fresh or on an already-focused field. A scrub
@@ -388,13 +393,25 @@ struct EditableColorValue: View {
         guard let color = format.recompose(liveValues, style: style, in: colorSpace) else { return value }
         eyedropper.set(color)
         lastPreviewedColor = eyedropper.color
-        // Round-trip the committed colour back through `decompose` to see what this component
-        // actually became. Only meaningful for numeric components; hex has no scrub path.
+        // Round-trip the committed colour back through `decompose` to see what it actually
+        // became. Clamping doesn't only move the dragged component — pushing chroma out of gamut
+        // shifts the resulting colour's lightness and hue too — so resync every *other* component
+        // from the real colour. Without this the readout contradicts the swatch (a magenta swatch
+        // still showing a blue hue), and worse, the commit would pair the dragged component's new
+        // value with the others' stale ones and land on a third colour entirely.
+        //
+        // The dragged component itself is deliberately left alone: its text stays frozen for the
+        // gesture so the row can't reflow, and the pill shows its live value instead.
         let achieved = format.decompose(color, style: style, in: colorSpace)
         guard index < achieved.components.count,
               let effective = Double(achieved.components[index].value.trimmingCharacters(in: .whitespaces))
         else {
             return value
+        }
+        if achieved.values.count == values.count {
+            for other in achieved.values.indices where other != index {
+                values[other] = achieved.values[other]
+            }
         }
         return effective
     }
