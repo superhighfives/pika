@@ -429,10 +429,13 @@ struct EditableColorValue: View {
     /// Snaps any component whose typed value fell outside its range to the nearest bound, and
     /// restrips every numeric value's trailing zeros back to its normal compact form — undoing
     /// the fixed-decimal-places padding a scrub session keeps live (see `formattedDragValue`) now
-    /// that it's ending. Hex is skipped naturally: it doesn't parse as a `Double`.
+    /// that it's ending. Hex is skipped explicitly: an all-decimal-digit hex string (e.g.
+    /// `000000`) parses fine as a `Double`, and `formattedDragValue`'s `.hex` case always returns
+    /// `""`, which would blank the field.
     private func finalizeValues(layout: DecomposedColor) {
         for (i, component) in layout.components.enumerated() where i < values.count {
-            guard let n = Double(values[i].trimmingCharacters(in: .whitespaces)) else { continue }
+            guard component.kind != .hex,
+                  let n = Double(values[i].trimmingCharacters(in: .whitespaces)) else { continue }
             let clamped = component.range.map { min(max(n, $0.lowerBound), $0.upperBound) } ?? n
             values[i] = ColorComponentField.formattedDragValue(clamped, kind: component.kind)
         }
