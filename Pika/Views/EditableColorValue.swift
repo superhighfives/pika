@@ -117,6 +117,12 @@ struct EditableColorValue: View {
     /// path-dependent, ratcheting the untouched components a little further every frame so
     /// dragging back where you came from no longer returns the colour you started with.
     @State private var sessionStartValues: [String] = []
+    /// The whole colour, formatted, while a scrub is in flight — shown in one pill above the row.
+    /// Every field's text stays frozen for the gesture: syncing the untouched components live
+    /// would change *their* widths instead, which moves `FlowLayout`'s wrap point just as surely
+    /// as the dragged one did. Showing the complete value here keeps the readout honest without
+    /// anything in the row itself changing size.
+    @State private var rowScrubPreview: String?
 
     private var decomposed: DecomposedColor {
         format.decompose(eyedropper.color, style: style, in: colorSpace)
@@ -174,6 +180,29 @@ struct EditableColorValue: View {
                 }
             }
         }
+        // Decorative overlay: it doesn't feed into the row's reported size, so it can appear and
+        // change width without perturbing `FlowLayout`. Anchored to the row rather than to the
+        // dragged field, so it's always in bounds and doesn't jump between components.
+        .overlay(alignment: .topLeading) {
+            if let rowScrubPreview {
+                Text(rowScrubPreview)
+                    .font(.system(size: 11, weight: .semibold, design: .rounded))
+                    .monospacedDigit()
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.6)
+                    .foregroundStyle(Color(uiColor == .white ? .black : .white))
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 3)
+                    .background(Capsule().fill(Color(uiColor).opacity(0.92)))
+                    // Bounded by the row, and allowed to shrink rather than run past its edge:
+                    // a long format (rgba with five decimals a channel) is wider than the swatch.
+                    .frame(maxWidth: effectiveWidth, alignment: .leading)
+                    .offset(y: -24)
+                    .transition(.opacity.combined(with: .scale(scale: 0.9)))
+                    .allowsHitTesting(false)
+            }
+        }
+        .animation(.easeOut(duration: 0.1), value: rowScrubPreview)
         // An explicit width, not `.frame(maxWidth: .infinity)`: a plain flexible frame was found
         // to sometimes only ever be queried for its *ideal* size in this view's position in the
         // hierarchy, never its true constrained size, so `FlowLayout` never wrapped and the row
@@ -291,6 +320,7 @@ struct EditableColorValue: View {
     /// one started elsewhere. Only finish if `index` is still the session's current owner.
     private func finishDragOrScrollSession(index: Int) {
         guard isEditing, sessionOwner == index else { return }
+        rowScrubPreview = nil
         finishEditing()
         // A scrub's committed colour is the clamped, displayable one, which may not decompose
         // back to exactly the values that produced it. Resync the whole readout from the real
@@ -382,7 +412,7 @@ struct EditableColorValue: View {
     /// Live-previews the eyedropper colour for a single component's in-progress drag/scroll
     /// value, mirroring `previewIfValid`'s recompose-and-set against a substituted value —
     /// without touching `values`/`text`, which stay frozen for the whole gesture so `FlowLayout`
-    /// never reflows mid-scrub (see `scrubPreviewText`).
+    /// never reflows mid-scrub (see `rowScrubPreview`).
     /// Returns the value actually achieved — which is not always the one requested. Lab/OKLCH can
     /// express colours outside sRGB, and `recompose` clamps those to the nearest displayable
     /// channel (see `NSColor.encodeSRGB`), so e.g. `oklch(30% 0.2 230)` really lands on chroma
@@ -417,11 +447,7 @@ struct EditableColorValue: View {
         else {
             return value
         }
-        if achieved.values.count == values.count {
-            for other in achieved.values.indices where other != index {
-                values[other] = achieved.values[other]
-            }
-        }
+        rowScrubPreview = achieved.joined()
         return effective
     }
 
@@ -529,7 +555,7 @@ struct ColorComponentField: View {
     let onDragEnd: () -> Void
     /// Fired with the raw live value on every drag/scroll step, so the parent can preview the
     /// eyedropper colour without touching `text` (which stays frozen for the gesture — see
-    /// `scrubPreviewText`).
+    /// `rowScrubPreview`).
     let onLiveValue: (Double) -> Double
 
     @State private var isHovering = false
@@ -539,7 +565,7 @@ struct ColorComponentField: View {
     @State private var scrollAccumulated: CGFloat = 0
     /// The last value computed during an active scroll — nil once no scroll is in progress.
     /// Committed to `text` in `handleScrollEnded`, since the field's own text stays frozen
-    /// (see `scrubPreviewText`) for the live-updating part of the gesture.
+    /// (see `EditableColorValue.rowScrubPreview`) for the live-updating part of the gesture.
     @State private var scrollLastValue: Double?
     /// Decimal places to hold this scroll session's live display at — captured once at scroll
     /// start (see `stableDecimalPlaces(for:)`) and held fixed for the session, same reasoning as
@@ -552,7 +578,6 @@ struct ColorComponentField: View {
     /// a fixed decimal-place count (e.g. "0.0000" vs "0.1111" in a proportional font), so a
     /// preview that doesn't participate in `FlowLayout`'s sizing at all is the only way to fully
     /// rule out wrap flicker while scrubbing.
-    @State private var scrubPreviewText: String?
     /// Bumped on every focus event (begin or end) this field reports; see the deferred-blur
     /// comment at its use in `onFocusChange` below.
     @State private var focusVersion = 0
@@ -599,11 +624,7 @@ struct ColorComponentField: View {
             onCancel: onCancel,
             onDragBegin: onDragBegin,
             onDragEnd: onDragEnd,
-            onScrubPreview: { scrubPreviewText = $0 },
-            onDragCancel: {
-                scrubPreviewText = nil
-                onCancel()
-            },
+            onDragCancel: onCancel,
             onLiveValue: onLiveValue,
             onStep: isDraggable ? stepValue : nil
         )
@@ -621,27 +642,6 @@ struct ColorComponentField: View {
                     style: StrokeStyle(lineWidth: 1, dash: isInvalid ? [2, 2] : [])
                 )
         )
-        // Purely decorative: an `.overlay` doesn't feed back into this view's own reported size,
-        // so the pill can appear, change text, and disappear without ever perturbing `FlowLayout`.
-        // Leading, not centred: centring a wide pill over a field near the swatch's left edge
-        // pushes it past that edge, where it's clipped (the value row starts hard against it).
-        // Growing rightward instead keeps it inside — the row reserves a trailing gutter anyway.
-        .overlay(alignment: .topLeading) {
-            if let scrubPreviewText {
-                Text(scrubPreviewText)
-                    .font(.system(size: 12, weight: .semibold, design: .rounded))
-                    .monospacedDigit()
-                    .foregroundStyle(.white)
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 3)
-                    .background(Capsule().fill(.black.opacity(0.85)))
-                    .fixedSize()
-                    .offset(y: -26)
-                    .transition(.opacity.combined(with: .scale(scale: 0.9)))
-                    .allowsHitTesting(false)
-            }
-        }
-        .animation(.easeOut(duration: 0.1), value: scrubPreviewText)
         .contentShape(Rectangle())
         .onHover { hovering in
             isHovering = hovering
@@ -711,7 +711,6 @@ struct ColorComponentField: View {
         }
         let achieved = onLiveValue(newValue)
         scrollLastValue = achieved
-        scrubPreviewText = Self.formattedDragValue(achieved, kind: component.kind, stableDecimalPlaces: scrollDecimalPlaces)
     }
 
     private func handleScrollEnded() {
@@ -722,7 +721,6 @@ struct ColorComponentField: View {
         scrollOrigin = nil
         scrollAccumulated = 0
         scrollLastValue = nil
-        scrubPreviewText = nil
         onDragEnd()
     }
 

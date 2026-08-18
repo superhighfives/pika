@@ -105,14 +105,10 @@ struct ScrubbableColorField: NSViewRepresentable {
     /// same live-preview/commit session used for typed edits.
     let onDragBegin: () -> Void
     let onDragEnd: () -> Void
-    /// Live value as the drag moves, or `nil` once it ends — drives a floating preview pill
-    /// instead of the field's own text, which stays frozen for the whole drag (see
-    /// `EditableColorValue.scrubPreviewText`).
-    let onScrubPreview: (String?) -> Void
     /// Escape pressed mid-drag — abandon the scrub and put the colour back how it was.
     let onDragCancel: () -> Void
     /// Fired with the raw live value on every drag step, so the parent can preview the eyedropper
-    /// colour without touching `text` (which stays frozen — see `onScrubPreview` above).
+    /// colour without touching `text`, which stays frozen for the whole gesture.
     let onLiveValue: (Double) -> Double
     /// Fired with +1/-1 for Up/Down arrow keys, `nil` for non-draggable (hex) fields.
     let onStep: ((CGFloat) -> Void)?
@@ -167,16 +163,13 @@ struct ScrubbableColorField: NSViewRepresentable {
         }
         // The field's own `stringValue` is deliberately never touched here — it stays frozen at
         // whatever it showed when the drag began, for `FlowLayout`'s benefit (see
-        // `EditableColorValue.scrubPreviewText`). Only the floating pill sees the live value.
+        // `EditableColorValue.rowScrubPreview`). Only the floating pill sees the live value.
         nsView.onDragChanged = { [weak nsView] newValue in
             guard let nsView else { return }
             // The achieved value, not the requested one: a drag past the sRGB gamut boundary
             // clamps, and the pill must show what the swatch actually is.
             let achieved = onLiveValue(newValue)
             nsView.lastAchievedValue = achieved
-            onScrubPreview(ColorComponentField.formattedDragValue(
-                achieved, kind: kind, stableDecimalPlaces: nsView.dragDecimalPlaces
-            ))
         }
         nsView.onDragEnd = { [weak nsView] finalValue in
             guard let nsView else { return }
@@ -184,7 +177,6 @@ struct ScrubbableColorField: NSViewRepresentable {
                 nsView.lastAchievedValue ?? finalValue, kind: kind, stableDecimalPlaces: nsView.dragDecimalPlaces
             )
             nsView.lastAchievedValue = nil
-            onScrubPreview(nil)
             onDragEnd()
         }
 
