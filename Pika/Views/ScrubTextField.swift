@@ -109,7 +109,7 @@ struct ScrubbableColorField: NSViewRepresentable {
     let onDragCancel: () -> Void
     /// Fired with the raw live value on every drag step, so the parent can preview the eyedropper
     /// colour without touching `text`, which stays frozen for the whole gesture.
-    let onLiveValue: (Double) -> Double
+    let onLiveValue: (Double, Int) -> Double
     /// Fired with +1/-1 for Up/Down arrow keys, `nil` for non-draggable (hex) fields.
     let onStep: ((CGFloat) -> Void)?
 
@@ -168,7 +168,7 @@ struct ScrubbableColorField: NSViewRepresentable {
             guard let nsView else { return }
             // The achieved value, not the requested one: a drag past the sRGB gamut boundary
             // clamps, and the pill must show what the swatch actually is.
-            let achieved = onLiveValue(newValue)
+            let achieved = onLiveValue(newValue, nsView.dragDecimalPlaces)
             nsView.lastAchievedValue = achieved
         }
         nsView.onDragEnd = { [weak nsView] finalValue in
@@ -461,14 +461,14 @@ final class ScrubTextField: NSTextField {
         NSCursor.resizeLeftRight.set()
         // AppKit's own event routing (`_handleMouseDownEvent:` → `NSTextFieldCell
         // _selectOrEdit:`) already focused and select-all'd this field as part of routing the
-        // mouseDown that's turning out to be this drag — before this override's loop could
-        // tell click from drag apart. Collapse that selection now that we know it's a drag, so
-        // releasing the mouse doesn't leave the dragged-to value shown text-selected. Just the
-        // selection, not the focus itself — resigning first responder here would race the
-        // deferred focus-loss handling in `EditableColorValue` and could end the drag's edit
-        // session (commit/revert) while the user is still mid-drag.
-        if let editor = currentEditor() {
-            editor.selectedRange = NSRange(location: (editor.string as NSString).length, length: 0)
+        // mouseDown that's turning out to be this drag — before this override's loop could tell
+        // click from drag apart. Hand first responder back now that we know it's a drag: a scrub
+        // should read as dragging a value, not as editing text, so it shouldn't leave the field
+        // select-all highlighted with a caret parked at the end of it. `EditableColorValue`
+        // knows a scrub is in flight (`isScrubbing`) and won't mistake this blur for a tab-out
+        // that should commit and close the session.
+        if currentEditor() != nil {
+            window?.makeFirstResponder(nil)
         }
         onDragBegin?()
     }

@@ -181,7 +181,10 @@ struct EyedropperButton: View {
                     }
                 }
             }
-            .padding(.all, 10.0)
+            .padding(.horizontal, 10.0)
+            .padding(.bottom, 10.0)
+            // Roomier above than below, so the hairline doesn't crowd the type label.
+            .padding(.top, 16.0)
             .modify {
                 let shadowColor: Color = eyedropper.color.getUIColor() == .white ? .black : .white
                 $0
@@ -190,14 +193,14 @@ struct EyedropperButton: View {
             }
             // Both of these sit outside the shadow above, so the hairline stays crisp.
             .background(ClickShield())
-            .overlay(
-                RoundedRectangle(cornerRadius: 6.0, style: .continuous)
-                    .strokeBorder(
-                        eyedropper.color.getUIColor().opacity(readoutHovered ? 0.35 : 0),
-                        lineWidth: 1
-                    )
+            // A single hairline along the top edge, marking where the block stops being a pick
+            // target — a full box around the text read as a control it isn't.
+            .overlay(alignment: .top) {
+                Rectangle()
+                    .fill(Color(eyedropper.color.getUIColor()).opacity(readoutHovered ? 0.5 : 0))
+                    .frame(height: 1)
                     .allowsHitTesting(false)
-            )
+            }
             .onHover { readoutHovered = $0 }
             .animation(.easeInOut(duration: 0.15), value: readoutHovered)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)

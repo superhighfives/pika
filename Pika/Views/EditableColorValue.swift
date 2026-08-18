@@ -123,6 +123,10 @@ struct EditableColorValue: View {
     /// as the dragged one did. Showing the complete value here keeps the readout honest without
     /// anything in the row itself changing size.
     @State private var rowScrubPreview: String?
+    /// True for the duration of a click-drag/scroll scrub. A scrub deliberately resigns first
+    /// responder (so no caret or selection shows over a value you're dragging), and that blur
+    /// must not be mistaken for a tab-out that should commit and close the session.
+    @State private var isScrubbing = false
 
     private var decomposed: DecomposedColor {
         format.decompose(eyedropper.color, style: style, in: colorSpace)
@@ -170,7 +174,9 @@ struct EditableColorValue: View {
                         onCancel: revertEditing,
                         onDragBegin: { beginDragSession(index: index, layout: layout) },
                         onDragEnd: { finishDragOrScrollSession(index: index) },
-                        onLiveValue: { value in previewLiveScrub(index: index, layout: layout, value: value) }
+                        onLiveValue: { value, places in
+                            previewLiveScrub(index: index, layout: layout, value: value, decimals: places)
+                        }
                     )
                     if index < layout.separators.count {
                         affix(layout.separators[index], size: size)
@@ -183,29 +189,27 @@ struct EditableColorValue: View {
         // Decorative overlay: it doesn't feed into the row's reported size, so it can appear and
         // change width without perturbing `FlowLayout`. Anchored to the row rather than to the
         // dragged field, so it's always in bounds and doesn't jump between components.
-        .overlay(alignment: .top) {
+        .overlay(alignment: .topLeading) {
             if let rowScrubPreview {
                 Text(rowScrubPreview)
-                    .font(.system(size: 11, weight: .semibold, design: .rounded))
-                    .monospacedDigit()
+                    // Monospaced so the digits hold their columns: at a proportional width the
+                    // numbers jitter sideways on every frame of a drag, which is exactly the
+                    // distraction the pill exists to avoid.
+                    .font(.system(size: 11, weight: .semibold, design: .monospaced))
                     .lineLimit(1)
                     .minimumScaleFactor(0.6)
                     .foregroundStyle(Color(uiColor == .white ? .black : .white))
                     .padding(.horizontal, 8)
                     .padding(.vertical, 3)
                     .background(Capsule().fill(Color(uiColor).opacity(0.92)))
-                    // Bounded by the row, and allowed to shrink rather than run past its edge:
-                    // a long format (rgba with five decimals a channel) is wider than the swatch.
-                    .frame(maxWidth: effectiveWidth)
+                    .frame(maxWidth: effectiveWidth, alignment: .leading)
                     // The swatch's content carries a text shadow for legibility on any colour;
                     // inherited by the pill it just reads as blur, so cancel it here.
                     .shadow(color: .clear, radius: 0, x: 0, y: 0)
                     .offset(y: -24)
-                    .transition(.opacity.combined(with: .scale(scale: 0.9)))
                     .allowsHitTesting(false)
             }
         }
-        .animation(.easeOut(duration: 0.1), value: rowScrubPreview)
         // An explicit width, not `.frame(maxWidth: .infinity)`: a plain flexible frame was found
         // to sometimes only ever be queried for its *ideal* size in this view's position in the
         // hierarchy, never its true constrained size, so `FlowLayout` never wrapped and the row
@@ -294,6 +298,7 @@ struct EditableColorValue: View {
     /// with a changing `text` binding just renders like a label — no editor involved.
     private func beginDragSession(index: Int, layout: DecomposedColor) {
         sessionOwner = index
+        isScrubbing = true
         if isEditing {
             focusedIndex = index
             return
@@ -309,8 +314,9 @@ struct EditableColorValue: View {
             if !isEditing {
                 startSession(layout: layout)
             }
-        } else if isEditing {
+        } else if isEditing, !isScrubbing {
             // Focus left every field (blur / tab-out) — commit if valid, otherwise revert.
+            // Not during a scrub: that blur is one we asked for, not the user leaving the field.
             finishEditing()
         }
     }
@@ -324,6 +330,7 @@ struct EditableColorValue: View {
     private func finishDragOrScrollSession(index: Int) {
         guard isEditing, sessionOwner == index else { return }
         rowScrubPreview = nil
+        isScrubbing = false
         finishEditing()
         // A scrub's committed colour is the clamped, displayable one, which may not decompose
         // back to exactly the values that produced it. Resync the whole readout from the real
@@ -351,56 +358,15 @@ struct EditableColorValue: View {
     private func startSession(layout: DecomposedColor) {
         isEditing = true
         sessionStartValues = layout.values
-        // Sized to the *widest possible* value for this format, not the current one: keeping
-        // `frozenSize` in step with the live value (as it started out) only froze the font size,
-        // not the wrap decision — a component can still change digit count as it's scrubbed
-        // (e.g. "0.25" → "0.3"), which shifts where FlowLayout breaks the line even at a fixed
-        // font size. Sizing conservatively for the worst case up front means no value this
-        // format can ever produce needs more room than what's already budgeted, so the number of
-        // lines genuinely can't change for the rest of the session, however the digits move.
-        frozenSize = fontSize(for: worstCaseJoined(layout))
+        // The size the value is *already* being shown at. Sizing to the format's theoretical
+        // widest value instead made the whole readout collapse to `minSize` the instant you
+        // clicked it in a narrow window — a jarring shrink, and the reason it's not done here.
+        // Nothing in the row changes width mid-scrub any more (every field's text is frozen and
+        // the live value goes to the pill), so there's no drift left to size defensively against.
+        frozenSize = fontSize(for: layout.joined())
         preEditColor = eyedropper.color
         values = layout.values
         valuesKey = FormatStyleKey(format: format, style: style, colorSpace: colorSpace)
-    }
-
-    /// The longest string this format's layout could ever produce: same scaffolding (leading/
-    /// separators/trailing) as `layout.joined()`, but each component replaced with its own
-    /// worst-case placeholder — see `worstCaseComponentString`.
-    private func worstCaseJoined(_ layout: DecomposedColor) -> String {
-        var result = layout.leading
-        for (index, component) in layout.components.enumerated() {
-            result += worstCaseComponentString(component)
-            if index < layout.separators.count { result += layout.separators[index] }
-        }
-        return result + layout.trailing
-    }
-
-    /// The widest value a component could ever display. Integers use the range's most digits;
-    /// decimals use the range's most integer-part digits plus 4 decimal places (the original
-    /// stripped format's max — still the true worst case even though scrubbing now defaults to
-    /// coarser 2-place rounding, since finer starting precision is preserved up to 4). A leading
-    /// "-" is budgeted for any component whose range allows (or has no range, e.g. Lab a/b) a
-    /// negative value. Unranged decimals (Lab a/b) have no clamp and are genuinely unbounded, so
-    /// there's no true worst case to size to; 3 int digits is a practical bound that covers real
-    /// sRGB-gamut a*/b* extremes (b* reaches roughly -107) without reserving excessive width.
-    /// Hex is already fixed-length, so it's left as-is.
-    private func worstCaseComponentString(_ component: ColorComponent) -> String {
-        let sign = (component.range?.lowerBound ?? -1) < 0 ? "-" : ""
-        switch component.kind {
-        case .hex:
-            return component.value
-        case .integer:
-            let digits = component.range.map {
-                max(String(abs(Int($0.upperBound.rounded()))).count, String(abs(Int($0.lowerBound.rounded()))).count)
-            } ?? 3
-            return sign + String(repeating: "9", count: max(digits, 1))
-        case .decimal:
-            let intDigits = component.range.map {
-                max(String(abs(Int($0.upperBound))).count, String(abs(Int($0.lowerBound))).count)
-            } ?? 3
-            return sign + String(repeating: "9", count: max(intDigits, 1)) + "." + String(repeating: "9", count: 4)
-        }
     }
 
     /// Recompose the working values and preview them live; flag invalid input for the pill.
@@ -412,10 +378,6 @@ struct EditableColorValue: View {
         lastPreviewedColor = eyedropper.color
     }
 
-    /// Live-previews the eyedropper colour for a single component's in-progress drag/scroll
-    /// value, mirroring `previewIfValid`'s recompose-and-set against a substituted value —
-    /// without touching `values`/`text`, which stay frozen for the whole gesture so `FlowLayout`
-    /// never reflows mid-scrub (see `rowScrubPreview`).
     /// Returns the value actually achieved — which is not always the one requested. Lab/OKLCH can
     /// express colours outside sRGB, and `recompose` clamps those to the nearest displayable
     /// channel (see `NSColor.encodeSRGB`), so e.g. `oklch(30% 0.2 230)` really lands on chroma
@@ -424,7 +386,7 @@ struct EditableColorValue: View {
     /// stops there instead of displaying a number that silently disagrees with the swatch (and
     /// then appearing to "jump" when a later interaction resynced from the real colour).
     @discardableResult
-    private func previewLiveScrub(index: Int, layout: DecomposedColor, value: Double) -> Double {
+    private func previewLiveScrub(index: Int, layout: DecomposedColor, value: Double, decimals: Int) -> Double {
         guard index < layout.components.count else { return value }
         // From the session's starting values, never the live (clamped) ones — see
         // `sessionStartValues`. This is what makes a scrub reversible: drag chroma up into the
@@ -450,7 +412,17 @@ struct EditableColorValue: View {
         else {
             return value
         }
-        rowScrubPreview = achieved.joined()
+        // Just the numbers — the `oklch(`/`)` scaffolding is already right there in the row
+        // beneath, so repeating it in the pill is noise. The dragged component renders at the
+        // scrub's own precision (what vertical travel is adjusting); the rest show as decomposed.
+        var preview = ""
+        for (position, component) in achieved.components.enumerated() {
+            preview += position == index
+                ? ColorComponentField.formattedDragValue(effective, kind: component.kind, stableDecimalPlaces: decimals)
+                : component.value
+            if position < achieved.separators.count { preview += achieved.separators[position] }
+        }
+        rowScrubPreview = preview
         return effective
     }
 
@@ -517,6 +489,8 @@ struct EditableColorValue: View {
 
     private func endSession(resync: Bool) {
         isEditing = false
+        isScrubbing = false
+        rowScrubPreview = nil
         frozenSize = nil
         isInvalid = false
         preEditColor = nil
@@ -560,7 +534,7 @@ struct ColorComponentField: View {
     /// Fired with the raw live value on every drag/scroll step, so the parent can preview the
     /// eyedropper colour without touching `text` (which stays frozen for the gesture — see
     /// `rowScrubPreview`).
-    let onLiveValue: (Double) -> Double
+    let onLiveValue: (Double, Int) -> Double
 
     @State private var isHovering = false
     /// Non-nil while a two-finger scroll-to-scrub gesture owns this field; holds the value at
@@ -713,7 +687,7 @@ struct ColorComponentField: View {
         if let range = component.range {
             newValue = min(max(newValue, range.lowerBound), range.upperBound)
         }
-        let achieved = onLiveValue(newValue)
+        let achieved = onLiveValue(newValue, scrollDecimalPlaces)
         scrollLastValue = achieved
     }
 
