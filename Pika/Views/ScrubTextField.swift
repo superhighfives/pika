@@ -288,6 +288,9 @@ final class ScrubTextField: NSTextField {
     /// run, since `updateDrag` fires at least once (immediately after `beginDrag`) before a
     /// `mouseUp` can be reached. Read once, then cleared, to hand `onDragEnd` its final value.
     private var lastDragValue: Double?
+    /// Raised only while the click branch is deliberately asking for focus, so
+    /// `becomeFirstResponder`'s mouse-down refusal stands aside for that one request.
+    private var isResolvingPress = false
     /// Value/x-position the current drag measures its horizontal offset from. Re-anchored
     /// whenever vertical movement changes precision, so rescaling the axis mid-drag doesn't make
     /// the value jump — it just changes how far a pixel moves it from wherever it already is.
@@ -323,6 +326,19 @@ final class ScrubTextField: NSTextField {
         // has clicked anything. Reject that call outright; genuine focus (click, Tab, or our
         // own `updateNSView` reconciliation) only ever happens once the window is already key.
         guard window?.isKeyWindow == true else { return false }
+        // Refuse focus that a mouse-down on this field is driving. AppKit focuses (and
+        // select-all's) the clicked field *before* dispatching `mouseDown`, so there is no
+        // earlier hook to raise a flag from — by the time our own `mouseDown` runs the selection
+        // has already been drawn, and resigning after the fact is what makes it flash. Reading
+        // the event currently being dispatched is the only way to catch it in time. The press
+        // may still turn out to be a scrub, where focusing at all is wrong; if it turns out to
+        // be a click, the `.leftMouseUp` branch asks again with `isResolvingPress` set and this
+        // check stands aside.
+        if isDraggable, !isResolvingPress, let event = NSApp.currentEvent, event.type == .leftMouseDown,
+           bounds.contains(convert(event.locationInWindow, from: nil))
+        {
+            return false
+        }
         let result = super.becomeFirstResponder()
         if result {
             if let editor = currentEditor() {
@@ -384,20 +400,6 @@ final class ScrubTextField: NSTextField {
             return
         }
 
-        // AppKit's own event routing (`_handleMouseDownEvent:` → `NSTextFieldCell
-        // _selectOrEdit:`) focuses and select-all's the field as part of routing this very
-        // mouseDown, before the loop below can tell a click from a drag. Hand first responder
-        // straight back: until it resolves, a press on a scrubbable value shouldn't look like an
-        // open text edit. If it turns out to be a plain click, the `.leftMouseUp` branch focuses
-        // it properly; if it turns out to be a drag, it's already in the state a scrub wants.
-        //
-        // The blur this causes is safe to ignore downstream: the tracking loop below blocks the
-        // runloop until the gesture ends, so `EditableColorValue`'s deferred focus-loss handling
-        // can't run before either a session is open (drag) or focus is restored (click).
-        if currentEditor() != nil {
-            window?.makeFirstResponder(nil)
-        }
-
         let startPoint = event.locationInWindow
         var didBeginDrag = false
         let threshold: CGFloat = 2
@@ -446,6 +448,8 @@ final class ScrubTextField: NSTextField {
                     // reports itself focused to SwiftUI (no outline, no edit session). Once
                     // focused, first responder is the *field editor* (an NSTextView), not this
                     // control itself, so check against `currentEditor()` rather than `self`.
+                    isResolvingPress = true
+                    defer { isResolvingPress = false }
                     let editorIsActive = currentEditor() != nil && window?.firstResponder === currentEditor()
                     if !editorIsActive {
                         window?.makeFirstResponder(self)
