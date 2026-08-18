@@ -289,6 +289,15 @@ final class ScrubTextField: NSTextField {
     /// run, since `updateDrag` fires at least once (immediately after `beginDrag`) before a
     /// `mouseUp` can be reached. Read once, then cleared, to hand `onDragEnd` its final value.
     private var lastDragValue: Double?
+    /// Value/x-position the current drag measures its horizontal offset from. Re-anchored
+    /// whenever vertical movement changes precision, so rescaling the axis mid-drag doesn't make
+    /// the value jump — it just changes how far a pixel moves it from wherever it already is.
+    private var dragAnchorValue: Double?
+    private var dragAnchorX: CGFloat = 0
+    /// Decimal places the drag started at; vertical movement offsets from this, and the
+    /// per-pixel step scales inversely so the last shown digit always advances about one per
+    /// pixel (otherwise a coarse readout looks frozen while the colour visibly changes).
+    private var dragBaseDecimalPlaces = 2
     /// The gamut-clamped value the last drag step actually achieved (see
     /// `EditableColorValue.previewLiveScrub`), so the commit uses reality rather than the raw
     /// requested value. Cleared once the drag ends.
@@ -401,9 +410,9 @@ final class ScrubTextField: NSTextField {
                 if !didBeginDrag {
                     guard abs(translationX) >= threshold else { continue }
                     didBeginDrag = true
-                    beginDrag()
+                    beginDrag(at: next.locationInWindow)
                 }
-                updateDrag(translationX: translationX)
+                updateDrag(location: next.locationInWindow, startPoint: startPoint)
             case .leftMouseUp:
                 if didBeginDrag {
                     finishDrag()
@@ -431,9 +440,20 @@ final class ScrubTextField: NSTextField {
         }
     }
 
-    private func beginDrag() {
+    private func beginDrag(at location: NSPoint) {
         dragOrigin = Double(stringValue.trimmingCharacters(in: .whitespaces)) ?? 0
-        dragDecimalPlaces = ColorComponentField.stableDecimalPlaces(for: stringValue)
+        dragAnchorValue = dragOrigin
+        dragAnchorX = location.x
+        // Whichever is finer: the precision this component's drag step can actually resolve, or
+        // the precision already on display (so starting a scrub never truncates what's shown).
+        dragDecimalPlaces = min(
+            Self.precisionRange.upperBound,
+            max(
+                ColorComponentField.naturalDecimalPlaces(forRange: range),
+                ColorComponentField.stableDecimalPlaces(for: stringValue)
+            )
+        )
+        dragBaseDecimalPlaces = dragDecimalPlaces
         NSCursor.resizeLeftRight.set()
         // AppKit's own event routing (`_handleMouseDownEvent:` → `NSTextFieldCell
         // _selectOrEdit:`) already focused and select-all'd this field as part of routing the
@@ -449,11 +469,37 @@ final class ScrubTextField: NSTextField {
         onDragBegin?()
     }
 
-    private func updateDrag(translationX: CGFloat) {
-        guard let origin = dragOrigin else { return }
+    /// Points of vertical travel per decimal place gained or lost.
+    private static let pointsPerPrecisionStep: CGFloat = 40
+    /// Bounds on scrub precision. Never 0: a 0...1 component (OKLCH chroma) would read a constant
+    /// "0" and look broken. 4 matches the widest the normal stripped display ever shows.
+    private static let precisionRange = 1 ... 4
+
+    private func updateDrag(location: NSPoint, startPoint: NSPoint) {
+        guard dragAnchorValue != nil else { return }
+
+        // Vertical travel picks the precision — dragging down (which decreases y in AppKit's
+        // bottom-left window coordinates) reveals more decimals, up rounds them off. Only for
+        // `.decimal`; integers have no decimals to trade.
+        if kind == .decimal {
+            let steps = Int(((startPoint.y - location.y) / Self.pointsPerPrecisionStep).rounded())
+            let wanted = min(max(dragBaseDecimalPlaces + steps, Self.precisionRange.lowerBound),
+                             Self.precisionRange.upperBound)
+            if wanted != dragDecimalPlaces {
+                // Re-anchor before rescaling, so only the sensitivity changes, not the value.
+                dragAnchorValue = lastDragValue ?? dragAnchorValue
+                dragAnchorX = location.x
+                dragDecimalPlaces = wanted
+            }
+        }
+
+        guard let anchorValue = dragAnchorValue else { return }
         let fine = NSEvent.modifierFlags.contains(.option)
-        let unitsPerStep = dragUnitsPerPixel(for: range)
-        var newValue = origin + Double(translationX) * unitsPerStep * (fine ? 0.1 : 1.0)
+        // Scale the per-pixel step against the precision on show, so one pixel moves roughly one
+        // unit of the last visible digit at every precision.
+        let scale = pow(10.0, Double(dragBaseDecimalPlaces - dragDecimalPlaces))
+        let unitsPerStep = dragUnitsPerPixel(for: range) * scale
+        var newValue = anchorValue + Double(location.x - dragAnchorX) * unitsPerStep * (fine ? 0.1 : 1.0)
         if let range {
             newValue = min(max(newValue, range.lowerBound), range.upperBound)
         }
@@ -463,6 +509,7 @@ final class ScrubTextField: NSTextField {
 
     private func finishDrag() {
         dragOrigin = nil
+        dragAnchorValue = nil
         NSCursor.arrow.set()
         if let lastDragValue {
             onDragEnd?(lastDragValue)

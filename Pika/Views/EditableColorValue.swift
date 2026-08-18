@@ -712,6 +712,17 @@ struct ColorComponentField: View {
     /// the value already displays with more precision than that, in which case keep it. Otherwise
     /// starting a scrub would itself immediately truncate the value and reflow the row, before
     /// any actual dragging has happened.
+    /// Decimal places at which this component's per-pixel drag step is actually visible: the
+    /// step is range-scaled (`dragUnitsPerPixel`), so a fixed 2 places leaves a fine-ranged
+    /// component like OKLCH chroma advancing its last digit only every ~4px — which reads as the
+    /// number being stuck while the colour plainly changes. Derived from the step so the last
+    /// digit always moves about once per pixel.
+    static func naturalDecimalPlaces(forRange range: ClosedRange<Double>?) -> Int {
+        let step = dragUnitsPerPixel(for: range)
+        guard step > 0 else { return 2 }
+        return max(0, Int(ceil(-log10(step))))
+    }
+
     static func stableDecimalPlaces(for text: String) -> Int {
         guard let dotIndex = text.firstIndex(of: ".") else { return 2 }
         let decimals = text.distance(from: text.index(after: dotIndex), to: text.endIndex)
