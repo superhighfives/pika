@@ -109,6 +109,8 @@ struct ScrubbableColorField: NSViewRepresentable {
     /// instead of the field's own text, which stays frozen for the whole drag (see
     /// `EditableColorValue.scrubPreviewText`).
     let onScrubPreview: (String?) -> Void
+    /// Escape pressed mid-drag — abandon the scrub and put the colour back how it was.
+    let onDragCancel: () -> Void
     /// Fired with the raw live value on every drag step, so the parent can preview the eyedropper
     /// colour without touching `text` (which stays frozen — see `onScrubPreview` above).
     let onLiveValue: (Double) -> Double
@@ -159,6 +161,10 @@ struct ScrubbableColorField: NSViewRepresentable {
         nsView.range = range
         nsView.kind = kind
         nsView.onDragBegin = onDragBegin
+        nsView.onDragCancel = { [weak nsView] in
+            nsView?.lastAchievedValue = nil
+            onDragCancel()
+        }
         // The field's own `stringValue` is deliberately never touched here — it stays frozen at
         // whatever it showed when the drag began, for `FlowLayout`'s benefit (see
         // `EditableColorValue.scrubPreviewText`). Only the floating pill sees the live value.
@@ -279,6 +285,8 @@ final class ScrubTextField: NSTextField {
     var onDragChanged: ((Double) -> Void)?
     /// Fires with the drag's final value once it ends.
     var onDragEnd: ((Double) -> Void)?
+    /// Fires instead of `onDragEnd` when the drag is abandoned with Escape.
+    var onDragCancel: (() -> Void)?
     /// Reports true/false as this field becomes/resigns first responder. Driven from these
     /// overrides rather than `NSTextFieldDelegate`'s controlTextDidBeginEditing/EndEditing —
     /// see the note at the `onFocusChange` assignment in `ScrubbableColorField.updateNSView`.
@@ -394,7 +402,7 @@ final class ScrubTextField: NSTextField {
         // of starting fresh.
         while true {
             guard let next = NSApp.nextEvent(
-                matching: [.leftMouseDragged, .leftMouseUp],
+                matching: [.leftMouseDragged, .leftMouseUp, .keyDown],
                 until: .distantFuture,
                 inMode: .eventTracking,
                 dequeue: true
@@ -404,6 +412,12 @@ final class ScrubTextField: NSTextField {
             }
 
             switch next.type {
+            case .keyDown:
+                // Escape abandons the scrub. Only meaningful once a drag is actually under way;
+                // otherwise let the key fall through to its normal handling.
+                guard didBeginDrag, next.keyCode == 53 else { continue }
+                cancelDrag()
+                return
             case .leftMouseDragged:
                 let translationX = next.locationInWindow.x - startPoint.x
                 if !didBeginDrag {
@@ -507,6 +521,13 @@ final class ScrubTextField: NSTextField {
         }
         lastDragValue = newValue
         onDragChanged?(newValue)
+    }
+
+    private func cancelDrag() {
+        dragAnchorValue = nil
+        lastDragValue = nil
+        NSCursor.arrow.set()
+        onDragCancel?()
     }
 
     private func finishDrag() {

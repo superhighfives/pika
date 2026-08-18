@@ -111,6 +111,12 @@ struct EditableColorValue: View {
     /// trackpad momentum — can tell "this is still my session" apart from "a different field
     /// has since taken over, or this session already ended and a new one started elsewhere."
     @State private var sessionOwner: Int?
+    /// The component values as they were when the session began, kept pristine for its whole
+    /// duration. Every scrub frame recomposes from *these* rather than from `values`, which now
+    /// tracks the clamped colour: feeding each frame's clamped result back in would make the drag
+    /// path-dependent, ratcheting the untouched components a little further every frame so
+    /// dragging back where you came from no longer returns the colour you started with.
+    @State private var sessionStartValues: [String] = []
 
     private var decomposed: DecomposedColor {
         format.decompose(eyedropper.color, style: style, in: colorSpace)
@@ -311,6 +317,7 @@ struct EditableColorValue: View {
     /// `finishEditing`/`abortEditingForExternalPick` have a consistent point to commit or revert to.
     private func startSession(layout: DecomposedColor) {
         isEditing = true
+        sessionStartValues = layout.values
         // Sized to the *widest possible* value for this format, not the current one: keeping
         // `frozenSize` in step with the live value (as it started out) only froze the font size,
         // not the wrap decision — a component can still change digit count as it's scrubbed
@@ -386,8 +393,10 @@ struct EditableColorValue: View {
     @discardableResult
     private func previewLiveScrub(index: Int, layout: DecomposedColor, value: Double) -> Double {
         guard index < layout.components.count else { return value }
-        let currentKey = FormatStyleKey(format: format, style: style, colorSpace: colorSpace)
-        var liveValues = (valuesKey == currentKey && values.count == layout.components.count) ? values : layout.values
+        // From the session's starting values, never the live (clamped) ones — see
+        // `sessionStartValues`. This is what makes a scrub reversible: drag chroma up into the
+        // clamped region and back down, and you land on exactly the colour you began with.
+        var liveValues = sessionStartValues.count == layout.components.count ? sessionStartValues : layout.values
         guard index < liveValues.count else { return value }
         liveValues[index] = ColorComponentField.formattedDragValue(value, kind: layout.components[index].kind)
         guard let color = format.recompose(liveValues, style: style, in: colorSpace) else { return value }
@@ -591,6 +600,10 @@ struct ColorComponentField: View {
             onDragBegin: onDragBegin,
             onDragEnd: onDragEnd,
             onScrubPreview: { scrubPreviewText = $0 },
+            onDragCancel: {
+                scrubPreviewText = nil
+                onCancel()
+            },
             onLiveValue: onLiveValue,
             onStep: isDraggable ? stepValue : nil
         )
@@ -610,7 +623,10 @@ struct ColorComponentField: View {
         )
         // Purely decorative: an `.overlay` doesn't feed back into this view's own reported size,
         // so the pill can appear, change text, and disappear without ever perturbing `FlowLayout`.
-        .overlay(alignment: .top) {
+        // Leading, not centred: centring a wide pill over a field near the swatch's left edge
+        // pushes it past that edge, where it's clipped (the value row starts hard against it).
+        // Growing rightward instead keeps it inside — the row reserves a trailing gutter anyway.
+        .overlay(alignment: .topLeading) {
             if let scrubPreviewText {
                 Text(scrubPreviewText)
                     .font(.system(size: 12, weight: .semibold, design: .rounded))
