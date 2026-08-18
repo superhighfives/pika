@@ -183,7 +183,7 @@ struct EditableColorValue: View {
         // Decorative overlay: it doesn't feed into the row's reported size, so it can appear and
         // change width without perturbing `FlowLayout`. Anchored to the row rather than to the
         // dragged field, so it's always in bounds and doesn't jump between components.
-        .overlay(alignment: .topLeading) {
+        .overlay(alignment: .top) {
             if let rowScrubPreview {
                 Text(rowScrubPreview)
                     .font(.system(size: 11, weight: .semibold, design: .rounded))
@@ -196,7 +196,10 @@ struct EditableColorValue: View {
                     .background(Capsule().fill(Color(uiColor).opacity(0.92)))
                     // Bounded by the row, and allowed to shrink rather than run past its edge:
                     // a long format (rgba with five decimals a channel) is wider than the swatch.
-                    .frame(maxWidth: effectiveWidth, alignment: .leading)
+                    .frame(maxWidth: effectiveWidth)
+                    // The swatch's content carries a text shadow for legibility on any colour;
+                    // inherited by the pill it just reads as blur, so cancel it here.
+                    .shadow(color: .clear, radius: 0, x: 0, y: 0)
                     .offset(y: -24)
                     .transition(.opacity.combined(with: .scale(scale: 0.9)))
                     .allowsHitTesting(false)

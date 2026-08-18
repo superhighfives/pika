@@ -66,6 +66,22 @@ private struct PickTarget: NSViewRepresentable {
     }
 }
 
+/// Swallows clicks over the readout block so they don't fall through to `PickTarget` and start
+/// a screen pick. An AppKit view rather than a SwiftUI `contentShape`: `PickTarget` is itself an
+/// `NSView` sitting in the same z-order, so the thing shadowing it has to win AppKit's own
+/// hit-testing, not just SwiftUI's.
+private struct ClickShield: NSViewRepresentable {
+    func makeNSView(context _: Context) -> NSView { ShieldView() }
+    func updateNSView(_: NSView, context _: Context) {}
+
+    final class ShieldView: NSView {
+        // Absorb rather than forward: the readout's own fields sit in front of this and keep
+        // receiving their clicks, but the labels, colour name, and the gaps between them no
+        // longer act as a pick target.
+        override func mouseDown(with _: NSEvent) {}
+    }
+}
+
 struct EyedropperButton: View {
     @ObservedObject var eyedropper: Eyedropper
     /// Shared with the other swatch (owned by `ColorPickers`) rather than local: a click on
@@ -87,6 +103,8 @@ struct EyedropperButton: View {
     @State private var valueInvalid: Bool = false
     @State private var isPressed: Bool = false
     @State private var flashOpacity: Double = 0
+    /// Drives the hairline that shows where the non-picking readout block begins.
+    @State private var readoutHovered = false
 
     var body: some View {
         ZStack {
@@ -170,6 +188,18 @@ struct EyedropperButton: View {
                     .shadow(color: shadowColor.opacity(0.30), radius: 0, x: 0, y: 1)
                     .shadow(color: shadowColor.opacity(0.10), radius: 3, x: 0, y: 0)
             }
+            // Both of these sit outside the shadow above, so the hairline stays crisp.
+            .background(ClickShield())
+            .overlay(
+                RoundedRectangle(cornerRadius: 6.0, style: .continuous)
+                    .strokeBorder(
+                        eyedropper.color.getUIColor().opacity(readoutHovered ? 0.35 : 0),
+                        lineWidth: 1
+                    )
+                    .allowsHitTesting(false)
+            )
+            .onHover { readoutHovered = $0 }
+            .animation(.easeInOut(duration: 0.15), value: readoutHovered)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
 
             VStack(spacing: 4.0) {
