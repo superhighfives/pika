@@ -127,9 +127,10 @@ struct EyedropperButton: View {
             // clicks. The type label and colour name disable hit-testing so clicks fall
             // through to the pick button behind them.
             VStack(alignment: .leading, spacing: 2.0) {
-                // Visibility is size-aware (`adaptive.showsTypeLabels` already folds in the
-                // preview-pill overlap) so labels fade out as the window shrinks and return
-                // when it grows again. The invalid pill overrides the fade so it's never hidden.
+                // `adaptive.showsTypeLabels` is hardcoded `true` (ContentView.swift) as of
+                // `81fe9f9`, so the fade below is currently vestigial — kept in case that's
+                // revisited, rather than stripped along with the conditional that once drove it.
+                // The invalid pill overrides the fade so it's never hidden.
                 let showsTypeLabel = adaptive.showsTypeLabels
                 HStack(alignment: .firstTextBaseline, spacing: 6.0) {
                     Text(eyedropper.type.description)

@@ -466,15 +466,7 @@ final class ScrubTextField: NSTextField {
     private func beginDrag(at location: NSPoint) {
         dragAnchorValue = Double(stringValue.trimmingCharacters(in: .whitespaces)) ?? 0
         dragAnchorX = location.x
-        // Whichever is finer: the precision this component's drag step can actually resolve, or
-        // the precision already on display (so starting a scrub never truncates what's shown).
-        dragDecimalPlaces = min(
-            Self.precisionRange.upperBound,
-            max(
-                ColorComponentField.naturalDecimalPlaces(forRange: range),
-                ColorComponentField.stableDecimalPlaces(for: stringValue)
-            )
-        )
+        dragDecimalPlaces = ColorComponentField.initialScrubDecimalPlaces(forRange: range, text: stringValue)
         dragBaseDecimalPlaces = dragDecimalPlaces
         NSCursor.resizeLeftRight.set()
         onDragBegin?()

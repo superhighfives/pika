@@ -671,13 +671,7 @@ struct ColorComponentField: View {
         if scrollOrigin == nil {
             scrollOrigin = Double(text.trimmingCharacters(in: .whitespaces)) ?? 0
             scrollAccumulated = 0
-            scrollDecimalPlaces = min(
-                ScrubTextField.precisionRange.upperBound,
-                max(
-                    Self.naturalDecimalPlaces(forRange: component.range),
-                    Self.stableDecimalPlaces(for: text)
-                )
-            )
+            scrollDecimalPlaces = Self.initialScrubDecimalPlaces(forRange: component.range, text: text)
             onDragBegin()
         }
         guard let origin = scrollOrigin else { return }
@@ -745,5 +739,18 @@ struct ColorComponentField: View {
         guard let dotIndex = text.firstIndex(of: ".") else { return 2 }
         let decimals = text.distance(from: text.index(after: dotIndex), to: text.endIndex)
         return max(2, min(4, decimals))
+    }
+
+    /// Decimal places to start a scrub session at: whichever is finer, the precision this
+    /// component's drag step can actually resolve (`naturalDecimalPlaces`) or the precision
+    /// already on display (`stableDecimalPlaces`, so starting a scrub never truncates what's
+    /// shown), capped at `ScrubTextField.precisionRange`'s ceiling. Shared by click-drag
+    /// (`ScrubTextField.beginDrag`) and scroll-to-scrub (`handleScrollDelta`) so the two paths
+    /// can't drift out of sync the way their digit-budget math already has once.
+    static func initialScrubDecimalPlaces(forRange range: ClosedRange<Double>?, text: String) -> Int {
+        min(
+            ScrubTextField.precisionRange.upperBound,
+            max(naturalDecimalPlaces(forRange: range), stableDecimalPlaces(for: text))
+        )
     }
 }
