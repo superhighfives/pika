@@ -707,11 +707,6 @@ struct ColorComponentField: View {
         }
     }
 
-    /// Decimal places for a scrub session's live display: 2 by default — finer than that isn't a
-    /// meaningful step to scrub by (0.0001 of a 0...1 range is imperceptible per pixel) — unless
-    /// the value already displays with more precision than that, in which case keep it. Otherwise
-    /// starting a scrub would itself immediately truncate the value and reflow the row, before
-    /// any actual dragging has happened.
     /// Decimal places at which this component's per-pixel drag step is actually visible: the
     /// step is range-scaled (`dragUnitsPerPixel`), so a fixed 2 places leaves a fine-ranged
     /// component like OKLCH chroma advancing its last digit only every ~4px — which reads as the
@@ -723,6 +718,11 @@ struct ColorComponentField: View {
         return max(0, Int(ceil(-log10(step))))
     }
 
+    /// Decimal places for a scrub session's live display: 2 by default — finer than that isn't a
+    /// meaningful step to scrub by (0.0001 of a 0...1 range is imperceptible per pixel) — unless
+    /// the value already displays with more precision than that, in which case keep it. Otherwise
+    /// starting a scrub would itself immediately truncate the value and reflow the row, before
+    /// any actual dragging has happened.
     static func stableDecimalPlaces(for text: String) -> Int {
         guard let dotIndex = text.firstIndex(of: ".") else { return 2 }
         let decimals = text.distance(from: text.index(after: dotIndex), to: text.endIndex)

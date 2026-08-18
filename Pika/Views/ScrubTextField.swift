@@ -284,7 +284,6 @@ final class ScrubTextField: NSTextField {
     /// see the note at the `onFocusChange` assignment in `ScrubbableColorField.updateNSView`.
     var onFocusChange: ((Bool) -> Void)?
 
-    private var dragOrigin: Double?
     /// The most recent value `onDragChanged` reported — always set by the time `finishDrag` can
     /// run, since `updateDrag` fires at least once (immediately after `beginDrag`) before a
     /// `mouseUp` can be reached. Read once, then cleared, to hand `onDragEnd` its final value.
@@ -441,8 +440,7 @@ final class ScrubTextField: NSTextField {
     }
 
     private func beginDrag(at location: NSPoint) {
-        dragOrigin = Double(stringValue.trimmingCharacters(in: .whitespaces)) ?? 0
-        dragAnchorValue = dragOrigin
+        dragAnchorValue = Double(stringValue.trimmingCharacters(in: .whitespaces)) ?? 0
         dragAnchorX = location.x
         // Whichever is finer: the precision this component's drag step can actually resolve, or
         // the precision already on display (so starting a scrub never truncates what's shown).
@@ -508,7 +506,6 @@ final class ScrubTextField: NSTextField {
     }
 
     private func finishDrag() {
-        dragOrigin = nil
         dragAnchorValue = nil
         NSCursor.arrow.set()
         if let lastDragValue {
