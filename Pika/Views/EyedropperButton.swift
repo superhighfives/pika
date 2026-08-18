@@ -197,7 +197,7 @@ struct EyedropperButton: View {
             // target — a full box around the text read as a control it isn't.
             .overlay(alignment: .top) {
                 Rectangle()
-                    .fill(Color(eyedropper.color.getUIColor()).opacity(readoutHovered ? 0.5 : 0))
+                    .fill(Color(eyedropper.color.getUIColor()).opacity(readoutHovered ? 0.15 : 0))
                     .frame(height: 1)
                     .allowsHitTesting(false)
             }
