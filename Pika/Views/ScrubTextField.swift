@@ -470,8 +470,9 @@ final class ScrubTextField: NSTextField {
     /// Points of vertical travel per decimal place gained or lost.
     private static let pointsPerPrecisionStep: CGFloat = 40
     /// Bounds on scrub precision. Never 0: a 0...1 component (OKLCH chroma) would read a constant
-    /// "0" and look broken. 4 matches the widest the normal stripped display ever shows.
-    private static let precisionRange = 1 ... 4
+    /// "0" and look broken. 4 matches the widest the normal stripped display ever shows. Not
+    /// private: `EditableColorValue`'s scroll-to-scrub path clamps to the same ceiling.
+    static let precisionRange = 1 ... 4
 
     private func updateDrag(location: NSPoint, startPoint: NSPoint) {
         guard dragAnchorValue != nil else { return }
