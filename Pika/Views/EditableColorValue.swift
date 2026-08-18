@@ -674,7 +674,10 @@ struct ColorComponentField: View {
         if scrollOrigin == nil {
             scrollOrigin = Double(text.trimmingCharacters(in: .whitespaces)) ?? 0
             scrollAccumulated = 0
-            scrollDecimalPlaces = Self.stableDecimalPlaces(for: text)
+            scrollDecimalPlaces = max(
+                Self.naturalDecimalPlaces(forRange: component.range),
+                Self.stableDecimalPlaces(for: text)
+            )
             onDragBegin()
         }
         guard let origin = scrollOrigin else { return }
