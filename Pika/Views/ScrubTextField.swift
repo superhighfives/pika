@@ -384,6 +384,20 @@ final class ScrubTextField: NSTextField {
             return
         }
 
+        // AppKit's own event routing (`_handleMouseDownEvent:` → `NSTextFieldCell
+        // _selectOrEdit:`) focuses and select-all's the field as part of routing this very
+        // mouseDown, before the loop below can tell a click from a drag. Hand first responder
+        // straight back: until it resolves, a press on a scrubbable value shouldn't look like an
+        // open text edit. If it turns out to be a plain click, the `.leftMouseUp` branch focuses
+        // it properly; if it turns out to be a drag, it's already in the state a scrub wants.
+        //
+        // The blur this causes is safe to ignore downstream: the tracking loop below blocks the
+        // runloop until the gesture ends, so `EditableColorValue`'s deferred focus-loss handling
+        // can't run before either a session is open (drag) or focus is restored (click).
+        if currentEditor() != nil {
+            window?.makeFirstResponder(nil)
+        }
+
         let startPoint = event.locationInWindow
         var didBeginDrag = false
         let threshold: CGFloat = 2
@@ -459,17 +473,6 @@ final class ScrubTextField: NSTextField {
         )
         dragBaseDecimalPlaces = dragDecimalPlaces
         NSCursor.resizeLeftRight.set()
-        // AppKit's own event routing (`_handleMouseDownEvent:` → `NSTextFieldCell
-        // _selectOrEdit:`) already focused and select-all'd this field as part of routing the
-        // mouseDown that's turning out to be this drag — before this override's loop could tell
-        // click from drag apart. Hand first responder back now that we know it's a drag: a scrub
-        // should read as dragging a value, not as editing text, so it shouldn't leave the field
-        // select-all highlighted with a caret parked at the end of it. `EditableColorValue`
-        // knows a scrub is in flight (`isScrubbing`) and won't mistake this blur for a tab-out
-        // that should commit and close the session.
-        if currentEditor() != nil {
-            window?.makeFirstResponder(nil)
-        }
         onDragBegin?()
     }
 
