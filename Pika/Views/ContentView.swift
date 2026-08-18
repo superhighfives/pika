@@ -6,9 +6,9 @@ import UniformTypeIdentifiers
 /// Height thresholds (in points of available window content height) below which each
 /// element is shed, so the window can shrink far smaller than the sum of everything.
 /// Ordered largest-first to match the shed order: palettes drop first, then contrast,
-/// preview, and colour names. Type labels are the last to go, but they hide only via the
-/// preview-pill overlap — the window floor (160) sits above any useful height threshold
-/// for them. These are the tuning knobs for the adaptive layout.
+/// preview, and colour names. Type labels never shed on height — the window floor (160)
+/// sits above any useful threshold for them. These are the tuning knobs for the adaptive
+/// layout.
 enum PikaAdaptiveHeight {
     static let floor: CGFloat = 160 // bare minimum content height (matches window frame min ≈ 200pt window)
     static let expandCornerBelow: CGFloat = 200 // below this content height (~240pt window) the button tucks top-right
@@ -111,8 +111,6 @@ struct ContentView: View {
             let allowContrastWidth = width >= PikaAdaptiveWidth.contrast
             let allowContrast = allowContrastHeight && allowContrastWidth
             let allowPalettes = height >= PikaAdaptiveHeight.palettes && width >= PikaAdaptiveWidth.palettes
-            // The preview pill overlaps the type labels, so labels only show when the
-            // pill is effectively hidden.
             let previewVisible = showColorPreview && allowPreview
 
             // An enabled element we're hiding purely for space. When any exist, offer to
@@ -199,9 +197,12 @@ struct ContentView: View {
             }
             .frame(width: geo.size.width, height: geo.size.height, alignment: .top)
             .environment(\.pikaAdaptiveVisibility, PikaAdaptiveVisibility(
-                // Type labels sit behind the preview pill, so they hide only when it shows
-                // — the window floor keeps height above any threshold that would drop them.
-                showsTypeLabels: !previewVisible,
+                // Not tied to the preview pill: the pill is anchored to the top of the
+                // swatches and the labels to the bottom, so they don't contend for the same
+                // space — measured at every height from the pill's own minimum (200) upward,
+                // the smallest gap between them is still ~30pt. The window floor keeps height
+                // above any threshold that would drop the labels on their own account.
+                showsTypeLabels: true,
                 showsColorNames: height >= PikaAdaptiveHeight.colorNames,
                 swatchWidth: width / 2
             ))
