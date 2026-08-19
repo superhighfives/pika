@@ -106,6 +106,25 @@ struct EyedropperButton: View {
     /// Drives the hairline that shows where the non-picking readout block begins.
     @State private var readoutHovered = false
 
+    /// Mirrors `wantsColorName`, but only ever changed inside `withAnimation`. Animating the
+    /// environment value directly doesn't work: it changes as part of the geometry pass that
+    /// re-evaluates the whole tree, and `.animation(_:value:)` doesn't catch that — the row just
+    /// snapped to full height. Driving an explicit state change is what makes it a transition.
+    @State private var colorNameVisible = false
+
+    private var wantsColorName: Bool { !hideColorNames && adaptive.showsColorNames }
+
+    private let colorNameFontSize: CGFloat = 12
+    /// Gap between the value and the colour name, carried by the name's own row so it
+    /// collapses along with it.
+    private static let colorNameSpacing: CGFloat = 6
+    /// The height that row occupies when shown: one line of its own font, plus that gap.
+    /// Measured from the font rather than hard-coded so it tracks the text it's reserving for.
+    private var colorNameRowHeight: CGFloat {
+        let font = NSFont.systemFont(ofSize: colorNameFontSize, weight: .medium)
+        return ceil(font.ascender - font.descender + font.leading) + Self.colorNameSpacing
+    }
+
     var body: some View {
         ZStack {
             // Background pick target: a click anywhere that isn't the editable value (or the
@@ -160,7 +179,10 @@ struct EyedropperButton: View {
                 )
                 .allowsHitTesting(false)
 
-                VStack(alignment: .leading, spacing: 6.0) {
+                // Spacing 0, with the gap above the colour name carried by that row's own
+                // height: the name has to be able to collapse to nothing, and a `VStack`
+                // spacing would still be contributing 6pt when it did.
+                VStack(alignment: .leading, spacing: 0) {
                     // Trailing gutter keeps the value clear of the copy / system-picker hover
                     // buttons; the value shrinks to fit as its column narrows.
                     EditableColorValue(
@@ -174,12 +196,23 @@ struct EyedropperButton: View {
                     )
                     .padding(.trailing, 32.0)
 
-                    if !hideColorNames, adaptive.showsColorNames {
-                        Text(eyedropper.getClosestColor())
-                            .font(.system(size: 12, weight: .medium))
-                            .foregroundStyle(eyedropper.color.getUIColor())
-                            .allowsHitTesting(false)
-                    }
+                    // Always in the hierarchy, collapsing to zero height rather than being
+                    // inserted and removed. This block is bottom-anchored, so a row appearing
+                    // at full height shoves everything above it up by that much in a single
+                    // frame — the jump you see when the colour name arrives. Animating the
+                    // height (and fading in) turns that into a reveal instead.
+                    Text(eyedropper.getClosestColor())
+                        .font(.system(size: colorNameFontSize, weight: .medium))
+                        .foregroundStyle(eyedropper.color.getUIColor())
+                        .allowsHitTesting(false)
+                        .padding(.top, Self.colorNameSpacing)
+                        .frame(height: colorNameVisible ? colorNameRowHeight : 0, alignment: .top)
+                        .opacity(colorNameVisible ? 1 : 0)
+                        .clipped()
+                }
+                .onAppear { colorNameVisible = wantsColorName }
+                .onChange(of: wantsColorName) { shows in
+                    withAnimation(.easeInOut(duration: 0.2)) { colorNameVisible = shows }
                 }
             }
             .padding(.horizontal, 10.0)
