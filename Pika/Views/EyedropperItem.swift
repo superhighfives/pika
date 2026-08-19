@@ -12,77 +12,86 @@ struct EyedropperItem: View {
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     @ObservedObject var eyedropper: Eyedropper
     @Binding var dismissEditingTrigger: Int
+    /// Height to hold the readout block at, shared across both swatches by `ColorPickers`.
+    var readoutHeight: CGFloat = 0
+    /// Whether the readout boundary hairline is showing — driven by hovering either swatch.
+    var showsReadoutBoundary: Bool = false
     @State private var showToast: Bool = false
     @Default(.colorFormat) var colorFormat
     @Default(.copyFormat) var copyFormat
     let pasteboard = NSPasteboard.general
     var body: some View {
         ZStack {
-            EyedropperButton(eyedropper: eyedropper, dismissEditingTrigger: $dismissEditingTrigger)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .onReceive(NotificationCenter.default.publisher(for: eyedropper.type.pickNotification)) { note in
-                    let requestedChain = note.userInfo?["chain"] as? Bool == true
-                    let chain = eyedropper.type == .foreground
-                        && (Defaults[.pickContrastingColor] || requestedChain)
-                    eyedropper.start(chainContrasting: chain)
+            EyedropperButton(
+                eyedropper: eyedropper,
+                dismissEditingTrigger: $dismissEditingTrigger,
+                readoutHeight: readoutHeight,
+                showsReadoutBoundary: showsReadoutBoundary
+            )
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .onReceive(NotificationCenter.default.publisher(for: eyedropper.type.pickNotification)) { note in
+                let requestedChain = note.userInfo?["chain"] as? Bool == true
+                let chain = eyedropper.type == .foreground
+                    && (Defaults[.pickContrastingColor] || requestedChain)
+                eyedropper.start(chainContrasting: chain)
+            }
+            .onReceive(NotificationCenter.default.publisher(for: eyedropper.type.copyNotification)) { _ in
+                showToast = true
+                pasteboard.clearContents()
+                let contents = "\(eyedropper.color.toFormat(format: colorFormat, style: Defaults[.copyFormat]))"
+                pasteboard.setString(contents, forType: .string)
+            }
+            .onReceive(NotificationCenter.default.publisher(for: eyedropper.type.systemPickerNotification)) { _ in
+                let panel = NSColorPanel.shared
+                if panel.isVisible, panel.title == "\(eyedropper.type.rawValue.capitalized)" {
+                    panel.close()
+                } else {
+                    eyedropper.picker()
                 }
-                .onReceive(NotificationCenter.default.publisher(for: eyedropper.type.copyNotification)) { _ in
-                    showToast = true
-                    pasteboard.clearContents()
-                    let contents = "\(eyedropper.color.toFormat(format: colorFormat, style: Defaults[.copyFormat]))"
-                    pasteboard.setString(contents, forType: .string)
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .triggerFormatHex)) { _ in
+                if copyFormat != .swiftUI {
+                    colorFormat = ColorFormat.hex
                 }
-                .onReceive(NotificationCenter.default.publisher(for: eyedropper.type.systemPickerNotification)) { _ in
-                    let panel = NSColorPanel.shared
-                    if panel.isVisible, panel.title == "\(eyedropper.type.rawValue.capitalized)" {
-                        panel.close()
-                    } else {
-                        eyedropper.picker()
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .triggerFormatRGB)) { _ in
+                colorFormat = ColorFormat.rgb
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .triggerFormatHSB)) { _ in
+                colorFormat = ColorFormat.hsb
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .triggerFormatHSL)) { _ in
+                if copyFormat != .swiftUI {
+                    colorFormat = ColorFormat.hsl
+                }
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .triggerFormatOpenGL)) { _ in
+                if copyFormat != .swiftUI {
+                    colorFormat = ColorFormat.opengl
+                }
+            }
+            .onChange(of: copyFormat) {
+                if copyFormat == .swiftUI {
+                    if PikaConstants.disabledFormats.contains(colorFormat) {
+                        colorFormat = .rgb
                     }
                 }
-                .onReceive(NotificationCenter.default.publisher(for: .triggerFormatHex)) { _ in
-                    if copyFormat != .swiftUI {
-                        colorFormat = ColorFormat.hex
-                    }
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .triggerFormatLAB)) { _ in
+                if copyFormat != .swiftUI {
+                    colorFormat = .lab
                 }
-                .onReceive(NotificationCenter.default.publisher(for: .triggerFormatRGB)) { _ in
-                    colorFormat = ColorFormat.rgb
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .triggerFormatOKLCH)) { _ in
+                if copyFormat != .swiftUI {
+                    colorFormat = .oklch
                 }
-                .onReceive(NotificationCenter.default.publisher(for: .triggerFormatHSB)) { _ in
-                    colorFormat = ColorFormat.hsb
-                }
-                .onReceive(NotificationCenter.default.publisher(for: .triggerFormatHSL)) { _ in
-                    if copyFormat != .swiftUI {
-                        colorFormat = ColorFormat.hsl
-                    }
-                }
-                .onReceive(NotificationCenter.default.publisher(for: .triggerFormatOpenGL)) { _ in
-                    if copyFormat != .swiftUI {
-                        colorFormat = ColorFormat.opengl
-                    }
-                }
-                .onChange(of: copyFormat) {
-                    if copyFormat == .swiftUI {
-                        if PikaConstants.disabledFormats.contains(colorFormat) {
-                            colorFormat = .rgb
-                        }
-                    }
-                }
-                .onReceive(NotificationCenter.default.publisher(for: .triggerFormatLAB)) { _ in
-                    if copyFormat != .swiftUI {
-                        colorFormat = .lab
-                    }
-                }
-                .onReceive(NotificationCenter.default.publisher(for: .triggerFormatOKLCH)) { _ in
-                    if copyFormat != .swiftUI {
-                        colorFormat = .oklch
-                    }
-                }
-                .toast(
-                    isShowing: $showToast,
-                    color: eyedropper.color.getUIColor(),
-                    text: Text(String(PikaText.textColorCopied))
-                )
+            }
+            .toast(
+                isShowing: $showToast,
+                color: eyedropper.color.getUIColor(),
+                text: Text(String(PikaText.textColorCopied))
+            )
         }
     }
 }

@@ -90,6 +90,11 @@ struct EyedropperButton: View {
     /// scoped to this button. Bumping a trigger only this button's own `EditableColorValue`
     /// hears would silently drop that edit instead of committing or reverting it.
     @Binding var dismissEditingTrigger: Int
+    /// Height to hold the readout block at — the taller of the two swatches', resolved by
+    /// `ColorPickers`, so the boundary sits at one height across the pair. 0 until measured.
+    var readoutHeight: CGFloat = 0
+    /// Driven by hovering either swatch, so both boundaries show together.
+    var showsReadoutBoundary: Bool = false
     @Default(.colorFormat) var colorFormat
     @Default(.copyFormat) var copyFormat
     @Default(.hideColorNames) var hideColorNames
@@ -103,9 +108,6 @@ struct EyedropperButton: View {
     @State private var valueInvalid: Bool = false
     @State private var isPressed: Bool = false
     @State private var flashOpacity: Double = 0
-    /// Drives the hairline that shows where the non-picking readout block begins.
-    @State private var readoutHovered = false
-
     /// Mirrors `wantsColorName`, but only ever changed inside `withAnimation`. Animating the
     /// environment value directly doesn't work: it changes as part of the geometry pass that
     /// re-evaluates the whole tree, and `.animation(_:value:)` doesn't catch that — the row just
@@ -219,6 +221,18 @@ struct EyedropperButton: View {
             .padding(.bottom, 10.0)
             // Roomier above than below, so the hairline doesn't crowd the type label.
             .padding(.top, 16.0)
+            // Measured *before* the shared height is imposed below, so this reports what the
+            // block naturally wants and can't feed back into its own answer.
+            .background(
+                GeometryReader { geo in
+                    Color.clear.preference(key: ReadoutHeightKey.self, value: geo.size.height)
+                }
+            )
+            // Both swatches take the taller one's height, so the shield and the hairline that
+            // marks its edge line up across the pair even when one value wraps and the other
+            // doesn't. Bottom-aligned, so the extra height opens upward and the readout itself
+            // stays put.
+            .frame(height: readoutHeight > 0 ? readoutHeight : nil, alignment: .bottom)
             .modify {
                 let shadowColor: Color = eyedropper.color.getUIColor() == .white ? .black : .white
                 $0
@@ -231,12 +245,11 @@ struct EyedropperButton: View {
             // target — a full box around the text read as a control it isn't.
             .overlay(alignment: .top) {
                 Rectangle()
-                    .fill(Color(eyedropper.color.getUIColor()).opacity(readoutHovered ? 0.15 : 0))
+                    .fill(Color(eyedropper.color.getUIColor()).opacity(showsReadoutBoundary ? 0.15 : 0))
                     .frame(height: 1)
                     .allowsHitTesting(false)
             }
-            .onHover { readoutHovered = $0 }
-            .animation(.easeInOut(duration: 0.15), value: readoutHovered)
+            .animation(.easeInOut(duration: 0.15), value: showsReadoutBoundary)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
 
             VStack(spacing: 4.0) {
