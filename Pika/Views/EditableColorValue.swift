@@ -498,7 +498,6 @@ struct EditableColorValue: View {
         isInvalid = false
         preEditColor = nil
         sessionOwner = nil
-        rowScrubPreview = nil
         // Only clear the own-write marker when we're about to resync anyway. A `resync: false`
         // commit (see `finishEditing`'s success path) deliberately keeps `values` as typed rather
         // than the freshly (and possibly lossily) decomposed colour — clearing this unconditionally

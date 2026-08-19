@@ -422,7 +422,8 @@ final class ScrubTextField: NSTextField {
             switch next.type {
             case .keyDown:
                 // Escape abandons the scrub. Only meaningful once a drag is actually under way;
-                // otherwise let the key fall through to its normal handling.
+                // otherwise the key is dropped rather than dispatched (narrow window: only
+                // while the mouse button is held on this field).
                 guard didBeginDrag, next.keyCode == 53 else { continue }
                 cancelDrag()
                 return
