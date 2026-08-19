@@ -532,13 +532,15 @@ private struct PickerComparisonTile: View {
         }
     }
 
-    // Monochrome white-on-dark, matching the app-mode preview art: translucent white
-    // fills, white line-art, no colour, no container borders.
+    // Monochrome line-art, matching the app-mode preview art: translucent fills, no colour,
+    // no container borders. Drawn in `.primary` rather than white so it inverts with the
+    // appearance — `AppearanceButtonStyle` fades the tile to near-white in light mode, where
+    // white-on-white left the art invisible.
 
     // Basic picker: a plain, dull loupe — a single flat disc with a faint crosshair.
     private var basicMock: some View {
         ZStack {
-            Circle().fill(Color.white.opacity(0.08))
+            Circle().fill(Color.primary.opacity(0.08))
             crosshair(opacity: 0.35)
         }
         .frame(width: 40.0, height: 40.0)
@@ -550,7 +552,7 @@ private struct PickerComparisonTile: View {
         VStack(spacing: 3.0) {
             ZStack {
                 RoundedRectangle(cornerRadius: 3.0, style: .continuous)
-                    .fill(Color.white.opacity(0.12))
+                    .fill(Color.primary.opacity(0.12))
                 crosshair(opacity: 0.35)
             }
             .frame(height: 18.0)
@@ -558,7 +560,7 @@ private struct PickerComparisonTile: View {
             HStack(spacing: 4.0) {
                 skeletonBar(width: 24.0, opacity: 0.3)
                 Spacer(minLength: 0.0)
-                Circle().fill(Color.white.opacity(0.35)).frame(width: 5.0, height: 5.0)
+                Circle().fill(Color.primary.opacity(0.35)).frame(width: 5.0, height: 5.0)
             }
         }
         .padding(.horizontal, 5.0)
@@ -567,18 +569,18 @@ private struct PickerComparisonTile: View {
         .frame(width: 52.0)
         .background(
             RoundedRectangle(cornerRadius: 6.0, style: .continuous)
-                .fill(Color.white.opacity(0.06))
+                .fill(Color.primary.opacity(0.06))
         )
     }
 
     private func crosshair(opacity: Double) -> some View {
         Rectangle()
-            .strokeBorder(Color.white.opacity(opacity), lineWidth: 2.0)
+            .strokeBorder(Color.primary.opacity(opacity), lineWidth: 2.0)
             .frame(width: 9.0, height: 9.0)
     }
 
     private func skeletonBar(width: CGFloat, opacity: Double) -> some View {
-        Capsule().fill(Color.white.opacity(opacity)).frame(width: width, height: 3.0)
+        Capsule().fill(Color.primary.opacity(opacity)).frame(width: width, height: 3.0)
     }
 }
 

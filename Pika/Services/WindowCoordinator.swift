@@ -430,8 +430,12 @@ class WindowCoordinator: NSObject {
 
     func openPreferencesWindow() {
         if preferencesWindow == nil, let eyedroppers {
+            // Width is pinned by the window's own min/max below, not by the SwiftUI frame:
+            // pinning both would demand the full 580 for content *and* leave the scroller
+            // with nowhere to go, pushing it past the right edge where the window clips it.
+            // Letting the content flex mirrors the Help window, whose scroller sits inboard.
             let rootView = PreferencesView()
-                .frame(minWidth: 580, maxWidth: 580, minHeight: 400, maxHeight: .infinity)
+                .frame(maxWidth: .infinity, minHeight: 400, maxHeight: .infinity)
                 .ignoresSafeArea()
                 .environmentObject(eyedroppers)
             let view = NSHostingView(rootView: rootView)
@@ -440,6 +444,9 @@ class WindowCoordinator: NSObject {
                 size: NSRect(x: 0, y: 0, width: 580, height: 600),
                 styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView]
             )
+            // Matches About/Help/Splash — lets the header gradient run up behind the titlebar
+            // instead of leaving an opaque bar above it.
+            preferencesWindow?.titlebarAppearsTransparent = true
             preferencesWindow?.minSize = NSSize(width: 580, height: 400)
             preferencesWindow?.maxSize = NSSize(width: 580, height: CGFloat.greatestFiniteMagnitude)
             preferencesWindow?.contentMinSize = NSSize(width: 580, height: 400)
