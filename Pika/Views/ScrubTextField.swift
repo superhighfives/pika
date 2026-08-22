@@ -181,15 +181,7 @@ struct ScrubbableColorField: NSViewRepresentable {
         }
 
         if nsView.stringValue != text {
-            nsView.stringValue = text
-            nsView.invalidateIntrinsicContentSize()
-            // A programmatic change (drag/scroll, or an external colour landing mid-edit) while
-            // this field is still first responder — keep the caret collapsed at the end rather
-            // than whatever AppKit does by default when `stringValue` changes underneath it.
-            if let editor = nsView.currentEditor() as? NSTextView {
-                let length = (text as NSString).length
-                editor.selectedRange = NSRange(location: length, length: 0)
-            }
+            ScrubTextField.setText(text, on: nsView)
         }
 
         let editorIsActive = nsView.currentEditor() != nil && nsView.window?.firstResponder === nsView.currentEditor()
@@ -227,11 +219,8 @@ struct ScrubbableColorField: NSViewRepresentable {
             // (`range` is nil), so it keeps the plain empty/invalid state.
             if field.stringValue.isEmpty, let range = field.range {
                 let lowest = ColorComponentField.formattedDragValue(range.lowerBound, kind: field.kind)
-                field.stringValue = lowest
+                ScrubTextField.setText(lowest, on: field, selectAll: true)
                 text.wrappedValue = lowest
-                if let editor = field.currentEditor() {
-                    editor.selectedRange = NSRange(location: 0, length: (lowest as NSString).length)
-                }
                 return
             }
             text.wrappedValue = field.stringValue
@@ -309,6 +298,28 @@ final class ScrubTextField: NSTextField {
     /// recomputed every pixel of movement, so the value's own live-updating string never itself
     /// becomes the thing shifting the row's wrap point mid-drag.
     var dragDecimalPlaces = 2
+
+    /// Replace `field`'s displayed text with `newValue`. While `field`'s own field editor is the
+    /// active first responder, this routes through the editor's `NSTextInputClient.insertText`
+    /// rather than assigning `stringValue` directly — that's what lets a *programmatic* change
+    /// mid-session (an arrow-key step, the empty-field snap-to-lowest below, a drag/scroll
+    /// landing on it) register with the window's `undoManager` the same way a keystroke does.
+    /// A direct `stringValue` write bypasses that machinery entirely: it doesn't just fail to
+    /// register its own undo step, it silently blows away whatever undo grouping the user's own
+    /// prior typing had already built up, breaking Cmd-Z for the rest of the session. Falls back
+    /// to a plain `stringValue` write when there's no active editor to preserve.
+    static func setText(_ newValue: String, on field: ScrubTextField, selectAll: Bool = false) {
+        guard field.stringValue != newValue else { return }
+        let length = (newValue as NSString).length
+        if let editor = field.currentEditor() as? NSTextView, field.window?.firstResponder === editor {
+            let full = NSRange(location: 0, length: (editor.string as NSString).length)
+            editor.insertText(newValue, replacementRange: full)
+            editor.selectedRange = selectAll ? NSRange(location: 0, length: length) : NSRange(location: length, length: 0)
+        } else {
+            field.stringValue = newValue
+            field.invalidateIntrinsicContentSize()
+        }
+    }
 
     // The default NSTextFieldCell intrinsic size proved unreliable once `.fixedSize()` queried
     // it eagerly (fields collapsed to ~0pt wide) — compute it directly from the string and font
