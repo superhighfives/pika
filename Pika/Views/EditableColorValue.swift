@@ -301,6 +301,7 @@ struct EditableColorValue: View {
         isScrubbing = true
         if isEditing {
             focusedIndex = index
+            rebudgetFrozenSize(for: index, layout: layout)
             return
         }
         startSession(index: index, layout: layout)
@@ -313,6 +314,11 @@ struct EditableColorValue: View {
             sessionOwner = newValue
             if !isEditing {
                 startSession(index: newValue, layout: layout)
+            } else {
+                // Moving to a different field within an already-open session (e.g. Tab) —
+                // `frozenSize` was budgeted for the *previous* field's worst case, so it must be
+                // re-budgeted for this one or a longer value typed here has nowhere to grow.
+                rebudgetFrozenSize(for: newValue, layout: layout)
             }
         } else if isEditing, !isScrubbing {
             // Focus left every field (blur / tab-out) — commit if valid, otherwise revert.
@@ -367,10 +373,19 @@ struct EditableColorValue: View {
         // in the row changes width mid-scrub any more (every field's text is frozen and the live
         // value goes to the pill), only `index`'s field is ever actually typed into during this
         // session, so it's the only one that needs worst-case headroom.
-        frozenSize = fontSize(for: boundedWorstCaseJoined(layout, growingIndex: index))
+        rebudgetFrozenSize(for: index, layout: layout)
         preEditColor = eyedropper.color
         values = layout.values
         valuesKey = FormatStyleKey(format: format, style: style, colorSpace: colorSpace)
+    }
+
+    /// Budgets `frozenSize` for whichever field is about to become editable — worst-case width
+    /// for `index`, current displayed width for every other field (see the comment on the call
+    /// site in `startSession`). Called both when a session opens and whenever the editable field
+    /// changes mid-session (Tab, or a drag/click landing on a different field), since the frozen
+    /// budget from the field that opened the session doesn't cover a value typed into a later one.
+    private func rebudgetFrozenSize(for index: Int, layout: DecomposedColor) {
+        frozenSize = fontSize(for: boundedWorstCaseJoined(layout, growingIndex: index))
     }
 
     /// Same scaffolding as `layout.joined()`, but the component at `growingIndex` is replaced
