@@ -17,6 +17,20 @@ private struct PikaCommands: Commands {
         // Replace the SwiftUI default Settings command (we handle Preferences ourselves).
         CommandGroup(replacing: .appSettings) {}
 
+        // Replace the default Undo/Redo group: its stock items send the plain `undo:`/`redo:`
+        // responder-chain actions, which AppKit's automatic menu validation disables unless some
+        // responder in the chain vends a real `NSUndoManager` — nothing here does, so those items
+        // stayed permanently greyed out and Cmd-Z silently did nothing. Explicit actions bound to
+        // `triggerUndo`/`triggerRedo` sidestep that validation entirely (same pattern as every
+        // other custom menu item below); those methods do their own focus-scoping — deferring to
+        // a focused field's own undo manager before falling back to colour-pick history.
+        CommandGroup(replacing: .undoRedo) {
+            Button(PikaText.textColorUndo) { send(#selector(AppDelegate.triggerUndo)) }
+                .keyboardShortcut("z", modifiers: .command)
+            Button(PikaText.textColorRedo) { send(#selector(AppDelegate.triggerRedo)) }
+                .keyboardShortcut("z", modifiers: [.command, .shift])
+        }
+
         // Pasteboard group hosts the picker / copy / format actions.
         CommandGroup(replacing: .pasteboard) {
             Button(PikaText.textPickForeground + "…") { send(#selector(AppDelegate.triggerPickForeground)) }

@@ -324,12 +324,30 @@ extension AppDelegate {
         notificationCenter.post(name: .triggerSwap, object: self)
     }
 
+    /// The `NSTextView` field editor of whichever `ScrubTextField` is currently being edited, if
+    /// any — `ScrubTextField.becomeFirstResponder` makes the field editor (not the field itself)
+    /// the window's first responder while editing, so this is the one place both `triggerUndo`
+    /// and `triggerRedo` need to check to keep Cmd-Z scoped to "whatever the user is actually
+    /// looking at": a value being typed, if one is focused, otherwise colour-pick history.
+    private var focusedFieldUndoManager: UndoManager? {
+        guard let editor = NSApp.keyWindow?.firstResponder as? NSTextView, editor.isFieldEditor else { return nil }
+        return editor.undoManager
+    }
+
     @IBAction func triggerUndo(_: Any) {
+        if let manager = focusedFieldUndoManager, manager.canUndo {
+            manager.undo()
+            return
+        }
         notificationCenter.post(name: .triggerUndo, object: self)
         eyedroppers.undo()
     }
 
     @IBAction func triggerRedo(_: Any) {
+        if let manager = focusedFieldUndoManager, manager.canRedo {
+            manager.redo()
+            return
+        }
         notificationCenter.post(name: .triggerRedo, object: self)
         eyedroppers.redo()
     }
