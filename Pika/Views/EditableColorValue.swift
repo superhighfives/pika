@@ -303,7 +303,7 @@ struct EditableColorValue: View {
             focusedIndex = index
             return
         }
-        startSession(layout: layout)
+        startSession(index: index, layout: layout)
     }
 
     private func handleFocusChange(to newValue: Int?, layout: DecomposedColor) {
@@ -312,7 +312,7 @@ struct EditableColorValue: View {
             // (per the comment on `sessionOwner`) take over an existing unfocused scrub session.
             sessionOwner = newValue
             if !isEditing {
-                startSession(layout: layout)
+                startSession(index: newValue, layout: layout)
             }
         } else if isEditing, !isScrubbing {
             // Focus left every field (blur / tab-out) — commit if valid, otherwise revert.
@@ -355,18 +355,61 @@ struct EditableColorValue: View {
 
     /// Snapshot the colour and working values at the start of an edit or drag session, so
     /// `finishEditing`/`abortEditingForExternalPick` have a consistent point to commit or revert to.
-    private func startSession(layout: DecomposedColor) {
+    private func startSession(index: Int, layout: DecomposedColor) {
         isEditing = true
         sessionStartValues = layout.values
-        // The size the value is *already* being shown at. Sizing to the format's theoretical
-        // widest value instead made the whole readout collapse to `minSize` the instant you
-        // clicked it in a narrow window — a jarring shrink, and the reason it's not done here.
-        // Nothing in the row changes width mid-scrub any more (every field's text is frozen and
-        // the live value goes to the pill), so there's no drift left to size defensively against.
-        frozenSize = fontSize(for: layout.joined())
+        // Sized to every field's current displayed width, except `index` — the one about to
+        // become editable — which is sized to its own worst case. Budgeting the *whole* row for
+        // worst case (the pre-f3cca6b behaviour) made the readout collapse to `minSize` the
+        // instant you clicked it in a narrow window, since every other field paid for width it
+        // never needed. But budgeting only the current width regressed the opposite way: typing
+        // a longer in-range value (e.g. hue "5" -> "355") has nowhere to grow, since nothing else
+        // in the row changes width mid-scrub any more (every field's text is frozen and the live
+        // value goes to the pill), only `index`'s field is ever actually typed into during this
+        // session, so it's the only one that needs worst-case headroom.
+        frozenSize = fontSize(for: boundedWorstCaseJoined(layout, growingIndex: index))
         preEditColor = eyedropper.color
         values = layout.values
         valuesKey = FormatStyleKey(format: format, style: style, colorSpace: colorSpace)
+    }
+
+    /// Same scaffolding as `layout.joined()`, but the component at `growingIndex` is replaced
+    /// with its own worst-case placeholder (see `worstCaseComponentString`) — that's the only
+    /// field a typed edit can actually grow during this session.
+    private func boundedWorstCaseJoined(_ layout: DecomposedColor, growingIndex: Int) -> String {
+        var result = layout.leading
+        for (index, component) in layout.components.enumerated() {
+            result += index == growingIndex ? worstCaseComponentString(component) : component.value
+            if index < layout.separators.count { result += layout.separators[index] }
+        }
+        return result + layout.trailing
+    }
+
+    /// The widest value a component could ever display. Integers use the range's most digits;
+    /// decimals use the range's most integer-part digits plus 4 decimal places (the original
+    /// stripped format's max — still the true worst case even though scrubbing now defaults to
+    /// coarser 2-place rounding, since finer starting precision is preserved up to 4). A leading
+    /// "-" is budgeted for any component whose range allows (or has no range, e.g. Lab a/b) a
+    /// negative value. Unranged decimals (Lab a/b) have no clamp and are genuinely unbounded, so
+    /// there's no true worst case to size to; 3 int digits is a practical bound that covers real
+    /// sRGB-gamut a*/b* extremes (b* reaches roughly -107) without reserving excessive width.
+    /// Hex is already fixed-length, so it's left as-is.
+    private func worstCaseComponentString(_ component: ColorComponent) -> String {
+        let sign = (component.range?.lowerBound ?? -1) < 0 ? "-" : ""
+        switch component.kind {
+        case .hex:
+            return component.value
+        case .integer:
+            let digits = component.range.map {
+                max(String(abs(Int($0.upperBound.rounded()))).count, String(abs(Int($0.lowerBound.rounded()))).count)
+            } ?? 3
+            return sign + String(repeating: "9", count: max(digits, 1))
+        case .decimal:
+            let intDigits = component.range.map {
+                max(String(abs(Int($0.upperBound))).count, String(abs(Int($0.lowerBound))).count)
+            } ?? 3
+            return sign + String(repeating: "9", count: max(intDigits, 1)) + "." + String(repeating: "9", count: 4)
+        }
     }
 
     /// Recompose the working values and preview them live; flag invalid input for the pill.
