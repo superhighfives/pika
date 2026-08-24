@@ -268,6 +268,14 @@ struct EditableColorValue: View {
                 }
                 guard index < values.count else { return }
                 values[index] = newValue
+                // A scrub's own end (`ScrubTextField.onDragEnd`/`handleScrollEnded`) writes here
+                // once, only to unfreeze the field's displayed text — not to request a new
+                // colour. `values` at that point still holds the *other* components' stale
+                // session-start numbers (only `index` was just updated), so recomposing here
+                // would clobber `eyedropper.color`, which `previewLiveScrub` already kept correct
+                // every frame, with a wrong colour right before `finishEditing`'s
+                // `commitLiveScrubColor` commits it.
+                guard !isScrubbing else { return }
                 previewIfValid(layout: layout)
             }
         )
