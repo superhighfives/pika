@@ -290,16 +290,29 @@ struct ColorListPickerView: View {
 struct PickerChoiceView: View {
     @Binding var pendingRelaunch: Bool
     @Default(.pickerStyle) private var pickerStyle
-    // Bumped on a timer so the permission pills re-read their (non-observable) status and
-    // flip to the granted state without a relaunch when the user allows them in Settings.
-    @State private var permissionTick = 0
+    // Backing state for the two permission checks. `CustomColorPickSession.isAvailable` and
+    // `AXIsProcessTrusted()` read non-observable system APIs, so reading them establishes no
+    // SwiftUI dependency on its own. Mirror them into @State, refreshed by the poll and the
+    // system notifications below, so the pills re-render when a permission actually flips —
+    // without forcing this subtree's identity to change every tick (an `.id()` on it would tear
+    // down and rebuild the Grant buttons once a second, risking a swallowed click if a press
+    // landed mid-reset).
+    @State private var hasScreenRecording = CustomColorPickSession.isAvailable
+    @State private var hasAccessibilityAccess = AXIsProcessTrusted()
 
-    private var hasPermission: Bool { CustomColorPickSession.isAvailable }
+    private var hasPermission: Bool { hasScreenRecording }
     // Optional: unlocks global Escape / arrow-nudge while picking over other apps.
-    private var hasAccessibility: Bool { AXIsProcessTrusted() }
+    private var hasAccessibility: Bool { hasAccessibilityAccess }
     // Custom is only truly active once permission exists; until then System stays selected
     // and the Custom tile is disabled.
     private var customActive: Bool { hasPermission && pickerStyle == .custom }
+
+    /// Re-read the (non-observable) system permission state into @State. Equal writes are
+    /// coalesced by SwiftUI, so this only drives a re-render when a permission actually changes.
+    private func refreshPermissionState() {
+        hasScreenRecording = CustomColorPickSession.isAvailable
+        hasAccessibilityAccess = AXIsProcessTrusted()
+    }
 
     var body: some View {
         VStack(spacing: 10.0) {
@@ -324,14 +337,10 @@ struct PickerChoiceView: View {
                 )
             }
 
-            // `.id` (not just the poll/notification handlers bumping `permissionTick` below):
-            // `hasPermission`/`hasAccessibility` call non-observable system APIs, so nothing
-            // about reading them establishes a SwiftUI dependency on its own — without forcing
-            // this subtree's identity to change on each tick, a bumped `permissionTick` wasn't
-            // reliably refreshing the pills; that only happened to work when some other state
-            // change (e.g. picking a tile) forced a re-render anyway. Scoped to `permissionArea`
-            // alone, which owns no state of its own to lose on the identity change.
-            permissionArea.id(permissionTick)
+            // The pills read `hasScreenRecording`/`hasAccessibilityAccess` (@State), so they
+            // re-render on their own when `refreshPermissionState` flips one — no `.id()` identity
+            // churn needed to force it.
+            permissionArea
         }
         .padding(12.0)
         .background(
@@ -348,19 +357,19 @@ struct PickerChoiceView: View {
         // the non-observable permission status so the pills confirm — or revert — on their own.
         .task {
             while !Task.isCancelled {
-                permissionTick += 1
+                refreshPermissionState()
                 try? await Task.sleep(nanoseconds: 1_000_000_000)
             }
         }
         // Re-check the moment the user returns from System Settings (the most common way a
         // permission changes), and on the system's accessibility-changed broadcast.
         .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
-            permissionTick += 1
+            refreshPermissionState()
         }
         .onReceive(DistributedNotificationCenter.default().publisher(
             for: Notification.Name("com.apple.accessibility.api")))
         { _ in
-            permissionTick += 1
+            refreshPermissionState()
         }
     }
 
