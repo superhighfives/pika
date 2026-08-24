@@ -337,7 +337,7 @@ struct EditableColorValue: View {
         guard isEditing, sessionOwner == index else { return }
         rowScrubPreview = nil
         isScrubbing = false
-        finishEditing()
+        finishEditing(commitLiveScrubColor: true)
         // A scrub's committed colour is the clamped, displayable one, which may not decompose
         // back to exactly the values that produced it. Resync the whole readout from the real
         // colour so what's shown is what's on screen — otherwise the next interaction resyncs
@@ -504,8 +504,20 @@ struct EditableColorValue: View {
         focusedIndex = nil
     }
 
-    private func finishEditing() {
+    private func finishEditing(commitLiveScrubColor: Bool = false) {
         let layout = decomposed
+        // A scrub (click-drag or scroll) has already committed the live, gamut-clamped colour to
+        // `eyedropper.color` on every frame via `previewLiveScrub`. Recomposing from `values` here
+        // would pair the dragged component's achieved value with the *other* components' stale
+        // session-start values — a colour the user never saw (see `previewLiveScrub`'s comment on
+        // out-of-gamut clamping shifting every component). Commit the already-correct live colour
+        // directly instead; the caller resyncs the readout from it right after.
+        if commitLiveScrubColor {
+            lastPreviewedColor = eyedropper.color
+            NotificationCenter.default.post(name: .colorPicked, object: nil)
+            endSession(resync: false)
+            return
+        }
         let allValid = zip(layout.components, values).allSatisfy { $0.isValid($1) }
         if allValid, let color = format.recompose(values, style: style, in: colorSpace) {
             eyedropper.set(color)
