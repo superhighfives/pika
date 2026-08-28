@@ -107,7 +107,6 @@ struct EyedropperButton: View {
     @State private var childHovered: Bool = false
     @State private var valueInvalid: Bool = false
     @State private var isPressed: Bool = false
-    @State private var flashOpacity: Double = 0
     /// Mirrors `wantsColorName`, but only ever changed inside `withAnimation`. Animating the
     /// environment value directly doesn't work: it changes as part of the geometry pass that
     /// re-evaluates the whole tree, and `.animation(_:value:)` doesn't catch that — the row just
@@ -291,19 +290,6 @@ struct EyedropperButton: View {
             }
             .padding(.all, 8.0)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
-
-            // Subtle affordance for a genuine screen pick landing on this swatch — most useful
-            // mid pick-pair, where it's otherwise a silent colour swap with nothing to tell you
-            // "that was the foreground" versus "that was the background".
-            Color.white
-                .opacity(flashOpacity)
-                .allowsHitTesting(false)
-        }
-        .onReceive(eyedropper.pickFlash) {
-            flashOpacity = 0.35
-            withAnimation(.easeOut(duration: 0.35)) {
-                flashOpacity = 0
-            }
         }
         .onReceive(NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification)) { _ in
             colorSpace = Defaults[.colorSpace]

@@ -72,11 +72,6 @@ class Eyedropper: ObservableObject {
 
     @objc @Published public var color: NSColor
 
-    /// Fires the instant this eyedropper's colour is set by a genuine screen pick (not a typed
-    /// edit) — lets the swatch flash briefly so a chained foreground-then-background pick reads
-    /// as two distinct events instead of one silent colour swap.
-    let pickFlash = PassthroughSubject<Void, Never>()
-
     private var overlayWindow = ColorPickOverlayWindow()
 
     init(type: Types, color: NSColor) {
@@ -237,7 +232,6 @@ extension Eyedropper {
         }
 
         set(normalizedColor)
-        pickFlash.send()
 
         if chainContrasting,
            type == .foreground,
