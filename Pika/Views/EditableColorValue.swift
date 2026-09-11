@@ -309,6 +309,11 @@ struct EditableColorValue: View {
         isScrubbing = true
         if isEditing {
             focusedIndex = index
+            // `values` holds whatever's been typed into the field so far this session;
+            // `sessionStartValues` must pick that up before scrubbing a different field, or
+            // `previewLiveScrub` recomposes the untouched fields from their pre-edit baseline
+            // and silently discards the edit — see the finding on this line.
+            sessionStartValues = values
             rebudgetFrozenSize(for: index, layout: layout)
             return
         }
@@ -326,6 +331,10 @@ struct EditableColorValue: View {
                 // Moving to a different field within an already-open session (e.g. Tab) —
                 // `frozenSize` was budgeted for the *previous* field's worst case, so it must be
                 // re-budgeted for this one or a longer value typed here has nowhere to grow.
+                // `sessionStartValues` needs the same refresh: it must pick up whatever was typed
+                // into the previous field, or scrubbing this one recomposes that field from its
+                // stale pre-edit baseline and silently discards the typed edit.
+                sessionStartValues = values
                 rebudgetFrozenSize(for: newValue, layout: layout)
             }
         } else if isEditing, !isScrubbing {
