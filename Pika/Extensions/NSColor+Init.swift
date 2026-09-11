@@ -16,29 +16,20 @@ extension NSColor {
 
      - parameter hex:     The hex color, i.e. "FF0072" or "#FF0072".
      - parameter alpha:   The opacity of the color, value between [0,1]. Optional. Default: 1
+
+     Invalid input falls back to black rather than crashing — this is fed remote and
+     user-facing strings (URL schemes, colour lists). Callers that need to *reject*
+     invalid input should use the failable `NSColor.fromHex(_:)` instead.
      */
     convenience init(hex: String, alpha: CGFloat = 1) {
-        var hex = hex.replacingOccurrences(of: "#", with: "")
-
-        guard hex.count == 3 || hex.count == 6 else {
-            fatalError("Hex characters must be either 3 or 6 characters.")
-        }
-
-        if hex.count == 3 {
-            let tmp = hex
-            hex = ""
-            for char in tmp {
-                hex += String([char, char])
-            }
-        }
-
-        let scanner = Scanner(string: hex)
-        var rgb: UInt64 = 0
-        scanner.scanHexInt64(&rgb)
-
-        let red = CGFloat((rgb >> 16) & 0xFF) / 255
-        let green = CGFloat((rgb >> 8) & 0xFF) / 255
-        let blue = CGFloat(rgb & 0xFF) / 255
-        self.init(red: red, green: green, blue: blue, alpha: alpha)
+        let parsed = NSColor.fromHex(hex, in: .sRGB, alpha: alpha)
+            ?? NSColor(colorSpace: .sRGB, components: [0, 0, 0, alpha], count: 4)
+        // `parsed` is already in sRGB, so its components read back without conversion.
+        self.init(
+            srgbRed: parsed.redComponent,
+            green: parsed.greenComponent,
+            blue: parsed.blueComponent,
+            alpha: parsed.alphaComponent
+        )
     }
 }
