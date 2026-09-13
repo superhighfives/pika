@@ -130,7 +130,7 @@ final class LoupeCardPanel: NSPanel {
 final class LoupeClickCatcherPanel: NSPanel {
     var onCommit: (() -> Void)?
     var onCancel: (() -> Void)?
-    var onMoved: (() -> Void)?
+    var onMoved: ((NSEvent) -> Void)?
     var onScroll: ((NSEvent) -> Void)?
 
     init() {
@@ -202,8 +202,8 @@ private final class LoupeClickCatcherView: NSView {
 
     // `mouseMoved`/`mouseDragged` are the live path: pointer movement isn't tapped or monitored,
     // so cursor tracking always rides these.
-    override func mouseMoved(with _: NSEvent) { owner?.onMoved?() }
-    override func mouseDragged(with _: NSEvent) { owner?.onMoved?() }
+    override func mouseMoved(with event: NSEvent) { owner?.onMoved?(event) }
+    override func mouseDragged(with event: NSEvent) { owner?.onMoved?(event) }
 
     // The click/scroll overrides are a best-effort fallback, not the primary path. With the
     // CGEventTap active it swallows these at the session level before AppKit dispatches them

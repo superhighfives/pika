@@ -69,17 +69,33 @@ private func fittedFont(_ text: String, base: NSFont, radius: CGFloat, maxArc: D
 
 /// Like `fittedFont` but for a multi-font label: scales every part by the same factor so the
 /// whole run fits `maxArc` while keeping the mono/sans mix. Below the 7.5pt floor, scaling alone
-/// can't bound the run any further (e.g. a long colour name combined with a verbose format), so
-/// any remaining overrun is ellipsized off the trailing segment rather than left to spill.
+/// can't bound the run any further (e.g. a long colour name combined with a verbose value), so
+/// trailing segments (the colour name) are dropped entirely rather than shown half-legible or
+/// chopped off with an ellipsis.
 private func fittedSegments(_ parts: [(String, NSFont)], radius: CGFloat, maxArc: Double) -> [CircularText.Segment] {
     let maxLength = CGFloat(maxArc) * radius
-    let total = parts.reduce(CGFloat.zero) { $0 + ($1.0 as NSString).size(withAttributes: [.font: $1.1]).width }
-    let scale = (total > maxLength && total > 0) ? maxLength / total : 1
-    let segments = parts.map { text, font -> CircularText.Segment in
-        guard scale < 1 else { return CircularText.Segment(text: text, font: font) }
-        let size = max(7.5, font.pointSize * scale)
-        return CircularText.Segment(text: text, font: NSFont(descriptor: font.fontDescriptor, size: size) ?? font)
+
+    func scale(_ parts: [(String, NSFont)]) -> [CircularText.Segment] {
+        let total = parts.reduce(CGFloat.zero) { $0 + ($1.0 as NSString).size(withAttributes: [.font: $1.1]).width }
+        let factor = (total > maxLength && total > 0) ? maxLength / total : 1
+        return parts.map { text, font -> CircularText.Segment in
+            guard factor < 1 else { return CircularText.Segment(text: text, font: font) }
+            let size = max(7.5, font.pointSize * factor)
+            return CircularText.Segment(text: text, font: NSFont(descriptor: font.fontDescriptor, size: size) ?? font)
+        }
     }
+    func width(_ segments: [CircularText.Segment]) -> CGFloat {
+        segments.reduce(0) { $0 + ($1.text as NSString).size(withAttributes: [.font: $1.font]).width }
+    }
+
+    var remaining = parts
+    var segments = scale(remaining)
+    while width(segments) > maxLength, remaining.count > 1 {
+        remaining.removeLast()
+        segments = scale(remaining)
+    }
+    // Safety net: even the lone remaining segment (the value) could in principle still
+    // overrun once floored — fall back to ellipsizing it rather than leaving it to spill.
     return truncateToFit(segments, maxLength: maxLength)
 }
 

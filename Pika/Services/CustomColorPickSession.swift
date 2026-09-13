@@ -220,7 +220,7 @@ final class PickerLoupeController {
             let catcher = LoupeClickCatcherPanel()
             catcher.onCommit = { [weak self] in self?.commit() }
             catcher.onCancel = { [weak self] in self?.cancel() }
-            catcher.onMoved = { [weak self] in self?.handlePointerMoved() }
+            catcher.onMoved = { [weak self] event in self?.handlePointerMoved(event) }
             catcher.onScroll = { [weak self] event in self?.handleScroll(deltaY: Double(event.deltaY)) }
             self.catcher = catcher
         }
@@ -335,6 +335,11 @@ final class PickerLoupeController {
     private func teardown() {
         isActive = false
         if cursorHidden {
+            // While zoom-scaled sensitivity was active, the real cursor was left to free-run
+            // ahead of the (slower) virtual position tracked in `currentCursor` — resync it now
+            // so the cursor reappears where the loupe left off rather than wherever unscaled
+            // hardware movement carried it.
+            warpCursor(to: currentCursor)
             CGDisplayShowCursor(CGMainDisplayID())
             cursorHidden = false
         }
@@ -449,11 +454,24 @@ final class PickerLoupeController {
         localMonitors.removeAll()
     }
 
-    private func handlePointerMoved() {
+    private func handlePointerMoved(_ event: NSEvent) {
         // The catcher's tracking area can keep firing after teardown (orderOut doesn't always
         // stop it); ignore moves unless a pick is live so the preview can't drift afterwards.
         guard isActive else { return }
-        currentCursor = NSEvent.mouseLocation
+        let scale = viewModel.mouseSensitivityScale
+        guard scale < 1 else {
+            currentCursor = NSEvent.mouseLocation
+            reposition()
+            requestCapture()
+            return
+        }
+        // At higher zoom, the same physical mouse movement should cover less ground so fine
+        // detail is easier to hit precisely. Accumulate scaled raw deltas into a virtual
+        // position instead of following the real cursor 1:1 — the real (hidden) cursor is
+        // resynced to it in `teardown()` so it reappears where the loupe left off rather than
+        // wherever unscaled hardware movement carried it while zoomed in.
+        currentCursor.x += event.deltaX * CGFloat(scale)
+        currentCursor.y -= event.deltaY * CGFloat(scale)
         reposition()
         requestCapture()
     }
@@ -520,12 +538,18 @@ final class PickerLoupeController {
         let step = 1.0 / screen.backingScaleFactor
         let target = NSPoint(x: currentCursor.x + CGFloat(dx) * step,
                              y: currentCursor.y + CGFloat(dy) * step)
-        // CGWarp uses a top-left origin anchored on the primary display.
-        let primaryHeight = (NSScreen.screens.first { $0.frame.origin == .zero } ?? screen).frame.height
-        CGWarpMouseCursorPosition(CGPoint(x: target.x, y: primaryHeight - target.y))
+        warpCursor(to: target)
         currentCursor = target
         reposition()
         requestCapture()
+    }
+
+    /// Moves the real system cursor to `point` (Cocoa's bottom-left-origin coordinate space).
+    /// CGWarp uses a top-left origin anchored on the primary display.
+    private func warpCursor(to point: NSPoint) {
+        let primaryHeight = (NSScreen.screens.first { $0.frame.origin == .zero }
+            ?? screenUnderCursor() ?? NSScreen.main)?.frame.height ?? 0
+        CGWarpMouseCursorPosition(CGPoint(x: point.x, y: primaryHeight - point.y))
     }
 
     // MARK: - Capture
@@ -743,7 +767,23 @@ final class LoupeViewModel: ObservableObject {
 
     private let minPixels = 5
     private let maxPixels = 41
+    private let zoomStep = 4
 
-    func zoomIn() { pixelCount = max(minPixels, pixelCount - 2) }
-    func zoomOut() { pixelCount = min(maxPixels, pixelCount + 2) }
+    func zoomIn() { pixelCount = max(minPixels, pixelCount - zoomStep) }
+    func zoomOut() { pixelCount = min(maxPixels, pixelCount + zoomStep) }
+
+    // How much a scroll/keyboard nudge, and how heavily to slow raw mouse movement, at the
+    // current zoom: 0 at `maxPixels` (least zoomed), 1 at `minPixels` (most zoomed).
+    private var zoomFraction: Double {
+        Double(maxPixels - pixelCount) / Double(maxPixels - minPixels)
+    }
+
+    /// Scales raw mouse-movement deltas so a fixed physical movement covers less ground at
+    /// high zoom, where a screen pixel of travel corresponds to much less magnified detail.
+    /// 1.0 (unchanged) at the least-zoomed step, tapering linearly to `minMouseSensitivity` at
+    /// the most-zoomed step.
+    private let minMouseSensitivity = 0.3
+    var mouseSensitivityScale: Double {
+        1.0 - zoomFraction * (1.0 - minMouseSensitivity)
+    }
 }
