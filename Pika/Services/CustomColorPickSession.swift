@@ -472,6 +472,13 @@ final class PickerLoupeController {
         // wherever unscaled hardware movement carried it while zoomed in.
         currentCursor.x += event.deltaX * CGFloat(scale)
         currentCursor.y -= event.deltaY * CGFloat(scale)
+        // Clamp to the containing screen so a sustained drag while zoomed in can't walk the
+        // virtual position past every display's edge — `teardown()` later warps the real cursor
+        // straight to `currentCursor`, and an unclamped target risks stranding it off-screen.
+        if let screen = screenUnderCursor() {
+            currentCursor.x = min(max(currentCursor.x, screen.frame.minX), screen.frame.maxX)
+            currentCursor.y = min(max(currentCursor.y, screen.frame.minY), screen.frame.maxY)
+        }
         reposition()
         requestCapture()
     }
