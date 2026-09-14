@@ -147,4 +147,52 @@ final class NSColorLabTests: XCTestCase {
                            "Token '\(token)' has trailing zeros after decimal")
         }
     }
+
+    // MARK: - fromLab(l:a:b:) — inverse round-trips
+
+    private let roundTripSamples = ["3A7BD5", "E32C88", "00FF00", "808080", "FF8800", "123456"]
+
+    func test_fromLab_roundTrip_matchesOriginalRGB() {
+        for hex in roundTripSamples {
+            let original = NSColor(hex: hex).usingColorSpace(.sRGB)!
+            let lab = original.toLabComponents()
+            let rebuilt = NSColor.fromLab(l: lab.l, a: lab.a, b: lab.b).usingColorSpace(.sRGB)!
+            let o = original.toRGBAComponents(in: .sRGB)
+            let r = rebuilt.toRGBAComponents(in: .sRGB)
+            XCTAssertEqual(r.r, o.r, accuracy: 0.01, "R mismatch for \(hex)")
+            XCTAssertEqual(r.g, o.g, accuracy: 0.01, "G mismatch for \(hex)")
+            XCTAssertEqual(r.b, o.b, accuracy: 0.01, "B mismatch for \(hex)")
+        }
+    }
+
+    func test_fromLab_white_isWhite() {
+        let rebuilt = NSColor.fromLab(l: 100, a: 0, b: 0).toRGBAComponents(in: .sRGB)
+        XCTAssertEqual(rebuilt.r, 1.0, accuracy: 0.01)
+        XCTAssertEqual(rebuilt.g, 1.0, accuracy: 0.01)
+        XCTAssertEqual(rebuilt.b, 1.0, accuracy: 0.01)
+    }
+
+    // MARK: - fromOklch(l:c:h:) — inverse round-trips
+
+    func test_fromOklch_roundTrip_matchesOriginalRGB() {
+        for hex in roundTripSamples {
+            let original = NSColor(hex: hex).usingColorSpace(.sRGB)!
+            let oklch = original.toOklchComponents()
+            let rebuilt = NSColor.fromOklch(l: oklch.l, c: oklch.c, h: oklch.h).usingColorSpace(.sRGB)!
+            let o = original.toRGBAComponents(in: .sRGB)
+            let r = rebuilt.toRGBAComponents(in: .sRGB)
+            XCTAssertEqual(r.r, o.r, accuracy: 0.01, "R mismatch for \(hex)")
+            XCTAssertEqual(r.g, o.g, accuracy: 0.01, "G mismatch for \(hex)")
+            XCTAssertEqual(r.b, o.b, accuracy: 0.01, "B mismatch for \(hex)")
+        }
+    }
+
+    func test_fromOklch_outOfGamut_clampsToValidRange() {
+        // A wildly out-of-gamut OKLCH should still produce in-[0,1] channels, not NaN/overflow.
+        let rebuilt = NSColor.fromOklch(l: 0.7, c: 0.4, h: 30).toRGBAComponents(in: .sRGB)
+        for channel in [rebuilt.r, rebuilt.g, rebuilt.b] {
+            XCTAssertGreaterThanOrEqual(channel, 0.0)
+            XCTAssertLessThanOrEqual(channel, 1.0)
+        }
+    }
 }

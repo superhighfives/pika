@@ -4,6 +4,9 @@ import SwiftUI
 
 extension KeyboardShortcuts.Name {
     static let togglePika = Self("togglePika")
+    // Global, user-rebindable "pick a pair" shortcut (foreground → background chain).
+    // Defaults to ⌥⌘D, matching the in-window menu equivalent it replaces.
+    static let pickPair = Self("pickPair", default: .init(.d, modifiers: [.command, .option]))
 }
 
 enum PikaConstants {
@@ -13,6 +16,11 @@ enum PikaConstants {
             ? "https://superhighfives.com/releases/pika/betas"
             : "https://superhighfives.com/releases/pika"
     }
+
+    // Bump when a release has onboarding worth re-showing: the splash then appears once for
+    // everyone (even those who ticked "Don't show again") whose `lastSeenSplashVersion` is lower.
+    // v1: the custom (Pro) colour picker.
+    static let currentSplashVersion = 1
 
     static let pikaWebsiteURL = "https://superhighfives.com/pika"
     static let gitHubRepoURL = "https://github.com/superhighfives/pika"
@@ -42,6 +50,7 @@ enum PikaConstants {
     static let ncTriggerCopyData = "triggerCopyData"
     static let ncTriggerPickForeground = "triggerPickForeground"
     static let ncTriggerPickBackground = "triggerPickBackground"
+    static let ncTriggerPickPair = "triggerPickPair"
     static let ncTriggerSystemPickerForeground = "triggerSystemPickerForeground"
     static let ncTriggerSystemPickerBackground = "triggerSystemPickerBackground"
     static let ncTriggerSwap = "triggerSwap"
@@ -67,6 +76,7 @@ enum PikaConstants {
     static let ncExportPalette = "exportPalette"
     static let ncSystemColorChanged = "systemColorChanged"
     static let ncExpandToFit = "expandToFit"
+    static let ncColorNamesUpdated = "colorNamesUpdated"
 
     // Disabled formats for SwiftUI copy format
     static let disabledFormats: [ColorFormat] = [.hex, .hsl, .opengl, .lab, .oklch]
@@ -75,6 +85,9 @@ enum PikaConstants {
 extension Notification.Name {
     static let triggerPickForeground = Notification.Name(PikaConstants.ncTriggerPickForeground)
     static let triggerPickBackground = Notification.Name(PikaConstants.ncTriggerPickBackground)
+    /// Help-grid-only: fired alongside the chained `.triggerPickForeground` post so
+    /// "Pick pair"'s own row highlights instead of piggybacking on "Pick foreground"'s.
+    static let triggerPickPair = Notification.Name(PikaConstants.ncTriggerPickPair)
     static let triggerCopyForeground = Notification.Name(PikaConstants.ncTriggerCopyForeground)
     static let triggerCopyBackground = Notification.Name(PikaConstants.ncTriggerCopyBackground)
     static let triggerCopyText = Notification.Name(PikaConstants.ncTriggerCopyText)
@@ -104,4 +117,5 @@ extension Notification.Name {
     static let exportPalette = Notification.Name(PikaConstants.ncExportPalette)
     static let systemColorChanged = Notification.Name(PikaConstants.ncSystemColorChanged)
     static let expandToFit = Notification.Name(PikaConstants.ncExpandToFit)
+    static let colorNamesUpdated = Notification.Name(PikaConstants.ncColorNamesUpdated)
 }

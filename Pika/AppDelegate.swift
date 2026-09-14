@@ -82,6 +82,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         validateColorSpace()
         showPikaIfConfigured()
         registerGlobalKeyMonitor()
+
+        // Refresh the colour-name list from color.pizza (catalogue + selected list) and cache
+        // it; the eyedroppers rebuild via `.colorNamesUpdated`. Best-effort — falls back to
+        // the bundled default offline.
+        ColorNamesManager.shared.updateOnLaunch()
     }
 
     private func removeUpdatesMenuItemIfNeeded() {
@@ -113,10 +118,27 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 NSApp.sendAction(#selector(AppDelegate.triggerPickForeground), to: nil, from: nil)
             }
         }
+        KeyboardShortcuts.onKeyUp(for: .pickPair) { [] in
+            if Defaults[.viewedSplash] {
+                NSApp.sendAction(#selector(AppDelegate.triggerPickContrast), to: nil, from: nil)
+            }
+        }
+    }
+
+    /// The splash shows on every launch unless the user ticked its (pre-selected) "Don't show
+    /// this again" checkbox — EXCEPT when a new onboarding version hasn't been seen yet, in which
+    /// case it shows once for everyone (see `PikaConstants.currentSplashVersion`).
+    private var shouldShowSplash: Bool {
+        !Defaults[.hideSplashOnLaunch]
+            || Defaults[.lastSeenSplashVersion] < PikaConstants.currentSplashVersion
     }
 
     private func presentSplashIfNeeded() {
-        if !Defaults[.viewedSplash] {
+        // `viewedSplash` still records the first run so the pick shortcuts stay gated until
+        // onboarding is dismissed the first time. `lastSeenSplashVersion` is recorded on
+        // dismissal (`closeSplashWindow`), not here — recording it now would make
+        // `showPikaIfConfigured` reveal the main window behind the splash.
+        if shouldShowSplash {
             openSplashWindow(nil)
             NSApp.activate(ignoringOtherApps: true)
         }
@@ -129,6 +151,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func showPikaIfConfigured() {
+        // Pika should only ever appear once the splash has been dismissed. When the splash
+        // is up, defer the main window until `closeSplashWindow` fires; otherwise show it now.
+        guard !shouldShowSplash else { return }
+        presentConfiguredPika()
+    }
+
+    private func presentConfiguredPika() {
         if Defaults[.alwaysShowOnLaunch], !Defaults[.appMode].usesPopover {
             showPika(self)
         }
@@ -215,7 +244,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 // MARK: - Window forwarding
 
 extension AppDelegate {
-    @objc func closeSplashWindow() { windowCoordinator.closeSplashWindow() }
+    @objc func closeSplashWindow() {
+        windowCoordinator.closeSplashWindow()
+        // Record that this onboarding version has been seen, so the version gate doesn't
+        // re-show it next launch (the user's "Don't show again" choice governs from here).
+        Defaults[.lastSeenSplashVersion] = PikaConstants.currentSplashVersion
+        // Now that onboarding is dismissed, show Pika if the user has it set to launch shown.
+        presentConfiguredPika()
+    }
+
     @objc func togglePopover(_: AnyObject?) { windowCoordinator.togglePopover() }
 
     @IBAction func openAboutWindow(_: Any?) { windowCoordinator.openAboutWindow() }
@@ -240,6 +277,7 @@ extension AppDelegate {
 
     @IBAction func triggerPickContrast(_: Any) {
         notificationCenter.post(name: .triggerPickForeground, object: self, userInfo: ["chain": true])
+        notificationCenter.post(name: .triggerPickPair, object: self)
     }
 
     @IBAction func triggerCopyForeground(_: Any) {
@@ -286,12 +324,30 @@ extension AppDelegate {
         notificationCenter.post(name: .triggerSwap, object: self)
     }
 
+    /// The `NSTextView` field editor of whichever `ScrubTextField` is currently being edited, if
+    /// any — `ScrubTextField.becomeFirstResponder` makes the field editor (not the field itself)
+    /// the window's first responder while editing, so this is the one place both `triggerUndo`
+    /// and `triggerRedo` need to check to keep Cmd-Z scoped to "whatever the user is actually
+    /// looking at": a value being typed, if one is focused, otherwise colour-pick history.
+    private var focusedFieldUndoManager: UndoManager? {
+        guard let editor = NSApp.keyWindow?.firstResponder as? NSTextView, editor.isFieldEditor else { return nil }
+        return editor.undoManager
+    }
+
     @IBAction func triggerUndo(_: Any) {
+        if let manager = focusedFieldUndoManager, manager.canUndo {
+            manager.undo()
+            return
+        }
         notificationCenter.post(name: .triggerUndo, object: self)
         eyedroppers.undo()
     }
 
     @IBAction func triggerRedo(_: Any) {
+        if let manager = focusedFieldUndoManager, manager.canRedo {
+            manager.redo()
+            return
+        }
         notificationCenter.post(name: .triggerRedo, object: self)
         eyedroppers.redo()
     }

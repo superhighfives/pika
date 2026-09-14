@@ -136,4 +136,34 @@ final class NSColorLuminanceTests: XCTestCase {
         XCTAssertTrue(result.contains("."), "Expected period decimal separator in '\(result)'")
         XCTAssertFalse(result.contains(","), "Did not expect comma decimal separator in '\(result)'")
     }
+
+    // MARK: - getUIColor() — legible black/white by WCAG contrast (crossover ~0.179)
+
+    // Disambiguate the two overloads (Color / NSColor) to the NSColor one.
+    private func ui(_ color: NSColor) -> NSColor { color.getUIColor() }
+
+    func test_getUIColor_white_returnsBlack() {
+        XCTAssertEqual(ui(NSColor(r: 1, g: 1, b: 1)), .black)
+    }
+
+    func test_getUIColor_black_returnsWhite() {
+        XCTAssertEqual(ui(NSColor(r: 0, g: 0, b: 0)), .white)
+    }
+
+    func test_getUIColor_lightBlue_returnsBlack() {
+        // Regression for the 0.5 → 0.179 threshold fix: this light blue's WCAG luminance is
+        // ~0.48 — above the contrast crossover, so black is far more legible (~10:1 vs ~2:1).
+        // The old 0.5 threshold wrongly returned white here.
+        XCTAssertEqual(ui(NSColor(r: 90, g: 193, b: 254)), .black)
+    }
+
+    func test_getUIColor_midGray_returnsBlack() {
+        // ~0.22 luminance — above the crossover; the old 0.5 threshold returned white.
+        XCTAssertEqual(ui(NSColor(r: 128, g: 128, b: 128)), .black)
+    }
+
+    func test_getUIColor_pureBlue_returnsWhite() {
+        // ~0.07 luminance — below the crossover, so white is more legible.
+        XCTAssertEqual(ui(NSColor(r: 0, g: 0, b: 255)), .white)
+    }
 }
