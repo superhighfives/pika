@@ -9,7 +9,7 @@ extension LatestAppStoreVersion {
         let versionString = "\(systemVersion.majorVersion).\(systemVersion.minorVersion).\(systemVersion.patchVersion)"
 
         let isRemoteVersionHigherThanLocal = currentVersion.compare(version, options: .numeric) == .orderedAscending
-        let isSystemVersionAllowed = versionString.compare(minimumOsVersion, options: .numeric) == .orderedDescending
+        let isSystemVersionAllowed = versionString.compare(minimumOsVersion, options: .numeric) != .orderedAscending
 
         return isRemoteVersionHigherThanLocal && isSystemVersionAllowed
     }

@@ -4,11 +4,11 @@ import XCTest
 /// Tests the palette-to-JSON export contract. Users rely on this format when
 /// exporting swatches, so the shape and field names are a public contract.
 ///
-/// `Exporter.toText` and `Exporter.toJSON` take `Eyedropper` values whose
-/// initialiser force-unwraps `loadColors()`, which reads `ColorNames.json`
-/// from `Bundle.main`. That bundle is not populated in the XCTest host, so
-/// those paths are out of reach from a unit test without an app-bundle
-/// fixture. Coverage for them belongs in an integration/UI test target.
+/// `Exporter.toText` and `Exporter.toJSON` take `Eyedropper` values whose colour
+/// names come from `ColorNamesManager`, reading the cached list or the bundled
+/// `ColorNames.json` from `Bundle.main`. That bundle is not populated in the XCTest
+/// host (names resolve to empty), so those paths are out of reach from a unit test
+/// without an app-bundle fixture. Coverage for them belongs in an integration/UI test target.
 final class ExporterTests: XCTestCase {
     private func makePair(fg: String, bg: String, date: Date) -> ColorPair {
         ColorPair(id: UUID(), foregroundHex: fg, backgroundHex: bg, date: date)
