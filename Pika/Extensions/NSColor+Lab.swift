@@ -28,9 +28,9 @@ extension NSColor {
      */
 
     /**
-     Get the rgb values of this color in opengl format.
+     Get the RGB values of this color in OpenGL format.
 
-     - returns: An NSColor as an opengl string.
+     - returns: An NSColor as an OpenGL string.
      */
     func toOpenGLString(style: CopyFormat = .css) -> String {
         let RGB = toRGBAComponents()
