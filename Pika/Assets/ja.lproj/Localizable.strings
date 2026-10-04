@@ -572,3 +572,6 @@
 
 /* Window Settings */
 "preferences.window.title" = "ウインドウ設定";
+
+/* Invalid input */
+"color.edit.invalid" = "無効な入力";

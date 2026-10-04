@@ -133,3 +133,9 @@
 
 /* Class = "NSMenu"; title = "Eyedroppers"; ObjectID = "z8G-HT-ae8"; */
 "z8G-HT-ae8.title" = "Próbniki koloru";
+
+/* Class = "NSMenuItem"; title = "Show Pika"; ObjectID = "shw-Pk-z0m"; */
+"shw-Pk-z0m.title" = "Pokaż Pikę";
+
+/* Class = "NSMenuItem"; title = "Show Pika"; ObjectID = "shw-Pk-n0m"; */
+"shw-Pk-n0m.title" = "Pokaż Pikę";

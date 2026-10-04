@@ -31,7 +31,9 @@ final class URLSchemeHandler: NSObject {
         case "pick": handlePick(task: task)
         case "system": handleSystem(task: task)
         case "copy": handleCopy(task: task)
-        case "set": handleSet(task: task, hex: arg1)
+        // `#` starts a URL fragment, so `pika://set/foreground/#AABBCC` arrives with the hex
+        // in `url.fragment` rather than the path.
+        case "set": handleSet(task: task, hex: arg1 ?? url.fragment)
         case "history": handleHistory(task: task)
         case "window": handleWindow(task: task, arg1: arg1, arg2: arg2)
         case "appearance": handleAppearance(task: task)
@@ -80,12 +82,13 @@ final class URLSchemeHandler: NSObject {
     }
 
     private func handleSet(task: String?, hex: String?) {
+        // `fromHex` accepts 3 or 6 digits with or without a leading `#` (#269). Built in sRGB,
+        // matching the `NSColor(hex:)` this replaced.
         guard
             let hex,
-            hex.count == 6,
+            let color = NSColor.fromHex(hex, in: .sRGB),
             let appDelegate = AppDelegate.shared
         else { return }
-        let color = NSColor(hex: hex)
         if task == "foreground" {
             appDelegate.eyedroppers.foreground.set(color)
         } else if task == "background" {

@@ -205,12 +205,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationShouldHandleReopen(_: NSApplication, hasVisibleWindows: Bool) -> Bool {
-        if !hasVisibleWindows {
-            if Defaults[.appMode].usesPopover {
-                statusBarController.showPopover()
-            } else {
-                windowCoordinator.pikaWindow.makeKeyAndOrderFront(self)
-            }
+        if Defaults[.appMode].usesPopover {
+            if !hasVisibleWindows { statusBarController.showPopover() }
+        } else if !windowCoordinator.pikaWindow.isVisible {
+            // Don't trust `hasVisibleWindows` here: Pika's auxiliary windows (the border
+            // window, pick overlays) can count as visible while the main window is closed,
+            // which left a Dock click with no way back to Pika (#268).
+            showPika(self)
         }
         return true
     }
@@ -262,6 +263,16 @@ extension AppDelegate {
     @IBAction func showPika(_: Any) { windowCoordinator.showPika() }
     @IBAction func hidePika(_: Any) { windowCoordinator.hidePika() }
     @IBAction func showPopover(_: Any) { statusBarController.showPopover() }
+
+    /// Bring Pika back however it's configured to appear — the main window, or the popover
+    /// in popover mode. Backs the "Show Pika" menu item (⌘0, and ⌘N as a hidden alias).
+    @IBAction func showMainInterface(_: Any) {
+        if Defaults[.appMode].usesPopover {
+            statusBarController.showPopover()
+        } else {
+            showPika(self)
+        }
+    }
 }
 
 // MARK: - Notification dispatch

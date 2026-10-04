@@ -572,3 +572,6 @@
 
 /* Window Settings */
 "preferences.window.title" = "Postavke prozora";
+
+/* Invalid input */
+"color.edit.invalid" = "Neispravan unos";

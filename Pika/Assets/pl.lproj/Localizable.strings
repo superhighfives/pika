@@ -572,3 +572,6 @@
 
 /* Window Settings */
 "preferences.window.title" = "Ustawienia okna";
+
+/* Invalid input */
+"color.edit.invalid" = "Nieprawidłowe dane";

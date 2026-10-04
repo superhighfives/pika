@@ -104,6 +104,16 @@
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="myp-6O-wWD"/>
+                                        <menuItem title="Show Pika" keyEquivalent="0" allowsKeyEquivalentWhenHidden="YES" id="shw-Pk-z0m">
+                                            <connections>
+                                                <action selector="showMainInterface:" target="Voe-Tx-rLC" id="shw-Pk-z0a"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Show Pika" hidden="YES" keyEquivalent="n" allowsKeyEquivalentWhenHidden="YES" id="shw-Pk-n0m">
+                                            <connections>
+                                                <action selector="showMainInterface:" target="Voe-Tx-rLC" id="shw-Pk-n0a"/>
+                                            </connections>
+                                        </menuItem>
                                         <menuItem title="Close window" keyEquivalent="w" allowsKeyEquivalentWhenHidden="YES" id="VpE-fH-2gc">
                                             <connections>
                                                 <action selector="performClose:" target="Ady-hI-5gd" id="rJH-vS-Moe"/>

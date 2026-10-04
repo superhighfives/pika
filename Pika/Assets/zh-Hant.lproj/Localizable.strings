@@ -572,3 +572,6 @@
 
 /* Window Settings */
 "preferences.window.title" = "視窗設置";
+
+/* Invalid input */
+"color.edit.invalid" = "無效輸入";
