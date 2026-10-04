@@ -94,13 +94,13 @@
                                         <menuItem title="Copy all as text" allowsKeyEquivalentWhenHidden="YES" id="D8e-06-QFY">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="triggerCopyBackground:" target="Voe-Tx-rLC" id="gum-gU-6N8"/>
+                                                <action selector="triggerCopyText:" target="Voe-Tx-rLC" id="gum-gU-6N8"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Copy all as JSON" allowsKeyEquivalentWhenHidden="YES" id="U40-Ip-3Uj">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="triggerCopyBackground:" target="Voe-Tx-rLC" id="C9Z-dn-Ddu"/>
+                                                <action selector="triggerCopyData:" target="Voe-Tx-rLC" id="C9Z-dn-Ddu"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="myp-6O-wWD"/>
