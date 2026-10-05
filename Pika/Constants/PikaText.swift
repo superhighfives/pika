@@ -58,6 +58,7 @@ enum PikaText {
     static let textMenuShowSplash = NSLocalizedString(
         "menu.showSplash", value: "Show splash", comment: "Show the welcome splash"
     )
+    static let textMenuShowPika = NSLocalizedString("menu.showPika", comment: "Show Pika")
     static let textMenuUpdates = NSLocalizedString("menu.updates", comment: "Check for updates")
     static let textMenuPreferences = NSLocalizedString("menu.preferences", comment: "Preferences")
     static let textMenuWebsite = NSLocalizedString("menu.website", comment: "Pika website")

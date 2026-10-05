@@ -67,6 +67,14 @@ private struct PikaCommands: Commands {
                 .keyboardShortcut("h", modifiers: [])
         }
 
+        // Window menu — the way back to Pika once its main window is closed (#268). ⌘N is
+        // also handled, as a hidden alias, in `AppDelegate.registerGlobalKeyMonitor`.
+        CommandGroup(before: .windowArrangement) {
+            Button(PikaText.textMenuShowPika) { send(#selector(AppDelegate.showMainInterface)) }
+                .keyboardShortcut("0", modifiers: .command)
+            Divider()
+        }
+
         // Help menu — point at Pika's website + GitHub feedback.
         CommandGroup(replacing: .help) {
             Button(PikaText.textMenuWebsite) { send(#selector(AppDelegate.openWebsite)) }

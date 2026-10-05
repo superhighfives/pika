@@ -509,8 +509,17 @@ struct EditableColorValue: View {
     /// `""`, which would blank the field.
     private func finalizeValues(layout: DecomposedColor) {
         for (i, component) in layout.components.enumerated() where i < values.count {
-            guard component.kind != .hex,
-                  let n = Double(values[i].trimmingCharacters(in: .whitespaces)) else { continue }
+            if component.kind == .hex {
+                // Hex is lossless, so canonicalise to the six lowercase digits the readout
+                // normally shows: drops a pasted `#` (the field already draws one, which left
+                // "##123abc") and expands 3-digit shorthand.
+                var digits = values[i].trimmingCharacters(in: .whitespaces)
+                if digits.hasPrefix("#") { digits.removeFirst() }
+                if digits.count == 3 { digits = digits.map { "\($0)\($0)" }.joined() }
+                values[i] = digits.lowercased()
+                continue
+            }
+            guard let n = Double(values[i].trimmingCharacters(in: .whitespaces)) else { continue }
             let clamped = component.range.map { min(max(n, $0.lowerBound), $0.upperBound) } ?? n
             values[i] = ColorComponentField.formattedDragValue(clamped, kind: component.kind)
         }

@@ -575,3 +575,6 @@
 
 /* Invalid input */
 "color.edit.invalid" = "Ungültige Eingabe";
+
+/* Show Pika */
+"menu.showPika" = "Pika anzeigen";

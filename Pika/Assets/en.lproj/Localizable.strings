@@ -581,3 +581,6 @@
 
 /* Restore system appearance */
 "help.url.appearance.system" = "Restore system appearance";
+
+/* Show Pika */
+"menu.showPika" = "Show Pika";

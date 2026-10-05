@@ -575,3 +575,6 @@
 
 /* Invalid input */
 "color.edit.invalid" = "无效输入";
+
+/* Show Pika */
+"menu.showPika" = "显示 Pika";
