@@ -572,3 +572,9 @@
 
 /* Window Settings */
 "preferences.window.title" = "Ajustes de Ventana";
+
+/* Invalid input */
+"color.edit.invalid" = "Entrada no válida";
+
+/* Show Pika */
+"menu.showPika" = "Mostrar Pika";

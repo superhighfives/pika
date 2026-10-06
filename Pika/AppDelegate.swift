@@ -186,6 +186,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 }
             }
 
+            if self.handleCommandKey(event) { return nil }
+
             // In popover mode neither `NSApp.mainMenu.performKeyEquivalent` nor SwiftUI's
             // command-bound `.keyboardShortcut` fire while the popover panel is the key
             // window of an `.accessory` app — only `.keyboardShortcut` bindings attached to
@@ -204,13 +206,40 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
+    /// ⌘-key handling the menu bar can't provide. Returns true when `event` was consumed.
+    private func handleCommandKey(_ event: NSEvent) -> Bool {
+        guard event.modifierFlags.intersection(.deviceIndependentFlagsMask) == .command,
+              let key = event.charactersIgnoringModifiers?.lowercased() else { return false }
+
+        // ⌘N: a hidden alias for Window → "Show Pika" (⌘0). SwiftUI can't hide a menu
+        // item, so it's matched here rather than given a second visible entry.
+        if key == "n" {
+            showMainInterface(self)
+            return true
+        }
+
+        // `PikaCommands` replaces the standard pasteboard menu group, so a focused field
+        // never receives cut/copy/paste/select-all key equivalents — pasting `#AABBCC`
+        // into a colour value silently did nothing (#269). Route them to the field editor.
+        guard let editor = NSApp.keyWindow?.firstResponder as? NSText else { return false }
+        switch key {
+        case "v": editor.paste(nil)
+        case "x": editor.cut(nil)
+        case "c": editor.copy(nil)
+        case "a": editor.selectAll(nil)
+        default: return false
+        }
+        return true
+    }
+
     func applicationShouldHandleReopen(_: NSApplication, hasVisibleWindows: Bool) -> Bool {
-        if !hasVisibleWindows {
-            if Defaults[.appMode].usesPopover {
-                statusBarController.showPopover()
-            } else {
-                windowCoordinator.pikaWindow.makeKeyAndOrderFront(self)
-            }
+        if Defaults[.appMode].usesPopover {
+            if !hasVisibleWindows { statusBarController.showPopover() }
+        } else if !windowCoordinator.pikaWindow.isVisible {
+            // Don't trust `hasVisibleWindows` here: Pika's auxiliary windows (the border
+            // window, pick overlays) can count as visible while the main window is closed,
+            // which left a Dock click with no way back to Pika (#268).
+            showPika(self)
         }
         return true
     }
@@ -262,6 +291,16 @@ extension AppDelegate {
     @IBAction func showPika(_: Any) { windowCoordinator.showPika() }
     @IBAction func hidePika(_: Any) { windowCoordinator.hidePika() }
     @IBAction func showPopover(_: Any) { statusBarController.showPopover() }
+
+    /// Bring Pika back however it's configured to appear — the main window, or the popover
+    /// in popover mode. Backs the Window → "Show Pika" menu item (⌘0) and the ⌘N alias.
+    @IBAction func showMainInterface(_: Any) {
+        if Defaults[.appMode].usesPopover {
+            statusBarController.showPopover()
+        } else {
+            showPika(self)
+        }
+    }
 }
 
 // MARK: - Notification dispatch
