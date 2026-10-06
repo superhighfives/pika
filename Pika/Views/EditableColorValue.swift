@@ -504,9 +504,9 @@ struct EditableColorValue: View {
     /// Snaps any component whose typed value fell outside its range to the nearest bound, and
     /// restrips every numeric value's trailing zeros back to its normal compact form — undoing
     /// the fixed-decimal-places padding a scrub session keeps live (see `formattedDragValue`) now
-    /// that it's ending. Hex is skipped explicitly: an all-decimal-digit hex string (e.g.
-    /// `000000`) parses fine as a `Double`, and `formattedDragValue`'s `.hex` case always returns
-    /// `""`, which would blank the field.
+    /// that it's ending. Hex is canonicalised separately rather than run through the numeric path:
+    /// an all-decimal-digit hex string (e.g. `000000`) parses fine as a `Double`, and
+    /// `formattedDragValue`'s `.hex` case always returns `""`, which would blank the field.
     private func finalizeValues(layout: DecomposedColor) {
         for (i, component) in layout.components.enumerated() where i < values.count {
             if component.kind == .hex {
@@ -515,7 +515,9 @@ struct EditableColorValue: View {
                 // "##123abc") and expands 3-digit shorthand.
                 var digits = values[i].trimmingCharacters(in: .whitespaces)
                 if digits.hasPrefix("#") { digits.removeFirst() }
-                if digits.count == 3 { digits = digits.map { "\($0)\($0)" }.joined() }
+                if digits.count == 3, digits.allSatisfy(\.isHexDigit) {
+                    digits = digits.map { "\($0)\($0)" }.joined()
+                }
                 values[i] = digits.lowercased()
                 continue
             }
