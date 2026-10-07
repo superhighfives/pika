@@ -37,7 +37,8 @@ extension NSColor {
 
     func roundToHex(_ value: CGFloat) -> UInt32 {
         guard value > 0 else { return 0 }
-        let rounded: CGFloat = round(value * 255.0)
+        // Extended-range components can exceed 1; clamp so a channel never overflows into its neighbour.
+        let rounded: CGFloat = round(min(value, 1) * 255.0)
         return UInt32(rounded)
     }
 
