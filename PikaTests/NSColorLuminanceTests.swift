@@ -36,6 +36,13 @@ final class NSColorLuminanceTests: XCTestCase {
         XCTAssertEqual(white.luminance, 1.0, accuracy: 0.001)
     }
 
+    func test_luminance_outOfSRGBGamutColor_usesClampedSRGB() {
+        // Colours are stored as extended sRGB; contrast must still score the clamped sRGB colour.
+        let p3 = NSColor(colorSpace: .displayP3, components: [1, 136.0 / 255, 0, 1], count: 4)
+        let extended = p3.usingColorSpace(.extendedSRGB)!
+        XCTAssertEqual(extended.luminance, p3.usingColorSpace(.sRGB)!.luminance, accuracy: 0.0001)
+    }
+
     func test_luminance_black_isZero() {
         let black = NSColor(r: 0, g: 0, b: 0)
         XCTAssertEqual(black.luminance, 0.0, accuracy: 0.001)
