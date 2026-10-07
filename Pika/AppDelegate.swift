@@ -278,10 +278,10 @@ extension AppDelegate {
         // Record that this onboarding version has been seen, so the version gate doesn't
         // re-show it next launch (the user's "Don't show again" choice governs from here).
         Defaults[.lastSeenSplashVersion] = PikaConstants.currentSplashVersion
-        // The coordinator reveals the main window once the splash fades out whatever
-        // `alwaysShowOnLaunch` says (see `WindowCoordinator.startMainWindow`), so a new user
-        // always lands on Pika. With `alwaysShowOnLaunch` on, this also shows and activates it
-        // straight away rather than after the fade.
+        // Outside popover mode, the coordinator reveals the main window once the splash fades
+        // out whatever `alwaysShowOnLaunch` says (see `WindowCoordinator.startMainWindow`), so a
+        // new user always lands on Pika. With `alwaysShowOnLaunch` on, this also shows and
+        // activates it straight away rather than after the fade.
         presentConfiguredPika()
     }
 
