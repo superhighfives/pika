@@ -81,13 +81,18 @@ final class URLSchemeHandler: NSObject {
         }
     }
 
+    /// The colour a `pika://set` hex describes. `fromHex` accepts 3 or 6 digits with or without
+    /// a leading `#` (#269). Read in the selected colour space, like a hex typed into the field,
+    /// so the hex sent in is the hex shown and copied back (hard-coded sRGB drifted under the
+    /// default Display P3).
+    static func color(fromSetHex hex: String) -> NSColor? {
+        NSColor.fromHex(hex)
+    }
+
     private func handleSet(task: String?, hex: String?) {
-        // `fromHex` accepts 3 or 6 digits with or without a leading `#` (#269). Read in the
-        // selected colour space, like a hex typed into the field, so the hex sent in is the hex
-        // shown and copied back (hard-coded sRGB drifted under the default Display P3).
         guard
             let hex,
-            let color = NSColor.fromHex(hex),
+            let color = Self.color(fromSetHex: hex),
             let appDelegate = AppDelegate.shared
         else { return }
         if task == "foreground" {
