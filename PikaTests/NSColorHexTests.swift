@@ -99,11 +99,11 @@ final class NSColorHexTests: XCTestCase {
 
     // MARK: - pika://set
 
-    func test_urlSetHex_isReadInTheSelectedColorSpace() {
+    func test_urlSetHex_isReadInTheSelectedColorSpace() throws {
         // Hard-coded sRGB read #ff8800 back as #ef8e34 under Display P3.
         Defaults[.colorSpace] = .displayP3
-        let color = try? XCTUnwrap(URLSchemeHandler.color(fromSetHex: "#ff8800"))
-        XCTAssertEqual(color?.toHex(in: .displayP3), 0xFF8800)
+        let color = try XCTUnwrap(URLSchemeHandler.color(fromSetHex: "#ff8800"))
+        XCTAssertEqual(color.toHex(in: .displayP3), 0xFF8800)
     }
 
     // MARK: - sRGB normalization stability
