@@ -98,7 +98,7 @@ private struct GeneralAndSelectionSection: View {
                     if showColorOverlay {
                         HStack(spacing: 8.0) {
                             Slider(value: $colorOverlayDuration, in: 1.0 ... 5.0, step: 0.5)
-                                .accessibilityLabel(PikaText.textShowColorOverlay)
+                                .accessibilityLabel(PikaText.textDuration)
                             Text(String(format: "%.1fs", colorOverlayDuration))
                                 .font(.system(size: 11))
                                 .foregroundStyle(.secondary)
