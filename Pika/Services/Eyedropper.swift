@@ -135,6 +135,10 @@ class Eyedropper: ObservableObject {
         panel.color = color
         panel.mode = .RGB
         panel.colorSpace = Defaults[.colorSpace]
+        // NSColorPanel hides while its app is inactive, so opened from the status bar menu, a
+        // shortcut or a pika:// URL with Pika in the background it never appeared. Activate
+        // first: the panel is interactive, so focus belongs with it anyway.
+        NSApp.activate(ignoringOtherApps: true)
         panel.orderFrontRegardless()
         panel.setAction(#selector(colorDidChange))
         panel.isContinuous = true
