@@ -401,6 +401,9 @@ class WindowCoordinator: NSObject {
         if !pikaWindow.isVisible {
             pikaWindow.fadeIn(sender: nil, duration: 0.2, presentationFunction: .orderFrontRegardless)
         }
+        // Not key yet, but set the first responder now so a later click that makes the
+        // window key doesn't land focus on a colour-value field.
+        steerFirstResponderAwayFromFields()
         applyShadowState()
     }
 
