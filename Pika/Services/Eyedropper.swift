@@ -126,7 +126,9 @@ class Eyedropper: ObservableObject {
         }
     }
 
-    func picker() {
+    /// Shows the system colour panel. `activate` is for user-initiated opens; the post-pick
+    /// refresh passes `false` so it doesn't pull focus back to Pika.
+    func picker(activate: Bool = true) {
         let panel = NSColorPanel.shared
         panel.showsAlpha = false
         panel.title = "\(type.rawValue.capitalized)"
@@ -138,7 +140,9 @@ class Eyedropper: ObservableObject {
         // NSColorPanel hides while its app is inactive, so opened from the status bar menu, a
         // shortcut or a pika:// URL with Pika in the background it never appeared. Activate
         // first: the panel is interactive, so focus belongs with it anyway.
-        NSApp.activate(ignoringOtherApps: true)
+        if activate {
+            NSApp.activate(ignoringOtherApps: true)
+        }
         panel.orderFrontRegardless()
         panel.setAction(#selector(colorDidChange))
         panel.isContinuous = true
@@ -209,7 +213,7 @@ extension Eyedropper {
 
                 let panel = NSColorPanel.shared
                 if panel.isVisible {
-                    self.picker()
+                    self.picker(activate: false)
                 }
 
                 self.activeSession = nil
