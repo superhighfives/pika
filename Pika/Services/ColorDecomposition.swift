@@ -281,7 +281,7 @@ private func int255Components(_ channels: [CGFloat]) -> [ColorComponent] {
 }
 
 private func floatComponents(_ channels: [CGFloat], range: ClosedRange<Double>) -> [ColorComponent] {
-    channels.map { ColorComponent(value: String(format: "%.5g", $0), kind: .decimal, range: range) }
+    channels.map { ColorComponent(value: $0.fiveSignificantDigits, kind: .decimal, range: range) }
 }
 
 /// Hue (0–360 integer) followed by two 0–100 integer percentages (S/B or S/L).
@@ -295,7 +295,7 @@ private func angleAndPercents(h: CGFloat, _ rest: [CGFloat]) -> [ColorComponent]
 
 /// Matches `toOpenGLString`'s ".0"-appended `%.5g`, e.g. 0 → "0.0", 1 → "1.0", 0.5 → "0.5".
 private func openGLValueString(_ value: CGFloat) -> String {
-    let s = String(format: "%.5g", value)
+    let s = value.fiveSignificantDigits
     return s.contains(".") ? s : "\(s).0"
 }
 

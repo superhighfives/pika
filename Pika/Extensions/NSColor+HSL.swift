@@ -52,7 +52,8 @@ extension NSColor {
         case .design:
             hsbString = String(format: "hsb(%d, %d, %d)", hue, saturation, brightness)
         case .swiftUI:
-            hsbString = String(format: "Color(hue: %.5g, saturation: %.5g, brightness: %.5g)", HSB.h, HSB.s, HSB.b)
+            hsbString = "Color(hue: \(HSB.h.fiveSignificantDigits), saturation: \(HSB.s.fiveSignificantDigits), "
+                + "brightness: \(HSB.b.fiveSignificantDigits))"
         case .unformatted:
             hsbString = String(format: "%d, %d, %d", hue, saturation, brightness)
         }

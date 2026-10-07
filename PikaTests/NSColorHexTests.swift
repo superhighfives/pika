@@ -139,4 +139,14 @@ final class NSColorHexTests: XCTestCase {
         XCTAssertEqual(stored.toHex(in: .sRGB), clipped.toHex(in: .sRGB))
         XCTAssertLessThanOrEqual(stored.toHex(in: .sRGB), 0xFFFFFF)
     }
+
+    func test_fiveSignificantDigits_readsFloatNoiseAsZero() {
+        // Converting extended sRGB back to P3 leaves ~1e-7 where blue should be 0, which `%.5g`
+        // printed as "5.641e-08" in the OpenGL and SwiftUI formats.
+        let stored = outOfGamutP3.usingColorSpace(.extendedSRGB)!
+        XCTAssertEqual(stored.toRGBAComponents(in: .displayP3).b.fiveSignificantDigits, "0")
+        XCTAssertEqual(CGFloat(-3e-8).fiveSignificantDigits, "0")
+        XCTAssertEqual(CGFloat(0.53333333).fiveSignificantDigits, "0.53333")
+        XCTAssertEqual(CGFloat(0.000012).fiveSignificantDigits, "1.2e-05", "real values are untouched")
+    }
 }

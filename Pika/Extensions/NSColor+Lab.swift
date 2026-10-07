@@ -37,9 +37,9 @@ extension NSColor {
 
         // %.5g strips trailing zeros but drops the decimal entirely for whole numbers,
         // so append ".0" when there is no decimal point (e.g. 0 → "0.0", 1 → "1.0").
-        let red = { let s = String(format: "%.5g", RGB.r); return s.contains(".") ? s : "\(s).0" }()
-        let green = { let s = String(format: "%.5g", RGB.g); return s.contains(".") ? s : "\(s).0" }()
-        let blue = { let s = String(format: "%.5g", RGB.b); return s.contains(".") ? s : "\(s).0" }()
+        let red = { let s = RGB.r.fiveSignificantDigits; return s.contains(".") ? s : "\(s).0" }()
+        let green = { let s = RGB.g.fiveSignificantDigits; return s.contains(".") ? s : "\(s).0" }()
+        let blue = { let s = RGB.b.fiveSignificantDigits; return s.contains(".") ? s : "\(s).0" }()
 
         switch style {
         case .css, .design, .swiftUI:
