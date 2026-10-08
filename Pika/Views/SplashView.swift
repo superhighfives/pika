@@ -65,7 +65,9 @@ struct SplashView: View {
                             title: PikaText.textSplashHotkey,
                             subtitle: PikaText.textSplashLaunchSubtitle
                         ) {
-                            LaunchAtLogin.Toggle {}
+                            // Labelled for VoiceOver; `.labelsHidden()` keeps it off screen, where
+                            // the row title already says it. An empty label read as "toggle button".
+                            LaunchAtLogin.Toggle { Text(PikaText.textSplashHotkey) }
                                 .labelsHidden()
                                 .toggleStyle(.switch)
                         }

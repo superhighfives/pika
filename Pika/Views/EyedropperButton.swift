@@ -269,6 +269,8 @@ struct EyedropperButton: View {
                 ))
                 .frame(maxWidth: .infinity, alignment: .trailing)
                 .focusable(false)
+                // The style only draws `alt` on hover; the label itself is a bare SF Symbol.
+                .accessibilityLabel(PikaText.textColorCopy)
 
                 Button(action: {
                     NSApp.sendAction(eyedropper.type.systemPickerSelector, to: nil, from: nil)
@@ -287,6 +289,8 @@ struct EyedropperButton: View {
                 ))
                 .frame(maxWidth: .infinity, alignment: .trailing)
                 .focusable(false)
+                // The style only draws `alt` on hover; the label itself is a bare SF Symbol.
+                .accessibilityLabel(PikaText.textColorSystemPicker)
             }
             .padding(.all, 8.0)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)

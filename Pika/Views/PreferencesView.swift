@@ -58,7 +58,7 @@ private struct GeneralAndSelectionSection: View {
                 Text(PikaText.textWindowSettingsTitle)
                     .font(.system(size: 16))
                     .padding(.top, 8.0)
-                Picker("", selection: $windowShadow) {
+                Picker(PikaText.textWindowShadow, selection: $windowShadow) {
                     ForEach(WindowShadow.allCases, id: \.self) { value in
                         Text(value.localizedString())
                     }
@@ -98,6 +98,7 @@ private struct GeneralAndSelectionSection: View {
                     if showColorOverlay {
                         HStack(spacing: 8.0) {
                             Slider(value: $colorOverlayDuration, in: 1.0 ... 5.0, step: 0.5)
+                                .accessibilityLabel(PikaText.textDuration)
                             Text(String(format: "%.1fs", colorOverlayDuration))
                                 .font(.system(size: 11))
                                 .foregroundStyle(.secondary)
@@ -234,6 +235,9 @@ private struct CopySettingsSection: View {
                         Divider()
                     }
                     .pickerStyle(.menu)
+                    // The menu style draws the title as separate text that VoiceOver doesn't
+                    // tie to the control, so name it explicitly.
+                    .accessibilityLabel(PikaText.textCopyExport)
                 }
                 ColorExampleRow(copyFormat: copyFormat, eyedropper: eyedroppers.foreground)
             }
@@ -307,6 +311,7 @@ private struct ColorFormatSection: View {
                     }
                 }
                 .pickerStyle(.menu)
+                .accessibilityLabel(PikaText.textFormatDescription)
             }
         }
         .padding(.horizontal, 24.0)
