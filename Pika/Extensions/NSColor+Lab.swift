@@ -131,6 +131,9 @@ extension NSColor {
         let C = sqrt(a * a + b * b)
         var H = atan2(b, a) * 180.0 / .pi
         if H < 0 { H += 360.0 }
+        // With no chroma, hue is meaningless (CSS calls it powerless): atan2 of float noise gave
+        // white a hue of 89.88. Report 0 whenever chroma would display as 0 (4 decimal places).
+        if C < 0.00005 { H = 0 }
 
         return OklchComponents(l: L, c: C, h: H)
     }

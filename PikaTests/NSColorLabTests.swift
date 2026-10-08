@@ -99,6 +99,20 @@ final class NSColorLabTests: XCTestCase {
         XCTAssertLessThanOrEqual(oklch.l, 1.0)
     }
 
+    func test_toOklchComponents_achromatic_hueIsZero() {
+        // Hue is meaningless without chroma; atan2 of float noise gave white a hue of 89.88.
+        for value in [0.0, 0.5, 1.0] {
+            let gray = NSColor(red: value, green: value, blue: value, alpha: 1).usingColorSpace(.sRGB)!
+            XCTAssertEqual(gray.toOklchComponents().h, 0, "gray \(value)")
+        }
+        XCTAssertEqual(NSColor.white.usingColorSpace(.sRGB)!.toOklchString(style: .css), "oklch(100% 0 0)")
+    }
+
+    func test_toOklchComponents_chromatic_keepsHue() {
+        let blue = NSColor(red: 0, green: 0, blue: 1, alpha: 1).usingColorSpace(.sRGB)!
+        XCTAssertEqual(blue.toOklchComponents().h, 264.05, accuracy: 0.01)
+    }
+
     // MARK: - toOklchString(style:)
 
     func test_toOklchString_cssStyle_containsOklchPrefix() {
