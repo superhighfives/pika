@@ -113,7 +113,8 @@ class WindowCoordinator: NSObject {
     ///   • `.always`  — native drop shadow, no companions.
     ///   • `.never`   — no shadow; the hairline border keeps the (otherwise blending) edge.
     ///   • `.hiddenWhilePicking` — native shadow off, custom shadow drawn instead so it can
-    ///     fade to nothing while the sampler is up (and the border fades in to hold the edge).
+    ///     fade to nothing while the sampler is up; the border stays on throughout to hold the
+    ///     edge the native shadow would otherwise draw.
     /// `animated` is `true` only for the pick transition; setting changes and re-asserts snap.
     func applyShadowState(animated: Bool = false) {
         guard pikaWindow != nil else { return }
@@ -132,8 +133,10 @@ class WindowCoordinator: NSObject {
             setNativeShadow(false)
             ensureCustomShadow()
             setCustomShadowOpacity(isPickingSuppressed ? 0 : restingShadowOpacity, animated: animated)
-            // The edge only needs the hairline while the shadow is gone; crossfade it in.
-            setBorderVisible(isPickingSuppressed, animated: animated)
+            // Keep the hairline at rest too: the native shadow draws a crisp edge that the
+            // custom one doesn't, so without it the window's outline went soft next to
+            // `.always`. While picking it's the only thing holding the edge.
+            setBorderVisible(true, animated: animated)
         }
     }
 
