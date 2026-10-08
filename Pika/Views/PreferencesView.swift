@@ -322,9 +322,17 @@ private struct GlobalShortcutSection: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8.0) {
             Section(header: Text(PikaText.textHotkeyTitle).font(.system(size: 16))) {
-                HStack(spacing: 12.0) {
-                    Text(PikaText.textHotkeyDescription).font(.system(size: 13, weight: .medium))
-                    KeyboardShortcuts.Recorder(for: .togglePika)
+                // Both global shortcuts the splash offers. Pick-pair was only settable during
+                // onboarding, so there was no way to change ⌥⌘D afterwards.
+                Grid(alignment: .leading, horizontalSpacing: 12.0, verticalSpacing: 10.0) {
+                    GridRow {
+                        Text(PikaText.textHotkeyDescription).font(.system(size: 13, weight: .medium))
+                        KeyboardShortcuts.Recorder(for: .togglePika)
+                    }
+                    GridRow {
+                        Text(PikaText.textSplashPairSubtitle).font(.system(size: 13, weight: .medium))
+                        KeyboardShortcuts.Recorder(for: .pickPair)
+                    }
                 }
             }
             .padding(.horizontal, 24.0)
