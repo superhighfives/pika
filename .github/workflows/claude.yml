@@ -41,7 +41,7 @@ jobs:
       )
     # macOS so Claude can build/test the app (AppKit/SwiftUI) during a review;
     # matches tests.yml. GitHub-hosted runners are free on public repos.
-    runs-on: macos-15
+    runs-on: macos-26
     permissions:
       contents: write
       pull-requests: write
@@ -55,7 +55,7 @@ jobs:
           fetch-depth: 1
 
       - name: Select Xcode
-        run: sudo xcode-select -s /Applications/Xcode_16.3.app
+        run: sudo xcode-select -s /Applications/Xcode_26.6.app
 
       - name: Run Claude Code
         id: claude

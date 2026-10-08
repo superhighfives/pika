@@ -6,7 +6,7 @@ extension KeyboardShortcuts.Name {
     static let togglePika = Self("togglePika")
     // Global, user-rebindable "pick a pair" shortcut (foreground → background chain).
     // Defaults to ⌥⌘D, matching the in-window menu equivalent it replaces.
-    static let pickPair = Self("pickPair", default: .init(.d, modifiers: [.command, .option]))
+    static let pickPair = Self("pickPair", initial: .init(.d, modifiers: [.command, .option]))
 }
 
 enum PikaConstants {
