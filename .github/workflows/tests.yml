@@ -24,6 +24,10 @@ jobs:
       - name: Select Xcode
         run: sudo xcode-select -s /Applications/Xcode_27.0.app
 
+      # The Xcode 27 image doesn't ship the Metal toolchain, which Pika's shader needs.
+      - name: Download Metal toolchain
+        run: xcodebuild -downloadComponent MetalToolchain
+
       - name: Resolve Swift packages
         run: |
           xcodebuild -resolvePackageDependencies \
