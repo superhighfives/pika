@@ -130,4 +130,32 @@ final class NSColorHexTests: XCTestCase {
         let color = NSColor(hex: original).usingColorSpace(.sRGB)!
         XCTAssertEqual(color.toHexString(style: .css), original)
     }
+
+    // MARK: - Wide gamut (Eyedropper stores colours as extended sRGB)
+
+    /// P3 #ff8800, outside the sRGB gamut: clipping it to sRGB on the way in read back #ef8733.
+    private let outOfGamutP3 = NSColor(colorSpace: .displayP3, components: [1, 136.0 / 255, 0, 1], count: 4)
+
+    func test_outOfSRGBGamutP3Color_survivesExtendedSRGBStorage() {
+        let stored = outOfGamutP3.usingColorSpace(.extendedSRGB)!
+        XCTAssertEqual(stored.toHex(in: .displayP3), 0xFF8800)
+    }
+
+    func test_outOfSRGBGamutP3Color_clampsWhenReadAsSRGB() {
+        // Extended components fall outside 0–1; reading as sRGB must clamp, never overflow a channel.
+        let stored = outOfGamutP3.usingColorSpace(.extendedSRGB)!
+        let clipped = outOfGamutP3.usingColorSpace(.sRGB)!
+        XCTAssertEqual(stored.toHex(in: .sRGB), clipped.toHex(in: .sRGB))
+        XCTAssertLessThanOrEqual(stored.toHex(in: .sRGB), 0xFFFFFF)
+    }
+
+    func test_fiveSignificantDigits_readsFloatNoiseAsZero() {
+        // Converting extended sRGB back to P3 leaves ~1e-7 where blue should be 0, which `%.5g`
+        // printed as "5.641e-08" in the OpenGL and SwiftUI formats.
+        let stored = outOfGamutP3.usingColorSpace(.extendedSRGB)!
+        XCTAssertEqual(stored.toRGBAComponents(in: .displayP3).b.fiveSignificantDigits, "0")
+        XCTAssertEqual(CGFloat(-3e-8).fiveSignificantDigits, "0")
+        XCTAssertEqual(CGFloat(0.53333333).fiveSignificantDigits, "0.53333")
+        XCTAssertEqual(CGFloat(0.000012).fiveSignificantDigits, "1.2e-05", "real values are untouched")
+    }
 }

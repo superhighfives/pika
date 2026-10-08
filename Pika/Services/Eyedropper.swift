@@ -79,7 +79,10 @@ class Eyedropper: ObservableObject {
 
     init(type: Types, color: NSColor) {
         self.type = type
-        self.color = color.usingColorSpace(.sRGB) ?? color
+        // Extended sRGB, not sRGB: plain sRGB clips anything outside its gamut, so a Display P3
+        // colour (typed, picked, from the panel or a URL) came back shifted. Each format converts
+        // to the space it needs when it reads components, clamping there where it must.
+        self.color = color.usingColorSpace(.extendedSRGB) ?? color
 
         // Load colours and rebuild whenever the active list changes or a refresh lands.
         reloadColorNames()
@@ -118,13 +121,13 @@ class Eyedropper: ObservableObject {
     }
 
     func set(_ selectedColor: NSColor) {
-        color = selectedColor.usingColorSpace(.sRGB) ?? selectedColor
+        color = selectedColor.usingColorSpace(.extendedSRGB) ?? selectedColor
     }
 
     @objc func colorDidChange(sender: AnyObject) {
         if let picker = sender as? NSColorPanel {
-            guard let srgbColor = picker.color.usingColorSpace(.sRGB) else { return }
-            color = srgbColor
+            guard let extendedColor = picker.color.usingColorSpace(.extendedSRGB) else { return }
+            color = extendedColor
             NotificationCenter.default.post(name: .systemColorChanged, object: nil)
         }
     }
@@ -229,7 +232,7 @@ extension Eyedropper {
     }
 
     private func commitPick(_ selectedColor: NSColor, chainContrasting: Bool, useCustom: Bool) {
-        let normalizedColor = selectedColor.usingColorSpace(.sRGB) ?? selectedColor
+        let normalizedColor = selectedColor.usingColorSpace(.extendedSRGB) ?? selectedColor
 
         // The custom loupe already shows the colour live during the pick, so the
         // post-pick overlay is redundant when it's active.

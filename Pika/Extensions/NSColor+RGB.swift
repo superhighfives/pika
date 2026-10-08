@@ -8,6 +8,14 @@ import SwiftUI
 
 struct RGBAComponents { let r, g, b, a: CGFloat }
 
+extension CGFloat {
+    /// `%.5g`, reading float noise below 1e-6 as 0. Converting a wide-gamut colour between spaces
+    /// can leave e.g. 5.6e-08 where a channel should be 0, which `%.5g` prints in scientific
+    /// notation. Applied only when formatting: rounding the components themselves would leak
+    /// into the Lab/OKLCH maths and shift values sitting on a rounding boundary.
+    var fiveSignificantDigits: String { String(format: "%.5g", abs(self) < 1e-6 ? 0 : self) }
+}
+
 extension NSColor {
     final func toRGBAComponents(in colorSpace: NSColorSpace = Defaults[.colorSpace]) -> RGBAComponents {
         var r: CGFloat = 0, g: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
@@ -31,7 +39,8 @@ extension NSColor {
         case .css, .design:
             return String(format: "rgb(%d, %d, %d)", red, green, blue)
         case .swiftUI:
-            return String(format: "Color(red: %.5g, green: %.5g, blue: %.5g)", RGB.r, RGB.g, RGB.b)
+            return "Color(red: \(RGB.r.fiveSignificantDigits), green: \(RGB.g.fiveSignificantDigits), "
+                + "blue: \(RGB.b.fiveSignificantDigits))"
         case .unformatted:
             return String(format: "%d, %d, %d", red, green, blue)
         }
