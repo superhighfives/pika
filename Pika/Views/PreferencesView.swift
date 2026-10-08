@@ -330,7 +330,7 @@ private struct GlobalShortcutSection: View {
                         KeyboardShortcuts.Recorder(for: .togglePika)
                     }
                     GridRow {
-                        Text(PikaText.textSplashPairSubtitle).font(.system(size: 13, weight: .medium))
+                        Text(PikaText.textPickPair).font(.system(size: 13, weight: .medium))
                         KeyboardShortcuts.Recorder(for: .pickPair)
                     }
                 }
