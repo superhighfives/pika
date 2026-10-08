@@ -393,6 +393,20 @@ class WindowCoordinator: NSObject {
         hideMainWindow()
     }
 
+    /// Bring the main window back after `hidePikaWhilePicking` hid it for a pick. Only
+    /// activates Pika if it was active when the pick began: a pick started from another app
+    /// (the global shortcut) shouldn't pull focus away from that app.
+    func restoreAfterPick(activate: Bool) {
+        guard !activate else { return showPika() }
+        if !pikaWindow.isVisible {
+            pikaWindow.fadeIn(sender: nil, duration: 0.2, presentationFunction: .orderFrontRegardless)
+        }
+        // Not key yet, but set the first responder now so a later click that makes the
+        // window key doesn't land focus on a colour-value field.
+        steerFirstResponderAwayFromFields()
+        applyShadowState()
+    }
+
     func openAboutWindow() {
         if aboutWindow == nil {
             let view = NSHostingView(rootView: AboutView().ignoresSafeArea())

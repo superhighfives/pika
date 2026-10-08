@@ -59,6 +59,9 @@ class Eyedropper: ObservableObject {
 
     let type: Types
     var forceShow = false
+    /// Whether Pika was the active app when `forceShow` was set, so restoring the window
+    /// after the pick only re-activates Pika if it was active to begin with.
+    var reactivateAfterPick = false
     var pendingChainCommit = false
 
     // Retains the in-flight pick session for the duration of an async pick so it
@@ -146,8 +149,12 @@ class Eyedropper: ObservableObject {
 extension Eyedropper {
     func start(chainContrasting: Bool = false) {
         if Defaults[.hidePikaWhilePicking] {
-            if NSApp.mainWindow?.isVisible == true {
+            // Ask the coordinator rather than `NSApp.mainWindow`, which is nil whenever Pika
+            // isn't active (a pick from the global shortcut in another app), so the window was
+            // hidden and never brought back.
+            if AppDelegate.shared?.windowCoordinator.pikaWindow?.isVisible == true {
                 forceShow = true
+                reactivateAfterPick = NSApp.isActive
             }
             NSApp.sendAction(#selector(AppDelegate.hidePika), to: nil, from: nil)
         }
@@ -199,7 +206,7 @@ extension Eyedropper {
                 if self.forceShow {
                     self.forceShow = false
                     if !Defaults[.appMode].usesPopover {
-                        NSApp.sendAction(#selector(AppDelegate.showPika), to: nil, from: nil)
+                        AppDelegate.shared?.windowCoordinator.restoreAfterPick(activate: self.reactivateAfterPick)
                     }
                 }
 
@@ -255,6 +262,7 @@ extension Eyedropper {
         if forceShow {
             forceShow = false
             background.forceShow = true
+            background.reactivateAfterPick = reactivateAfterPick
         }
         let delay: Double = (Defaults[.showColorOverlay] && !useCustom) ? 0.4 : 0.05
         DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
