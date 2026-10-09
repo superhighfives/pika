@@ -399,9 +399,8 @@ struct EditableColorValue: View {
     /// site in `startSession`). Called both when a session opens and whenever the editable field
     /// changes mid-session (Tab, or a drag/click landing on a different field), since the frozen
     /// budget from the field that opened the session doesn't cover a value typed into a later one.
-    /// Sizes for the session: the field at `index` is replaced with its own worst-case
-    /// placeholder (see `worstCaseComponentString`), since that's the only field a typed edit
-    /// can actually grow.
+    /// `index`'s value is swapped for its worst-case placeholder (see `worstCaseComponentString`)
+    /// before sizing, since that's the only field a typed edit can actually grow.
     private func rebudgetFrozenSize(for index: Int, layout: DecomposedColor) {
         var values = layout.values
         if index < values.count { values[index] = worstCaseComponentString(layout.components[index]) }
@@ -667,6 +666,7 @@ private extension EditableColorValue {
         return (unit.value.map { textWidth($0) + fieldChrome } ?? 0) + textWidth(unit.affix)
     }
 
+    /// Mirrors `FlowLayout`'s greedy wrap rule; keep the two in step if either changes.
     func wrapsWithinLines(_ widths: [CGFloat], lines maxLineCount: Int) -> Bool {
         let lineLimit = effectiveWidth - wrapSafetyMargin
         var lines = 1
