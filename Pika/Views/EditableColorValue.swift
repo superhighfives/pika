@@ -525,6 +525,24 @@ struct EditableColorValue: View {
             let clamped = component.range.map { min(max(n, $0.lowerBound), $0.upperBound) } ?? n
             values[i] = ColorComponentField.formattedDragValue(clamped, kind: component.kind)
         }
+        adoptReadoutFormatting()
+    }
+
+    /// Shows committed numbers the way the readout formats them, e.g. OpenGL's `1.0` and five
+    /// significant digits, rather than the generic up-to-4-decimals form (which turned `1.0`
+    /// into `1` and `0.70196` into `0.702` on Return). Only where the committed colour reads
+    /// back as the same number: a lossy format can legitimately read back differently (hue is
+    /// undefined at brightness 0), and there the typed value stays, as `finishEditing` intends.
+    private func adoptReadoutFormatting() {
+        let readout = format.decompose(eyedropper.color, style: style, in: colorSpace).components
+        for (index, component) in readout.enumerated() where index < values.count && component.kind != .hex {
+            guard let typed = Double(values[index]), let shown = Double(component.value) else { continue }
+            // Same number to the readout's own precision (half a unit in its last place).
+            let places = component.value.split(separator: ".").dropFirst().first?.count ?? 0
+            if abs(typed - shown) <= 0.5 * pow(10, -Double(places)) + 1e-9 {
+                values[index] = component.value
+            }
+        }
     }
 
     private func commitEditing() {
