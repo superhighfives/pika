@@ -247,8 +247,10 @@ struct ScrubbableColorField: NSViewRepresentable {
             // modifier steps never arrived — and Option sends *two* commands for one keypress,
             // so step once per event. The multiplier rides on the direction's magnitude, read
             // from this event's own modifiers (the global modifier state can lag behind it).
+            // Command and Control arrows keep their text-system meaning (jump to start/end).
             if let onStep, let event = NSApp.currentEvent, event.type == .keyDown,
-               event.keyCode == Self.upArrowKeyCode || event.keyCode == Self.downArrowKeyCode
+               event.keyCode == Self.upArrowKeyCode || event.keyCode == Self.downArrowKeyCode,
+               event.modifierFlags.isDisjoint(with: [.command, .control])
             {
                 guard event !== lastSteppedEvent else { return true }
                 lastSteppedEvent = event
