@@ -90,7 +90,7 @@ struct EditableColorValue: View {
     /// digit count, and so its rendered width, on essentially every frame) doesn't repeatedly
     /// re-shrink/re-wrap the row — the flicker that made the value visibly flick between one and
     /// two lines while dragging. Captured once at session start, cleared once it ends.
-    @State private var frozenSize: CGFloat?
+    @State private var frozenSize: (size: CGFloat, lines: Int)?
     @State private var preEditColor: NSColor?
     /// The colour we last pushed to `eyedropper` ourselves (live preview or commit). Lets
     /// `onChange(of: eyedropper.color)` tell our own writes apart from an external pick landing
@@ -134,28 +134,25 @@ struct EditableColorValue: View {
 
     private var uiColor: NSColor { eyedropper.color.getUIColor() }
 
-    /// `FlowLayout` should never need more than this many lines.
-    private let maxLines: CGFloat = 2
-    /// Shrink target, deliberately less than `maxLines`: wrapping happens at fragment boundaries,
-    /// not the halfway character, so a greedy 2-line wrap rarely splits content 50/50 — leave
-    /// slack instead of clipping the fuller line.
-    private let wrapShrinkTarget: CGFloat = 1.7
-
-    // Deterministic font size vs `wrapShrinkTarget` rows of column width, so the row shrinks
-    // just enough that `FlowLayout` wraps to at most `maxLines`.
-    private func fontSize(for text: String) -> CGFloat {
-        guard effectiveWidth > 4 else { return baseSize }
-        let full = (text as NSString).size(withAttributes: [.font: NSFont.systemFont(ofSize: baseSize)]).width
-        guard full > 0 else { return baseSize }
-        let scale = min(1, (effectiveWidth * wrapShrinkTarget) / full)
-        return max(minSize, baseSize * scale)
-    }
+    /// Lines the row normally wraps to; `fallbackMaxLines` only when even `minSize` can't fit
+    /// (a long style in a narrow window, e.g. SwiftUI HSB's `Color(hue: …, saturation: …,
+    /// brightness: …)`) — a third line beats clipping the value.
+    private let maxLines = 2
+    private let fallbackMaxLines = 3
+    /// Width a value field occupies beyond its text: `ScrubTextField`'s 2pt intrinsic slack, its
+    /// cell's own rendering margin, and `ColorComponentField`'s 1pt horizontal padding each side
+    /// (measured: a field renders ~6pt wider than its text).
+    private let fieldChrome: CGFloat = 6
+    /// Kept free on every line. A row sized to fit exactly can still wrap a unit early on a
+    /// sub-point rounding difference, and then the remainder overflows the last line.
+    private let wrapSafetyMargin: CGFloat = 4
 
     var body: some View {
         let layout = decomposed
-        let size = frozenSize ?? fontSize(for: layout.joined())
+        let fit = frozenSize ?? fontSize(forUnits: wrapUnits(layout, values: layout.values))
+        let size = fit.size
 
-        FlowLayout(maxLines: Int(maxLines)) {
+        FlowLayout(maxLines: fit.lines) {
             affix(layout.leading, size: size)
             ForEach(Array(layout.components.enumerated()), id: \.offset) { index, component in
                 // Grouped with its trailing punctuation (the separator after it, or the closing
@@ -402,20 +399,13 @@ struct EditableColorValue: View {
     /// site in `startSession`). Called both when a session opens and whenever the editable field
     /// changes mid-session (Tab, or a drag/click landing on a different field), since the frozen
     /// budget from the field that opened the session doesn't cover a value typed into a later one.
+    /// Sizes for the session: the field at `index` is replaced with its own worst-case
+    /// placeholder (see `worstCaseComponentString`), since that's the only field a typed edit
+    /// can actually grow.
     private func rebudgetFrozenSize(for index: Int, layout: DecomposedColor) {
-        frozenSize = fontSize(for: boundedWorstCaseJoined(layout, growingIndex: index))
-    }
-
-    /// Same scaffolding as `layout.joined()`, but the component at `growingIndex` is replaced
-    /// with its own worst-case placeholder (see `worstCaseComponentString`) — that's the only
-    /// field a typed edit can actually grow during this session.
-    private func boundedWorstCaseJoined(_ layout: DecomposedColor, growingIndex: Int) -> String {
-        var result = layout.leading
-        for (index, component) in layout.components.enumerated() {
-            result += index == growingIndex ? worstCaseComponentString(component) : component.value
-            if index < layout.separators.count { result += layout.separators[index] }
-        }
-        return result + layout.trailing
+        var values = layout.values
+        if index < values.count { values[index] = worstCaseComponentString(layout.components[index]) }
+        frozenSize = fontSize(forUnits: wrapUnits(layout, values: values))
     }
 
     /// The widest value a component could ever display. Integers use the range's most digits;
@@ -634,6 +624,62 @@ struct EditableColorValue: View {
             lastPreviewedColor = nil
             syncValuesFromColor(decomposed)
         }
+    }
+}
+
+// MARK: - Value row sizing
+
+private extension EditableColorValue {
+    /// The units `FlowLayout` wraps, as `body` builds them: the leading affix on its own, then
+    /// each value grouped with the punctuation after it.
+    func wrapUnits(_ layout: DecomposedColor, values: [String]) -> [(value: String?, affix: String)] {
+        var units: [(value: String?, affix: String)] = [(nil, layout.leading)]
+        for (index, value) in values.enumerated() {
+            units.append((value, index < layout.separators.count ? layout.separators[index] : layout.trailing))
+        }
+        return units.filter { $0.value != nil || !$0.affix.isEmpty }
+    }
+
+    /// The largest font size, down to `minSize`, at which `units` wrap greedily (the way
+    /// `FlowLayout` does) into at most `maxLines` lines, none wider than the column. Each value and
+    /// affix is measured as its own view lays out (rounded up, plus field chrome for values).
+    ///
+    /// This replaced sizing the whole string to 1.7 lines of width, which assumed a roughly even
+    /// split. Long styles break unevenly at unit boundaries: SwiftUI's `Color(red:` sat alone on
+    /// line 1 and everything else overflowed line 2, clipping the value.
+    func fontSize(forUnits units: [(value: String?, affix: String)]) -> (size: CGFloat, lines: Int) {
+        guard effectiveWidth > 4 else { return (baseSize, maxLines) }
+        for lines in [maxLines, fallbackMaxLines] {
+            var size = baseSize
+            while size >= minSize {
+                if wrapsWithinLines(units.map { unitWidth($0, size: size) }, lines: lines) { return (size, lines) }
+                size -= 0.5
+            }
+        }
+        return (minSize, fallbackMaxLines)
+    }
+
+    func unitWidth(_ unit: (value: String?, affix: String), size: CGFloat) -> CGFloat {
+        let font = NSFont.systemFont(ofSize: size)
+        func textWidth(_ text: String) -> CGFloat {
+            text.isEmpty ? 0 : ceil((text as NSString).size(withAttributes: [.font: font]).width) + 1
+        }
+        return (unit.value.map { textWidth($0) + fieldChrome } ?? 0) + textWidth(unit.affix)
+    }
+
+    func wrapsWithinLines(_ widths: [CGFloat], lines maxLineCount: Int) -> Bool {
+        let lineLimit = effectiveWidth - wrapSafetyMargin
+        var lines = 1
+        var lineWidth: CGFloat = 0
+        for width in widths {
+            if width > lineLimit { return false }
+            if lineWidth > 0, lineWidth + width > lineLimit {
+                lines += 1
+                lineWidth = 0
+            }
+            lineWidth += width
+        }
+        return lines <= maxLineCount
     }
 }
 
