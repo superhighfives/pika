@@ -167,6 +167,7 @@ struct EditableColorValue: View {
                         text: binding(for: index, layout: layout),
                         component: component,
                         index: index,
+                        focusGroup: eyedropper.type.rawValue,
                         uiColor: uiColor,
                         fontSize: size,
                         focusedIndex: $focusedIndex,
@@ -649,6 +650,8 @@ struct ColorComponentField: View {
     @Binding var text: String
     let component: ColorComponent
     let index: Int
+    /// Which swatch this field belongs to; see `ScrubTextField.focusGroup`.
+    let focusGroup: String
     let uiColor: NSColor
     let fontSize: CGFloat
     @Binding var focusedIndex: Int?
@@ -695,6 +698,7 @@ struct ColorComponentField: View {
     var body: some View {
         ScrubbableColorField(
             text: $text,
+            focusGroup: focusGroup,
             fontSize: fontSize,
             textColor: uiColor,
             isDraggable: isDraggable,
