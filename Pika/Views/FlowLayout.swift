@@ -12,6 +12,8 @@ struct FlowLayout: Layout {
     /// default) wraps to as many lines as needed.
     var maxLines: Int?
 
+    // `EditableColorValue.wrapsWithinLines` predicts this greedy wrap rule to size its font;
+    // keep the two in step if either changes.
     func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache _: inout ()) -> CGSize {
         let maxWidth = proposal.width ?? .infinity
         var lineWidth: CGFloat = 0, lineHeight: CGFloat = 0
