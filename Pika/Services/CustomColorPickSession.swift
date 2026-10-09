@@ -567,10 +567,14 @@ final class PickerLoupeController {
 
     /// Whether the cursor is over one of Pika's own windows (excluding the loupe panels). Used to
     /// fall back to the current colours instead of sampling — and feeding back — Pika's own UI.
+    /// Windows that ignore the mouse are decoration (the custom shadow and hairline border around
+    /// the main window), not UI: counting them blocked picking across the whole shadow, even
+    /// while it was faded out for the pick.
     private func isCursorOverAppWindow() -> Bool {
         let loupeNumbers = Set(loupeWindowIDs.map { Int($0) })
         return NSApp.windows.contains { window in
             window.isVisible
+                && !window.ignoresMouseEvents
                 && !loupeNumbers.contains(window.windowNumber)
                 && window.frame.contains(currentCursor)
         }
