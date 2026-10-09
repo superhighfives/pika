@@ -93,4 +93,46 @@ final class EditableColorValueTests: XCTestCase {
         XCTAssertEqual(ColorComponentField.naturalDecimalPlaces(forRange: 0 ... 100), 1)
         XCTAssertEqual(ColorComponentField.naturalDecimalPlaces(forRange: 0 ... 1), 3)
     }
+
+    // MARK: - Adopting the readout's formatting on commit
+
+    func test_adoptingReadoutFormatting_sameNumber_takesTheReadoutsText() {
+        // OpenGL shows `1.0` and five significant digits; the generic commit form had
+        // stripped those to `1` and `0.702`.
+        let readout = [
+            ColorComponent(value: "1.0", kind: .decimal, range: 0 ... 1),
+            ColorComponent(value: "0.70196", kind: .decimal, range: 0 ... 1),
+        ]
+        XCTAssertEqual(
+            EditableColorValue.adoptingReadoutFormatting(["1", "0.70196"], readout: readout),
+            ["1.0", "0.70196"]
+        )
+    }
+
+    func test_adoptingReadoutFormatting_differentNumber_keepsTheTypedValue() {
+        // HSB hue is undefined at brightness 0, so the committed colour reads back as hue 0;
+        // the typed hue must stay rather than being replaced by the readout's.
+        let readout = [
+            ColorComponent(value: "0", kind: .integer, range: 0 ... 360),
+            ColorComponent(value: "0", kind: .integer, range: 0 ... 100),
+        ]
+        XCTAssertEqual(
+            EditableColorValue.adoptingReadoutFormatting(["200", "0"], readout: readout),
+            ["200", "0"]
+        )
+    }
+
+    func test_adoptingReadoutFormatting_withinHalfAUnitOfTheReadout_takesTheReadoutsText() {
+        let readout = [ColorComponent(value: "0.702", kind: .decimal, range: 0 ... 1)]
+        XCTAssertEqual(EditableColorValue.adoptingReadoutFormatting(["0.7024"], readout: readout), ["0.702"])
+        XCTAssertEqual(EditableColorValue.adoptingReadoutFormatting(["0.7026"], readout: readout), ["0.7026"])
+    }
+
+    func test_adoptingReadoutFormatting_skipsHexAndMismatchedLayouts() {
+        let readout = [
+            ColorComponent(value: "abcdef", kind: .hex, range: nil),
+            ColorComponent(value: "1.0", kind: .decimal, range: 0 ... 1),
+        ]
+        XCTAssertEqual(EditableColorValue.adoptingReadoutFormatting(["ABCDEF"], readout: readout), ["ABCDEF"])
+    }
 }

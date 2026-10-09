@@ -535,14 +535,23 @@ struct EditableColorValue: View {
     /// undefined at brightness 0), and there the typed value stays, as `finishEditing` intends.
     private func adoptReadoutFormatting() {
         let readout = format.decompose(eyedropper.color, style: style, in: colorSpace).components
+        values = Self.adoptingReadoutFormatting(values, readout: readout)
+    }
+
+    /// The pure comparison behind `adoptReadoutFormatting`: each typed number takes the
+    /// readout's text where the two are the same number to the readout's own precision (half a
+    /// unit in its last place), and is otherwise left as typed. Hex, unparseable values, and
+    /// readout components past the end of `values` are left alone.
+    static func adoptingReadoutFormatting(_ values: [String], readout: [ColorComponent]) -> [String] {
+        var values = values
         for (index, component) in readout.enumerated() where index < values.count && component.kind != .hex {
             guard let typed = Double(values[index]), let shown = Double(component.value) else { continue }
-            // Same number to the readout's own precision (half a unit in its last place).
             let places = component.value.split(separator: ".").dropFirst().first?.count ?? 0
             if abs(typed - shown) <= 0.5 * pow(10, -Double(places)) + 1e-9 {
                 values[index] = component.value
             }
         }
+        return values
     }
 
     private func commitEditing() {
