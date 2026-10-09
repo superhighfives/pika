@@ -35,11 +35,11 @@ extension NSColor {
     func toOpenGLString(style: CopyFormat = .css) -> String {
         let RGB = toRGBAComponents()
 
-        // %.5g strips trailing zeros but drops the decimal entirely for whole numbers,
-        // so append ".0" when there is no decimal point (e.g. 0 → "0.0", 1 → "1.0").
-        let red = { let s = RGB.r.fiveSignificantDigits; return s.contains(".") ? s : "\(s).0" }()
-        let green = { let s = RGB.g.fiveSignificantDigits; return s.contains(".") ? s : "\(s).0" }()
-        let blue = { let s = RGB.b.fiveSignificantDigits; return s.contains(".") ? s : "\(s).0" }()
+        // `colorDecimalString` strips trailing zeros, dropping the decimal entirely for whole
+        // numbers, so append ".0" when there is no decimal point (e.g. 0 → "0.0", 1 → "1.0").
+        let red = { let s = RGB.r.colorDecimalString; return s.contains(".") ? s : "\(s).0" }()
+        let green = { let s = RGB.g.colorDecimalString; return s.contains(".") ? s : "\(s).0" }()
+        let blue = { let s = RGB.b.colorDecimalString; return s.contains(".") ? s : "\(s).0" }()
 
         switch style {
         case .css, .design, .swiftUI:

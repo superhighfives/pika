@@ -149,13 +149,28 @@ final class NSColorHexTests: XCTestCase {
         XCTAssertLessThanOrEqual(stored.toHex(in: .sRGB), 0xFFFFFF)
     }
 
-    func test_fiveSignificantDigits_readsFloatNoiseAsZero() {
-        // Converting extended sRGB back to P3 leaves ~1e-7 where blue should be 0, which `%.5g`
-        // printed as "5.641e-08" in the OpenGL and SwiftUI formats.
+    func test_colorDecimalString_readsFloatNoiseAsZero() {
+        // Converting extended sRGB back to P3 leaves ~1e-7 where blue should be 0.
         let stored = outOfGamutP3.usingColorSpace(.extendedSRGB)!
-        XCTAssertEqual(stored.toRGBAComponents(in: .displayP3).b.fiveSignificantDigits, "0")
-        XCTAssertEqual(CGFloat(-3e-8).fiveSignificantDigits, "0")
-        XCTAssertEqual(CGFloat(0.53333333).fiveSignificantDigits, "0.53333")
-        XCTAssertEqual(CGFloat(0.000012).fiveSignificantDigits, "1.2e-05", "real values are untouched")
+        XCTAssertEqual(stored.toRGBAComponents(in: .displayP3).b.colorDecimalString, "0")
+        XCTAssertEqual(CGFloat(-3e-8).colorDecimalString, "0")
+        XCTAssertEqual(CGFloat(-0.00001).colorDecimalString, "0", "no \"-0\"")
+    }
+
+    func test_colorDecimalString_capsAtFourDecimalPlaces() {
+        // `%.5g` showed more decimals the smaller the value, and disagreed with the editor.
+        XCTAssertEqual(CGFloat(0.066667).colorDecimalString, "0.0667")
+        XCTAssertEqual(CGFloat(0.05098).colorDecimalString, "0.051")
+        XCTAssertEqual(CGFloat(0.53333333).colorDecimalString, "0.5333")
+        XCTAssertEqual(CGFloat(0.000123).colorDecimalString, "0.0001")
+        XCTAssertEqual(CGFloat(1).colorDecimalString, "1")
+    }
+
+    func test_colorDecimalString_roundTripsEvery8BitChannel() {
+        // Four places is ±0.00005 — well inside one 8-bit step — so nothing is lost.
+        for channel in 0 ... 255 {
+            let shown = Double((CGFloat(channel) / 255).colorDecimalString)!
+            XCTAssertEqual(Int((shown * 255).rounded()), channel, "channel \(channel)")
+        }
     }
 }

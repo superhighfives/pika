@@ -12,6 +12,7 @@ extension CGFloat {
         var result = formatted
         while result.hasSuffix("0") { result.removeLast() }
         if result.hasSuffix(".") { result.removeLast() }
-        return result
+        // A tiny negative value (e.g. float noise) rounds to "-0.0000" and strips to "-0".
+        return result == "-0" ? "0" : result
     }
 }

@@ -9,11 +9,12 @@ import SwiftUI
 struct RGBAComponents { let r, g, b, a: CGFloat }
 
 extension CGFloat {
-    /// `%.5g`, reading float noise below 1e-6 as 0. Converting a wide-gamut colour between spaces
-    /// can leave e.g. 5.6e-08 where a channel should be 0, which `%.5g` prints in scientific
-    /// notation. Applied only when formatting: rounding the components themselves would leak
-    /// into the Lab/OKLCH maths and shift values sitting on a rounding boundary.
-    var fiveSignificantDigits: String { String(format: "%.5g", abs(self) < 1e-6 ? 0 : self) }
+    /// A 0–1 colour value (OpenGL, SwiftUI) to at most 4 decimal places, trailing zeros stripped.
+    /// Four places is ±0.00005, well inside one 8-bit step (1/255), so every 8-bit channel still
+    /// round-trips. This replaced `%.5g`, whose 5 *significant* digits showed more decimals the
+    /// smaller the value (`0.066667`, but `0.53333`) and disagreed with the editor, which caps at
+    /// 4 places. Float noise from wide-gamut conversions (e.g. 5.6e-08) rounds to `0`.
+    var colorDecimalString: String { strippedDecimalString(maxDecimalPlaces: 4) }
 }
 
 extension NSColor {
@@ -39,8 +40,8 @@ extension NSColor {
         case .css, .design:
             return String(format: "rgb(%d, %d, %d)", red, green, blue)
         case .swiftUI:
-            return "Color(red: \(RGB.r.fiveSignificantDigits), green: \(RGB.g.fiveSignificantDigits), "
-                + "blue: \(RGB.b.fiveSignificantDigits))"
+            return "Color(red: \(RGB.r.colorDecimalString), green: \(RGB.g.colorDecimalString), "
+                + "blue: \(RGB.b.colorDecimalString))"
         case .unformatted:
             return String(format: "%d, %d, %d", red, green, blue)
         }
