@@ -185,7 +185,12 @@ struct ScrubbableColorField: NSViewRepresentable {
         }
 
         let editorIsActive = nsView.currentEditor() != nil && nsView.window?.firstResponder === nsView.currentEditor()
-        if isFocused, !editorIsActive {
+        // The colour field the shared field editor is editing right now, if it's another one.
+        // Tab between swatches moves focus there before this swatch's own state catches up (its
+        // focus-loss is deferred a turn), so a stale `isFocused` here must not pull focus back.
+        let editingField = (nsView.window?.firstResponder as? NSTextView)?.delegate as? ScrubTextField
+        let anotherFieldIsEditing = editingField != nil && editingField !== nsView
+        if isFocused, !editorIsActive, !anotherFieldIsEditing {
             nsView.window?.makeFirstResponder(nsView)
         } else if !isFocused, editorIsActive {
             nsView.window?.makeFirstResponder(nil)
@@ -376,6 +381,17 @@ final class ScrubTextField: NSTextField {
             onFocusChange?(false)
         }
         return result
+    }
+
+    // While editing, the window's shared field editor is first responder, not this field: the
+    // field's own `resignFirstResponder` fires as editing *starts* (the spurious "end" the
+    // deferral in `ColorComponentField` filters out) and never as it ends. Without this, tabbing
+    // into the other swatch's fields left this swatch still marked focused, outline and edit
+    // session included. The same deferral drops this when focus just moves to a sibling field.
+    override func textDidEndEditing(_ notification: Notification) {
+        super.textDidEndEditing(notification)
+        window?.invalidateCursorRects(for: self)
+        onFocusChange?(false)
     }
 
     override func viewDidMoveToWindow() {
