@@ -193,6 +193,12 @@ struct ScrubbableColorField: NSViewRepresentable {
     }
 
     final class Coordinator: NSObject, NSTextFieldDelegate {
+        static let upArrowKeyCode: UInt16 = 126
+        static let downArrowKeyCode: UInt16 = 125
+        /// The arrow-key event already stepped, so a second command for the same keypress
+        /// (Option sends two) doesn't step again.
+        private weak var lastSteppedEvent: NSEvent?
+
         var text: Binding<String>
         let onSubmit: () -> Void
         let onCancel: () -> Void
@@ -235,12 +241,20 @@ struct ScrubbableColorField: NSViewRepresentable {
                 onCancel()
                 return true
             }
-            if commandSelector == #selector(NSResponder.moveUp(_:)), let onStep {
-                onStep(1)
-                return true
-            }
-            if commandSelector == #selector(NSResponder.moveDown(_:)), let onStep {
-                onStep(-1)
+            // Up/Down step the value, with or without modifiers. Match the key itself rather than
+            // the command: with Shift or Option held, the text system sends selection and
+            // paragraph commands (`moveUpAndModifySelection:` …) instead of `moveUp:`, so the
+            // modifier steps never arrived — and Option sends *two* commands for one keypress,
+            // so step once per event. The multiplier rides on the direction's magnitude, read
+            // from this event's own modifiers (the global modifier state can lag behind it).
+            if let onStep, let event = NSApp.currentEvent, event.type == .keyDown,
+               event.keyCode == Self.upArrowKeyCode || event.keyCode == Self.downArrowKeyCode
+            {
+                guard event !== lastSteppedEvent else { return true }
+                lastSteppedEvent = event
+                let flags = event.modifierFlags
+                let scale: CGFloat = flags.contains(.shift) ? 10 : flags.contains(.option) ? 0.1 : 1
+                onStep((event.keyCode == Self.upArrowKeyCode ? 1 : -1) * scale)
                 return true
             }
             return false
