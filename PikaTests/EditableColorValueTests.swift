@@ -135,4 +135,33 @@ final class EditableColorValueTests: XCTestCase {
         ]
         XCTAssertEqual(EditableColorValue.adoptingReadoutFormatting(["ABCDEF"], readout: readout), ["ABCDEF"])
     }
+
+    // MARK: - Arrow-key steps
+
+    func test_arrowStep_isOneForWholeNumbersAndWideRanges() {
+        // Percentages, hue, 0–255 RGB, and Lab/OKLCH lightness: a per-pixel drag step here
+        // (range ÷ 360) rounded percentages straight back and moved lightness by ~0.28.
+        XCTAssertEqual(ColorComponentField.arrowStep(kind: .integer, range: 0 ... 100), 1)
+        XCTAssertEqual(ColorComponentField.arrowStep(kind: .integer, range: 0 ... 255), 1)
+        XCTAssertEqual(ColorComponentField.arrowStep(kind: .decimal, range: 0 ... 100), 1)
+        XCTAssertEqual(ColorComponentField.arrowStep(kind: .decimal, range: nil), 1) // Lab a/b
+    }
+
+    func test_arrowStep_isOneHundredthForUnitRanges() {
+        XCTAssertEqual(ColorComponentField.arrowStep(kind: .decimal, range: 0 ... 1), 0.01)
+    }
+
+    func test_formattedStepValue_keepsThePrecisionOnDisplay() {
+        XCTAssertEqual(ColorComponentField.formattedStepValue(0.3033, kind: .decimal, step: 0.01, shownText: "0.2933"), "0.3033")
+        XCTAssertEqual(ColorComponentField.formattedStepValue(83.05, kind: .decimal, step: 1, shownText: "82.05"), "83.05")
+    }
+
+    func test_formattedStepValue_usesTheStepsPrecisionWhenFiner() {
+        // OpenGL "1.0" stepped down by 0.01 needs two places.
+        XCTAssertEqual(ColorComponentField.formattedStepValue(0.99, kind: .decimal, step: 0.01, shownText: "1.0"), "0.99")
+    }
+
+    func test_formattedStepValue_roundsIntegers() {
+        XCTAssertEqual(ColorComponentField.formattedStepValue(51, kind: .integer, step: 1, shownText: "50"), "51")
+    }
 }

@@ -771,20 +771,42 @@ struct ColorComponentField: View {
         )
     }
 
-    /// Up/Down arrow keys nudge the focused field by one `dragUnitsPerPixel` step (a tenth of
-    /// that with Option), same as a single step of click-drag or scroll scrubbing — applied
+    /// Up/Down arrow keys nudge the focused field by a round step (`arrowStep`), scaled by
+    /// `direction`'s magnitude: the field passes ±10 with Shift and ±0.1 with Option. Applied
     /// straight to the live-preview binding since the field is already mid-edit (it has to be
-    /// focused to receive the key at all).
+    /// focused to receive the key at all). They used to reuse the drag's per-pixel step
+    /// (range ÷ 360), which moved Lab/OKLCH by odd amounts like 0.28, and rounded every 0–100
+    /// percentage straight back to where it started.
     private func stepValue(_ direction: CGFloat) {
-        let current = Double(text.trimmingCharacters(in: .whitespaces)) ?? 0
-        let fine = NSEvent.modifierFlags.contains(.option)
-        let unitsPerStep = dragUnitsPerPixel(for: component.range)
-        var newValue = current + Double(direction) * unitsPerStep * (fine ? 0.1 : 1.0)
+        let trimmed = text.trimmingCharacters(in: .whitespaces)
+        let current = Double(trimmed) ?? 0
+        var step = Self.arrowStep(kind: component.kind, range: component.range) * Double(abs(direction))
+        // A whole-number field can't take a fractional step; it would round straight back.
+        if component.kind == .integer { step = max(step, 1) }
+        var newValue = current + (direction < 0 ? -step : step)
         if let range = component.range {
             newValue = min(max(newValue, range.lowerBound), range.upperBound)
         }
-        let places = Self.stableDecimalPlaces(for: text)
-        text = Self.formattedDragValue(newValue, kind: component.kind, stableDecimalPlaces: places)
+        // At a limit, leave the text exactly as it is rather than reformatting an unchanged value
+        // (a capped `1.0` used to become `1.00`).
+        guard newValue != current else { return }
+        text = Self.formattedStepValue(newValue, kind: component.kind, step: step, shownText: trimmed)
+    }
+
+    /// The Up/Down arrow step: 1 for whole numbers and wide or unbounded decimal ranges (Lab,
+    /// OKLCH lightness and hue), 0.01 for 0–1 values (OpenGL, OKLCH chroma, SwiftUI).
+    static func arrowStep(kind: ComponentKind, range: ClosedRange<Double>?) -> Double {
+        guard kind == .decimal, let range else { return 1 }
+        return range.upperBound - range.lowerBound > 1 ? 1 : 0.01
+    }
+
+    /// Formats a stepped value at the precision already on display, or the step's own precision
+    /// if that's finer, so `0.2933` steps to `0.3033` and `82.05` to `83.05`.
+    static func formattedStepValue(_ value: Double, kind: ComponentKind, step: Double, shownText: String) -> String {
+        guard kind == .decimal else { return String(Int(value.rounded())) }
+        let shownPlaces = shownText.split(separator: ".").dropFirst().first?.count ?? 0
+        let stepPlaces = max(0, Int(ceil(-log10(step) - 1e-9)))
+        return String(format: "%.\(max(shownPlaces, stepPlaces))f", value)
     }
 
     /// Two-finger trackpad scroll nudges the value the same way click-drag does: accumulated
