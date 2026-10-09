@@ -92,6 +92,7 @@ struct ScrollValueAdapter: NSViewRepresentable {
 /// stays correct however focus changes — click, Tab, or a programmatic request.
 struct ScrubbableColorField: NSViewRepresentable {
     @Binding var text: String
+    let focusGroup: String
     let fontSize: CGFloat
     let textColor: NSColor
     let isDraggable: Bool
@@ -147,6 +148,7 @@ struct ScrubbableColorField: NSViewRepresentable {
         // delegate relies on — so `focusedIndex` silently never got set, and the focus outline
         // never appeared. The responder overrides fire reliably however focus changes.
         nsView.onFocusChange = onFocusChange
+        nsView.focusGroup = focusGroup
         context.coordinator.onStep = onStep
         if nsView.font?.pointSize != fontSize {
             nsView.font = NSFont.systemFont(ofSize: fontSize, weight: .regular)
@@ -185,12 +187,14 @@ struct ScrubbableColorField: NSViewRepresentable {
         }
 
         let editorIsActive = nsView.currentEditor() != nil && nsView.window?.firstResponder === nsView.currentEditor()
-        // The colour field the shared field editor is editing right now, if it's another one.
-        // Tab between swatches moves focus there before this swatch's own state catches up (its
-        // focus-loss is deferred a turn), so a stale `isFocused` here must not pull focus back.
+        // The colour field the shared field editor is editing right now, if it's in the *other*
+        // swatch. Tab between swatches moves focus there before this swatch's own state catches
+        // up (its focus-loss is deferred a turn), so a stale `isFocused` here must not pull focus
+        // back. Within one swatch, focus legitimately moves while a sibling is still editing
+        // (dragging a second field mid-edit joins the session), so don't hold back there.
         let editingField = (nsView.window?.firstResponder as? NSTextView)?.delegate as? ScrubTextField
-        let anotherFieldIsEditing = editingField != nil && editingField !== nsView
-        if isFocused, !editorIsActive, !anotherFieldIsEditing {
+        let otherSwatchIsEditing = editingField.map { $0 !== nsView && $0.focusGroup != nsView.focusGroup } ?? false
+        if isFocused, !editorIsActive, !otherSwatchIsEditing {
             nsView.window?.makeFirstResponder(nsView)
         } else if !isFocused, editorIsActive {
             nsView.window?.makeFirstResponder(nil)
@@ -277,6 +281,9 @@ final class ScrubTextField: NSTextField {
     /// overrides rather than `NSTextFieldDelegate`'s controlTextDidBeginEditing/EndEditing —
     /// see the note at the `onFocusChange` assignment in `ScrubbableColorField.updateNSView`.
     var onFocusChange: ((Bool) -> Void)?
+    /// Which swatch (foreground or background) this field belongs to, so focus reconciliation
+    /// can tell a handoff between swatches from a move between sibling fields.
+    var focusGroup: String?
 
     /// The most recent value `onDragChanged` reported — always set by the time `finishDrag` can
     /// run, since `updateDrag` fires at least once (immediately after `beginDrag`) before a
