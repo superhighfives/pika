@@ -417,6 +417,10 @@ struct PreferencesView: View {
 
                     GlobalShortcutSection()
                 }
+                // Extra leading for labels that wrap in the narrow two-column layout (e.g. "Pick
+                // contrasting color after foreground"); the default read as cramped next to the
+                // spacing between rows. Single-line text is unaffected.
+                .lineSpacing(3)
                 .padding(.bottom, 24.0)
             }
         }
