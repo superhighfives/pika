@@ -19,6 +19,7 @@ private struct GeneralAndSelectionSection: View {
     @Default(.alwaysShowOnLaunch) var alwaysShowOnLaunch
     @Default(.showColorOverlay) var showColorOverlay
     @Default(.colorOverlayDuration) var colorOverlayDuration
+    @Default(.pickerStyle) var pickerStyle
     @State var disableHideMenuBarIcon = true
 
     var body: some View {
@@ -57,7 +58,7 @@ private struct GeneralAndSelectionSection: View {
                 Text(PikaText.textWindowSettingsTitle)
                     .font(.system(size: 16))
                     .padding(.top, 8.0)
-                Picker("", selection: $windowShadow) {
+                Picker(PikaText.textWindowShadow, selection: $windowShadow) {
                     ForEach(WindowShadow.allCases, id: \.self) { value in
                         Text(value.localizedString())
                     }
@@ -88,17 +89,22 @@ private struct GeneralAndSelectionSection: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 .disabled(appMode == .menubarPopover)
-                Toggle(isOn: $showColorOverlay) {
-                    Text(PikaText.textShowColorOverlay)
-                }
-                if showColorOverlay {
-                    HStack(spacing: 8.0) {
-                        Slider(value: $colorOverlayDuration, in: 1.0 ... 5.0, step: 0.5)
-                        Text(String(format: "%.1fs", colorOverlayDuration))
-                            .font(.system(size: 11))
-                            .foregroundStyle(.secondary)
+                // The custom picker shows the colour live in the loupe, so the post-pick
+                // overlay (and its duration) is redundant and hidden while it's active.
+                if pickerStyle != .custom {
+                    Toggle(isOn: $showColorOverlay) {
+                        Text(PikaText.textShowColorOverlay)
                     }
-                    .padding(.leading, 20.0)
+                    if showColorOverlay {
+                        HStack(spacing: 8.0) {
+                            Slider(value: $colorOverlayDuration, in: 1.0 ... 5.0, step: 0.5)
+                                .accessibilityLabel(PikaText.textDuration)
+                            Text(String(format: "%.1fs", colorOverlayDuration))
+                                .font(.system(size: 11))
+                                .foregroundStyle(.secondary)
+                        }
+                        .padding(.leading, 20.0)
+                    }
                 }
             }
             .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
@@ -117,6 +123,54 @@ private struct AppModeSection: View {
             }
             .frame(height: 96)
         }
+        .padding(.horizontal, 24.0)
+    }
+}
+
+private struct PickerStyleSection: View {
+    @Default(.pickerStyle) var pickerStyle
+    @Default(.loupeTheme) var loupeTheme
+    @State private var pendingRelaunch = false
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10.0) {
+            Text(PikaText.textPickerStyleTitle).font(.system(size: 16))
+
+            // Same gated System/Custom comparison as the first-run splash.
+            PickerChoiceView(pendingRelaunch: $pendingRelaunch)
+
+            // The Pro loupe's style. Only relevant when the custom picker is chosen.
+            if pickerStyle == .custom {
+                HStack(spacing: 8.0) {
+                    Text(PikaText.textLoupeTheme).font(.system(size: 13))
+                    Spacer(minLength: 12.0)
+                    Picker("", selection: $loupeTheme) {
+                        ForEach(LoupeTheme.allCases, id: \.self) { theme in
+                            Text(theme.localizedName).tag(theme)
+                        }
+                    }
+                    .labelsHidden()
+                    .pickerStyle(.segmented)
+                    .fixedSize()
+                }
+            }
+
+            // Pair picking is controlled by the single "Pick a contrasting
+            // background color after the foreground" toggle in the Selection
+            // section — it applies to both picker styles, so it isn't duplicated
+            // here per picker.
+        }
+        .padding(.horizontal, 24.0)
+    }
+}
+
+private struct ColorNamesSection: View {
+    var body: some View {
+        // The picker owns its heading and description (with the refresh state on the right).
+        ColorListPickerView(
+            titleFont: .system(size: 16),
+            subtitleFont: .system(size: 12)
+        )
         .padding(.horizontal, 24.0)
     }
 }
@@ -181,6 +235,9 @@ private struct CopySettingsSection: View {
                         Divider()
                     }
                     .pickerStyle(.menu)
+                    // The menu style draws the title as separate text that VoiceOver doesn't
+                    // tie to the control, so name it explicitly.
+                    .accessibilityLabel(PikaText.textCopyExport)
                 }
                 ColorExampleRow(copyFormat: copyFormat, eyedropper: eyedroppers.foreground)
             }
@@ -254,6 +311,7 @@ private struct ColorFormatSection: View {
                     }
                 }
                 .pickerStyle(.menu)
+                .accessibilityLabel(PikaText.textFormatDescription)
             }
         }
         .padding(.horizontal, 24.0)
@@ -264,9 +322,17 @@ private struct GlobalShortcutSection: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8.0) {
             Section(header: Text(PikaText.textHotkeyTitle).font(.system(size: 16))) {
-                HStack(spacing: 12.0) {
-                    Text(PikaText.textHotkeyDescription).font(.system(size: 13, weight: .medium))
-                    KeyboardShortcuts.Recorder(for: .togglePika)
+                // Both global shortcuts the splash offers. Pick-pair was only settable during
+                // onboarding, so there was no way to change ⌥⌘D afterwards.
+                Grid(alignment: .leading, horizontalSpacing: 12.0, verticalSpacing: 10.0) {
+                    GridRow {
+                        Text(PikaText.textHotkeyDescription).font(.system(size: 13, weight: .medium))
+                        KeyboardShortcuts.Recorder(for: .togglePika)
+                    }
+                    GridRow {
+                        Text(PikaText.textPickPair).font(.system(size: 13, weight: .medium))
+                        KeyboardShortcuts.Recorder(for: .pickPair)
+                    }
                 }
             }
             .padding(.horizontal, 24.0)
@@ -329,6 +395,14 @@ struct PreferencesView: View {
 
                     Divider().padding(.vertical, 16.0)
 
+                    PickerStyleSection()
+
+                    Divider().padding(.vertical, 16.0)
+
+                    ColorNamesSection()
+
+                    Divider().padding(.vertical, 16.0)
+
                     AppearanceSection()
 
                     Divider().padding(.vertical, 16.0)
@@ -343,6 +417,10 @@ struct PreferencesView: View {
 
                     GlobalShortcutSection()
                 }
+                // Extra leading for labels that wrap in the narrow two-column layout (e.g. "Pick
+                // contrasting color after foreground"); the default read as cramped next to the
+                // spacing between rows. Single-line text is unaffected.
+                .lineSpacing(3)
                 .padding(.bottom, 24.0)
             }
         }

@@ -75,11 +75,17 @@ class WindowCoordinator: NSObject {
 
         // Keep the companion windows on the same level as the main window (which PikaWindow
         // moves between .floating/.normal), so toggling "float on top" doesn't leave them
-        // stranded on a stale level.
+        // stranded on a stale level. About/Help/Preferences are cached after first open
+        // (see setupAbout/Help/Preferences below), so without this they'd stay stuck at
+        // whatever level they were created with.
         Defaults.observe(.appFloating) { [weak self] change in
             let level: NSWindow.Level = change.newValue == true ? .floating : .normal
             self?.borderWindow?.level = level
             self?.shadowWindow?.level = level
+            self?.aboutWindow?.level = level
+            self?.helpWindow?.level = level
+            self?.preferencesWindow?.level = level
+            self?.splashWindow?.level = level
         }.tieToLifetime(of: self)
 
         // Keep the companion windows aligned to the main window as it resizes and moves.
@@ -107,7 +113,8 @@ class WindowCoordinator: NSObject {
     ///   • `.always`  — native drop shadow, no companions.
     ///   • `.never`   — no shadow; the hairline border keeps the (otherwise blending) edge.
     ///   • `.hiddenWhilePicking` — native shadow off, custom shadow drawn instead so it can
-    ///     fade to nothing while the sampler is up (and the border fades in to hold the edge).
+    ///     fade to nothing while the sampler is up; the border stays on throughout to hold the
+    ///     edge the native shadow would otherwise draw.
     /// `animated` is `true` only for the pick transition; setting changes and re-asserts snap.
     func applyShadowState(animated: Bool = false) {
         guard pikaWindow != nil else { return }
@@ -126,8 +133,10 @@ class WindowCoordinator: NSObject {
             setNativeShadow(false)
             ensureCustomShadow()
             setCustomShadowOpacity(isPickingSuppressed ? 0 : restingShadowOpacity, animated: animated)
-            // The edge only needs the hairline while the shadow is gone; crossfade it in.
-            setBorderVisible(isPickingSuppressed, animated: animated)
+            // Keep the hairline at rest too: the native shadow draws a crisp edge that the
+            // custom one doesn't, so without it the window's outline went soft next to
+            // `.always`. While picking it's the only thing holding the edge.
+            setBorderVisible(true, animated: animated)
         }
     }
 
@@ -323,8 +332,12 @@ class WindowCoordinator: NSObject {
     }
 
     func startMainWindow() {
-        if !pikaWindow.isVisible {
+        // Popover mode clears `pikaWindow.contentView` (see `removeMainWindowContent()`),
+        // so fading it in here — as this completion handler used to unconditionally do —
+        // would show a blank floating window whenever the splash is dismissed in that mode.
+        if !Defaults[.appMode].usesPopover, !pikaWindow.isVisible {
             pikaWindow.fadeIn(nil)
+            steerFirstResponderAwayFromFields()
         }
         applyShadowState()
         Defaults[.viewedSplash] = true
@@ -332,7 +345,21 @@ class WindowCoordinator: NSObject {
 
     func showMainWindow() {
         pikaWindow.makeKeyAndOrderFront(nil)
+        steerFirstResponderAwayFromFields()
         applyShadowState()
+    }
+
+    /// AppKit's own auto-focus (`_setUpFirstResponder`/`_selectFirstKeyView`) is meant to be
+    /// headed off once and for all by pointing `initialFirstResponder` at the content view (see
+    /// the comment at that assignment in `ScrubTextField.viewDidMoveToWindow`).
+    /// That holds for the window's very first appearance, but re-showing a window that was
+    /// previously ordered out (e.g. a pick landing while Pika was closed, which unconditionally
+    /// re-shows it via `showPika`) can still land on the first colour-value field instead —
+    /// resigning key status on hide appears to drop the current first responder, and re-deriving
+    /// one on the way back in doesn't always respect `initialFirstResponder`. Rather than chase
+    /// that AppKit-internal quirk, force it back every time the window is (re)shown.
+    private func steerFirstResponderAwayFromFields() {
+        pikaWindow.makeFirstResponder(pikaWindow.contentView)
     }
 
     func hideMainWindow() {
@@ -360,12 +387,27 @@ class WindowCoordinator: NSObject {
         } else {
             pikaWindow.fadeIn(sender: nil, duration: 0.2)
         }
+        steerFirstResponderAwayFromFields()
         applyShadowState()
         NSApp.activate(ignoringOtherApps: true)
     }
 
     func hidePika() {
         hideMainWindow()
+    }
+
+    /// Bring the main window back after `hidePikaWhilePicking` hid it for a pick. Only
+    /// activates Pika if it was active when the pick began: a pick started from another app
+    /// (the global shortcut) shouldn't pull focus away from that app.
+    func restoreAfterPick(activate: Bool) {
+        guard !activate else { return showPika() }
+        if !pikaWindow.isVisible {
+            pikaWindow.fadeIn(sender: nil, duration: 0.2, presentationFunction: .orderFrontRegardless)
+        }
+        // Not key yet, but set the first responder now so a later click that makes the
+        // window key doesn't land focus on a colour-value field.
+        steerFirstResponderAwayFromFields()
+        applyShadowState()
     }
 
     func openAboutWindow() {
@@ -405,8 +447,12 @@ class WindowCoordinator: NSObject {
 
     func openPreferencesWindow() {
         if preferencesWindow == nil, let eyedroppers {
+            // Width is pinned by the window's own min/max below, not by the SwiftUI frame:
+            // pinning both would demand the full 580 for content *and* leave the scroller
+            // with nowhere to go, pushing it past the right edge where the window clips it.
+            // Letting the content flex mirrors the Help window, whose scroller sits inboard.
             let rootView = PreferencesView()
-                .frame(minWidth: 580, maxWidth: 580, minHeight: 400, maxHeight: .infinity)
+                .frame(maxWidth: .infinity, minHeight: 400, maxHeight: .infinity)
                 .ignoresSafeArea()
                 .environmentObject(eyedroppers)
             let view = NSHostingView(rootView: rootView)
@@ -415,6 +461,9 @@ class WindowCoordinator: NSObject {
                 size: NSRect(x: 0, y: 0, width: 580, height: 600),
                 styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView]
             )
+            // Matches About/Help/Splash — lets the header gradient run up behind the titlebar
+            // instead of leaving an opaque bar above it.
+            preferencesWindow?.titlebarAppearsTransparent = true
             preferencesWindow?.minSize = NSSize(width: 580, height: 400)
             preferencesWindow?.maxSize = NSSize(width: 580, height: CGFloat.greatestFiniteMagnitude)
             preferencesWindow?.contentMinSize = NSSize(width: 580, height: 400)
@@ -426,19 +475,24 @@ class WindowCoordinator: NSObject {
     }
 
     func openSplashWindow() {
-        splashWindow = PikaWindow.createSecondaryWindow(
-            title: PikaText.textAppName,
-            size: NSRect(x: 0, y: 0, width: 650, height: 380),
-            styleMask: [.titled, .fullSizeContentView]
-        )
-        // `createSecondaryWindow` derives the autosave name from the title, which for
-        // the splash ("Pika") collides with the main window's "Pika Window" name and
-        // would let the transient, always-centered splash pollute the persisted main
-        // window frame. The splash never needs to remember its position, so clear it.
-        splashWindow.setFrameAutosaveName("")
-        splashWindow.titlebarAppearsTransparent = true
-        splashTouchBarController = SplashTouchBarController(window: splashWindow)
-        splashWindow.contentView = NSHostingView(rootView: SplashView().ignoresSafeArea())
+        if splashWindow == nil {
+            splashWindow = PikaWindow.createSecondaryWindow(
+                title: PikaText.textAppName,
+                // Sized to fit the full setup list without scrolling, including a permission
+                // step (Grant Screen Recording / Grant Accessibility) when one is shown.
+                size: NSRect(x: 0, y: 0, width: 720, height: 720),
+                styleMask: [.titled, .fullSizeContentView]
+            )
+            // `createSecondaryWindow` derives the autosave name from the title, which for
+            // the splash ("Pika") collides with the main window's "Pika Window" name and
+            // would let the transient, always-centered splash pollute the persisted main
+            // window frame. The splash never needs to remember its position, so clear it.
+            splashWindow.setFrameAutosaveName("")
+            splashWindow.titlebarAppearsTransparent = true
+            splashTouchBarController = SplashTouchBarController(window: splashWindow)
+            splashWindow.contentView = NSHostingView(rootView: SplashView().ignoresSafeArea())
+        }
+        splashWindow.makeKeyAndOrderFront(nil)
         splashWindow.fadeIn(nil)
     }
 }

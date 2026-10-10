@@ -202,6 +202,9 @@
 /* Background */
 "color.background" = "Background";
 
+/* Invalid input */
+"color.edit.invalid" = "Invalid input";
+
 /* WCAG 3:1 */
 "color.wcag.30" = "WCAG 2 level AA requires a contrast ratio of at least 3:1 for large (18pt / ~24px) or bold (14pt / ~18.6px) text, and for non-text content like UI.";
 
@@ -578,3 +581,144 @@
 
 /* Restore system appearance */
 "help.url.appearance.system" = "Restore system appearance";
+
+/* Show Pika */
+"menu.showPika" = "Show Pika";
+
+/* Show the welcome splash */
+"menu.showSplash" = "Show splash";
+
+/* Splash setup heading */
+"splash.setup.title" = "Welcome to Pika";
+
+/* Splash setup subheading */
+"splash.setup.subtitle" = "A few quick choices to get you started.";
+
+/* Global shortcut row subtitle */
+"splash.shortcut.subtitle" = "Show and hide Pika from anywhere";
+
+/* Pick-pair shortcut row subtitle */
+"splash.pair.subtitle" = "Grab a foreground, then a background";
+
+/* Launch at login row subtitle */
+"splash.launch.subtitle" = "Open Pika when you log in";
+
+/* Custom picker recommended badge */
+"splash.picker.recommended" = "Recommended";
+
+/* Pro picker capability note: needs the Screen Recording permission */
+"picker.requiresScreenRecording" = "Requires Screen Recording";
+
+/* Button to grant the optional Accessibility permission for the Pro picker */
+"picker.grantAccessibility" = "Grant Accessibility";
+
+/* Label for the Pro picker loupe theme setting */
+"loupe.theme" = "Loupe style";
+
+/* Loupe theme: coloured rim with engraved text */
+"loupe.theme.lens" = "Lens";
+
+/* Loupe theme: white badges on the inside edge */
+"loupe.theme.badge" = "Badge";
+
+/* Loupe theme: plain magnifier with a readout card beside it */
+"loupe.theme.card" = "Card";
+
+/* Intro line above the Pro picker permission buttons */
+"picker.permissions.intro" = "To enable the Pro picker, you’ll need to grant the following permissions:";
+
+/* Permission pill label: Screen Recording */
+"picker.perm.screenRecording" = "Screen Recording";
+
+/* Permission pill label: Accessibility */
+"picker.perm.accessibility" = "Accessibility";
+
+/* Explains what the optional Accessibility permission adds to the Pro picker */
+"picker.accessibilityNote" = "Optional — lets Escape and arrow-key nudging work while picking over other apps.";
+
+/* Custom picker permission note */
+"splash.picker.permission" = "Needs Screen Recording permission";
+
+/* Pro picker declined fallback note */
+"splash.picker.fallback" = "Not now? You’ll use the Basic picker.";
+
+/* Splash footer note */
+"splash.footer" = "You can change all of this in Settings.";
+
+/* Splash: pre-selected checkbox to stop showing the splash on launch */
+"splash.dontShowAgain" = "Don’t show this again";
+
+/* Get started confirmation title when the Basic picker is selected */
+"splash.confirm.title" = "Use Pika’s Pro picker?";
+
+/* Get started confirmation body */
+"splash.confirm.body" = "The Pro picker shows the colour, its format, and live contrast right in the loupe as you pick — a much nicer experience than the macOS sampler. You can always switch later in Settings.";
+
+/* Confirmation: enable Pro picker */
+"splash.confirm.enable" = "Enable Pro Picker";
+
+/* Confirmation: keep the Basic picker */
+"splash.confirm.continue" = "Continue with Basic Picker";
+
+/* Colour name list section title */
+"preferences.colornames.title" = "Colour Names";
+
+/* Colour name list section subtitle */
+"preferences.colornames.subtitle" = "Choose the list Pika uses to name colours. Lists come from color.pizza and update automatically; the default works offline.";
+
+/* Default colour list name */
+"preferences.colornames.default" = "Default";
+
+/* Colour list tooltip: a refresh is in progress */
+"preferences.colornames.status.checking" = "Checking color.pizza for updates…";
+
+/* Colour list tooltip: when the list was last refreshed (%@ is a date) */
+"preferences.colornames.status.updated" = "Updated %@";
+
+/* Colour list tooltip: the last refresh failed, cached/bundled names are in use */
+"preferences.colornames.status.offline" = "Couldn’t reach color.pizza. Using the saved colour list.";
+
+/* Colour list tooltip: no network refresh has happened yet */
+"preferences.colornames.status.builtin" = "Using the built-in colour list.";
+
+/* Colour picker style section title */
+"preferences.picker.title" = "Colour Picker";
+
+/* Basic picker tile title */
+"preferences.picker.system.title" = "Basic picker";
+
+/* Basic picker tile subtitle */
+"preferences.picker.system.description" = "macOS colour sampler";
+
+/* Pro picker tile title */
+"preferences.picker.custom.title" = "Pro picker";
+
+/* Pro picker tile subtitle */
+"preferences.picker.custom.description" = "Live contrast & format";
+
+/* Pair pick mode toggle */
+"preferences.picker.pair" = "Pick a background straight after the foreground";
+
+/* Screen recording permission explanation */
+"preferences.picker.permission" = "Pika needs Screen Recording permission to sample pixels for the Pro picker.";
+
+/* Screen recording relaunch guidance */
+"preferences.picker.relaunch.note" = "Allow Screen Recording for Pika in System Settings, then relaunch Pika to finish enabling the Pro picker.";
+
+/* Relaunch Pika button */
+"preferences.picker.relaunch.button" = "Relaunch Pika";
+
+/* Grant Screen Recording permission button */
+"preferences.picker.grant.button" = "Grant Permission";
+
+/* Permission revoked alert title */
+"picker.reverted.title" = "Switched to the Basic picker";
+
+/* Permission revoked alert body */
+"picker.reverted.body" = "Pika’s Pro picker needs Screen Recording permission, which isn’t currently granted. You can re-enable it in Settings once permission is allowed.";
+
+/* Splash picker choice label */
+"splash.picker.prompt" = "Colour picker";
+
+/* Pick a foreground then background pair */
+"color.pick.pair" = "Pick pair";

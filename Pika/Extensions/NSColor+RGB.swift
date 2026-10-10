@@ -8,6 +8,15 @@ import SwiftUI
 
 struct RGBAComponents { let r, g, b, a: CGFloat }
 
+extension CGFloat {
+    /// A 0–1 colour value (OpenGL, SwiftUI) to at most 4 decimal places, trailing zeros stripped.
+    /// Four places is ±0.00005, well inside one 8-bit step (1/255), so every 8-bit channel still
+    /// round-trips. This replaced `%.5g`, whose 5 *significant* digits showed more decimals the
+    /// smaller the value (`0.066667`, but `0.53333`) and disagreed with the editor, which caps at
+    /// 4 places. Float noise from wide-gamut conversions (e.g. 5.6e-08) rounds to `0`.
+    var colorDecimalString: String { strippedDecimalString(maxDecimalPlaces: 4) }
+}
+
 extension NSColor {
     final func toRGBAComponents(in colorSpace: NSColorSpace = Defaults[.colorSpace]) -> RGBAComponents {
         var r: CGFloat = 0, g: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
@@ -31,7 +40,8 @@ extension NSColor {
         case .css, .design:
             return String(format: "rgb(%d, %d, %d)", red, green, blue)
         case .swiftUI:
-            return String(format: "Color(red: %.5g, green: %.5g, blue: %.5g)", RGB.r, RGB.g, RGB.b)
+            return "Color(red: \(RGB.r.colorDecimalString), green: \(RGB.g.colorDecimalString), "
+                + "blue: \(RGB.b.colorDecimalString))"
         case .unformatted:
             return String(format: "%d, %d, %d", red, green, blue)
         }
@@ -64,12 +74,17 @@ extension NSColor {
         }
     }
 
+    // Black or white — whichever has the higher WCAG contrast against this colour — for legible
+    // text/UI drawn on top of it. The crossover (equal contrast to black and white) is at a
+    // relative luminance of ~0.179, not 0.5: black wins for everything brighter than that.
+    private static let uiColorCrossover: CGFloat = 0.179
+
     func getUIColor() -> Color {
-        luminance < 0.5 ? Color.white : Color.black
+        luminance < Self.uiColorCrossover ? Color.white : Color.black
     }
 
     func getUIColor() -> NSColor {
-        luminance < 0.5 ? NSColor.white : NSColor.black
+        luminance < Self.uiColorCrossover ? NSColor.white : NSColor.black
     }
 }
 

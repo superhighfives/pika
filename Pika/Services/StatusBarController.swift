@@ -55,9 +55,14 @@ class StatusBarController: NSObject, NSMenuDelegate, NSPopoverDelegate {
         let popover = NSPopover()
         popover.behavior = .semitransient
         popover.animates = true
-        popover.contentViewController = NSHostingController(rootView: rootView)
+        let host = NSHostingController(rootView: rootView)
+        popover.contentViewController = host
         popover.delegate = self
         self.popover = popover
+        // Build the SwiftUI tree now rather than on first show: copy, pick, swap and the
+        // system picker are handled by `.onReceive` in these views, so until the popover had
+        // been opened once, those actions (from the menu, shortcuts or pika:// URLs) did nothing.
+        host.view.layoutSubtreeIfNeeded()
     }
 
     /// Releases the popover's hosting controller so its SwiftUI tree (and notification

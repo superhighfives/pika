@@ -1,3 +1,4 @@
+import Combine
 import Defaults
 import SwiftUI
 
@@ -58,10 +59,19 @@ class Eyedropper: ObservableObject {
 
     let type: Types
     var forceShow = false
+    /// Whether Pika was the active app when `forceShow` was set, so restoring the window
+    /// after the pick only re-activates Pika if it was active to begin with.
+    var reactivateAfterPick = false
     var pendingChainCommit = false
 
-    let colorNames: [ColorName] = loadColors()!
-    var closestVector: ClosestVector!
+    // Retains the in-flight pick session for the duration of an async pick so it
+    // (and its event monitors / capture engine, for the custom loupe) stays alive.
+    private var activeSession: ColorPickSession?
+
+    // Colour names come from the shared manager (cached network list, or the bundled
+    // default offline). Rebuilt whenever the manager broadcasts `.colorNamesUpdated`.
+    private var colorNames: [ColorName] = []
+    private var closestVector: ClosestVector?
 
     @objc @Published public var color: NSColor
 
@@ -69,29 +79,62 @@ class Eyedropper: ObservableObject {
 
     init(type: Types, color: NSColor) {
         self.type = type
-        self.color = color.usingColorSpace(.sRGB) ?? color
+        // Extended sRGB, not sRGB: plain sRGB clips anything outside its gamut, so a Display P3
+        // colour (typed, picked, from the panel or a URL) came back shifted. Each format converts
+        // to the space it needs when it reads components, clamping there where it must.
+        self.color = color.usingColorSpace(.extendedSRGB) ?? color
 
-        // Load colors
-        closestVector = ClosestVector(colorNames.map { $0.color.toRGB8BitArray() })
+        // Load colours and rebuild whenever the active list changes or a refresh lands.
+        reloadColorNames()
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleColorNamesUpdated),
+            name: .colorNamesUpdated,
+            object: nil
+        )
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    @objc private func handleColorNamesUpdated() {
+        reloadColorNames()
+        // Nudge observing views (the eyedropper label) to recompute the name.
+        DispatchQueue.main.async { self.objectWillChange.send() }
+    }
+
+    private func reloadColorNames() {
+        DispatchQueue.global(qos: .utility).async { [weak self] in
+            let names = ColorNamesManager.shared.currentColorNames()
+            let vector = ClosestVector(names.map { $0.color.toRGB8BitArray() })
+            DispatchQueue.main.async {
+                self?.colorNames = names
+                self?.closestVector = vector
+            }
+        }
     }
 
     func getClosestColor() -> String {
-        colorNames[closestVector.compare(color)].name
+        guard let closestVector, !colorNames.isEmpty else { return "" }
+        return colorNames[closestVector.compare(color)].name
     }
 
     func set(_ selectedColor: NSColor) {
-        color = selectedColor.usingColorSpace(.sRGB) ?? selectedColor
+        color = selectedColor.usingColorSpace(.extendedSRGB) ?? selectedColor
     }
 
     @objc func colorDidChange(sender: AnyObject) {
         if let picker = sender as? NSColorPanel {
-            guard let srgbColor = picker.color.usingColorSpace(.sRGB) else { return }
-            color = srgbColor
+            guard let extendedColor = picker.color.usingColorSpace(.extendedSRGB) else { return }
+            color = extendedColor
             NotificationCenter.default.post(name: .systemColorChanged, object: nil)
         }
     }
 
-    func picker() {
+    /// Shows the system colour panel. `activate` is for user-initiated opens; the post-pick
+    /// refresh passes `false` so it doesn't pull focus back to Pika.
+    func picker(activate: Bool = true) {
         let panel = NSColorPanel.shared
         panel.showsAlpha = false
         panel.title = "\(type.rawValue.capitalized)"
@@ -100,6 +143,12 @@ class Eyedropper: ObservableObject {
         panel.color = color
         panel.mode = .RGB
         panel.colorSpace = Defaults[.colorSpace]
+        // NSColorPanel hides while its app is inactive, so opened from the status bar menu, a
+        // shortcut or a pika:// URL with Pika in the background it never appeared. Activate
+        // first: the panel is interactive, so focus belongs with it anyway.
+        if activate {
+            NSApp.activate(ignoringOtherApps: true)
+        }
         panel.orderFrontRegardless()
         panel.setAction(#selector(colorDidChange))
         panel.isContinuous = true
@@ -111,8 +160,12 @@ class Eyedropper: ObservableObject {
 extension Eyedropper {
     func start(chainContrasting: Bool = false) {
         if Defaults[.hidePikaWhilePicking] {
-            if NSApp.mainWindow?.isVisible == true {
+            // Ask the coordinator rather than `NSApp.mainWindow`, which is nil whenever Pika
+            // isn't active (a pick from the global shortcut in another app), so the window was
+            // hidden and never brought back.
+            if AppDelegate.shared?.windowCoordinator.pikaWindow?.isVisible == true {
                 forceShow = true
+                reactivateAfterPick = NSApp.isActive
             }
             NSApp.sendAction(#selector(AppDelegate.hidePika), to: nil, from: nil)
         }
@@ -127,10 +180,33 @@ extension Eyedropper {
             if Defaults[.appMode].usesPopover {
                 NSApp.activate(ignoringOtherApps: true)
             }
-            let sampler = NSColorSampler()
-            sampler.show { selectedColor in
+
+            // Choose the picking UI by preference. The commit path below is shared
+            // and identical for both sessions — only the pick surface differs, so
+            // downstream behaviour (set / history / undo / overlay / chaining)
+            // cannot fork. With `.system` this is byte-for-byte today's flow.
+            let willChain = chainContrasting && self.type == .foreground
+            // `AppDelegate.shared`, not `NSApp.delegate` — the latter is SwiftUI's forwarding
+            // wrapper under `@NSApplicationDelegateAdaptor`, so `as? AppDelegate` is always
+            // nil and the loupe would never get a comparison colour (no live contrast).
+            let comparison: NSColor? = AppDelegate.shared.map {
+                self.type == .foreground ? $0.eyedroppers.background.color : $0.eyedroppers.foreground.color
+            }
+            let useCustom = Defaults[.pickerStyle] == .custom && CustomColorPickSession.isAvailable
+            if Defaults[.pickerStyle] == .custom, !useCustom {
+                // Permission was revoked since the picker was enabled: fall back to
+                // the system sampler for this pick and revert the preference, telling
+                // the user once. A pick must never fail because custom is unavailable.
+                Defaults[.pickerStyle] = .system
+                CustomColorPickSession.notePermissionRevertedOnce()
+            }
+            let session: ColorPickSession = useCustom
+                ? CustomColorPickSession()
+                : SystemColorPickSession()
+            self.activeSession = session
+            session.begin(target: self.type, comparison: comparison, willChain: willChain) { selectedColor in
                 if let selectedColor = selectedColor {
-                    self.commitPick(selectedColor, chainContrasting: chainContrasting)
+                    self.commitPick(selectedColor, chainContrasting: chainContrasting, useCustom: useCustom)
                 } else if self.pendingChainCommit {
                     self.commitCancelledChain()
                 } else {
@@ -141,22 +217,26 @@ extension Eyedropper {
                 if self.forceShow {
                     self.forceShow = false
                     if !Defaults[.appMode].usesPopover {
-                        NSApp.sendAction(#selector(AppDelegate.showPika), to: nil, from: nil)
+                        AppDelegate.shared?.windowCoordinator.restoreAfterPick(activate: self.reactivateAfterPick)
                     }
                 }
 
                 let panel = NSColorPanel.shared
                 if panel.isVisible {
-                    self.picker()
+                    self.picker(activate: false)
                 }
+
+                self.activeSession = nil
             }
         }
     }
 
-    private func commitPick(_ selectedColor: NSColor, chainContrasting: Bool) {
-        let normalizedColor = selectedColor.usingColorSpace(.sRGB) ?? selectedColor
+    private func commitPick(_ selectedColor: NSColor, chainContrasting: Bool, useCustom: Bool) {
+        let normalizedColor = selectedColor.usingColorSpace(.extendedSRGB) ?? selectedColor
 
-        if Defaults[.showColorOverlay] {
+        // The custom loupe already shows the colour live during the pick, so the
+        // post-pick overlay is redundant when it's active.
+        if Defaults[.showColorOverlay], !useCustom {
             let colorText = normalizedColor.toFormat(
                 format: Defaults[.colorFormat], style: Defaults[.copyFormat]
             )
@@ -175,7 +255,7 @@ extension Eyedropper {
            type == .foreground,
            let appDelegate = AppDelegate.shared
         {
-            startChainedBackgroundPick(using: appDelegate)
+            startChainedBackgroundPick(using: appDelegate, useCustom: useCustom)
         } else {
             pendingChainCommit = false
             NotificationCenter.default.post(name: .colorPicked, object: nil)
@@ -183,7 +263,7 @@ extension Eyedropper {
         }
     }
 
-    private func startChainedBackgroundPick(using appDelegate: AppDelegate) {
+    private func startChainedBackgroundPick(using appDelegate: AppDelegate, useCustom: Bool) {
         // Defer committing the foreground pick — we'll record once the
         // background is also picked (or the chained pick is cancelled).
         let background = appDelegate.eyedroppers.background
@@ -193,8 +273,9 @@ extension Eyedropper {
         if forceShow {
             forceShow = false
             background.forceShow = true
+            background.reactivateAfterPick = reactivateAfterPick
         }
-        let delay: Double = Defaults[.showColorOverlay] ? 0.4 : 0.05
+        let delay: Double = (Defaults[.showColorOverlay] && !useCustom) ? 0.4 : 0.05
         DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
             background.start()
         }

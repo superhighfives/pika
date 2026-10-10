@@ -14,6 +14,15 @@ extension NSColor {
         c <= 0.04045 ? c / 12.92 : pow((c + 0.055) / 1.055, 2.4)
     }
 
+    // Inverse of `linearizeSRGB`: gamma-encode a linear-light component, clamped to [0, 1].
+    // Lab and OKLCH can express colours outside the sRGB gamut, so the clamp snaps those
+    // to the nearest displayable channel value (see the round-trip note in the plan).
+    private static func encodeSRGB(_ c: CGFloat) -> CGFloat {
+        let clamped = Swift.min(Swift.max(c, 0), 1)
+        let encoded = clamped <= 0.0031308 ? 12.92 * clamped : 1.055 * pow(clamped, 1 / 2.4) - 0.055
+        return Swift.min(Swift.max(encoded, 0), 1)
+    }
+
     /*
      * OpenGL
      */
@@ -26,11 +35,11 @@ extension NSColor {
     func toOpenGLString(style: CopyFormat = .css) -> String {
         let RGB = toRGBAComponents()
 
-        // %.5g strips trailing zeros but drops the decimal entirely for whole numbers,
-        // so append ".0" when there is no decimal point (e.g. 0 → "0.0", 1 → "1.0").
-        let red = { let s = String(format: "%.5g", RGB.r); return s.contains(".") ? s : "\(s).0" }()
-        let green = { let s = String(format: "%.5g", RGB.g); return s.contains(".") ? s : "\(s).0" }()
-        let blue = { let s = String(format: "%.5g", RGB.b); return s.contains(".") ? s : "\(s).0" }()
+        // `colorDecimalString` strips trailing zeros, dropping the decimal entirely for whole
+        // numbers, so append ".0" when there is no decimal point (e.g. 0 → "0.0", 1 → "1.0").
+        let red = { let s = RGB.r.colorDecimalString; return s.contains(".") ? s : "\(s).0" }()
+        let green = { let s = RGB.g.colorDecimalString; return s.contains(".") ? s : "\(s).0" }()
+        let blue = { let s = RGB.b.colorDecimalString; return s.contains(".") ? s : "\(s).0" }()
 
         switch style {
         case .css, .design, .swiftUI:
@@ -122,6 +131,9 @@ extension NSColor {
         let C = sqrt(a * a + b * b)
         var H = atan2(b, a) * 180.0 / .pi
         if H < 0 { H += 360.0 }
+        // With no chroma, hue is meaningless (CSS calls it powerless): atan2 of float noise gave
+        // white a hue of 89.88. Report 0 whenever chroma would display as 0 (4 decimal places).
+        if C < 0.00005 { H = 0 }
 
         return OklchComponents(l: L, c: C, h: H)
     }
@@ -140,6 +152,75 @@ extension NSColor {
         case .unformatted:
             return "\(l_str), \(c_str), \(h_str)"
         }
+    }
+
+    /*
+     * Inverses (component → colour)
+     *
+     * Inverses of `toLabComponents` / `toOklchComponents`, taking the same units the forward
+     * conversions produce (Lab: L 0…100, a/b unbounded; OKLCH: L 0…1, C ≥ 0, H in degrees).
+     * Both forward conversions are defined via the sRGB path, so these build in sRGB. Out-of-gamut
+     * inputs are clamped per channel (see `encodeSRGB`), so a round-trip on an out-of-gamut colour
+     * snaps to the nearest displayable one — inherent to storing sRGB.
+     */
+
+    /// Build an sRGB colour from CIE-Lab components (L in 0…100, a/b in Lab units).
+    static func fromLab(l: CGFloat, a: CGFloat, b: CGFloat) -> NSColor {
+        // Lab → XYZ (D65 reference white), inverse of the forward f().
+        let Xn: CGFloat = 0.95047
+        let Yn: CGFloat = 1.00000
+        let Zn: CGFloat = 1.08883
+        let delta: CGFloat = 6.0 / 29.0
+
+        func fInv(_ t: CGFloat) -> CGFloat {
+            t > delta ? pow(t, 3) : 3 * pow(delta, 2) * (t - 4.0 / 29.0)
+        }
+
+        let fy = (l + 16) / 116
+        let fx = fy + a / 500
+        let fz = fy - b / 200
+
+        let x = Xn * fInv(fx)
+        let y = Yn * fInv(fy)
+        let z = Zn * fInv(fz)
+
+        // XYZ → linear sRGB
+        let r_lin = x * 3.2404542 - y * 1.5371385 - z * 0.4985314
+        let g_lin = x * -0.9692660 + y * 1.8760108 + z * 0.0415560
+        let b_lin = x * 0.0556434 - y * 0.2040259 + z * 1.0572252
+
+        return NSColor(
+            colorSpace: .sRGB,
+            components: [encodeSRGB(r_lin), encodeSRGB(g_lin), encodeSRGB(b_lin), 1],
+            count: 4
+        )
+    }
+
+    /// Build an sRGB colour from OKLCH components (L in 0…1, C ≥ 0, H in degrees).
+    static func fromOklch(l: CGFloat, c: CGFloat, h: CGFloat) -> NSColor {
+        let hRad = h * .pi / 180
+        let a = c * cos(hRad)
+        let b = c * sin(hRad)
+
+        // OKLCH → OKLab → LMS' → LMS (inverse of the forward M2/M1 matrices).
+        let l_ = l + 0.3963377774 * a + 0.2158037573 * b
+        let m_ = l - 0.1055613458 * a - 0.0638541728 * b
+        let s_ = l - 0.0894841775 * a - 1.2914855480 * b
+
+        let lCube = l_ * l_ * l_
+        let mCube = m_ * m_ * m_
+        let sCube = s_ * s_ * s_
+
+        // LMS → linear sRGB
+        let r_lin = lCube * 4.0767416621 - mCube * 3.3077115913 + sCube * 0.2309699292
+        let g_lin = lCube * -1.2684380046 + mCube * 2.6097574011 - sCube * 0.3413193965
+        let b_lin = lCube * -0.0041960863 - mCube * 0.7034186147 + sCube * 1.7076147010
+
+        return NSColor(
+            colorSpace: .sRGB,
+            components: [encodeSRGB(r_lin), encodeSRGB(g_lin), encodeSRGB(b_lin), 1],
+            count: 4
+        )
     }
 }
 
