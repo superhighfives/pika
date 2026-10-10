@@ -422,7 +422,12 @@ struct PickerChoiceView: View {
     // A regular button that requests a permission (or relaunches).
     private func actionButton(_ label: String, systemImage: String, action: @escaping () -> Void) -> some View {
         Button(action: action) {
-            Label(label, systemImage: systemImage).frame(maxWidth: .infinity)
+            // Scale down rather than truncate: longer translations ("Enregistrement de l’écran")
+            // overflow the pill at full size.
+            Label(label, systemImage: systemImage)
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
+                .frame(maxWidth: .infinity)
         }
         .buttonStyle(.bordered)
         .controlSize(.large)
@@ -433,6 +438,8 @@ struct PickerChoiceView: View {
     private func grantedButton(_ label: String) -> some View {
         Label(label, systemImage: "checkmark.circle.fill")
             .font(.system(size: 13, weight: .medium))
+            .lineLimit(1)
+            .minimumScaleFactor(0.8)
             .foregroundStyle(.green)
             .frame(maxWidth: .infinity, minHeight: 29.0)
             .background(

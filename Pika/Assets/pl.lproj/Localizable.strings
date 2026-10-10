@@ -578,3 +578,141 @@
 
 /* Show Pika */
 "menu.showPika" = "Pokaż Pikę";
+
+/* Show the welcome splash */
+"menu.showSplash" = "Pokaż ekran powitalny";
+
+/* Splash setup heading */
+"splash.setup.title" = "Witaj w Pice";
+
+/* Splash setup subheading */
+"splash.setup.subtitle" = "Kilka szybkich wyborów na dobry początek.";
+
+/* Global shortcut row subtitle */
+"splash.shortcut.subtitle" = "Pokazuj i ukrywaj Pikę z dowolnego miejsca";
+
+/* Pick-pair shortcut row subtitle */
+"splash.pair.subtitle" = "Wybierz pierwszy plan, a potem tło";
+
+/* Launch at login row subtitle */
+"splash.launch.subtitle" = "Otwieraj Pikę po zalogowaniu";
+
+/* Custom picker recommended badge */
+"splash.picker.recommended" = "Zalecany";
+
+/* Pro picker capability note: needs the Screen Recording permission */
+"picker.requiresScreenRecording" = "Wymaga nagrywania ekranu";
+
+/* Button to grant the optional Accessibility permission for the Pro picker */
+"picker.grantAccessibility" = "Zezwól na dostępność";
+
+/* Label for the Pro picker loupe theme setting */
+"loupe.theme" = "Styl lupy";
+
+/* Loupe theme: coloured rim with engraved text */
+"loupe.theme.lens" = "Soczewka";
+
+/* Loupe theme: white badges on the inside edge */
+"loupe.theme.badge" = "Plakietka";
+
+/* Loupe theme: plain magnifier with a readout card beside it */
+"loupe.theme.card" = "Karta";
+
+/* Intro line above the Pro picker permission buttons */
+"picker.permissions.intro" = "Aby włączyć próbnik Pro, musisz przyznać następujące uprawnienia:";
+
+/* Permission pill label: Screen Recording */
+"picker.perm.screenRecording" = "Nagrywanie ekranu";
+
+/* Permission pill label: Accessibility */
+"picker.perm.accessibility" = "Dostępność";
+
+/* Explains what the optional Accessibility permission adds to the Pro picker */
+"picker.accessibilityNote" = "Opcjonalne — pozwala używać Escape i przesuwać strzałkami podczas wybierania nad innymi aplikacjami.";
+
+/* Custom picker permission note */
+"splash.picker.permission" = "Wymaga uprawnienia do nagrywania ekranu";
+
+/* Pro picker declined fallback note */
+"splash.picker.fallback" = "Nie teraz? Użyjesz próbnika podstawowego.";
+
+/* Splash footer note */
+"splash.footer" = "Wszystko to możesz zmienić w Ustawieniach.";
+
+/* Splash: pre-selected checkbox to stop showing the splash on launch */
+"splash.dontShowAgain" = "Nie pokazuj ponownie";
+
+/* Get started confirmation title when the Basic picker is selected */
+"splash.confirm.title" = "Użyć próbnika Pro w Pice?";
+
+/* Get started confirmation body */
+"splash.confirm.body" = "Próbnik Pro pokazuje kolor, jego format i kontrast na żywo bezpośrednio w lupie podczas wybierania — dużo wygodniej niż próbnik macOS. Zawsze możesz to później zmienić w Ustawieniach.";
+
+/* Confirmation: enable Pro picker */
+"splash.confirm.enable" = "Włącz próbnik Pro";
+
+/* Confirmation: keep the Basic picker */
+"splash.confirm.continue" = "Kontynuuj z próbnikiem podstawowym";
+
+/* Colour name list section title */
+"preferences.colornames.title" = "Nazwy kolorów";
+
+/* Colour name list section subtitle */
+"preferences.colornames.subtitle" = "Wybierz listę, której Pika używa do nazywania kolorów. Listy pochodzą z color.pizza i aktualizują się automatycznie; domyślna działa offline.";
+
+/* Default colour list name */
+"preferences.colornames.default" = "Domyślna";
+
+/* Colour list tooltip: a refresh is in progress */
+"preferences.colornames.status.checking" = "Sprawdzanie aktualizacji w color.pizza…";
+
+/* Colour list tooltip: when the list was last refreshed (%@ is a date) */
+"preferences.colornames.status.updated" = "Zaktualizowano %@";
+
+/* Colour list tooltip: the last refresh failed, cached/bundled names are in use */
+"preferences.colornames.status.offline" = "Nie udało się połączyć z color.pizza. Używana jest zapisana lista kolorów.";
+
+/* Colour list tooltip: no network refresh has happened yet */
+"preferences.colornames.status.builtin" = "Używana jest wbudowana lista kolorów.";
+
+/* Colour picker style section title */
+"preferences.picker.title" = "Próbnik kolorów";
+
+/* Basic picker tile title */
+"preferences.picker.system.title" = "Próbnik podstawowy";
+
+/* Basic picker tile subtitle */
+"preferences.picker.system.description" = "Próbnik kolorów macOS";
+
+/* Pro picker tile title */
+"preferences.picker.custom.title" = "Próbnik Pro";
+
+/* Pro picker tile subtitle */
+"preferences.picker.custom.description" = "Kontrast i format na żywo";
+
+/* Pair pick mode toggle */
+"preferences.picker.pair" = "Wybierz tło zaraz po pierwszym planie";
+
+/* Screen recording permission explanation */
+"preferences.picker.permission" = "Pika potrzebuje uprawnienia do nagrywania ekranu, aby próbnik Pro mógł pobierać piksele.";
+
+/* Screen recording relaunch guidance */
+"preferences.picker.relaunch.note" = "Zezwól Pice na nagrywanie ekranu w Ustawieniach systemowych, a potem uruchom Pikę ponownie, aby dokończyć włączanie próbnika Pro.";
+
+/* Relaunch Pika button */
+"preferences.picker.relaunch.button" = "Uruchom Pikę ponownie";
+
+/* Grant Screen Recording permission button */
+"preferences.picker.grant.button" = "Przyznaj uprawnienie";
+
+/* Permission revoked alert title */
+"picker.reverted.title" = "Przełączono na próbnik podstawowy";
+
+/* Permission revoked alert body */
+"picker.reverted.body" = "Próbnik Pro w Pice potrzebuje uprawnienia do nagrywania ekranu, które nie jest obecnie przyznane. Możesz go ponownie włączyć w Ustawieniach po przyznaniu uprawnienia.";
+
+/* Splash picker choice label */
+"splash.picker.prompt" = "Próbnik kolorów";
+
+/* Pick a foreground then background pair */
+"color.pick.pair" = "Wybierz parę";

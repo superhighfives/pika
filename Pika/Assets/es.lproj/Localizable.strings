@@ -578,3 +578,141 @@
 
 /* Show Pika */
 "menu.showPika" = "Mostrar Pika";
+
+/* Show the welcome splash */
+"menu.showSplash" = "Mostrar bienvenida";
+
+/* Splash setup heading */
+"splash.setup.title" = "Te damos la bienvenida a Pika";
+
+/* Splash setup subheading */
+"splash.setup.subtitle" = "Unas pocas opciones rápidas para empezar.";
+
+/* Global shortcut row subtitle */
+"splash.shortcut.subtitle" = "Muestra y oculta Pika desde cualquier lugar";
+
+/* Pick-pair shortcut row subtitle */
+"splash.pair.subtitle" = "Elige un primer plano y luego un segundo plano";
+
+/* Launch at login row subtitle */
+"splash.launch.subtitle" = "Abrir Pika al iniciar sesión";
+
+/* Custom picker recommended badge */
+"splash.picker.recommended" = "Recomendado";
+
+/* Pro picker capability note: needs the Screen Recording permission */
+"picker.requiresScreenRecording" = "Requiere Grabación de pantalla";
+
+/* Button to grant the optional Accessibility permission for the Pro picker */
+"picker.grantAccessibility" = "Permitir Accesibilidad";
+
+/* Label for the Pro picker loupe theme setting */
+"loupe.theme" = "Estilo de lupa";
+
+/* Loupe theme: coloured rim with engraved text */
+"loupe.theme.lens" = "Lente";
+
+/* Loupe theme: white badges on the inside edge */
+"loupe.theme.badge" = "Insignia";
+
+/* Loupe theme: plain magnifier with a readout card beside it */
+"loupe.theme.card" = "Tarjeta";
+
+/* Intro line above the Pro picker permission buttons */
+"picker.permissions.intro" = "Para activar el selector Pro, tendrás que conceder los siguientes permisos:";
+
+/* Permission pill label: Screen Recording */
+"picker.perm.screenRecording" = "Grabación de pantalla";
+
+/* Permission pill label: Accessibility */
+"picker.perm.accessibility" = "Accesibilidad";
+
+/* Explains what the optional Accessibility permission adds to the Pro picker */
+"picker.accessibilityNote" = "Opcional: permite usar Escape y mover con las flechas mientras seleccionas sobre otras apps.";
+
+/* Custom picker permission note */
+"splash.picker.permission" = "Necesita el permiso de Grabación de pantalla";
+
+/* Pro picker declined fallback note */
+"splash.picker.fallback" = "¿Ahora no? Usarás el selector básico.";
+
+/* Splash footer note */
+"splash.footer" = "Puedes cambiar todo esto en Ajustes.";
+
+/* Splash: pre-selected checkbox to stop showing the splash on launch */
+"splash.dontShowAgain" = "No volver a mostrar";
+
+/* Get started confirmation title when the Basic picker is selected */
+"splash.confirm.title" = "¿Usar el selector Pro de Pika?";
+
+/* Get started confirmation body */
+"splash.confirm.body" = "El selector Pro muestra el color, su formato y el contraste en tiempo real directamente en la lupa mientras seleccionas: una experiencia mucho mejor que el muestreador de macOS. Puedes cambiarlo más adelante en Ajustes.";
+
+/* Confirmation: enable Pro picker */
+"splash.confirm.enable" = "Activar selector Pro";
+
+/* Confirmation: keep the Basic picker */
+"splash.confirm.continue" = "Continuar con el selector básico";
+
+/* Colour name list section title */
+"preferences.colornames.title" = "Nombres de colores";
+
+/* Colour name list section subtitle */
+"preferences.colornames.subtitle" = "Elige la lista que usa Pika para nombrar los colores. Las listas vienen de color.pizza y se actualizan automáticamente; la predeterminada funciona sin conexión.";
+
+/* Default colour list name */
+"preferences.colornames.default" = "Predeterminada";
+
+/* Colour list tooltip: a refresh is in progress */
+"preferences.colornames.status.checking" = "Buscando actualizaciones en color.pizza…";
+
+/* Colour list tooltip: when the list was last refreshed (%@ is a date) */
+"preferences.colornames.status.updated" = "Actualizada %@";
+
+/* Colour list tooltip: the last refresh failed, cached/bundled names are in use */
+"preferences.colornames.status.offline" = "No se pudo conectar con color.pizza. Se usa la lista de colores guardada.";
+
+/* Colour list tooltip: no network refresh has happened yet */
+"preferences.colornames.status.builtin" = "Se usa la lista de colores integrada.";
+
+/* Colour picker style section title */
+"preferences.picker.title" = "Selector de color";
+
+/* Basic picker tile title */
+"preferences.picker.system.title" = "Selector básico";
+
+/* Basic picker tile subtitle */
+"preferences.picker.system.description" = "Muestreador de color de macOS";
+
+/* Pro picker tile title */
+"preferences.picker.custom.title" = "Selector Pro";
+
+/* Pro picker tile subtitle */
+"preferences.picker.custom.description" = "Contraste y formato en tiempo real";
+
+/* Pair pick mode toggle */
+"preferences.picker.pair" = "Elegir un segundo plano justo después del primer plano";
+
+/* Screen recording permission explanation */
+"preferences.picker.permission" = "Pika necesita el permiso de Grabación de pantalla para muestrear píxeles con el selector Pro.";
+
+/* Screen recording relaunch guidance */
+"preferences.picker.relaunch.note" = "Permite la Grabación de pantalla para Pika en Ajustes del Sistema y luego reinicia Pika para terminar de activar el selector Pro.";
+
+/* Relaunch Pika button */
+"preferences.picker.relaunch.button" = "Reiniciar Pika";
+
+/* Grant Screen Recording permission button */
+"preferences.picker.grant.button" = "Conceder permiso";
+
+/* Permission revoked alert title */
+"picker.reverted.title" = "Se ha cambiado al selector básico";
+
+/* Permission revoked alert body */
+"picker.reverted.body" = "El selector Pro de Pika necesita el permiso de Grabación de pantalla, que ahora mismo no está concedido. Puedes volver a activarlo en Ajustes cuando concedas el permiso.";
+
+/* Splash picker choice label */
+"splash.picker.prompt" = "Selector de color";
+
+/* Pick a foreground then background pair */
+"color.pick.pair" = "Elegir par";
