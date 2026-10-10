@@ -394,7 +394,6 @@ enum PikaText {
         "preferences.space.description",
         comment: "Set your RGB color space"
     )
-    static let textSpaceTitle = NSLocalizedString("preferences.space.title", comment: "Color Space")
     static let textSystemDefault = NSLocalizedString("preferences.space.default", comment: "System Default")
 
     static let textFormatHex = NSLocalizedString("color.format.hex", comment: "Hex format")
