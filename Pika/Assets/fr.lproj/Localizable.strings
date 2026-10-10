@@ -578,3 +578,141 @@
 
 /* Show Pika */
 "menu.showPika" = "Afficher Pika";
+
+/* Show the welcome splash */
+"menu.showSplash" = "Afficher l’écran d’accueil";
+
+/* Splash setup heading */
+"splash.setup.title" = "Bienvenue dans Pika";
+
+/* Splash setup subheading */
+"splash.setup.subtitle" = "Quelques choix rapides pour bien démarrer.";
+
+/* Global shortcut row subtitle */
+"splash.shortcut.subtitle" = "Afficher et masquer Pika depuis n’importe où";
+
+/* Pick-pair shortcut row subtitle */
+"splash.pair.subtitle" = "Choisir un premier plan, puis un arrière-plan";
+
+/* Launch at login row subtitle */
+"splash.launch.subtitle" = "Ouvrir Pika à l’ouverture de session";
+
+/* Custom picker recommended badge */
+"splash.picker.recommended" = "Recommandé";
+
+/* Pro picker capability note: needs the Screen Recording permission */
+"picker.requiresScreenRecording" = "Nécessite l’enregistrement de l’écran";
+
+/* Button to grant the optional Accessibility permission for the Pro picker */
+"picker.grantAccessibility" = "Autoriser l’accessibilité";
+
+/* Label for the Pro picker loupe theme setting */
+"loupe.theme" = "Style de loupe";
+
+/* Loupe theme: coloured rim with engraved text */
+"loupe.theme.lens" = "Lentille";
+
+/* Loupe theme: white badges on the inside edge */
+"loupe.theme.badge" = "Badge";
+
+/* Loupe theme: plain magnifier with a readout card beside it */
+"loupe.theme.card" = "Carte";
+
+/* Intro line above the Pro picker permission buttons */
+"picker.permissions.intro" = "Pour activer la pipette Pro, vous devez accorder les autorisations suivantes :";
+
+/* Permission pill label: Screen Recording */
+"picker.perm.screenRecording" = "Enregistrement de l’écran";
+
+/* Permission pill label: Accessibility */
+"picker.perm.accessibility" = "Accessibilité";
+
+/* Explains what the optional Accessibility permission adds to the Pro picker */
+"picker.accessibilityNote" = "Facultatif : permet d’utiliser Échap et les flèches pendant la sélection au-dessus d’autres apps.";
+
+/* Custom picker permission note */
+"splash.picker.permission" = "Nécessite l’autorisation d’enregistrement de l’écran";
+
+/* Pro picker declined fallback note */
+"splash.picker.fallback" = "Pas maintenant ? Vous utiliserez la pipette de base.";
+
+/* Splash footer note */
+"splash.footer" = "Vous pourrez modifier tout cela dans les Paramètres.";
+
+/* Splash: pre-selected checkbox to stop showing the splash on launch */
+"splash.dontShowAgain" = "Ne plus afficher";
+
+/* Get started confirmation title when the Basic picker is selected */
+"splash.confirm.title" = "Utiliser la pipette Pro de Pika ?";
+
+/* Get started confirmation body */
+"splash.confirm.body" = "La pipette Pro affiche la couleur, son format et le contraste en direct dans la loupe pendant la sélection : bien plus agréable que l’échantillonneur de macOS. Vous pourrez toujours changer plus tard dans les Paramètres.";
+
+/* Confirmation: enable Pro picker */
+"splash.confirm.enable" = "Activer la pipette Pro";
+
+/* Confirmation: keep the Basic picker */
+"splash.confirm.continue" = "Continuer avec la pipette de base";
+
+/* Colour name list section title */
+"preferences.colornames.title" = "Noms des couleurs";
+
+/* Colour name list section subtitle */
+"preferences.colornames.subtitle" = "Choisissez la liste utilisée par Pika pour nommer les couleurs. Les listes proviennent de color.pizza et se mettent à jour automatiquement ; la liste par défaut fonctionne hors ligne.";
+
+/* Default colour list name */
+"preferences.colornames.default" = "Par défaut";
+
+/* Colour list tooltip: a refresh is in progress */
+"preferences.colornames.status.checking" = "Recherche de mises à jour sur color.pizza…";
+
+/* Colour list tooltip: when the list was last refreshed (%@ is a date) */
+"preferences.colornames.status.updated" = "Mise à jour : %@";
+
+/* Colour list tooltip: the last refresh failed, cached/bundled names are in use */
+"preferences.colornames.status.offline" = "Impossible de joindre color.pizza. La liste de couleurs enregistrée est utilisée.";
+
+/* Colour list tooltip: no network refresh has happened yet */
+"preferences.colornames.status.builtin" = "La liste de couleurs intégrée est utilisée.";
+
+/* Colour picker style section title */
+"preferences.picker.title" = "Pipette";
+
+/* Basic picker tile title */
+"preferences.picker.system.title" = "Pipette de base";
+
+/* Basic picker tile subtitle */
+"preferences.picker.system.description" = "Échantillonneur de couleurs de macOS";
+
+/* Pro picker tile title */
+"preferences.picker.custom.title" = "Pipette Pro";
+
+/* Pro picker tile subtitle */
+"preferences.picker.custom.description" = "Contraste et format en direct";
+
+/* Pair pick mode toggle */
+"preferences.picker.pair" = "Choisir un arrière-plan juste après le premier plan";
+
+/* Screen recording permission explanation */
+"preferences.picker.permission" = "Pika a besoin de l’autorisation d’enregistrement de l’écran pour échantillonner les pixels avec la pipette Pro.";
+
+/* Screen recording relaunch guidance */
+"preferences.picker.relaunch.note" = "Autorisez l’enregistrement de l’écran pour Pika dans Réglages Système, puis relancez Pika pour terminer l’activation de la pipette Pro.";
+
+/* Relaunch Pika button */
+"preferences.picker.relaunch.button" = "Relancer Pika";
+
+/* Grant Screen Recording permission button */
+"preferences.picker.grant.button" = "Accorder l’autorisation";
+
+/* Permission revoked alert title */
+"picker.reverted.title" = "Passage à la pipette de base";
+
+/* Permission revoked alert body */
+"picker.reverted.body" = "La pipette Pro de Pika a besoin de l’autorisation d’enregistrement de l’écran, qui n’est pas accordée actuellement. Vous pourrez la réactiver dans les Paramètres une fois l’autorisation accordée.";
+
+/* Splash picker choice label */
+"splash.picker.prompt" = "Pipette";
+
+/* Pick a foreground then background pair */
+"color.pick.pair" = "Choisir une paire";

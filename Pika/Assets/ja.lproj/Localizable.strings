@@ -578,3 +578,141 @@
 
 /* Show Pika */
 "menu.showPika" = "Pikaを表示";
+
+/* Show the welcome splash */
+"menu.showSplash" = "スプラッシュを表示";
+
+/* Splash setup heading */
+"splash.setup.title" = "Pikaへようこそ";
+
+/* Splash setup subheading */
+"splash.setup.subtitle" = "はじめに、いくつか簡単に選んでください。";
+
+/* Global shortcut row subtitle */
+"splash.shortcut.subtitle" = "どこからでもPikaを表示／非表示";
+
+/* Pick-pair shortcut row subtitle */
+"splash.pair.subtitle" = "前景色を選んでから背景色を選ぶ";
+
+/* Launch at login row subtitle */
+"splash.launch.subtitle" = "ログイン時にPikaを開く";
+
+/* Custom picker recommended badge */
+"splash.picker.recommended" = "おすすめ";
+
+/* Pro picker capability note: needs the Screen Recording permission */
+"picker.requiresScreenRecording" = "画面収録が必要です";
+
+/* Button to grant the optional Accessibility permission for the Pro picker */
+"picker.grantAccessibility" = "アクセシビリティを許可";
+
+/* Label for the Pro picker loupe theme setting */
+"loupe.theme" = "ルーペのスタイル";
+
+/* Loupe theme: coloured rim with engraved text */
+"loupe.theme.lens" = "レンズ";
+
+/* Loupe theme: white badges on the inside edge */
+"loupe.theme.badge" = "バッジ";
+
+/* Loupe theme: plain magnifier with a readout card beside it */
+"loupe.theme.card" = "カード";
+
+/* Intro line above the Pro picker permission buttons */
+"picker.permissions.intro" = "Proピッカーを有効にするには、次のアクセス権を許可する必要があります：";
+
+/* Permission pill label: Screen Recording */
+"picker.perm.screenRecording" = "画面収録";
+
+/* Permission pill label: Accessibility */
+"picker.perm.accessibility" = "アクセシビリティ";
+
+/* Explains what the optional Accessibility permission adds to the Pro picker */
+"picker.accessibilityNote" = "任意 — 他のアプリの上でピックするときに、Escキーや矢印キーでの微調整が使えるようになります。";
+
+/* Custom picker permission note */
+"splash.picker.permission" = "画面収録のアクセス権が必要です";
+
+/* Pro picker declined fallback note */
+"splash.picker.fallback" = "今はしない場合は、ベーシックピッカーを使います。";
+
+/* Splash footer note */
+"splash.footer" = "これらはすべて「設定」で変更できます。";
+
+/* Splash: pre-selected checkbox to stop showing the splash on launch */
+"splash.dontShowAgain" = "次回から表示しない";
+
+/* Get started confirmation title when the Basic picker is selected */
+"splash.confirm.title" = "PikaのProピッカーを使いますか？";
+
+/* Get started confirmation body */
+"splash.confirm.body" = "Proピッカーでは、ピックしながらルーペ内で色・フォーマット・コントラストをリアルタイムに確認できます。macOSのサンプラーよりずっと快適です。あとからいつでも「設定」で切り替えられます。";
+
+/* Confirmation: enable Pro picker */
+"splash.confirm.enable" = "Proピッカーを有効にする";
+
+/* Confirmation: keep the Basic picker */
+"splash.confirm.continue" = "ベーシックピッカーで続ける";
+
+/* Colour name list section title */
+"preferences.colornames.title" = "カラー名";
+
+/* Colour name list section subtitle */
+"preferences.colornames.subtitle" = "Pikaが色の名前に使うリストを選びます。リストはcolor.pizzaから取得され、自動的に更新されます。デフォルトのリストはオフラインでも使えます。";
+
+/* Default colour list name */
+"preferences.colornames.default" = "デフォルト";
+
+/* Colour list tooltip: a refresh is in progress */
+"preferences.colornames.status.checking" = "color.pizzaのアップデートを確認中…";
+
+/* Colour list tooltip: when the list was last refreshed (%@ is a date) */
+"preferences.colornames.status.updated" = "%@に更新";
+
+/* Colour list tooltip: the last refresh failed, cached/bundled names are in use */
+"preferences.colornames.status.offline" = "color.pizzaに接続できませんでした。保存済みのカラーリストを使用しています。";
+
+/* Colour list tooltip: no network refresh has happened yet */
+"preferences.colornames.status.builtin" = "内蔵のカラーリストを使用しています。";
+
+/* Colour picker style section title */
+"preferences.picker.title" = "カラーピッカー";
+
+/* Basic picker tile title */
+"preferences.picker.system.title" = "ベーシックピッカー";
+
+/* Basic picker tile subtitle */
+"preferences.picker.system.description" = "macOSのカラーサンプラー";
+
+/* Pro picker tile title */
+"preferences.picker.custom.title" = "Proピッカー";
+
+/* Pro picker tile subtitle */
+"preferences.picker.custom.description" = "コントラストとフォーマットをリアルタイム表示";
+
+/* Pair pick mode toggle */
+"preferences.picker.pair" = "前景色のすぐ後に背景色をピック";
+
+/* Screen recording permission explanation */
+"preferences.picker.permission" = "Proピッカーでピクセルを取得するには、Pikaに画面収録のアクセス権が必要です。";
+
+/* Screen recording relaunch guidance */
+"preferences.picker.relaunch.note" = "「システム設定」でPikaの画面収録を許可してから、Pikaを再起動するとProピッカーの有効化が完了します。";
+
+/* Relaunch Pika button */
+"preferences.picker.relaunch.button" = "Pikaを再起動";
+
+/* Grant Screen Recording permission button */
+"preferences.picker.grant.button" = "アクセス権を許可";
+
+/* Permission revoked alert title */
+"picker.reverted.title" = "ベーシックピッカーに切り替えました";
+
+/* Permission revoked alert body */
+"picker.reverted.body" = "PikaのProピッカーには画面収録のアクセス権が必要ですが、現在許可されていません。アクセス権を許可したあと、「設定」で再度有効にできます。";
+
+/* Splash picker choice label */
+"splash.picker.prompt" = "カラーピッカー";
+
+/* Pick a foreground then background pair */
+"color.pick.pair" = "ペアをピック";

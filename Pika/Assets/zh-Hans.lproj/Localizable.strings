@@ -578,3 +578,141 @@
 
 /* Show Pika */
 "menu.showPika" = "显示 Pika";
+
+/* Show the welcome splash */
+"menu.showSplash" = "显示欢迎页";
+
+/* Splash setup heading */
+"splash.setup.title" = "欢迎使用 Pika";
+
+/* Splash setup subheading */
+"splash.setup.subtitle" = "几个简单的选择，帮你快速上手。";
+
+/* Global shortcut row subtitle */
+"splash.shortcut.subtitle" = "随时随地显示或隐藏 Pika";
+
+/* Pick-pair shortcut row subtitle */
+"splash.pair.subtitle" = "先选前景色，再选背景色";
+
+/* Launch at login row subtitle */
+"splash.launch.subtitle" = "登录时打开 Pika";
+
+/* Custom picker recommended badge */
+"splash.picker.recommended" = "推荐";
+
+/* Pro picker capability note: needs the Screen Recording permission */
+"picker.requiresScreenRecording" = "需要屏幕录制权限";
+
+/* Button to grant the optional Accessibility permission for the Pro picker */
+"picker.grantAccessibility" = "授予辅助功能权限";
+
+/* Label for the Pro picker loupe theme setting */
+"loupe.theme" = "放大镜样式";
+
+/* Loupe theme: coloured rim with engraved text */
+"loupe.theme.lens" = "镜头";
+
+/* Loupe theme: white badges on the inside edge */
+"loupe.theme.badge" = "徽章";
+
+/* Loupe theme: plain magnifier with a readout card beside it */
+"loupe.theme.card" = "卡片";
+
+/* Intro line above the Pro picker permission buttons */
+"picker.permissions.intro" = "要启用专业取色器，你需要授予以下权限：";
+
+/* Permission pill label: Screen Recording */
+"picker.perm.screenRecording" = "屏幕录制";
+
+/* Permission pill label: Accessibility */
+"picker.perm.accessibility" = "辅助功能";
+
+/* Explains what the optional Accessibility permission adds to the Pro picker */
+"picker.accessibilityNote" = "可选：在其他 App 上方取色时，可使用 Esc 键和方向键微调。";
+
+/* Custom picker permission note */
+"splash.picker.permission" = "需要屏幕录制权限";
+
+/* Pro picker declined fallback note */
+"splash.picker.fallback" = "暂不启用？将使用基础取色器。";
+
+/* Splash footer note */
+"splash.footer" = "这些都可以在设置中更改。";
+
+/* Splash: pre-selected checkbox to stop showing the splash on launch */
+"splash.dontShowAgain" = "不再显示";
+
+/* Get started confirmation title when the Basic picker is selected */
+"splash.confirm.title" = "使用 Pika 的专业取色器？";
+
+/* Get started confirmation body */
+"splash.confirm.body" = "专业取色器会在取色时直接在放大镜中实时显示颜色、格式和对比度，比 macOS 自带的取样器好用得多。你之后随时可以在设置中切换。";
+
+/* Confirmation: enable Pro picker */
+"splash.confirm.enable" = "启用专业取色器";
+
+/* Confirmation: keep the Basic picker */
+"splash.confirm.continue" = "继续使用基础取色器";
+
+/* Colour name list section title */
+"preferences.colornames.title" = "颜色名称";
+
+/* Colour name list section subtitle */
+"preferences.colornames.subtitle" = "选择 Pika 用来命名颜色的列表。列表来自 color.pizza，会自动更新；默认列表可离线使用。";
+
+/* Default colour list name */
+"preferences.colornames.default" = "默认";
+
+/* Colour list tooltip: a refresh is in progress */
+"preferences.colornames.status.checking" = "正在检查 color.pizza 的更新…";
+
+/* Colour list tooltip: when the list was last refreshed (%@ is a date) */
+"preferences.colornames.status.updated" = "更新于 %@";
+
+/* Colour list tooltip: the last refresh failed, cached/bundled names are in use */
+"preferences.colornames.status.offline" = "无法连接 color.pizza，正在使用已保存的颜色列表。";
+
+/* Colour list tooltip: no network refresh has happened yet */
+"preferences.colornames.status.builtin" = "正在使用内置颜色列表。";
+
+/* Colour picker style section title */
+"preferences.picker.title" = "取色器";
+
+/* Basic picker tile title */
+"preferences.picker.system.title" = "基础取色器";
+
+/* Basic picker tile subtitle */
+"preferences.picker.system.description" = "macOS 颜色取样器";
+
+/* Pro picker tile title */
+"preferences.picker.custom.title" = "专业取色器";
+
+/* Pro picker tile subtitle */
+"preferences.picker.custom.description" = "实时对比度与格式";
+
+/* Pair pick mode toggle */
+"preferences.picker.pair" = "选完前景色后紧接着选择背景色";
+
+/* Screen recording permission explanation */
+"preferences.picker.permission" = "Pika 需要屏幕录制权限，才能让专业取色器采样像素。";
+
+/* Screen recording relaunch guidance */
+"preferences.picker.relaunch.note" = "请在“系统设置”中允许 Pika 进行屏幕录制，然后重新启动 Pika 以完成专业取色器的启用。";
+
+/* Relaunch Pika button */
+"preferences.picker.relaunch.button" = "重新启动 Pika";
+
+/* Grant Screen Recording permission button */
+"preferences.picker.grant.button" = "授予权限";
+
+/* Permission revoked alert title */
+"picker.reverted.title" = "已切换到基础取色器";
+
+/* Permission revoked alert body */
+"picker.reverted.body" = "Pika 的专业取色器需要屏幕录制权限，但目前未获授权。授权后，你可以在设置中重新启用它。";
+
+/* Splash picker choice label */
+"splash.picker.prompt" = "取色器";
+
+/* Pick a foreground then background pair */
+"color.pick.pair" = "选择颜色对";
