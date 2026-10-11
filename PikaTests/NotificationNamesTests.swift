@@ -11,6 +11,11 @@ final class NotificationNamesTests: XCTestCase {
                        PikaConstants.ncTriggerPickForeground)
     }
 
+    func test_triggerPickPair() {
+        XCTAssertEqual(Notification.Name.triggerPickPair.rawValue,
+                       PikaConstants.ncTriggerPickPair)
+    }
+
     func test_triggerPickBackground() {
         XCTAssertEqual(Notification.Name.triggerPickBackground.rawValue,
                        PikaConstants.ncTriggerPickBackground)

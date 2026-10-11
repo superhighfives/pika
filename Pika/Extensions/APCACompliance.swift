@@ -34,8 +34,11 @@ extension NSColor {
     }
 
     private func calculateAPCA(with color: NSColor) -> CGFloat {
-        let fgRGB = toRGBAComponents()
-        let bgRGB = color.toRGBAComponents()
+        // APCA is defined over sRGB, like WCAG `luminance`. Reading the selected colour space
+        // scored Display P3 components as if they were sRGB, so the two standards could
+        // disagree on the same pair.
+        let fgRGB = toRGBAComponents(in: .sRGB)
+        let bgRGB = color.toRGBAComponents(in: .sRGB)
 
         // Convert to sRGB components in 0-255 range
         let fg = [fgRGB.r * 255, fgRGB.g * 255, fgRGB.b * 255]

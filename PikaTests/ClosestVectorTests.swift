@@ -69,4 +69,27 @@ final class ClosestVectorTests: XCTestCase {
         let p3Red = NSColor(colorSpace: .displayP3, components: [1.0, 0.0, 0.0, 1.0], count: 4)
         XCTAssertEqual(cv.compare(p3Red), 1)
     }
+
+    // MARK: - compare() quantisation (truncate vs round)
+
+    func test_compare_halfValueComponent_roundsNotTruncates() {
+        // The named-color database is built with round() (see toRGB8BitArray); the
+        // query must quantise the same way. 0.5 * 255 = 127.5 → round = 128,
+        // truncate = 127. With truncation the (0.5, 0.5, 0.5) query wrongly matches
+        // the [127] bucket, so the picked color is mis-named at every k.5/255 channel.
+        let cv = ClosestVector([[127, 127, 127], [128, 128, 128]])
+        let midGray = NSColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1).usingColorSpace(.sRGB)!
+        XCTAssertEqual(cv.compare(midGray), 1,
+                       "0.5-channel values must round (128) to match the database convention, not truncate (127)")
+    }
+
+    func test_compare_halfChannelAsymmetric_roundsNotTruncates() {
+        // Only the red channel sits on the 0.5 boundary (0.5 * 255 = 127.5 → round
+        // 128, truncate 127). Truncation wrongly matches the [127, 0, 0] bucket;
+        // rounding matches [128, 0, 0]. Locks the per-channel (non-gray) behaviour.
+        let cv = ClosestVector([[127, 0, 0], [128, 0, 0]])
+        let halfRed = NSColor(red: 0.5, green: 0.0, blue: 0.0, alpha: 1).usingColorSpace(.sRGB)!
+        XCTAssertEqual(cv.compare(halfRed), 1,
+                       "a single 0.5-channel must round to match the database convention")
+    }
 }

@@ -82,6 +82,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         validateColorSpace()
         showPikaIfConfigured()
         registerGlobalKeyMonitor()
+
+        // Refresh the colour-name list from color.pizza (catalogue + selected list) and cache
+        // it; the eyedroppers rebuild via `.colorNamesUpdated`. Best-effort — falls back to
+        // the bundled default offline.
+        ColorNamesManager.shared.updateOnLaunch()
     }
 
     private func removeUpdatesMenuItemIfNeeded() {
@@ -107,16 +112,37 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
+    // KeyboardShortcuts 3.x isolates `onKeyUp(for:action:)` to the main actor, so this
+    // registration must run there too. Its only caller, `applicationDidFinishLaunching`,
+    // is already main-actor isolated.
+    @MainActor
     private func registerTogglePikaShortcut() {
         KeyboardShortcuts.onKeyUp(for: .togglePika) { [] in
             if Defaults[.viewedSplash] {
                 NSApp.sendAction(#selector(AppDelegate.triggerPickForeground), to: nil, from: nil)
             }
         }
+        KeyboardShortcuts.onKeyUp(for: .pickPair) { [] in
+            if Defaults[.viewedSplash] {
+                NSApp.sendAction(#selector(AppDelegate.triggerPickContrast), to: nil, from: nil)
+            }
+        }
+    }
+
+    /// The splash shows on every launch unless the user ticked its (pre-selected) "Don't show
+    /// this again" checkbox — EXCEPT when a new onboarding version hasn't been seen yet, in which
+    /// case it shows once for everyone (see `PikaConstants.currentSplashVersion`).
+    private var shouldShowSplash: Bool {
+        !Defaults[.hideSplashOnLaunch]
+            || Defaults[.lastSeenSplashVersion] < PikaConstants.currentSplashVersion
     }
 
     private func presentSplashIfNeeded() {
-        if !Defaults[.viewedSplash] {
+        // `viewedSplash` still records the first run so the pick shortcuts stay gated until
+        // onboarding is dismissed the first time. `lastSeenSplashVersion` is recorded on
+        // dismissal (`closeSplashWindow`), not here — recording it now would make
+        // `showPikaIfConfigured` reveal the main window behind the splash.
+        if shouldShowSplash {
             openSplashWindow(nil)
             NSApp.activate(ignoringOtherApps: true)
         }
@@ -129,6 +155,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func showPikaIfConfigured() {
+        // Pika should only ever appear once the splash has been dismissed. When the splash
+        // is up, defer the main window until `closeSplashWindow` fires; otherwise show it now.
+        guard !shouldShowSplash else { return }
+        presentConfiguredPika()
+    }
+
+    private func presentConfiguredPika() {
         if Defaults[.alwaysShowOnLaunch], !Defaults[.appMode].usesPopover {
             showPika(self)
         }
@@ -157,6 +190,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 }
             }
 
+            if self.handleCommandKey(event) { return nil }
+
             // In popover mode neither `NSApp.mainMenu.performKeyEquivalent` nor SwiftUI's
             // command-bound `.keyboardShortcut` fire while the popover panel is the key
             // window of an `.accessory` app — only `.keyboardShortcut` bindings attached to
@@ -175,13 +210,40 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
+    /// ⌘-key handling the menu bar can't provide. Returns true when `event` was consumed.
+    private func handleCommandKey(_ event: NSEvent) -> Bool {
+        guard event.modifierFlags.intersection(.deviceIndependentFlagsMask) == .command,
+              let key = event.charactersIgnoringModifiers?.lowercased() else { return false }
+
+        // ⌘N: a hidden alias for Window → "Show Pika" (⌘0). SwiftUI can't hide a menu
+        // item, so it's matched here rather than given a second visible entry.
+        if key == "n" {
+            showMainInterface(self)
+            return true
+        }
+
+        // `PikaCommands` replaces the standard pasteboard menu group, so a focused field
+        // never receives cut/copy/paste/select-all key equivalents — pasting `#AABBCC`
+        // into a colour value silently did nothing (#269). Route them to the field editor.
+        guard let editor = NSApp.keyWindow?.firstResponder as? NSText else { return false }
+        switch key {
+        case "v": editor.paste(nil)
+        case "x": editor.cut(nil)
+        case "c": editor.copy(nil)
+        case "a": editor.selectAll(nil)
+        default: return false
+        }
+        return true
+    }
+
     func applicationShouldHandleReopen(_: NSApplication, hasVisibleWindows: Bool) -> Bool {
-        if !hasVisibleWindows {
-            if Defaults[.appMode].usesPopover {
-                statusBarController.showPopover()
-            } else {
-                windowCoordinator.pikaWindow.makeKeyAndOrderFront(self)
-            }
+        if Defaults[.appMode].usesPopover {
+            if !hasVisibleWindows { statusBarController.showPopover() }
+        } else if !windowCoordinator.pikaWindow.isVisible {
+            // Don't trust `hasVisibleWindows` here: Pika's auxiliary windows (the border
+            // window, pick overlays) can count as visible while the main window is closed,
+            // which left a Dock click with no way back to Pika (#268).
+            showPika(self)
         }
         return true
     }
@@ -215,7 +277,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 // MARK: - Window forwarding
 
 extension AppDelegate {
-    @objc func closeSplashWindow() { windowCoordinator.closeSplashWindow() }
+    @objc func closeSplashWindow() {
+        windowCoordinator.closeSplashWindow()
+        // Record that this onboarding version has been seen, so the version gate doesn't
+        // re-show it next launch (the user's "Don't show again" choice governs from here).
+        Defaults[.lastSeenSplashVersion] = PikaConstants.currentSplashVersion
+        // Outside popover mode, the coordinator reveals the main window once the splash fades
+        // out whatever `alwaysShowOnLaunch` says (see `WindowCoordinator.startMainWindow`), so a
+        // new user always lands on Pika. With `alwaysShowOnLaunch` on, this also shows and
+        // activates it straight away rather than after the fade.
+        presentConfiguredPika()
+    }
+
     @objc func togglePopover(_: AnyObject?) { windowCoordinator.togglePopover() }
 
     @IBAction func openAboutWindow(_: Any?) { windowCoordinator.openAboutWindow() }
@@ -225,6 +298,16 @@ extension AppDelegate {
     @IBAction func showPika(_: Any) { windowCoordinator.showPika() }
     @IBAction func hidePika(_: Any) { windowCoordinator.hidePika() }
     @IBAction func showPopover(_: Any) { statusBarController.showPopover() }
+
+    /// Bring Pika back however it's configured to appear — the main window, or the popover
+    /// in popover mode. Backs the Window → "Show Pika" menu item (⌘0) and the ⌘N alias.
+    @IBAction func showMainInterface(_: Any) {
+        if Defaults[.appMode].usesPopover {
+            statusBarController.showPopover()
+        } else {
+            showPika(self)
+        }
+    }
 }
 
 // MARK: - Notification dispatch
@@ -240,6 +323,7 @@ extension AppDelegate {
 
     @IBAction func triggerPickContrast(_: Any) {
         notificationCenter.post(name: .triggerPickForeground, object: self, userInfo: ["chain": true])
+        notificationCenter.post(name: .triggerPickPair, object: self)
     }
 
     @IBAction func triggerCopyForeground(_: Any) {
@@ -286,12 +370,30 @@ extension AppDelegate {
         notificationCenter.post(name: .triggerSwap, object: self)
     }
 
+    /// The `NSTextView` field editor of whichever `ScrubTextField` is currently being edited, if
+    /// any — `ScrubTextField.becomeFirstResponder` makes the field editor (not the field itself)
+    /// the window's first responder while editing, so this is the one place both `triggerUndo`
+    /// and `triggerRedo` need to check to keep Cmd-Z scoped to "whatever the user is actually
+    /// looking at": a value being typed, if one is focused, otherwise colour-pick history.
+    private var focusedFieldUndoManager: UndoManager? {
+        guard let editor = NSApp.keyWindow?.firstResponder as? NSTextView, editor.isFieldEditor else { return nil }
+        return editor.undoManager
+    }
+
     @IBAction func triggerUndo(_: Any) {
+        if let manager = focusedFieldUndoManager, manager.canUndo {
+            manager.undo()
+            return
+        }
         notificationCenter.post(name: .triggerUndo, object: self)
         eyedroppers.undo()
     }
 
     @IBAction func triggerRedo(_: Any) {
+        if let manager = focusedFieldUndoManager, manager.canRedo {
+            manager.redo()
+            return
+        }
         notificationCenter.post(name: .triggerRedo, object: self)
         eyedroppers.redo()
     }

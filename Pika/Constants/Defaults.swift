@@ -60,6 +60,25 @@ enum WindowShadow: String, Codable, CaseIterable {
     var showsShadowAtRest: Bool { self != .never }
 }
 
+enum PickerStyle: String, Codable, CaseIterable, Equatable {
+    case system // NSColorSampler (default, today's behaviour)
+    case custom // Pika-native loupe
+}
+
+enum LoupeTheme: String, Codable, CaseIterable, Equatable {
+    case lens // colour-filled rim engraved with the format + colour name (SF Pro)
+    case badge // white rounded badges hugging the inside edge (monospaced)
+    case card // plain magnifier with a readout card beside it
+
+    var localizedName: String {
+        switch self {
+        case .lens: return PikaText.textLoupeThemeLens
+        case .badge: return PikaText.textLoupeThemeBadge
+        case .card: return PikaText.textLoupeThemeCard
+        }
+    }
+}
+
 enum AppMode: String, Codable, CaseIterable {
     case menubar = "preferences.app.mode.menubar"
     case regular = "preferences.app.mode.regular"
@@ -84,9 +103,21 @@ enum AppMode: String, Codable, CaseIterable {
 extension Defaults.Keys {
     static let colorFormat = Key<ColorFormat>("colorFormat", default: .hex)
     static let viewedSplash = Key<Bool>("viewedSplash", default: false)
+    // The colour-name list to use, keyed to color.pizza's `/v1/lists/`. `default` is the
+    // list bundled at build time as the offline fallback.
+    static let colorNameList = Key<String>("colorNameList", default: "default")
+    // When false, the splash is shown on launch. The splash's pre-selected "Don't show
+    // this again" checkbox sets this to true on dismissal.
+    static let hideSplashOnLaunch = Key<Bool>("hideSplashOnLaunch", default: false)
+    // The `PikaConstants.currentSplashVersion` last shown to the user. Bumping that constant
+    // re-shows the splash once for everyone (even those who ticked "Don't show again"), so a
+    // release with new onboarding gets in front of existing users.
+    static let lastSeenSplashVersion = Key<Int>("lastSeenSplashVersion", default: 0)
     static let hidePikaWhilePicking = Key<Bool>("hidePikaWhilePicking", default: false)
     static let windowShadow = Key<WindowShadow>("windowShadow", default: .always)
     static let pickContrastingColor = Key<Bool>("pickContrastingColor", default: false)
+    static let pickerStyle = Key<PickerStyle>("pickerStyle", default: .system)
+    static let loupeTheme = Key<LoupeTheme>("loupeTheme", default: .lens)
     static let copyColorOnPick = Key<Bool>("copyColorOnPick", default: false)
     static let hideMenuBarIcon = Key<Bool>("hideMenuBarIcon", default: false)
     static let betaUpdates = Key<Bool>("betaUpdates", default: false)

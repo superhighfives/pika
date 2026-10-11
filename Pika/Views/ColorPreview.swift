@@ -60,6 +60,8 @@ struct SwapPreviewButton: View {
                 .rotationEffect(.degrees(angle))
                 .animation(.easeInOut, value: angle)
         }
+        // `SwapButtonStyle` only draws `alt` on hover; without this VoiceOver read a bare "button".
+        .accessibilityLabel(PikaText.textColorSwap)
     }
 
     var body: some View {

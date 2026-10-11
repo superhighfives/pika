@@ -6,7 +6,10 @@ extension NSColor {
     }
 
     var luminance: CGFloat {
-        let rgba = toRGBAComponents(in: .extendedSRGB)
+        // Clamped sRGB: WCAG is defined over sRGB, and colours are now stored as extended sRGB
+        // (Eyedropper), so reading extended components here would score out-of-gamut colours on
+        // values outside 0–1 and change their contrast ratios.
+        let rgba = toRGBAComponents(in: .sRGB)
 
         func lumHelper(component: CGFloat) -> CGFloat {
             (component < 0.03928) ? (component / 12.92) : pow((component + 0.055) / 1.055, 2.4)

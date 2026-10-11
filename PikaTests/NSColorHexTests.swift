@@ -97,6 +97,15 @@ final class NSColorHexTests: XCTestCase {
         XCTAssertEqual(color.toHexString(style: .css), original)
     }
 
+    // MARK: - pika://set
+
+    func test_urlSetHex_isReadInTheSelectedColorSpace() throws {
+        // Hard-coded sRGB read #ff8800 back as #ef8e34 under Display P3.
+        Defaults[.colorSpace] = .displayP3
+        let color = try XCTUnwrap(URLSchemeHandler.color(fromSetHex: "#ff8800"))
+        XCTAssertEqual(color.toHex(in: .displayP3), 0xFF8800)
+    }
+
     // MARK: - sRGB normalization stability
 
     func test_displayP3Color_normalizedToSRGB_roundTripsExactly() {
@@ -120,5 +129,48 @@ final class NSColorHexTests: XCTestCase {
         let original = "#0e1829"
         let color = NSColor(hex: original).usingColorSpace(.sRGB)!
         XCTAssertEqual(color.toHexString(style: .css), original)
+    }
+
+    // MARK: - Wide gamut (Eyedropper stores colours as extended sRGB)
+
+    /// P3 #ff8800, outside the sRGB gamut: clipping it to sRGB on the way in read back #ef8733.
+    private let outOfGamutP3 = NSColor(colorSpace: .displayP3, components: [1, 136.0 / 255, 0, 1], count: 4)
+
+    func test_outOfSRGBGamutP3Color_survivesExtendedSRGBStorage() {
+        let stored = outOfGamutP3.usingColorSpace(.extendedSRGB)!
+        XCTAssertEqual(stored.toHex(in: .displayP3), 0xFF8800)
+    }
+
+    func test_outOfSRGBGamutP3Color_clampsWhenReadAsSRGB() {
+        // Extended components fall outside 0–1; reading as sRGB must clamp, never overflow a channel.
+        let stored = outOfGamutP3.usingColorSpace(.extendedSRGB)!
+        let clipped = outOfGamutP3.usingColorSpace(.sRGB)!
+        XCTAssertEqual(stored.toHex(in: .sRGB), clipped.toHex(in: .sRGB))
+        XCTAssertLessThanOrEqual(stored.toHex(in: .sRGB), 0xFFFFFF)
+    }
+
+    func test_colorDecimalString_readsFloatNoiseAsZero() {
+        // Converting extended sRGB back to P3 leaves ~1e-7 where blue should be 0.
+        let stored = outOfGamutP3.usingColorSpace(.extendedSRGB)!
+        XCTAssertEqual(stored.toRGBAComponents(in: .displayP3).b.colorDecimalString, "0")
+        XCTAssertEqual(CGFloat(-3e-8).colorDecimalString, "0")
+        XCTAssertEqual(CGFloat(-0.00001).colorDecimalString, "0", "no \"-0\"")
+    }
+
+    func test_colorDecimalString_capsAtFourDecimalPlaces() {
+        // `%.5g` showed more decimals the smaller the value, and disagreed with the editor.
+        XCTAssertEqual(CGFloat(0.066667).colorDecimalString, "0.0667")
+        XCTAssertEqual(CGFloat(0.05098).colorDecimalString, "0.051")
+        XCTAssertEqual(CGFloat(0.53333333).colorDecimalString, "0.5333")
+        XCTAssertEqual(CGFloat(0.000123).colorDecimalString, "0.0001")
+        XCTAssertEqual(CGFloat(1).colorDecimalString, "1")
+    }
+
+    func test_colorDecimalString_roundTripsEvery8BitChannel() {
+        // Four places is ±0.00005 — well inside one 8-bit step — so nothing is lost.
+        for channel in 0 ... 255 {
+            let shown = Double((CGFloat(channel) / 255).colorDecimalString)!
+            XCTAssertEqual(Int((shown * 255).rounded()), channel, "channel \(channel)")
+        }
     }
 }

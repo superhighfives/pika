@@ -16,7 +16,10 @@ public class ClosestVector {
 
     public func compare(_ val: NSColor) -> (Int) {
         guard let color = val.usingColorSpace(.sRGB) else { return 0 }
-        let colorArr = [Int(color.redComponent * 255), Int(color.greenComponent * 255), Int(color.blueComponent * 255)]
+        // Quantise with the same rounded helper used to build the named-color
+        // database (see Eyedropper + toRGB8BitArray), so the query and the
+        // database agree on every 8-bit bucket instead of truncate-vs-round.
+        let colorArr = color.toRGB8BitArray()
 
         var minDistance = Int.max
         var index = 0

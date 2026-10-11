@@ -41,7 +41,7 @@ jobs:
       )
     # macOS so Claude can build/test the app (AppKit/SwiftUI) during a review;
     # matches tests.yml. GitHub-hosted runners are free on public repos.
-    runs-on: macos-15
+    runs-on: xcode-27
     permissions:
       contents: write
       pull-requests: write
@@ -55,7 +55,11 @@ jobs:
           fetch-depth: 1
 
       - name: Select Xcode
-        run: sudo xcode-select -s /Applications/Xcode_16.3.app
+        run: sudo xcode-select -s /Applications/Xcode_27.0.app
+
+      # The Xcode 27 image doesn't ship the Metal toolchain, which Pika's shader needs.
+      - name: Download Metal toolchain
+        run: xcodebuild -downloadComponent MetalToolchain
 
       - name: Run Claude Code
         id: claude

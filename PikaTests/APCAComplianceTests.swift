@@ -1,3 +1,4 @@
+import Defaults
 @testable import Pika
 import XCTest
 
@@ -75,5 +76,22 @@ final class APCAComplianceTests: XCTestCase {
         let alias = colorA.toAPCACompliance(with: colorB)
         XCTAssertEqual(direct.level, alias.level)
         XCTAssertEqual(direct.value, alias.value, accuracy: 0.001)
+    }
+
+    // MARK: - Colour space
+
+    func test_value_isIndependentOfTheSelectedColorSpace() {
+        // Saturated, so its sRGB and Display P3 components differ (greys wouldn't catch this).
+        let red = NSColor(srgbRed: 1, green: 0, blue: 0, alpha: 1)
+        let white = NSColor(srgbRed: 1, green: 1, blue: 1, alpha: 1)
+        let saved = Defaults[.colorSpace]
+        defer { Defaults[.colorSpace] = saved }
+
+        Defaults[.colorSpace] = .sRGB
+        let inSRGB = red.APCACompliance(with: white).value
+        Defaults[.colorSpace] = .displayP3
+        let inP3 = red.APCACompliance(with: white).value
+
+        XCTAssertEqual(inP3, inSRGB, accuracy: 0.0001)
     }
 }
