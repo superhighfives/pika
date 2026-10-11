@@ -578,3 +578,141 @@
 
 /* Show Pika */
 "menu.showPika" = "Pika anzeigen";
+
+/* Show the welcome splash */
+"menu.showSplash" = "Begrüßung anzeigen";
+
+/* Splash setup heading */
+"splash.setup.title" = "Willkommen bei Pika";
+
+/* Splash setup subheading */
+"splash.setup.subtitle" = "Ein paar schnelle Einstellungen für den Start.";
+
+/* Global shortcut row subtitle */
+"splash.shortcut.subtitle" = "Pika von überall ein- und ausblenden";
+
+/* Pick-pair shortcut row subtitle */
+"splash.pair.subtitle" = "Erst einen Vordergrund, dann einen Hintergrund auswählen";
+
+/* Launch at login row subtitle */
+"splash.launch.subtitle" = "Pika beim Anmelden öffnen";
+
+/* Custom picker recommended badge */
+"splash.picker.recommended" = "Empfohlen";
+
+/* Pro picker capability note: needs the Screen Recording permission */
+"picker.requiresScreenRecording" = "Erfordert Bildschirmaufnahme";
+
+/* Button to grant the optional Accessibility permission for the Pro picker */
+"picker.grantAccessibility" = "Bedienungshilfen erlauben";
+
+/* Label for the Pro picker loupe theme setting */
+"loupe.theme" = "Lupenstil";
+
+/* Loupe theme: coloured rim with engraved text */
+"loupe.theme.lens" = "Linse";
+
+/* Loupe theme: white badges on the inside edge */
+"loupe.theme.badge" = "Plakette";
+
+/* Loupe theme: plain magnifier with a readout card beside it */
+"loupe.theme.card" = "Karte";
+
+/* Intro line above the Pro picker permission buttons */
+"picker.permissions.intro" = "Um die Pro-Pipette zu aktivieren, musst du folgende Berechtigungen erteilen:";
+
+/* Permission pill label: Screen Recording */
+"picker.perm.screenRecording" = "Bildschirmaufnahme";
+
+/* Permission pill label: Accessibility */
+"picker.perm.accessibility" = "Bedienungshilfen";
+
+/* Explains what the optional Accessibility permission adds to the Pro picker */
+"picker.accessibilityNote" = "Optional – damit Escape und das Verschieben mit den Pfeiltasten auch beim Auswählen über anderen Apps funktionieren.";
+
+/* Custom picker permission note */
+"splash.picker.permission" = "Benötigt die Berechtigung „Bildschirmaufnahme“";
+
+/* Pro picker declined fallback note */
+"splash.picker.fallback" = "Jetzt nicht? Dann verwendest du die einfache Pipette.";
+
+/* Splash footer note */
+"splash.footer" = "Du kannst all das in den Einstellungen ändern.";
+
+/* Splash: pre-selected checkbox to stop showing the splash on launch */
+"splash.dontShowAgain" = "Nicht mehr anzeigen";
+
+/* Get started confirmation title when the Basic picker is selected */
+"splash.confirm.title" = "Pikas Pro-Pipette verwenden?";
+
+/* Get started confirmation body */
+"splash.confirm.body" = "Die Pro-Pipette zeigt die Farbe, ihr Format und den Kontrast live direkt in der Lupe, während du auswählst – viel angenehmer als die macOS-Pipette. Du kannst später jederzeit in den Einstellungen wechseln.";
+
+/* Confirmation: enable Pro picker */
+"splash.confirm.enable" = "Pro-Pipette aktivieren";
+
+/* Confirmation: keep the Basic picker */
+"splash.confirm.continue" = "Mit einfacher Pipette fortfahren";
+
+/* Colour name list section title */
+"preferences.colornames.title" = "Farbnamen";
+
+/* Colour name list section subtitle */
+"preferences.colornames.subtitle" = "Wähle die Liste, mit der Pika Farben benennt. Die Listen stammen von color.pizza und werden automatisch aktualisiert; die Standardliste funktioniert auch offline.";
+
+/* Default colour list name */
+"preferences.colornames.default" = "Standard";
+
+/* Colour list tooltip: a refresh is in progress */
+"preferences.colornames.status.checking" = "Suche auf color.pizza nach Aktualisierungen …";
+
+/* Colour list tooltip: when the list was last refreshed (%@ is a date) */
+"preferences.colornames.status.updated" = "Aktualisiert %@";
+
+/* Colour list tooltip: the last refresh failed, cached/bundled names are in use */
+"preferences.colornames.status.offline" = "color.pizza nicht erreichbar. Die gespeicherte Farbliste wird verwendet.";
+
+/* Colour list tooltip: no network refresh has happened yet */
+"preferences.colornames.status.builtin" = "Die integrierte Farbliste wird verwendet.";
+
+/* Colour picker style section title */
+"preferences.picker.title" = "Pipette";
+
+/* Basic picker tile title */
+"preferences.picker.system.title" = "Einfache Pipette";
+
+/* Basic picker tile subtitle */
+"preferences.picker.system.description" = "macOS-Farbpipette";
+
+/* Pro picker tile title */
+"preferences.picker.custom.title" = "Pro-Pipette";
+
+/* Pro picker tile subtitle */
+"preferences.picker.custom.description" = "Live-Kontrast und -Format";
+
+/* Pair pick mode toggle */
+"preferences.picker.pair" = "Direkt nach dem Vordergrund einen Hintergrund auswählen";
+
+/* Screen recording permission explanation */
+"preferences.picker.permission" = "Pika benötigt die Berechtigung „Bildschirmaufnahme“, um für die Pro-Pipette Pixel auszulesen.";
+
+/* Screen recording relaunch guidance */
+"preferences.picker.relaunch.note" = "Erlaube Pika die Bildschirmaufnahme in den Systemeinstellungen und starte Pika dann neu, um die Pro-Pipette fertig zu aktivieren.";
+
+/* Relaunch Pika button */
+"preferences.picker.relaunch.button" = "Pika neu starten";
+
+/* Grant Screen Recording permission button */
+"preferences.picker.grant.button" = "Berechtigung erteilen";
+
+/* Permission revoked alert title */
+"picker.reverted.title" = "Zur einfachen Pipette gewechselt";
+
+/* Permission revoked alert body */
+"picker.reverted.body" = "Pikas Pro-Pipette benötigt die Berechtigung „Bildschirmaufnahme“, die derzeit nicht erteilt ist. Sobald die Berechtigung erteilt ist, kannst du sie in den Einstellungen wieder aktivieren.";
+
+/* Splash picker choice label */
+"splash.picker.prompt" = "Pipette";
+
+/* Pick a foreground then background pair */
+"color.pick.pair" = "Paar auswählen";

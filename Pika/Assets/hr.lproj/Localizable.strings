@@ -578,3 +578,141 @@
 
 /* Show Pika */
 "menu.showPika" = "Prikaži Pika";
+
+/* Show the welcome splash */
+"menu.showSplash" = "Prikaži dobrodošlicu";
+
+/* Splash setup heading */
+"splash.setup.title" = "Dobro došli u Pika";
+
+/* Splash setup subheading */
+"splash.setup.subtitle" = "Nekoliko brzih odabira za početak.";
+
+/* Global shortcut row subtitle */
+"splash.shortcut.subtitle" = "Prikaži i sakrij Pika s bilo kojeg mjesta";
+
+/* Pick-pair shortcut row subtitle */
+"splash.pair.subtitle" = "Odaberi prednju boju, a zatim boju pozadine";
+
+/* Launch at login row subtitle */
+"splash.launch.subtitle" = "Otvori Pika nakon prijave";
+
+/* Custom picker recommended badge */
+"splash.picker.recommended" = "Preporučeno";
+
+/* Pro picker capability note: needs the Screen Recording permission */
+"picker.requiresScreenRecording" = "Zahtijeva snimanje zaslona";
+
+/* Button to grant the optional Accessibility permission for the Pro picker */
+"picker.grantAccessibility" = "Dopusti pristupačnost";
+
+/* Label for the Pro picker loupe theme setting */
+"loupe.theme" = "Stil povećala";
+
+/* Loupe theme: coloured rim with engraved text */
+"loupe.theme.lens" = "Leća";
+
+/* Loupe theme: white badges on the inside edge */
+"loupe.theme.badge" = "Značka";
+
+/* Loupe theme: plain magnifier with a readout card beside it */
+"loupe.theme.card" = "Kartica";
+
+/* Intro line above the Pro picker permission buttons */
+"picker.permissions.intro" = "Za uključivanje Pro birača trebate dodijeliti sljedeća dopuštenja:";
+
+/* Permission pill label: Screen Recording */
+"picker.perm.screenRecording" = "Snimanje zaslona";
+
+/* Permission pill label: Accessibility */
+"picker.perm.accessibility" = "Pristupačnost";
+
+/* Explains what the optional Accessibility permission adds to the Pro picker */
+"picker.accessibilityNote" = "Neobavezno – omogućuje tipku Escape i pomicanje strelicama tijekom biranja iznad drugih aplikacija.";
+
+/* Custom picker permission note */
+"splash.picker.permission" = "Potrebno je dopuštenje za snimanje zaslona";
+
+/* Pro picker declined fallback note */
+"splash.picker.fallback" = "Ne sada? Koristit ćete osnovni birač.";
+
+/* Splash footer note */
+"splash.footer" = "Sve ovo možete promijeniti u Postavkama.";
+
+/* Splash: pre-selected checkbox to stop showing the splash on launch */
+"splash.dontShowAgain" = "Ne prikazuj ponovno";
+
+/* Get started confirmation title when the Basic picker is selected */
+"splash.confirm.title" = "Koristiti Pikin Pro birač?";
+
+/* Get started confirmation body */
+"splash.confirm.body" = "Pro birač prikazuje boju, njezin format i kontrast uživo izravno u povećalu dok birate – mnogo ugodnije od macOS uzorkivača. Uvijek možete promijeniti kasnije u Postavkama.";
+
+/* Confirmation: enable Pro picker */
+"splash.confirm.enable" = "Uključi Pro birač";
+
+/* Confirmation: keep the Basic picker */
+"splash.confirm.continue" = "Nastavi s osnovnim biračem";
+
+/* Colour name list section title */
+"preferences.colornames.title" = "Nazivi boja";
+
+/* Colour name list section subtitle */
+"preferences.colornames.subtitle" = "Odaberite popis koji Pika koristi za imenovanje boja. Popisi dolaze s color.pizza i automatski se ažuriraju; zadani popis radi i izvan mreže.";
+
+/* Default colour list name */
+"preferences.colornames.default" = "Zadano";
+
+/* Colour list tooltip: a refresh is in progress */
+"preferences.colornames.status.checking" = "Provjera ažuriranja na color.pizza…";
+
+/* Colour list tooltip: when the list was last refreshed (%@ is a date) */
+"preferences.colornames.status.updated" = "Ažurirano %@";
+
+/* Colour list tooltip: the last refresh failed, cached/bundled names are in use */
+"preferences.colornames.status.offline" = "Nije moguće pristupiti color.pizza. Koristi se spremljeni popis boja.";
+
+/* Colour list tooltip: no network refresh has happened yet */
+"preferences.colornames.status.builtin" = "Koristi se ugrađeni popis boja.";
+
+/* Colour picker style section title */
+"preferences.picker.title" = "Birač boja";
+
+/* Basic picker tile title */
+"preferences.picker.system.title" = "Osnovni birač";
+
+/* Basic picker tile subtitle */
+"preferences.picker.system.description" = "macOS uzorkivač boja";
+
+/* Pro picker tile title */
+"preferences.picker.custom.title" = "Pro birač";
+
+/* Pro picker tile subtitle */
+"preferences.picker.custom.description" = "Kontrast i format uživo";
+
+/* Pair pick mode toggle */
+"preferences.picker.pair" = "Odaberi boju pozadine odmah nakon prednje boje";
+
+/* Screen recording permission explanation */
+"preferences.picker.permission" = "Pika treba dopuštenje za snimanje zaslona kako bi Pro birač mogao uzorkovati piksele.";
+
+/* Screen recording relaunch guidance */
+"preferences.picker.relaunch.note" = "Dopustite snimanje zaslona za Pika u Postavkama sustava, a zatim ponovno pokrenite Pika da biste dovršili uključivanje Pro birača.";
+
+/* Relaunch Pika button */
+"preferences.picker.relaunch.button" = "Ponovno pokreni Pika";
+
+/* Grant Screen Recording permission button */
+"preferences.picker.grant.button" = "Dodijeli dopuštenje";
+
+/* Permission revoked alert title */
+"picker.reverted.title" = "Prebačeno na osnovni birač";
+
+/* Permission revoked alert body */
+"picker.reverted.body" = "Pikin Pro birač treba dopuštenje za snimanje zaslona, koje trenutačno nije dodijeljeno. Možete ga ponovno uključiti u Postavkama nakon što dopustite pristup.";
+
+/* Splash picker choice label */
+"splash.picker.prompt" = "Birač boja";
+
+/* Pick a foreground then background pair */
+"color.pick.pair" = "Odaberi par";
