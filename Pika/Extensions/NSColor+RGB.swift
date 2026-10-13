@@ -8,6 +8,19 @@ import SwiftUI
 
 struct RGBAComponents { let r, g, b, a: CGFloat }
 
+/// The gamut a display can show, as far as Pika tells them apart.
+enum DisplayGamut {
+    case sRGB
+    case displayP3
+
+    init(screen: NSScreen?) {
+        self = screen?.canRepresent(.p3) == true ? .displayP3 : .sRGB
+    }
+
+    /// The gamut of the screen Pika's window is on.
+    static var current: DisplayGamut { DisplayGamut(screen: NSScreen.main) }
+}
+
 extension CGFloat {
     /// A 0–1 colour value (OpenGL, SwiftUI) to at most 4 decimal places, trailing zeros stripped.
     /// Four places is ±0.00005, well inside one 8-bit step (1/255), so every 8-bit channel still
@@ -28,6 +41,28 @@ extension NSColor {
         rgbaColor.getRed(&r, green: &g, blue: &b, alpha: &a)
 
         return RGBAComponents(r: r, g: g, b: b, a: a)
+    }
+
+    /// Whether a display with `gamut` can show this colour as itself. Colours are stored as
+    /// extended sRGB, so one authored in Lab or OKLCH, or in a wider colour space than the
+    /// display's, can sit outside it; the swatch then shows the nearest colour the display has.
+    func isDisplayable(in gamut: DisplayGamut) -> Bool {
+        var (r, g, b) = toLinearExtendedSRGB()
+        if gamut == .displayP3 {
+            // Linear sRGB → linear Display P3 (same white point, so one matrix).
+            (r, g, b) = (
+                0.8224621 * r + 0.1775380 * g,
+                0.0331941 * r + 0.9668058 * g,
+                0.0170827 * r + 0.0723974 * g + 0.9105199 * b
+            )
+        }
+        // Half an 8-bit step of slack, so float noise and a readout's rounding (four decimal
+        // places of OKLCH chroma, say) don't flag a colour sitting on the gamut's edge.
+        let slack: CGFloat = 1 / 510
+        return [r, g, b].allSatisfy {
+            let encoded = Self.encodeExtendedSRGB($0)
+            return encoded >= -slack && encoded <= 1 + slack
+        }
     }
 
     func toRGBString(style: CopyFormat = .css) -> String {

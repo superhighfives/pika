@@ -576,6 +576,9 @@
 /* Invalid input */
 "color.edit.invalid" = "Ungültige Eingabe";
 
+/* Outside the display's color range */
+"color.gamut.outside" = "Außerhalb des Farbumfangs dieses Displays. Angezeigt wird die nächste darstellbare Farbe.";
+
 /* Show Pika */
 "menu.showPika" = "Pika anzeigen";
 

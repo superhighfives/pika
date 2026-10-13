@@ -576,6 +576,9 @@
 /* Invalid input */
 "color.edit.invalid" = "無効な入力";
 
+/* Outside the display's color range */
+"color.gamut.outside" = "ディスプレイの色域外です。表示可能な最も近いカラーで表示されています。";
+
 /* Show Pika */
 "menu.showPika" = "Pikaを表示";
 
