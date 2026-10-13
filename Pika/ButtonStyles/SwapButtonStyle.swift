@@ -6,6 +6,13 @@ struct SwapButtonStyle: ButtonStyle {
     var ltr = false
     var expanded = false
     var onHoverChange: ((Bool) -> Void)?
+    /// Called when the label actually appears or goes, which trails the hover by `labelDelay`.
+    var onExpandChange: ((Bool) -> Void)?
+
+    /// How long the pointer rests on the button before its label slides out. Long enough that
+    /// moving across the buttons, or clicking one, doesn't make them all expand; the label is
+    /// there for someone who stops to wonder what the icon does, like a tooltip.
+    static let labelDelay: Duration = .seconds(3)
 
     private struct SwapButtonStyleView: View {
         @Environment(\.colorScheme) var colorScheme: ColorScheme
@@ -20,6 +27,7 @@ struct SwapButtonStyle: ButtonStyle {
         let ltr: Bool
         let expanded: Bool
         let onHoverChange: ((Bool) -> Void)?
+        let onExpandChange: ((Bool) -> Void)?
 
         private var showText: Bool { isHovered || expanded }
 
@@ -68,7 +76,7 @@ struct SwapButtonStyle: ButtonStyle {
                 if hover {
                     guard hoverCooldown == nil, hoverTask == nil else { return }
                     hoverTask = Task {
-                        try? await Task.sleep(for: .milliseconds(100))
+                        try? await Task.sleep(for: SwapButtonStyle.labelDelay)
                         guard !Task.isCancelled else { return }
                         isHovered = true
                         hoverTask = nil
@@ -98,6 +106,14 @@ struct SwapButtonStyle: ButtonStyle {
                     isHovered = false
                 }
             }
+            .onChange(of: isHovered) { _, shown in onExpandChange?(shown) }
+            // A click answers the question the label was going to: don't expand after it.
+            .onChange(of: configuration.isPressed) { _, pressed in
+                if pressed {
+                    hoverTask?.cancel()
+                    hoverTask = nil
+                }
+            }
         }
     }
 
@@ -108,7 +124,8 @@ struct SwapButtonStyle: ButtonStyle {
             alt: alt,
             ltr: ltr,
             expanded: expanded,
-            onHoverChange: onHoverChange
+            onHoverChange: onHoverChange,
+            onExpandChange: onExpandChange
         )
     }
 }

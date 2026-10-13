@@ -55,7 +55,9 @@ struct SwapPreviewButton: View {
     }
 
     private var swapButton: some View {
-        Button(action: { onSwap(); angle -= 180 }) {
+        // The half-turn comes from `.triggerSwap` (below), which `onSwap` posts and which also
+        // covers a swap from the menu or a shortcut. Turning here as well made a click spin twice.
+        Button(action: onSwap) {
             IconImage(name: "arrow.triangle.swap")
                 .rotationEffect(.degrees(angle))
                 .animation(.easeInOut, value: angle)
@@ -84,7 +86,7 @@ struct SwapPreviewButton: View {
                                 alt: PikaText.textColorSwap,
                                 ltr: true,
                                 expanded: swapHovered,
-                                onHoverChange: { swapHovered = $0 }
+                                onExpandChange: { swapHovered = $0 }
                             ))
                             .transition(
                                 .move(edge: .leading).combined(with: .opacity)
