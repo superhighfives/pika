@@ -94,6 +94,49 @@ final class EditableColorValueTests: XCTestCase {
         XCTAssertEqual(ColorComponentField.naturalDecimalPlaces(forRange: 0 ... 1), 3)
     }
 
+    // MARK: - Click-away ends an edit
+
+    private final class SelfDismissingTarget: NSView, EditDismissingClickTarget {}
+
+    /// A field editor as it is while `field` is being edited: an `NSText` whose delegate is the field.
+    private func editor(for field: NSTextField) -> NSTextView {
+        let editor = NSTextView()
+        editor.delegate = field as? NSTextViewDelegate
+        return editor
+    }
+
+    func test_clickAway_onAnyOtherView_orEmptySpace_endsTheEdit() {
+        let editing = editor(for: ScrubTextField())
+        XCTAssertTrue(EditingClickAway.shouldEndEditing(firstResponder: editing, clicked: NSView()))
+        XCTAssertTrue(EditingClickAway.shouldEndEditing(firstResponder: editing, clicked: NSButton()))
+        XCTAssertTrue(EditingClickAway.shouldEndEditing(firstResponder: editing, clicked: nil))
+    }
+
+    func test_clickAway_onAColourField_orInsideOne_leavesFocusToTheField() {
+        let editing = editor(for: ScrubTextField())
+        let other = ScrubTextField()
+        let inside = NSView()
+        other.addSubview(inside)
+        XCTAssertFalse(EditingClickAway.shouldEndEditing(firstResponder: editing, clicked: other))
+        XCTAssertFalse(EditingClickAway.shouldEndEditing(firstResponder: editing, clicked: inside))
+    }
+
+    func test_clickAway_onAViewThatEndsTheEditItself_isLeftToThatView() {
+        let editing = editor(for: ScrubTextField())
+        let target = SelfDismissingTarget()
+        let inside = NSView()
+        target.addSubview(inside)
+        XCTAssertFalse(EditingClickAway.shouldEndEditing(firstResponder: editing, clicked: target))
+        XCTAssertFalse(EditingClickAway.shouldEndEditing(firstResponder: editing, clicked: inside))
+    }
+
+    func test_clickAway_whenNoColourFieldIsBeingEdited_doesNothing() {
+        XCTAssertFalse(EditingClickAway.shouldEndEditing(firstResponder: nil, clicked: NSView()))
+        XCTAssertFalse(EditingClickAway.shouldEndEditing(firstResponder: NSView(), clicked: NSView()))
+        // Some other text field's editor.
+        XCTAssertFalse(EditingClickAway.shouldEndEditing(firstResponder: editor(for: NSTextField()), clicked: NSView()))
+    }
+
     // MARK: - Adopting the readout's formatting on commit
 
     func test_adoptingReadoutFormatting_sameNumber_takesTheReadoutsText() {
