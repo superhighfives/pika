@@ -17,7 +17,9 @@ enum DisplayGamut {
         self = screen?.canRepresent(.p3) == true ? .displayP3 : .sRGB
     }
 
-    /// The gamut of the screen Pika's window is on.
+    /// The gamut of the main screen (the one holding the key window, so Pika's own while it's
+    /// frontmost). Not tied to Pika's window: with Pika in the background, this follows whichever
+    /// screen has the active app's key window.
     static var current: DisplayGamut { DisplayGamut(screen: NSScreen.main) }
 }
 

@@ -304,3 +304,33 @@ final class NSColorLabTests: XCTestCase {
         XCTAssertEqual(wide.luminance, clamped.luminance, accuracy: 0.0001)
     }
 }
+
+// MARK: - Clamping where a format can't hold the colour
+
+extension NSColorLabTests {
+    /// Pins the clamp itself, independently of `usingColorSpace`: luminance matches the WCAG
+    /// formula over the extended components clipped to 0–1 by hand.
+    func test_luminance_ofAnOutOfGamutColour_matchesHandClippedComponents() {
+        let wide = NSColor.fromOklch(l: 0.7, c: 0.4, h: 30)
+        let ext = wide.toRGBAComponents(in: .extendedSRGB)
+        XCTAssertTrue([ext.r, ext.g, ext.b].contains { $0 < 0 || $0 > 1 }, "fixture should be outside sRGB")
+        func linear(_ component: CGFloat) -> CGFloat {
+            let clipped = min(max(component, 0), 1)
+            return clipped < 0.03928 ? clipped / 12.92 : pow((clipped + 0.055) / 1.055, 2.4)
+        }
+        let expected = 0.2126 * linear(ext.r) + 0.7152 * linear(ext.g) + 0.0722 * linear(ext.b)
+        XCTAssertEqual(wide.luminance, expected, accuracy: 0.0001)
+        XCTAssertLessThanOrEqual(wide.luminance, 1)
+    }
+
+    /// RGB output of a colour outside even Display P3 stays within 0–255.
+    func test_toRGB8BitArray_ofAnOutOfGamutColour_staysIn8BitRange() {
+        let extreme = NSColor.fromOklch(l: 0.9, c: 0.4, h: 150)
+        for space in [NSColorSpace.sRGB, .displayP3] {
+            for channel in extreme.toRGB8BitArray(in: space) {
+                XCTAssertGreaterThanOrEqual(channel, 0, "\(space)")
+                XCTAssertLessThanOrEqual(channel, 255, "\(space)")
+            }
+        }
+    }
+}
