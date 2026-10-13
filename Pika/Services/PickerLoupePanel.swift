@@ -123,10 +123,11 @@ final class LoupeCardPanel: NSPanel {
 }
 
 /// A transparent panel covering one screen, sitting above every other app (but below the loupe)
-/// while a pick is active. There is one per screen (see `frames(coveringScreens:)`). Its whole job is to *consume* the committing click so it never
-/// reaches the desktop / app underneath — global `NSEvent` monitors can only observe the
-/// click, not swallow it. It also drives cursor tracking, scroll-to-zoom, and right-click
-/// cancel, since with the catcher in front those events are delivered locally to Pika.
+/// while a pick is active. There is one per screen (see `frames(coveringScreens:)`). Its whole
+/// job is to *consume* the committing click so it never reaches the desktop / app underneath —
+/// global `NSEvent` monitors can only observe the click, not swallow it. It also drives cursor
+/// tracking, scroll-to-zoom, and right-click cancel, since with the catcher in front those
+/// events are delivered locally to Pika.
 final class LoupeClickCatcherPanel: NSPanel {
     var onCommit: (() -> Void)?
     var onCancel: (() -> Void)?
