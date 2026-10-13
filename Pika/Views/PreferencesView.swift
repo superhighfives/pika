@@ -37,14 +37,6 @@ private struct GeneralAndSelectionSection: View {
                 Toggle(isOn: $alwaysShowOnLaunch) {
                     Text(PikaText.textAlwaysShowOnLaunch)
                 }
-                #if TARGET_SPARKLE
-                .onReceive([betaUpdates].publisher.first()) { _ in
-                        NSApp.sendAction(
-                            #selector(AppDelegate.updateFeedURL),
-                            to: nil, from: nil
-                        )
-                    }
-                #endif
                 if appMode != .menubar {
                     Toggle(isOn: $disableHideMenuBarIcon) {
                         Text(PikaText.textIconDescription)

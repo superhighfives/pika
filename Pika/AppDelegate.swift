@@ -21,6 +21,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let windowCoordinator = WindowCoordinator()
     let statusBarController = StatusBarController()
 
+    #if TARGET_SPARKLE
+        /// Sparkle 2 updater. Created on launch so scheduled update checks start with the app.
+        private(set) lazy var updaterController = SPUStandardUpdaterController(
+            startingUpdater: true,
+            updaterDelegate: self,
+            userDriverDelegate: nil
+        )
+    #endif
+
     func setupAppMode() {
         var currentMode = Defaults[.appMode].activationPolicy
         NSApp.setActivationPolicy(currentMode)
@@ -73,6 +82,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         LaunchAtLogin.migrateIfNeeded()
         migrateHistoryToPalettes()
         removeUpdatesMenuItemIfNeeded()
+        #if TARGET_SPARKLE
+            // Sparkle 1 persisted the runtime feed URL to user defaults, where Sparkle 2 would
+            // still read it. The feed now comes from `feedURLString(for:)`, so drop the stale copy.
+            updaterController.updater.clearFeedURLFromUserDefaults()
+        #endif
 
         eyedroppers = Eyedroppers()
         setupInterface()
@@ -439,13 +453,8 @@ extension AppDelegate {
 
 extension AppDelegate {
     #if TARGET_SPARKLE
-        @IBAction func updateFeedURL(_: Any) {
-            SUUpdater.shared().feedURL = URL(string: PikaConstants.url())
-        }
-
-        @IBAction func checkForUpdates(_: Any) {
-            SUUpdater.shared().feedURL = URL(string: PikaConstants.url())
-            SUUpdater.shared()?.checkForUpdates(self)
+        @IBAction func checkForUpdates(_ sender: Any) {
+            updaterController.checkForUpdates(sender)
         }
     #endif
 
@@ -465,3 +474,14 @@ extension AppDelegate {
         NSApplication.shared.terminate(self)
     }
 }
+
+// MARK: - Updates
+
+#if TARGET_SPARKLE
+    extension AppDelegate: SPUUpdaterDelegate {
+        /// Sparkle asks for the feed on every check, so the beta toggle takes effect immediately.
+        func feedURLString(for _: SPUUpdater) -> String? {
+            PikaConstants.url()
+        }
+    }
+#endif
