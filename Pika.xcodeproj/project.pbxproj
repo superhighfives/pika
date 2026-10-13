@@ -31,6 +31,7 @@
 		DEC0FACE0000000000000011 /* ColorDecompositionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC0FACE0000000000000010 /* ColorDecompositionTests.swift */; };
 		CC2000000000000000000C01 /* ClosestVectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000C00 /* ClosestVectorTests.swift */; };
 		CC2000000000000000000D01 /* SequenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000D00 /* SequenceTests.swift */; };
+		CC2000000000000000003E01 /* PickerLoupePanelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000003E00 /* PickerLoupePanelTests.swift */; };
 		CC2000000000000000000E01 /* ExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000E00 /* ExporterTests.swift */; };
 		CC2000000000000000000F01 /* EditableColorValueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000F00 /* EditableColorValueTests.swift */; };
 
@@ -253,6 +254,7 @@
 		DEC0FACE0000000000000010 /* ColorDecompositionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorDecompositionTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000000C00 /* ClosestVectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosestVectorTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000000D00 /* SequenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceTests.swift; sourceTree = "<group>"; };
+		CC2000000000000000003E00 /* PickerLoupePanelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerLoupePanelTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000000E00 /* ExporterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExporterTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000000F00 /* EditableColorValueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableColorValueTests.swift; sourceTree = "<group>"; };
 
@@ -585,6 +587,7 @@
 				DEC0FACE0000000000000010 /* ColorDecompositionTests.swift */,
 				CC2000000000000000000C00 /* ClosestVectorTests.swift */,
 				CC2000000000000000000D00 /* SequenceTests.swift */,
+				CC2000000000000000003E00 /* PickerLoupePanelTests.swift */,
 				CC2000000000000000000E00 /* ExporterTests.swift */,
 				CC2000000000000000000F00 /* EditableColorValueTests.swift */,
 			);
@@ -1149,6 +1152,7 @@
 				DEC0FACE0000000000000011 /* ColorDecompositionTests.swift in Sources */,
 				CC2000000000000000000C01 /* ClosestVectorTests.swift in Sources */,
 				CC2000000000000000000D01 /* SequenceTests.swift in Sources */,
+				CC2000000000000000003E01 /* PickerLoupePanelTests.swift in Sources */,
 				CC2000000000000000000E01 /* ExporterTests.swift in Sources */,
 				CC2000000000000000000F01 /* EditableColorValueTests.swift in Sources */,
 			);
