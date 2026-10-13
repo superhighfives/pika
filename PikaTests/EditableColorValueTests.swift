@@ -132,6 +132,35 @@ final class EditableColorValueTests: XCTestCase {
         XCTAssertFalse(EditingClickAway.shouldEndEditing(firstResponder: editor(for: NSTextField()), clicked: NSView()))
     }
 
+    // MARK: - Telling our own colour writes from external ones
+
+    func test_isExternalChange_echoOfOurOwnWrite_isNotExternal_andKeepsTheMarker() {
+        let black = NSColor.fromHex("#000000", in: .sRGB)!
+        var ownWrite: NSColor? = black
+        XCTAssertFalse(EditableColorValue.isExternalChange(to: black, ownWrite: &ownWrite))
+        XCTAssertEqual(ownWrite, black)
+    }
+
+    /// Type black, start a pick and hover another colour, then cancel: the pick's live preview
+    /// and the revert to black are both external, so both must resync the readout. The revert
+    /// used to be mistaken for an echo of the typed black, leaving the hovered colour's text.
+    func test_isExternalChange_revertToTheColourWeLastWrote_afterAnExternalChange_isExternal() {
+        let black = NSColor.fromHex("#000000", in: .sRGB)!
+        let hovered = NSColor.fromHex("#33232b", in: .sRGB)!
+        var ownWrite: NSColor? = black
+
+        XCTAssertTrue(EditableColorValue.isExternalChange(to: hovered, ownWrite: &ownWrite))
+        XCTAssertNil(ownWrite)
+        XCTAssertTrue(EditableColorValue.isExternalChange(to: black, ownWrite: &ownWrite))
+    }
+
+    func test_isExternalChange_withNoOwnWrite_isExternal() {
+        var ownWrite: NSColor?
+        XCTAssertTrue(EditableColorValue.isExternalChange(
+            to: NSColor.fromHex("#112233", in: .sRGB)!, ownWrite: &ownWrite
+        ))
+    }
+
     // MARK: - Adopting the readout's formatting on commit
 
     func test_adoptingReadoutFormatting_sameNumber_takesTheReadoutsText() {
