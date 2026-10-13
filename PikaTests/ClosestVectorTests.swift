@@ -92,4 +92,17 @@ final class ClosestVectorTests: XCTestCase {
         XCTAssertEqual(cv.compare(halfRed), 1,
                        "a single 0.5-channel must round to match the database convention")
     }
+
+    // MARK: - compare() out-of-gamut input
+
+    func test_compare_outOfGamutColour_matchesItsHandClippedSRGBBucket() {
+        // Lab/OKLCH colours are stored as unclamped extended sRGB. The lookup must
+        // name the colour the screen shows: components clipped to 0–1, then rounded.
+        let wide = NSColor.fromOklch(l: 0.7, c: 0.4, h: 30)
+        let ext = wide.toRGBAComponents(in: .extendedSRGB)
+        XCTAssertTrue([ext.r, ext.g, ext.b].contains { $0 < 0 || $0 > 1 }, "fixture should be outside sRGB")
+        let clipped = [ext.r, ext.g, ext.b].map { Int((min(max($0, 0), 1) * 255).rounded()) }
+        let cv = ClosestVector([[0, 0, 0], clipped, [255, 255, 255]])
+        XCTAssertEqual(cv.compare(wide), 1)
+    }
 }
