@@ -24,6 +24,8 @@ struct ColorPickers: View {
     /// Hovering either swatch shows the boundary on both: it marks where the pair stops being
     /// a pick target, which is one fact about the whole row, not a per-swatch one.
     @State private var pickersHovered = false
+    /// Ends an edit when a click lands outside the fields and the swatches — see `EditingClickAway`.
+    @State private var clickAway = EditingClickAway()
 
     var body: some View {
         let eyedropperArray: [Eyedropper] = [eyedroppers.foreground, eyedroppers.background]
@@ -47,6 +49,8 @@ struct ColorPickers: View {
             DispatchQueue.main.async { readoutHeight = height }
         }
         .onHover { pickersHovered = $0 }
+        .onAppear { clickAway.start { dismissEditingTrigger += 1 } }
+        .onDisappear { clickAway.stop() }
     }
 }
 
