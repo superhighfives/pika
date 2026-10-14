@@ -21,6 +21,23 @@ struct InvalidInputPill: View {
     }
 }
 
+/// Marks a colour the display can't show as itself (see `NSColor.isDisplayable(in:)`), so the
+/// swatch standing in for it with the nearest colour it has isn't a silent substitution. A glyph
+/// rather than a pill: it stays up for as long as the colour does, and the explanation is in the
+/// tooltip.
+struct OutOfGamutIndicator: View {
+    let uiColor: NSColor
+
+    var body: some View {
+        Image(systemName: "exclamationmark.triangle")
+            .font(.caption2)
+            .fontWeight(.semibold)
+            .foregroundStyle(Color(uiColor).opacity(0.75))
+            .help(PikaText.textColorOutsideGamut)
+            .accessibilityLabel(PikaText.textColorOutsideGamut)
+    }
+}
+
 /// Units nudged per pixel of drag/scroll (or per arrow-key press), scaled to a component's own
 /// range so every field's full span takes about the same drag distance to traverse — hue's
 /// `0...360` (which felt right at a flat 1 unit/px) is the reference; without this, OKLCH
@@ -443,13 +460,11 @@ struct EditableColorValue: View {
         lastPreviewedColor = eyedropper.color
     }
 
-    /// Returns the value actually achieved — which is not always the one requested. Lab/OKLCH can
-    /// express colours outside sRGB, and `recompose` clamps those to the nearest displayable
-    /// channel (see `NSColor.encodeSRGB`), so e.g. `oklch(30% 0.2 230)` really lands on chroma
-    /// ~0.137. Reading the value back off the resulting colour means the readout can only ever
-    /// show a colour the screen can genuinely produce: a drag past the gamut boundary simply
-    /// stops there instead of displaying a number that silently disagrees with the swatch (and
-    /// then appearing to "jump" when a later interaction resynced from the real colour).
+    /// Returns the value actually achieved — which is not always the one requested. A lossy
+    /// format can read back differently from what went in (HSB hue is undefined at brightness 0,
+    /// and 8-bit RGB rounds), so the value is read back off the resulting colour: the readout
+    /// can't then show a number that disagrees with the swatch. Lab and OKLCH no longer clamp to
+    /// sRGB, so for those the achieved value is the requested one.
     @discardableResult
     private func previewLiveScrub(index: Int, layout: DecomposedColor, value: Double, decimals: Int) -> Double {
         guard index < layout.components.count else { return value }
@@ -463,9 +478,8 @@ struct EditableColorValue: View {
         eyedropper.set(color)
         lastPreviewedColor = eyedropper.color
         // Round-trip the committed colour back through `decompose` to see what it actually
-        // became. Clamping doesn't only move the dragged component — pushing chroma out of gamut
-        // shifts the resulting colour's lightness and hue too — so resync every *other* component
-        // from the real colour. Without this the readout contradicts the swatch (a magenta swatch
+        // became. A lossy format doesn't only move the dragged component, so resync every
+        // *other* component from the real colour. Without this the readout contradicts the swatch (a magenta swatch
         // still showing a blue hue), and worse, the commit would pair the dragged component's new
         // value with the others' stale ones and land on a third colour entirely.
         //

@@ -48,13 +48,13 @@ final class EditableColorValueTests: XCTestCase {
         XCTAssertEqual(ColorComponentField.stableDecimalPlaces(for: "5.123456"), 4)
     }
 
-    // MARK: - Scrub reversibility / gamut clamping
+    // MARK: - Scrub reversibility / wide gamut
 
-    /// Recomposing from a session's *starting* values is what makes a scrub reversible. Pushing
-    /// OKLCH chroma past the sRGB gamut clamps the colour, and decomposing that clamped colour
-    /// reports a different lightness and hue — so feeding each frame's result back in would drag
-    /// the untouched components along with it and you could never return to where you began.
-    func test_scrubFromPristineValues_isReversible() {
+    /// Pushing OKLCH chroma past the sRGB gamut used to clamp the colour, so reading it back
+    /// reported a different lightness and hue and a scrub could ratchet away from where it began.
+    /// Lab and OKLCH are now carried unclamped, so the readout is what was asked for, and going
+    /// out and back lands on the starting colour whichever values it recomposes from.
+    func test_scrubPastTheSRGBGamut_readsBackWhatWasAsked_andIsReversible() {
         let start = ["40.68", "0.2173", "264.58"]
         let format = ColorFormat.oklch
         let space = NSColorSpace.sRGB
@@ -63,29 +63,24 @@ final class EditableColorValueTests: XCTestCase {
             return XCTFail("expected the starting values to recompose")
         }
 
-        // Drag chroma far out of gamut, then back to exactly where it started.
+        // Drag chroma far out of gamut.
         var pushed = start
-        pushed[1] = "1.0"
-        guard let clamped = format.recompose(pushed, style: .css, in: space) else {
+        pushed[1] = "0.4"
+        guard let wide = format.recompose(pushed, style: .css, in: space) else {
             return XCTFail("expected the out-of-gamut values to recompose")
         }
-        let clampedBack = format.decompose(clamped, style: .css, in: space)
-        XCTAssertNotEqual(clampedBack.values[0], start[0], "clamping should have moved lightness")
-        XCTAssertNotEqual(clampedBack.values[2], start[2], "clamping should have moved hue")
+        XCTAssertFalse(wide.isDisplayable(in: .sRGB))
+        let readBack = format.decompose(wide, style: .css, in: space)
+        XCTAssertEqual(readBack.values, ["40.68", "0.4", "264.58"])
 
-        // Returning to the original chroma from the pristine starting values restores the colour.
-        guard let restored = format.recompose(start, style: .css, in: space) else {
+        // And back to where it started, carrying the read-back values forward.
+        var returned = readBack.values
+        returned[1] = start[1]
+        guard let restored = format.recompose(returned, style: .css, in: space) else {
             return XCTFail("expected the restored values to recompose")
         }
         XCTAssertEqual(restored.toHex(in: space), original.toHex(in: space))
-
-        // Whereas carrying the clamped values forward does not.
-        var ratcheted = clampedBack.values
-        ratcheted[1] = start[1]
-        guard let notRestored = format.recompose(ratcheted, style: .css, in: space) else {
-            return XCTFail("expected the ratcheted values to recompose")
-        }
-        XCTAssertNotEqual(notRestored.toHex(in: space), original.toHex(in: space))
+        XCTAssertEqual(format.decompose(restored, style: .css, in: space).values, start)
     }
 
     func test_naturalDecimalPlaces_matchesTheStepItCanResolve() {

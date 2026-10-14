@@ -201,12 +201,136 @@ final class NSColorLabTests: XCTestCase {
         }
     }
 
-    func test_fromOklch_outOfGamut_clampsToValidRange() {
-        // A wildly out-of-gamut OKLCH should still produce in-[0,1] channels, not NaN/overflow.
-        let rebuilt = NSColor.fromOklch(l: 0.7, c: 0.4, h: 30).toRGBAComponents(in: .sRGB)
-        for channel in [rebuilt.r, rebuilt.g, rebuilt.b] {
+    // MARK: - Wide gamut (Lab and OKLCH are carried as unclamped extended sRGB)
+
+    func test_fromOklch_outOfGamut_clampsOnlyWhenReadAsSRGB() {
+        // A wildly out-of-gamut OKLCH still reads as in-[0,1] sRGB channels (hex, RGB, contrast),
+        // not NaN/overflow, while the colour itself keeps what was asked for.
+        let color = NSColor.fromOklch(l: 0.7, c: 0.4, h: 30)
+        let srgb = color.toRGBAComponents(in: .sRGB)
+        for channel in [srgb.r, srgb.g, srgb.b] {
             XCTAssertGreaterThanOrEqual(channel, 0.0)
             XCTAssertLessThanOrEqual(channel, 1.0)
+        }
+        XCTAssertEqual(color.toOklchComponents().c, 0.4, accuracy: 0.0001)
+    }
+
+    /// The reported case: chroma 0.2 at L 30%, H 230° used to land on 0.1371.
+    func test_oklch_outsideSRGB_keepsTheAuthoredValue() {
+        let color = NSColor.fromOklch(l: 0.3, c: 0.2, h: 230)
+        XCTAssertEqual(color.toOklchString(style: .css), "oklch(30% 0.2 230)")
+        XCTAssertEqual(ColorFormat.oklch.decompose(color, style: .css, in: .sRGB).values, ["30", "0.2", "230"])
+    }
+
+    func test_oklch_roundTripsAcrossAGridIncludingOutOfGamutValues() {
+        for l in stride(from: 0.1, through: 0.9, by: 0.2) {
+            for c in stride(from: 0.05, through: 0.4, by: 0.07) {
+                for h in stride(from: 0.0, to: 360.0, by: 30) {
+                    let back = NSColor.fromOklch(l: l, c: c, h: h).toOklchComponents()
+                    XCTAssertEqual(back.l, l, accuracy: 0.00005, "L for \(l) \(c) \(h)")
+                    XCTAssertEqual(back.c, c, accuracy: 0.00005, "C for \(l) \(c) \(h)")
+                    XCTAssertEqual(back.h, h, accuracy: 0.005, "H for \(l) \(c) \(h)")
+                }
+            }
+        }
+    }
+
+    func test_lab_roundTripsAcrossAGridIncludingOutOfGamutValues() {
+        for l in stride(from: 10.0, through: 90.0, by: 20) {
+            for a in stride(from: -120.0, through: 120.0, by: 60) {
+                for b in stride(from: -120.0, through: 120.0, by: 60) {
+                    let back = NSColor.fromLab(l: l, a: a, b: b).toLabComponents()
+                    XCTAssertEqual(back.l, l, accuracy: 0.005, "L for \(l) \(a) \(b)")
+                    XCTAssertEqual(back.a, a, accuracy: 0.005, "a for \(l) \(a) \(b)")
+                    XCTAssertEqual(back.b, b, accuracy: 0.005, "b for \(l) \(a) \(b)")
+                }
+            }
+        }
+    }
+
+    func test_lab_outsideSRGB_keepsTheAuthoredValue() {
+        let color = NSColor.fromLab(l: 50, a: -100, b: 60)
+        XCTAssertEqual(color.toLabString(style: .css), "lab(50 -100 60)")
+    }
+
+    /// A Display P3 colour outside sRGB reports its own OKLCH, not that of its sRGB neighbour.
+    func test_oklch_ofAP3Colour_isNotTheClampedSRGBValue() {
+        let p3Red = NSColor(colorSpace: .displayP3, components: [1, 0, 0, 1], count: 4)
+        let stored = p3Red.usingColorSpace(.extendedSRGB)!
+        let srgbRed = NSColor(colorSpace: .sRGB, components: [1, 0, 0, 1], count: 4)
+        XCTAssertGreaterThan(stored.toOklchComponents().c, srgbRed.toOklchComponents().c + 0.02)
+    }
+
+    // MARK: - Display gamut
+
+    func test_isDisplayable_sRGBColoursFitBothGamuts() {
+        for hex in ["#000000", "#ffffff", "#ff0000", "#00ff00", "#0000ff", "#8a2be2", "#7f7f7f"] {
+            let color = NSColor.fromHex(hex, in: .sRGB)!
+            XCTAssertTrue(color.isDisplayable(in: .sRGB), hex)
+            XCTAssertTrue(color.isDisplayable(in: .displayP3), hex)
+        }
+    }
+
+    func test_isDisplayable_p3PrimariesFitP3ButNotSRGB() {
+        for components: [CGFloat] in [[1, 0, 0, 1], [0, 1, 0, 1], [0, 0, 1, 1]] {
+            let stored = NSColor(colorSpace: .displayP3, components: components, count: 4)
+                .usingColorSpace(.extendedSRGB)!
+            XCTAssertTrue(stored.isDisplayable(in: .displayP3), "\(components)")
+            XCTAssertFalse(stored.isDisplayable(in: .sRGB), "\(components)")
+        }
+    }
+
+    func test_isDisplayable_readoutRoundingDoesNotFlagAColourOnTheGamutEdge() {
+        // sRGB red, rebuilt from its own rounded OKLCH readout, sits a hair outside sRGB.
+        let red = NSColor.fromHex("#ff0000", in: .sRGB)!
+        let values = ColorFormat.oklch.decompose(red, style: .css, in: .sRGB).values
+        let rebuilt = ColorFormat.oklch.recompose(values, style: .css, in: .sRGB)!
+        XCTAssertTrue(rebuilt.isDisplayable(in: .sRGB))
+    }
+
+    func test_isDisplayable_authoredOklchOutsideEachGamut() {
+        // The reported colour is outside sRGB.
+        XCTAssertFalse(NSColor.fromOklch(l: 0.3, c: 0.2, h: 230).isDisplayable(in: .sRGB))
+        // Far beyond either.
+        let extreme = NSColor.fromOklch(l: 0.9, c: 0.4, h: 150)
+        XCTAssertFalse(extreme.isDisplayable(in: .sRGB))
+        XCTAssertFalse(extreme.isDisplayable(in: .displayP3))
+    }
+
+    /// Contrast is scored on the colour the screen shows, never the unclamped one.
+    func test_luminance_ofAnOutOfGamutColour_isThatOfItsClampedSRGBColour() {
+        let wide = NSColor.fromOklch(l: 0.7, c: 0.4, h: 30)
+        let clamped = wide.usingColorSpace(.sRGB)!
+        XCTAssertEqual(wide.luminance, clamped.luminance, accuracy: 0.0001)
+    }
+}
+
+// MARK: - Clamping where a format can't hold the colour
+
+extension NSColorLabTests {
+    /// Pins the clamp itself, independently of `usingColorSpace`: luminance matches the WCAG
+    /// formula over the extended components clipped to 0–1 by hand.
+    func test_luminance_ofAnOutOfGamutColour_matchesHandClippedComponents() {
+        let wide = NSColor.fromOklch(l: 0.7, c: 0.4, h: 30)
+        let ext = wide.toRGBAComponents(in: .extendedSRGB)
+        XCTAssertTrue([ext.r, ext.g, ext.b].contains { $0 < 0 || $0 > 1 }, "fixture should be outside sRGB")
+        func linear(_ component: CGFloat) -> CGFloat {
+            let clipped = min(max(component, 0), 1)
+            return clipped < 0.03928 ? clipped / 12.92 : pow((clipped + 0.055) / 1.055, 2.4)
+        }
+        let expected = 0.2126 * linear(ext.r) + 0.7152 * linear(ext.g) + 0.0722 * linear(ext.b)
+        XCTAssertEqual(wide.luminance, expected, accuracy: 0.0001)
+        XCTAssertLessThanOrEqual(wide.luminance, 1)
+    }
+
+    /// RGB output of a colour outside even Display P3 stays within 0–255.
+    func test_toRGB8BitArray_ofAnOutOfGamutColour_staysIn8BitRange() {
+        let extreme = NSColor.fromOklch(l: 0.9, c: 0.4, h: 150)
+        for space in [NSColorSpace.sRGB, .displayP3] {
+            for channel in extreme.toRGB8BitArray(in: space) {
+                XCTAssertGreaterThanOrEqual(channel, 0, "\(space)")
+                XCTAssertLessThanOrEqual(channel, 255, "\(space)")
+            }
         }
     }
 }

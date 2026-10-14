@@ -576,6 +576,9 @@
 /* Invalid input */
 "color.edit.invalid" = "無效輸入";
 
+/* Outside the display's color range */
+"color.gamut.outside" = "超出顯示器的色域。目前顯示的是最接近的可顯示顏色。";
+
 /* Show Pika */
 "menu.showPika" = "顯示 Pika";
 

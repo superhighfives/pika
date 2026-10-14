@@ -207,8 +207,13 @@ struct EyedropperButton: View {
                         .font(.caption)
                         .fontWeight(.semibold)
                         .foregroundStyle(eyedropper.color.getUIColor().opacity(0.75))
+                        .allowsHitTesting(false)
                     if valueInvalid {
                         InvalidInputPill(uiColor: eyedropper.color.getUIColor())
+                            .allowsHitTesting(false)
+                    } else if !eyedropper.color.isDisplayable(in: .current) {
+                        // Hit-testable, unlike the rest of this row, so its tooltip can show.
+                        OutOfGamutIndicator(uiColor: eyedropper.color.getUIColor())
                     }
                     // Reserves the pill's height in this row at all times (zero width, so it
                     // never otherwise affects layout) so toggling the pill doesn't change the
@@ -220,6 +225,7 @@ struct EyedropperButton: View {
                         .fixedSize()
                         .frame(width: 0)
                         .accessibilityHidden(true)
+                        .allowsHitTesting(false)
                 }
                 .opacity(showsTypeLabel || valueInvalid ? 1 : 0)
                 .animation(
@@ -228,7 +234,6 @@ struct EyedropperButton: View {
                         : .easeInOut(duration: 0.2),
                     value: showsTypeLabel
                 )
-                .allowsHitTesting(false)
 
                 // Spacing 0, with the gap above the colour name carried by that row's own
                 // height: the name has to be able to collapse to nothing, and a `VStack`
