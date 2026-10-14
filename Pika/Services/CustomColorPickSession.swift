@@ -244,6 +244,9 @@ final class PickerLoupeController {
 
         // The loupe circle sits on the cursor, so hide the system cursor for the pick.
         if !cursorHidden {
+            // With Accessibility granted Pika stays in the background for the pick, and macOS
+            // ignores a background app's request to hide the cursor.
+            BackgroundCursor.setAllowed(true)
             CGDisplayHideCursor(CGMainDisplayID())
             cursorHidden = true
         }
@@ -341,6 +344,7 @@ final class PickerLoupeController {
             // hardware movement carried it.
             warpCursor(to: currentCursor)
             CGDisplayShowCursor(CGMainDisplayID())
+            BackgroundCursor.setAllowed(false)
             cursorHidden = false
         }
         rearmSafety?.invalidate()
@@ -751,6 +755,32 @@ final class PickerLoupeController {
         let green = CGFloat(ptr[offset + 1]) / 255.0
         let red = CGFloat(ptr[offset + 2]) / 255.0
         return NSColor(colorSpace: colorSpace, components: [red, green, blue, 1.0], count: 4)
+    }
+}
+
+/// Lets Pika hide the cursor while it isn't the frontmost app.
+///
+/// `CGDisplayHideCursor` only works for the frontmost app, and a pick started from the global
+/// shortcut or the menu bar runs with another app in front (deliberately: activating Pika would
+/// change what's being picked), so the system cursor stayed visible on top of the loupe. The
+/// window server has a per-connection `SetsCursorInBackground` property that lifts this. It is
+/// not public API, so the two functions are looked up at runtime: if a future macOS drops
+/// them, this returns false and the cursor simply shows again, as it did before.
+enum BackgroundCursor {
+    private typealias ConnectionID = Int32
+    private typealias DefaultConnection = @convention(c) () -> ConnectionID
+    private typealias SetConnectionProperty = @convention(c) (ConnectionID, ConnectionID, CFString, CFTypeRef) -> Int32
+
+    @discardableResult
+    static func setAllowed(_ allowed: Bool) -> Bool {
+        let anyImage = UnsafeMutableRawPointer(bitPattern: -2) // RTLD_DEFAULT
+        guard let connectionSymbol = dlsym(anyImage, "_CGSDefaultConnection"),
+              let setPropertySymbol = dlsym(anyImage, "CGSSetConnectionProperty")
+        else { return false }
+        let connection = unsafeBitCast(connectionSymbol, to: DefaultConnection.self)()
+        let setProperty = unsafeBitCast(setPropertySymbol, to: SetConnectionProperty.self)
+        let value: CFBoolean = allowed ? kCFBooleanTrue : kCFBooleanFalse
+        return setProperty(connection, connection, "SetsCursorInBackground" as CFString, value) == 0
     }
 }
 
