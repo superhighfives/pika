@@ -145,6 +145,9 @@ struct EyedropperButton: View {
     var readoutHeight: CGFloat = 0
     /// Driven by hovering either swatch, so both boundaries show together.
     var showsReadoutBoundary: Bool = false
+    /// Reports whether the pointer is over the pick area: the swatch above the readout block.
+    /// The Swap button shows only while one of the two pick areas is hovered.
+    var onPickAreaHover: (Bool) -> Void = { _ in }
     @Default(.colorFormat) var colorFormat
     @Default(.copyFormat) var copyFormat
     @Default(.hideColorNames) var hideColorNames
@@ -155,6 +158,11 @@ struct EyedropperButton: View {
     @State private var colorSpace = Defaults[.colorSpace]
     @State private var hoverTask: Task<Void, Never>?
     @State private var childHovered: Bool = false
+    /// Whether the pointer is over the readout block (below the hairline). The Copy and system
+    /// picker buttons belong to the readout, so they show only while it, or they, are hovered.
+    @State private var readoutHovered: Bool = false
+    /// Top of the readout block in the swatch's own coordinates, where the pick area ends.
+    @State private var readoutTop: CGFloat = .infinity
     @State private var valueInvalid: Bool = false
     @State private var isPressed: Bool = false
     /// Mirrors `wantsColorName`, but only ever changed inside `withAnimation`. Animating the
@@ -295,6 +303,14 @@ struct EyedropperButton: View {
             }
             // Both of these sit outside the shadow above, so the hairline stays crisp.
             .background(ClickShield())
+            .background(
+                GeometryReader { geo in
+                    let top = geo.frame(in: .named(Self.swatchSpace)).minY
+                    Color.clear
+                        .onAppear { readoutTop = top }
+                        .onChange(of: top) { readoutTop = $0 }
+                }
+            )
             // A single hairline along the top edge, marking where the block stops being a pick
             // target — a full box around the text read as a control it isn't.
             .overlay(alignment: .top) {
@@ -319,7 +335,7 @@ struct EyedropperButton: View {
                     alt: PikaText.textColorCopy,
                     onHoverChange: { hover in
                         childHovered = hover
-                        if hover { hoverTask?.cancel(); hoverTask = nil }
+                        updateButtonVisibility()
                     }
                 ))
                 .frame(maxWidth: .infinity, alignment: .trailing)
@@ -339,7 +355,7 @@ struct EyedropperButton: View {
                     alt: PikaText.textColorSystemPicker,
                     onHoverChange: { hover in
                         childHovered = hover
-                        if hover { hoverTask?.cancel(); hoverTask = nil }
+                        updateButtonVisibility()
                     }
                 ))
                 .frame(maxWidth: .infinity, alignment: .trailing)
@@ -353,18 +369,42 @@ struct EyedropperButton: View {
         .onReceive(NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification)) { _ in
             colorSpace = Defaults[.colorSpace]
         }
-        .onHover { hover in
-            if hover {
-                hoverTask?.cancel()
+        .coordinateSpace(name: Self.swatchSpace)
+        .onContinuousHover(coordinateSpace: .named(Self.swatchSpace)) { phase in
+            let inReadout: Bool
+            let inPickArea: Bool
+            switch phase {
+            case let .active(location):
+                inReadout = location.y >= readoutTop
+                inPickArea = !inReadout
+            case .ended:
+                inReadout = false
+                inPickArea = false
+            }
+            if inReadout != readoutHovered {
+                readoutHovered = inReadout
+                updateButtonVisibility()
+            }
+            onPickAreaHover(inPickArea)
+        }
+    }
+
+    private static let swatchSpace = "swatch"
+
+    /// Shows the Copy and system picker buttons while the readout or the buttons are hovered,
+    /// and hides them a moment after neither is, so crossing the gap onto a button doesn't
+    /// flicker them away.
+    private func updateButtonVisibility() {
+        if readoutHovered || childHovered {
+            hoverTask?.cancel()
+            hoverTask = nil
+            hoverVisible = true
+        } else if hoverTask == nil {
+            hoverTask = Task {
+                try? await Task.sleep(for: .milliseconds(250))
+                guard !Task.isCancelled else { return }
+                if !readoutHovered, !childHovered { hoverVisible = false }
                 hoverTask = nil
-                hoverVisible = true
-            } else if hoverTask == nil, !childHovered {
-                hoverTask = Task {
-                    try? await Task.sleep(for: .milliseconds(250))
-                    guard !Task.isCancelled else { return }
-                    hoverVisible = false
-                    hoverTask = nil
-                }
             }
         }
     }
