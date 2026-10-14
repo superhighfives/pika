@@ -33,8 +33,31 @@ struct OutOfGamutIndicator: View {
             .font(.caption2)
             .fontWeight(.semibold)
             .foregroundStyle(Color(uiColor).opacity(0.75))
-            .help(PikaText.textColorOutsideGamut)
+            // An AppKit tooltip view over the glyph, not SwiftUI's `.help`: the swatch's
+            // readout sits on `ClickShield`, an NSView, and AppKit gives the hover to that view,
+            // so a `.help` drawn by the hosting view underneath it never showed.
+            .overlay(ToolTipArea(text: PikaText.textColorOutsideGamut))
             .accessibilityLabel(PikaText.textColorOutsideGamut)
+    }
+}
+
+/// A transparent NSView that carries a tooltip, for SwiftUI content that sits over other
+/// AppKit views. Clicks on it do nothing, so they don't fall through and start a pick.
+private struct ToolTipArea: NSViewRepresentable {
+    let text: String
+
+    func makeNSView(context _: Context) -> NSView {
+        let view = ToolTipView()
+        view.toolTip = text
+        return view
+    }
+
+    func updateNSView(_ view: NSView, context _: Context) {
+        view.toolTip = text
+    }
+
+    private final class ToolTipView: NSView {
+        override func mouseDown(with _: NSEvent) {}
     }
 }
 

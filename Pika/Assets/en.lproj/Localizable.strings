@@ -206,7 +206,7 @@
 "color.edit.invalid" = "Invalid input";
 
 /* Outside the display's color range */
-"color.gamut.outside" = "Outside your display’s color range. Shown as the nearest color it can display.";
+"color.gamut.outside" = "Your display can’t show this color, so the swatch shows the closest one it can. Lab and OKLCH keep the exact value you entered; hex and RGB show the closest color.";
 
 /* WCAG 3:1 */
 "color.wcag.30" = "WCAG 2 level AA requires a contrast ratio of at least 3:1 for large (18pt / ~24px) or bold (14pt / ~18.6px) text, and for non-text content like UI.";

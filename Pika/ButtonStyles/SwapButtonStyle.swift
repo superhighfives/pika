@@ -14,6 +14,30 @@ struct SwapButtonStyle: ButtonStyle {
     /// there for someone who stops to wonder what the icon does, like a tooltip.
     static let labelDelay: Duration = .milliseconds(1500)
 
+    /// Once one button's label is out, the next one follows after this rather than
+    /// `labelDelay`, so moving along the buttons reads them off one after another.
+    static let warmLabelDelay: Duration = .milliseconds(300)
+
+    /// Whether some icon button's label is showing, or finished hiding within `warmGrace` —
+    /// about as long as a label takes to slide away. Shared by every button using this style;
+    /// once every label is fully away, the next hover waits the full `labelDelay` again.
+    @MainActor private enum LabelWarmth {
+        static let warmGrace: TimeInterval = 0.3
+        private static var shownCount = 0
+        private static var lastHidden = Date.distantPast
+
+        static var delay: Duration {
+            shownCount > 0 || Date().timeIntervalSince(lastHidden) < warmGrace ? warmLabelDelay : labelDelay
+        }
+
+        static func labelShown() { shownCount += 1 }
+
+        static func labelHidden() {
+            shownCount = max(0, shownCount - 1)
+            if shownCount == 0 { lastHidden = Date() }
+        }
+    }
+
     private struct SwapButtonStyleView: View {
         @Environment(\.colorScheme) var colorScheme: ColorScheme
 
@@ -76,7 +100,7 @@ struct SwapButtonStyle: ButtonStyle {
                 if hover {
                     guard hoverCooldown == nil, hoverTask == nil else { return }
                     hoverTask = Task {
-                        try? await Task.sleep(for: SwapButtonStyle.labelDelay)
+                        try? await Task.sleep(for: LabelWarmth.delay)
                         guard !Task.isCancelled else { return }
                         isHovered = true
                         hoverTask = nil
@@ -106,7 +130,11 @@ struct SwapButtonStyle: ButtonStyle {
                     isHovered = false
                 }
             }
-            .onChange(of: isHovered) { _, shown in onExpandChange?(shown) }
+            .onChange(of: isHovered) { _, shown in
+                if shown { LabelWarmth.labelShown() } else { LabelWarmth.labelHidden() }
+                onExpandChange?(shown)
+            }
+            .onDisappear { if isHovered { LabelWarmth.labelHidden() } }
             // A click answers the question the label was going to: don't expand after it.
             .onChange(of: configuration.isPressed) { _, pressed in
                 if pressed {
