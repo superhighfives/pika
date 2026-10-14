@@ -12,7 +12,7 @@ struct SwapButtonStyle: ButtonStyle {
     /// How long the pointer rests on the button before its label slides out. Long enough that
     /// moving across the buttons, or clicking one, doesn't make them all expand; the label is
     /// there for someone who stops to wonder what the icon does, like a tooltip.
-    static let labelDelay: Duration = .seconds(3)
+    static let labelDelay: Duration = .milliseconds(1500)
 
     private struct SwapButtonStyleView: View {
         @Environment(\.colorScheme) var colorScheme: ColorScheme

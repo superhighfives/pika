@@ -295,6 +295,7 @@ struct EditableColorValue: View {
                 }
                 guard index < values.count else { return }
                 values[index] = newValue
+                shrinkFrozenSizeIfNeeded(layout: layout)
                 // A scrub's own end (`ScrubTextField.onDragEnd`/`handleScrollEnded`) writes here
                 // once, only to unfreeze the field's displayed text — not to request a new
                 // colour. `values` at that point still holds the *other* components' stale
@@ -408,59 +409,34 @@ struct EditableColorValue: View {
     private func startSession(index: Int, layout: DecomposedColor) {
         isEditing = true
         sessionStartValues = layout.values
-        // Sized to every field's current displayed width, except `index` — the one about to
-        // become editable — which is sized to its own worst case. Budgeting the *whole* row for
-        // worst case (the pre-f3cca6b behaviour) made the readout collapse to `minSize` the
-        // instant you clicked it in a narrow window, since every other field paid for width it
-        // never needed. But budgeting only the current width regressed the opposite way: typing
-        // a longer in-range value (e.g. hue "5" -> "355") has nowhere to grow, since nothing else
-        // in the row changes width mid-scrub any more (every field's text is frozen and the live
-        // value goes to the pill), only `index`'s field is ever actually typed into during this
-        // session, so it's the only one that needs worst-case headroom.
-        rebudgetFrozenSize(for: index, layout: layout)
+        // Frozen at the size the row already has, so focusing a field never resizes the text.
+        // A longer value typed in then shrinks it only as far as it has to (see
+        // `shrinkFrozenSizeIfNeeded`).
         preEditColor = eyedropper.color
         values = layout.values
         valuesKey = FormatStyleKey(format: format, style: style, colorSpace: colorSpace)
+        rebudgetFrozenSize(for: index, layout: layout)
     }
 
-    /// Budgets `frozenSize` for whichever field is about to become editable — worst-case width
-    /// for `index`, current displayed width for every other field (see the comment on the call
-    /// site in `startSession`). Called both when a session opens and whenever the editable field
-    /// changes mid-session (Tab, or a drag/click landing on a different field), since the frozen
-    /// budget from the field that opened the session doesn't cover a value typed into a later one.
-    /// `index`'s value is swapped for its worst-case placeholder (see `worstCaseComponentString`)
-    /// before sizing, since that's the only field a typed edit can actually grow.
-    private func rebudgetFrozenSize(for index: Int, layout: DecomposedColor) {
-        var values = layout.values
-        if index < values.count { values[index] = worstCaseComponentString(layout.components[index]) }
-        frozenSize = fontSize(forUnits: wrapUnits(layout, values: values))
+    /// Freezes the row's text size for an edit at the size it has now, sized to the values as
+    /// they stand (including anything already typed into another field this session). Called
+    /// when a session opens and whenever the editable field changes mid-session (Tab, or a
+    /// drag/click landing on a different field).
+    ///
+    /// It used to budget the field being edited for its widest possible value ("9.9999" for a
+    /// 0–1 decimal), so that a longer value had room to be typed. A row that only just fitted
+    /// then shrank the moment a field was clicked, before anything was typed.
+    private func rebudgetFrozenSize(for _: Int, layout: DecomposedColor) {
+        let current = values.count == layout.components.count ? values : layout.values
+        frozenSize = fontSize(forUnits: wrapUnits(layout, values: current))
     }
 
-    /// The widest value a component could ever display. Integers use the range's most digits;
-    /// decimals use the range's most integer-part digits plus 4 decimal places (the original
-    /// stripped format's max — still the true worst case even though scrubbing now defaults to
-    /// coarser 2-place rounding, since finer starting precision is preserved up to 4). A leading
-    /// "-" is budgeted for any component whose range allows (or has no range, e.g. Lab a/b) a
-    /// negative value. Unranged decimals (Lab a/b) have no clamp and are genuinely unbounded, so
-    /// there's no true worst case to size to; 3 int digits is a practical bound that covers real
-    /// sRGB-gamut a*/b* extremes (b* reaches roughly -107) without reserving excessive width.
-    /// Hex is already fixed-length, so it's left as-is.
-    private func worstCaseComponentString(_ component: ColorComponent) -> String {
-        let sign = (component.range?.lowerBound ?? -1) < 0 ? "-" : ""
-        switch component.kind {
-        case .hex:
-            return component.value
-        case .integer:
-            let digits = component.range.map {
-                max(String(abs(Int($0.upperBound.rounded()))).count, String(abs(Int($0.lowerBound.rounded()))).count)
-            } ?? 3
-            return sign + String(repeating: "9", count: max(digits, 1))
-        case .decimal:
-            let intDigits = component.range.map {
-                max(String(abs(Int($0.upperBound))).count, String(abs(Int($0.lowerBound))).count)
-            } ?? 3
-            return sign + String(repeating: "9", count: max(intDigits, 1)) + "." + String(repeating: "9", count: 4)
-        }
+    /// Shrinks the frozen size when what's been typed no longer fits at it, and never grows it
+    /// back mid-edit, so the text only moves when it has to and doesn't bounce as you type.
+    private func shrinkFrozenSizeIfNeeded(layout: DecomposedColor) {
+        guard isEditing, let frozen = frozenSize else { return }
+        let needed = fontSize(forUnits: wrapUnits(layout, values: values))
+        if needed.size < frozen.size || needed.lines > frozen.lines { frozenSize = needed }
     }
 
     /// Recompose the working values and preview them live; flag invalid input for the pill.
