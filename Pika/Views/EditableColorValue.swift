@@ -240,7 +240,7 @@ struct EditableColorValue: View {
                 // A change we didn't push ourselves is an external pick landing mid-edit —
                 // abort the session so the external colour wins, matching pre-edit behaviour.
                 if newValue != lastPreviewedColor { abortEditingForExternalPick() }
-            } else if newValue != lastPreviewedColor {
+            } else if Self.isExternalChange(to: newValue, ownWrite: &lastPreviewedColor) {
                 // Only resync from a colour we didn't just set ourselves. Without this check,
                 // this handler fires right after our own commit lands (isEditing has already
                 // flipped false by then) and undoes finishEditing's deliberate `resync: false` —
@@ -253,6 +253,18 @@ struct EditableColorValue: View {
         .onChange(of: style) { _ in handleFormatOrStyleChange() }
         .onChange(of: colorSpace) { _ in handleFormatOrStyleChange() }
         .onChange(of: dismissEditingTrigger) { _ in focusedIndex = nil }
+    }
+
+    /// Whether a colour change came from somewhere other than this view, given `ownWrite`, the
+    /// colour it last pushed itself. An external change forgets that marker: it exists to
+    /// swallow the one echo of our own write, and kept any longer it also swallowed the next
+    /// change *back* to that colour. Type a value, start a pick, hover something else and press
+    /// Escape, and the swatch reverted to the typed colour while the readout stayed on the
+    /// hovered one.
+    static func isExternalChange(to newColor: NSColor, ownWrite: inout NSColor?) -> Bool {
+        guard newColor != ownWrite else { return false }
+        ownWrite = nil
+        return true
     }
 
     private func affix(_ text: String, size: CGFloat) -> some View {
