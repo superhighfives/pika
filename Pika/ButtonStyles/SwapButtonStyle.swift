@@ -20,17 +20,23 @@ struct SwapButtonStyle: ButtonStyle {
     /// showing anywhere does the next hover wait the full `labelDelay` again: one set of
     /// buttons hiding while another is up (the other swatch's, or Swap as you move down to
     /// the readout) doesn't reset it. Shared by every button using this style.
+    ///
+    /// Buttons are tracked by identity rather than counted: a button can report being shown
+    /// twice (it appears already visible, and its visibility changes in the same pass), and a
+    /// count that drifted up that way never reached zero, so the labels stayed instant forever.
     @MainActor private enum LabelWarmth {
         static var isWarm = false
-        private static var visibleCount = 0
+        private static var visible: Set<UUID> = []
 
         static var delay: Duration { isWarm ? .zero : labelDelay }
 
-        static func buttonShown() { visibleCount += 1 }
-
-        static func buttonHidden() {
-            visibleCount = max(0, visibleCount - 1)
-            if visibleCount == 0 { isWarm = false }
+        static func setVisible(_ shown: Bool, id: UUID) {
+            if shown {
+                visible.insert(id)
+            } else {
+                visible.remove(id)
+                if visible.isEmpty { isWarm = false }
+            }
         }
     }
 
@@ -38,6 +44,8 @@ struct SwapButtonStyle: ButtonStyle {
         @Environment(\.colorScheme) var colorScheme: ColorScheme
 
         @State private var isHovered: Bool = false
+        /// This button's identity in `LabelWarmth`'s set of visible buttons.
+        @State private var warmthID = UUID()
         @State private var hoverTask: Task<Void, Never>?
         @State private var hoverCooldown: Task<Void, Never>?
 
@@ -120,7 +128,7 @@ struct SwapButtonStyle: ButtonStyle {
             .animation(.timingCurve(0.65, 0, 0.35, 1, duration: 0.3), value: isVisible)
             .animation(.timingCurve(0.65, 0, 0.35, 1, duration: 0.3), value: configuration.isPressed)
             .onChange(of: isVisible) { _, visible in
-                if visible { LabelWarmth.buttonShown() } else { LabelWarmth.buttonHidden() }
+                LabelWarmth.setVisible(visible, id: warmthID)
                 if !visible {
                     hoverTask?.cancel()
                     hoverTask = nil
@@ -133,8 +141,8 @@ struct SwapButtonStyle: ButtonStyle {
             }
             // Counted while visible. The Swap button in the contrast-preview layout comes and
             // goes from the hierarchy rather than toggling `isVisible`, hence appear/disappear.
-            .onAppear { if isVisible { LabelWarmth.buttonShown() } }
-            .onDisappear { if isVisible { LabelWarmth.buttonHidden() } }
+            .onAppear { LabelWarmth.setVisible(isVisible, id: warmthID) }
+            .onDisappear { LabelWarmth.setVisible(false, id: warmthID) }
             // A click answers the question the label was going to: don't expand after it.
             .onChange(of: configuration.isPressed) { _, pressed in
                 if pressed {
