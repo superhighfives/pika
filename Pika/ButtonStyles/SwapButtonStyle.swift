@@ -15,39 +15,31 @@ struct SwapButtonStyle: ButtonStyle {
     /// one label has shown, the others show without waiting (see `LabelWarmth`).
     static let labelDelay: Duration = .seconds(1)
 
-    /// Whether a label has shown since the icon buttons were last all hidden. Once one has,
-    /// moving to any other button shows its label straight away. Only when no button is
-    /// showing anywhere does the next hover wait the full `labelDelay` again: one set of
-    /// buttons hiding while another is up (the other swatch's, or Swap as you move down to
-    /// the readout) doesn't reset it. Shared by every button using this style.
-    ///
-    /// Buttons are tracked by identity rather than counted: a button can report being shown
-    /// twice (it appears already visible, and its visibility changes in the same pass), and a
-    /// count that drifted up that way never reached zero, so the labels stayed instant forever.
+    /// How long a label takes to slide back in, matching the `showText` animation below.
+    static let labelCollapse: Duration = .milliseconds(300)
+
+    /// The labels that are out, or still sliding back in. While any is, hovering another
+    /// button (or the same one again) shows its label with no delay; once every label is back
+    /// to its plain icon, the next hover waits the full `labelDelay`. Shared by every button
+    /// using this style, so it carries across Copy, the system picker and Swap.
     @MainActor private enum LabelWarmth {
-        static var isWarm = false
-        private static var visible: Set<UUID> = []
+        private static var open: Set<UUID> = []
 
-        static var delay: Duration { isWarm ? .zero : labelDelay }
+        static var delay: Duration { open.isEmpty ? labelDelay : .zero }
 
-        static func setVisible(_ shown: Bool, id: UUID) {
-            if shown {
-                visible.insert(id)
-            } else {
-                visible.remove(id)
-                if visible.isEmpty { isWarm = false }
-            }
-        }
+        static func opened(_ id: UUID) { open.insert(id) }
+        static func closed(_ id: UUID) { open.remove(id) }
     }
 
     private struct SwapButtonStyleView: View {
         @Environment(\.colorScheme) var colorScheme: ColorScheme
 
         @State private var isHovered: Bool = false
-        /// This button's identity in `LabelWarmth`'s set of visible buttons.
+        /// This button's identity in `LabelWarmth`'s set of open labels.
         @State private var warmthID = UUID()
         @State private var hoverTask: Task<Void, Never>?
-        @State private var hoverCooldown: Task<Void, Never>?
+        /// Waits out the label's slide back in before telling `LabelWarmth` it has closed.
+        @State private var collapseTask: Task<Void, Never>?
 
         let configuration: Configuration
         let isVisible: Bool
@@ -102,7 +94,12 @@ struct SwapButtonStyle: ButtonStyle {
             .onHover { hover in
                 onHoverChange?(hover)
                 if hover {
-                    guard hoverCooldown == nil, hoverTask == nil else { return }
+                    // Back on while the label is still sliding in: it counts as open, so this
+                    // reopens it straight away rather than leaving it shut until you leave and
+                    // come back.
+                    collapseTask?.cancel()
+                    collapseTask = nil
+                    guard hoverTask == nil, !isHovered else { return }
                     hoverTask = Task {
                         try? await Task.sleep(for: LabelWarmth.delay)
                         guard !Task.isCancelled else { return }
@@ -112,12 +109,13 @@ struct SwapButtonStyle: ButtonStyle {
                 } else {
                     hoverTask?.cancel()
                     hoverTask = nil
+                    guard isHovered else { return }
                     isHovered = false
-                    hoverCooldown?.cancel()
-                    hoverCooldown = Task {
-                        try? await Task.sleep(for: .milliseconds(150))
+                    collapseTask = Task {
+                        try? await Task.sleep(for: SwapButtonStyle.labelCollapse)
                         guard !Task.isCancelled else { return }
-                        hoverCooldown = nil
+                        LabelWarmth.closed(warmthID)
+                        collapseTask = nil
                     }
                 }
             }
@@ -128,21 +126,23 @@ struct SwapButtonStyle: ButtonStyle {
             .animation(.timingCurve(0.65, 0, 0.35, 1, duration: 0.3), value: isVisible)
             .animation(.timingCurve(0.65, 0, 0.35, 1, duration: 0.3), value: configuration.isPressed)
             .onChange(of: isVisible) { _, visible in
-                LabelWarmth.setVisible(visible, id: warmthID)
                 if !visible {
                     hoverTask?.cancel()
                     hoverTask = nil
+                    collapseTask?.cancel()
+                    collapseTask = nil
                     isHovered = false
+                    LabelWarmth.closed(warmthID)
                 }
             }
             .onChange(of: isHovered) { _, shown in
-                if shown { LabelWarmth.isWarm = true }
+                if shown { LabelWarmth.opened(warmthID) }
                 onExpandChange?(shown)
             }
-            // Tracked while visible. The Swap button in the contrast-preview layout comes and
-            // goes from the hierarchy rather than toggling `isVisible`, hence appear/disappear.
-            .onAppear { LabelWarmth.setVisible(isVisible, id: warmthID) }
-            .onDisappear { LabelWarmth.setVisible(false, id: warmthID) }
+            .onDisappear {
+                collapseTask?.cancel()
+                LabelWarmth.closed(warmthID)
+            }
             // A click answers the question the label was going to: don't expand after it.
             .onChange(of: configuration.isPressed) { _, pressed in
                 if pressed {
