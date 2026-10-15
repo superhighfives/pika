@@ -139,7 +139,7 @@ struct SwapButtonStyle: ButtonStyle {
                 if shown { LabelWarmth.isWarm = true }
                 onExpandChange?(shown)
             }
-            // Counted while visible. The Swap button in the contrast-preview layout comes and
+            // Tracked while visible. The Swap button in the contrast-preview layout comes and
             // goes from the hierarchy rather than toggling `isVisible`, hence appear/disappear.
             .onAppear { LabelWarmth.setVisible(isVisible, id: warmthID) }
             .onDisappear { LabelWarmth.setVisible(false, id: warmthID) }
