@@ -368,7 +368,7 @@ struct EditableColorValue: View {
             freezeSizeForEdit(layout: layout)
             return
         }
-        startSession(index: index, layout: layout)
+        startSession(layout: layout)
     }
 
     private func handleFocusChange(to newValue: Int?, layout: DecomposedColor) {
@@ -377,7 +377,7 @@ struct EditableColorValue: View {
             // (per the comment on `sessionOwner`) take over an existing unfocused scrub session.
             sessionOwner = newValue
             if !isEditing {
-                startSession(index: newValue, layout: layout)
+                startSession(layout: layout)
             } else {
                 // Moving to a different field within an already-open session (e.g. Tab) —
                 // re-freeze the size to the row as it now stands, including whatever was typed
@@ -428,7 +428,7 @@ struct EditableColorValue: View {
 
     /// Snapshot the colour and working values at the start of an edit or drag session, so
     /// `finishEditing`/`abortEditingForExternalPick` have a consistent point to commit or revert to.
-    private func startSession(index _: Int, layout: DecomposedColor) {
+    private func startSession(layout: DecomposedColor) {
         isEditing = true
         sessionStartValues = layout.values
         // Frozen at the size the row already has, so focusing a field never resizes the text.
