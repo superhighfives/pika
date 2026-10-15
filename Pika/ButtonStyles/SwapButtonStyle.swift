@@ -9,9 +9,10 @@ struct SwapButtonStyle: ButtonStyle {
     /// Called when the label actually appears or goes, which trails the hover by `labelDelay`.
     var onExpandChange: ((Bool) -> Void)?
 
-    /// How long the pointer rests on the button before its label slides out. Long enough that
-    /// moving across the buttons, or clicking one, doesn't make them all expand; the label is
-    /// there for someone who stops to wonder what the icon does, like a tooltip.
+    /// How long the pointer rests on the button before the first label slides out. Long enough
+    /// that passing over a button, or clicking one, doesn't expand it; the label is there for
+    /// someone who stops to wonder what the icon does, like a tooltip. Once a label is out, the
+    /// others follow after `warmLabelDelay` instead.
     static let labelDelay: Duration = .seconds(1)
 
     /// Once one button's label is out, the next one follows after this rather than

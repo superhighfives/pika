@@ -161,6 +161,9 @@ struct EyedropperButton: View {
     /// Whether the pointer is over the readout block (below the hairline). The Copy and system
     /// picker buttons belong to the readout, so they show only while it, or they, are hovered.
     @State private var readoutHovered: Bool = false
+    /// Whether the pointer is over the pick area (above the hairline), so `onPickAreaHover`
+    /// fires on a change rather than on every pointer move.
+    @State private var pickAreaHovered: Bool = false
     /// Top of the readout block in the swatch's own coordinates, where the pick area ends.
     @State private var readoutTop: CGFloat = .infinity
     @State private var valueInvalid: Bool = false
@@ -385,7 +388,10 @@ struct EyedropperButton: View {
                 readoutHovered = inReadout
                 updateButtonVisibility()
             }
-            onPickAreaHover(inPickArea)
+            if inPickArea != pickAreaHovered {
+                pickAreaHovered = inPickArea
+                onPickAreaHover(inPickArea)
+            }
         }
     }
 

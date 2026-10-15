@@ -365,7 +365,7 @@ struct EditableColorValue: View {
             // `previewLiveScrub` recomposes the untouched fields from their pre-edit baseline
             // and silently discards the edit — see the finding on this line.
             sessionStartValues = values
-            rebudgetFrozenSize(for: index, layout: layout)
+            freezeSizeForEdit(layout: layout)
             return
         }
         startSession(index: index, layout: layout)
@@ -385,7 +385,7 @@ struct EditableColorValue: View {
                 // into the previous field, or scrubbing this one recomposes that field from its
                 // stale pre-edit baseline and silently discards the typed edit.
                 sessionStartValues = values
-                rebudgetFrozenSize(for: newValue, layout: layout)
+                freezeSizeForEdit(layout: layout)
             }
         } else if isEditing, !isScrubbing {
             // Focus left every field (blur / tab-out) — commit if valid, otherwise revert.
@@ -428,7 +428,7 @@ struct EditableColorValue: View {
 
     /// Snapshot the colour and working values at the start of an edit or drag session, so
     /// `finishEditing`/`abortEditingForExternalPick` have a consistent point to commit or revert to.
-    private func startSession(index: Int, layout: DecomposedColor) {
+    private func startSession(index _: Int, layout: DecomposedColor) {
         isEditing = true
         sessionStartValues = layout.values
         // Frozen at the size the row already has, so focusing a field never resizes the text.
@@ -437,7 +437,7 @@ struct EditableColorValue: View {
         preEditColor = eyedropper.color
         values = layout.values
         valuesKey = FormatStyleKey(format: format, style: style, colorSpace: colorSpace)
-        rebudgetFrozenSize(for: index, layout: layout)
+        freezeSizeForEdit(layout: layout)
     }
 
     /// Freezes the row's text size for an edit at the size it has now, sized to the values as
@@ -448,7 +448,7 @@ struct EditableColorValue: View {
     /// It used to budget the field being edited for its widest possible value ("9.9999" for a
     /// 0–1 decimal), so that a longer value had room to be typed. A row that only just fitted
     /// then shrank the moment a field was clicked, before anything was typed.
-    private func rebudgetFrozenSize(for _: Int, layout: DecomposedColor) {
+    private func freezeSizeForEdit(layout: DecomposedColor) {
         let current = values.count == layout.components.count ? values : layout.values
         frozenSize = fontSize(forUnits: wrapUnits(layout, values: current))
     }
