@@ -577,7 +577,7 @@
 "color.edit.invalid" = "Nieprawidłowe dane";
 
 /* Outside the display's color range */
-"color.gamut.outside" = "Poza zakresem kolorów Twojego ekranu. Wyświetlany jest najbliższy kolor, jaki ekran może pokazać.";
+"color.gamut.outside" = "Twój ekran nie może wyświetlić tego koloru, więc próbka pokazuje najbliższy możliwy. Lab i OKLCH zachowują dokładnie wpisaną wartość; hex i RGB pokazują najbliższy kolor.";
 
 /* Show Pika */
 "menu.showPika" = "Pokaż Pikę";

@@ -16,6 +16,7 @@ struct EyedropperItem: View {
     var readoutHeight: CGFloat = 0
     /// Whether the readout boundary hairline is showing — driven by hovering either swatch.
     var showsReadoutBoundary: Bool = false
+    var onPickAreaHover: (Bool) -> Void = { _ in }
     @State private var showToast: Bool = false
     @Default(.colorFormat) var colorFormat
     @Default(.copyFormat) var copyFormat
@@ -26,7 +27,8 @@ struct EyedropperItem: View {
                 eyedropper: eyedropper,
                 dismissEditingTrigger: $dismissEditingTrigger,
                 readoutHeight: readoutHeight,
-                showsReadoutBoundary: showsReadoutBoundary
+                showsReadoutBoundary: showsReadoutBoundary,
+                onPickAreaHover: onPickAreaHover
             )
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .onReceive(NotificationCenter.default.publisher(for: eyedropper.type.pickNotification)) { note in

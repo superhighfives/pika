@@ -71,6 +71,8 @@ struct ContentView: View {
     @State var swapVisible: Bool = false
     @State private var swapTimerSubscription: Cancellable?
     @State private var swapTimer = Timer.publish(every: 0.25, on: .main, in: .common)
+    @State private var swapAreaHovered = false
+    @State private var swapButtonHovered = false
     @State private var isHovering: Bool = false
 
     /// Content size that comfortably shows every element the user currently has enabled —
@@ -93,6 +95,19 @@ struct ContentView: View {
             height = max(height, PikaAdaptiveHeight.palettes)
         }
         return CGSize(width: width + margin, height: height + margin)
+    }
+
+    /// Shows Swap while a pick area or the button itself is hovered, and hides it a quarter
+    /// second after neither is, so moving between the two swatches or onto the button keeps it.
+    private func updateSwapVisibility() {
+        if swapAreaHovered || swapButtonHovered {
+            swapVisible = true
+            swapTimerSubscription?.cancel()
+            swapTimerSubscription = nil
+        } else if swapTimerSubscription == nil {
+            swapTimer = Timer.publish(every: 0.25, on: .main, in: .common)
+            swapTimerSubscription = swapTimer.connect()
+        }
     }
 
     var body: some View {
@@ -124,59 +139,55 @@ struct ContentView: View {
 
             VStack(alignment: .trailing, spacing: 0) {
                 Divider()
-                ColorPickers()
-                    .onHover { hover in
-                        guard hover else { return }
-                        swapVisible = true
-                        swapTimerSubscription?.cancel()
-                        swapTimerSubscription = nil
-                    }
-                    .onReceive(swapTimer) { _ in
-                        swapVisible = false
-                        swapTimerSubscription?.cancel()
-                        swapTimerSubscription = nil
-                    }
-                    .overlay(
-                        SwapPreviewButton(
-                            foreground: eyedroppers.foreground,
-                            background: eyedroppers.background,
-                            showPreview: previewVisible,
-                            isVisible: swapVisible,
-                            onSwap: {
-                                NSApp.sendAction(#selector(AppDelegate.triggerSwap), to: nil, from: nil)
-                            }
-                        )
-                        .onReceive(NotificationCenter.default.publisher(for: .triggerSwap)) { _ in
-                            withAnimation(.easeInOut(duration: 0.2)) {
-                                eyedroppers.swap()
-                            }
+                // Swap shows over the pick areas (and while it's hovered itself), not the
+                // readouts, where the Copy and system picker buttons live.
+                ColorPickers(onPickAreaHover: { hovered in
+                    swapAreaHovered = hovered
+                    updateSwapVisibility()
+                })
+                .onReceive(swapTimer) { _ in
+                    if !swapAreaHovered, !swapButtonHovered { swapVisible = false }
+                    swapTimerSubscription?.cancel()
+                    swapTimerSubscription = nil
+                }
+                .overlay(
+                    SwapPreviewButton(
+                        foreground: eyedroppers.foreground,
+                        background: eyedroppers.background,
+                        showPreview: previewVisible,
+                        isVisible: swapVisible,
+                        onHoverChange: { hovered in
+                            swapButtonHovered = hovered
+                            updateSwapVisibility()
+                        },
+                        onSwap: {
+                            NSApp.sendAction(#selector(AppDelegate.triggerSwap), to: nil, from: nil)
                         }
-                        .focusable(false)
-                        .padding(.horizontal, 16.0)
-                        .padding(.top, appMode.usesPopover ? 42.0 : 16.0)
-                        .frame(maxHeight: .infinity, alignment: .top)
                     )
-                    // Expand-to-fit sits over the colour tiles (not the whole app), so it
-                    // centres on the swatches rather than drifting down over the footer.
-                    .overlay(alignment: expandAlignment) {
-                        if suppressed, isHovering {
-                            ExpandToFitButton {
-                                NotificationCenter.default.post(
-                                    name: .expandToFit,
-                                    object: NSValue(size: expandTargetSize())
-                                )
-                            }
-                            .padding(expandAlignment == .topTrailing ? 8 : 0)
-                            .transition(.scale(scale: 0.9).combined(with: .opacity))
+                    .onReceive(NotificationCenter.default.publisher(for: .triggerSwap)) { _ in
+                        withAnimation(.easeInOut(duration: 0.2)) {
+                            eyedroppers.swap()
                         }
                     }
-                    .onHover { hover in
-                        guard !hover, swapTimerSubscription == nil else {
-                            return
+                    .focusable(false)
+                    .padding(.horizontal, 16.0)
+                    .padding(.top, appMode.usesPopover ? 42.0 : 16.0)
+                    .frame(maxHeight: .infinity, alignment: .top)
+                )
+                // Expand-to-fit sits over the colour tiles (not the whole app), so it
+                // centres on the swatches rather than drifting down over the footer.
+                .overlay(alignment: expandAlignment) {
+                    if suppressed, isHovering {
+                        ExpandToFitButton {
+                            NotificationCenter.default.post(
+                                name: .expandToFit,
+                                object: NSValue(size: expandTargetSize())
+                            )
                         }
-                        swapTimer = Timer.publish(every: 0.25, on: .main, in: .common)
-                        swapTimerSubscription = swapTimer.connect()
+                        .padding(expandAlignment == .topTrailing ? 8 : 0)
+                        .transition(.scale(scale: 0.9).combined(with: .opacity))
                     }
+                }
 
                 if showCompliance, allowContrastHeight {
                     AdaptiveDivider()

@@ -577,7 +577,7 @@
 "color.edit.invalid" = "Saisie non valide";
 
 /* Outside the display's color range */
-"color.gamut.outside" = "En dehors de la gamme de couleurs de votre écran. La couleur affichable la plus proche est utilisée.";
+"color.gamut.outside" = "Votre écran ne peut pas afficher cette couleur : l’échantillon montre la plus proche possible. Lab et OKLCH conservent la valeur exacte saisie ; hex et RGB affichent la couleur la plus proche.";
 
 /* Show Pika */
 "menu.showPika" = "Afficher Pika";

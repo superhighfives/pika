@@ -38,6 +38,8 @@ struct SwapPreviewButton: View {
     @ObservedObject var background: Eyedropper
     let showPreview: Bool
     let isVisible: Bool
+    /// Reports the pointer entering and leaving the button, so its parent keeps it shown.
+    var onHoverChange: (Bool) -> Void = { _ in }
     let onSwap: () -> Void
 
     @State private var angle: Double = 0
@@ -86,6 +88,7 @@ struct SwapPreviewButton: View {
                                 alt: PikaText.textColorSwap,
                                 ltr: true,
                                 expanded: swapHovered,
+                                onHoverChange: onHoverChange,
                                 onExpandChange: { swapHovered = $0 }
                             ))
                             .transition(
@@ -104,7 +107,8 @@ struct SwapPreviewButton: View {
                     .buttonStyle(SwapButtonStyle(
                         isVisible: isVisible,
                         alt: PikaText.textColorSwap,
-                        ltr: true
+                        ltr: true,
+                        onHoverChange: onHoverChange
                     ))
             }
         }
