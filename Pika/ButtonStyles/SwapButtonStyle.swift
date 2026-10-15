@@ -109,7 +109,12 @@ struct SwapButtonStyle: ButtonStyle {
                 } else {
                     hoverTask?.cancel()
                     hoverTask = nil
-                    guard isHovered else { return }
+                    // Left again after reopening mid-collapse, before the label came back out:
+                    // its collapse was cancelled, so nothing else would take it out of `open`.
+                    guard isHovered else {
+                        LabelWarmth.closed(warmthID)
+                        return
+                    }
                     isHovered = false
                     collapseTask = Task {
                         try? await Task.sleep(for: SwapButtonStyle.labelCollapse)
