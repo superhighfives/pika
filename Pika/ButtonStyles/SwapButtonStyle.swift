@@ -6,7 +6,8 @@ struct SwapButtonStyle: ButtonStyle {
     var ltr = false
     var expanded = false
     var onHoverChange: ((Bool) -> Void)?
-    /// Called when the label actually appears or goes, which trails the hover by `labelDelay`.
+    /// Called when the label actually appears or goes. That trails the hover by `labelDelay`,
+    /// or comes straight away while another label is out (see `LabelWarmth`).
     var onExpandChange: ((Bool) -> Void)?
 
     /// How long the pointer rests on a button before its label slides out, the first time.
