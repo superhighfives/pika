@@ -576,6 +576,9 @@
 /* Invalid input */
 "color.edit.invalid" = "Neispravan unos";
 
+/* Outside the display's color range */
+"color.gamut.outside" = "Tvoj zaslon ne može prikazati ovu boju, pa uzorak prikazuje najbližu koju može. Lab i OKLCH zadržavaju točnu vrijednost koju si unio; hex i RGB prikazuju najbližu boju.";
+
 /* Show Pika */
 "menu.showPika" = "Prikaži Pika";
 

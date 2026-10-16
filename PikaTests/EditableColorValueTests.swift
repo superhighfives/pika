@@ -48,13 +48,13 @@ final class EditableColorValueTests: XCTestCase {
         XCTAssertEqual(ColorComponentField.stableDecimalPlaces(for: "5.123456"), 4)
     }
 
-    // MARK: - Scrub reversibility / gamut clamping
+    // MARK: - Scrub reversibility / wide gamut
 
-    /// Recomposing from a session's *starting* values is what makes a scrub reversible. Pushing
-    /// OKLCH chroma past the sRGB gamut clamps the colour, and decomposing that clamped colour
-    /// reports a different lightness and hue — so feeding each frame's result back in would drag
-    /// the untouched components along with it and you could never return to where you began.
-    func test_scrubFromPristineValues_isReversible() {
+    /// Pushing OKLCH chroma past the sRGB gamut used to clamp the colour, so reading it back
+    /// reported a different lightness and hue and a scrub could ratchet away from where it began.
+    /// Lab and OKLCH are now carried unclamped, so the readout is what was asked for, and going
+    /// out and back lands on the starting colour whichever values it recomposes from.
+    func test_scrubPastTheSRGBGamut_readsBackWhatWasAsked_andIsReversible() {
         let start = ["40.68", "0.2173", "264.58"]
         let format = ColorFormat.oklch
         let space = NSColorSpace.sRGB
@@ -63,35 +63,102 @@ final class EditableColorValueTests: XCTestCase {
             return XCTFail("expected the starting values to recompose")
         }
 
-        // Drag chroma far out of gamut, then back to exactly where it started.
+        // Drag chroma far out of gamut.
         var pushed = start
-        pushed[1] = "1.0"
-        guard let clamped = format.recompose(pushed, style: .css, in: space) else {
+        pushed[1] = "0.4"
+        guard let wide = format.recompose(pushed, style: .css, in: space) else {
             return XCTFail("expected the out-of-gamut values to recompose")
         }
-        let clampedBack = format.decompose(clamped, style: .css, in: space)
-        XCTAssertNotEqual(clampedBack.values[0], start[0], "clamping should have moved lightness")
-        XCTAssertNotEqual(clampedBack.values[2], start[2], "clamping should have moved hue")
+        XCTAssertFalse(wide.isDisplayable(in: .sRGB))
+        let readBack = format.decompose(wide, style: .css, in: space)
+        XCTAssertEqual(readBack.values, ["40.68", "0.4", "264.58"])
 
-        // Returning to the original chroma from the pristine starting values restores the colour.
-        guard let restored = format.recompose(start, style: .css, in: space) else {
+        // And back to where it started, carrying the read-back values forward.
+        var returned = readBack.values
+        returned[1] = start[1]
+        guard let restored = format.recompose(returned, style: .css, in: space) else {
             return XCTFail("expected the restored values to recompose")
         }
         XCTAssertEqual(restored.toHex(in: space), original.toHex(in: space))
-
-        // Whereas carrying the clamped values forward does not.
-        var ratcheted = clampedBack.values
-        ratcheted[1] = start[1]
-        guard let notRestored = format.recompose(ratcheted, style: .css, in: space) else {
-            return XCTFail("expected the ratcheted values to recompose")
-        }
-        XCTAssertNotEqual(notRestored.toHex(in: space), original.toHex(in: space))
+        XCTAssertEqual(format.decompose(restored, style: .css, in: space).values, start)
     }
 
     func test_naturalDecimalPlaces_matchesTheStepItCanResolve() {
         XCTAssertEqual(ColorComponentField.naturalDecimalPlaces(forRange: 0 ... 360), 0)
         XCTAssertEqual(ColorComponentField.naturalDecimalPlaces(forRange: 0 ... 100), 1)
         XCTAssertEqual(ColorComponentField.naturalDecimalPlaces(forRange: 0 ... 1), 3)
+    }
+
+    // MARK: - Click-away ends an edit
+
+    private final class SelfDismissingTarget: NSView, EditDismissingClickTarget {}
+
+    /// A field editor as it is while `field` is being edited: an `NSText` whose delegate is the field.
+    private func editor(for field: NSTextField) -> NSTextView {
+        let editor = NSTextView()
+        editor.delegate = field as? NSTextViewDelegate
+        return editor
+    }
+
+    func test_clickAway_onAnyOtherView_orEmptySpace_endsTheEdit() {
+        let editing = editor(for: ScrubTextField())
+        XCTAssertTrue(EditingClickAway.shouldEndEditing(firstResponder: editing, clicked: NSView()))
+        XCTAssertTrue(EditingClickAway.shouldEndEditing(firstResponder: editing, clicked: NSButton()))
+        XCTAssertTrue(EditingClickAway.shouldEndEditing(firstResponder: editing, clicked: nil))
+    }
+
+    func test_clickAway_onAColourField_orInsideOne_leavesFocusToTheField() {
+        let editing = editor(for: ScrubTextField())
+        let other = ScrubTextField()
+        let inside = NSView()
+        other.addSubview(inside)
+        XCTAssertFalse(EditingClickAway.shouldEndEditing(firstResponder: editing, clicked: other))
+        XCTAssertFalse(EditingClickAway.shouldEndEditing(firstResponder: editing, clicked: inside))
+    }
+
+    func test_clickAway_onAViewThatEndsTheEditItself_isLeftToThatView() {
+        let editing = editor(for: ScrubTextField())
+        let target = SelfDismissingTarget()
+        let inside = NSView()
+        target.addSubview(inside)
+        XCTAssertFalse(EditingClickAway.shouldEndEditing(firstResponder: editing, clicked: target))
+        XCTAssertFalse(EditingClickAway.shouldEndEditing(firstResponder: editing, clicked: inside))
+    }
+
+    func test_clickAway_whenNoColourFieldIsBeingEdited_doesNothing() {
+        XCTAssertFalse(EditingClickAway.shouldEndEditing(firstResponder: nil, clicked: NSView()))
+        XCTAssertFalse(EditingClickAway.shouldEndEditing(firstResponder: NSView(), clicked: NSView()))
+        // Some other text field's editor.
+        XCTAssertFalse(EditingClickAway.shouldEndEditing(firstResponder: editor(for: NSTextField()), clicked: NSView()))
+    }
+
+    // MARK: - Telling our own colour writes from external ones
+
+    func test_isExternalChange_echoOfOurOwnWrite_isNotExternal_andKeepsTheMarker() {
+        let black = NSColor.fromHex("#000000", in: .sRGB)!
+        var ownWrite: NSColor? = black
+        XCTAssertFalse(EditableColorValue.isExternalChange(to: black, ownWrite: &ownWrite))
+        XCTAssertEqual(ownWrite, black)
+    }
+
+    /// Type black, start a pick and hover another colour, then cancel: the pick's live preview
+    /// and the revert to black are both external, so both must resync the readout. The revert
+    /// used to be mistaken for an echo of the typed black, leaving the hovered colour's text.
+    func test_isExternalChange_revertToTheColourWeLastWrote_afterAnExternalChange_isExternal() {
+        let black = NSColor.fromHex("#000000", in: .sRGB)!
+        let hovered = NSColor.fromHex("#33232b", in: .sRGB)!
+        var ownWrite: NSColor? = black
+
+        XCTAssertTrue(EditableColorValue.isExternalChange(to: hovered, ownWrite: &ownWrite))
+        XCTAssertNil(ownWrite)
+        XCTAssertTrue(EditableColorValue.isExternalChange(to: black, ownWrite: &ownWrite))
+    }
+
+    func test_isExternalChange_withNoOwnWrite_isExternal() {
+        var ownWrite: NSColor?
+        XCTAssertTrue(EditableColorValue.isExternalChange(
+            to: NSColor.fromHex("#112233", in: .sRGB)!, ownWrite: &ownWrite
+        ))
     }
 
     // MARK: - Adopting the readout's formatting on commit

@@ -576,6 +576,9 @@
 /* Invalid input */
 "color.edit.invalid" = "無効な入力";
 
+/* Outside the display's color range */
+"color.gamut.outside" = "このディスプレイではこのカラーを表示できないため、スウォッチには表示可能な最も近いカラーが使われています。Lab と OKLCH は入力した値をそのまま保持し、HEX と RGB は最も近いカラーを表示します。";
+
 /* Show Pika */
 "menu.showPika" = "Pikaを表示";
 

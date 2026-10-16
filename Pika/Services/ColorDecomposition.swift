@@ -211,9 +211,10 @@ extension ColorFormat {
         }
     }
 
-    /// Rebuild an sRGB-normalisable colour from edited component strings, or `nil` if any is
-    /// unparseable. Assumes per-component validity has already been checked by the field; still
-    /// clamps into range so a committed colour is always displayable.
+    /// Rebuild a colour from edited component strings, or `nil` if any is unparseable. Assumes
+    /// per-component validity has already been checked by the field; still clamps each value
+    /// into its declared range. Lab and OKLCH values inside those ranges can lie outside the
+    /// display's gamut, and are kept as authored (see `NSColor.isDisplayable(in:)`).
     func recompose(_ values: [String], style: CopyFormat, in cs: NSColorSpace) -> NSColor? {
         switch self {
         case .hex:

@@ -32,7 +32,7 @@ private struct PickTarget: NSViewRepresentable {
         view.onDismissEditing = onDismissEditing
     }
 
-    final class PickTargetView: NSView {
+    final class PickTargetView: NSView, EditDismissingClickTarget {
         var onPick: (() -> Void)?
         var onPressChange: ((Bool) -> Void)?
         var onDismissEditing: (() -> Void)?
@@ -66,6 +66,56 @@ private struct PickTarget: NSViewRepresentable {
     }
 }
 
+/// A view whose own `mouseDown` already ends an active colour-field edit (and needs to see the
+/// field still focused to know that's all the click should do), so `EditingClickAway` leaves
+/// clicks on it alone.
+protocol EditDismissingClickTarget: NSView {}
+
+/// Click-away-to-blur for the colour fields. A click on a swatch already ended an edit (see
+/// `PickTarget`), and a click on a button fired the button, but a click anywhere else in the
+/// window — the labels, the contrast footer, the title bar — left the field focused. This
+/// watches mouse-downs while a field is being edited and ends the edit for any that land
+/// outside it. The click itself is never swallowed.
+final class EditingClickAway {
+    private var monitor: Any?
+
+    func start(onDismiss: @escaping () -> Void) {
+        guard monitor == nil else { return }
+        monitor = NSEvent.addLocalMonitorForEvents(matching: .leftMouseDown) { event in
+            guard let window = event.window else { return event }
+            // `hitTest` takes a point in the superview's coordinates; the content view's
+            // superview is the window's frame view, whose coordinates are the window's.
+            let root = window.contentView?.superview ?? window.contentView
+            let hit = root?.hitTest(event.locationInWindow)
+            if Self.shouldEndEditing(firstResponder: window.firstResponder, clicked: hit) {
+                window.endEditing(for: nil)
+                onDismiss()
+            }
+            return event
+        }
+    }
+
+    func stop() {
+        if let monitor { NSEvent.removeMonitor(monitor) }
+        monitor = nil
+    }
+
+    deinit { stop() }
+
+    /// Whether a mouse-down on `clicked` should end the edit in progress: only when a colour
+    /// field is the one being edited, and the click isn't on a colour field (which moves focus
+    /// itself) or on a view that ends the edit in its own `mouseDown`.
+    static func shouldEndEditing(firstResponder: NSResponder?, clicked: NSView?) -> Bool {
+        guard let editor = firstResponder as? NSText, editor.delegate is ScrubTextField else { return false }
+        var view = clicked
+        while let current = view {
+            if current is ScrubTextField || current is EditDismissingClickTarget { return false }
+            view = current.superview
+        }
+        return true
+    }
+}
+
 /// Swallows clicks over the readout block so they don't fall through to `PickTarget` and start
 /// a screen pick. An AppKit view rather than a SwiftUI `contentShape`: `PickTarget` is itself an
 /// `NSView` sitting in the same z-order, so the thing shadowing it has to win AppKit's own
@@ -95,6 +145,9 @@ struct EyedropperButton: View {
     var readoutHeight: CGFloat = 0
     /// Driven by hovering either swatch, so both boundaries show together.
     var showsReadoutBoundary: Bool = false
+    /// Reports whether the pointer is over the pick area: the swatch above the readout block.
+    /// The Swap button shows only while one of the two pick areas is hovered.
+    var onPickAreaHover: (Bool) -> Void = { _ in }
     @Default(.colorFormat) var colorFormat
     @Default(.copyFormat) var copyFormat
     @Default(.hideColorNames) var hideColorNames
@@ -105,6 +158,14 @@ struct EyedropperButton: View {
     @State private var colorSpace = Defaults[.colorSpace]
     @State private var hoverTask: Task<Void, Never>?
     @State private var childHovered: Bool = false
+    /// Whether the pointer is over the readout block (below the hairline). The Copy and system
+    /// picker buttons belong to the readout, so they show only while it, or they, are hovered.
+    @State private var readoutHovered: Bool = false
+    /// Whether the pointer is over the pick area (above the hairline), so `onPickAreaHover`
+    /// fires on a change rather than on every pointer move.
+    @State private var pickAreaHovered: Bool = false
+    /// Top of the readout block in the swatch's own coordinates, where the pick area ends.
+    @State private var readoutTop: CGFloat = .infinity
     @State private var valueInvalid: Bool = false
     @State private var isPressed: Bool = false
     /// Mirrors `wantsColorName`, but only ever changed inside `withAnimation`. Animating the
@@ -157,8 +218,13 @@ struct EyedropperButton: View {
                         .font(.caption)
                         .fontWeight(.semibold)
                         .foregroundStyle(eyedropper.color.getUIColor().opacity(0.75))
+                        .allowsHitTesting(false)
                     if valueInvalid {
                         InvalidInputPill(uiColor: eyedropper.color.getUIColor())
+                            .allowsHitTesting(false)
+                    } else if !eyedropper.color.isDisplayable(in: .current) {
+                        // Hit-testable, unlike the rest of this row, so its tooltip can show.
+                        OutOfGamutIndicator(uiColor: eyedropper.color.getUIColor())
                     }
                     // Reserves the pill's height in this row at all times (zero width, so it
                     // never otherwise affects layout) so toggling the pill doesn't change the
@@ -170,6 +236,7 @@ struct EyedropperButton: View {
                         .fixedSize()
                         .frame(width: 0)
                         .accessibilityHidden(true)
+                        .allowsHitTesting(false)
                 }
                 .opacity(showsTypeLabel || valueInvalid ? 1 : 0)
                 .animation(
@@ -178,7 +245,6 @@ struct EyedropperButton: View {
                         : .easeInOut(duration: 0.2),
                     value: showsTypeLabel
                 )
-                .allowsHitTesting(false)
 
                 // Spacing 0, with the gap above the colour name carried by that row's own
                 // height: the name has to be able to collapse to nothing, and a `VStack`
@@ -240,6 +306,14 @@ struct EyedropperButton: View {
             }
             // Both of these sit outside the shadow above, so the hairline stays crisp.
             .background(ClickShield())
+            .background(
+                GeometryReader { geo in
+                    let top = geo.frame(in: .named(Self.swatchSpace)).minY
+                    Color.clear
+                        .onAppear { readoutTop = top }
+                        .onChange(of: top) { readoutTop = $0 }
+                }
+            )
             // A single hairline along the top edge, marking where the block stops being a pick
             // target — a full box around the text read as a control it isn't.
             .overlay(alignment: .top) {
@@ -264,7 +338,7 @@ struct EyedropperButton: View {
                     alt: PikaText.textColorCopy,
                     onHoverChange: { hover in
                         childHovered = hover
-                        if hover { hoverTask?.cancel(); hoverTask = nil }
+                        updateButtonVisibility()
                     }
                 ))
                 .frame(maxWidth: .infinity, alignment: .trailing)
@@ -284,7 +358,7 @@ struct EyedropperButton: View {
                     alt: PikaText.textColorSystemPicker,
                     onHoverChange: { hover in
                         childHovered = hover
-                        if hover { hoverTask?.cancel(); hoverTask = nil }
+                        updateButtonVisibility()
                     }
                 ))
                 .frame(maxWidth: .infinity, alignment: .trailing)
@@ -298,18 +372,45 @@ struct EyedropperButton: View {
         .onReceive(NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification)) { _ in
             colorSpace = Defaults[.colorSpace]
         }
-        .onHover { hover in
-            if hover {
-                hoverTask?.cancel()
+        .coordinateSpace(name: Self.swatchSpace)
+        .onContinuousHover(coordinateSpace: .named(Self.swatchSpace)) { phase in
+            let inReadout: Bool
+            let inPickArea: Bool
+            switch phase {
+            case let .active(location):
+                inReadout = location.y >= readoutTop
+                inPickArea = !inReadout
+            case .ended:
+                inReadout = false
+                inPickArea = false
+            }
+            if inReadout != readoutHovered {
+                readoutHovered = inReadout
+                updateButtonVisibility()
+            }
+            if inPickArea != pickAreaHovered {
+                pickAreaHovered = inPickArea
+                onPickAreaHover(inPickArea)
+            }
+        }
+    }
+
+    private static let swatchSpace = "swatch"
+
+    /// Shows the Copy and system picker buttons while the readout or the buttons are hovered,
+    /// and hides them a moment after neither is, so crossing the gap onto a button doesn't
+    /// flicker them away.
+    private func updateButtonVisibility() {
+        if readoutHovered || childHovered {
+            hoverTask?.cancel()
+            hoverTask = nil
+            hoverVisible = true
+        } else if hoverTask == nil {
+            hoverTask = Task {
+                try? await Task.sleep(for: .milliseconds(250))
+                guard !Task.isCancelled else { return }
+                if !readoutHovered, !childHovered { hoverVisible = false }
                 hoverTask = nil
-                hoverVisible = true
-            } else if hoverTask == nil, !childHovered {
-                hoverTask = Task {
-                    try? await Task.sleep(for: .milliseconds(250))
-                    guard !Task.isCancelled else { return }
-                    hoverVisible = false
-                    hoverTask = nil
-                }
             }
         }
     }

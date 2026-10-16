@@ -21,6 +21,46 @@ struct InvalidInputPill: View {
     }
 }
 
+/// Marks a colour the display can't show as itself (see `NSColor.isDisplayable(in:)`), so the
+/// swatch standing in for it with the nearest colour it has isn't a silent substitution. A glyph
+/// rather than a pill: it stays up for as long as the colour does, and the explanation is in the
+/// tooltip.
+struct OutOfGamutIndicator: View {
+    let uiColor: NSColor
+
+    var body: some View {
+        Image(systemName: "exclamationmark.triangle")
+            .font(.caption2)
+            .fontWeight(.semibold)
+            .foregroundStyle(Color(uiColor).opacity(0.75))
+            // An AppKit tooltip view over the glyph, not SwiftUI's `.help`: the swatch's
+            // readout sits on `ClickShield`, an NSView, and AppKit gives the hover to that view,
+            // so a `.help` drawn by the hosting view underneath it never showed.
+            .overlay(ToolTipArea(text: PikaText.textColorOutsideGamut))
+            .accessibilityLabel(PikaText.textColorOutsideGamut)
+    }
+}
+
+/// A transparent NSView that carries a tooltip, for SwiftUI content that sits over other
+/// AppKit views. Clicks on it do nothing, so they don't fall through and start a pick.
+private struct ToolTipArea: NSViewRepresentable {
+    let text: String
+
+    func makeNSView(context _: Context) -> NSView {
+        let view = ToolTipView()
+        view.toolTip = text
+        return view
+    }
+
+    func updateNSView(_ view: NSView, context _: Context) {
+        view.toolTip = text
+    }
+
+    private final class ToolTipView: NSView {
+        override func mouseDown(with _: NSEvent) {}
+    }
+}
+
 /// Units nudged per pixel of drag/scroll (or per arrow-key press), scaled to a component's own
 /// range so every field's full span takes about the same drag distance to traverse — hue's
 /// `0...360` (which felt right at a flat 1 unit/px) is the reference; without this, OKLCH
@@ -223,7 +263,7 @@ struct EditableColorValue: View {
                 // A change we didn't push ourselves is an external pick landing mid-edit —
                 // abort the session so the external colour wins, matching pre-edit behaviour.
                 if newValue != lastPreviewedColor { abortEditingForExternalPick() }
-            } else if newValue != lastPreviewedColor {
+            } else if Self.isExternalChange(to: newValue, ownWrite: &lastPreviewedColor) {
                 // Only resync from a colour we didn't just set ourselves. Without this check,
                 // this handler fires right after our own commit lands (isEditing has already
                 // flipped false by then) and undoes finishEditing's deliberate `resync: false` —
@@ -236,6 +276,18 @@ struct EditableColorValue: View {
         .onChange(of: style) { _ in handleFormatOrStyleChange() }
         .onChange(of: colorSpace) { _ in handleFormatOrStyleChange() }
         .onChange(of: dismissEditingTrigger) { _ in focusedIndex = nil }
+    }
+
+    /// Whether a colour change came from somewhere other than this view, given `ownWrite`, the
+    /// colour it last pushed itself. An external change forgets that marker: it exists to
+    /// swallow the one echo of our own write, and kept any longer it also swallowed the next
+    /// change *back* to that colour. Type a value, start a pick, hover something else and press
+    /// Escape, and the swatch reverted to the typed colour while the readout stayed on the
+    /// hovered one.
+    static func isExternalChange(to newColor: NSColor, ownWrite: inout NSColor?) -> Bool {
+        guard newColor != ownWrite else { return false }
+        ownWrite = nil
+        return true
     }
 
     private func affix(_ text: String, size: CGFloat) -> some View {
@@ -266,6 +318,7 @@ struct EditableColorValue: View {
                 }
                 guard index < values.count else { return }
                 values[index] = newValue
+                shrinkFrozenSizeIfNeeded(layout: layout)
                 // A scrub's own end (`ScrubTextField.onDragEnd`/`handleScrollEnded`) writes here
                 // once, only to unfreeze the field's displayed text — not to request a new
                 // colour. `values` at that point still holds the *other* components' stale
@@ -312,10 +365,10 @@ struct EditableColorValue: View {
             // `previewLiveScrub` recomposes the untouched fields from their pre-edit baseline
             // and silently discards the edit — see the finding on this line.
             sessionStartValues = values
-            rebudgetFrozenSize(for: index, layout: layout)
+            freezeSizeForEdit(layout: layout)
             return
         }
-        startSession(index: index, layout: layout)
+        startSession(layout: layout)
     }
 
     private func handleFocusChange(to newValue: Int?, layout: DecomposedColor) {
@@ -324,16 +377,15 @@ struct EditableColorValue: View {
             // (per the comment on `sessionOwner`) take over an existing unfocused scrub session.
             sessionOwner = newValue
             if !isEditing {
-                startSession(index: newValue, layout: layout)
+                startSession(layout: layout)
             } else {
                 // Moving to a different field within an already-open session (e.g. Tab) —
-                // `frozenSize` was budgeted for the *previous* field's worst case, so it must be
-                // re-budgeted for this one or a longer value typed here has nowhere to grow.
-                // `sessionStartValues` needs the same refresh: it must pick up whatever was typed
+                // re-freeze the size to the row as it now stands, including whatever was typed
+                // into the previous field. `sessionStartValues` needs the same refresh: it must pick up whatever was typed
                 // into the previous field, or scrubbing this one recomposes that field from its
                 // stale pre-edit baseline and silently discards the typed edit.
                 sessionStartValues = values
-                rebudgetFrozenSize(for: newValue, layout: layout)
+                freezeSizeForEdit(layout: layout)
             }
         } else if isEditing, !isScrubbing {
             // Focus left every field (blur / tab-out) — commit if valid, otherwise revert.
@@ -376,62 +428,37 @@ struct EditableColorValue: View {
 
     /// Snapshot the colour and working values at the start of an edit or drag session, so
     /// `finishEditing`/`abortEditingForExternalPick` have a consistent point to commit or revert to.
-    private func startSession(index: Int, layout: DecomposedColor) {
+    private func startSession(layout: DecomposedColor) {
         isEditing = true
         sessionStartValues = layout.values
-        // Sized to every field's current displayed width, except `index` — the one about to
-        // become editable — which is sized to its own worst case. Budgeting the *whole* row for
-        // worst case (the pre-f3cca6b behaviour) made the readout collapse to `minSize` the
-        // instant you clicked it in a narrow window, since every other field paid for width it
-        // never needed. But budgeting only the current width regressed the opposite way: typing
-        // a longer in-range value (e.g. hue "5" -> "355") has nowhere to grow, since nothing else
-        // in the row changes width mid-scrub any more (every field's text is frozen and the live
-        // value goes to the pill), only `index`'s field is ever actually typed into during this
-        // session, so it's the only one that needs worst-case headroom.
-        rebudgetFrozenSize(for: index, layout: layout)
+        // Frozen at the size the row already has, so focusing a field never resizes the text.
+        // A longer value typed in then shrinks it only as far as it has to (see
+        // `shrinkFrozenSizeIfNeeded`).
         preEditColor = eyedropper.color
         values = layout.values
         valuesKey = FormatStyleKey(format: format, style: style, colorSpace: colorSpace)
+        freezeSizeForEdit(layout: layout)
     }
 
-    /// Budgets `frozenSize` for whichever field is about to become editable — worst-case width
-    /// for `index`, current displayed width for every other field (see the comment on the call
-    /// site in `startSession`). Called both when a session opens and whenever the editable field
-    /// changes mid-session (Tab, or a drag/click landing on a different field), since the frozen
-    /// budget from the field that opened the session doesn't cover a value typed into a later one.
-    /// `index`'s value is swapped for its worst-case placeholder (see `worstCaseComponentString`)
-    /// before sizing, since that's the only field a typed edit can actually grow.
-    private func rebudgetFrozenSize(for index: Int, layout: DecomposedColor) {
-        var values = layout.values
-        if index < values.count { values[index] = worstCaseComponentString(layout.components[index]) }
-        frozenSize = fontSize(forUnits: wrapUnits(layout, values: values))
+    /// Freezes the row's text size for an edit at the size it has now, sized to the values as
+    /// they stand (including anything already typed into another field this session). Called
+    /// when a session opens and whenever the editable field changes mid-session (Tab, or a
+    /// drag/click landing on a different field).
+    ///
+    /// It used to budget the field being edited for its widest possible value ("9.9999" for a
+    /// 0–1 decimal), so that a longer value had room to be typed. A row that only just fitted
+    /// then shrank the moment a field was clicked, before anything was typed.
+    private func freezeSizeForEdit(layout: DecomposedColor) {
+        let current = values.count == layout.components.count ? values : layout.values
+        frozenSize = fontSize(forUnits: wrapUnits(layout, values: current))
     }
 
-    /// The widest value a component could ever display. Integers use the range's most digits;
-    /// decimals use the range's most integer-part digits plus 4 decimal places (the original
-    /// stripped format's max — still the true worst case even though scrubbing now defaults to
-    /// coarser 2-place rounding, since finer starting precision is preserved up to 4). A leading
-    /// "-" is budgeted for any component whose range allows (or has no range, e.g. Lab a/b) a
-    /// negative value. Unranged decimals (Lab a/b) have no clamp and are genuinely unbounded, so
-    /// there's no true worst case to size to; 3 int digits is a practical bound that covers real
-    /// sRGB-gamut a*/b* extremes (b* reaches roughly -107) without reserving excessive width.
-    /// Hex is already fixed-length, so it's left as-is.
-    private func worstCaseComponentString(_ component: ColorComponent) -> String {
-        let sign = (component.range?.lowerBound ?? -1) < 0 ? "-" : ""
-        switch component.kind {
-        case .hex:
-            return component.value
-        case .integer:
-            let digits = component.range.map {
-                max(String(abs(Int($0.upperBound.rounded()))).count, String(abs(Int($0.lowerBound.rounded()))).count)
-            } ?? 3
-            return sign + String(repeating: "9", count: max(digits, 1))
-        case .decimal:
-            let intDigits = component.range.map {
-                max(String(abs(Int($0.upperBound))).count, String(abs(Int($0.lowerBound))).count)
-            } ?? 3
-            return sign + String(repeating: "9", count: max(intDigits, 1)) + "." + String(repeating: "9", count: 4)
-        }
+    /// Shrinks the frozen size when what's been typed no longer fits at it, and never grows it
+    /// back mid-edit, so the text only moves when it has to and doesn't bounce as you type.
+    private func shrinkFrozenSizeIfNeeded(layout: DecomposedColor) {
+        guard isEditing, let frozen = frozenSize else { return }
+        let needed = fontSize(forUnits: wrapUnits(layout, values: values))
+        if needed.size < frozen.size || needed.lines > frozen.lines { frozenSize = needed }
     }
 
     /// Recompose the working values and preview them live; flag invalid input for the pill.
@@ -443,13 +470,11 @@ struct EditableColorValue: View {
         lastPreviewedColor = eyedropper.color
     }
 
-    /// Returns the value actually achieved — which is not always the one requested. Lab/OKLCH can
-    /// express colours outside sRGB, and `recompose` clamps those to the nearest displayable
-    /// channel (see `NSColor.encodeSRGB`), so e.g. `oklch(30% 0.2 230)` really lands on chroma
-    /// ~0.137. Reading the value back off the resulting colour means the readout can only ever
-    /// show a colour the screen can genuinely produce: a drag past the gamut boundary simply
-    /// stops there instead of displaying a number that silently disagrees with the swatch (and
-    /// then appearing to "jump" when a later interaction resynced from the real colour).
+    /// Returns the value actually achieved — which is not always the one requested. A lossy
+    /// format can read back differently from what went in (HSB hue is undefined at brightness 0,
+    /// and 8-bit RGB rounds), so the value is read back off the resulting colour: the readout
+    /// can't then show a number that disagrees with the swatch. Lab and OKLCH no longer clamp to
+    /// sRGB, so for those the achieved value is the requested one.
     @discardableResult
     private func previewLiveScrub(index: Int, layout: DecomposedColor, value: Double, decimals: Int) -> Double {
         guard index < layout.components.count else { return value }
@@ -463,9 +488,8 @@ struct EditableColorValue: View {
         eyedropper.set(color)
         lastPreviewedColor = eyedropper.color
         // Round-trip the committed colour back through `decompose` to see what it actually
-        // became. Clamping doesn't only move the dragged component — pushing chroma out of gamut
-        // shifts the resulting colour's lightness and hue too — so resync every *other* component
-        // from the real colour. Without this the readout contradicts the swatch (a magenta swatch
+        // became. A lossy format doesn't only move the dragged component, so resync every
+        // *other* component from the real colour. Without this the readout contradicts the swatch (a magenta swatch
         // still showing a blue hue), and worse, the commit would pair the dragged component's new
         // value with the others' stale ones and land on a third colour entirely.
         //

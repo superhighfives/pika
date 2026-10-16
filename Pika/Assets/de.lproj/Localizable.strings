@@ -576,6 +576,9 @@
 /* Invalid input */
 "color.edit.invalid" = "Ungültige Eingabe";
 
+/* Outside the display's color range */
+"color.gamut.outside" = "Dieses Display kann diese Farbe nicht darstellen, daher zeigt das Farbfeld die nächstliegende. Lab und OKLCH behalten den exakt eingegebenen Wert; Hex und RGB zeigen die nächstliegende Farbe.";
+
 /* Show Pika */
 "menu.showPika" = "Pika anzeigen";
 

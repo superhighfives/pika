@@ -12,6 +12,9 @@ struct ReadoutHeightKey: PreferenceKey {
 
 struct ColorPickers: View {
     @EnvironmentObject var eyedroppers: Eyedroppers
+    /// Whether either swatch's pick area (above its readout) is hovered. Drives the Swap button.
+    var onPickAreaHover: (Bool) -> Void = { _ in }
+    @State private var pickAreaHovered: Set<Eyedropper.Types> = []
 
     /// Shared across both swatches rather than owned per-swatch: a click landing on either
     /// swatch's pick target while a colour field is focused needs to dismiss whichever swatch
@@ -24,6 +27,8 @@ struct ColorPickers: View {
     /// Hovering either swatch shows the boundary on both: it marks where the pair stops being
     /// a pick target, which is one fact about the whole row, not a per-swatch one.
     @State private var pickersHovered = false
+    /// Ends an edit when a click lands outside the fields and the swatches — see `EditingClickAway`.
+    @State private var clickAway = EditingClickAway()
 
     var body: some View {
         let eyedropperArray: [Eyedropper] = [eyedroppers.foreground, eyedroppers.background]
@@ -36,7 +41,12 @@ struct ColorPickers: View {
                     eyedropper: eyedropper,
                     dismissEditingTrigger: $dismissEditingTrigger,
                     readoutHeight: readoutHeight,
-                    showsReadoutBoundary: pickersHovered
+                    showsReadoutBoundary: pickersHovered,
+                    onPickAreaHover: { hovered in
+                        let wasHovered = !pickAreaHovered.isEmpty
+                        if hovered { pickAreaHovered.insert(eyedropper.type) } else { pickAreaHovered.remove(eyedropper.type) }
+                        if !pickAreaHovered.isEmpty != wasHovered { onPickAreaHover(!pickAreaHovered.isEmpty) }
+                    }
                 )
             }
         }
@@ -47,6 +57,8 @@ struct ColorPickers: View {
             DispatchQueue.main.async { readoutHeight = height }
         }
         .onHover { pickersHovered = $0 }
+        .onAppear { clickAway.start { dismissEditingTrigger += 1 } }
+        .onDisappear { clickAway.stop() }
     }
 }
 

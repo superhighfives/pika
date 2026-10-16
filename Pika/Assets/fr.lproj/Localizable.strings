@@ -576,6 +576,9 @@
 /* Invalid input */
 "color.edit.invalid" = "Saisie non valide";
 
+/* Outside the display's color range */
+"color.gamut.outside" = "Votre écran ne peut pas afficher cette couleur : l’échantillon montre la plus proche possible. Lab et OKLCH conservent la valeur exacte saisie ; hex et RGB affichent la couleur la plus proche.";
+
 /* Show Pika */
 "menu.showPika" = "Afficher Pika";
 

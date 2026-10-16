@@ -122,11 +122,12 @@ final class LoupeCardPanel: NSPanel {
     }
 }
 
-/// A full-screen, transparent panel that sits above every other app (but below the loupe)
-/// while a pick is active. Its whole job is to *consume* the committing click so it never
-/// reaches the desktop / app underneath — global `NSEvent` monitors can only observe the
-/// click, not swallow it. It also drives cursor tracking, scroll-to-zoom, and right-click
-/// cancel, since with the catcher in front those events are delivered locally to Pika.
+/// A transparent panel covering one screen, sitting above every other app (but below the loupe)
+/// while a pick is active. There is one per screen (see `frames(coveringScreens:)`). Its whole
+/// job is to *consume* the committing click so it never reaches the desktop / app underneath —
+/// global `NSEvent` monitors can only observe the click, not swallow it. It also drives cursor
+/// tracking, scroll-to-zoom, and right-click cancel, since with the catcher in front those
+/// events are delivered locally to Pika.
 final class LoupeClickCatcherPanel: NSPanel {
     var onCommit: (() -> Void)?
     var onCancel: (() -> Void)?
@@ -167,11 +168,16 @@ final class LoupeClickCatcherPanel: NSPanel {
     override var canBecomeKey: Bool { true }
     override var canBecomeMain: Bool { false }
 
-    /// Covers the bounding rect of all screens so a click anywhere is intercepted.
-    func cover(screens: [NSScreen]) {
-        let union = screens.reduce(CGRect.null) { $0.union($1.frame) }
-        let target = union.isNull ? (NSScreen.main?.frame ?? .zero) : union
-        setFrame(target, display: false)
+    /// The frames catchers need so a click anywhere is intercepted: one per screen, never one
+    /// window spanning them. With "Displays have separate Spaces" on (the default) macOS shows
+    /// a window on a single display only, so a catcher stretched over every screen's bounding
+    /// rect caught clicks on one display and let them through to the apps on the others (#302).
+    static func frames(coveringScreens screenFrames: [CGRect]) -> [CGRect] {
+        screenFrames.filter { !$0.isEmpty }
+    }
+
+    func cover(_ frame: CGRect) {
+        setFrame(frame, display: false)
     }
 }
 

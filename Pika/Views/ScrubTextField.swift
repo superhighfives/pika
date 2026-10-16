@@ -168,8 +168,8 @@ struct ScrubbableColorField: NSViewRepresentable {
         // `EditableColorValue.rowScrubPreview`). Only the floating pill sees the live value.
         nsView.onDragChanged = { [weak nsView] newValue in
             guard let nsView else { return }
-            // The achieved value, not the requested one: a drag past the sRGB gamut boundary
-            // clamps, and the pill must show what the swatch actually is.
+            // The achieved value, not the requested one: a lossy format can read back
+            // differently, and the pill must show what the swatch actually is.
             let achieved = onLiveValue(newValue, nsView.dragDecimalPlaces)
             nsView.lastAchievedValue = achieved
         }
@@ -317,7 +317,7 @@ final class ScrubTextField: NSTextField {
     /// per-pixel step scales inversely so the last shown digit always advances about one per
     /// pixel (otherwise a coarse readout looks frozen while the colour visibly changes).
     private var dragBaseDecimalPlaces = 2
-    /// The gamut-clamped value the last drag step actually achieved (see
+    /// The value the last drag step actually achieved (see
     /// `EditableColorValue.previewLiveScrub`), so the commit uses reality rather than the raw
     /// requested value. Cleared once the drag ends.
     var lastAchievedValue: Double?

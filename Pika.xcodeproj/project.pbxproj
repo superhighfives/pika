@@ -31,8 +31,10 @@
 		DEC0FACE0000000000000011 /* ColorDecompositionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC0FACE0000000000000010 /* ColorDecompositionTests.swift */; };
 		CC2000000000000000000C01 /* ClosestVectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000C00 /* ClosestVectorTests.swift */; };
 		CC2000000000000000000D01 /* SequenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000D00 /* SequenceTests.swift */; };
+		CC2000000000000000003E01 /* PickerLoupePanelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000003E00 /* PickerLoupePanelTests.swift */; };
 		CC2000000000000000000E01 /* ExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000E00 /* ExporterTests.swift */; };
 		CC2000000000000000000F01 /* EditableColorValueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000F00 /* EditableColorValueTests.swift */; };
+		CC2000000000000000003F01 /* BackgroundCursorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000003F00 /* BackgroundCursorTests.swift */; };
 
 		220D5E9428DB154300B6285E /* AppModeButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220D5E9328DB154300B6285E /* AppModeButtons.swift */; };
 		220D5E9828DB158400B6285E /* AppModeToggleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220D5E9728DB158400B6285E /* AppModeToggleGroup.swift */; };
@@ -253,8 +255,10 @@
 		DEC0FACE0000000000000010 /* ColorDecompositionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorDecompositionTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000000C00 /* ClosestVectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosestVectorTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000000D00 /* SequenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceTests.swift; sourceTree = "<group>"; };
+		CC2000000000000000003E00 /* PickerLoupePanelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerLoupePanelTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000000E00 /* ExporterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExporterTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000000F00 /* EditableColorValueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableColorValueTests.swift; sourceTree = "<group>"; };
+		CC2000000000000000003F00 /* BackgroundCursorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundCursorTests.swift; sourceTree = "<group>"; };
 
 		220D5E9328DB154300B6285E /* AppModeButtons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppModeButtons.swift; sourceTree = "<group>"; };
 		220D5E9728DB158400B6285E /* AppModeToggleGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppModeToggleGroup.swift; sourceTree = "<group>"; };
@@ -585,8 +589,10 @@
 				DEC0FACE0000000000000010 /* ColorDecompositionTests.swift */,
 				CC2000000000000000000C00 /* ClosestVectorTests.swift */,
 				CC2000000000000000000D00 /* SequenceTests.swift */,
+				CC2000000000000000003E00 /* PickerLoupePanelTests.swift */,
 				CC2000000000000000000E00 /* ExporterTests.swift */,
 				CC2000000000000000000F00 /* EditableColorValueTests.swift */,
+				CC2000000000000000003F00 /* BackgroundCursorTests.swift */,
 			);
 			path = PikaTests;
 			sourceTree = "<group>";
@@ -1149,8 +1155,10 @@
 				DEC0FACE0000000000000011 /* ColorDecompositionTests.swift in Sources */,
 				CC2000000000000000000C01 /* ClosestVectorTests.swift in Sources */,
 				CC2000000000000000000D01 /* SequenceTests.swift in Sources */,
+				CC2000000000000000003E01 /* PickerLoupePanelTests.swift in Sources */,
 				CC2000000000000000000E01 /* ExporterTests.swift in Sources */,
 				CC2000000000000000000F01 /* EditableColorValueTests.swift in Sources */,
+				CC2000000000000000003F01 /* BackgroundCursorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1322,7 +1330,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 105;
+				CURRENT_PROJECT_VERSION = 107;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Pika/Preview Content\"";
 				DEVELOPMENT_TEAM = TGHU37N6EX;
@@ -1336,7 +1344,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 2.0.1-beta1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.superhighfives.Pika;
 				PRODUCT_NAME = Pika;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG TARGET_SPARKLE";
@@ -1354,7 +1362,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 105;
+				CURRENT_PROJECT_VERSION = 107;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Pika/Preview Content\"";
 				DEVELOPMENT_TEAM = TGHU37N6EX;
@@ -1368,7 +1376,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 2.0.1-beta1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.superhighfives.Pika;
 				PRODUCT_NAME = Pika;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = TARGET_SPARKLE;
@@ -1401,7 +1409,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 2.0.1-beta1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.superhighfives.Pika;
 				PRODUCT_NAME = Pika;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG TARGET_MAS";
@@ -1435,7 +1443,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 2.0.1-beta1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.superhighfives.Pika;
 				PRODUCT_NAME = Pika;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = TARGET_MAS;
@@ -1535,8 +1543,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sparkle-project/Sparkle";
 			requirement = {
-				kind = revision;
-				revision = 891afd44c7075e699924ed9b81d8dc94a5111dfd;
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.10.0;
 			};
 		};
 		EAD0B70E259CFAC700FA2F67 /* XCRemoteSwiftPackageReference "Defaults" */ = {

@@ -576,6 +576,9 @@
 /* Invalid input */
 "color.edit.invalid" = "无效输入";
 
+/* Outside the display's color range */
+"color.gamut.outside" = "你的显示器无法显示此颜色，因此色块显示的是最接近的可显示颜色。Lab 和 OKLCH 保留你输入的精确值；十六进制和 RGB 显示最接近的颜色。";
+
 /* Show Pika */
 "menu.showPika" = "显示 Pika";
 

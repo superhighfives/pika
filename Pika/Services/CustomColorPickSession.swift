@@ -90,15 +90,24 @@ final class CustomColorPickSession: ColorPickSession {
 // swiftlint:disable:next type_body_length
 final class PickerLoupeController {
     static let shared = PickerLoupeController()
-    private init() {}
+    private init() {
+        // A display plugged in, unplugged or rearranged mid-pick: re-cover what's there now.
+        NotificationCenter.default.addObserver(
+            forName: NSApplication.didChangeScreenParametersNotification, object: nil, queue: .main
+        ) { [weak self] _ in
+            guard let self, self.isActive else { return }
+            self.coverScreens()
+            self.keyCatcherUnderCursor()
+        }
+    }
 
     let viewModel = LoupeViewModel()
 
     // The loupe is two stacked panels: the lens (a circular magnifier with the readouts
-    // engraved around its rim) centred on the cursor, and a full-screen catcher beneath it
-    // that swallows the committing click so it never reaches the desktop.
+    // engraved around its rim) centred on the cursor, and a full-screen catcher on every
+    // screen that swallows the committing click so it never reaches the desktop.
     private var circlePanel: LoupeCirclePanel?
-    private var catcher: LoupeClickCatcherPanel?
+    private var catchers: [LoupeClickCatcherPanel] = []
     // Only shown for the `.card` theme: the readout card tucked beside the magnifier.
     private var cardPanel: LoupeCardPanel?
     private var completion: ((NSColor?) -> Void)?
@@ -216,39 +225,61 @@ final class PickerLoupeController {
     private func showPanel() {
         if circlePanel == nil { circlePanel = LoupeCirclePanel(viewModel: viewModel) }
         if cardPanel == nil { cardPanel = LoupeCardPanel(viewModel: viewModel) }
-        if catcher == nil {
-            let catcher = LoupeClickCatcherPanel()
-            catcher.onCommit = { [weak self] in self?.commit() }
-            catcher.onCancel = { [weak self] in self?.cancel() }
-            catcher.onMoved = { [weak self] event in self?.handlePointerMoved(event) }
-            catcher.onScroll = { [weak self] event in self?.handleScroll(deltaY: Double(event.deltaY)) }
-            self.catcher = catcher
-        }
 
-        // The catcher must be the front-most surface so it swallows clicks/scroll; it's ordered
-        // last (after the circle and card) and re-fronted on every cursor move (see
-        // `updateCardPanel`). Being transparent, it doesn't hide the lens. It also takes key
-        // status so Escape / zoom / nudge reach us without activating Pika.
-        catcher?.cover(screens: NSScreen.screens)
+        // The catchers must be the front-most surfaces so they swallow clicks/scroll; they're
+        // ordered last (after the circle and card) and re-fronted on every cursor move (see
+        // `updateCardPanel`). Being transparent, they don't hide the lens. The one under the
+        // cursor also takes key status so Escape / zoom / nudge reach us without activating Pika.
         circlePanel?.orderFrontRegardless()
         updateCardPanel()
-        catcher?.orderFrontRegardless()
-
-        loupeWindowIDs = [circlePanel?.windowNumber, cardPanel?.windowNumber, catcher?.windowNumber]
-            .compactMap { $0 }
-            .map { CGWindowID($0) }
+        coverScreens()
 
         // Activate (fallback) before taking key status so the catcher stays key afterwards.
         activateForKeysIfNeeded()
-        catcher?.makeKey()
+        keyCatcherUnderCursor()
 
         // The loupe circle sits on the cursor, so hide the system cursor for the pick.
         if !cursorHidden {
+            // With Accessibility granted Pika stays in the background for the pick, and macOS
+            // ignores a background app's request to hide the cursor.
+            BackgroundCursor.setAllowed(true)
             CGDisplayHideCursor(CGMainDisplayID())
             cursorHidden = true
         }
 
         isActive = true
+    }
+
+    /// Puts one catcher on every screen, reusing the panels from the last pick.
+    private func coverScreens() {
+        let frames = LoupeClickCatcherPanel.frames(coveringScreens: NSScreen.screens.map(\.frame))
+        while catchers.count < frames.count {
+            let catcher = LoupeClickCatcherPanel()
+            catcher.onCommit = { [weak self] in self?.commit() }
+            catcher.onCancel = { [weak self] in self?.cancel() }
+            catcher.onMoved = { [weak self] event in self?.handlePointerMoved(event) }
+            catcher.onScroll = { [weak self] event in self?.handleScroll(deltaY: Double(event.deltaY)) }
+            catchers.append(catcher)
+        }
+        for catcher in catchers.dropFirst(frames.count) {
+            catcher.orderOut(nil)
+        }
+        catchers.removeLast(catchers.count - frames.count)
+        for (catcher, frame) in zip(catchers, frames) {
+            catcher.cover(frame)
+            catcher.orderFrontRegardless()
+        }
+
+        loupeWindowIDs = ([circlePanel?.windowNumber, cardPanel?.windowNumber] + catchers.map(\.windowNumber))
+            .compactMap { $0 }
+            .map { CGWindowID($0) }
+    }
+
+    /// Keys follow the key window, so the catcher on the cursor's screen holds key status.
+    private func keyCatcherUnderCursor() {
+        let location = NSEvent.mouseLocation
+        let catcher = catchers.first { NSMouseInRect(location, $0.frame, false) } ?? catchers.first
+        if let catcher, !catcher.isKeyWindow { catcher.makeKey() }
     }
 
     /// A non-activating panel only receives keys while Pika is frontmost. If Pika is trusted
@@ -275,9 +306,9 @@ final class PickerLoupeController {
         if Defaults[.loupeTheme] == .card {
             cardPanel.position(near: currentCursor, circleRadius: LoupeCircle.cardGlass / 2)
             cardPanel.orderFrontRegardless()
-            // The card just jumped to the front; keep the click-catcher above it so clicks and
-            // scroll still land on the catcher rather than falling through.
-            catcher?.orderFrontRegardless()
+            // The card just jumped to the front; keep the click-catchers above it so clicks and
+            // scroll still land on a catcher rather than falling through.
+            catchers.forEach { $0.orderFrontRegardless() }
         } else {
             cardPanel.orderOut(nil)
         }
@@ -341,6 +372,7 @@ final class PickerLoupeController {
             // hardware movement carried it.
             warpCursor(to: currentCursor)
             CGDisplayShowCursor(CGMainDisplayID())
+            BackgroundCursor.setAllowed(false)
             cursorHidden = false
         }
         rearmSafety?.invalidate()
@@ -355,7 +387,7 @@ final class PickerLoupeController {
         colorNames = []
         circlePanel?.orderOut(nil)
         cardPanel?.orderOut(nil)
-        catcher?.orderOut(nil)
+        catchers.forEach { $0.orderOut(nil) }
 
         // Restore focus to whatever app we took it from for key handling.
         if let appToRestore {
@@ -458,6 +490,7 @@ final class PickerLoupeController {
         // The catcher's tracking area can keep firing after teardown (orderOut doesn't always
         // stop it); ignore moves unless a pick is live so the preview can't drift afterwards.
         guard isActive else { return }
+        keyCatcherUnderCursor()
         let scale = viewModel.mouseSensitivityScale
         guard scale < 1 else {
             currentCursor = NSEvent.mouseLocation
@@ -751,6 +784,32 @@ final class PickerLoupeController {
         let green = CGFloat(ptr[offset + 1]) / 255.0
         let red = CGFloat(ptr[offset + 2]) / 255.0
         return NSColor(colorSpace: colorSpace, components: [red, green, blue, 1.0], count: 4)
+    }
+}
+
+/// Lets Pika hide the cursor while it isn't the frontmost app.
+///
+/// `CGDisplayHideCursor` only works for the frontmost app, and a pick started from the global
+/// shortcut or the menu bar runs with another app in front (deliberately: activating Pika would
+/// change what's being picked), so the system cursor stayed visible on top of the loupe. The
+/// window server has a per-connection `SetsCursorInBackground` property that lifts this. It is
+/// not public API, so the two functions are looked up at runtime: if a future macOS drops
+/// them, this returns false and the cursor simply shows again, as it did before.
+enum BackgroundCursor {
+    private typealias ConnectionID = Int32
+    private typealias DefaultConnection = @convention(c) () -> ConnectionID
+    private typealias SetConnectionProperty = @convention(c) (ConnectionID, ConnectionID, CFString, CFTypeRef) -> Int32
+
+    @discardableResult
+    static func setAllowed(_ allowed: Bool) -> Bool {
+        let anyImage = UnsafeMutableRawPointer(bitPattern: -2) // RTLD_DEFAULT
+        guard let connectionSymbol = dlsym(anyImage, "_CGSDefaultConnection"),
+              let setPropertySymbol = dlsym(anyImage, "CGSSetConnectionProperty")
+        else { return false }
+        let connection = unsafeBitCast(connectionSymbol, to: DefaultConnection.self)()
+        let setProperty = unsafeBitCast(setPropertySymbol, to: SetConnectionProperty.self)
+        let value: CFBoolean = allowed ? kCFBooleanTrue : kCFBooleanFalse
+        return setProperty(connection, connection, "SetsCursorInBackground" as CFString, value) == 0
     }
 }
 
