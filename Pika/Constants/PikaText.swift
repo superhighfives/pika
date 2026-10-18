@@ -74,6 +74,8 @@ enum PikaText {
     static let textHelpBasicsEditing = NSLocalizedString("help.basics.editing", comment: "Editing values description")
     static let textHelpBasicsSpacesTitle = NSLocalizedString("help.basics.spaces.title", comment: "Colour spaces")
     static let textHelpBasicsSpaces = NSLocalizedString("help.basics.spaces", comment: "Colour spaces description")
+    static let textHelpReferenceWCAG = NSLocalizedString("help.reference.wcag", comment: "Link to WCAG contrast guidance")
+    static let textHelpReferenceAPCA = NSLocalizedString("help.reference.apca", comment: "Link to APCA guidance")
 
     static let textMenuAbout = NSLocalizedString("menu.about", comment: "About")
     static let textMenuShowSplash = NSLocalizedString(

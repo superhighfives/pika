@@ -418,6 +418,12 @@
 /* Colour spaces description */
 "help.basics.spaces" = "sRGB 适用于网页和大多数屏幕。Display P3 涵盖近年来 Mac 显示器上更鲜艳的颜色。对比度始终在 sRGB 中计算。";
 
+/* Link to WCAG contrast guidance */
+"help.reference.wcag" = "了解 WCAG 对比度";
+
+/* Link to APCA guidance */
+"help.reference.apca" = "了解 APCA";
+
 /* Check for updates */
 "menu.updates" = "检查更新";
 

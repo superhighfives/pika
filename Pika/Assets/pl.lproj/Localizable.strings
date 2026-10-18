@@ -418,6 +418,12 @@
 /* Colour spaces description */
 "help.basics.spaces" = "sRGB pasuje do internetu i większości ekranów. Display P3 obejmuje bardziej nasycone kolory nowszych Maców. Kontrast zawsze liczony jest w sRGB.";
 
+/* Link to WCAG contrast guidance */
+"help.reference.wcag" = "Więcej o kontraście WCAG";
+
+/* Link to APCA guidance */
+"help.reference.apca" = "Więcej o APCA";
+
 /* Check for updates */
 "menu.updates" = "Sprawdź uaktualnienia";
 

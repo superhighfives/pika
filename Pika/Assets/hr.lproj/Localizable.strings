@@ -418,6 +418,12 @@
 /* Colour spaces description */
 "help.basics.spaces" = "sRGB odgovara webu i većini zaslona. Display P3 obuhvaća živopisnije boje novijih Maca. Kontrast se uvijek izračunava u prostoru sRGB.";
 
+/* Link to WCAG contrast guidance */
+"help.reference.wcag" = "Više o WCAG kontrastu";
+
+/* Link to APCA guidance */
+"help.reference.apca" = "Više o APCA-u";
+
 /* Check for updates */
 "menu.updates" = "Traži nove verzije";
 

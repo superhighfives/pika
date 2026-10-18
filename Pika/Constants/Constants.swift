@@ -24,6 +24,8 @@ enum PikaConstants {
 
     static let pikaWebsiteURL = "https://superhighfives.com/pika"
     static let gitHubRepoURL = "https://github.com/superhighfives/pika"
+    static let wcagContrastURL = "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html"
+    static let apcaGuideURL = "https://git.apcacontrast.com/documentation/APCA_in_a_Nutshell"
     static let gitHubIssueURL = "https://github.com/superhighfives/pika/issues/new/choose"
     static let charlieGleasonWebsiteURL = "https://charliegleason.com"
     static let pikaHelpURL = "https://superhighfives.com/pika/help"

@@ -55,6 +55,8 @@ Pika picks colours from anywhere on your screen and checks how readable they are
 - **Editing values**: Click a value to type, drag or two-finger scroll to scrub, and press <kbd>↑</kbd> or <kbd>↓</kbd> to step. <kbd>⌘ Z</kbd> undoes.
 - **Colour spaces**: sRGB suits the web and most screens. Display P3 covers the more vivid colours of recent Macs. Contrast always uses sRGB.
 
+Learn more about [WCAG contrast](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) and [APCA](https://git.apcacontrast.com/documentation/APCA_in_a_Nutshell).
+
 ## Keyboard Shortcuts
 
 Most shortcuts need Pika in front. Show/hide Pika and Pick pair (<kbd>⌥ ⌘ D</kbd>) work from any app; set them in Settings → Global Shortcut.

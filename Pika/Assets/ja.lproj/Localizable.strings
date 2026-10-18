@@ -418,6 +418,12 @@
 /* Colour spaces description */
 "help.basics.spaces" = "sRGBはウェブとほとんどの画面向けです。Display P3は最近のMacで表示できる、より鮮やかなカラーを含みます。コントラストは常にsRGBで計算されます。";
 
+/* Link to WCAG contrast guidance */
+"help.reference.wcag" = "WCAGのコントラストについて";
+
+/* Link to APCA guidance */
+"help.reference.apca" = "APCAについて";
+
 /* Check for updates */
 "menu.updates" = "アップデートを確認";
 

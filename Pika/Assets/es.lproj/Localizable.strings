@@ -418,6 +418,12 @@
 /* Colour spaces description */
 "help.basics.spaces" = "sRGB es adecuado para la web y la mayoría de las pantallas. Display P3 cubre los colores más vivos de los Mac recientes. El contraste siempre usa sRGB.";
 
+/* Link to WCAG contrast guidance */
+"help.reference.wcag" = "Más sobre el contraste WCAG";
+
+/* Link to APCA guidance */
+"help.reference.apca" = "Más sobre APCA";
+
 /* Check for updates */
 "menu.updates" = "Comprobar actualizaciones";
 

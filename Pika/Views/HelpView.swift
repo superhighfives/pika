@@ -34,6 +34,12 @@ struct HelpView: View {
                 HelpSectionHeader(title: PikaText.textHelpBasics)
                 Divider()
                 HelpBasicsGrid(entries: basics)
+                VStack(spacing: 0) {
+                    HelpExternalLinkRow(title: PikaText.textHelpReferenceWCAG, url: PikaConstants.wcagContrastURL, shorthand: "w3.org/…/contrast-minimum")
+                    Divider().padding(.horizontal, 20)
+                    HelpExternalLinkRow(title: PikaText.textHelpReferenceAPCA, url: PikaConstants.apcaGuideURL, shorthand: "git.apcacontrast.com/…")
+                }
+                .padding(.bottom, 10)
                 Divider()
 
                 // MARK: Keyboard Shortcuts

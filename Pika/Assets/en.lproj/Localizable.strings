@@ -448,6 +448,12 @@
 /* Colour spaces description */
 "help.basics.spaces" = "sRGB suits the web and most screens. Display P3 covers the more vivid colours of recent Macs. Contrast always uses sRGB.";
 
+/* Link to WCAG contrast guidance */
+"help.reference.wcag" = "Learn about WCAG contrast";
+
+/* Link to APCA guidance */
+"help.reference.apca" = "Learn about APCA";
+
 /* Check for updates */
 "menu.updates" = "Check for updates";
 
