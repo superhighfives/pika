@@ -350,7 +350,7 @@
 "menu.help" = "ヘルプ";
 
 /* Help description */
-"help.description" = "キーボードショートカットからURL自動化まで、Pikaの使い方をすべて説明します。";
+"help.description" = "Pikaは画面上のどこからでもカラーをピックし、組み合わせの読みやすさを確認できます。使い方は次のとおりです。";
 
 /* Keyboard Shortcuts */
 "help.shortcuts" = "キーボードショートカット";
@@ -377,52 +377,46 @@
 "help.mas" = "Mac App Storeでサポート";
 
 /* Which keyboard shortcuts are global and which need Pika focused */
-"help.shortcuts.description" = "ほとんどのショートカットは、Pikaがアクティブなとき（ウィンドウまたはメニューバーのポップオーバーが開いていて最前面にあるとき）に使えます。Pikaの表示／非表示と、前景色と背景色のピック（⌥⌘D）の2つはグローバルで、どのアプリからでも使えます。どちらも「設定」→「グローバルショートカット」で設定できます。";
+"help.shortcuts.description" = "ほとんどのショートカットはPikaが最前面のときに使えます。Pikaの表示／非表示と、前景色と背景色のピック（⌥⌘D）はどのアプリからでも使え、「設定」→「グローバルショートカット」で設定できます。";
 
 /* Basics */
 "help.basics" = "基本";
-
-/* What Pika does */
-"help.basics.what.title" = "Pikaでできること";
-
-/* What Pika does description */
-"help.basics.what" = "Pikaは画面上のどこからでもカラーをピックし、必要なフォーマットで表示するので、すぐにコピーできます。2つのカラーを同時に保持できるため、一方をもう一方に重ねたときの読みやすさを確認できます。";
 
 /* Foreground and background */
 "help.basics.pair.title" = "前景色と背景色";
 
 /* Foreground and background description */
-"help.basics.pair" = "前景色は主にテキストやアイコン、背景色はその後ろにある面のカラーです。コントラストはこの2つの間で測定されるため、両方をピックしてください。Xを押すと入れ替えられます。";
+"help.basics.pair" = "前景色はテキストやアイコン、背景色はその後ろにある面のカラーです。Xを押すと入れ替えられます。";
 
 /* Why check contrast */
 "help.basics.contrast.title" = "コントラストを確認する理由";
 
 /* Why check contrast description */
-"help.basics.contrast" = "背景から十分に際立たないテキストは読みにくくなります。ロービジョンや色覚特性のある人、暗い画面や明るい光の下で見ている人にとっては特にそうです。コントラストを確認すれば、使う前にその組み合わせが読みやすいかどうかがわかります。";
+"help.basics.contrast" = "コントラストの低いテキストは読みにくくなります。ロービジョンや色覚特性のある人、まぶしい環境では特にそうです。";
 
 /* WCAG and APCA */
 "help.basics.standards.title" = "WCAGとAPCA";
 
 /* WCAG and APCA description */
-"help.basics.standards" = "WCAG 2は現在の標準規格で、ほとんどのアクセシビリティガイドラインや法律が参照しています。コントラスト比は1:1から21:1で示されます。レベルAAでは通常テキストに4.5:1、大きなテキストに3:1が必要で、レベルAAAではそれぞれ7:1と4.5:1が必要です。APCAはテキストのサイズとウェイトも考慮する新しい方式で、最大約106の輝度コントラスト（Lc）を示します。まだ正式な標準規格ではありません。Pikaでどちらを表示するかは「設定」で選べます。";
+"help.basics.standards" = "WCAG 2はコントラスト比を示します（AAではテキストに4.5:1が必要）。APCAはサイズとウェイトを考慮したLc値を示しますが、まだ標準規格ではありません。";
 
 /* Ways to pick a colour */
 "help.basics.pickers.title" = "カラーのピック方法";
 
 /* Basic, Pro and system colour picker description */
-"help.basics.pickers" = "ベーシックピッカーはmacOSのカラーサンプラーで、アクセス権は不要です。ProピッカーはPika独自のピッカーで、拡大表示するルーペにカラー、カラー名、コントラストを動かしながらリアルタイムで表示します。画面収録のアクセス権が必要です。どちらを使うかは「設定」で選べます。システムカラーピッカー（⌘S）はこれらとは異なり、macOSのカラーパネルを開くので、画面からサンプリングする代わりに手動でカラーを選んだり調整したりできます。";
+"help.basics.pickers" = "ベーシックピッカーはmacOSのカラーサンプラーです。Proピッカーはリアルタイムのルーペを備え、画面収録のアクセス権が必要です。⌘SでmacOSのカラーパネルが開きます。";
 
 /* Editing values */
 "help.basics.editing.title" = "値の編集";
 
 /* Editing values description */
-"help.basics.editing" = "値をクリックすると新しい値を入力でき、HEXコードを貼り付けることもできます。値の上をドラッグするか2本指でスクロールすると、値を連続的に調整できます。↑と↓で1段階ずつ変更でき、⇧を押しながらだと大きく、⌥を押しながらだと小さく変わります。⌘Zでどの変更も取り消せます。";
+"help.basics.editing" = "値をクリックして入力、ドラッグか2本指スクロールで連続調整、↑か↓で1段階ずつ変更できます。⌘Zで取り消せます。";
 
 /* Colour spaces */
 "help.basics.spaces.title" = "カラースペース";
 
 /* Colour spaces description */
-"help.basics.spaces" = "カラースペースは、一連の数値がどのカラーを表すかを定義します。sRGBはウェブとほとんどの画面の標準です。Display P3はより広く、最近のMacのディスプレイで表示できる、より鮮やかなカラーを含みます。広色域の画面向けにデザインする場合以外はsRGBを使ってください。「設定」で変更できます。コントラストは常にsRGBで計算されます。";
+"help.basics.spaces" = "sRGBはウェブとほとんどの画面向けです。Display P3は最近のMacで表示できる、より鮮やかなカラーを含みます。コントラストは常にsRGBで計算されます。";
 
 /* Check for updates */
 "menu.updates" = "アップデートを確認";

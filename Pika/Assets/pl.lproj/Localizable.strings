@@ -350,7 +350,7 @@
 "menu.help" = "Pomoc";
 
 /* Help description */
-"help.description" = "Wszystko, co musisz wiedzieć o używaniu Piki, od skrótów klawiszowych po automatyzację URL.";
+"help.description" = "Pika pobiera kolory z dowolnego miejsca na ekranie i sprawdza, jak czytelne są razem. Oto jak to działa.";
 
 /* Keyboard Shortcuts */
 "help.shortcuts" = "Skróty klawiszowe";
@@ -377,52 +377,46 @@
 "help.mas" = "Wesprzyj w Mac App Store";
 
 /* Which keyboard shortcuts are global and which need Pika focused */
-"help.shortcuts.description" = "Większość skrótów działa, gdy Pika jest aktywna, czyli gdy jej okno lub popover paska menu jest otwarte i na wierzchu. Dwa są globalne i działają w każdej aplikacji: pokazywanie i ukrywanie Piki oraz wybieranie pierwszego planu i tła (⌥⌘D). Oba ustawisz w sekcji Ustawienia → Globalny skrót klawiszowy.";
+"help.shortcuts.description" = "Większość skrótów działa, gdy Pika jest aktywna. Pokaż/ukryj Pikę i Wybierz parę (⌥⌘D) działają w każdej aplikacji; ustawisz je w sekcji Ustawienia → Globalny skrót klawiszowy.";
 
 /* Basics */
 "help.basics" = "Podstawy";
-
-/* What Pika does */
-"help.basics.what.title" = "Co robi Pika";
-
-/* What Pika does description */
-"help.basics.what" = "Pika pobiera kolory z dowolnego miejsca na ekranie i pokazuje je w potrzebnym formacie, gotowe do skopiowania. Przechowuje jednocześnie dwa kolory, więc możesz sprawdzić, jak czytelny jest jeden na tle drugiego.";
 
 /* Foreground and background */
 "help.basics.pair.title" = "Pierwszy plan i tło";
 
 /* Foreground and background description */
-"help.basics.pair" = "Pierwszy plan to zwykle tekst lub ikona, a tło to powierzchnia pod nim. Kontrast mierzy się między nimi, więc wybierz oba kolory. Naciśnij X, aby je zamienić.";
+"help.basics.pair" = "Pierwszy plan to tekst lub ikona, a tło to powierzchnia pod nim. Naciśnij X, aby je zamienić.";
 
 /* Why check contrast */
 "help.basics.contrast.title" = "Po co sprawdzać kontrast";
 
 /* Why check contrast description */
-"help.basics.contrast" = "Tekst, który za słabo odcina się od tła, jest trudny do odczytania, zwłaszcza dla osób słabowidzących lub z zaburzeniami widzenia barw, a także dla każdego przy przyciemnionym ekranie lub w jasnym świetle. Sprawdzenie kontrastu pokaże, czy para kolorów jest czytelna, zanim jej użyjesz.";
+"help.basics.contrast" = "Tekst o niskim kontraście trudno odczytać, zwłaszcza przy słabym wzroku, zaburzeniach widzenia barw lub odblaskach.";
 
 /* WCAG and APCA */
 "help.basics.standards.title" = "WCAG i APCA";
 
 /* WCAG and APCA description */
-"help.basics.standards" = "WCAG 2 to obecny standard, do którego odwołuje się większość wytycznych i przepisów dotyczących dostępności. Podaje współczynnik od 1:1 do 21:1. Poziom AA wymaga 4,5:1 dla zwykłego tekstu i 3:1 dla tekstu dużego; poziom AAA wymaga 7:1 i 4,5:1. APCA to nowsza metoda, która uwzględnia też rozmiar i grubość tekstu, a wynik podaje jako kontrast jasności (Lc) do około 106. Nie jest jeszcze oficjalnym standardem. W Ustawieniach wybierzesz, którą metodę pokazuje Pika.";
+"help.basics.standards" = "WCAG 2 podaje współczynnik (AA wymaga 4,5:1 dla tekstu). APCA podaje wartość Lc uwzględniającą rozmiar i grubość, ale nie jest jeszcze standardem.";
 
 /* Ways to pick a colour */
 "help.basics.pickers.title" = "Sposoby wybierania koloru";
 
 /* Basic, Pro and system colour picker description */
-"help.basics.pickers" = "Próbnik podstawowy to próbnik kolorów macOS i nie wymaga żadnych uprawnień. Próbnik Pro to własne narzędzie Piki: lupa, która podczas przesuwania pokazuje kolor, jego nazwę i kontrast na żywo. Wymaga uprawnienia do nagrywania ekranu. Wybierz jeden z nich w Ustawieniach. Systemowy wybór koloru (⌘S) działa inaczej: otwiera panel kolorów macOS, w którym możesz wybrać lub dostosować kolor ręcznie zamiast pobierać go z ekranu.";
+"help.basics.pickers" = "Próbnik podstawowy to próbnik macOS. Próbnik Pro dodaje lupę na żywo i wymaga nagrywania ekranu. ⌘S otwiera panel kolorów macOS.";
 
 /* Editing values */
 "help.basics.editing.title" = "Edytowanie wartości";
 
 /* Editing values description */
-"help.basics.editing" = "Kliknij dowolną wartość, aby wpisać nową, lub wklej kod szesnastkowy. Przeciągnij po wartości albo przewiń dwoma palcami, aby płynnie ją zmieniać. ↑ i ↓ zmieniają ją o krok; z ⇧ kroki są większe, a z ⌥ mniejsze. ⌘Z cofa każdą zmianę.";
+"help.basics.editing" = "Kliknij wartość, aby ją wpisać. Przeciągnij lub przewiń dwoma palcami, aby ją płynnie zmieniać; ↑ i ↓ zmieniają ją o krok. ⌘Z cofa zmianę.";
 
 /* Colour spaces */
 "help.basics.spaces.title" = "Przestrzenie kolorów";
 
 /* Colour spaces description */
-"help.basics.spaces" = "Przestrzeń kolorów określa, jaki kolor opisuje dany zestaw liczb. sRGB to standard w internecie i na większości ekranów. Display P3 jest szersza i obejmuje bardziej nasycone kolory, które potrafią wyświetlić nowsze ekrany Maców. Używaj sRGB, chyba że projektujesz dla ekranów o szerokiej gamie kolorów. Zmienisz to w Ustawieniach. Kontrast jest zawsze obliczany w sRGB.";
+"help.basics.spaces" = "sRGB pasuje do internetu i większości ekranów. Display P3 obejmuje bardziej nasycone kolory nowszych Maców. Kontrast zawsze liczony jest w sRGB.";
 
 /* Check for updates */
 "menu.updates" = "Sprawdź uaktualnienia";

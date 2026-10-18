@@ -62,8 +62,6 @@ enum PikaText {
 
     // Help Basics
     static let textHelpBasics = NSLocalizedString("help.basics", comment: "Basics")
-    static let textHelpBasicsWhatTitle = NSLocalizedString("help.basics.what.title", comment: "What Pika does")
-    static let textHelpBasicsWhat = NSLocalizedString("help.basics.what", comment: "What Pika does description")
     static let textHelpBasicsPairTitle = NSLocalizedString("help.basics.pair.title", comment: "Foreground and background")
     static let textHelpBasicsPair = NSLocalizedString("help.basics.pair", comment: "Foreground and background description")
     static let textHelpBasicsContrastTitle = NSLocalizedString("help.basics.contrast.title", comment: "Why check contrast")

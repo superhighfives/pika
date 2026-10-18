@@ -350,7 +350,7 @@
 "menu.help" = "帮助";
 
 /* Help description */
-"help.description" = "关于使用 Pika 的一切，从键盘快捷键到 URL 自动化。";
+"help.description" = "Pika 可以从屏幕上的任意位置拾取颜色，并检查它们搭配时是否清晰易读。下面介绍它的用法。";
 
 /* Keyboard Shortcuts */
 "help.shortcuts" = "键盘快捷键";
@@ -377,52 +377,46 @@
 "help.mas" = "在 Mac App Store 支持";
 
 /* Which keyboard shortcuts are global and which need Pika focused */
-"help.shortcuts.description" = "大多数快捷键在 Pika 处于活跃状态时可用，即其窗口或菜单栏弹出窗口已打开并位于最前面。有两个是全局快捷键，在任何 App 中都能使用：显示和隐藏 Pika，以及选择前景色和背景色（⌥⌘D）。两者都可以在“设置 → 全局快捷键”中设置。";
+"help.shortcuts.description" = "大多数快捷键需要 Pika 位于最前面。显示和隐藏 Pika 以及选择前景色和背景色（⌥⌘D）在任何 App 中都能使用，可在“设置 → 全局快捷键”中设置。";
 
 /* Basics */
 "help.basics" = "基础知识";
-
-/* What Pika does */
-"help.basics.what.title" = "Pika 能做什么";
-
-/* What Pika does description */
-"help.basics.what" = "Pika 可以从屏幕上的任意位置拾取颜色，并以你需要的格式显示，随时可以复制。它能同时保存两种颜色，方便你检查一种颜色叠在另一种颜色上是否清晰易读。";
 
 /* Foreground and background */
 "help.basics.pair.title" = "前景色和背景色";
 
 /* Foreground and background description */
-"help.basics.pair" = "前景色通常是文字或图标，背景色则是其后方的表面。对比度是在两者之间测量的，所以两种颜色都要选。按 X 可交换它们。";
+"help.basics.pair" = "前景色是文字或图标，背景色是其后方的表面。按 X 可交换它们。";
 
 /* Why check contrast */
 "help.basics.contrast.title" = "为什么要检查对比度";
 
 /* Why check contrast description */
-"help.basics.contrast" = "与背景区分不够明显的文字很难阅读，对低视力或色盲人士来说尤其如此，在昏暗的屏幕上或强光下也是一样。检查对比度可以让你在使用一组颜色之前，先确认它是否清晰易读。";
+"help.basics.contrast" = "对比度低的文字很难阅读，对低视力或色盲人士来说尤其如此，在强光下也是一样。";
 
 /* WCAG and APCA */
 "help.basics.standards.title" = "WCAG 和 APCA";
 
 /* WCAG and APCA description */
-"help.basics.standards" = "WCAG 2 是现行标准，也是大多数无障碍指南和法规所引用的标准。它给出从 1:1 到 21:1 的对比度。级别 AA 要求普通文本达到 4.5:1，大文本达到 3:1；级别 AAA 则分别要求 7:1 和 4.5:1。APCA 是一种较新的方法，还会考虑文字的大小和粗细，给出最高约 106 的亮度对比度 (Lc)。它目前还不是正式标准。你可以在设置中选择 Pika 显示哪一种。";
+"help.basics.standards" = "WCAG 2 给出对比度（AA 要求文本达到 4.5:1）。APCA 给出的 Lc 值会考虑文字大小和粗细，但它目前还不是正式标准。";
 
 /* Ways to pick a colour */
 "help.basics.pickers.title" = "取色方式";
 
 /* Basic, Pro and system colour picker description */
-"help.basics.pickers" = "基础取色器就是 macOS 的颜色取样器，无需任何权限。专业取色器是 Pika 自己的取色器：一个放大镜，会随着你的移动实时显示颜色、颜色名称和对比度，需要屏幕录制权限。你可以在设置中选择使用哪一种。系统颜色选择器（⌘S）则不同：它会打开 macOS 的颜色面板，让你手动选择或调整颜色，而不是从屏幕取样。";
+"help.basics.pickers" = "基础取色器使用 macOS 的颜色取样器。专业取色器增加了实时放大镜，需要屏幕录制权限。⌘S 可打开 macOS 的颜色面板。";
 
 /* Editing values */
 "help.basics.editing.title" = "编辑数值";
 
 /* Editing values description */
-"help.basics.editing" = "点按任意数值即可输入新值，也可以粘贴十六进制代码。在数值上拖移，或用双指滚动，即可连续调整。按 ↑ 和 ↓ 逐步调整，按住 ⇧ 步幅更大，按住 ⌥ 步幅更小。⌘Z 可撤销任何更改。";
+"help.basics.editing" = "点按数值即可输入，拖移或用双指滚动可连续调整，按 ↑ 或 ↓ 逐步调整。⌘Z 可撤销。";
 
 /* Colour spaces */
 "help.basics.spaces.title" = "色彩空间";
 
 /* Colour spaces description */
-"help.basics.spaces" = "色彩空间决定了一组数值所代表的颜色。sRGB 是网页和大多数屏幕的标准。Display P3 的范围更广，包含近年来 Mac 显示器能够显示的更鲜艳的颜色。除非你在为广色域屏幕做设计，否则请使用 sRGB。可以在设置中更改。对比度始终在 sRGB 中计算。";
+"help.basics.spaces" = "sRGB 适用于网页和大多数屏幕。Display P3 涵盖近年来 Mac 显示器上更鲜艳的颜色。对比度始终在 sRGB 中计算。";
 
 /* Check for updates */
 "menu.updates" = "检查更新";

@@ -17,26 +17,61 @@ struct HelpDescriptionRow: View {
     }
 }
 
-// MARK: - Concept Row
+// MARK: - Basics Grid
 
-struct HelpConceptRow: View {
-    let title: String
-    let text: String
+struct HelpBasicsGrid: View {
+    let entries: [HelpBasic]
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(title)
-                .font(.system(size: 13, weight: .semibold))
+        Grid(horizontalSpacing: 10, verticalSpacing: 10) {
+            ForEach(Array(stride(from: 0, to: entries.count, by: 2)), id: \.self) { index in
+                GridRow {
+                    HelpBasicCard(entry: entries[index])
+                    if index + 1 < entries.count {
+                        HelpBasicCard(entry: entries[index + 1])
+                    } else {
+                        Color.clear
+                    }
+                }
+            }
+        }
+        .padding(.horizontal, 20)
+        .padding(.vertical, 14)
+    }
+}
+
+struct HelpBasicCard: View {
+    let entry: HelpBasic
+
+    @Environment(\.colorScheme) var colorScheme: ColorScheme
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Image(systemName: entry.symbol)
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundStyle(.white)
+                .frame(width: 28, height: 28)
+                .background(
+                    RoundedRectangle(cornerRadius: 7, style: .continuous)
+                        .fill(Color(red: 0.4, green: 0.0, blue: 0.7))
+                )
+                .accessibilityHidden(true)
+            Text(entry.title)
+                .font(.system(size: 12, weight: .semibold))
                 .foregroundStyle(.primary)
-            Text(text)
-                .font(.system(size: 13))
+            Text(entry.text)
+                .font(.system(size: 12))
                 .foregroundStyle(.secondary)
-                .lineSpacing(5)
+                .lineSpacing(3)
                 .fixedSize(horizontal: false, vertical: true)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.horizontal, 20)
-        .padding(.vertical, 10)
+        .padding(12)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .background(
+            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                .fill(colorScheme == .light ? Color.black.opacity(0.04) : Color.white.opacity(0.05))
+        )
+        .accessibilityElement(children: .combine)
     }
 }
 

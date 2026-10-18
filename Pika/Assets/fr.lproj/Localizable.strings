@@ -350,7 +350,7 @@
 "menu.help" = "Aide";
 
 /* Help description */
-"help.description" = "Tout ce que vous devez savoir sur l'utilisation de Pika, des raccourcis clavier à l'automatisation par URL.";
+"help.description" = "Pika prélève des couleurs n’importe où sur votre écran et vérifie si elles restent lisibles ensemble. Voici comment.";
 
 /* Keyboard Shortcuts */
 "help.shortcuts" = "Raccourcis clavier";
@@ -377,52 +377,46 @@
 "help.mas" = "Soutenir sur le Mac App Store";
 
 /* Which keyboard shortcuts are global and which need Pika focused */
-"help.shortcuts.description" = "La plupart des raccourcis fonctionnent quand Pika est actif, c’est-à-dire quand sa fenêtre ou son popover de barre des menus est ouvert et au premier plan. Deux sont globaux et fonctionnent depuis n’importe quelle app : afficher et masquer Pika, et choisir un premier plan et un arrière-plan (⌥⌘D). Définissez-les tous les deux dans Paramètres → Raccourci principal.";
+"help.shortcuts.description" = "La plupart des raccourcis exigent que Pika soit au premier plan. Afficher/masquer Pika et Choisir une paire (⌥⌘D) fonctionnent partout ; définissez-les dans Paramètres → Raccourci principal.";
 
 /* Basics */
 "help.basics" = "Notions de base";
-
-/* What Pika does */
-"help.basics.what.title" = "À quoi sert Pika";
-
-/* What Pika does description */
-"help.basics.what" = "Pika prélève des couleurs n’importe où sur votre écran et les affiche dans le format dont vous avez besoin, prêtes à copier. Il garde deux couleurs à la fois, pour que vous puissiez vérifier si l’une reste lisible sur l’autre.";
 
 /* Foreground and background */
 "help.basics.pair.title" = "Premier plan et arrière-plan";
 
 /* Foreground and background description */
-"help.basics.pair" = "Le premier plan est généralement un texte ou une icône, et l’arrière-plan la surface derrière. Le contraste se mesure entre les deux : choisissez donc les deux. Appuyez sur X pour les permuter.";
+"help.basics.pair" = "Le premier plan est un texte ou une icône ; l’arrière-plan, la surface derrière. Appuyez sur X pour les permuter.";
 
 /* Why check contrast */
 "help.basics.contrast.title" = "Pourquoi vérifier le contraste";
 
 /* Why check contrast description */
-"help.basics.contrast" = "Un texte qui ne se détache pas assez de son arrière-plan est difficile à lire, surtout pour les personnes malvoyantes ou daltoniennes, et pour tout le monde sur un écran peu lumineux ou en pleine lumière. Vérifier le contraste vous indique si une paire est lisible avant de l’utiliser.";
+"help.basics.contrast" = "Un texte peu contrasté est difficile à lire, surtout en cas de malvoyance, de daltonisme ou d’éblouissement.";
 
 /* WCAG and APCA */
 "help.basics.standards.title" = "WCAG et APCA";
 
 /* WCAG and APCA description */
-"help.basics.standards" = "WCAG 2 est la norme actuelle, et celle à laquelle se réfèrent la plupart des recommandations et des lois sur l’accessibilité. Elle donne un rapport de 1:1 à 21:1. Le niveau AA exige 4.5:1 pour le texte normal et 3:1 pour le texte large ; le niveau AAA exige 7:1 et 4.5:1. APCA est une méthode plus récente qui tient aussi compte de la taille et de la graisse du texte, et donne un contraste de luminosité (Lc) allant jusqu’à environ 106. Ce n’est pas encore une norme officielle. Choisissez celle qu’affiche Pika dans les Paramètres.";
+"help.basics.standards" = "WCAG 2 donne un rapport (AA exige 4.5:1 pour le texte). APCA, qui n’est pas encore une norme, donne une valeur Lc tenant compte de la taille et de la graisse.";
 
 /* Ways to pick a colour */
 "help.basics.pickers.title" = "Façons de choisir une couleur";
 
 /* Basic, Pro and system colour picker description */
-"help.basics.pickers" = "La pipette de base est l’échantillonneur de couleurs de macOS, et ne demande aucune autorisation. La pipette Pro est celle de Pika : une loupe grossissante qui affiche la couleur, son nom et le contraste en direct pendant que vous vous déplacez, et qui nécessite l’autorisation d’enregistrement de l’écran. Choisissez entre les deux dans les Paramètres. Le sélecteur de couleur système (⌘S) est différent : il ouvre le panneau des couleurs de macOS, pour choisir ou ajuster une couleur à la main au lieu de l’échantillonner à l’écran.";
+"help.basics.pickers" = "La pipette de base utilise l’échantillonneur de macOS. La pipette Pro ajoute une loupe en direct et nécessite l’enregistrement de l’écran. ⌘S ouvre le panneau des couleurs de macOS.";
 
 /* Editing values */
 "help.basics.editing.title" = "Modifier les valeurs";
 
 /* Editing values description */
-"help.basics.editing" = "Cliquez sur une valeur pour en saisir une nouvelle, ou collez un code hex. Faites glisser sur une valeur, ou faites défiler avec deux doigts, pour l’ajuster. ↑ et ↓ la modifient pas à pas, avec ⇧ pour des pas plus grands et ⌥ pour des pas plus petits. ⌘Z annule toute modification.";
+"help.basics.editing" = "Cliquez sur une valeur pour la saisir, faites glisser ou défiler à deux doigts pour l’ajuster, et appuyez sur ↑ ou ↓ pour la modifier pas à pas. ⌘Z annule.";
 
 /* Colour spaces */
 "help.basics.spaces.title" = "Espaces colorimétriques";
 
 /* Colour spaces description */
-"help.basics.spaces" = "Un espace colorimétrique définit quelle couleur correspond à une série de valeurs. sRGB est la norme pour le web et la plupart des écrans. Display P3 est plus étendu, et inclut les couleurs plus vives que les écrans Mac récents peuvent afficher. Utilisez sRGB, sauf si vous concevez pour des écrans à large gamut. Modifiez-le dans les Paramètres. Le contraste est toujours calculé en sRGB.";
+"help.basics.spaces" = "sRGB convient au web et à la plupart des écrans. Display P3 couvre les couleurs plus vives des Mac récents. Le contraste utilise toujours sRGB.";
 
 /* Check for updates */
 "menu.updates" = "Rechercher des mises à jour";

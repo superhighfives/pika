@@ -46,17 +46,18 @@ Learn more about the [motivations behind the project](https://medium.com/superhi
 
 ## Basics
 
-- **What Pika does**: Pika picks colours from anywhere on your screen and shows them in the format you need, ready to copy. It holds two colours at once, so you can check how readable one is on top of the other.
-- **Foreground and background**: The foreground is usually text or an icon, and the background is the surface behind it. Contrast is measured between the two, so pick both. Press <kbd>X</kbd> to swap them.
-- **Why check contrast**: Text that doesn’t stand out enough from its background is hard to read, especially for people with low vision or colour blindness, and for anyone on a dim screen or in bright light. Checking contrast tells you whether a pair is readable before you use it.
-- **WCAG and APCA**: WCAG 2 is the current standard, and the one most accessibility guidelines and laws refer to. It gives a ratio from 1:1 to 21:1. Level AA needs 4.5:1 for normal text and 3:1 for large text; level AAA needs 7:1 and 4.5:1. APCA is a newer method that also accounts for text size and weight, and gives a lightness contrast (Lc) of up to about 106. It isn’t an official standard yet. Choose which one Pika shows in Settings.
-- **Ways to pick a colour**: The Basic picker is the macOS colour sampler, and needs no permissions. The Pro picker is Pika’s own: a magnified loupe that shows the colour, its name and live contrast as you move, and needs Screen Recording permission. Choose between them in Settings. The system colour picker (<kbd>⌘ S</kbd>) is different: it opens the macOS colour panel, so you can choose or adjust a colour by hand instead of sampling the screen.
-- **Editing values**: Click any value to type a new one, or paste a hex code. Drag across a value, or scroll with two fingers, to scrub it. <kbd>↑</kbd> and <kbd>↓</kbd> step it, with <kbd>⇧</kbd> for bigger steps and <kbd>⌥</kbd> for smaller ones. <kbd>⌘ Z</kbd> undoes any change.
-- **Colour spaces**: A colour space defines which colour a set of numbers describes. sRGB is the standard for the web and most screens. Display P3 is wider, and includes the more vivid colours that recent Mac displays can show. Use sRGB unless you’re designing for wide-gamut screens. Change it in Settings. Contrast is always calculated in sRGB.
+Pika picks colours from anywhere on your screen and checks how readable they are together.
+
+- **Foreground and background**: The foreground is text or an icon; the background is the surface behind it. Press <kbd>X</kbd> to swap them.
+- **Why check contrast**: Low-contrast text is hard to read, especially with low vision, colour blindness or glare.
+- **WCAG and APCA**: WCAG 2 gives a ratio (AA needs 4.5:1 for text). APCA gives an Lc value that accounts for size and weight, but isn’t a standard yet.
+- **Ways to pick a colour**: Basic uses the macOS sampler. Pro adds a live loupe and needs Screen Recording. <kbd>⌘ S</kbd> opens the macOS colour panel.
+- **Editing values**: Click a value to type, drag or two-finger scroll to scrub, and press <kbd>↑</kbd> or <kbd>↓</kbd> to step. <kbd>⌘ Z</kbd> undoes.
+- **Colour spaces**: sRGB suits the web and most screens. Display P3 covers the more vivid colours of recent Macs. Contrast always uses sRGB.
 
 ## Keyboard Shortcuts
 
-Most shortcuts work while Pika is active, meaning its window or menu bar popover is open and in front. Two are global and work from any app: showing and hiding Pika, and picking a foreground and background (<kbd>⌥ ⌘ D</kbd>). Set both in Settings → Global Shortcut.
+Most shortcuts need Pika in front. Show/hide Pika and Pick pair (<kbd>⌥ ⌘ D</kbd>) work from any app; set them in Settings → Global Shortcut.
 
 | Group | Shortcut | Action |
 | --- | --- | --- |

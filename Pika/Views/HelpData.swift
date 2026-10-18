@@ -2,14 +2,19 @@ import SwiftUI
 
 // MARK: - Basics
 
-let basics: [(title: String, text: String)] = [
-    (PikaText.textHelpBasicsWhatTitle, PikaText.textHelpBasicsWhat),
-    (PikaText.textHelpBasicsPairTitle, PikaText.textHelpBasicsPair),
-    (PikaText.textHelpBasicsContrastTitle, PikaText.textHelpBasicsContrast),
-    (PikaText.textHelpBasicsStandardsTitle, PikaText.textHelpBasicsStandards),
-    (PikaText.textHelpBasicsPickersTitle, PikaText.textHelpBasicsPickers),
-    (PikaText.textHelpBasicsEditingTitle, PikaText.textHelpBasicsEditing),
-    (PikaText.textHelpBasicsSpacesTitle, PikaText.textHelpBasicsSpaces),
+struct HelpBasic {
+    let symbol: String
+    let title: String
+    let text: String
+}
+
+let basics: [HelpBasic] = [
+    HelpBasic(symbol: "square.on.square", title: PikaText.textHelpBasicsPairTitle, text: PikaText.textHelpBasicsPair),
+    HelpBasic(symbol: "eye", title: PikaText.textHelpBasicsContrastTitle, text: PikaText.textHelpBasicsContrast),
+    HelpBasic(symbol: "textformat.size", title: PikaText.textHelpBasicsStandardsTitle, text: PikaText.textHelpBasicsStandards),
+    HelpBasic(symbol: "eyedropper", title: PikaText.textHelpBasicsPickersTitle, text: PikaText.textHelpBasicsPickers),
+    HelpBasic(symbol: "slider.horizontal.3", title: PikaText.textHelpBasicsEditingTitle, text: PikaText.textHelpBasicsEditing),
+    HelpBasic(symbol: "paintpalette", title: PikaText.textHelpBasicsSpacesTitle, text: PikaText.textHelpBasicsSpaces),
 ]
 
 // MARK: - Keyboard Shortcuts
