@@ -377,7 +377,7 @@
 "help.mas" = "Podrška na Mac App Storeu";
 
 /* Which keyboard shortcuts are global and which need Pika focused */
-"help.shortcuts.description" = "Većina prečaca radi kad je Pika u prvom planu. Prikazivanje/skrivanje Pike i biranje para (⌥⌘D) rade iz bilo koje aplikacije; postavljaju se u Postavke → Globalni prečac.";
+"help.shortcuts.description" = "Većina prečaca radi kad je Pika u prvom planu. Prikazivanje/skrivanje Pike i biranje para ([⌥⌘D]) rade iz bilo koje aplikacije; postavljaju se u Postavke → Globalni prečac.";
 
 /* Basics */
 "help.basics" = "Osnove";
@@ -386,7 +386,7 @@
 "help.basics.pair.title" = "Prednja boja i boja pozadine";
 
 /* Foreground and background description */
-"help.basics.pair" = "Prednja boja je tekst ili ikona, a boja pozadine površina iza nje. Pritisnite X da biste ih zamijenili.";
+"help.basics.pair" = "Prednja boja je tekst ili ikona, a boja pozadine površina iza nje. Pritisnite [X] da biste ih zamijenili.";
 
 /* Why check contrast */
 "help.basics.contrast.title" = "Zašto provjeravati kontrast";
@@ -404,13 +404,13 @@
 "help.basics.pickers.title" = "Načini biranja boje";
 
 /* Basic, Pro and system colour picker description */
-"help.basics.pickers" = "Osnovni birač koristi macOS uzorkivač. Pro dodaje povećalo uživo i traži dopuštenje za snimanje zaslona. ⌘S otvara macOS ploču boja.";
+"help.basics.pickers" = "Osnovni birač koristi macOS uzorkivač. Pro dodaje povećalo uživo i traži dopuštenje za snimanje zaslona. [⌘S] otvara macOS ploču boja.";
 
 /* Editing values */
 "help.basics.editing.title" = "Uređivanje vrijednosti";
 
 /* Editing values description */
-"help.basics.editing" = "Kliknite vrijednost za upis, povucite ili se pomičite s dva prsta za postupnu promjenu, a ↑ ili ↓ mijenjaju je u koracima. ⌘Z poništava.";
+"help.basics.editing" = "Kliknite vrijednost za upis, povucite ili se pomičite s dva prsta za postupnu promjenu, a [↑] ili [↓] mijenjaju je u koracima. [⌘Z] poništava.";
 
 /* Colour spaces */
 "help.basics.spaces.title" = "Prostori boja";

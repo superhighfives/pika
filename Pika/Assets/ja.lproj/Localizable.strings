@@ -377,7 +377,7 @@
 "help.mas" = "Mac App Storeでサポート";
 
 /* Which keyboard shortcuts are global and which need Pika focused */
-"help.shortcuts.description" = "ほとんどのショートカットはPikaが最前面のときに使えます。Pikaの表示／非表示と、前景色と背景色のピック（⌥⌘D）はどのアプリからでも使え、「設定」→「グローバルショートカット」で設定できます。";
+"help.shortcuts.description" = "ほとんどのショートカットはPikaが最前面のときに使えます。Pikaの表示／非表示と、前景色と背景色のピック（[⌥⌘D]）はどのアプリからでも使え、「設定」→「グローバルショートカット」で設定できます。";
 
 /* Basics */
 "help.basics" = "基本";
@@ -386,7 +386,7 @@
 "help.basics.pair.title" = "前景色と背景色";
 
 /* Foreground and background description */
-"help.basics.pair" = "前景色はテキストやアイコン、背景色はその後ろにある面のカラーです。Xを押すと入れ替えられます。";
+"help.basics.pair" = "前景色はテキストやアイコン、背景色はその後ろにある面のカラーです。[X]を押すと入れ替えられます。";
 
 /* Why check contrast */
 "help.basics.contrast.title" = "コントラストを確認する理由";
@@ -404,13 +404,13 @@
 "help.basics.pickers.title" = "カラーのピック方法";
 
 /* Basic, Pro and system colour picker description */
-"help.basics.pickers" = "ベーシックピッカーはmacOSのカラーサンプラーです。Proピッカーはリアルタイムのルーペを備え、画面収録のアクセス権が必要です。⌘SでmacOSのカラーパネルが開きます。";
+"help.basics.pickers" = "ベーシックピッカーはmacOSのカラーサンプラーです。Proピッカーはリアルタイムのルーペを備え、画面収録のアクセス権が必要です。[⌘S]でmacOSのカラーパネルが開きます。";
 
 /* Editing values */
 "help.basics.editing.title" = "値の編集";
 
 /* Editing values description */
-"help.basics.editing" = "値をクリックして入力、ドラッグか2本指スクロールで連続調整、↑か↓で1段階ずつ変更できます。⌘Zで取り消せます。";
+"help.basics.editing" = "値をクリックして入力、ドラッグか2本指スクロールで連続調整、[↑]か[↓]で1段階ずつ変更できます。[⌘Z]で取り消せます。";
 
 /* Colour spaces */
 "help.basics.spaces.title" = "カラースペース";

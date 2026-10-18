@@ -377,7 +377,7 @@
 "help.mas" = "在 Mac App Store 支持";
 
 /* Which keyboard shortcuts are global and which need Pika focused */
-"help.shortcuts.description" = "大多數快捷鍵需要 Pika 位於最前方。顯示和隱藏 Pika 及選擇前景色和背景色（⌥⌘D）可在任何 App 中使用，請在「設置 → 全局快捷鍵」中設定。";
+"help.shortcuts.description" = "大多數快捷鍵需要 Pika 位於最前方。顯示和隱藏 Pika 及選擇前景色和背景色（[⌥⌘D]）可在任何 App 中使用，請在「設置 → 全局快捷鍵」中設定。";
 
 /* Basics */
 "help.basics" = "基礎";
@@ -386,7 +386,7 @@
 "help.basics.pair.title" = "前景色和背景色";
 
 /* Foreground and background description */
-"help.basics.pair" = "前景色是文字或圖示，背景色是其後方的表面。按 X 可交換兩者。";
+"help.basics.pair" = "前景色是文字或圖示，背景色是其後方的表面。按 [X] 可交換兩者。";
 
 /* Why check contrast */
 "help.basics.contrast.title" = "為何要檢查對比度";
@@ -404,13 +404,13 @@
 "help.basics.pickers.title" = "選取顏色的方式";
 
 /* Basic, Pro and system colour picker description */
-"help.basics.pickers" = "基本取色器使用 macOS 取樣器。專業取色器加入即時放大鏡，需要螢幕錄製權限。⌘S 會打開 macOS 顏色面板。";
+"help.basics.pickers" = "基本取色器使用 macOS 取樣器。專業取色器加入即時放大鏡，需要螢幕錄製權限。[⌘S] 會打開 macOS 顏色面板。";
 
 /* Editing values */
 "help.basics.editing.title" = "編輯數值";
 
 /* Editing values description */
-"help.basics.editing" = "點按數值即可輸入，拖移或用兩指捲動可快速調整，按 ↑ 或 ↓ 逐步調整。⌘Z 可撤銷。";
+"help.basics.editing" = "點按數值即可輸入，拖移或用兩指捲動可快速調整，按 [↑] 或 [↓] 逐步調整。[⌘Z] 可撤銷。";
 
 /* Colour spaces */
 "help.basics.spaces.title" = "色彩空間";

@@ -46,20 +46,18 @@ struct HelpBasicCard: View {
     @Environment(\.colorScheme) var colorScheme: ColorScheme
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Image(systemName: entry.symbol)
-                .font(.system(size: 14, weight: .semibold))
-                .foregroundStyle(.white)
-                .frame(width: 28, height: 28)
-                .background(
-                    RoundedRectangle(cornerRadius: 7, style: .continuous)
-                        .fill(entry.tint.gradient)
-                )
-                .accessibilityHidden(true)
-            Text(entry.title)
-                .font(.system(size: 12, weight: .semibold))
-                .foregroundStyle(.primary)
-            Text(entry.text)
+        let tint = colorScheme == .light ? entry.tint.light : entry.tint.dark
+        VStack(alignment: .leading, spacing: 6) {
+            HStack(spacing: 6) {
+                Image(systemName: entry.symbol)
+                    .font(.system(size: 13, weight: .medium))
+                    .frame(width: 18)
+                    .accessibilityHidden(true)
+                Text(entry.title)
+                    .font(.system(size: 13, weight: .semibold))
+            }
+            .foregroundStyle(tint)
+            HelpKeycapText(text: entry.text)
                 .font(.system(size: 12))
                 .foregroundStyle(.secondary)
                 .lineSpacing(3)
@@ -72,6 +70,49 @@ struct HelpBasicCard: View {
                 .fill(colorScheme == .light ? Color.black.opacity(0.04) : Color.white.opacity(0.05))
         )
         .accessibilityElement(children: .combine)
+    }
+}
+
+// MARK: - Keycap Text
+
+/// Text where `[⌘S]`-style runs are drawn inline as key caps, one cap per character,
+/// matching the caps in the shortcut rows. Brackets are markup in the localised strings.
+struct HelpKeycapText: View {
+    let text: String
+    var keySize: CGFloat = 10
+
+    @Environment(\.colorScheme) var colorScheme: ColorScheme
+    @Environment(\.displayScale) var displayScale: CGFloat
+
+    var body: some View {
+        var result = Text(verbatim: "")
+        var remaining = text[...]
+        while let open = remaining.firstIndex(of: "["),
+              let close = remaining[open...].firstIndex(of: "]")
+        {
+            result = result + Text(verbatim: String(remaining[..<open]))
+            let keys = remaining[remaining.index(after: open) ..< close]
+            for (index, key) in keys.enumerated() {
+                if index > 0 { result = result + Text(verbatim: "\u{2009}") }
+                result = result + keycap(String(key))
+            }
+            remaining = remaining[remaining.index(after: close)...]
+        }
+        return result + Text(verbatim: String(remaining))
+    }
+
+    private func keycap(_ key: String) -> Text {
+        let cap = Text(verbatim: key)
+            .font(.system(size: keySize, weight: .semibold, design: .rounded))
+            .foregroundStyle(.primary)
+            .frame(minWidth: keySize + 2)
+            .padding(.horizontal, 4)
+            .overlay(RoundedRectangle(cornerRadius: 2).strokeBorder(Color.gray.opacity(0.5), lineWidth: 1))
+            .environment(\.colorScheme, colorScheme)
+        let renderer = ImageRenderer(content: cap)
+        renderer.scale = displayScale
+        guard let image = renderer.nsImage else { return Text(verbatim: key) }
+        return Text(Image(nsImage: image)).baselineOffset(-2)
     }
 }
 

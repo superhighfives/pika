@@ -377,7 +377,7 @@
 "help.mas" = "Apoyar en el Mac App Store";
 
 /* Which keyboard shortcuts are global and which need Pika focused */
-"help.shortcuts.description" = "Casi todos los atajos requieren Pika delante. Mostrar/ocultar Pika y Seleccionar par (⌥⌘D) funcionan desde cualquier app; configúralos en Ajustes → Atajo Global.";
+"help.shortcuts.description" = "Casi todos los atajos requieren Pika delante. Mostrar/ocultar Pika y Seleccionar par ([⌥⌘D]) funcionan desde cualquier app; configúralos en Ajustes → Atajo Global.";
 
 /* Basics */
 "help.basics" = "Conceptos básicos";
@@ -386,7 +386,7 @@
 "help.basics.pair.title" = "Primer plano y segundo plano";
 
 /* Foreground and background description */
-"help.basics.pair" = "El primer plano es texto o un icono; el segundo plano es la superficie que hay detrás. Pulsa X para intercambiarlos.";
+"help.basics.pair" = "El primer plano es texto o un icono; el segundo plano es la superficie que hay detrás. Pulsa [X] para intercambiarlos.";
 
 /* Why check contrast */
 "help.basics.contrast.title" = "Por qué comprobar el contraste";
@@ -404,13 +404,13 @@
 "help.basics.pickers.title" = "Formas de seleccionar un color";
 
 /* Basic, Pro and system colour picker description */
-"help.basics.pickers" = "El selector básico usa el muestreador de macOS. El Pro añade una lupa en tiempo real y necesita Grabación de pantalla. ⌘S abre el panel de colores de macOS.";
+"help.basics.pickers" = "El selector básico usa el muestreador de macOS. El Pro añade una lupa en tiempo real y necesita Grabación de pantalla. [⌘S] abre el panel de colores de macOS.";
 
 /* Editing values */
 "help.basics.editing.title" = "Editar valores";
 
 /* Editing values description */
-"help.basics.editing" = "Haz clic en un valor para escribir, arrastra o desplázate con dos dedos para ajustarlo, y pulsa ↑ o ↓ para ir paso a paso. ⌘Z deshace.";
+"help.basics.editing" = "Haz clic en un valor para escribir, arrastra o desplázate con dos dedos para ajustarlo, y pulsa [↑] o [↓] para ir paso a paso. [⌘Z] deshace.";
 
 /* Colour spaces */
 "help.basics.spaces.title" = "Espacios de color";

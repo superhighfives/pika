@@ -377,7 +377,7 @@
 "help.mas" = "Wesprzyj w Mac App Store";
 
 /* Which keyboard shortcuts are global and which need Pika focused */
-"help.shortcuts.description" = "Większość skrótów działa, gdy Pika jest aktywna. Pokaż/ukryj Pikę i Wybierz parę (⌥⌘D) działają w każdej aplikacji; ustawisz je w sekcji Ustawienia → Globalny skrót klawiszowy.";
+"help.shortcuts.description" = "Większość skrótów działa, gdy Pika jest aktywna. Pokaż/ukryj Pikę i Wybierz parę ([⌥⌘D]) działają w każdej aplikacji; ustawisz je w sekcji Ustawienia → Globalny skrót klawiszowy.";
 
 /* Basics */
 "help.basics" = "Podstawy";
@@ -386,7 +386,7 @@
 "help.basics.pair.title" = "Pierwszy plan i tło";
 
 /* Foreground and background description */
-"help.basics.pair" = "Pierwszy plan to tekst lub ikona, a tło to powierzchnia pod nim. Naciśnij X, aby je zamienić.";
+"help.basics.pair" = "Pierwszy plan to tekst lub ikona, a tło to powierzchnia pod nim. Naciśnij [X], aby je zamienić.";
 
 /* Why check contrast */
 "help.basics.contrast.title" = "Po co sprawdzać kontrast";
@@ -404,13 +404,13 @@
 "help.basics.pickers.title" = "Sposoby wybierania koloru";
 
 /* Basic, Pro and system colour picker description */
-"help.basics.pickers" = "Próbnik podstawowy to próbnik macOS. Próbnik Pro dodaje lupę na żywo i wymaga nagrywania ekranu. ⌘S otwiera panel kolorów macOS.";
+"help.basics.pickers" = "Próbnik podstawowy to próbnik macOS. Próbnik Pro dodaje lupę na żywo i wymaga nagrywania ekranu. [⌘S] otwiera panel kolorów macOS.";
 
 /* Editing values */
 "help.basics.editing.title" = "Edytowanie wartości";
 
 /* Editing values description */
-"help.basics.editing" = "Kliknij wartość, aby ją wpisać. Przeciągnij lub przewiń dwoma palcami, aby ją płynnie zmieniać; ↑ i ↓ zmieniają ją o krok. ⌘Z cofa zmianę.";
+"help.basics.editing" = "Kliknij wartość, aby ją wpisać. Przeciągnij lub przewiń dwoma palcami, aby ją płynnie zmieniać; [↑] i [↓] zmieniają ją o krok. [⌘Z] cofa zmianę.";
 
 /* Colour spaces */
 "help.basics.spaces.title" = "Przestrzenie kolorów";

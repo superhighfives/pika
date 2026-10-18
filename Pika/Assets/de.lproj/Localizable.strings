@@ -377,7 +377,7 @@
 "help.mas" = "Im Mac App Store unterstützen";
 
 /* Which keyboard shortcuts are global and which need Pika focused */
-"help.shortcuts.description" = "Die meisten Tastaturkürzel brauchen Pika im Vordergrund. Pika ein- und ausblenden und Paar auswählen (⌥⌘D) gehen in jeder App; festlegen unter Einstellungen → Globaler Kurzbefehl.";
+"help.shortcuts.description" = "Die meisten Tastaturkürzel brauchen Pika im Vordergrund. Pika ein- und ausblenden und Paar auswählen ([⌥⌘D]) gehen in jeder App; festlegen unter Einstellungen → Globaler Kurzbefehl.";
 
 /* Basics */
 "help.basics" = "Grundlagen";
@@ -386,7 +386,7 @@
 "help.basics.pair.title" = "Vordergrund und Hintergrund";
 
 /* Foreground and background description */
-"help.basics.pair" = "Der Vordergrund ist Text oder ein Symbol, der Hintergrund die Fläche dahinter. Mit X tauschen Sie sie.";
+"help.basics.pair" = "Der Vordergrund ist Text oder ein Symbol, der Hintergrund die Fläche dahinter. Mit [X] tauschen Sie sie.";
 
 /* Why check contrast */
 "help.basics.contrast.title" = "Warum Kontrast prüfen?";
@@ -404,13 +404,13 @@
 "help.basics.pickers.title" = "So wählen Sie eine Farbe aus";
 
 /* Basic, Pro and system colour picker description */
-"help.basics.pickers" = "Die einfache Pipette ist die von macOS. Die Pro-Pipette bietet eine Live-Lupe und benötigt die Berechtigung „Bildschirmaufnahme“. ⌘S öffnet das Farbfenster von macOS.";
+"help.basics.pickers" = "Die einfache Pipette ist die von macOS. Die Pro-Pipette bietet eine Live-Lupe und benötigt die Berechtigung „Bildschirmaufnahme“. [⌘S] öffnet das Farbfenster von macOS.";
 
 /* Editing values */
 "help.basics.editing.title" = "Werte bearbeiten";
 
 /* Editing values description */
-"help.basics.editing" = "Klicken Sie auf einen Wert zum Eingeben. Ziehen oder Scrollen mit zwei Fingern verändert ihn, ↑ oder ↓ schrittweise. ⌘Z widerruft.";
+"help.basics.editing" = "Klicken Sie auf einen Wert zum Eingeben. Ziehen oder Scrollen mit zwei Fingern verändert ihn, [↑] oder [↓] schrittweise. [⌘Z] widerruft.";
 
 /* Colour spaces */
 "help.basics.spaces.title" = "Farbräume";

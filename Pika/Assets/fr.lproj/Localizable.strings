@@ -377,7 +377,7 @@
 "help.mas" = "Soutenir sur le Mac App Store";
 
 /* Which keyboard shortcuts are global and which need Pika focused */
-"help.shortcuts.description" = "La plupart des raccourcis exigent que Pika soit au premier plan. Afficher/masquer Pika et Choisir une paire (⌥⌘D) fonctionnent partout ; définissez-les dans Paramètres → Raccourci principal.";
+"help.shortcuts.description" = "La plupart des raccourcis exigent que Pika soit au premier plan. Afficher/masquer Pika et Choisir une paire ([⌥⌘D]) fonctionnent partout ; définissez-les dans Paramètres → Raccourci principal.";
 
 /* Basics */
 "help.basics" = "Notions de base";
@@ -386,7 +386,7 @@
 "help.basics.pair.title" = "Premier plan et arrière-plan";
 
 /* Foreground and background description */
-"help.basics.pair" = "Le premier plan est un texte ou une icône ; l’arrière-plan, la surface derrière. Appuyez sur X pour les permuter.";
+"help.basics.pair" = "Le premier plan est un texte ou une icône ; l’arrière-plan, la surface derrière. Appuyez sur [X] pour les permuter.";
 
 /* Why check contrast */
 "help.basics.contrast.title" = "Pourquoi vérifier le contraste";
@@ -404,13 +404,13 @@
 "help.basics.pickers.title" = "Façons de choisir une couleur";
 
 /* Basic, Pro and system colour picker description */
-"help.basics.pickers" = "La pipette de base utilise l’échantillonneur de macOS. La pipette Pro ajoute une loupe en direct et nécessite l’enregistrement de l’écran. ⌘S ouvre le panneau des couleurs de macOS.";
+"help.basics.pickers" = "La pipette de base utilise l’échantillonneur de macOS. La pipette Pro ajoute une loupe en direct et nécessite l’enregistrement de l’écran. [⌘S] ouvre le panneau des couleurs de macOS.";
 
 /* Editing values */
 "help.basics.editing.title" = "Modifier les valeurs";
 
 /* Editing values description */
-"help.basics.editing" = "Cliquez sur une valeur pour la saisir, faites glisser ou défiler à deux doigts pour l’ajuster, et appuyez sur ↑ ou ↓ pour la modifier pas à pas. ⌘Z annule.";
+"help.basics.editing" = "Cliquez sur une valeur pour la saisir, faites glisser ou défiler à deux doigts pour l’ajuster, et appuyez sur [↑] ou [↓] pour la modifier pas à pas. [⌘Z] annule.";
 
 /* Colour spaces */
 "help.basics.spaces.title" = "Espaces colorimétriques";

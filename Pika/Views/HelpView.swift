@@ -46,7 +46,14 @@ struct HelpView: View {
 
                 HelpSectionHeader(title: PikaText.textHelpKeyboardShortcuts)
                 Divider()
-                HelpDescriptionRow(text: PikaText.textHelpShortcutsDescription)
+                HelpKeycapText(text: PikaText.textHelpShortcutsDescription, keySize: 11)
+                    .font(.system(size: 13))
+                    .foregroundStyle(.secondary)
+                    .lineSpacing(5)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 14)
                 Divider()
                 ForEach(shortcutGroups.indices, id: \.self) { gi in
                     let group = shortcutGroups[gi]

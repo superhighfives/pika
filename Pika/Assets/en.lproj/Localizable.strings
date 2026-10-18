@@ -407,7 +407,7 @@
 "help.mas" = "Support on the Mac App Store";
 
 /* Which keyboard shortcuts are global and which need Pika focused */
-"help.shortcuts.description" = "Most shortcuts need Pika in front. Show/hide Pika and Pick pair (⌥⌘D) work from any app; set them in Settings → Global Shortcut.";
+"help.shortcuts.description" = "Most shortcuts need Pika in front. Show/hide Pika and Pick pair ([⌥⌘D]) work from any app; set them in Settings → Global Shortcut.";
 
 /* Basics */
 "help.basics" = "Basics";
@@ -416,7 +416,7 @@
 "help.basics.pair.title" = "Foreground and background";
 
 /* Foreground and background description */
-"help.basics.pair" = "The foreground is text or an icon; the background is the surface behind it. Press X to swap them.";
+"help.basics.pair" = "The foreground is text or an icon; the background is the surface behind it. Press [X] to swap them.";
 
 /* Why check contrast */
 "help.basics.contrast.title" = "Why check contrast";
@@ -434,13 +434,13 @@
 "help.basics.pickers.title" = "Ways to pick a colour";
 
 /* Basic, Pro and system colour picker description */
-"help.basics.pickers" = "Basic uses the macOS sampler. Pro adds a live loupe and needs Screen Recording. ⌘S opens the macOS colour panel.";
+"help.basics.pickers" = "Basic uses the macOS sampler. Pro adds a live loupe and needs Screen Recording. [⌘S] opens the macOS colour panel.";
 
 /* Editing values */
 "help.basics.editing.title" = "Editing values";
 
 /* Editing values description */
-"help.basics.editing" = "Click a value to type, drag or two-finger scroll to scrub, and press ↑ or ↓ to step. ⌘Z undoes.";
+"help.basics.editing" = "Click a value to type, drag or two-finger scroll to scrub, and press [↑] or [↓] to step. [⌘Z] undoes.";
 
 /* Colour spaces */
 "help.basics.spaces.title" = "Colour spaces";
