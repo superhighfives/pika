@@ -218,16 +218,16 @@
 "color.wcag.70" = "WCAG 2 level AAA requires a contrast ratio of at least 7:1 for normal text.";
 
 /* APCA 30 */
-"color.apca.30" = "APCA >= 30 is the minimum contrast for baseline text and non-text content. Suitable for larger text, placeholders, and disabled elements.";
+"color.apca.30" = "APCA Lc 30 is the absolute minimum for any text, and only for text that doesn’t need to be read fluently, like placeholders, disabled controls and copyright notices. Also suits solid icons and other non-text content.";
 
 /* APCA 45 */
-"color.apca.45" = "APCA >= 45 is the minimum contrast for headline text. Suitable for large headings, navigation elements, and important UI components.";
+"color.apca.45" = "APCA Lc 45 is the minimum for large text such as headlines: at least 36px at regular weight, or 24px bold.";
 
 /* APCA 60 */
-"color.apca.60" = "APCA >= 60 is the minimum contrast for title text. Suitable for subheadings, captions, and secondary content that needs to be clearly readable.";
+"color.apca.60" = "APCA Lc 60 is the minimum for content text that isn’t body text, like subheadings and captions: at least 24px at regular weight, or 16px bold.";
 
 /* APCA 75 */
-"color.apca.75" = "APCA >= 75 is the minimum contrast for body text. Suitable for primary content, normal-sized text, and extended reading material.";
+"color.apca.75" = "APCA Lc 75 is the minimum for body text: at least 18px at regular weight, or 14px bold. Lc 90 is preferred for long passages.";
 
 /* Baseline */
 "color.apca.baseline" = "Baseline";

@@ -191,16 +191,16 @@
 "color.wcag.70" = "Le niveau WCAG 2 AAA requiert un contraste d'au moins 7:1 pour un texte normal.";
 
 /* APCA 30 */
-"color.apca.30" = "APCA >= 30 est le contraste minimum pour le texte de base et le contenu non textuel. Convient pour du texte plus grand, des espaces réservés et des éléments désactivés.";
+"color.apca.30" = "APCA Lc 30 est le minimum absolu pour tout texte, et seulement pour un texte qui n’a pas besoin d’être lu de façon fluide, comme les textes indicatifs, les commandes désactivées et les mentions de copyright. Convient aussi aux icônes pleines et aux autres contenus non textuels.";
 
 /* APCA 45 */
-"color.apca.45" = "APCA >= 45 est le contraste minimum pour le texte d'en-tête. Convient pour de grands titres, des éléments de navigation et des composants d'interface importants.";
+"color.apca.45" = "APCA Lc 45 est le minimum pour le texte large comme les gros titres : au moins 36px en graisse normale, ou 24px en gras.";
 
 /* APCA 60 */
-"color.apca.60" = "APCA >= 60 est le contraste minimum pour le texte de titre. Convient pour des sous-titres, des légendes et du contenu secondaire qui doit être clairement lisible.";
+"color.apca.60" = "APCA Lc 60 est le minimum pour le texte de contenu autre que le corps de texte, comme les sous-titres et les légendes : au moins 24px en graisse normale, ou 16px en gras.";
 
 /* APCA 75 */
-"color.apca.75" = "APCA >= 75 est le contraste minimum pour le texte de corps. Convient pour le contenu principal, le texte de taille normale et le matériel de lecture étendue.";
+"color.apca.75" = "APCA Lc 75 est le minimum pour le corps de texte : au moins 18px en graisse normale, ou 14px en gras. Lc 90 est préférable pour les longs passages.";
 
 /* Baseline */
 "color.apca.baseline" = "Base";

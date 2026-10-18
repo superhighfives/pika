@@ -191,16 +191,16 @@
 "color.wcag.70" = "WCAG 2 razina AAA zahtijeva omjer kontrasta od barem 7:1 za normalan tekst.";
 
 /* APCA 30 */
-"color.apca.30" = "APCA ≥ 30 je minimalni kontrast za osnovni tekst i netekstualni sadržaj. Pogodno za veći tekst, za rezervirana mjesta i za deaktivirane elemente.";
+"color.apca.30" = "APCA Lc 30 apsolutni je minimum za bilo koji tekst, i to samo za tekst koji ne treba tečno čitati, poput rezerviranih mjesta, deaktiviranih kontrola i napomena o autorskim pravima. Pogodno je i za pune ikone i drugi netekstualni sadržaj.";
 
 /* APCA 45 */
-"color.apca.45" = "APCA ≥ 45 je minimalni kontrast za tekst naslova. Pogodno za velike naslove, za navigacijske elemente i za važne komponente korisničkog sučelja.";
+"color.apca.45" = "APCA Lc 45 minimum je za veliki tekst poput naslova: barem 36 px u običnoj debljini ili 24 px podebljano.";
 
 /* APCA 60 */
-"color.apca.60" = "APCA ≥ 60 je minimalni kontrast za tekst naslova. Pogodno za podnaslove, za natpise i za sekundarni sadržaj koji mora biti jasno čitljiv.";
+"color.apca.60" = "APCA Lc 60 minimum je za sadržajni tekst koji nije glavni tekst, poput podnaslova i natpisa: barem 24 px u običnoj debljini ili 16 px podebljano.";
 
 /* APCA 75 */
-"color.apca.75" = "APCA ≥ 75 je minimalni kontrast za glavni tekst. Pogodno za primarni sadržaj, za tekst normalne veličine i za duže materijale za čitanje.";
+"color.apca.75" = "APCA Lc 75 minimum je za glavni tekst: barem 18 px u običnoj debljini ili 14 px podebljano. Za duže odlomke preporučuje se Lc 90.";
 
 /* Baseline */
 "color.apca.baseline" = "Osnovno";

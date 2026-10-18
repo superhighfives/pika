@@ -191,16 +191,16 @@
 "color.wcag.70" = "Norma WCAG 2 poziomu AAA wymaga, aby w przypadku zwykłego tekstu współczynnik kontrastu wynosił co najmniej 7:1.";
 
 /* APCA 30 */
-"color.apca.30" = "APCA >= 30 to minimalny kontrast tekstu podstawowego i elementów nietekstowych. Odpowiedni dla większego tekstu, tekstów zastępczych i elementów wyłączonych.";
+"color.apca.30" = "APCA Lc 30 to bezwzględne minimum dla jakiegokolwiek tekstu, i to tylko takiego, którego nie trzeba czytać płynnie, np. tekstów zastępczych, wyłączonych elementów sterujących czy informacji o prawach autorskich. Nadaje się też do pełnych ikon i innych elementów nietekstowych.";
 
 /* APCA 45 */
-"color.apca.45" = "APCA >= 45 to minimalny kontrast tekstu nagłówkowego. Odpowiedni dla dużych nagłówków, elementów nawigacyjnych i ważnych komponentów interfejsu użytkownika.";
+"color.apca.45" = "APCA Lc 45 to minimum dla dużego tekstu, np. nagłówków: co najmniej 36 px przy zwykłej grubości lub 24 px pogrubiony.";
 
 /* APCA 60 */
-"color.apca.60" = "APCA >= 60 to minimalny kontrast tekstu tytułowego. Odpowiedni dla podtytułów, podpisów i treści drugorzędnych, które muszą być wyraźnie czytelne.";
+"color.apca.60" = "APCA Lc 60 to minimum dla tekstu treści innego niż tekst główny, np. śródtytułów i podpisów: co najmniej 24 px przy zwykłej grubości lub 16 px pogrubiony.";
 
 /* APCA 75 */
-"color.apca.75" = "APCA >= 75 to minimalny kontrast tekstu głównego. Odpowiedni dla treści podstawowych, tekstu o standardowym rozmiarze i obszernych materiałów do czytania.";
+"color.apca.75" = "APCA Lc 75 to minimum dla tekstu głównego: co najmniej 18 px przy zwykłej grubości lub 14 px pogrubiony. Dla dłuższych fragmentów zalecane jest Lc 90.";
 
 /* Baseline */
 "color.apca.baseline" = "Podstawowy";

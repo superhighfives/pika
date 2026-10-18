@@ -191,16 +191,16 @@
 "color.wcag.70" = "WCAG 2-Level AAA erfordert ein Kontrastverhältnis von mindestens 7:1 für normalen Text.";
 
 /* APCA 30 */
-"color.apca.30" = "APCA >= 30 ist der Mindestkontrast für Grundtext und Nicht-Text-Inhalte. Geeignet für größeren Text, Platzhalter und deaktivierte Elemente.";
+"color.apca.30" = "APCA Lc 30 ist das absolute Minimum für jeden Text, und nur für Text, der nicht flüssig gelesen werden muss, wie Platzhalter, deaktivierte Elemente und Copyright-Hinweise. Eignet sich auch für flächige Symbole und andere Nicht-Text-Inhalte.";
 
 /* APCA 45 */
-"color.apca.45" = "APCA >= 45 ist der Mindestkontrast für Überschriftentext. Geeignet für große Überschriften, Navigationselemente und wichtige UI-Komponenten.";
+"color.apca.45" = "APCA Lc 45 ist das Minimum für großen Text wie Überschriften: mindestens 36px in normaler Stärke oder 24px fett.";
 
 /* APCA 60 */
-"color.apca.60" = "APCA >= 60 ist der Mindestkontrast für Titeltext. Geeignet für Unterüberschriften, Bildunterschriften und sekundäre Inhalte, die klar lesbar sein müssen.";
+"color.apca.60" = "APCA Lc 60 ist das Minimum für Inhaltstext, der kein Fließtext ist, wie Zwischenüberschriften und Bildunterschriften: mindestens 24px in normaler Stärke oder 16px fett.";
 
 /* APCA 75 */
-"color.apca.75" = "APCA >= 75 ist der Mindestkontrast für Fließtext. Geeignet für primäre Inhalte, normal große Texte und längere Lesematerialien.";
+"color.apca.75" = "APCA Lc 75 ist das Minimum für Fließtext: mindestens 18px in normaler Stärke oder 14px fett. Für längere Texte ist Lc 90 empfehlenswert.";
 
 /* Baseline */
 "color.apca.baseline" = "Basis";
