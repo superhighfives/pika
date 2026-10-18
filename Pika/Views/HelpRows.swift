@@ -53,7 +53,7 @@ struct HelpBasicCard: View {
                 .frame(width: 28, height: 28)
                 .background(
                     RoundedRectangle(cornerRadius: 7, style: .continuous)
-                        .fill(Color(red: 0.4, green: 0.0, blue: 0.7))
+                        .fill(entry.tint.gradient)
                 )
                 .accessibilityHidden(true)
             Text(entry.title)

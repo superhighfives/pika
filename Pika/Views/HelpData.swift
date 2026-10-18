@@ -4,17 +4,37 @@ import SwiftUI
 
 struct HelpBasic {
     let symbol: String
+    /// Matches the colour of the same concept on the website's Pika and Help pages (Tailwind 600s).
+    let tint: Color
     let title: String
     let text: String
 }
 
 let basics: [HelpBasic] = [
-    HelpBasic(symbol: "square.on.square", title: PikaText.textHelpBasicsPairTitle, text: PikaText.textHelpBasicsPair),
-    HelpBasic(symbol: "eye", title: PikaText.textHelpBasicsContrastTitle, text: PikaText.textHelpBasicsContrast),
-    HelpBasic(symbol: "textformat.size", title: PikaText.textHelpBasicsStandardsTitle, text: PikaText.textHelpBasicsStandards),
-    HelpBasic(symbol: "eyedropper", title: PikaText.textHelpBasicsPickersTitle, text: PikaText.textHelpBasicsPickers),
-    HelpBasic(symbol: "slider.horizontal.3", title: PikaText.textHelpBasicsEditingTitle, text: PikaText.textHelpBasicsEditing),
-    HelpBasic(symbol: "paintpalette", title: PikaText.textHelpBasicsSpacesTitle, text: PikaText.textHelpBasicsSpaces),
+    HelpBasic(
+        symbol: "square.on.square", tint: Color(red: 0.008, green: 0.518, blue: 0.780),
+        title: PikaText.textHelpBasicsPairTitle, text: PikaText.textHelpBasicsPair
+    ),
+    HelpBasic(
+        symbol: "eye", tint: Color(red: 0.859, green: 0.153, blue: 0.467),
+        title: PikaText.textHelpBasicsContrastTitle, text: PikaText.textHelpBasicsContrast
+    ),
+    HelpBasic(
+        symbol: "textformat.size", tint: Color(red: 0.310, green: 0.275, blue: 0.898),
+        title: PikaText.textHelpBasicsStandardsTitle, text: PikaText.textHelpBasicsStandards
+    ),
+    HelpBasic(
+        symbol: "eyedropper", tint: Color(red: 0.753, green: 0.149, blue: 0.827),
+        title: PikaText.textHelpBasicsPickersTitle, text: PikaText.textHelpBasicsPickers
+    ),
+    HelpBasic(
+        symbol: "slider.horizontal.3", tint: Color(red: 0.863, green: 0.149, blue: 0.149),
+        title: PikaText.textHelpBasicsEditingTitle, text: PikaText.textHelpBasicsEditing
+    ),
+    HelpBasic(
+        symbol: "paintpalette", tint: Color(red: 0.851, green: 0.467, blue: 0.024),
+        title: PikaText.textHelpBasicsSpacesTitle, text: PikaText.textHelpBasicsSpaces
+    ),
 ]
 
 // MARK: - Keyboard Shortcuts
