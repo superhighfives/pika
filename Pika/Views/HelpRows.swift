@@ -17,6 +17,29 @@ struct HelpDescriptionRow: View {
     }
 }
 
+// MARK: - Concept Row
+
+struct HelpConceptRow: View {
+    let title: String
+    let text: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(title)
+                .font(.system(size: 13, weight: .semibold))
+                .foregroundStyle(.primary)
+            Text(text)
+                .font(.system(size: 13))
+                .foregroundStyle(.secondary)
+                .lineSpacing(5)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, 20)
+        .padding(.vertical, 10)
+    }
+}
+
 // MARK: - Section Header
 
 struct HelpSectionHeader: View {

@@ -376,6 +376,54 @@
 /* Support on the Mac App Store */
 "help.mas" = "Apoyar en el Mac App Store";
 
+/* Which keyboard shortcuts are global and which need Pika focused */
+"help.shortcuts.description" = "La mayoría de los atajos funcionan mientras Pika está activo, es decir, con su ventana o el popover de la barra de menú abierto y delante. Dos son globales y funcionan desde cualquier app: mostrar y ocultar Pika, y seleccionar un primer plano y un segundo plano (⌥⌘D). Configura ambos en Ajustes → Atajo Global.";
+
+/* Basics */
+"help.basics" = "Conceptos básicos";
+
+/* What Pika does */
+"help.basics.what.title" = "Qué hace Pika";
+
+/* What Pika does description */
+"help.basics.what" = "Pika toma colores de cualquier parte de la pantalla y los muestra en el formato que necesitas, listos para copiar. Guarda dos colores a la vez, para que puedas comprobar lo legible que es uno sobre el otro.";
+
+/* Foreground and background */
+"help.basics.pair.title" = "Primer plano y segundo plano";
+
+/* Foreground and background description */
+"help.basics.pair" = "El primer plano suele ser texto o un icono, y el segundo plano es la superficie que hay detrás. El contraste se mide entre los dos, así que selecciona ambos. Pulsa X para intercambiarlos.";
+
+/* Why check contrast */
+"help.basics.contrast.title" = "Por qué comprobar el contraste";
+
+/* Why check contrast description */
+"help.basics.contrast" = "El texto que no destaca lo suficiente sobre su fondo es difícil de leer, sobre todo para personas con baja visión o daltonismo, y para cualquiera con una pantalla tenue o bajo una luz intensa. Comprobar el contraste te dice si un par es legible antes de usarlo.";
+
+/* WCAG and APCA */
+"help.basics.standards.title" = "WCAG y APCA";
+
+/* WCAG and APCA description */
+"help.basics.standards" = "WCAG 2 es el estándar actual, y al que se refieren la mayoría de las pautas y leyes de accesibilidad. Da una proporción de 1:1 a 21:1. El nivel AA requiere 4.5:1 para texto normal y 3:1 para texto grande; el nivel AAA requiere 7:1 y 4.5:1. APCA es un método más reciente que también tiene en cuenta el tamaño y el peso del texto, y da un contraste de luminosidad (Lc) de hasta unos 106. Todavía no es un estándar oficial. Elige cuál muestra Pika en Ajustes.";
+
+/* Ways to pick a colour */
+"help.basics.pickers.title" = "Formas de seleccionar un color";
+
+/* Basic, Pro and system colour picker description */
+"help.basics.pickers" = "El selector básico es el muestreador de color de macOS y no necesita permisos. El selector Pro es el propio de Pika: una lupa ampliada que muestra el color, su nombre y el contraste en tiempo real mientras te mueves, y necesita el permiso de Grabación de pantalla. Elige entre ellos en Ajustes. El selector de color del sistema (⌘S) es distinto: abre el panel de colores de macOS, para que puedas elegir o ajustar un color a mano en lugar de muestrear la pantalla.";
+
+/* Editing values */
+"help.basics.editing.title" = "Editar valores";
+
+/* Editing values description */
+"help.basics.editing" = "Haz clic en cualquier valor para escribir uno nuevo, o pega un código hex. Arrastra sobre un valor, o desplázate con dos dedos, para ajustarlo. ↑ y ↓ lo cambian paso a paso, con ⇧ para pasos más grandes y ⌥ para más pequeños. ⌘Z deshace cualquier cambio.";
+
+/* Colour spaces */
+"help.basics.spaces.title" = "Espacios de color";
+
+/* Colour spaces description */
+"help.basics.spaces" = "Un espacio de color define qué color describe un conjunto de números. sRGB es el estándar para la web y la mayoría de las pantallas. Display P3 es más amplio e incluye los colores más vivos que pueden mostrar las pantallas recientes de Mac. Usa sRGB salvo que diseñes para pantallas de gama amplia. Cámbialo en Ajustes. El contraste siempre se calcula en sRGB.";
+
 /* Check for updates */
 "menu.updates" = "Comprobar actualizaciones";
 

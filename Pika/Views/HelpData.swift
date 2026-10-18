@@ -1,15 +1,28 @@
 import SwiftUI
 
+// MARK: - Basics
+
+let basics: [(title: String, text: String)] = [
+    (PikaText.textHelpBasicsWhatTitle, PikaText.textHelpBasicsWhat),
+    (PikaText.textHelpBasicsPairTitle, PikaText.textHelpBasicsPair),
+    (PikaText.textHelpBasicsContrastTitle, PikaText.textHelpBasicsContrast),
+    (PikaText.textHelpBasicsStandardsTitle, PikaText.textHelpBasicsStandards),
+    (PikaText.textHelpBasicsPickersTitle, PikaText.textHelpBasicsPickers),
+    (PikaText.textHelpBasicsEditingTitle, PikaText.textHelpBasicsEditing),
+    (PikaText.textHelpBasicsSpacesTitle, PikaText.textHelpBasicsSpaces),
+]
+
 // MARK: - Keyboard Shortcuts
 
 typealias ShortcutGroup = (title: String, entries: [ShortcutEntry])
 
 let shortcutGroups: [ShortcutGroup] = [
-    ("Pick", [
+    (PikaText.textUrlGroupPick, [
         ShortcutEntry(title: PikaText.textPickForeground, keys: ["⌘", "D"], notificationName: .triggerPickForeground),
         ShortcutEntry(title: PikaText.textPickBackground, keys: ["⇧", "⌘", "D"], notificationName: .triggerPickBackground),
+        ShortcutEntry(title: PikaText.textPickContrast, keys: ["⌥", "⌘", "D"], notificationName: .triggerPickPair),
     ]),
-    ("Copy", [
+    (PikaText.textUrlGroupCopy, [
         ShortcutEntry(title: PikaText.textCopyForeground, keys: ["⌘", "C"], notificationName: .triggerCopyForeground),
         ShortcutEntry(title: PikaText.textCopyBackground, keys: ["⇧", "⌘", "C"], notificationName: .triggerCopyBackground),
     ]),
@@ -17,7 +30,7 @@ let shortcutGroups: [ShortcutGroup] = [
         ShortcutEntry(title: PikaText.textColorSystemPickerForegroundSimple, keys: ["⌘", "S"], notificationName: .triggerSystemPickerForeground),
         ShortcutEntry(title: PikaText.textColorSystemPickerBackgroundSimple, keys: ["⇧", "⌘", "S"], notificationName: .triggerSystemPickerBackground),
     ]),
-    ("Change Format", [
+    (PikaText.textUrlGroupChangeFormat, [
         ShortcutEntry(title: PikaText.textFormatHex, keys: ["⌘", "1"], notificationName: .triggerFormatHex),
         ShortcutEntry(title: PikaText.textFormatRGB, keys: ["⌘", "2"], notificationName: .triggerFormatRGB),
         ShortcutEntry(title: PikaText.textFormatHSB, keys: ["⌘", "3"], notificationName: .triggerFormatHSB),
@@ -26,7 +39,7 @@ let shortcutGroups: [ShortcutGroup] = [
         ShortcutEntry(title: PikaText.textFormatOpenGL, keys: ["⌘", "6"], notificationName: .triggerFormatOpenGL),
         ShortcutEntry(title: PikaText.textFormatOKLCH, keys: ["⌘", "7"], notificationName: .triggerFormatOKLCH),
     ]),
-    ("Actions", [
+    (PikaText.textUrlGroupActions, [
         ShortcutEntry(title: PikaText.textColorSwapDetail, keys: ["X"], notificationName: .triggerSwap),
         ShortcutEntry(title: PikaText.textHistoryToggle, keys: ["H"], notificationName: .toggleHistory),
         ShortcutEntry(title: PikaText.textComplianceToggle, keys: ["C"], notificationName: .toggleCompliance),

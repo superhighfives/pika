@@ -29,9 +29,26 @@ struct HelpView: View {
                 HelpDescriptionRow(text: PikaText.textHelpDescription)
                 Divider()
 
+                // MARK: Basics
+
+                HelpSectionHeader(title: PikaText.textHelpBasics)
+                Divider()
+                VStack(spacing: 0) {
+                    ForEach(basics.indices, id: \.self) { index in
+                        HelpConceptRow(title: basics[index].title, text: basics[index].text)
+                        if index < basics.count - 1 {
+                            Divider().padding(.horizontal, 20)
+                        }
+                    }
+                }
+                .padding(.vertical, 4)
+                Divider()
+
                 // MARK: Keyboard Shortcuts
 
                 HelpSectionHeader(title: PikaText.textHelpKeyboardShortcuts)
+                Divider()
+                HelpDescriptionRow(text: PikaText.textHelpShortcutsDescription)
                 Divider()
                 ForEach(shortcutGroups.indices, id: \.self) { gi in
                     let group = shortcutGroups[gi]

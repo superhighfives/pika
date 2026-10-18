@@ -56,6 +56,26 @@ enum PikaText {
     static let textHelpOpenSourceDescription = NSLocalizedString("help.open_source.description", comment: "Open Source description")
     static let textHelpViewOnGitHub = NSLocalizedString("help.github", comment: "View on GitHub")
     static let textHelpSupportOnMAS = NSLocalizedString("help.mas", comment: "Support on the Mac App Store")
+    static let textHelpShortcutsDescription = NSLocalizedString(
+        "help.shortcuts.description", comment: "Which keyboard shortcuts are global and which need Pika focused"
+    )
+
+    // Help Basics
+    static let textHelpBasics = NSLocalizedString("help.basics", comment: "Basics")
+    static let textHelpBasicsWhatTitle = NSLocalizedString("help.basics.what.title", comment: "What Pika does")
+    static let textHelpBasicsWhat = NSLocalizedString("help.basics.what", comment: "What Pika does description")
+    static let textHelpBasicsPairTitle = NSLocalizedString("help.basics.pair.title", comment: "Foreground and background")
+    static let textHelpBasicsPair = NSLocalizedString("help.basics.pair", comment: "Foreground and background description")
+    static let textHelpBasicsContrastTitle = NSLocalizedString("help.basics.contrast.title", comment: "Why check contrast")
+    static let textHelpBasicsContrast = NSLocalizedString("help.basics.contrast", comment: "Why check contrast description")
+    static let textHelpBasicsStandardsTitle = NSLocalizedString("help.basics.standards.title", comment: "WCAG and APCA")
+    static let textHelpBasicsStandards = NSLocalizedString("help.basics.standards", comment: "WCAG and APCA description")
+    static let textHelpBasicsPickersTitle = NSLocalizedString("help.basics.pickers.title", comment: "Ways to pick a colour")
+    static let textHelpBasicsPickers = NSLocalizedString("help.basics.pickers", comment: "Basic, Pro and system colour picker description")
+    static let textHelpBasicsEditingTitle = NSLocalizedString("help.basics.editing.title", comment: "Editing values")
+    static let textHelpBasicsEditing = NSLocalizedString("help.basics.editing", comment: "Editing values description")
+    static let textHelpBasicsSpacesTitle = NSLocalizedString("help.basics.spaces.title", comment: "Colour spaces")
+    static let textHelpBasicsSpaces = NSLocalizedString("help.basics.spaces", comment: "Colour spaces description")
 
     static let textMenuAbout = NSLocalizedString("menu.about", comment: "About")
     static let textMenuShowSplash = NSLocalizedString(

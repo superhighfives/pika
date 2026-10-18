@@ -376,6 +376,54 @@
 /* Support on the Mac App Store */
 "help.mas" = "Podrška na Mac App Storeu";
 
+/* Which keyboard shortcuts are global and which need Pika focused */
+"help.shortcuts.description" = "Većina prečaca radi dok je Pika aktivna, odnosno dok je njezin prozor ili popover trake izbornika otvoren i u prvom planu. Dva su globalna i rade iz bilo koje aplikacije: prikazivanje i skrivanje aplikacije Pika te biranje prednje boje i boje pozadine (⌥⌘D). Oba se postavljaju u Postavke → Globalni prečac.";
+
+/* Basics */
+"help.basics" = "Osnove";
+
+/* What Pika does */
+"help.basics.what.title" = "Što Pika radi";
+
+/* What Pika does description */
+"help.basics.what" = "Pika bira boje s bilo kojeg mjesta na zaslonu i prikazuje ih u formatu koji vam treba, spremne za kopiranje. Istodobno drži dvije boje, pa možete provjeriti koliko je jedna čitljiva na drugoj.";
+
+/* Foreground and background */
+"help.basics.pair.title" = "Prednja boja i boja pozadine";
+
+/* Foreground and background description */
+"help.basics.pair" = "Prednja boja obično je tekst ili ikona, a boja pozadine površina iza nje. Kontrast se mjeri između njih, pa odaberite obje. Pritisnite X da biste ih zamijenili.";
+
+/* Why check contrast */
+"help.basics.contrast.title" = "Zašto provjeravati kontrast";
+
+/* Why check contrast description */
+"help.basics.contrast" = "Tekst koji se dovoljno ne ističe od pozadine teško je čitati, osobito osobama sa slabim vidom ili daltonizmom te svima koji gledaju zatamnjen zaslon ili su na jakom svjetlu. Provjera kontrasta pokazuje je li par čitljiv prije nego što ga upotrijebite.";
+
+/* WCAG and APCA */
+"help.basics.standards.title" = "WCAG i APCA";
+
+/* WCAG and APCA description */
+"help.basics.standards" = "WCAG 2 trenutačni je standard i na njega se poziva većina smjernica i zakona o pristupačnosti. Daje omjer od 1:1 do 21:1. Razina AA zahtijeva 4,5:1 za normalan tekst i 3:1 za veliki tekst; razina AAA zahtijeva 7:1 i 4,5:1. APCA je novija metoda koja uzima u obzir i veličinu i debljinu teksta, a daje kontrast svjetline (Lc) do otprilike 106. Još nije službeni standard. U Postavkama odaberite koji od njih Pika prikazuje.";
+
+/* Ways to pick a colour */
+"help.basics.pickers.title" = "Načini biranja boje";
+
+/* Basic, Pro and system colour picker description */
+"help.basics.pickers" = "Osnovni birač je macOS uzorkivač boja i ne treba nikakva dopuštenja. Pro birač vlastiti je birač aplikacije Pika: povećalo koje dok pomičete pokazivač prikazuje boju, njezin naziv i kontrast uživo, a zahtijeva dopuštenje za snimanje zaslona. Između njih birate u Postavkama. Birač boja sustava (⌘S) nešto je drugo: otvara macOS ploču boja, pa boju možete odabrati ili prilagoditi ručno umjesto da je uzorkujete sa zaslona.";
+
+/* Editing values */
+"help.basics.editing.title" = "Uređivanje vrijednosti";
+
+/* Editing values description */
+"help.basics.editing" = "Kliknite bilo koju vrijednost da biste upisali novu ili zalijepili hex kod. Povucite preko vrijednosti ili se pomičite s dva prsta da biste je postupno mijenjali. ↑ i ↓ mijenjaju je u koracima, s ⇧ za veće korake i ⌥ za manje. ⌘Z poništava svaku promjenu.";
+
+/* Colour spaces */
+"help.basics.spaces.title" = "Prostori boja";
+
+/* Colour spaces description */
+"help.basics.spaces" = "Prostor boja određuje koju boju opisuje neki skup brojeva. sRGB je standard za web i većinu zaslona. Display P3 je širi i uključuje živopisnije boje koje mogu prikazati noviji zasloni Maca. Koristite sRGB, osim ako dizajnirate za zaslone širokog gamuta. Prostor boja mijenjate u Postavkama. Kontrast se uvijek izračunava u prostoru sRGB.";
+
 /* Check for updates */
 "menu.updates" = "Traži nove verzije";
 
