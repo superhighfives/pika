@@ -391,6 +391,12 @@
 /* Basics intro: where Pika fits */
 "help.basics.intro.3" = "C’est là qu’intervient Pika. Choisissez un premier plan et un arrière-plan n’importe où sur votre écran, qu’il s’agisse d’une maquette, d’un site web ou d’une capture d’écran : Pika affiche aussitôt le contraste, avec les couleurs dans le format dont vous avez besoin, prêtes à copier.";
 
+/* Expand the Basics intro */
+"help.basics.intro.more" = "Afficher plus";
+
+/* Collapse the Basics intro */
+"help.basics.intro.less" = "Afficher moins";
+
 /* Foreground and background */
 "help.basics.pair.title" = "Premier plan et arrière-plan";
 

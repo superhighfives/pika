@@ -391,6 +391,12 @@
 /* Basics intro: where Pika fits */
 "help.basics.intro.3" = "Genau hier kommt Pika ins Spiel. Wählen Sie Vordergrund und Hintergrund von überall auf Ihrem Bildschirm aus, ob aus einer Designdatei, einer Website oder einem Screenshot. Pika zeigt Ihnen den Kontrast sofort an, dazu die Farben im gewünschten Format, bereit zum Kopieren.";
 
+/* Expand the Basics intro */
+"help.basics.intro.more" = "Mehr anzeigen";
+
+/* Collapse the Basics intro */
+"help.basics.intro.less" = "Weniger anzeigen";
+
 /* Foreground and background */
 "help.basics.pair.title" = "Vordergrund und Hintergrund";
 

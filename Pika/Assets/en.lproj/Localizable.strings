@@ -421,6 +421,12 @@
 /* Basics intro: where Pika fits */
 "help.basics.intro.3" = "That’s where Pika comes in. Pick a foreground and background from anywhere on your screen, whether it’s a design file, a website or a screenshot, and Pika shows the contrast straight away, alongside the colours in the format you need, ready to copy.";
 
+/* Expand the Basics intro */
+"help.basics.intro.more" = "Show more";
+
+/* Collapse the Basics intro */
+"help.basics.intro.less" = "Show less";
+
 /* Foreground and background */
 "help.basics.pair.title" = "Foreground and background";
 

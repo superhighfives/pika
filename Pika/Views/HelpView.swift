@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct HelpView: View {
+    @State private var showFullIntro = false
     /// The shortcuts note names Pick pair by its default keys; show the user's binding instead.
     private var shortcutsDescription: String {
         let keys = pickPairKeys().joined()
@@ -41,13 +42,22 @@ struct HelpView: View {
                 HelpSectionHeader(title: PikaText.textHelpBasics)
                 Divider()
                 VStack(alignment: .leading, spacing: 10) {
-                    ForEach(PikaText.textHelpBasicsIntro, id: \.self) { paragraph in
+                    let paragraphs = PikaText.textHelpBasicsIntro
+                    ForEach(paragraphs.prefix(showFullIntro ? paragraphs.count : 1), id: \.self) { paragraph in
                         Text(paragraph)
                             .font(.system(size: 13))
                             .foregroundStyle(.primary.opacity(0.85))
                             .lineSpacing(5)
                             .fixedSize(horizontal: false, vertical: true)
                     }
+                    Button {
+                        withAnimation(.easeOut(duration: 0.2)) { showFullIntro.toggle() }
+                    } label: {
+                        Text(showFullIntro ? PikaText.textHelpBasicsIntroLess : PikaText.textHelpBasicsIntroMore)
+                            .font(.system(size: 13, weight: .medium))
+                            .foregroundStyle(Color.accentColor)
+                    }
+                    .buttonStyle(.plain)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 20)

@@ -391,6 +391,12 @@
 /* Basics intro: where Pika fits */
 "help.basics.intro.3" = "这正是 Pika 的用武之地。从屏幕上的任意位置选择前景色和背景色，无论是设计文件、网站还是截图，Pika 都会立即显示对比度，并按您需要的格式列出颜色，随时可以复制。";
 
+/* Expand the Basics intro */
+"help.basics.intro.more" = "显示更多";
+
+/* Collapse the Basics intro */
+"help.basics.intro.less" = "收起";
+
 /* Foreground and background */
 "help.basics.pair.title" = "前景色和背景色";
 

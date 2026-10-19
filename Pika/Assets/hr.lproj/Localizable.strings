@@ -391,6 +391,12 @@
 /* Basics intro: where Pika fits */
 "help.basics.intro.3" = "Tu na scenu stupa Pika. Odaberite prednju boju i boju pozadine s bilo kojeg mjesta na zaslonu, bilo da je riječ o dizajnerskoj datoteci, web-stranici ili snimci zaslona, i Pika odmah prikazuje kontrast, zajedno s bojama u formatu koji vam treba, spremnima za kopiranje.";
 
+/* Expand the Basics intro */
+"help.basics.intro.more" = "Prikaži više";
+
+/* Collapse the Basics intro */
+"help.basics.intro.less" = "Prikaži manje";
+
 /* Foreground and background */
 "help.basics.pair.title" = "Prednja boja i boja pozadine";
 

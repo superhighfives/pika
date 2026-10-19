@@ -391,6 +391,12 @@
 /* Basics intro: where Pika fits */
 "help.basics.intro.3" = "Ahí es donde entra Pika. Selecciona un primer plano y un segundo plano de cualquier parte de la pantalla, ya sea un archivo de diseño, un sitio web o una captura, y Pika te muestra el contraste al instante, junto con los colores en el formato que necesites, listos para copiar.";
 
+/* Expand the Basics intro */
+"help.basics.intro.more" = "Mostrar más";
+
+/* Collapse the Basics intro */
+"help.basics.intro.less" = "Mostrar menos";
+
 /* Foreground and background */
 "help.basics.pair.title" = "Primer plano y segundo plano";
 

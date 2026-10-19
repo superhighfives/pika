@@ -391,6 +391,12 @@
 /* Basics intro: where Pika fits */
 "help.basics.intro.3" = "Tu z pomocą przychodzi Pika. Wybierz pierwszy plan i tło z dowolnego miejsca na ekranie, czy to z pliku projektu, strony internetowej, czy zrzutu ekranu, a Pika od razu pokaże kontrast oraz kolory w potrzebnym formacie, gotowe do skopiowania.";
 
+/* Expand the Basics intro */
+"help.basics.intro.more" = "Pokaż więcej";
+
+/* Collapse the Basics intro */
+"help.basics.intro.less" = "Pokaż mniej";
+
 /* Foreground and background */
 "help.basics.pair.title" = "Pierwszy plan i tło";
 
