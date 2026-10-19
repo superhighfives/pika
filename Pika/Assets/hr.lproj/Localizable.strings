@@ -394,6 +394,9 @@
 /* Expand the Basics intro */
 "help.basics.intro.more" = "Pročitaj više";
 
+/* Collapse the Basics intro */
+"help.basics.intro.less" = "Prikaži manje";
+
 /* Foreground and background */
 "help.basics.pair.title" = "Prednja boja i boja pozadine";
 

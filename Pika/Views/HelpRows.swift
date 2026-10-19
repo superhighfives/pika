@@ -120,6 +120,7 @@ struct HelpKeycapText: View {
 
 /// A small outlined pill that expands collapsed Help copy.
 struct HelpReadMoreButton: View {
+    let expanded: Bool
     let action: () -> Void
 
     @State private var isHovered = false
@@ -127,10 +128,11 @@ struct HelpReadMoreButton: View {
     var body: some View {
         Button(action: action) {
             HStack(spacing: 5) {
-                Text(PikaText.textHelpBasicsIntroMore)
+                Text(expanded ? PikaText.textHelpBasicsIntroLess : PikaText.textHelpBasicsIntroMore)
                 Image(systemName: "chevron.down")
                     .font(.system(size: 9, weight: .bold))
-                    .offset(y: isHovered ? 1.5 : 0)
+                    .rotationEffect(.degrees(expanded ? 180 : 0))
+                    .offset(y: isHovered ? (expanded ? -1.5 : 1.5) : 0)
             }
             .font(.system(size: 12, weight: .medium))
             .foregroundStyle(isHovered ? .primary : .secondary)

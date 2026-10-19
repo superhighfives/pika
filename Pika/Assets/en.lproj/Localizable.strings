@@ -424,6 +424,9 @@
 /* Expand the Basics intro */
 "help.basics.intro.more" = "Read more";
 
+/* Collapse the Basics intro */
+"help.basics.intro.less" = "Show less";
+
 /* Foreground and background */
 "help.basics.pair.title" = "Foreground and background";
 

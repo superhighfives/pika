@@ -63,21 +63,17 @@ struct HelpView: View {
                     .frame(height: showFullIntro ? introFullHeight : collapsedHeight, alignment: .top)
                     .clipped()
                     .mask(
+                        // Same two stops either way, so the fade dissolves as the block opens.
                         LinearGradient(
-                            stops: showFullIntro
-                                ? [.init(color: .black, location: 0), .init(color: .black, location: 1)]
-                                : [
-                                    .init(color: .black, location: introFirstHeight / collapsedHeight),
-                                    .init(color: .clear, location: 1),
-                                ],
+                            stops: [
+                                .init(color: .black, location: introFirstHeight / collapsedHeight),
+                                .init(color: showFullIntro ? .black : .clear, location: 1),
+                            ],
                             startPoint: .top, endPoint: .bottom
                         )
                     )
-                    if !showFullIntro {
-                        HelpReadMoreButton {
-                            withAnimation(.easeInOut(duration: 0.35)) { showFullIntro = true }
-                        }
-                        .transition(.opacity)
+                    HelpReadMoreButton(expanded: showFullIntro) {
+                        withAnimation(.easeInOut(duration: 0.35)) { showFullIntro.toggle() }
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)

@@ -394,6 +394,9 @@
 /* Expand the Basics intro */
 "help.basics.intro.more" = "続きを読む";
 
+/* Collapse the Basics intro */
+"help.basics.intro.less" = "表示を減らす";
+
 /* Foreground and background */
 "help.basics.pair.title" = "前景色と背景色";
 

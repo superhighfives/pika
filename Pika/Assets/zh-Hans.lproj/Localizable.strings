@@ -394,6 +394,9 @@
 /* Expand the Basics intro */
 "help.basics.intro.more" = "继续阅读";
 
+/* Collapse the Basics intro */
+"help.basics.intro.less" = "收起";
+
 /* Foreground and background */
 "help.basics.pair.title" = "前景色和背景色";
 
