@@ -26,6 +26,7 @@
 		CC2000000000000000000701 /* WCAGComplianceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000700 /* WCAGComplianceTests.swift */; };
 		CC2000000000000000000801 /* APCAComplianceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000800 /* APCAComplianceTests.swift */; };
 		CC2000000000000000000901 /* NotificationNamesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000900 /* NotificationNamesTests.swift */; };
+		CC2000000000000000001F01 /* HelpKeyCapsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000001F00 /* HelpKeyCapsTests.swift */; };
 		CC2000000000000000000A01 /* CGFloatFormatTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000A00 /* CGFloatFormatTests.swift */; };
 		CC2000000000000000000B01 /* ColorPairTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000B00 /* ColorPairTests.swift */; };
 		DEC0FACE0000000000000011 /* ColorDecompositionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC0FACE0000000000000010 /* ColorDecompositionTests.swift */; };
@@ -250,6 +251,7 @@
 		CC2000000000000000000700 /* WCAGComplianceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCAGComplianceTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000000800 /* APCAComplianceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APCAComplianceTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000000900 /* NotificationNamesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationNamesTests.swift; sourceTree = "<group>"; };
+		CC2000000000000000001F00 /* HelpKeyCapsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpKeyCapsTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000000A00 /* CGFloatFormatTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGFloatFormatTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000000B00 /* ColorPairTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPairTests.swift; sourceTree = "<group>"; };
 		DEC0FACE0000000000000010 /* ColorDecompositionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorDecompositionTests.swift; sourceTree = "<group>"; };
@@ -584,6 +586,7 @@
 				CC2000000000000000000700 /* WCAGComplianceTests.swift */,
 				CC2000000000000000000800 /* APCAComplianceTests.swift */,
 				CC2000000000000000000900 /* NotificationNamesTests.swift */,
+				CC2000000000000000001F00 /* HelpKeyCapsTests.swift */,
 				CC2000000000000000000A00 /* CGFloatFormatTests.swift */,
 				CC2000000000000000000B00 /* ColorPairTests.swift */,
 				DEC0FACE0000000000000010 /* ColorDecompositionTests.swift */,
@@ -1150,6 +1153,7 @@
 				CC2000000000000000000701 /* WCAGComplianceTests.swift in Sources */,
 				CC2000000000000000000801 /* APCAComplianceTests.swift in Sources */,
 				CC2000000000000000000901 /* NotificationNamesTests.swift in Sources */,
+				CC2000000000000000001F01 /* HelpKeyCapsTests.swift in Sources */,
 				CC2000000000000000000A01 /* CGFloatFormatTests.swift in Sources */,
 				CC2000000000000000000B01 /* ColorPairTests.swift in Sources */,
 				DEC0FACE0000000000000011 /* ColorDecompositionTests.swift in Sources */,

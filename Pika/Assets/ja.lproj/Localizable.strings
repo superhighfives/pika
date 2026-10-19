@@ -191,16 +191,16 @@
 "color.wcag.70" = "WCAG 2 レベルAAAは通常テキストに少なくとも7:1のコントラスト比を要求します。";
 
 /* APCA 30 */
-"color.apca.30" = "APCA >= 30 はベースラインテキストと非テキストコンテンツの最小コントラストです。大きなテキスト、プレースホルダー、無効化された要素に適しています。";
+"color.apca.30" = "APCA Lc 30は、あらゆるテキストに対する絶対的な最小値です。プレースホルダー、無効化されたコントロール、著作権表示など、すらすらと読む必要のないテキストにのみ使います。塗りつぶしのアイコンなどの非テキストコンテンツにも適しています。";
 
 /* APCA 45 */
-"color.apca.45" = "APCA >= 45 は見出しテキストの最小コントラストです。大きな見出し、ナビゲーション要素、重要なUIコンポーネントに適しています。";
+"color.apca.45" = "APCA Lc 45は、見出しなどの大きなテキストの最小値です。通常のウェイトで36px以上、または太字で24px以上が必要です。";
 
 /* APCA 60 */
-"color.apca.60" = "APCA >= 60 はタイトルテキストの最小コントラストです。サブ見出し、キャプション、明確に読める必要のある補助コンテンツに適しています。";
+"color.apca.60" = "APCA Lc 60は、サブ見出しやキャプションなど、本文以外のコンテンツテキストの最小値です。通常のウェイトで24px以上、または太字で16px以上が必要です。";
 
 /* APCA 75 */
-"color.apca.75" = "APCA >= 75 は本文テキストの最小コントラストです。主要コンテンツ、通常サイズのテキスト、長文の読み物に適しています。";
+"color.apca.75" = "APCA Lc 75は本文テキストの最小値です。通常のウェイトで18px以上、または太字で14px以上が必要です。長い文章にはLc 90が推奨されます。";
 
 /* Baseline */
 "color.apca.baseline" = "ベースライン";
@@ -350,7 +350,7 @@
 "menu.help" = "ヘルプ";
 
 /* Help description */
-"help.description" = "キーボードショートカットからURL自動化まで、Pikaの使い方をすべて説明します。";
+"help.description" = "Pikaは画面上のどこからでもカラーをピックし、組み合わせの読みやすさを確認できます。使い方は次のとおりです。";
 
 /* Keyboard Shortcuts */
 "help.shortcuts" = "キーボードショートカット";
@@ -375,6 +375,69 @@
 
 /* Support on the Mac App Store */
 "help.mas" = "Mac App Storeでサポート";
+
+/* Which keyboard shortcuts are global and which need Pika focused */
+"help.shortcuts.description" = "ほとんどのショートカットはPikaが最前面のときに使えます。Pikaの表示／非表示と、前景色と背景色のピック（[⌥⌘D]）はどのアプリからでも使え、「設定」→「グローバルショートカット」で設定できます。";
+
+/* Basics */
+"help.basics" = "基本";
+
+/* Basics intro: what colour contrast is */
+"help.basics.intro.1" = "カラーコントラストとは、テキストとその後ろにあるものとの明るさの差のことです。差が小さすぎると、文字が背景に溶け込んでしまいます。ロービジョンや色覚特性のある人にとっては深刻な問題ですが、日差しの下でスマートフォンを見るときや、画面を暗くしたノートパソコンを使うときなど、誰にでも起こりうることです。";
+
+/* Basics intro: accessibility guidelines */
+"help.basics.intro.2" = "アクセシビリティのガイドラインは、できるだけ多くの人がテキストを読めるよう、コントラストの最低基準を定めています。WCAG 2は多くのガイドラインや法律が参照する標準規格で、APCAはフォントのサイズとウェイトも考慮する新しい方法です。後からデザインを作り直すより、早めに確認するほうがずっと簡単です。";
+
+/* Basics intro: where Pika fits */
+"help.basics.intro.3" = "そこで役立つのがPikaです。デザインファイルでも、ウェブサイトでも、スクリーンショットでも、画面上のどこからでも前景色と背景色をピックすると、Pikaがすぐにコントラストを表示します。カラーも必要なフォーマットで並んで表示されるので、そのままコピーできます。";
+
+/* Expand the Basics intro */
+"help.basics.intro.more" = "続きを読む";
+
+/* Collapse the Basics intro */
+"help.basics.intro.less" = "表示を減らす";
+
+/* Foreground and background */
+"help.basics.pair.title" = "前景色と背景色";
+
+/* Foreground and background description */
+"help.basics.pair" = "前景色はテキストやアイコン、背景色はその後ろにある面のカラーです。[X]を押すと入れ替えられます。";
+
+/* Why check contrast */
+"help.basics.contrast.title" = "コントラストを確認する理由";
+
+/* Why check contrast description */
+"help.basics.contrast" = "コントラストの低いテキストは読みにくくなります。ロービジョンや色覚特性のある人、まぶしい環境では特にそうです。";
+
+/* WCAG and APCA */
+"help.basics.standards.title" = "WCAGとAPCA";
+
+/* WCAG and APCA description */
+"help.basics.standards" = "WCAG 2はコントラスト比を示します（AAではテキストに4.5:1が必要）。APCAはサイズとウェイトを考慮したLc値を示しますが、まだ標準規格ではありません。";
+
+/* Ways to pick a colour */
+"help.basics.pickers.title" = "カラーのピック方法";
+
+/* Basic, Pro and system colour picker description */
+"help.basics.pickers" = "ベーシックピッカーはmacOSのカラーサンプラーです。Proピッカーはリアルタイムのルーペを備え、画面収録のアクセス権が必要です。[⌘S]でmacOSのカラーパネルが開きます。";
+
+/* Editing values */
+"help.basics.editing.title" = "値の編集";
+
+/* Editing values description */
+"help.basics.editing" = "値をクリックして入力、ドラッグか2本指スクロールで連続調整、[↑]か[↓]で1段階ずつ変更できます。[⌘Z]で取り消せます。";
+
+/* Colour spaces */
+"help.basics.spaces.title" = "カラースペース";
+
+/* Colour spaces description */
+"help.basics.spaces" = "sRGBはウェブとほとんどの画面向けです。Display P3は最近のMacで表示できる、より鮮やかなカラーを含みます。コントラストは常にsRGBで計算されます。";
+
+/* Link to WCAG contrast guidance */
+"help.reference.wcag" = "WCAGのコントラストについて";
+
+/* Link to APCA guidance */
+"help.reference.apca" = "APCAについて";
 
 /* Check for updates */
 "menu.updates" = "アップデートを確認";

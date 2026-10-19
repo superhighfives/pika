@@ -17,6 +17,141 @@ struct HelpDescriptionRow: View {
     }
 }
 
+// MARK: - Basics Grid
+
+struct HelpBasicsGrid: View {
+    let entries: [HelpBasic]
+
+    var body: some View {
+        Grid(horizontalSpacing: 10, verticalSpacing: 10) {
+            ForEach(Array(stride(from: 0, to: entries.count, by: 2)), id: \.self) { index in
+                GridRow {
+                    HelpBasicCard(entry: entries[index])
+                    if index + 1 < entries.count {
+                        HelpBasicCard(entry: entries[index + 1])
+                    } else {
+                        Color.clear
+                    }
+                }
+            }
+        }
+        .padding(.horizontal, 20)
+        .padding(.vertical, 14)
+    }
+}
+
+struct HelpBasicCard: View {
+    let entry: HelpBasic
+
+    @Environment(\.colorScheme) var colorScheme: ColorScheme
+
+    var body: some View {
+        let tint = colorScheme == .light ? entry.tint.light : entry.tint.dark
+        VStack(alignment: .leading, spacing: 6) {
+            HStack(spacing: 6) {
+                Image(systemName: entry.symbol)
+                    .font(.system(size: 13, weight: .medium))
+                    .frame(width: 18)
+                    .accessibilityHidden(true)
+                Text(entry.title)
+                    .font(.system(size: 13, weight: .semibold))
+            }
+            .foregroundStyle(tint)
+            HelpKeycapText(text: entry.text)
+                .font(.system(size: 12))
+                .foregroundStyle(.secondary)
+                .lineSpacing(3)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(12)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .background(
+            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                .fill(colorScheme == .light ? Color.black.opacity(0.04) : Color.white.opacity(0.05))
+        )
+        .accessibilityElement(children: .combine)
+    }
+}
+
+// MARK: - Keycap Text
+
+/// Text where `[⌘S]`-style runs are drawn inline as key caps, one cap per character,
+/// matching the caps in the shortcut rows. Brackets are markup in the localised strings.
+struct HelpKeycapText: View {
+    let text: String
+    var keySize: CGFloat = 10
+
+    @Environment(\.colorScheme) var colorScheme: ColorScheme
+    @Environment(\.displayScale) var displayScale: CGFloat
+
+    var body: some View {
+        var parts: [Text] = []
+        var remaining = text[...]
+        while let open = remaining.firstIndex(of: "["),
+              let close = remaining[open...].firstIndex(of: "]")
+        {
+            parts.append(Text(verbatim: String(remaining[..<open])))
+            let keys = remaining[remaining.index(after: open) ..< close]
+            for (index, key) in keys.enumerated() {
+                if index > 0 { parts.append(Text(verbatim: "\u{2009}")) }
+                parts.append(keycap(String(key)))
+            }
+            remaining = remaining[remaining.index(after: close)...]
+        }
+        parts.append(Text(verbatim: String(remaining)))
+        // The caps are images, so VoiceOver reads the text with the markup removed instead
+        // ("⌘S" is read as "command S").
+        return parts.reduce(Text(verbatim: ""), +)
+            .accessibilityLabel(text.replacingOccurrences(of: "[", with: "").replacingOccurrences(of: "]", with: ""))
+    }
+
+    private func keycap(_ key: String) -> Text {
+        let cap = Text(verbatim: key)
+            .font(.system(size: keySize, weight: .semibold, design: .rounded))
+            .foregroundStyle(.primary)
+            .frame(minWidth: keySize + 2)
+            .padding(.horizontal, 4)
+            .overlay(RoundedRectangle(cornerRadius: 2).strokeBorder(Color.gray.opacity(0.5), lineWidth: 1))
+            .environment(\.colorScheme, colorScheme)
+        let renderer = ImageRenderer(content: cap)
+        renderer.scale = displayScale
+        guard let image = renderer.nsImage else { return Text(verbatim: key) }
+        return Text(Image(nsImage: image)).baselineOffset(-2)
+    }
+}
+
+// MARK: - Read More Button
+
+/// A small outlined pill that expands collapsed Help copy.
+struct HelpReadMoreButton: View {
+    let expanded: Bool
+    let action: () -> Void
+
+    @State private var isHovered = false
+
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: 5) {
+                Text(expanded ? PikaText.textHelpBasicsIntroLess : PikaText.textHelpBasicsIntroMore)
+                Image(systemName: "chevron.down")
+                    .font(.system(size: 9, weight: .bold))
+                    .rotationEffect(.degrees(expanded ? 180 : 0))
+                    .offset(y: isHovered ? (expanded ? -1.5 : 1.5) : 0)
+            }
+            .font(.system(size: 12, weight: .medium))
+            .foregroundStyle(isHovered ? .primary : .secondary)
+            .padding(.horizontal, 11)
+            .padding(.vertical, 5)
+            .background(Capsule().fill(Color.primary.opacity(isHovered ? 0.06 : 0)))
+            .overlay(Capsule().strokeBorder(Color.primary.opacity(isHovered ? 0.35 : 0.2), lineWidth: 1))
+            .contentShape(Capsule())
+        }
+        .buttonStyle(.plain)
+        .animation(.easeOut(duration: 0.15), value: isHovered)
+        .onHover { isHovered = $0 }
+    }
+}
+
 // MARK: - Section Header
 
 struct HelpSectionHeader: View {

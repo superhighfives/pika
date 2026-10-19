@@ -191,16 +191,16 @@
 "color.wcag.70" = "WCAG 2-Level AAA erfordert ein Kontrastverhältnis von mindestens 7:1 für normalen Text.";
 
 /* APCA 30 */
-"color.apca.30" = "APCA >= 30 ist der Mindestkontrast für Grundtext und Nicht-Text-Inhalte. Geeignet für größeren Text, Platzhalter und deaktivierte Elemente.";
+"color.apca.30" = "APCA Lc 30 ist das absolute Minimum für jeden Text, und nur für Text, der nicht flüssig gelesen werden muss, wie Platzhalter, deaktivierte Elemente und Copyright-Hinweise. Eignet sich auch für flächige Symbole und andere Nicht-Text-Inhalte.";
 
 /* APCA 45 */
-"color.apca.45" = "APCA >= 45 ist der Mindestkontrast für Überschriftentext. Geeignet für große Überschriften, Navigationselemente und wichtige UI-Komponenten.";
+"color.apca.45" = "APCA Lc 45 ist das Minimum für großen Text wie Überschriften: mindestens 36px in normaler Stärke oder 24px fett.";
 
 /* APCA 60 */
-"color.apca.60" = "APCA >= 60 ist der Mindestkontrast für Titeltext. Geeignet für Unterüberschriften, Bildunterschriften und sekundäre Inhalte, die klar lesbar sein müssen.";
+"color.apca.60" = "APCA Lc 60 ist das Minimum für Inhaltstext, der kein Fließtext ist, wie Zwischenüberschriften und Bildunterschriften: mindestens 24px in normaler Stärke oder 16px fett.";
 
 /* APCA 75 */
-"color.apca.75" = "APCA >= 75 ist der Mindestkontrast für Fließtext. Geeignet für primäre Inhalte, normal große Texte und längere Lesematerialien.";
+"color.apca.75" = "APCA Lc 75 ist das Minimum für Fließtext: mindestens 18px in normaler Stärke oder 14px fett. Für längere Texte ist Lc 90 empfehlenswert.";
 
 /* Baseline */
 "color.apca.baseline" = "Basis";
@@ -350,7 +350,7 @@
 "menu.help" = "Hilfe";
 
 /* Help description */
-"help.description" = "Alles, was Sie über die Verwendung von Pika wissen müssen, von Tastaturkürzeln bis zur URL-Automatisierung.";
+"help.description" = "Pika nimmt Farben von überall auf Ihrem Bildschirm auf und prüft, wie gut sie zusammen lesbar sind. So funktioniert es.";
 
 /* Keyboard Shortcuts */
 "help.shortcuts" = "Tastaturkürzel";
@@ -375,6 +375,69 @@
 
 /* Support on the Mac App Store */
 "help.mas" = "Im Mac App Store unterstützen";
+
+/* Which keyboard shortcuts are global and which need Pika focused */
+"help.shortcuts.description" = "Die meisten Tastaturkürzel brauchen Pika im Vordergrund. Pika ein- und ausblenden und Paar auswählen ([⌥⌘D]) gehen in jeder App; festlegen unter Einstellungen → Globaler Kurzbefehl.";
+
+/* Basics */
+"help.basics" = "Grundlagen";
+
+/* Basics intro: what colour contrast is */
+"help.basics.intro.1" = "Farbkontrast ist der Helligkeitsunterschied zwischen Text und dem, was dahinter liegt. Ist er zu gering, verschwimmen Wörter mit ihrem Hintergrund. Für Menschen mit Sehschwäche oder Farbenblindheit ist das ein echtes Problem, und es trifft auch alle anderen, etwa beim Lesen am Handy in der Sonne oder am Laptop mit gedimmtem Bildschirm.";
+
+/* Basics intro: accessibility guidelines */
+"help.basics.intro.2" = "Richtlinien zur Barrierefreiheit legen Mindestwerte für den Kontrast fest, damit Text für möglichst viele Menschen lesbar bleibt. WCAG 2 ist der Standard, auf den sich die meisten Richtlinien und Gesetze beziehen. APCA ist ein neueres Verfahren, das auch Schriftgröße und -stärke berücksichtigt. Früh zu prüfen ist viel einfacher, als ein Design später zu überarbeiten.";
+
+/* Basics intro: where Pika fits */
+"help.basics.intro.3" = "Genau hier kommt Pika ins Spiel. Wählen Sie Vordergrund und Hintergrund von überall auf Ihrem Bildschirm aus, ob aus einer Designdatei, einer Website oder einem Screenshot. Pika zeigt Ihnen den Kontrast sofort an, dazu die Farben im gewünschten Format, bereit zum Kopieren.";
+
+/* Expand the Basics intro */
+"help.basics.intro.more" = "Weiterlesen";
+
+/* Collapse the Basics intro */
+"help.basics.intro.less" = "Weniger anzeigen";
+
+/* Foreground and background */
+"help.basics.pair.title" = "Vordergrund und Hintergrund";
+
+/* Foreground and background description */
+"help.basics.pair" = "Der Vordergrund ist Text oder ein Symbol, der Hintergrund die Fläche dahinter. Mit [X] tauschen Sie sie.";
+
+/* Why check contrast */
+"help.basics.contrast.title" = "Warum Kontrast prüfen?";
+
+/* Why check contrast description */
+"help.basics.contrast" = "Kontrastarmer Text ist schwer zu lesen, besonders bei Sehschwäche, Farbenblindheit oder Blendung.";
+
+/* WCAG and APCA */
+"help.basics.standards.title" = "WCAG und APCA";
+
+/* WCAG and APCA description */
+"help.basics.standards" = "WCAG 2 liefert ein Verhältnis (AA erfordert 4,5:1 für Text). APCA liefert einen Lc-Wert, der Größe und Stärke berücksichtigt, ist aber noch kein Standard.";
+
+/* Ways to pick a colour */
+"help.basics.pickers.title" = "So wählen Sie eine Farbe aus";
+
+/* Basic, Pro and system colour picker description */
+"help.basics.pickers" = "Die einfache Pipette ist die von macOS. Die Pro-Pipette bietet eine Live-Lupe und benötigt die Berechtigung „Bildschirmaufnahme“. [⌘S] öffnet das Farbfenster von macOS.";
+
+/* Editing values */
+"help.basics.editing.title" = "Werte bearbeiten";
+
+/* Editing values description */
+"help.basics.editing" = "Klicken Sie auf einen Wert zum Eingeben. Ziehen oder Scrollen mit zwei Fingern verändert ihn, [↑] oder [↓] schrittweise. [⌘Z] widerruft.";
+
+/* Colour spaces */
+"help.basics.spaces.title" = "Farbräume";
+
+/* Colour spaces description */
+"help.basics.spaces" = "sRGB passt für das Web und die meisten Bildschirme. Display P3 umfasst die kräftigeren Farben aktueller Macs. Der Kontrast nutzt immer sRGB.";
+
+/* Link to WCAG contrast guidance */
+"help.reference.wcag" = "Mehr über WCAG-Kontrast";
+
+/* Link to APCA guidance */
+"help.reference.apca" = "Mehr über APCA";
 
 /* Check for updates */
 "menu.updates" = "Updates überprüfen";

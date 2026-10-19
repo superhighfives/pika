@@ -1,15 +1,76 @@
+import KeyboardShortcuts
 import SwiftUI
+
+// MARK: - Basics
+
+struct HelpBasic {
+    let symbol: String
+    /// Matches the colour of the same concept on the website's Pika and Help pages:
+    /// Tailwind's 600 shade in light mode and 400 in dark, like the site's feature titles.
+    let tint: (light: Color, dark: Color)
+    let title: String
+    let text: String
+}
+
+let basics: [HelpBasic] = [
+    HelpBasic(
+        symbol: "square.on.square",
+        tint: (light: Color(red: 0.008, green: 0.518, blue: 0.780), dark: Color(red: 0.220, green: 0.741, blue: 0.973)),
+        title: PikaText.textHelpBasicsPairTitle, text: PikaText.textHelpBasicsPair
+    ),
+    HelpBasic(
+        symbol: "eye",
+        tint: (light: Color(red: 0.859, green: 0.153, blue: 0.467), dark: Color(red: 0.957, green: 0.447, blue: 0.714)),
+        title: PikaText.textHelpBasicsContrastTitle, text: PikaText.textHelpBasicsContrast
+    ),
+    HelpBasic(
+        symbol: "textformat.size",
+        tint: (light: Color(red: 0.310, green: 0.275, blue: 0.898), dark: Color(red: 0.506, green: 0.549, blue: 0.973)),
+        title: PikaText.textHelpBasicsStandardsTitle, text: PikaText.textHelpBasicsStandards
+    ),
+    HelpBasic(
+        symbol: "eyedropper",
+        tint: (light: Color(red: 0.753, green: 0.149, blue: 0.827), dark: Color(red: 0.910, green: 0.475, blue: 0.976)),
+        title: PikaText.textHelpBasicsPickersTitle, text: PikaText.textHelpBasicsPickers
+    ),
+    HelpBasic(
+        symbol: "slider.horizontal.3",
+        tint: (light: Color(red: 0.863, green: 0.149, blue: 0.149), dark: Color(red: 0.973, green: 0.443, blue: 0.443)),
+        title: PikaText.textHelpBasicsEditingTitle, text: PikaText.textHelpBasicsEditing
+    ),
+    HelpBasic(
+        symbol: "paintpalette",
+        tint: (light: Color(red: 0.851, green: 0.467, blue: 0.024), dark: Color(red: 0.984, green: 0.749, blue: 0.141)),
+        title: PikaText.textHelpBasicsSpacesTitle, text: PikaText.textHelpBasicsSpaces
+    ),
+]
 
 // MARK: - Keyboard Shortcuts
 
 typealias ShortcutGroup = (title: String, entries: [ShortcutEntry])
 
-let shortcutGroups: [ShortcutGroup] = [
-    ("Pick", [
+/// Splits a shortcut like "⌥⌘D" into key caps: each modifier on its own, then the key.
+func keyCaps(for shortcut: String) -> [String] {
+    let modifiers = shortcut.prefix { "⌃⌥⇧⌘".contains($0) }
+    let key = shortcut.dropFirst(modifiers.count)
+    return modifiers.map(String.init) + (key.isEmpty ? [] : [String(key)])
+}
+
+/// The Pick pair shortcut as key caps, following the user's binding in Settings (⌥⌘D by default).
+@MainActor
+func pickPairKeys() -> [String] {
+    guard let shortcut = KeyboardShortcuts.getShortcut(for: .pickPair) else { return [] }
+    return keyCaps(for: shortcut.description)
+}
+
+@MainActor
+var shortcutGroups: [ShortcutGroup] { [
+    (PikaText.textUrlGroupPick, [
         ShortcutEntry(title: PikaText.textPickForeground, keys: ["⌘", "D"], notificationName: .triggerPickForeground),
         ShortcutEntry(title: PikaText.textPickBackground, keys: ["⇧", "⌘", "D"], notificationName: .triggerPickBackground),
+        ShortcutEntry(title: PikaText.textPickContrast, keys: pickPairKeys(), notificationName: .triggerPickPair),
     ]),
-    ("Copy", [
+    (PikaText.textUrlGroupCopy, [
         ShortcutEntry(title: PikaText.textCopyForeground, keys: ["⌘", "C"], notificationName: .triggerCopyForeground),
         ShortcutEntry(title: PikaText.textCopyBackground, keys: ["⇧", "⌘", "C"], notificationName: .triggerCopyBackground),
     ]),
@@ -17,7 +78,7 @@ let shortcutGroups: [ShortcutGroup] = [
         ShortcutEntry(title: PikaText.textColorSystemPickerForegroundSimple, keys: ["⌘", "S"], notificationName: .triggerSystemPickerForeground),
         ShortcutEntry(title: PikaText.textColorSystemPickerBackgroundSimple, keys: ["⇧", "⌘", "S"], notificationName: .triggerSystemPickerBackground),
     ]),
-    ("Change Format", [
+    (PikaText.textUrlGroupChangeFormat, [
         ShortcutEntry(title: PikaText.textFormatHex, keys: ["⌘", "1"], notificationName: .triggerFormatHex),
         ShortcutEntry(title: PikaText.textFormatRGB, keys: ["⌘", "2"], notificationName: .triggerFormatRGB),
         ShortcutEntry(title: PikaText.textFormatHSB, keys: ["⌘", "3"], notificationName: .triggerFormatHSB),
@@ -26,7 +87,7 @@ let shortcutGroups: [ShortcutGroup] = [
         ShortcutEntry(title: PikaText.textFormatOpenGL, keys: ["⌘", "6"], notificationName: .triggerFormatOpenGL),
         ShortcutEntry(title: PikaText.textFormatOKLCH, keys: ["⌘", "7"], notificationName: .triggerFormatOKLCH),
     ]),
-    ("Actions", [
+    (PikaText.textUrlGroupActions, [
         ShortcutEntry(title: PikaText.textColorSwapDetail, keys: ["X"], notificationName: .triggerSwap),
         ShortcutEntry(title: PikaText.textHistoryToggle, keys: ["H"], notificationName: .toggleHistory),
         ShortcutEntry(title: PikaText.textComplianceToggle, keys: ["C"], notificationName: .toggleCompliance),
@@ -36,7 +97,7 @@ let shortcutGroups: [ShortcutGroup] = [
         ShortcutEntry(title: "\(PikaText.textMenuPreferences)…", keys: ["⌘", ","], notificationName: .triggerPreferences),
         ShortcutEntry(title: PikaText.textMenuQuit, keys: ["⌘", "Q"], notificationName: nil),
     ]),
-]
+] }
 
 // MARK: - URL Triggers
 
