@@ -109,6 +109,8 @@
 		EABAEAE0284D50D1000716AE /* ComplianceButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = EABAEADF284D50D1000716AE /* ComplianceButtons.swift */; };
 		EACA8A45260501210064035C /* Exporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EACA8A44260501210064035C /* Exporter.swift */; };
 		EAD0B6CC259CED1C00FA2F67 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6CB259CED1C00FA2F67 /* AppDelegate.swift */; };
+		CC3000000000000000000201 /* AppDelegate+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3000000000000000000200 /* AppDelegate+Actions.swift */; };
+		CC3000000000000000000202 /* AppDelegate+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3000000000000000000200 /* AppDelegate+Actions.swift */; };
 		CCFEED0002000000000000A2 /* PikaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFEED0001000000000000A1 /* PikaApp.swift */; };
 		CCFEED0003000000000000A3 /* PikaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFEED0001000000000000A1 /* PikaApp.swift */; };
 		CCFEED0011000000000000B2 /* PopoverContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFEED0010000000000000B1 /* PopoverContentView.swift */; };
@@ -338,6 +340,7 @@
 		EACA8A44260501210064035C /* Exporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exporter.swift; sourceTree = "<group>"; };
 		EAD0B6C8259CED1C00FA2F67 /* Pika.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pika.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAD0B6CB259CED1C00FA2F67 /* AppDelegate.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; tabWidth = 4; };
+		CC3000000000000000000200 /* AppDelegate+Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Actions.swift"; sourceTree = "<group>"; };
 		CCFEED0001000000000000A1 /* PikaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PikaApp.swift; sourceTree = "<group>"; };
 		CCFEED0010000000000000B1 /* PopoverContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverContentView.swift; sourceTree = "<group>"; };
 		CCFEED0020000000000000C1 /* PikaShortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PikaShortcuts.swift; sourceTree = "<group>"; };
@@ -475,6 +478,7 @@
 			isa = PBXGroup;
 			children = (
 				EAD0B6CB259CED1C00FA2F67 /* AppDelegate.swift */,
+				CC3000000000000000000200 /* AppDelegate+Actions.swift */,
 				CCFEED0001000000000000A1 /* PikaApp.swift */,
 				EA0C525725AB576C00AFF716 /* Assets */,
 				EA0C525925AB57AE00AFF716 /* Constants */,
@@ -979,6 +983,7 @@
 				EA0C525025AA729300AFF716 /* Visualisation.swift in Sources */,
 				EAD0B6FB259CF29300FA2F67 /* ContentView.swift in Sources */,
 				EAD0B6CC259CED1C00FA2F67 /* AppDelegate.swift in Sources */,
+				CC3000000000000000000201 /* AppDelegate+Actions.swift in Sources */,
 				CCFEED0002000000000000A2 /* PikaApp.swift in Sources */,
 				CCFEED0011000000000000B2 /* PopoverContentView.swift in Sources */,
 				CCFEED0021000000000000C2 /* PikaShortcuts.swift in Sources */,
@@ -1088,6 +1093,7 @@
 				DEC0FACE0000000000000003 /* ColorDecomposition.swift in Sources */,
 				EAE23DB32D032A38005BB270 /* ContentView.swift in Sources */,
 				EAE23DB42D032A38005BB270 /* AppDelegate.swift in Sources */,
+				CC3000000000000000000202 /* AppDelegate+Actions.swift in Sources */,
 				CCFEED0003000000000000A3 /* PikaApp.swift in Sources */,
 				CCFEED0012000000000000B3 /* PopoverContentView.swift in Sources */,
 				CCFEED0022000000000000C3 /* PikaShortcuts.swift in Sources */,
