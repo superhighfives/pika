@@ -13,6 +13,10 @@
 		CC1100000000000000000201 /* WindowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1100000000000000000101 /* WindowCoordinator.swift */; };
 		CC1100000000000000000202 /* StatusBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1100000000000000000102 /* StatusBarController.swift */; };
 		CC3000000000000000000101 /* UpdateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3000000000000000000100 /* UpdateController.swift */; };
+		CC3000000000000000000141 /* PikaUpdateDriver+Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3000000000000000000140 /* PikaUpdateDriver+Debug.swift */; };
+		CC3000000000000000000142 /* PikaUpdateDriver+Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3000000000000000000140 /* PikaUpdateDriver+Debug.swift */; };
+		CC3000000000000000000131 /* PikaUpdateDriver+StatusMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3000000000000000000130 /* PikaUpdateDriver+StatusMenu.swift */; };
+		CC3000000000000000000132 /* PikaUpdateDriver+StatusMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3000000000000000000130 /* PikaUpdateDriver+StatusMenu.swift */; };
 		CC3000000000000000000102 /* UpdateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3000000000000000000100 /* UpdateController.swift */; };
 		CC3000000000000000000111 /* PikaUpdateDriverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3000000000000000000110 /* PikaUpdateDriverTests.swift */; };
 		CC1100000000000000000203 /* URLSchemeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1100000000000000000100 /* URLSchemeHandler.swift */; };
@@ -135,6 +139,8 @@
 		EAD0B713259CFD2000FA2F67 /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B712259CFD2000FA2F67 /* Defaults.swift */; };
 		EAD0B718259D146200FA2F67 /* EyedropperButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B717259D146200FA2F67 /* EyedropperButtonStyle.swift */; };
 		EAD0B71C259D151400FA2F67 /* NavigationMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B71B259D151400FA2F67 /* NavigationMenu.swift */; };
+		CC3000000000000000000121 /* UpdateControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3000000000000000000120 /* UpdateControl.swift */; };
+		CC3000000000000000000122 /* UpdateControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3000000000000000000120 /* UpdateControl.swift */; };
 		EAE23DA72D032A38005BB270 /* MetalShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA72BB8A25A537C3008205E7 /* MetalShader.swift */; };
 		EAE23DA82D032A38005BB270 /* Sequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EF1D9A25B7AA18001102FA /* Sequence.swift */; };
 		EAE23DA92D032A38005BB270 /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6F4259CF29300FA2F67 /* PreferencesView.swift */; };
@@ -242,6 +248,8 @@
 		CC1100000000000000000101 /* WindowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowCoordinator.swift; sourceTree = "<group>"; };
 		CC1100000000000000000102 /* StatusBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarController.swift; sourceTree = "<group>"; };
 		CC3000000000000000000100 /* UpdateController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateController.swift; sourceTree = "<group>"; };
+		CC3000000000000000000140 /* PikaUpdateDriver+Debug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PikaUpdateDriver+Debug.swift"; sourceTree = "<group>"; };
+		CC3000000000000000000130 /* PikaUpdateDriver+StatusMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PikaUpdateDriver+StatusMenu.swift"; sourceTree = "<group>"; };
 		CC3000000000000000000110 /* PikaUpdateDriverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PikaUpdateDriverTests.swift; sourceTree = "<group>"; };
 
 		CC20000000000000000000D2 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_FRAMEWORKS_DIR; };
@@ -362,6 +370,7 @@
 		EAD0B712259CFD2000FA2F67 /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
 		EAD0B717259D146200FA2F67 /* EyedropperButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyedropperButtonStyle.swift; sourceTree = "<group>"; };
 		EAD0B71B259D151400FA2F67 /* NavigationMenu.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = NavigationMenu.swift; sourceTree = "<group>"; tabWidth = 4; };
+		CC3000000000000000000120 /* UpdateControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateControl.swift; sourceTree = "<group>"; };
 		EAE23DE82D032A38005BB270 /* Pika.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pika.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAE2EB9B2D03697600FA9BC9 /* Info (Mac App Store).plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info (Mac App Store).plist"; sourceTree = "<group>"; };
 		EAE2EB9E2D03C3DA00FA9BC9 /* LookUpAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookUpAPI.swift; sourceTree = "<group>"; };
@@ -657,6 +666,7 @@
 			isa = PBXGroup;
 			children = (
 				EAD0B71B259D151400FA2F67 /* NavigationMenu.swift */,
+				CC3000000000000000000120 /* UpdateControl.swift */,
 				EA0C525F25AB5A2B00AFF716 /* NavigationMenuItems.swift */,
 			);
 			name = Navigation;
@@ -718,6 +728,8 @@
 			children = (
 				CC1100000000000000000102 /* StatusBarController.swift */,
 				CC3000000000000000000100 /* UpdateController.swift */,
+				CC3000000000000000000140 /* PikaUpdateDriver+Debug.swift */,
+				CC3000000000000000000130 /* PikaUpdateDriver+StatusMenu.swift */,
 			);
 			name = StatusBar;
 			sourceTree = "<group>";
@@ -1006,6 +1018,7 @@
 				EA03E3A12F5E619800998D8B /* ColorPreview.swift in Sources */,
 				EA635DF125B5A6D80014D91A /* Toast.swift in Sources */,
 				EAD0B71C259D151400FA2F67 /* NavigationMenu.swift in Sources */,
+				CC3000000000000000000121 /* UpdateControl.swift in Sources */,
 				22FE80B325BA0F820063759E /* KeyboardShortcutItem.swift in Sources */,
 				F8ABAC5A2EAAD0DF008CD152 /* ColorPickOverlay.swift in Sources */,
 				EAD0B6F8259CF29300FA2F67 /* AboutView.swift in Sources */,
@@ -1049,6 +1062,8 @@
 				CC1100000000000000000201 /* WindowCoordinator.swift in Sources */,
 				CC1100000000000000000202 /* StatusBarController.swift in Sources */,
 				CC3000000000000000000101 /* UpdateController.swift in Sources */,
+				CC3000000000000000000141 /* PikaUpdateDriver+Debug.swift in Sources */,
+				CC3000000000000000000131 /* PikaUpdateDriver+StatusMenu.swift in Sources */,
 				EAD0B6FE259CF29C00FA2F67 /* Constants.swift in Sources */,
 				50635DBB6B3442498CD8F803 /* PikaText.swift in Sources */,
 			);
@@ -1111,6 +1126,7 @@
 				EAE23DC12D032A38005BB270 /* ConditionalModifier.swift in Sources */,
 				EAE23DC22D032A38005BB270 /* Toast.swift in Sources */,
 				EAE23DC32D032A38005BB270 /* NavigationMenu.swift in Sources */,
+				CC3000000000000000000122 /* UpdateControl.swift in Sources */,
 				EAE23DC42D032A38005BB270 /* KeyboardShortcutItem.swift in Sources */,
 				EAE23DC52D032A38005BB270 /* AboutView.swift in Sources */,
 				E2298A573187471D9484E53E /* HelpView.swift in Sources */,
@@ -1141,6 +1157,8 @@
 				CC1100000000000000000204 /* WindowCoordinator.swift in Sources */,
 				CC1100000000000000000205 /* StatusBarController.swift in Sources */,
 				CC3000000000000000000102 /* UpdateController.swift in Sources */,
+				CC3000000000000000000142 /* PikaUpdateDriver+Debug.swift in Sources */,
+				CC3000000000000000000132 /* PikaUpdateDriver+StatusMenu.swift in Sources */,
 				EAE23DD72D032A38005BB270 /* Constants.swift in Sources */,
 				C39625300DCB48C7BC20CB98 /* PikaText.swift in Sources */,
 			);

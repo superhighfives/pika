@@ -27,6 +27,11 @@ enum PikaConstants {
     static let gitHubIssueURL = "https://github.com/superhighfives/pika/issues/new/choose"
     static let charlieGleasonWebsiteURL = "https://charliegleason.com"
     static let pikaHelpURL = "https://superhighfives.com/pika/help"
+    /// The changelog entry for one version, for the update control's "What's new" link.
+    static func changelogURL(version: String) -> URL? {
+        URL(string: "https://superhighfives.com/pika/changelog#\(version)")
+    }
+
     static let macAppStoreURL = "https://apps.apple.com/us/app/pika/id6739170421"
 
     // Initial colors

@@ -205,6 +205,9 @@ struct ContentView: View {
                     ColorHistoryDrawer(foreground: eyedroppers.foreground, background: eyedroppers.background)
                         .transition(.move(edge: .bottom).combined(with: .opacity))
                 }
+                #if TARGET_SPARKLE
+                    InlineUpdateControl(placement: .bar)
+                #endif
             }
             .frame(width: geo.size.width, height: geo.size.height, alignment: .top)
             .environment(\.pikaAdaptiveVisibility, PikaAdaptiveVisibility(

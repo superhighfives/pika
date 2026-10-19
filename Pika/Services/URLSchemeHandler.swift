@@ -43,9 +43,37 @@ final class URLSchemeHandler: NSObject {
         case "swap": NSApp.sendAction(#selector(AppDelegate.triggerSwap), to: nil, from: nil)
         case "undo": NSApp.sendAction(#selector(AppDelegate.triggerUndo), to: nil, from: nil)
         case "redo": NSApp.sendAction(#selector(AppDelegate.triggerRedo), to: nil, from: nil)
+        #if DEBUG && TARGET_SPARKLE
+            case "debug": handleDebug(task: task, arg1: arg1)
+        #endif
         default: break
         }
     }
+
+    #if DEBUG && TARGET_SPARKLE
+        /// Debug-only hooks for checking the inline update control:
+        /// - `pika://debug/update/<state>`: available, downloading, ready, installing, checking,
+        ///   uptodate, failed or idle, with stand-in replies (see `PikaUpdateDriver.debugShow`)
+        /// - `pika://debug/update/scheduled`: a real scheduled-style check against the feed now
+        /// - `pika://debug/placement/<toolbar|bar|menu>`: where the control lives
+        private func handleDebug(task: String?, arg1: String?) {
+            // Apple events arrive on the main thread.
+            MainActor.assumeIsolated {
+                guard let controller = AppDelegate.shared?.updateController, let arg1 else { return }
+                switch task {
+                case "update" where arg1 == "scheduled":
+                    controller.updater.checkForUpdatesInBackground()
+                case "update":
+                    controller.driver.debugShow(arg1)
+                case "placement":
+                    guard UpdatePlacement(rawValue: arg1) != nil else { return }
+                    UserDefaults.standard.set(arg1, forKey: UpdatePlacement.debugDefaultsKey)
+                default:
+                    break
+                }
+            }
+        }
+    #endif
 
     private func handleFormat(task: String?) {
         if let task, let format = ColorFormat.withLabel(task) {

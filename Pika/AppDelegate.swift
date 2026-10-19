@@ -1,4 +1,5 @@
 import Cocoa
+import Combine
 import Defaults
 import KeyboardShortcuts
 import LaunchAtLogin
@@ -25,6 +26,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         /// Sparkle 2 updater, with updates shown inline rather than in Sparkle's windows.
         /// Created and started on launch so scheduled update checks start with the app.
         private(set) var updateController: UpdateController!
+        private var updateAttention: AnyCancellable?
     #endif
 
     func setupAppMode() {
@@ -93,6 +95,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         eyedroppers = Eyedroppers()
         setupInterface()
+        #if TARGET_SPARKLE
+            setupUpdateStatusBar()
+        #endif
         setupAppMode()
         registerTogglePikaShortcut()
         presentSplashIfNeeded()
@@ -115,6 +120,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             }
         #endif
     }
+
+    #if TARGET_SPARKLE
+        /// Flags the status bar icon for an update found while Pika wasn't showing, and puts the
+        /// update control in the status bar menu when that's its placement.
+        @MainActor
+        private func setupUpdateStatusBar() {
+            let driver = updateController.driver
+            updateAttention = driver.$needsAttention
+                .removeDuplicates()
+                .sink { [weak self] in self?.statusBarController.setNeedsAttention($0) }
+            statusBarController.leadingMenuItems = {
+                UpdatePlacement.current == .menu ? driver.statusMenuItems : []
+            }
+        }
+    #endif
 
     private func setupInterface() {
         windowCoordinator.setupMainWindow(eyedroppers: eyedroppers)

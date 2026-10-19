@@ -725,3 +725,42 @@
 
 /* Pick a foreground then background pair */
 "color.pick.pair" = "Pick pair";
+
+/* Inline update control: an update was found */
+"update.available" = "Update available";
+
+/* Inline update control: start downloading the update */
+"update.update" = "Update";
+
+/* Inline update control: skip this version */
+"update.ignore" = "Ignore";
+
+/* Inline update control: install the downloaded update and relaunch */
+"update.restart" = "Restart to update";
+
+/* Inline update control: link to the release notes */
+"update.whats_new" = "What’s new";
+
+/* Inline update control: no newer version was found */
+"update.up_to_date" = "Up to date";
+
+/* Inline update control: the update failed */
+"update.failed" = "Update failed";
+
+/* Inline update control: retry after a failure */
+"update.try_again" = "Try again";
+
+/* Inline update control: a check by hand is in progress */
+"update.checking" = "Checking for updates…";
+
+/* Inline update control: the update is downloading */
+"update.downloading" = "Downloading update…";
+
+/* Inline update control: the update is installing */
+"update.installing" = "Installing update…";
+
+/* Inline update control: dismiss a message */
+"update.dismiss" = "Dismiss";
+
+/* Inline update control: version number shown in the tooltip */
+"update.version" = "Version %@";

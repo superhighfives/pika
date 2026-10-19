@@ -13,6 +13,12 @@ class StatusBarController: NSObject, NSMenuDelegate, NSPopoverDelegate {
     /// Called when the user left-clicks the status bar icon in menubar mode.
     var onToggle: (() -> Void)?
 
+    /// Items to show at the top of the status bar menu (the update control, when it lives
+    /// there). Asked for each time the menu opens.
+    var leadingMenuItems: (@MainActor () -> [NSMenuItem])?
+
+    private static let leadingMenuItemTag = 7001
+
     /// Whether the popover is currently on screen. Used to scope popover-mode
     /// keyboard shortcut dispatch so it only fires while the popover is showing,
     /// not when Preferences/Help/About happens to be the focused window.
@@ -43,6 +49,30 @@ class StatusBarController: NSObject, NSMenuDelegate, NSPopoverDelegate {
                 self?.popover?.performClose(nil)
             }
         }.tieToLifetime(of: self)
+    }
+
+    /// Flags the icon with a dot, for an update found while no Pika window was showing.
+    func setNeedsAttention(_ needsAttention: Bool) {
+        guard let button = statusBarItem?.button, let icon = NSImage(named: "StatusBarIcon") else { return }
+        button.image = needsAttention ? Self.iconWithDot(icon) : icon
+    }
+
+    /// The template icon with a small dot cut into its top-right corner.
+    private static func iconWithDot(_ icon: NSImage) -> NSImage {
+        let image = NSImage(size: icon.size, flipped: false) { rect in
+            icon.draw(in: rect)
+            let diameter = (rect.width * 0.36).rounded()
+            let dot = NSRect(x: rect.maxX - diameter, y: rect.maxY - diameter, width: diameter, height: diameter)
+            // Clear a ring around the dot so it reads against the icon beneath.
+            NSGraphicsContext.current?.compositingOperation = .clear
+            NSBezierPath(ovalIn: dot.insetBy(dx: -1.5, dy: -1.5)).fill()
+            NSGraphicsContext.current?.compositingOperation = .sourceOver
+            NSColor.black.setFill()
+            NSBezierPath(ovalIn: dot).fill()
+            return true
+        }
+        image.isTemplate = true
+        return image
     }
 
     private var isStatusBarItemVisible: Bool {
@@ -186,5 +216,20 @@ class StatusBarController: NSObject, NSMenuDelegate, NSPopoverDelegate {
 
     func menuDidClose(_: NSMenu) {
         statusBarItem.menu = nil
+    }
+
+    func menuNeedsUpdate(_ menu: NSMenu) {
+        // AppKit asks on the main thread as the menu opens.
+        MainActor.assumeIsolated {
+            for item in menu.items where item.tag == Self.leadingMenuItemTag {
+                menu.removeItem(item)
+            }
+            let items = leadingMenuItems?() ?? []
+            guard !items.isEmpty else { return }
+            for (index, item) in (items + [.separator()]).enumerated() {
+                item.tag = Self.leadingMenuItemTag
+                menu.insertItem(item, at: index)
+            }
+        }
     }
 }

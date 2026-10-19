@@ -317,6 +317,7 @@
         let driver = PikaUpdateDriver()
         let updater: SPUUpdater
         private var retryObservation: NSKeyValueObservation?
+        private var seenObservation: NSObjectProtocol?
 
         init(delegate: SPUUpdaterDelegate) {
             updater = SPUUpdater(
@@ -326,6 +327,23 @@
                 delegate: delegate
             )
             driver.checkForUpdates = { [weak self] in self?.checkForUpdatesWhenReady() }
+            observeSeen()
+        }
+
+        /// The control counts as seen once Pika's window or popover comes to the front with it
+        /// showing, which clears the status bar flag.
+        private func observeSeen() {
+            seenObservation = NotificationCenter.default.addObserver(
+                forName: NSWindow.didBecomeKeyNotification, object: nil, queue: .main
+            ) { [weak self] notification in
+                MainActor.assumeIsolated {
+                    guard let window = notification.object as? NSWindow,
+                          let appDelegate = AppDelegate.shared else { return }
+                    let showsControl = window === appDelegate.windowCoordinator.pikaWindow
+                        || appDelegate.statusBarController.isPopoverShown
+                    if showsControl, UpdatePlacement.current != .menu { self?.driver.markSeen() }
+                }
+            }
         }
 
         /// Starts the updater, which schedules automatic checks.
