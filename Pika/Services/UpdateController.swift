@@ -96,9 +96,12 @@
             resetPending()
             self.acknowledgement = acknowledgement
             state = .upToDate
-            upToDateTimer = Timer.scheduledTimer(withTimeInterval: upToDateDuration, repeats: false) { [weak self] _ in
+            let timer = Timer(timeInterval: upToDateDuration, repeats: false) { [weak self] _ in
                 MainActor.assumeIsolated { self?.acknowledge() }
             }
+            // Common modes, so it still fades while a menu is open (event tracking).
+            RunLoop.main.add(timer, forMode: .common)
+            upToDateTimer = timer
         }
 
         func updaterError(message: String, acknowledgement: @escaping () -> Void) {

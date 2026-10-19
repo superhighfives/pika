@@ -25,7 +25,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     #if TARGET_SPARKLE
         /// Sparkle 2 updater, with updates shown inline rather than in Sparkle's windows.
         /// Created and started on launch so scheduled update checks start with the app.
-        private(set) var updateController: UpdateController!
+        /// Optional rather than implicitly unwrapped: it's created on launch, so anything that
+        /// reaches it earlier gets nil instead of a crash.
+        private(set) var updateController: UpdateController?
         private var updateAttention: AnyCancellable?
     #endif
 
@@ -82,7 +84,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         migrateHistoryToPalettes()
         removeUpdatesMenuItemIfNeeded()
         #if TARGET_SPARKLE
-            updateController = UpdateController(delegate: self)
+            let updateController = UpdateController(delegate: self)
             updateController.driver.showUpdateInFocusHandler = { [weak self] in
                 guard let self else { return }
                 showMainInterface(self)
@@ -91,6 +93,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             // still read it. The feed now comes from `feedURLString(for:)`, so drop the stale copy.
             updateController.updater.clearFeedURLFromUserDefaults()
             updateController.start()
+            self.updateController = updateController
         #endif
 
         eyedroppers = Eyedroppers()
@@ -125,7 +128,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         /// Flags the status bar icon for an update found while Pika wasn't showing.
         @MainActor
         private func setupUpdateStatusBar() {
-            updateAttention = updateController.driver.$needsAttention
+            updateAttention = PikaUpdateDriver.shared.$needsAttention
                 .removeDuplicates()
                 .sink { [weak self] in self?.statusBarController.setNeedsAttention($0) }
         }
@@ -475,7 +478,7 @@ extension AppDelegate {
         /// to show it.
         @IBAction func checkForUpdates(_: Any) {
             showMainInterface(self)
-            updateController.checkForUpdates()
+            updateController?.checkForUpdates()
         }
     #endif
 
