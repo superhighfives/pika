@@ -1,90 +1,23 @@
 #if TARGET_SPARKLE
     import SwiftUI
 
-    /// Where the inline update control lives. While the placement is being chosen, a debug
-    /// build can switch between them live (`pika://debug/placement/<name>`); a release build
-    /// always uses the toolbar.
-    enum UpdatePlacement: String, CaseIterable {
-        /// A capsule in the toolbar of the window and the popover.
-        case toolbar
-        /// A slim bar along the bottom of the window and the popover.
-        case bar
-        /// Items at the top of the status bar menu only.
-        case menu
-
-        static let debugDefaultsKey = "debugUpdatePlacement"
-
-        static var current: UpdatePlacement {
-            #if DEBUG
-                UserDefaults.standard.string(forKey: debugDefaultsKey).flatMap(Self.init) ?? .toolbar
-            #else
-                .toolbar
-            #endif
-        }
-    }
-
-    /// The live update control for one placement, or nothing if that placement isn't the
-    /// current one (or there's no updater, as in previews).
+    /// The live update control along the bottom of the window and the popover.
     struct InlineUpdateControl: View {
-        let placement: UpdatePlacement
-        @AppStorage(UpdatePlacement.debugDefaultsKey) private var placementName = UpdatePlacement.toolbar.rawValue
-
         var body: some View {
-            if isCurrent, let driver = AppDelegate.shared?.updateController?.driver {
-                UpdateControl(driver: driver, style: placement == .bar ? .bar : .capsule)
-            }
-        }
-
-        /// Reads the stored name (not `UpdatePlacement.current`) so the view updates when a
-        /// debug build switches placement.
-        private var isCurrent: Bool {
-            #if DEBUG
-                placementName == placement.rawValue
-            #else
-                placement == .toolbar
-            #endif
+            UpdateControl(driver: .shared)
         }
     }
 
     /// Shows the driver's `UpdateState` and answers it: Update or Ignore, a spinner while
     /// downloading, Restart once it's ready, and a failure that stays until it's dismissed.
     struct UpdateControl: View {
-        enum Style {
-            case capsule
-            case bar
-        }
-
         @ObservedObject var driver: PikaUpdateDriver
-        let style: Style
 
         var body: some View {
             Group {
-                if driver.state != .idle {
-                    switch style {
-                    case .capsule: capsule
-                    case .bar: bar
-                    }
-                }
+                if driver.state != .idle { bar }
             }
             .animation(.easeInOut(duration: 0.2), value: driver.state)
-        }
-
-        // MARK: - Styles
-
-        private var capsule: some View {
-            HStack(spacing: 6) {
-                icon
-                title
-                actions
-            }
-            .font(.system(size: 11, weight: .medium))
-            .padding(.leading, 8)
-            .padding(.trailing, hasActions ? 3 : 10)
-            .frame(height: 22)
-            .background(.regularMaterial, in: Capsule())
-            .overlay(Capsule().strokeBorder(Color.primary.opacity(0.12)))
-            .fixedSize()
-            .transition(.scale(scale: 0.9).combined(with: .opacity))
         }
 
         private var bar: some View {
@@ -98,7 +31,7 @@
                             .foregroundStyle(.secondary)
                     }
                     Spacer(minLength: 8)
-                    if let progress = linearProgress {
+                    if let progress {
                         ProgressView(value: progress)
                             .progressViewStyle(.linear)
                             .controlSize(.small)
@@ -120,20 +53,8 @@
             switch driver.state {
             case .idle:
                 EmptyView()
-            case .checking, .installing:
+            case .checking, .installing, .downloading, .extracting:
                 ProgressView().controlSize(.mini)
-            case let .downloading(progress):
-                if style == .capsule, let progress {
-                    ProgressView(value: progress).progressViewStyle(.circular).controlSize(.mini)
-                } else {
-                    ProgressView().controlSize(.mini)
-                }
-            case let .extracting(progress):
-                if style == .capsule {
-                    ProgressView(value: progress).progressViewStyle(.circular).controlSize(.mini)
-                } else {
-                    ProgressView().controlSize(.mini)
-                }
             case .available:
                 symbol("arrow.down.circle.fill", .accentColor)
             case .readyToRestart:
@@ -182,15 +103,8 @@
             }
         }
 
-        private var hasActions: Bool {
-            switch driver.state {
-            case .available, .readyToRestart, .failed: true
-            default: false
-            }
-        }
-
-        /// The bar shows download progress as a line; the capsule fills its spinner instead.
-        private var linearProgress: Double? {
+        /// Download progress, once Sparkle knows the expected length.
+        private var progress: Double? {
             switch driver.state {
             case let .downloading(progress): progress
             case let .extracting(progress): progress
@@ -233,7 +147,7 @@
         }
     }
 
-    /// A compact capsule button sized for the toolbar and the bar alike.
+    /// A compact capsule button sized for the bar.
     private struct ActionButton: View {
         let title: String
         var prominent = false
@@ -280,7 +194,7 @@
     // MARK: - Previews
 
     #if DEBUG
-        /// Every state the control can show, in both styles.
+        /// Every state the control can show.
         struct UpdateControl_Previews: PreviewProvider {
             private static let states: [(String, (PikaUpdateDriver) -> Void)] = [
                 ("checking", { $0.userInitiatedCheckStarted() }),
@@ -300,24 +214,13 @@
             }
 
             static var previews: some View {
-                Group {
-                    VStack(alignment: .trailing, spacing: 10) {
-                        ForEach(states, id: \.0) { _, setUp in
-                            UpdateControl(driver: driver(setUp), style: .capsule)
-                        }
+                VStack(spacing: 10) {
+                    ForEach(states, id: \.0) { _, setUp in
+                        UpdateControl(driver: driver(setUp))
                     }
-                    .padding()
-                    .previewDisplayName("Capsule")
-
-                    VStack(spacing: 10) {
-                        ForEach(states, id: \.0) { _, setUp in
-                            UpdateControl(driver: driver(setUp), style: .bar)
-                        }
-                    }
-                    .frame(width: 400)
-                    .padding(.vertical)
-                    .previewDisplayName("Bar")
                 }
+                .frame(width: 400)
+                .padding(.vertical)
             }
         }
     #endif

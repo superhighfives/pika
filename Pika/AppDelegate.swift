@@ -122,17 +122,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     #if TARGET_SPARKLE
-        /// Flags the status bar icon for an update found while Pika wasn't showing, and puts the
-        /// update control in the status bar menu when that's its placement.
+        /// Flags the status bar icon for an update found while Pika wasn't showing.
         @MainActor
         private func setupUpdateStatusBar() {
-            let driver = updateController.driver
-            updateAttention = driver.$needsAttention
+            updateAttention = updateController.driver.$needsAttention
                 .removeDuplicates()
                 .sink { [weak self] in self?.statusBarController.setNeedsAttention($0) }
-            statusBarController.leadingMenuItems = {
-                UpdatePlacement.current == .menu ? driver.statusMenuItems : []
-            }
         }
     #endif
 

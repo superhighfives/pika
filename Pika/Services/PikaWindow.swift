@@ -37,7 +37,7 @@ class PikaWindow {
         window.toolbar = NSToolbar()
         window.toolbarStyle = .unifiedCompact
 
-        let toolbarButtons = SelfSizingHostingView(rootView: NavigationMenu())
+        let toolbarButtons = NSHostingView(rootView: NavigationMenu())
         toolbarButtons.frame.size = toolbarButtons.fittingSize
         let titlebarAccessory = NSTitlebarAccessoryViewController()
         titlebarAccessory.view = toolbarButtons
@@ -92,19 +92,5 @@ class PikaWindow {
         window.isReleasedWhenClosed = false
 
         return window
-    }
-}
-
-/// A hosting view that keeps its frame at its content's fitting size. A titlebar accessory
-/// takes its size from the view's frame, so without this the toolbar couldn't grow to fit the
-/// update control when it appears.
-final class SelfSizingHostingView<Content: View>: NSHostingView<Content> {
-    override func invalidateIntrinsicContentSize() {
-        super.invalidateIntrinsicContentSize()
-        DispatchQueue.main.async { [weak self] in
-            guard let self else { return }
-            let size = fittingSize
-            if frame.size != size { setFrameSize(size) }
-        }
     }
 }

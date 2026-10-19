@@ -15,8 +15,6 @@
 		CC3000000000000000000101 /* UpdateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3000000000000000000100 /* UpdateController.swift */; };
 		CC3000000000000000000141 /* PikaUpdateDriver+Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3000000000000000000140 /* PikaUpdateDriver+Debug.swift */; };
 		CC3000000000000000000142 /* PikaUpdateDriver+Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3000000000000000000140 /* PikaUpdateDriver+Debug.swift */; };
-		CC3000000000000000000131 /* PikaUpdateDriver+StatusMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3000000000000000000130 /* PikaUpdateDriver+StatusMenu.swift */; };
-		CC3000000000000000000132 /* PikaUpdateDriver+StatusMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3000000000000000000130 /* PikaUpdateDriver+StatusMenu.swift */; };
 		CC3000000000000000000102 /* UpdateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3000000000000000000100 /* UpdateController.swift */; };
 		CC3000000000000000000111 /* PikaUpdateDriverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3000000000000000000110 /* PikaUpdateDriverTests.swift */; };
 		CC1100000000000000000203 /* URLSchemeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1100000000000000000100 /* URLSchemeHandler.swift */; };
@@ -249,7 +247,6 @@
 		CC1100000000000000000102 /* StatusBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarController.swift; sourceTree = "<group>"; };
 		CC3000000000000000000100 /* UpdateController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateController.swift; sourceTree = "<group>"; };
 		CC3000000000000000000140 /* PikaUpdateDriver+Debug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PikaUpdateDriver+Debug.swift"; sourceTree = "<group>"; };
-		CC3000000000000000000130 /* PikaUpdateDriver+StatusMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PikaUpdateDriver+StatusMenu.swift"; sourceTree = "<group>"; };
 		CC3000000000000000000110 /* PikaUpdateDriverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PikaUpdateDriverTests.swift; sourceTree = "<group>"; };
 
 		CC20000000000000000000D2 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_FRAMEWORKS_DIR; };
@@ -729,7 +726,6 @@
 				CC1100000000000000000102 /* StatusBarController.swift */,
 				CC3000000000000000000100 /* UpdateController.swift */,
 				CC3000000000000000000140 /* PikaUpdateDriver+Debug.swift */,
-				CC3000000000000000000130 /* PikaUpdateDriver+StatusMenu.swift */,
 			);
 			name = StatusBar;
 			sourceTree = "<group>";
@@ -1063,7 +1059,6 @@
 				CC1100000000000000000202 /* StatusBarController.swift in Sources */,
 				CC3000000000000000000101 /* UpdateController.swift in Sources */,
 				CC3000000000000000000141 /* PikaUpdateDriver+Debug.swift in Sources */,
-				CC3000000000000000000131 /* PikaUpdateDriver+StatusMenu.swift in Sources */,
 				EAD0B6FE259CF29C00FA2F67 /* Constants.swift in Sources */,
 				50635DBB6B3442498CD8F803 /* PikaText.swift in Sources */,
 			);
@@ -1158,7 +1153,6 @@
 				CC1100000000000000000205 /* StatusBarController.swift in Sources */,
 				CC3000000000000000000102 /* UpdateController.swift in Sources */,
 				CC3000000000000000000142 /* PikaUpdateDriver+Debug.swift in Sources */,
-				CC3000000000000000000132 /* PikaUpdateDriver+StatusMenu.swift in Sources */,
 				EAE23DD72D032A38005BB270 /* Constants.swift in Sources */,
 				C39625300DCB48C7BC20CB98 /* PikaText.swift in Sources */,
 			);

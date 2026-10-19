@@ -17,11 +17,6 @@ struct NavigationMenu: View {
 
     var body: some View {
         HStack(spacing: 4.0) {
-            #if TARGET_SPARKLE
-                InlineUpdateControl(placement: .toolbar)
-                    .padding(.trailing, 6.0)
-            #endif
-
             Picker(PikaText.textFormatTitle, selection: $colorFormat) {
                 ForEach(ColorFormat.allCases, id: \.self) { value in
                     Text(value.rawValue)

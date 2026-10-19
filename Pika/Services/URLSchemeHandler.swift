@@ -55,7 +55,6 @@ final class URLSchemeHandler: NSObject {
         /// - `pika://debug/update/<state>`: available, downloading, ready, installing, checking,
         ///   uptodate, failed or idle, with stand-in replies (see `PikaUpdateDriver.debugShow`)
         /// - `pika://debug/update/scheduled`: a real scheduled-style check against the feed now
-        /// - `pika://debug/placement/<toolbar|bar|menu>`: where the control lives
         private func handleDebug(task: String?, arg1: String?) {
             // Apple events arrive on the main thread.
             MainActor.assumeIsolated {
@@ -65,9 +64,6 @@ final class URLSchemeHandler: NSObject {
                     controller.updater.checkForUpdatesInBackground()
                 case "update":
                     controller.driver.debugShow(arg1)
-                case "placement":
-                    guard UpdatePlacement(rawValue: arg1) != nil else { return }
-                    UserDefaults.standard.set(arg1, forKey: UpdatePlacement.debugDefaultsKey)
                 default:
                     break
                 }

@@ -206,7 +206,7 @@ struct ContentView: View {
                         .transition(.move(edge: .bottom).combined(with: .opacity))
                 }
                 #if TARGET_SPARKLE
-                    InlineUpdateControl(placement: .bar)
+                    InlineUpdateControl()
                 #endif
             }
             .frame(width: geo.size.width, height: geo.size.height, alignment: .top)

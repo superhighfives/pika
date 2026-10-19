@@ -45,6 +45,10 @@
     /// update only sets `needsAttention`, which flags the status bar icon.
     @MainActor
     final class PikaUpdateDriver: NSObject, ObservableObject {
+        /// The app's driver. It exists before the updater does, so views can observe it from
+        /// their first render whatever order launch sets things up in.
+        static let shared = PikaUpdateDriver()
+
         @Published private(set) var state: UpdateState = .idle
 
         /// Set when a scheduled check finds an update, until the control has been seen.
@@ -314,7 +318,7 @@
     /// beta feed.
     @MainActor
     final class UpdateController {
-        let driver = PikaUpdateDriver()
+        let driver = PikaUpdateDriver.shared
         let updater: SPUUpdater
         private var retryObservation: NSKeyValueObservation?
         private var seenObservation: NSObjectProtocol?
@@ -341,7 +345,7 @@
                           let appDelegate = AppDelegate.shared else { return }
                     let showsControl = window === appDelegate.windowCoordinator.pikaWindow
                         || appDelegate.statusBarController.isPopoverShown
-                    if showsControl, UpdatePlacement.current != .menu { self?.driver.markSeen() }
+                    if showsControl { self?.driver.markSeen() }
                 }
             }
         }

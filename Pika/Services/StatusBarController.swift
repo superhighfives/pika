@@ -13,12 +13,6 @@ class StatusBarController: NSObject, NSMenuDelegate, NSPopoverDelegate {
     /// Called when the user left-clicks the status bar icon in menubar mode.
     var onToggle: (() -> Void)?
 
-    /// Items to show at the top of the status bar menu (the update control, when it lives
-    /// there). Asked for each time the menu opens.
-    var leadingMenuItems: (@MainActor () -> [NSMenuItem])?
-
-    private static let leadingMenuItemTag = 7001
-
     /// Whether the popover is currently on screen. Used to scope popover-mode
     /// keyboard shortcut dispatch so it only fires while the popover is showing,
     /// not when Preferences/Help/About happens to be the focused window.
@@ -216,20 +210,5 @@ class StatusBarController: NSObject, NSMenuDelegate, NSPopoverDelegate {
 
     func menuDidClose(_: NSMenu) {
         statusBarItem.menu = nil
-    }
-
-    func menuNeedsUpdate(_ menu: NSMenu) {
-        // AppKit asks on the main thread as the menu opens.
-        MainActor.assumeIsolated {
-            for item in menu.items where item.tag == Self.leadingMenuItemTag {
-                menu.removeItem(item)
-            }
-            let items = leadingMenuItems?() ?? []
-            guard !items.isEmpty else { return }
-            for (index, item) in (items + [.separator()]).enumerated() {
-                item.tag = Self.leadingMenuItemTag
-                menu.insertItem(item, at: index)
-            }
-        }
     }
 }
