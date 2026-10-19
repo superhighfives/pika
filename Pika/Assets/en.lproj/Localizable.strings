@@ -218,16 +218,16 @@
 "color.wcag.70" = "WCAG 2 level AAA requires a contrast ratio of at least 7:1 for normal text.";
 
 /* APCA 30 */
-"color.apca.30" = "APCA >= 30 is the minimum contrast for baseline text and non-text content. Suitable for larger text, placeholders, and disabled elements.";
+"color.apca.30" = "APCA Lc 30 is the absolute minimum for any text, and only for text that doesn’t need to be read fluently, like placeholders, disabled controls and copyright notices. Also suits solid icons and other non-text content.";
 
 /* APCA 45 */
-"color.apca.45" = "APCA >= 45 is the minimum contrast for headline text. Suitable for large headings, navigation elements, and important UI components.";
+"color.apca.45" = "APCA Lc 45 is the minimum for large text such as headlines: at least 36px at regular weight, or 24px bold.";
 
 /* APCA 60 */
-"color.apca.60" = "APCA >= 60 is the minimum contrast for title text. Suitable for subheadings, captions, and secondary content that needs to be clearly readable.";
+"color.apca.60" = "APCA Lc 60 is the minimum for content text that isn’t body text, like subheadings and captions: at least 24px at regular weight, or 16px bold.";
 
 /* APCA 75 */
-"color.apca.75" = "APCA >= 75 is the minimum contrast for body text. Suitable for primary content, normal-sized text, and extended reading material.";
+"color.apca.75" = "APCA Lc 75 is the minimum for body text: at least 18px at regular weight, or 14px bold. Lc 90 is preferred for long passages.";
 
 /* Baseline */
 "color.apca.baseline" = "Baseline";
@@ -380,7 +380,7 @@
 "menu.help" = "Help";
 
 /* Help description */
-"help.description" = "Everything you need to know about using Pika, from keyboard shortcuts to URL automation.";
+"help.description" = "Pika picks colours from anywhere on your screen and checks how readable they are together. Here’s how it works.";
 
 /* Keyboard Shortcuts */
 "help.shortcuts" = "Keyboard Shortcuts";
@@ -405,6 +405,69 @@
 
 /* Support on the Mac App Store */
 "help.mas" = "Support on the Mac App Store";
+
+/* Which keyboard shortcuts are global and which need Pika focused */
+"help.shortcuts.description" = "Most shortcuts need Pika in front. Show/hide Pika and Pick pair ([⌥⌘D]) work from any app; set them in Settings → Global Shortcut.";
+
+/* Basics */
+"help.basics" = "Basics";
+
+/* Basics intro: what colour contrast is */
+"help.basics.intro.1" = "Colour contrast is the difference in lightness between text and whatever’s behind it. With too little, words blur into their background. That’s a real problem for people with low vision or colour blindness, and it catches everyone else too, like reading a phone in the sun or a laptop turned down low.";
+
+/* Basics intro: accessibility guidelines */
+"help.basics.intro.2" = "Accessibility guidelines set minimum contrast levels so text stays readable for as many people as possible. WCAG 2 is the standard most guidelines and laws point to, and APCA is a newer method that also weighs up font size and weight. Checking early is much easier than reworking a design later.";
+
+/* Basics intro: where Pika fits */
+"help.basics.intro.3" = "That’s where Pika comes in. Pick a foreground and background from anywhere on your screen, whether it’s a design file, a website or a screenshot, and Pika shows the contrast straight away, alongside the colours in the format you need, ready to copy.";
+
+/* Expand the Basics intro */
+"help.basics.intro.more" = "Read more";
+
+/* Collapse the Basics intro */
+"help.basics.intro.less" = "Show less";
+
+/* Foreground and background */
+"help.basics.pair.title" = "Foreground and background";
+
+/* Foreground and background description */
+"help.basics.pair" = "The foreground is text or an icon; the background is the surface behind it. Press [X] to swap them.";
+
+/* Why check contrast */
+"help.basics.contrast.title" = "Why check contrast";
+
+/* Why check contrast description */
+"help.basics.contrast" = "Low-contrast text is hard to read, especially with low vision, colour blindness or glare.";
+
+/* WCAG and APCA */
+"help.basics.standards.title" = "WCAG and APCA";
+
+/* WCAG and APCA description */
+"help.basics.standards" = "WCAG 2 gives a ratio (AA needs 4.5:1 for text). APCA gives an Lc value that accounts for size and weight, but isn’t a standard yet.";
+
+/* Ways to pick a colour */
+"help.basics.pickers.title" = "Ways to pick a colour";
+
+/* Basic, Pro and system colour picker description */
+"help.basics.pickers" = "Basic uses the macOS sampler. Pro adds a live loupe and needs Screen Recording. [⌘S] opens the macOS colour panel.";
+
+/* Editing values */
+"help.basics.editing.title" = "Editing values";
+
+/* Editing values description */
+"help.basics.editing" = "Click a value to type, drag or two-finger scroll to scrub, and press [↑] or [↓] to step. [⌘Z] undoes.";
+
+/* Colour spaces */
+"help.basics.spaces.title" = "Colour spaces";
+
+/* Colour spaces description */
+"help.basics.spaces" = "sRGB suits the web and most screens. Display P3 covers the more vivid colours of recent Macs. Contrast always uses sRGB.";
+
+/* Link to WCAG contrast guidance */
+"help.reference.wcag" = "Learn about WCAG contrast";
+
+/* Link to APCA guidance */
+"help.reference.apca" = "Learn about APCA";
 
 /* Check for updates */
 "menu.updates" = "Check for updates";

@@ -191,16 +191,16 @@
 "color.wcag.70" = "Le niveau WCAG 2 AAA requiert un contraste d'au moins 7:1 pour un texte normal.";
 
 /* APCA 30 */
-"color.apca.30" = "APCA >= 30 est le contraste minimum pour le texte de base et le contenu non textuel. Convient pour du texte plus grand, des espaces réservés et des éléments désactivés.";
+"color.apca.30" = "APCA Lc 30 est le minimum absolu pour tout texte, et seulement pour un texte qui n’a pas besoin d’être lu de façon fluide, comme les textes indicatifs, les commandes désactivées et les mentions de copyright. Convient aussi aux icônes pleines et aux autres contenus non textuels.";
 
 /* APCA 45 */
-"color.apca.45" = "APCA >= 45 est le contraste minimum pour le texte d'en-tête. Convient pour de grands titres, des éléments de navigation et des composants d'interface importants.";
+"color.apca.45" = "APCA Lc 45 est le minimum pour le texte large comme les gros titres : au moins 36px en graisse normale, ou 24px en gras.";
 
 /* APCA 60 */
-"color.apca.60" = "APCA >= 60 est le contraste minimum pour le texte de titre. Convient pour des sous-titres, des légendes et du contenu secondaire qui doit être clairement lisible.";
+"color.apca.60" = "APCA Lc 60 est le minimum pour le texte de contenu autre que le corps de texte, comme les sous-titres et les légendes : au moins 24px en graisse normale, ou 16px en gras.";
 
 /* APCA 75 */
-"color.apca.75" = "APCA >= 75 est le contraste minimum pour le texte de corps. Convient pour le contenu principal, le texte de taille normale et le matériel de lecture étendue.";
+"color.apca.75" = "APCA Lc 75 est le minimum pour le corps de texte : au moins 18px en graisse normale, ou 14px en gras. Lc 90 est préférable pour les longs passages.";
 
 /* Baseline */
 "color.apca.baseline" = "Base";
@@ -350,7 +350,7 @@
 "menu.help" = "Aide";
 
 /* Help description */
-"help.description" = "Tout ce que vous devez savoir sur l'utilisation de Pika, des raccourcis clavier à l'automatisation par URL.";
+"help.description" = "Pika prélève des couleurs n’importe où sur votre écran et vérifie si elles restent lisibles ensemble. Voici comment.";
 
 /* Keyboard Shortcuts */
 "help.shortcuts" = "Raccourcis clavier";
@@ -375,6 +375,69 @@
 
 /* Support on the Mac App Store */
 "help.mas" = "Soutenir sur le Mac App Store";
+
+/* Which keyboard shortcuts are global and which need Pika focused */
+"help.shortcuts.description" = "La plupart des raccourcis exigent que Pika soit au premier plan. Afficher/masquer Pika et Choisir une paire ([⌥⌘D]) fonctionnent partout ; définissez-les dans Paramètres → Raccourci principal.";
+
+/* Basics */
+"help.basics" = "Notions de base";
+
+/* Basics intro: what colour contrast is */
+"help.basics.intro.1" = "Le contraste des couleurs, c’est l’écart de luminosité entre un texte et ce qui se trouve derrière. S’il est trop faible, les mots se fondent dans l’arrière-plan. C’est un vrai problème en cas de malvoyance ou de daltonisme, et cela arrive à tout le monde : un téléphone en plein soleil, un portable à la luminosité réduite.";
+
+/* Basics intro: accessibility guidelines */
+"help.basics.intro.2" = "Les règles d’accessibilité fixent des niveaux de contraste minimaux pour que le texte reste lisible par le plus grand nombre. WCAG 2 est la norme à laquelle renvoient la plupart des recommandations et des lois ; APCA, une méthode plus récente, tient aussi compte de la taille et de la graisse du texte. Mieux vaut vérifier tôt que retoucher un design plus tard.";
+
+/* Basics intro: where Pika fits */
+"help.basics.intro.3" = "C’est là qu’intervient Pika. Choisissez un premier plan et un arrière-plan n’importe où sur votre écran, qu’il s’agisse d’une maquette, d’un site web ou d’une capture d’écran : Pika affiche aussitôt le contraste, avec les couleurs dans le format dont vous avez besoin, prêtes à copier.";
+
+/* Expand the Basics intro */
+"help.basics.intro.more" = "Lire la suite";
+
+/* Collapse the Basics intro */
+"help.basics.intro.less" = "Afficher moins";
+
+/* Foreground and background */
+"help.basics.pair.title" = "Premier plan et arrière-plan";
+
+/* Foreground and background description */
+"help.basics.pair" = "Le premier plan est un texte ou une icône ; l’arrière-plan, la surface derrière. Appuyez sur [X] pour les permuter.";
+
+/* Why check contrast */
+"help.basics.contrast.title" = "Pourquoi vérifier le contraste";
+
+/* Why check contrast description */
+"help.basics.contrast" = "Un texte peu contrasté est difficile à lire, surtout en cas de malvoyance, de daltonisme ou d’éblouissement.";
+
+/* WCAG and APCA */
+"help.basics.standards.title" = "WCAG et APCA";
+
+/* WCAG and APCA description */
+"help.basics.standards" = "WCAG 2 donne un rapport (AA exige 4.5:1 pour le texte). APCA, qui n’est pas encore une norme, donne une valeur Lc tenant compte de la taille et de la graisse.";
+
+/* Ways to pick a colour */
+"help.basics.pickers.title" = "Façons de choisir une couleur";
+
+/* Basic, Pro and system colour picker description */
+"help.basics.pickers" = "La pipette de base utilise l’échantillonneur de macOS. La pipette Pro ajoute une loupe en direct et nécessite l’enregistrement de l’écran. [⌘S] ouvre le panneau des couleurs de macOS.";
+
+/* Editing values */
+"help.basics.editing.title" = "Modifier les valeurs";
+
+/* Editing values description */
+"help.basics.editing" = "Cliquez sur une valeur pour la saisir, faites glisser ou défiler à deux doigts pour l’ajuster, et appuyez sur [↑] ou [↓] pour la modifier pas à pas. [⌘Z] annule.";
+
+/* Colour spaces */
+"help.basics.spaces.title" = "Espaces colorimétriques";
+
+/* Colour spaces description */
+"help.basics.spaces" = "sRGB convient au web et à la plupart des écrans. Display P3 couvre les couleurs plus vives des Mac récents. Le contraste utilise toujours sRGB.";
+
+/* Link to WCAG contrast guidance */
+"help.reference.wcag" = "En savoir plus sur le contraste WCAG";
+
+/* Link to APCA guidance */
+"help.reference.apca" = "En savoir plus sur l’APCA";
 
 /* Check for updates */
 "menu.updates" = "Rechercher des mises à jour";
