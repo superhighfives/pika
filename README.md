@@ -46,7 +46,11 @@ Learn more about the [motivations behind the project](https://medium.com/superhi
 
 ## Basics
 
-Pika picks colours from anywhere on your screen and checks how readable they are together.
+Colour contrast is the difference in lightness between text and whatever’s behind it. With too little, words blur into their background. That’s a real problem for people with low vision or colour blindness, and it catches everyone else too, like reading a phone in the sun or a laptop turned down low.
+
+Accessibility guidelines set minimum contrast levels so text stays readable for as many people as possible. WCAG 2 is the standard most guidelines and laws point to, and APCA is a newer method that also weighs up font size and weight. Checking early is much easier than reworking a design later.
+
+That’s where Pika comes in. Pick a foreground and background from anywhere on your screen, whether it’s a design file, a website or a screenshot, and Pika shows the contrast straight away, alongside the colours in the format you need, ready to copy.
 
 - **Foreground and background**: The foreground is text or an icon; the background is the surface behind it. Press <kbd>X</kbd> to swap them.
 - **Why check contrast**: Low-contrast text is hard to read, especially with low vision, colour blindness or glare.

@@ -40,6 +40,18 @@ struct HelpView: View {
 
                 HelpSectionHeader(title: PikaText.textHelpBasics)
                 Divider()
+                VStack(alignment: .leading, spacing: 10) {
+                    ForEach(PikaText.textHelpBasicsIntro, id: \.self) { paragraph in
+                        Text(paragraph)
+                            .font(.system(size: 13))
+                            .foregroundStyle(.primary.opacity(0.85))
+                            .lineSpacing(5)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, 20)
+                .padding(.top, 14)
                 HelpBasicsGrid(entries: basics)
                 VStack(spacing: 0) {
                     HelpExternalLinkRow(title: PikaText.textHelpReferenceWCAG, url: PikaConstants.wcagContrastURL, shorthand: "w3.org/…/contrast-minimum")

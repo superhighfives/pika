@@ -382,6 +382,15 @@
 /* Basics */
 "help.basics" = "基础知识";
 
+/* Basics intro: what colour contrast is */
+"help.basics.intro.1" = "颜色对比度是指文字与其后方内容之间的明暗差异。对比度太低，文字就会和背景混在一起。这对低视力或色盲人士来说是实实在在的困扰，其他人也难免遇到，比如在阳光下看手机，或是笔记本电脑屏幕调得很暗的时候。";
+
+/* Basics intro: accessibility guidelines */
+"help.basics.intro.2" = "无障碍指南规定了最低对比度，让尽可能多的人都能看清文字。WCAG 2 是大多数指南和法规所依据的标准，APCA 则是一种较新的方法，还会考虑文字大小和粗细。尽早检查，比日后返工修改设计要轻松得多。";
+
+/* Basics intro: where Pika fits */
+"help.basics.intro.3" = "这正是 Pika 的用武之地。从屏幕上的任意位置选择前景色和背景色，无论是设计文件、网站还是截图，Pika 都会立即显示对比度，并按您需要的格式列出颜色，随时可以复制。";
+
 /* Foreground and background */
 "help.basics.pair.title" = "前景色和背景色";
 

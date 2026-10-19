@@ -382,6 +382,15 @@
 /* Basics */
 "help.basics" = "Podstawy";
 
+/* Basics intro: what colour contrast is */
+"help.basics.intro.1" = "Kontrast kolorów to różnica jasności między tekstem a tym, co znajduje się pod nim. Gdy jest za mały, słowa zlewają się z tłem. To realny problem dla osób słabowidzących lub z zaburzeniami widzenia barw, ale dotyka też wszystkich innych, np. gdy czytasz z telefonu w pełnym słońcu albo z przyciemnionego ekranu laptopa.";
+
+/* Basics intro: accessibility guidelines */
+"help.basics.intro.2" = "Wytyczne dostępności określają minimalny poziom kontrastu, aby tekst był czytelny dla jak największej liczby osób. WCAG 2 to standard, do którego odwołuje się większość wytycznych i przepisów, a APCA to nowsza metoda, która bierze pod uwagę także rozmiar i grubość czcionki. Sprawdzenie kontrastu na wczesnym etapie jest dużo prostsze niż późniejsze przerabianie projektu.";
+
+/* Basics intro: where Pika fits */
+"help.basics.intro.3" = "Tu z pomocą przychodzi Pika. Wybierz pierwszy plan i tło z dowolnego miejsca na ekranie, czy to z pliku projektu, strony internetowej, czy zrzutu ekranu, a Pika od razu pokaże kontrast oraz kolory w potrzebnym formacie, gotowe do skopiowania.";
+
 /* Foreground and background */
 "help.basics.pair.title" = "Pierwszy plan i tło";
 

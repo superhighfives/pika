@@ -382,6 +382,15 @@
 /* Basics */
 "help.basics" = "Grundlagen";
 
+/* Basics intro: what colour contrast is */
+"help.basics.intro.1" = "Farbkontrast ist der Helligkeitsunterschied zwischen Text und dem, was dahinter liegt. Ist er zu gering, verschwimmen Wörter mit ihrem Hintergrund. Für Menschen mit Sehschwäche oder Farbenblindheit ist das ein echtes Problem, und es trifft auch alle anderen, etwa beim Lesen am Handy in der Sonne oder am Laptop mit gedimmtem Bildschirm.";
+
+/* Basics intro: accessibility guidelines */
+"help.basics.intro.2" = "Richtlinien zur Barrierefreiheit legen Mindestwerte für den Kontrast fest, damit Text für möglichst viele Menschen lesbar bleibt. WCAG 2 ist der Standard, auf den sich die meisten Richtlinien und Gesetze beziehen. APCA ist ein neueres Verfahren, das auch Schriftgröße und -stärke berücksichtigt. Früh zu prüfen ist viel einfacher, als ein Design später zu überarbeiten.";
+
+/* Basics intro: where Pika fits */
+"help.basics.intro.3" = "Genau hier kommt Pika ins Spiel. Wählen Sie Vordergrund und Hintergrund von überall auf Ihrem Bildschirm aus, ob aus einer Designdatei, einer Website oder einem Screenshot. Pika zeigt Ihnen den Kontrast sofort an, dazu die Farben im gewünschten Format, bereit zum Kopieren.";
+
 /* Foreground and background */
 "help.basics.pair.title" = "Vordergrund und Hintergrund";
 

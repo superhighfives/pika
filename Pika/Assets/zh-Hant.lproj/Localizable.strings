@@ -382,6 +382,15 @@
 /* Basics */
 "help.basics" = "基礎";
 
+/* Basics intro: what colour contrast is */
+"help.basics.intro.1" = "顏色對比度是文字與其後方背景之間的明暗差異。對比度太低，文字就會和背景混在一起。這對低視力或色盲人士是實實在在的困擾，其他人也難以倖免，例如在陽光下看手機，或螢幕亮度調得很低的時候。";
+
+/* Basics intro: accessibility guidelines */
+"help.basics.intro.2" = "無障礙指引訂定了最低對比度，讓文字對盡可能多的人都清晰易讀。WCAG 2 是大多數指引和法規所依據的標準，APCA 則是較新的方法，還會考量文字大小和粗細。及早檢查，遠比日後重新修改設計輕鬆得多。";
+
+/* Basics intro: where Pika fits */
+"help.basics.intro.3" = "這正是 Pika 派上用場的時候。從螢幕上任何位置選取前景色和背景色，無論是設計檔、網站還是螢幕截圖，Pika 都會立即顯示對比度，並以您需要的格式列出顏色，隨時可以複製。";
+
 /* Foreground and background */
 "help.basics.pair.title" = "前景色和背景色";
 

@@ -382,6 +382,15 @@
 /* Basics */
 "help.basics" = "Osnove";
 
+/* Basics intro: what colour contrast is */
+"help.basics.intro.1" = "Kontrast boja razlika je u svjetlini između teksta i onoga što se nalazi iza njega. Kad ga je premalo, riječi se stapaju s pozadinom. To je stvaran problem za osobe sa slabim vidom ili daltonizmom, a pogađa i sve ostale, primjerice kad čitate s mobitela na suncu ili s prigušenog zaslona prijenosnika.";
+
+/* Basics intro: accessibility guidelines */
+"help.basics.intro.2" = "Smjernice za pristupačnost propisuju najmanje razine kontrasta kako bi tekst ostao čitljiv što većem broju ljudi. WCAG 2 standard je na koji se poziva većina smjernica i zakona, a APCA je novija metoda koja uzima u obzir i veličinu i debljinu fonta. Mnogo je lakše provjeriti kontrast na početku nego kasnije prerađivati dizajn.";
+
+/* Basics intro: where Pika fits */
+"help.basics.intro.3" = "Tu na scenu stupa Pika. Odaberite prednju boju i boju pozadine s bilo kojeg mjesta na zaslonu, bilo da je riječ o dizajnerskoj datoteci, web-stranici ili snimci zaslona, i Pika odmah prikazuje kontrast, zajedno s bojama u formatu koji vam treba, spremnima za kopiranje.";
+
 /* Foreground and background */
 "help.basics.pair.title" = "Prednja boja i boja pozadine";
 

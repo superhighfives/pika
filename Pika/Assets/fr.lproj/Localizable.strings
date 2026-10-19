@@ -382,6 +382,15 @@
 /* Basics */
 "help.basics" = "Notions de base";
 
+/* Basics intro: what colour contrast is */
+"help.basics.intro.1" = "Le contraste des couleurs, c’est l’écart de luminosité entre un texte et ce qui se trouve derrière. S’il est trop faible, les mots se fondent dans l’arrière-plan. C’est un vrai problème en cas de malvoyance ou de daltonisme, et cela arrive à tout le monde : un téléphone en plein soleil, un portable à la luminosité réduite.";
+
+/* Basics intro: accessibility guidelines */
+"help.basics.intro.2" = "Les règles d’accessibilité fixent des niveaux de contraste minimaux pour que le texte reste lisible par le plus grand nombre. WCAG 2 est la norme à laquelle renvoient la plupart des recommandations et des lois ; APCA, une méthode plus récente, tient aussi compte de la taille et de la graisse du texte. Mieux vaut vérifier tôt que retoucher un design plus tard.";
+
+/* Basics intro: where Pika fits */
+"help.basics.intro.3" = "C’est là qu’intervient Pika. Choisissez un premier plan et un arrière-plan n’importe où sur votre écran, qu’il s’agisse d’une maquette, d’un site web ou d’une capture d’écran : Pika affiche aussitôt le contraste, avec les couleurs dans le format dont vous avez besoin, prêtes à copier.";
+
 /* Foreground and background */
 "help.basics.pair.title" = "Premier plan et arrière-plan";
 
