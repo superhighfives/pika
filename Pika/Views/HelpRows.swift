@@ -116,6 +116,36 @@ struct HelpKeycapText: View {
     }
 }
 
+// MARK: - Read More Button
+
+/// A small outlined pill that expands collapsed Help copy.
+struct HelpReadMoreButton: View {
+    let action: () -> Void
+
+    @State private var isHovered = false
+
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: 5) {
+                Text(PikaText.textHelpBasicsIntroMore)
+                Image(systemName: "chevron.down")
+                    .font(.system(size: 9, weight: .bold))
+                    .offset(y: isHovered ? 1.5 : 0)
+            }
+            .font(.system(size: 12, weight: .medium))
+            .foregroundStyle(isHovered ? .primary : .secondary)
+            .padding(.horizontal, 11)
+            .padding(.vertical, 5)
+            .background(Capsule().fill(Color.primary.opacity(isHovered ? 0.06 : 0)))
+            .overlay(Capsule().strokeBorder(Color.primary.opacity(isHovered ? 0.35 : 0.2), lineWidth: 1))
+            .contentShape(Capsule())
+        }
+        .buttonStyle(.plain)
+        .animation(.easeOut(duration: 0.15), value: isHovered)
+        .onHover { isHovered = $0 }
+    }
+}
+
 // MARK: - Section Header
 
 struct HelpSectionHeader: View {

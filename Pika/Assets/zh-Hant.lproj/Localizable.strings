@@ -392,10 +392,7 @@
 "help.basics.intro.3" = "這正是 Pika 派上用場的時候。從螢幕上任何位置選取前景色和背景色，無論是設計檔、網站還是螢幕截圖，Pika 都會立即顯示對比度，並以您需要的格式列出顏色，隨時可以複製。";
 
 /* Expand the Basics intro */
-"help.basics.intro.more" = "顯示更多";
-
-/* Collapse the Basics intro */
-"help.basics.intro.less" = "收起";
+"help.basics.intro.more" = "繼續閱讀";
 
 /* Foreground and background */
 "help.basics.pair.title" = "前景色和背景色";

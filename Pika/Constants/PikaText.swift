@@ -68,7 +68,6 @@ enum PikaText {
         NSLocalizedString("help.basics.intro.3", comment: "Basics intro: where Pika fits"),
     ]
     static let textHelpBasicsIntroMore = NSLocalizedString("help.basics.intro.more", comment: "Expand the Basics intro")
-    static let textHelpBasicsIntroLess = NSLocalizedString("help.basics.intro.less", comment: "Collapse the Basics intro")
     static let textHelpBasicsPairTitle = NSLocalizedString("help.basics.pair.title", comment: "Foreground and background")
     static let textHelpBasicsPair = NSLocalizedString("help.basics.pair", comment: "Foreground and background description")
     static let textHelpBasicsContrastTitle = NSLocalizedString("help.basics.contrast.title", comment: "Why check contrast")

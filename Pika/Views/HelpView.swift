@@ -2,6 +2,8 @@ import SwiftUI
 
 struct HelpView: View {
     @State private var showFullIntro = false
+    @State private var introFirstHeight: CGFloat = 80
+    @State private var introFullHeight: CGFloat = 300
     /// The shortcuts note names Pick pair by its default keys; show the user's binding instead.
     private var shortcutsDescription: String {
         let keys = pickPairKeys().joined()
@@ -42,22 +44,41 @@ struct HelpView: View {
                 HelpSectionHeader(title: PikaText.textHelpBasics)
                 Divider()
                 VStack(alignment: .leading, spacing: 10) {
-                    let paragraphs = PikaText.textHelpBasicsIntro
-                    ForEach(paragraphs.prefix(showFullIntro ? paragraphs.count : 1), id: \.self) { paragraph in
-                        Text(paragraph)
-                            .font(.system(size: 13))
-                            .foregroundStyle(.primary.opacity(0.85))
-                            .lineSpacing(5)
-                            .fixedSize(horizontal: false, vertical: true)
+                    // One block that slides open: collapsed, it's cut off two lines into the
+                    // second paragraph and fades out; expanded, it grows to its full height.
+                    let collapsedHeight = introFirstHeight + 10 + 42
+                    VStack(alignment: .leading, spacing: 10) {
+                        ForEach(Array(PikaText.textHelpBasicsIntro.enumerated()), id: \.offset) { index, paragraph in
+                            Text(paragraph)
+                                .font(.system(size: 13))
+                                .foregroundStyle(.primary.opacity(0.85))
+                                .lineSpacing(5)
+                                .fixedSize(horizontal: false, vertical: true)
+                                .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { height in
+                                    if index == 0 { introFirstHeight = height }
+                                }
+                        }
                     }
-                    Button {
-                        withAnimation(.easeOut(duration: 0.2)) { showFullIntro.toggle() }
-                    } label: {
-                        Text(showFullIntro ? PikaText.textHelpBasicsIntroLess : PikaText.textHelpBasicsIntroMore)
-                            .font(.system(size: 13, weight: .medium))
-                            .foregroundStyle(Color.accentColor)
+                    .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { introFullHeight = $0 }
+                    .frame(height: showFullIntro ? introFullHeight : collapsedHeight, alignment: .top)
+                    .clipped()
+                    .mask(
+                        LinearGradient(
+                            stops: showFullIntro
+                                ? [.init(color: .black, location: 0), .init(color: .black, location: 1)]
+                                : [
+                                    .init(color: .black, location: introFirstHeight / collapsedHeight),
+                                    .init(color: .clear, location: 1),
+                                ],
+                            startPoint: .top, endPoint: .bottom
+                        )
+                    )
+                    if !showFullIntro {
+                        HelpReadMoreButton {
+                            withAnimation(.easeInOut(duration: 0.35)) { showFullIntro = true }
+                        }
+                        .transition(.opacity)
                     }
-                    .buttonStyle(.plain)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 20)
