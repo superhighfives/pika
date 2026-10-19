@@ -85,20 +85,24 @@ struct HelpKeycapText: View {
     @Environment(\.displayScale) var displayScale: CGFloat
 
     var body: some View {
-        var result = Text(verbatim: "")
+        var parts: [Text] = []
         var remaining = text[...]
         while let open = remaining.firstIndex(of: "["),
               let close = remaining[open...].firstIndex(of: "]")
         {
-            result = result + Text(verbatim: String(remaining[..<open]))
+            parts.append(Text(verbatim: String(remaining[..<open])))
             let keys = remaining[remaining.index(after: open) ..< close]
             for (index, key) in keys.enumerated() {
-                if index > 0 { result = result + Text(verbatim: "\u{2009}") }
-                result = result + keycap(String(key))
+                if index > 0 { parts.append(Text(verbatim: "\u{2009}")) }
+                parts.append(keycap(String(key)))
             }
             remaining = remaining[remaining.index(after: close)...]
         }
-        return result + Text(verbatim: String(remaining))
+        parts.append(Text(verbatim: String(remaining)))
+        // The caps are images, so VoiceOver reads the text with the markup removed instead
+        // ("⌘S" is read as "command S").
+        return parts.reduce(Text(verbatim: ""), +)
+            .accessibilityLabel(text.replacingOccurrences(of: "[", with: "").replacingOccurrences(of: "]", with: ""))
     }
 
     private func keycap(_ key: String) -> Text {

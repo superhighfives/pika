@@ -49,13 +49,18 @@ let basics: [HelpBasic] = [
 
 typealias ShortcutGroup = (title: String, entries: [ShortcutEntry])
 
+/// Splits a shortcut like "⌥⌘D" into key caps: each modifier on its own, then the key.
+func keyCaps(for shortcut: String) -> [String] {
+    let modifiers = shortcut.prefix { "⌃⌥⇧⌘".contains($0) }
+    let key = shortcut.dropFirst(modifiers.count)
+    return modifiers.map(String.init) + (key.isEmpty ? [] : [String(key)])
+}
+
 /// The Pick pair shortcut as key caps, following the user's binding in Settings (⌥⌘D by default).
 @MainActor
 func pickPairKeys() -> [String] {
     guard let shortcut = KeyboardShortcuts.getShortcut(for: .pickPair) else { return [] }
-    let text = shortcut.description
-    let modifiers = text.prefix { "⌃⌥⇧⌘".contains($0) }
-    return modifiers.map(String.init) + [String(text.dropFirst(modifiers.count))]
+    return keyCaps(for: shortcut.description)
 }
 
 @MainActor

@@ -43,7 +43,7 @@ struct HelpView: View {
                 Divider()
                 VStack(alignment: .leading, spacing: 10) {
                     let paragraphs = PikaText.textHelpBasicsIntro
-                    ForEach(paragraphs.prefix(showFullIntro ? paragraphs.count : 1), id: \.self) { paragraph in
+                    ForEach(Array(paragraphs.prefix(showFullIntro ? paragraphs.count : 1).enumerated()), id: \.offset) { _, paragraph in
                         Text(paragraph)
                             .font(.system(size: 13))
                             .foregroundStyle(.primary.opacity(0.85))
