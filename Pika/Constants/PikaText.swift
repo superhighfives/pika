@@ -77,7 +77,7 @@ enum PikaText {
     static let textUpdateDownloading = NSLocalizedString("update.downloading", comment: "Inline update control: the update is downloading")
     static let textUpdateInstalling = NSLocalizedString("update.installing", comment: "Inline update control: the update is installing")
     static let textUpdateDismiss = NSLocalizedString("update.dismiss", comment: "Inline update control: dismiss a message")
-    static let textUpdateVersion = NSLocalizedString("update.version", comment: "Inline update control: version number shown in the tooltip")
+    static let textUpdateVersion = NSLocalizedString("update.version", comment: "Inline update control: the version on offer, linking to its release notes")
     static let textMenuPreferences = NSLocalizedString("menu.preferences", comment: "Preferences")
     static let textMenuWebsite = NSLocalizedString("menu.website", comment: "Pika website")
     static let textMenuGitHubIssue = NSLocalizedString("menu.issue", comment: "Report feedback")

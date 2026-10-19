@@ -756,5 +756,5 @@
 /* Inline update control: dismiss a message */
 "update.dismiss" = "Fermer";
 
-/* Inline update control: version number shown in the tooltip */
+/* Inline update control: the version on offer, linking to its release notes */
 "update.version" = "Version %@";

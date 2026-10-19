@@ -27,8 +27,7 @@
                     icon
                     title
                     if case let .available(version) = driver.state {
-                        Text(String(format: PikaText.textUpdateVersion, version))
-                            .foregroundStyle(.secondary)
+                        WhatsNewLink(version: version)
                     }
                     Spacer(minLength: 8)
                     if let progress {
@@ -73,7 +72,7 @@
             case .checking:
                 Text(PikaText.textUpdateChecking)
             case .available:
-                WhatsNewLink(version: driver.version)
+                Text(PikaText.textUpdateAvailable)
             case .downloading, .extracting:
                 Text(PikaText.textUpdateDownloading)
             case .readyToRestart:
@@ -120,30 +119,26 @@
         }
     }
 
-    /// "Update available", which opens that version's changelog entry ("What's new").
+    /// "Version 2.1.0", which opens that version's changelog entry ("What's new").
     private struct WhatsNewLink: View {
-        let version: String?
+        let version: String
         @State private var hovering = false
 
         var body: some View {
             Button {
-                if let version, let url = PikaConstants.changelogURL(version: version) {
+                if let url = PikaConstants.changelogURL(version: version) {
                     NSWorkspace.shared.open(url)
                 }
             } label: {
-                Text(PikaText.textUpdateAvailable)
+                Text(String(format: PikaText.textUpdateVersion, version))
+                    .foregroundStyle(hovering ? Color.primary : Color.secondary)
                     .underline(hovering)
             }
             .buttonStyle(.plain)
             .focusable(false)
             .onHover { hovering = $0 }
-            .help(helpText)
+            .help(PikaText.textUpdateWhatsNew)
             .accessibilityHint(PikaText.textUpdateWhatsNew)
-        }
-
-        private var helpText: String {
-            guard let version else { return PikaText.textUpdateWhatsNew }
-            return "\(String(format: PikaText.textUpdateVersion, version)) · \(PikaText.textUpdateWhatsNew)"
         }
     }
 
