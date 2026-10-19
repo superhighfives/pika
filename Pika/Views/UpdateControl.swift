@@ -14,7 +14,9 @@
         @ObservedObject var driver: PikaUpdateDriver
 
         var body: some View {
-            Group {
+            // A real container rather than `Group`: modifiers on a `Group` attach to its child,
+            // so the animation left with the bar and its removal was a hard cut.
+            VStack(spacing: 0) {
                 if driver.state != .idle { bar }
             }
             .animation(.easeInOut(duration: 0.2), value: driver.state)
