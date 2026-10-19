@@ -22,12 +22,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let statusBarController = StatusBarController()
 
     #if TARGET_SPARKLE
-        /// Sparkle 2 updater. Created on launch so scheduled update checks start with the app.
-        private(set) lazy var updaterController = SPUStandardUpdaterController(
-            startingUpdater: true,
-            updaterDelegate: self,
-            userDriverDelegate: nil
-        )
+        /// Sparkle 2 updater, with updates shown inline rather than in Sparkle's windows.
+        /// Created and started on launch so scheduled update checks start with the app.
+        private(set) var updateController: UpdateController!
     #endif
 
     func setupAppMode() {
@@ -83,9 +80,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         migrateHistoryToPalettes()
         removeUpdatesMenuItemIfNeeded()
         #if TARGET_SPARKLE
+            updateController = UpdateController(delegate: self)
+            updateController.driver.showUpdateInFocusHandler = { [weak self] in
+                guard let self else { return }
+                showMainInterface(self)
+            }
             // Sparkle 1 persisted the runtime feed URL to user defaults, where Sparkle 2 would
             // still read it. The feed now comes from `feedURLString(for:)`, so drop the stale copy.
-            updaterController.updater.clearFeedURLFromUserDefaults()
+            updateController.updater.clearFeedURLFromUserDefaults()
+            updateController.start()
         #endif
 
         eyedroppers = Eyedroppers()
@@ -453,8 +456,11 @@ extension AppDelegate {
 
 extension AppDelegate {
     #if TARGET_SPARKLE
-        @IBAction func checkForUpdates(_ sender: Any) {
-            updaterController.checkForUpdates(sender)
+        /// A check by hand. The result shows in the inline update control, so bring Pika up
+        /// to show it.
+        @IBAction func checkForUpdates(_: Any) {
+            showMainInterface(self)
+            updateController.checkForUpdates()
         }
     #endif
 
