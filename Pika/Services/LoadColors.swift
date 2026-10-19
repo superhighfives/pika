@@ -20,12 +20,13 @@ struct ColorListInfo: Identifiable, Hashable {
     var id: String { key }
 }
 
-/// The key of the list bundled with the app as the offline fallback. It's downloaded as
-/// part of the build so colour names always work without a network connection.
+/// The key of the list selected out of the box, and the one we fall back to when the chosen
+/// list is no longer offered by the API.
 let defaultColorListKey = "default"
 
-/// Loads the colour list bundled at build time — the `default` list, used as the offline
-/// fallback until (and if) a network refresh caches a newer copy.
+/// Loads the colour list bundled with the app (`ColorNames.json`), used as the offline
+/// fallback until (and if) a network refresh caches a newer copy. It's a snapshot of
+/// color-name-list's best-of list, refreshed by `/pre-release` before each release.
 func loadColors() -> [ColorName]? {
     if let url = Bundle.main.url(forResource: "ColorNames", withExtension: "json") {
         do {
@@ -42,8 +43,8 @@ func loadColors() -> [ColorName]? {
 
 /// Owns colour-name data sourced from the color.pizza API, with an offline fallback.
 ///
-/// - The `default` list is downloaded during the build and bundled, so names always work
-///   offline.
+/// - A snapshot list is bundled with the app (refreshed before each release), so names
+///   always work offline.
 /// - On launch the currently-selected list is refreshed from the network and cached on disk.
 /// - Settings and the splash let the user pick any list from `/v1/lists/`; if the chosen
 ///   list is no longer offered by the API, we fall back to `default`.
