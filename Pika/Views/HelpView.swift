@@ -1,6 +1,13 @@
 import SwiftUI
 
 struct HelpView: View {
+    /// The shortcuts note names Pick pair by its default keys; show the user's binding instead.
+    private var shortcutsDescription: String {
+        let keys = pickPairKeys().joined()
+        guard !keys.isEmpty else { return PikaText.textHelpShortcutsDescription }
+        return PikaText.textHelpShortcutsDescription.replacingOccurrences(of: "[⌥⌘D]", with: "[\(keys)]")
+    }
+
     @Environment(\.colorScheme) var colorScheme: ColorScheme
 
     var body: some View {
@@ -46,7 +53,7 @@ struct HelpView: View {
 
                 HelpSectionHeader(title: PikaText.textHelpKeyboardShortcuts)
                 Divider()
-                HelpKeycapText(text: PikaText.textHelpShortcutsDescription, keySize: 11)
+                HelpKeycapText(text: shortcutsDescription, keySize: 11)
                     .font(.system(size: 13))
                     .foregroundStyle(.secondary)
                     .lineSpacing(5)

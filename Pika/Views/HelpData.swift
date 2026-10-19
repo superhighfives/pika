@@ -1,3 +1,4 @@
+import KeyboardShortcuts
 import SwiftUI
 
 // MARK: - Basics
@@ -48,11 +49,21 @@ let basics: [HelpBasic] = [
 
 typealias ShortcutGroup = (title: String, entries: [ShortcutEntry])
 
-let shortcutGroups: [ShortcutGroup] = [
+/// The Pick pair shortcut as key caps, following the user's binding in Settings (⌥⌘D by default).
+@MainActor
+func pickPairKeys() -> [String] {
+    guard let shortcut = KeyboardShortcuts.getShortcut(for: .pickPair) else { return [] }
+    let text = shortcut.description
+    let modifiers = text.prefix { "⌃⌥⇧⌘".contains($0) }
+    return modifiers.map(String.init) + [String(text.dropFirst(modifiers.count))]
+}
+
+@MainActor
+var shortcutGroups: [ShortcutGroup] { [
     (PikaText.textUrlGroupPick, [
         ShortcutEntry(title: PikaText.textPickForeground, keys: ["⌘", "D"], notificationName: .triggerPickForeground),
         ShortcutEntry(title: PikaText.textPickBackground, keys: ["⇧", "⌘", "D"], notificationName: .triggerPickBackground),
-        ShortcutEntry(title: PikaText.textPickContrast, keys: ["⌥", "⌘", "D"], notificationName: .triggerPickPair),
+        ShortcutEntry(title: PikaText.textPickContrast, keys: pickPairKeys(), notificationName: .triggerPickPair),
     ]),
     (PikaText.textUrlGroupCopy, [
         ShortcutEntry(title: PikaText.textCopyForeground, keys: ["⌘", "C"], notificationName: .triggerCopyForeground),
@@ -81,7 +92,7 @@ let shortcutGroups: [ShortcutGroup] = [
         ShortcutEntry(title: "\(PikaText.textMenuPreferences)…", keys: ["⌘", ","], notificationName: .triggerPreferences),
         ShortcutEntry(title: PikaText.textMenuQuit, keys: ["⌘", "Q"], notificationName: nil),
     ]),
-]
+] }
 
 // MARK: - URL Triggers
 
