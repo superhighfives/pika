@@ -154,6 +154,31 @@ final class PikaUpdateDriverTests: XCTestCase {
         XCTAssertEqual(acknowledgements, 1)
     }
 
+    /// Sparkle's acknowledgements can dismiss the driver before they return. Calling one while
+    /// still holding the stored closure was an exclusive-access violation, which crashed Pika
+    /// when "Up to date" faded out.
+    func test_acknowledgement_thatDismissesStraightAway_doesNotTrap() {
+        driver.updateNotFound { [unowned self] in
+            acknowledgements += 1
+            driver.dismiss()
+        }
+        driver.acknowledge()
+        XCTAssertEqual(acknowledgements, 1)
+        XCTAssertEqual(driver.state, .idle)
+
+        driver.updaterError(message: "Failed") { [unowned self] in driver.dismiss() }
+        driver.acknowledge()
+        XCTAssertEqual(driver.state, .idle)
+
+        var retries = 0
+        driver.installing(applicationTerminated: false) { [unowned self] in
+            retries += 1
+            driver.dismiss()
+        }
+        driver.restart()
+        XCTAssertEqual(retries, 1)
+    }
+
     // MARK: - Failures
 
     func test_failure_staysUntilDismissed() {

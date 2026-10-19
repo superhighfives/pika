@@ -182,7 +182,7 @@
                 reply(.install)
                 state = .installing
             case .installing:
-                takeAndCall(&retryTerminating)
+                take(&retryTerminating)?()
             default:
                 break
             }
@@ -199,7 +199,7 @@
         func acknowledge() {
             upToDateTimer?.invalidate()
             upToDateTimer = nil
-            takeAndCall(&acknowledgement)
+            take(&acknowledgement)?()
             // Sparkle follows the acknowledgement with `dismissUpdateInstallation`; go idle now
             // so the control doesn't linger on a state that's been answered.
             if case .failed = state { state = .idle }
@@ -219,10 +219,12 @@
             reply(choice)
         }
 
-        private func takeAndCall(_ closure: inout (() -> Void)?) {
-            guard let call = closure else { return }
-            closure = nil
-            call()
+        /// Clears a stored closure and returns it, so it's called at most once. The caller runs
+        /// it after `take` returns: running it inside the `inout` access would trap if the
+        /// closure re-enters the driver (an acknowledgement that dismisses straight away).
+        private func take(_ closure: inout (() -> Void)?) -> (() -> Void)? {
+            defer { closure = nil }
+            return closure
         }
 
         private func resetPending() {
