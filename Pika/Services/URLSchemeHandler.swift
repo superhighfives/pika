@@ -1,5 +1,8 @@
 import Cocoa
 import Defaults
+#if DEBUG
+    import ScreenCaptureKit
+#endif
 
 /// Handles `pika://` URL scheme events and dispatches the corresponding app actions.
 final class URLSchemeHandler: NSObject {
@@ -43,9 +46,48 @@ final class URLSchemeHandler: NSObject {
         case "swap": NSApp.sendAction(#selector(AppDelegate.triggerSwap), to: nil, from: nil)
         case "undo": NSApp.sendAction(#selector(AppDelegate.triggerUndo), to: nil, from: nil)
         case "redo": NSApp.sendAction(#selector(AppDelegate.triggerRedo), to: nil, from: nil)
+        #if DEBUG
+            case "debug": handleDebug(task: task, arg1: arg1, url: url)
+        #endif
         default: break
         }
     }
+
+    #if DEBUG
+        /// Debug builds only. `pika://debug/sample/<foreground|background>?x=…&y=…` samples the
+        /// screen at a point (global, top-left origin, in points, like a `CGEvent` location)
+        /// through the Pro picker's own capture, and sets the colour as a pick would. Lets tests
+        /// check picking accuracy without driving the mouse.
+        private func handleDebug(task: String?, arg1: String?, url: URL) {
+            let items = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems ?? []
+            func value(_ name: String) -> Double? {
+                items.first { $0.name == name }?.value.flatMap(Double.init)
+            }
+            guard task == "sample", let left = value("x"), let top = value("y"),
+                  let primary = NSScreen.screens.first,
+                  let appDelegate = AppDelegate.shared
+            else { return }
+            let point = NSPoint(x: left, y: primary.frame.maxY - top)
+            guard let screen = NSScreen.screens.first(where: { NSMouseInRect(point, $0.frame, false) })
+            else { return }
+            let eyedropper = arg1 == "background"
+                ? appDelegate.eyedroppers.background
+                : appDelegate.eyedroppers.foreground
+            Task { @MainActor in
+                guard let content = try? await SCShareableContent.current,
+                      let display = content.displays.first(where: { $0.displayID == screen.displayID }),
+                      let sample = try? await PickerLoupeController.captureWindow(
+                          around: point, on: screen, pixelCount: 15,
+                          filter: SCContentFilter(display: display, excludingWindows: [])
+                      ),
+                      let pixel = sample.pixel
+                else { return }
+                ColorSpacePreference.followDisplay(screen)
+                eyedropper.set(pixel)
+                NotificationCenter.default.post(name: .colorPicked, object: nil)
+            }
+        }
+    #endif
 
     private func handleFormat(task: String?) {
         if let task, let format = ColorFormat.withLabel(task) {

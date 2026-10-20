@@ -640,51 +640,16 @@ final class PickerLoupeController {
         }
         guard let filter = baseFilter else { return }
 
-        let pixelCount = viewModel.pixelCount
-        let scale = screen.backingScaleFactor
-
-        // Capture ONLY a small window around the cursor — not the whole display (tens of MB per
-        // frame on a large screen). But a `sourceRect` with a SUB-POINT origin makes
-        // ScreenCaptureKit sample *between* pixels and softens the magnifier. So snap the rect to
-        // WHOLE POINTS that fully enclose the magnifier window and capture at its exact
-        // device-pixel size (1:1, no resample), then crop the exact window out of the result with
-        // `CGImage.cropping` — a pure pixel op that keeps it hard-edged and the sample exact.
-        let displayWpx = Int((screen.frame.width * scale).rounded())
-        let displayHpx = Int((screen.frame.height * scale).rounded())
-        // Magnifier window in device pixels (top-left origin), clamped so it stays on-screen.
-        let localX = (cursor.x - screen.frame.minX) * scale
-        let localYTop = (screen.frame.height - (cursor.y - screen.frame.minY)) * scale
-        let half = pixelCount / 2
-        let winX = min(max(0, Int(localX.rounded()) - half), max(0, displayWpx - pixelCount))
-        let winY = min(max(0, Int(localYTop.rounded()) - half), max(0, displayHpx - pixelCount))
-
-        // Whole-point rect (top-left origin, points) that encloses the window, so SCK samples on
-        // point boundaries with no sub-point blend.
-        let originPtX = (Double(winX) / scale).rounded(.down)
-        let originPtY = (Double(winY) / scale).rounded(.down)
-        let regionPtW = (Double(winX + pixelCount) / scale).rounded(.up) - originPtX
-        let regionPtH = (Double(winY + pixelCount) / scale).rounded(.up) - originPtY
-
-        let config = SCStreamConfiguration()
-        config.sourceRect = CGRect(x: originPtX, y: originPtY, width: regionPtW, height: regionPtH)
-        config.width = Int((regionPtW * scale).rounded())
-        config.height = Int((regionPtH * scale).rounded())
-        config.showsCursor = false
-
         do {
-            let region = try await Self.capture(filter: filter, configuration: config)
+            let (cropped, sampled) = try await Self.captureWindow(
+                around: cursor, on: screen, pixelCount: viewModel.pixelCount, filter: filter
+            )
             // The grab is async: if the pick was cancelled/committed (or a new one began) while
             // it was in flight, this result is stale — discard it so it can't write a colour
             // into a finished pick (the cause of a straggler landing on Escape or a drag).
             guard generation == pickGeneration else { return }
-            // Crop the exact magnifier window out of the whole-point capture (pure pixel op).
-            let offsetX = winX - Int((originPtX * scale).rounded())
-            let offsetY = winY - Int((originPtY * scale).rounded())
-            let cropped = region.cropping(
-                to: CGRect(x: offsetX, y: offsetY, width: pixelCount, height: pixelCount)
-            ) ?? region
             viewModel.image = cropped
-            let pixel = Self.centerPixelColor(of: cropped) ?? viewModel.sampleColor
+            let pixel = sampled ?? viewModel.sampleColor
             // Over Pika's own UI, fall back to the colour the pick started with so sampling
             // doesn't feed the swatch back into itself (and fade the loupe to signal that).
             let overApp = isCursorOverAppWindow()
@@ -738,6 +703,52 @@ final class PickerLoupeController {
             baseFilter = nil
             configuredDisplayID = nil
         }
+    }
+
+    /// Captures the magnifier window around `cursor` (AppKit coordinates) on `screen`: the image
+    /// the loupe shows, and its centre pixel's colour. Shared by live picking and the Debug-only
+    /// `pika://debug/sample` URL, so a test samples exactly as a pick does.
+    static func captureWindow(
+        around cursor: NSPoint, on screen: NSScreen, pixelCount: Int, filter: SCContentFilter
+    ) async throws -> (image: CGImage, pixel: NSColor?) {
+        let scale = screen.backingScaleFactor
+
+        // Capture ONLY a small window around the cursor — not the whole display (tens of MB per
+        // frame on a large screen). But a `sourceRect` with a SUB-POINT origin makes
+        // ScreenCaptureKit sample *between* pixels and softens the magnifier. So snap the rect to
+        // WHOLE POINTS that fully enclose the magnifier window and capture at its exact
+        // device-pixel size (1:1, no resample), then crop the exact window out of the result with
+        // `CGImage.cropping` — a pure pixel op that keeps it hard-edged and the sample exact.
+        let displayWpx = Int((screen.frame.width * scale).rounded())
+        let displayHpx = Int((screen.frame.height * scale).rounded())
+        // Magnifier window in device pixels (top-left origin), clamped so it stays on-screen.
+        let localX = (cursor.x - screen.frame.minX) * scale
+        let localYTop = (screen.frame.height - (cursor.y - screen.frame.minY)) * scale
+        let half = pixelCount / 2
+        let winX = min(max(0, Int(localX.rounded()) - half), max(0, displayWpx - pixelCount))
+        let winY = min(max(0, Int(localYTop.rounded()) - half), max(0, displayHpx - pixelCount))
+
+        // Whole-point rect (top-left origin, points) that encloses the window, so SCK samples on
+        // point boundaries with no sub-point blend.
+        let originPtX = (Double(winX) / scale).rounded(.down)
+        let originPtY = (Double(winY) / scale).rounded(.down)
+        let regionPtW = (Double(winX + pixelCount) / scale).rounded(.up) - originPtX
+        let regionPtH = (Double(winY + pixelCount) / scale).rounded(.up) - originPtY
+
+        let config = SCStreamConfiguration()
+        config.sourceRect = CGRect(x: originPtX, y: originPtY, width: regionPtW, height: regionPtH)
+        config.width = Int((regionPtW * scale).rounded())
+        config.height = Int((regionPtH * scale).rounded())
+        config.showsCursor = false
+
+        let region = try await capture(filter: filter, configuration: config)
+        // Crop the exact magnifier window out of the whole-point capture (pure pixel op).
+        let offsetX = winX - Int((originPtX * scale).rounded())
+        let offsetY = winY - Int((originPtY * scale).rounded())
+        let cropped = region.cropping(
+            to: CGRect(x: offsetX, y: offsetY, width: pixelCount, height: pixelCount)
+        ) ?? region
+        return (cropped, centerPixelColor(of: cropped))
     }
 
     /// The space the half-float capture is in. Display P3 covers what Mac displays show, and the
