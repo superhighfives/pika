@@ -28,6 +28,14 @@ if [ "$new" -lt "$MIN_COLORS" ]; then
   exit 1
 fi
 
+# Every entry needs a non-empty name and a #rrggbb hex, or the app can't use it.
+bad=$(jq '[.colors[] | select((.name | type) != "string" or .name == ""
+  or ((.hex | type) != "string") or (.hex | test("^#[0-9a-fA-F]{6}$") | not))] | length' "$TMP")
+if [ "$bad" -ne 0 ]; then
+  echo "error: $bad entries are missing a name or have an invalid hex; kept the existing list" >&2
+  exit 1
+fi
+
 if cmp -s "$TMP" "$DEST"; then
   echo "ColorNames.json is already up to date ($new colours)."
   exit 0
