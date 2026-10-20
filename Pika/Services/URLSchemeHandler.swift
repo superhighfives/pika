@@ -54,16 +54,30 @@ final class URLSchemeHandler: NSObject {
     }
 
     #if DEBUG
-        /// Debug builds only. `pika://debug/sample/<foreground|background>?x=…&y=…` samples the
-        /// screen at a point (global, top-left origin, in points, like a `CGEvent` location)
-        /// through the Pro picker's own capture, and sets the colour as a pick would. Lets tests
-        /// check picking accuracy without driving the mouse.
+        /// Debug builds only:
+        /// - `pika://debug/sample/<foreground|background>?x=…&y=…`: samples the screen at a point
+        ///   through the Pro picker's own capture (see `debugSample`)
+        /// - `pika://debug/update/<state>` and `pika://debug/update/scheduled` (Sparkle build):
+        ///   checks the inline update control (see `debugUpdate`)
         private func handleDebug(task: String?, arg1: String?, url: URL) {
+            switch task {
+            case "sample": debugSample(arg1: arg1, url: url)
+            #if TARGET_SPARKLE
+                case "update": debugUpdate(arg1)
+            #endif
+            default: break
+            }
+        }
+
+        /// Samples the screen at a point (global, top-left origin, in points, like a `CGEvent`
+        /// location) through the Pro picker's own capture, and sets the colour as a pick would.
+        /// Lets tests check picking accuracy without driving the mouse.
+        private func debugSample(arg1: String?, url: URL) {
             let items = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems ?? []
             func value(_ name: String) -> Double? {
                 items.first { $0.name == name }?.value.flatMap(Double.init)
             }
-            guard task == "sample", let left = value("x"), let top = value("y"),
+            guard let left = value("x"), let top = value("y"),
                   let primary = NSScreen.screens.first,
                   let appDelegate = AppDelegate.shared
             else { return }
@@ -87,6 +101,23 @@ final class URLSchemeHandler: NSObject {
                 NotificationCenter.default.post(name: .colorPicked, object: nil)
             }
         }
+
+        #if TARGET_SPARKLE
+            /// - `<state>`: available, downloading, ready, installing, checking, uptodate, failed or
+            ///   idle, with stand-in replies (see `PikaUpdateDriver.debugShow`)
+            /// - `scheduled`: a real scheduled-style check against the feed now
+            private func debugUpdate(_ arg1: String?) {
+                // Apple events arrive on the main thread.
+                MainActor.assumeIsolated {
+                    guard let controller = AppDelegate.shared?.updateController, let arg1 else { return }
+                    if arg1 == "scheduled" {
+                        controller.updater.checkForUpdatesInBackground()
+                    } else {
+                        controller.driver.debugShow(arg1)
+                    }
+                }
+            }
+        #endif
     #endif
 
     private func handleFormat(task: String?) {

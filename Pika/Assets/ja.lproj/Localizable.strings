@@ -839,3 +839,42 @@
 
 /* Learn more link */
 "match.learn" = "詳しく見る";
+
+/* Inline update control: an update was found */
+"update.available" = "アップデートがあります";
+
+/* Inline update control: start downloading the update */
+"update.update" = "アップデート";
+
+/* Inline update control: skip this version */
+"update.ignore" = "無視";
+
+/* Inline update control: install the downloaded update and relaunch */
+"update.restart" = "再起動してアップデート";
+
+/* Inline update control: link to the release notes */
+"update.whats_new" = "新機能";
+
+/* Inline update control: no newer version was found */
+"update.up_to_date" = "最新です";
+
+/* Inline update control: the update failed */
+"update.failed" = "アップデートに失敗しました";
+
+/* Inline update control: retry after a failure */
+"update.try_again" = "再試行";
+
+/* Inline update control: a check by hand is in progress */
+"update.checking" = "アップデートを確認中…";
+
+/* Inline update control: the update is downloading */
+"update.downloading" = "アップデートをダウンロード中…";
+
+/* Inline update control: the update is installing */
+"update.installing" = "アップデートをインストール中…";
+
+/* Inline update control: dismiss a message */
+"update.dismiss" = "閉じる";
+
+/* Inline update control: the version on offer, linking to its release notes */
+"update.version" = "バージョン %@";

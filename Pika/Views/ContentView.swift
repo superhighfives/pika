@@ -74,6 +74,11 @@ struct ContentView: View {
     @State private var swapAreaHovered = false
     @State private var swapButtonHovered = false
     @State private var isHovering: Bool = false
+    #if TARGET_SPARKLE
+        /// Observed here, not just in the bar, so the swatches resize with the update bar as it
+        /// slides in and out.
+        @ObservedObject private var updates = PikaUpdateDriver.shared
+    #endif
 
     /// Content size that comfortably shows every element the user currently has enabled —
     /// the target for the "expand to fit" control. Takes the largest width/height each
@@ -205,6 +210,9 @@ struct ContentView: View {
                     ColorHistoryDrawer(foreground: eyedroppers.foreground, background: eyedroppers.background)
                         .transition(.move(edge: .bottom).combined(with: .opacity))
                 }
+                #if TARGET_SPARKLE
+                    InlineUpdateControl()
+                #endif
             }
             .frame(width: geo.size.width, height: geo.size.height, alignment: .top)
             .environment(\.pikaAdaptiveVisibility, PikaAdaptiveVisibility(
@@ -231,6 +239,9 @@ struct ContentView: View {
             .animation(.easeInOut(duration: 0.2), value: allowPalettes)
             .animation(.easeInOut(duration: 0.15), value: suppressed)
             .animation(.easeInOut(duration: 0.15), value: isHovering)
+            #if TARGET_SPARKLE
+                .animation(.easeInOut(duration: 0.25), value: updates.state == .idle)
+            #endif
         }
         .onAppear {
             if Defaults[.palettes].first?.pairs.isEmpty ?? true {

@@ -839,3 +839,42 @@
 
 /* Learn more link */
 "match.learn" = "了解更多";
+
+/* Inline update control: an update was found */
+"update.available" = "有可用更新";
+
+/* Inline update control: start downloading the update */
+"update.update" = "更新";
+
+/* Inline update control: skip this version */
+"update.ignore" = "忽略";
+
+/* Inline update control: install the downloaded update and relaunch */
+"update.restart" = "重新启动以更新";
+
+/* Inline update control: link to the release notes */
+"update.whats_new" = "新功能";
+
+/* Inline update control: no newer version was found */
+"update.up_to_date" = "已是最新版本";
+
+/* Inline update control: the update failed */
+"update.failed" = "更新失败";
+
+/* Inline update control: retry after a failure */
+"update.try_again" = "重试";
+
+/* Inline update control: a check by hand is in progress */
+"update.checking" = "正在检查更新…";
+
+/* Inline update control: the update is downloading */
+"update.downloading" = "正在下载更新…";
+
+/* Inline update control: the update is installing */
+"update.installing" = "正在安装更新…";
+
+/* Inline update control: dismiss a message */
+"update.dismiss" = "关闭";
+
+/* Inline update control: the version on offer, linking to its release notes */
+"update.version" = "版本 %@";

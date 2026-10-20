@@ -839,3 +839,42 @@
 
 /* Learn more link */
 "match.learn" = "En savoir plus";
+
+/* Inline update control: an update was found */
+"update.available" = "Mise à jour disponible";
+
+/* Inline update control: start downloading the update */
+"update.update" = "Mettre à jour";
+
+/* Inline update control: skip this version */
+"update.ignore" = "Ignorer";
+
+/* Inline update control: install the downloaded update and relaunch */
+"update.restart" = "Redémarrer pour mettre à jour";
+
+/* Inline update control: link to the release notes */
+"update.whats_new" = "Nouveautés";
+
+/* Inline update control: no newer version was found */
+"update.up_to_date" = "À jour";
+
+/* Inline update control: the update failed */
+"update.failed" = "Échec de la mise à jour";
+
+/* Inline update control: retry after a failure */
+"update.try_again" = "Réessayer";
+
+/* Inline update control: a check by hand is in progress */
+"update.checking" = "Recherche de mises à jour…";
+
+/* Inline update control: the update is downloading */
+"update.downloading" = "Téléchargement de la mise à jour…";
+
+/* Inline update control: the update is installing */
+"update.installing" = "Installation de la mise à jour…";
+
+/* Inline update control: dismiss a message */
+"update.dismiss" = "Fermer";
+
+/* Inline update control: the version on offer, linking to its release notes */
+"update.version" = "Version %@";
