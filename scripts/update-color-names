@@ -1,0 +1,37 @@
+#!/bin/sh
+# Refreshes Pika/Assets/ColorNames.json, the offline colour-name list bundled with
+# the app, from color-name-list's best-of list. Run before a release, then commit
+# the result. The app downloads the full lists from color.pizza when it's online.
+#
+# Usage: scripts/update-color-names
+
+set -eu
+
+SOURCE="https://unpkg.com/color-name-list/dist/colornames.bestof.json"
+MIN_COLORS=1000
+
+cd "$(dirname "$0")/.."
+DEST="Pika/Assets/ColorNames.json"
+TMP="$(mktemp)"
+trap 'rm -f "$TMP"' EXIT
+
+command -v jq >/dev/null || { echo "error: jq is required" >&2; exit 1; }
+
+old=$(jq '.colors | length' "$DEST" 2>/dev/null || echo 0)
+
+curl --fail --retry 3 --retry-delay 5 --retry-all-errors --max-time 60 -sSL "$SOURCE" \
+  | jq -c '{colors: [.[] | {name, hex}]}' > "$TMP"
+
+new=$(jq '.colors | length' "$TMP")
+if [ "$new" -lt "$MIN_COLORS" ]; then
+  echo "error: only $new colours downloaded (expected at least $MIN_COLORS); kept the existing list" >&2
+  exit 1
+fi
+
+if cmp -s "$TMP" "$DEST"; then
+  echo "ColorNames.json is already up to date ($new colours)."
+  exit 0
+fi
+
+cat "$TMP" > "$DEST"
+echo "Updated ColorNames.json: $old → $new colours. Review and commit it."

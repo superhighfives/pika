@@ -26,7 +26,8 @@ let defaultColorListKey = "default"
 
 /// Loads the colour list bundled with the app (`ColorNames.json`), used as the offline
 /// fallback until (and if) a network refresh caches a newer copy. It's a snapshot of
-/// color-name-list's best-of list, refreshed by `/pre-release` before each release.
+/// color-name-list's best-of list; refresh it with `scripts/update-color-names` before
+/// each release.
 func loadColors() -> [ColorName]? {
     if let url = Bundle.main.url(forResource: "ColorNames", withExtension: "json") {
         do {
