@@ -784,7 +784,7 @@
 "preferences.space.label" = "Čitaj boje u";
 
 /* Match display (%@) */
-"preferences.space.display" = "Kao zaslon (%@)";
+"preferences.space.display" = "Prema zaslonu (%@)";
 
 /* Recommended for color space */
 "preferences.space.hint.srgb" = "Preporučeno. Hex vrijednosti odgovaraju CSS-u, Figmi i većini alata za dizajn.";
@@ -793,7 +793,7 @@
 "preferences.space.hint.p3" = "Za dizajnerske datoteke i resurse aplikacija u Display P3. CSS hex i RGB kopiraju se kao color(display-p3 …), jer preglednici običan hex čitaju kao sRGB.";
 
 /* Match display hint */
-"preferences.space.hint.display" = "Izravne vrijednosti tvog zaslona, prema zaslonu na kojem biraš. Hex vrijednosti neće odgovarati webu.";
+"preferences.space.hint.display" = "Neobrađene vrijednosti zaslona na kojem birate. Hex vrijednosti neće odgovarati webu.";
 
 /* Other color space hint */
 "preferences.space.hint.other" = "Hex vrijednosti neće odgovarati webu, osim ako izvor koristi isti prostor boja.";
@@ -808,7 +808,7 @@
 "match.title" = "Provjeri boju";
 
 /* Check a Color introduction */
-"match.intro" = "Odaberi boju čiji hex već znaš, poput uzorka u Figmi ili na web stranici, pa unesi taj hex. Pika pronalazi prostor boja koji ga vraća.";
+"match.intro" = "Odaberite boju čiji hex već znate, poput uzorka u Figmi ili na web stranici, pa unesite taj hex. Pika pronalazi prostor boja u kojem se očitava isti hex.";
 
 /* Expected hex field */
 "match.expected" = "Očekivani hex";
@@ -817,19 +817,19 @@
 "match.exact" = "Točno";
 
 /* Match within rounding */
-"match.close" = "Unutar zaokruživanja";
+"match.close" = "U granicama zaokruživanja";
 
 /* Channels off by */
-"match.off" = "%d razlike";
+"match.off" = "Razlika: %d";
 
 /* Matches the current space */
-"match.result.current" = "To je prostor boja koji koristiš, pa se vrijednosti podudaraju.";
+"match.result.current" = "To je prostor boja koji koristite, pa se vrijednosti podudaraju.";
 
 /* Matches another space */
 "match.result.other" = "Ova se boja podudara u prostoru %@.";
 
 /* No space matches */
-"match.result.none" = "Nijedan prostor boja se ne podudara. Aplikacija koja prikazuje ovu boju možda ne upravlja bojama ili koristi vlastiti profil.";
+"match.result.none" = "Nijedan se prostor boja ne podudara. Aplikacija koja prikazuje ovu boju možda ne upravlja bojama ili koristi vlastiti profil.";
 
 /* Use color space button */
 "match.use" = "Koristi %@";

@@ -778,13 +778,13 @@
 "color.pick.pair" = "Wybierz parę";
 
 /* Color Space */
-"preferences.space.title" = "Przestrzeń barw";
+"preferences.space.title" = "Przestrzeń kolorów";
 
 /* Read colors in */
 "preferences.space.label" = "Odczytuj kolory w";
 
 /* Match display (%@) */
-"preferences.space.display" = "Jak ekran (%@)";
+"preferences.space.display" = "Zgodnie z ekranem (%@)";
 
 /* Recommended for color space */
 "preferences.space.hint.srgb" = "Zalecane. Wartości hex zgadzają się z CSS, Figmą i większością narzędzi projektowych.";
@@ -793,10 +793,10 @@
 "preferences.space.hint.p3" = "Do plików projektowych i zasobów aplikacji w Display P3. Hex i RGB w CSS kopiowane są jako color(display-p3 …), bo przeglądarki czytają zwykły hex jako sRGB.";
 
 /* Match display hint */
-"preferences.space.hint.display" = "Surowe wartości z ekranu, na którym wybierasz kolor. Wartości hex nie będą zgodne z internetem.";
+"preferences.space.hint.display" = "Surowe wartości z ekranu, na którym wybierasz kolor. Wartości hex nie będą zgodne z tymi w przeglądarce.";
 
 /* Other color space hint */
-"preferences.space.hint.other" = "Wartości hex nie będą zgodne z internetem, chyba że źródło używa tej samej przestrzeni barw.";
+"preferences.space.hint.other" = "Wartości hex nie będą zgodne z tymi w przeglądarce, chyba że źródło używa tej samej przestrzeni kolorów.";
 
 /* Colors don't match? */
 "color.space.mismatch" = "Kolory się nie zgadzają?";
@@ -808,7 +808,7 @@
 "match.title" = "Sprawdź kolor";
 
 /* Check a Color introduction */
-"match.intro" = "Wybierz kolor, którego hex już znasz, na przykład próbkę w Figmie lub na stronie, a potem wpisz ten hex. Pika znajdzie przestrzeń barw, która go odtwarza.";
+"match.intro" = "Wybierz kolor, którego hex już znasz, na przykład próbkę w Figmie lub na stronie, a potem wpisz ten hex. Pika znajdzie przestrzeń kolorów, w której odczytuje się ten sam hex.";
 
 /* Expected hex field */
 "match.expected" = "Oczekiwany hex";
@@ -823,13 +823,13 @@
 "match.off" = "Różnica %d";
 
 /* Matches the current space */
-"match.result.current" = "To przestrzeń barw, której używasz, więc wartości się zgadzają.";
+"match.result.current" = "To przestrzeń kolorów, której używasz, więc wartości się zgadzają.";
 
 /* Matches another space */
 "match.result.other" = "Ten kolor zgadza się w przestrzeni %@.";
 
 /* No space matches */
-"match.result.none" = "Żadna przestrzeń barw się nie zgadza. Aplikacja wyświetlająca ten kolor może nie zarządzać kolorem albo używać własnego profilu.";
+"match.result.none" = "Żadna przestrzeń kolorów się nie zgadza. Aplikacja wyświetlająca ten kolor może nie zarządzać kolorem albo używać własnego profilu.";
 
 /* Use color space button */
 "match.use" = "Użyj %@";

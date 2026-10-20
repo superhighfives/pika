@@ -793,10 +793,10 @@
 "preferences.space.hint.p3" = "適用於 Display P3 設計檔案和 App 素材。瀏覽器會將一般十六進位值視為 sRGB，因此 CSS 十六進位和 RGB 會複製為 color(display-p3 …)。";
 
 /* Match display hint */
-"preferences.space.hint.display" = "取色所在顯示器的原始值。十六進位值與網頁不一致。";
+"preferences.space.hint.display" = "取色所在顯示器的原始值。十六進位值將與網頁不一致。";
 
 /* Other color space hint */
-"preferences.space.hint.other" = "除非來源使用相同的色彩空間，否則十六進位值與網頁不一致。";
+"preferences.space.hint.other" = "除非來源使用相同的色彩空間，否則十六進位值將與網頁不一致。";
 
 /* Colors don't match? */
 "color.space.mismatch" = "顏色不一致？";
@@ -808,7 +808,7 @@
 "match.title" = "檢查顏色";
 
 /* Check a Color introduction */
-"match.intro" = "選取一個你已知十六進位值的顏色，例如 Figma 或網頁中的色塊，然後輸入該值。Pika 會找到能還原它的色彩空間。";
+"match.intro" = "選取一個你已知十六進位值的顏色，例如 Figma 或網頁中的色塊，然後輸入該值。Pika 會找出能讀出同一數值的色彩空間。";
 
 /* Expected hex field */
 "match.expected" = "預期的十六進位值";

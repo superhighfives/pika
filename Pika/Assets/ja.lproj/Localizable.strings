@@ -781,7 +781,7 @@
 "preferences.space.title" = "カラースペース";
 
 /* Read colors in */
-"preferences.space.label" = "カラーを読み取るスペース";
+"preferences.space.label" = "読み取りに使うカラースペース";
 
 /* Match display (%@) */
 "preferences.space.display" = "ディスプレイに合わせる（%@）";
@@ -793,7 +793,7 @@
 "preferences.space.hint.p3" = "Display P3のデザインファイルやアプリのアセット向けです。ブラウザは通常のHEXをsRGBとして読むため、CSSのHEXとRGBはcolor(display-p3 …)としてコピーされます。";
 
 /* Match display hint */
-"preferences.space.hint.display" = "ピックしたディスプレイの生の値です。HEX値はウェブと一致しません。";
+"preferences.space.hint.display" = "ピックするディスプレイの生の値です。HEX値はウェブと一致しません。";
 
 /* Other color space hint */
 "preferences.space.hint.other" = "ソースが同じカラースペースを使っていない限り、HEX値はウェブと一致しません。";
@@ -808,10 +808,10 @@
 "match.title" = "カラーを確認";
 
 /* Check a Color introduction */
-"match.intro" = "FigmaやウェブページのスウォッチなどHEXがわかっているカラーをピックし、そのHEXを入力してください。Pikaがそれを再現するカラースペースを探します。";
+"match.intro" = "FigmaのスウォッチやウェブページなどHEXがわかっているカラーをピックし、そのHEXを入力してください。同じHEXで読み取れるカラースペースをPikaが探します。";
 
 /* Expected hex field */
-"match.expected" = "期待するHEX";
+"match.expected" = "想定していたHEX";
 
 /* Exact match */
 "match.exact" = "完全一致";
@@ -820,7 +820,7 @@
 "match.close" = "丸め誤差の範囲内";
 
 /* Channels off by */
-"match.off" = "%d のずれ";
+"match.off" = "%d段階のずれ";
 
 /* Matches the current space */
 "match.result.current" = "現在使用中のカラースペースなので、値は一致しています。";

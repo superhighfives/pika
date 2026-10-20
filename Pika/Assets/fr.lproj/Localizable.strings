@@ -793,7 +793,7 @@
 "preferences.space.hint.p3" = "Pour les fichiers de design et les ressources d’app en Display P3. Le hex et le RGB CSS sont copiés en color(display-p3 …), car les navigateurs lisent un hex simple comme du sRGB.";
 
 /* Match display hint */
-"preferences.space.hint.display" = "Valeurs brutes de votre écran, selon l’écran où vous prélevez. Les valeurs hex ne correspondront pas au web.";
+"preferences.space.hint.display" = "Valeurs brutes de l’écran sur lequel vous sélectionnez. Les valeurs hex ne correspondront pas au web.";
 
 /* Other color space hint */
 "preferences.space.hint.other" = "Les valeurs hex ne correspondront pas au web, sauf si la source utilise le même espace colorimétrique.";
@@ -808,7 +808,7 @@
 "match.title" = "Vérifier une couleur";
 
 /* Check a Color introduction */
-"match.intro" = "Prélevez une couleur dont vous connaissez déjà le hex, comme un échantillon dans Figma ou sur une page web, puis saisissez ce hex. Pika trouve l’espace colorimétrique qui le restitue.";
+"match.intro" = "Sélectionnez une couleur dont vous connaissez déjà le hex, comme un échantillon dans Figma ou sur une page web, puis saisissez ce hex. Pika trouve l’espace colorimétrique dans lequel on lit ce même hex.";
 
 /* Expected hex field */
 "match.expected" = "Hex attendu";
@@ -835,7 +835,7 @@
 "match.use" = "Utiliser %@";
 
 /* Pick again button */
-"match.pick" = "Prélever à nouveau";
+"match.pick" = "Sélectionner à nouveau";
 
 /* Learn more link */
 "match.learn" = "En savoir plus";

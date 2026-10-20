@@ -790,13 +790,13 @@
 "preferences.space.hint.srgb" = "Empfohlen. Hex-Werte stimmen mit CSS, Figma und den meisten Design-Tools überein.";
 
 /* Display P3 hint */
-"preferences.space.hint.p3" = "Für Display-P3-Designdateien und App-Assets. CSS-Hex und -RGB werden als color(display-p3 …) kopiert, da Browser ein einfaches Hex als sRGB lesen.";
+"preferences.space.hint.p3" = "Für Display-P3-Designdateien und App-Assets. CSS-Hex und -RGB werden als color(display-p3 …) kopiert, da Browser einen einfachen Hex-Wert als sRGB interpretieren.";
 
 /* Match display hint */
-"preferences.space.hint.display" = "Rohwerte deines Displays, jeweils von dem Display, auf dem du pickst. Hex-Werte stimmen nicht mit dem Web überein.";
+"preferences.space.hint.display" = "Rohwerte des Displays, auf dem Sie auswählen. Hex-Werte stimmen nicht mit dem Web überein.";
 
 /* Other color space hint */
-"preferences.space.hint.other" = "Hex-Werte stimmen nicht mit dem Web überein, außer die Quelle nutzt denselben Farbraum.";
+"preferences.space.hint.other" = "Hex-Werte stimmen nicht mit dem Web überein, es sei denn, die Quelle nutzt denselben Farbraum.";
 
 /* Colors don't match? */
 "color.space.mismatch" = "Farben stimmen nicht überein?";
@@ -808,7 +808,7 @@
 "match.title" = "Farbe prüfen";
 
 /* Check a Color introduction */
-"match.intro" = "Wähle eine Farbe, deren Hex-Wert du kennst, etwa ein Farbfeld in Figma oder auf einer Webseite, und gib diesen Hex-Wert ein. Pika findet den Farbraum, der ihn zurückliest.";
+"match.intro" = "Wählen Sie eine Farbe aus, deren Hex-Wert Sie kennen, etwa ein Farbfeld in Figma oder auf einer Webseite, und geben Sie diesen Hex-Wert ein. Pika ermittelt den Farbraum, in dem genau dieser Wert gelesen wird.";
 
 /* Expected hex field */
 "match.expected" = "Erwarteter Hex-Wert";
@@ -817,13 +817,13 @@
 "match.exact" = "Exakt";
 
 /* Match within rounding */
-"match.close" = "Innerhalb der Rundung";
+"match.close" = "Im Rahmen der Rundung";
 
 /* Channels off by */
-"match.off" = "%d daneben";
+"match.off" = "Abweichung: %d";
 
 /* Matches the current space */
-"match.result.current" = "Das ist dein aktueller Farbraum, die Werte stimmen also überein.";
+"match.result.current" = "Das ist Ihr aktueller Farbraum, die Werte stimmen also überein.";
 
 /* Matches another space */
 "match.result.other" = "Diese Farbe stimmt in %@ überein.";
