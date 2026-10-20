@@ -740,19 +740,36 @@ final class PickerLoupeController {
         }
     }
 
-    /// Half-float extended sRGB, whatever the colour space setting: nothing outside sRGB is
-    /// clipped, and the only 8-bit rounding left is the readout's. `captureImage` ignores
-    /// `pixelFormat` and always returns 8-bit BGRA, so this goes through a sample buffer.
+    /// The space the half-float capture is in. Display P3 covers what Mac displays show, and the
+    /// extended range holds anything beyond it rather than clipping. Measured: sRGB swatches read
+    /// back exact, and a P3 swatch keeps its P3 value, where an extended sRGB capture clipped it.
+    static let captureSpaceName = CGColorSpace.extendedLinearDisplayP3
+
+    /// Half-float extended linear Display P3, whatever the colour space setting, so the only 8-bit
+    /// rounding left is the readout's. `captureImage` ignores `pixelFormat` and always returns
+    /// 8-bit BGRA, so this goes through a sample buffer.
+    ///
+    /// On macOS 15 it also asks for HDR values. With a display in HDR mode, an SDR capture squeezes
+    /// the display's whole range into 0…1, so white reads at about 0.9 and every pick comes back
+    /// darker than its source (measured: `#0e1829` read as `#0d1625`). In HDR values 1.0 is SDR
+    /// white, so sRGB and P3 content reads back exactly; on an SDR display the two are the same.
     private static func capture(
         filter: SCContentFilter, configuration config: SCStreamConfiguration
     ) async throws -> CGImage {
         config.pixelFormat = kCVPixelFormatType_64RGBAHalf
-        config.colorSpaceName = CGColorSpace.extendedSRGB
+        config.colorSpaceName = captureSpaceName
+        if #available(macOS 15.0, *) {
+            config.captureDynamicRange = .hdrLocalDisplay
+        }
         let sampleBuffer = try await SCScreenshotManager.captureSampleBuffer(
             contentFilter: filter, configuration: config
         )
         if let image = image(fromHalfFloat: sampleBuffer) { return image }
         // Not the format asked for; fall back to an 8-bit capture rather than no sample.
+        config.colorSpaceName = CGColorSpace.displayP3
+        if #available(macOS 15.0, *) {
+            config.captureDynamicRange = .SDR
+        }
         return try await SCScreenshotManager.captureImage(contentFilter: filter, configuration: config)
     }
 
@@ -761,7 +778,8 @@ final class PickerLoupeController {
     static func image(fromHalfFloat sampleBuffer: CMSampleBuffer) -> CGImage? {
         guard let pixelBuffer = sampleBuffer.imageBuffer,
               CVPixelBufferGetPixelFormatType(pixelBuffer) == kCVPixelFormatType_64RGBAHalf,
-              let space = CGColorSpace(name: CGColorSpace.extendedSRGB)
+              // Tagged explicitly: an HDR capture carries no colour space attachment.
+              let space = CGColorSpace(name: captureSpaceName)
         else { return nil }
         CVPixelBufferLockBaseAddress(pixelBuffer, .readOnly)
         defer { CVPixelBufferUnlockBaseAddress(pixelBuffer, .readOnly) }
