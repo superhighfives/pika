@@ -1,4 +1,5 @@
 import Cocoa
+import Combine
 import Defaults
 import KeyboardShortcuts
 import LaunchAtLogin
@@ -22,12 +23,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let statusBarController = StatusBarController()
 
     #if TARGET_SPARKLE
-        /// Sparkle 2 updater. Created on launch so scheduled update checks start with the app.
-        private(set) lazy var updaterController = SPUStandardUpdaterController(
-            startingUpdater: true,
-            updaterDelegate: self,
-            userDriverDelegate: nil
-        )
+        /// Sparkle 2 updater, with updates shown inline rather than in Sparkle's windows.
+        /// Created and started on launch so scheduled update checks start with the app.
+        /// Optional rather than implicitly unwrapped: it's created on launch, so anything that
+        /// reaches it earlier gets nil instead of a crash.
+        private(set) var updateController: UpdateController?
+        private var updateAttention: AnyCancellable?
     #endif
 
     func setupAppMode() {
@@ -83,13 +84,23 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         migrateHistoryToPalettes()
         removeUpdatesMenuItemIfNeeded()
         #if TARGET_SPARKLE
+            let updateController = UpdateController(delegate: self)
+            updateController.driver.showUpdateInFocusHandler = { [weak self] in
+                guard let self else { return }
+                showMainInterface(self)
+            }
             // Sparkle 1 persisted the runtime feed URL to user defaults, where Sparkle 2 would
             // still read it. The feed now comes from `feedURLString(for:)`, so drop the stale copy.
-            updaterController.updater.clearFeedURLFromUserDefaults()
+            updateController.updater.clearFeedURLFromUserDefaults()
+            updateController.start()
+            self.updateController = updateController
         #endif
 
         eyedroppers = Eyedroppers()
         setupInterface()
+        #if TARGET_SPARKLE
+            setupUpdateStatusBar()
+        #endif
         setupAppMode()
         registerTogglePikaShortcut()
         presentSplashIfNeeded()
@@ -112,6 +123,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             }
         #endif
     }
+
+    #if TARGET_SPARKLE
+        /// Flags the status bar icon for an update found while Pika wasn't showing.
+        @MainActor
+        private func setupUpdateStatusBar() {
+            updateAttention = PikaUpdateDriver.shared.$needsAttention
+                .removeDuplicates()
+                .sink { [weak self] in self?.statusBarController.setNeedsAttention($0) }
+        }
+    #endif
 
     private func setupInterface() {
         windowCoordinator.setupMainWindow(eyedroppers: eyedroppers)
@@ -328,8 +349,11 @@ extension AppDelegate {
 
 extension AppDelegate {
     #if TARGET_SPARKLE
-        @IBAction func checkForUpdates(_ sender: Any) {
-            updaterController.checkForUpdates(sender)
+        /// A check by hand. The result shows in the inline update control, so bring Pika up
+        /// to show it.
+        @IBAction func checkForUpdates(_: Any) {
+            showMainInterface(self)
+            updateController?.checkForUpdates()
         }
     #endif
 

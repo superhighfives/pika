@@ -782,3 +782,42 @@
 
 /* Pick a foreground then background pair */
 "color.pick.pair" = "Wybierz parę";
+
+/* Inline update control: an update was found */
+"update.available" = "Dostępna aktualizacja";
+
+/* Inline update control: start downloading the update */
+"update.update" = "Aktualizuj";
+
+/* Inline update control: skip this version */
+"update.ignore" = "Ignoruj";
+
+/* Inline update control: install the downloaded update and relaunch */
+"update.restart" = "Uruchom ponownie, aby zaktualizować";
+
+/* Inline update control: link to the release notes */
+"update.whats_new" = "Co nowego";
+
+/* Inline update control: no newer version was found */
+"update.up_to_date" = "Aktualne";
+
+/* Inline update control: the update failed */
+"update.failed" = "Aktualizacja nie powiodła się";
+
+/* Inline update control: retry after a failure */
+"update.try_again" = "Spróbuj ponownie";
+
+/* Inline update control: a check by hand is in progress */
+"update.checking" = "Sprawdzanie aktualizacji…";
+
+/* Inline update control: the update is downloading */
+"update.downloading" = "Pobieranie aktualizacji…";
+
+/* Inline update control: the update is installing */
+"update.installing" = "Instalowanie aktualizacji…";
+
+/* Inline update control: dismiss a message */
+"update.dismiss" = "Zamknij";
+
+/* Inline update control: the version on offer, linking to its release notes */
+"update.version" = "Wersja %@";
