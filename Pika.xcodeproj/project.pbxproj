@@ -225,7 +225,9 @@
 		CCB1CA0000000000000000F2 /* ColorPickSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CA0000000000000000F1 /* ColorPickSession.swift */; };
 		CCB1CA0000000000000000F3 /* ColorPickSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CA0000000000000000F1 /* ColorPickSession.swift */; };
 		CCB1CA0000000000000000F5 /* CustomColorPickSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CA0000000000000000F4 /* CustomColorPickSession.swift */; };
+		C59795F7EE718689904F682A /* PickerLoupeCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5CC39646FAA705E90838F44 /* PickerLoupeCapture.swift */; };
 		CCB1CA0000000000000000F6 /* CustomColorPickSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CA0000000000000000F4 /* CustomColorPickSession.swift */; };
+		C5D7AFF6343E2A94731847DA /* PickerLoupeCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5CC39646FAA705E90838F44 /* PickerLoupeCapture.swift */; };
 		CCB1CA0000000000000000F8 /* PickerLoupePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CA0000000000000000F7 /* PickerLoupePanel.swift */; };
 		CCB1CA0000000000000000F9 /* PickerLoupePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CA0000000000000000F7 /* PickerLoupePanel.swift */; };
 		CCB1CA000000000000000101 /* PickerLoupeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CA000000000000000100 /* PickerLoupeView.swift */; };
@@ -396,6 +398,7 @@
 		F8ABAC5C2EAAD0F0008CD152 /* ColorPickOverlayWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickOverlayWindow.swift; sourceTree = "<group>"; };
 		CCB1CA0000000000000000F1 /* ColorPickSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickSession.swift; sourceTree = "<group>"; };
 		CCB1CA0000000000000000F4 /* CustomColorPickSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColorPickSession.swift; sourceTree = "<group>"; };
+		C5CC39646FAA705E90838F44 /* PickerLoupeCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerLoupeCapture.swift; sourceTree = "<group>"; };
 		CCB1CA0000000000000000F7 /* PickerLoupePanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerLoupePanel.swift; sourceTree = "<group>"; };
 		CCB1CA000000000000000100 /* PickerLoupeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerLoupeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -557,6 +560,7 @@
 				DEC0FACE0000000000000001 /* ColorDecomposition.swift */,
 				CCB1CA0000000000000000F1 /* ColorPickSession.swift */,
 				CCB1CA0000000000000000F4 /* CustomColorPickSession.swift */,
+				C5CC39646FAA705E90838F44 /* PickerLoupeCapture.swift */,
 				CC1100000000000000000007 /* Models */,
 				CC1100000000000000000008 /* Export */,
 				CC1100000000000000000009 /* Windows */,
@@ -1067,6 +1071,7 @@
 				F8ABAC5D2EAAD0F0008CD152 /* ColorPickOverlayWindow.swift in Sources */,
 				CCB1CA0000000000000000F2 /* ColorPickSession.swift in Sources */,
 				CCB1CA0000000000000000F5 /* CustomColorPickSession.swift in Sources */,
+				C59795F7EE718689904F682A /* PickerLoupeCapture.swift in Sources */,
 				CCB1CA0000000000000000F8 /* PickerLoupePanel.swift in Sources */,
 				CCB1CA000000000000000101 /* PickerLoupeView.swift in Sources */,
 				EA635DE125B4FC580014D91A /* ColorPickers.swift in Sources */,
@@ -1121,6 +1126,7 @@
 				F8ABAC5E2EAAD0F0008CD152 /* ColorPickOverlayWindow.swift in Sources */,
 				CCB1CA0000000000000000F3 /* ColorPickSession.swift in Sources */,
 				CCB1CA0000000000000000F6 /* CustomColorPickSession.swift in Sources */,
+				C5D7AFF6343E2A94731847DA /* PickerLoupeCapture.swift in Sources */,
 				CCB1CA0000000000000000F9 /* PickerLoupePanel.swift in Sources */,
 				CCB1CA000000000000000102 /* PickerLoupeView.swift in Sources */,
 				EAE23DB12D032A38005BB270 /* AppModeToggleGroup.swift in Sources */,

@@ -90,12 +90,19 @@ final class URLSchemeHandler: NSObject {
             Task { @MainActor in
                 guard let content = try? await SCShareableContent.current,
                       let display = content.displays.first(where: { $0.displayID == screen.displayID }),
+                      case let filter = SCContentFilter(display: display, excludingWindows: []),
                       let sample = try? await PickerLoupeController.captureWindow(
-                          around: point, on: screen, pixelCount: 15,
-                          filter: SCContentFilter(display: display, excludingWindows: [])
+                          around: point, on: screen, pixelCount: 15, filter: filter
                       ),
-                      let pixel = sample.pixel
+                      let devicePixel = sample.pixel
                 else { return }
+                // As a committed pick does: a flat point is read as drawn.
+                var pixel = devicePixel
+                if let flatPoint = sample.flatPoint,
+                   let drawn = try? await PickerLoupeController.sourceColor(ofPointAt: flatPoint, filter: filter)
+                {
+                    pixel = drawn
+                }
                 ColorSpacePreference.followDisplay(screen)
                 eyedropper.set(pixel)
                 NotificationCenter.default.post(name: .colorPicked, object: nil)

@@ -161,6 +161,13 @@ final class PickerLoupeController {
     private var loupeWindowIDs: [CGWindowID] = []
     private var isCapturing = false
     private var pendingCapture = false
+    /// The flat point under the current sample, waiting to be read as drawn (see `commit`).
+    private var pendingRefinement: Refinement?
+    private var refineTask: Task<Void, Never>?
+    /// The cursor position whose point was last read as drawn.
+    private var refinedCursor: NSPoint?
+    /// A commit waiting on that read.
+    private var isCommitting = false
     private var currentCursor: NSPoint = .zero
 
     // MARK: - Session lifecycle
@@ -172,6 +179,7 @@ final class PickerLoupeController {
         completion: @escaping (NSColor?) -> Void
     ) {
         pickGeneration += 1
+        resetRefinement()
         self.completion = completion
         self.willChain = willChain
         rearmSafety?.invalidate()
@@ -327,8 +335,70 @@ final class PickerLoupeController {
     private func commit() {
         // Ignore stray events once the pick has ended (e.g. an orphaned catcher tracking area
         // still delivering after teardown): only a live pick has a completion.
-        guard completion != nil else { return }
-        finish(with: viewModel.sampleColor)
+        guard completion != nil, !isCommitting else { return }
+        // A flat point not yet read as drawn (the cursor hadn't settled): read it now, so the
+        // committed colour is always the one the system picker would give. One point capture,
+        // ~60 ms; moves and clicks are ignored meanwhile, and Escape still cancels.
+        guard let refinement = pendingRefinement, refinedCursor != refinement.cursor else {
+            finish(with: viewModel.sampleColor)
+            return
+        }
+        isCommitting = true
+        refineTask?.cancel()
+        Task { @MainActor in
+            let refined = await self.refine(refinement)
+            self.isCommitting = false
+            guard self.completion != nil else { return } // cancelled while reading
+            self.finish(with: refined ?? self.viewModel.sampleColor)
+        }
+    }
+
+    private func resetRefinement() {
+        refineTask?.cancel()
+        refineTask = nil
+        pendingRefinement = nil
+        refinedCursor = nil
+        isCommitting = false
+    }
+
+    /// A flat point under the sample, to read as drawn once the cursor settles.
+    private struct Refinement {
+        let point: CGPoint
+        let filter: SCContentFilter
+        let cursor: NSPoint
+    }
+
+    /// Reads the sampled point as drawn once the cursor has rested on it, so the live sample and
+    /// readout match the system picker without a second capture on every frame of a drag.
+    private func scheduleRefinement(_ refinement: Refinement?) {
+        refineTask?.cancel()
+        refineTask = nil
+        pendingRefinement = refinement
+        // A new frame has just replaced the sample with its device pixel, so nothing is read as
+        // drawn yet, even if an earlier read was at this same position.
+        refinedCursor = nil
+        guard let refinement else { return }
+        refineTask = Task { @MainActor in
+            try? await Task.sleep(for: .milliseconds(120))
+            guard !Task.isCancelled else { return }
+            _ = await self.refine(refinement)
+        }
+    }
+
+    /// Captures `refinement`'s point and, if the pick is still on it, makes it the sample.
+    @discardableResult
+    private func refine(_ refinement: Refinement) async -> NSColor? {
+        let generation = pickGeneration
+        guard let color = try? await Self.sourceColor(ofPointAt: refinement.point, filter: refinement.filter),
+              generation == pickGeneration, currentCursor == refinement.cursor
+        else { return nil }
+        viewModel.sampleColor = color
+        refinedCursor = refinement.cursor
+        if isActive, completion != nil {
+            targetEyedropper?.set(color)
+        }
+        updateColorName()
+        return color
     }
 
     private func finish(with color: NSColor?) {
@@ -381,6 +451,7 @@ final class PickerLoupeController {
         removeMonitors()
         isCapturing = false
         pendingCapture = false
+        resetRefinement()
         configuredDisplayID = nil
         baseFilter = nil
         // Rebuild the name lookup next pick so it reflects the active colour list.
@@ -490,7 +561,8 @@ final class PickerLoupeController {
     private func handlePointerMoved(_ event: NSEvent) {
         // The catcher's tracking area can keep firing after teardown (orderOut doesn't always
         // stop it); ignore moves unless a pick is live so the preview can't drift afterwards.
-        guard isActive else { return }
+        // A commit reading its point (see `commit`) holds the cursor where it was clicked.
+        guard isActive, !isCommitting else { return }
         keyCatcherUnderCursor()
         let scale = viewModel.mouseSensitivityScale
         guard scale < 1 else {
@@ -641,23 +713,25 @@ final class PickerLoupeController {
         guard let filter = baseFilter else { return }
 
         do {
-            let (cropped, sampled) = try await Self.captureWindow(
+            let frame = try await Self.captureWindow(
                 around: cursor, on: screen, pixelCount: viewModel.pixelCount, filter: filter
             )
             // The grab is async: if the pick was cancelled/committed (or a new one began) while
             // it was in flight, this result is stale — discard it so it can't write a colour
             // into a finished pick (the cause of a straggler landing on Escape or a drag).
             guard generation == pickGeneration else { return }
-            viewModel.image = cropped
-            let pixel = sampled ?? viewModel.sampleColor
+            viewModel.image = frame.image
+            let pixel = frame.pixel ?? viewModel.sampleColor
             // Over Pika's own UI, fall back to the colour the pick started with so sampling
             // doesn't feed the swatch back into itself (and fade the loupe to signal that).
             let overApp = isCursorOverAppWindow()
             viewModel.isOverApp = overApp
             if overApp, let previewOriginal {
                 viewModel.sampleColor = previewOriginal
+                scheduleRefinement(nil)
             } else {
                 viewModel.sampleColor = pixel
+                scheduleRefinement(frame.flatPoint.map { Refinement(point: $0, filter: filter, cursor: cursor) })
             }
             // Live-preview the sample into the app (footer / swatches track the cursor) only
             // while a leg is actively sampling. `completion` is nil between the foreground commit
@@ -703,226 +777,6 @@ final class PickerLoupeController {
             baseFilter = nil
             configuredDisplayID = nil
         }
-    }
-
-    /// Captures the magnifier window around `cursor` (AppKit coordinates) on `screen`: the image
-    /// the loupe shows, and its centre pixel's colour. Shared by live picking and the Debug-only
-    /// `pika://debug/sample` URL, so a test samples exactly as a pick does.
-    static func captureWindow(
-        around cursor: NSPoint, on screen: NSScreen, pixelCount: Int, filter: SCContentFilter
-    ) async throws -> (image: CGImage, pixel: NSColor?) {
-        let scale = screen.backingScaleFactor
-
-        // Capture ONLY a small window around the cursor — not the whole display (tens of MB per
-        // frame on a large screen). But a `sourceRect` with a SUB-POINT origin makes
-        // ScreenCaptureKit sample *between* pixels and softens the magnifier. So snap the rect to
-        // WHOLE POINTS that fully enclose the magnifier window and capture at its exact
-        // device-pixel size (1:1, no resample), then crop the exact window out of the result with
-        // `CGImage.cropping` — a pure pixel op that keeps it hard-edged and the sample exact.
-        let displayWpx = Int((screen.frame.width * scale).rounded())
-        let displayHpx = Int((screen.frame.height * scale).rounded())
-        // Magnifier window in device pixels (top-left origin), clamped so it stays on-screen.
-        let localX = (cursor.x - screen.frame.minX) * scale
-        let localYTop = (screen.frame.height - (cursor.y - screen.frame.minY)) * scale
-        let half = pixelCount / 2
-        let winX = min(max(0, Int(localX.rounded()) - half), max(0, displayWpx - pixelCount))
-        let winY = min(max(0, Int(localYTop.rounded()) - half), max(0, displayHpx - pixelCount))
-
-        // Whole-point rect (top-left origin, points) that encloses the window, so SCK samples on
-        // point boundaries with no sub-point blend.
-        let originPtX = (Double(winX) / scale).rounded(.down)
-        let originPtY = (Double(winY) / scale).rounded(.down)
-        let regionPtW = (Double(winX + pixelCount) / scale).rounded(.up) - originPtX
-        let regionPtH = (Double(winY + pixelCount) / scale).rounded(.up) - originPtY
-
-        let config = SCStreamConfiguration()
-        config.sourceRect = CGRect(x: originPtX, y: originPtY, width: regionPtW, height: regionPtH)
-        config.width = Int((regionPtW * scale).rounded())
-        config.height = Int((regionPtH * scale).rounded())
-        config.showsCursor = false
-
-        // The point holding the sampled (centre) device pixel, captured alongside: see
-        // `sourceColor(ofPointAt:filter:)`.
-        let pointX = (Double(winX + pixelCount / 2) / scale).rounded(.down)
-        let pointY = (Double(winY + pixelCount / 2) / scale).rounded(.down)
-        async let regionCapture = capture(filter: filter, configuration: config)
-        async let pointCapture = sourceColor(ofPointAt: CGPoint(x: pointX, y: pointY), filter: filter)
-
-        let region = try await regionCapture
-        // Crop the exact magnifier window out of the whole-point capture (pure pixel op).
-        let originX = Int((originPtX * scale).rounded())
-        let originY = Int((originPtY * scale).rounded())
-        let cropped = region.cropping(
-            to: CGRect(x: winX - originX, y: winY - originY, width: pixelCount, height: pixelCount)
-        ) ?? region
-        let devicePixel = centerPixelColor(of: cropped)
-
-        // Where the point's device pixels are all one colour, read it from the point capture, so
-        // a colour beyond the display's gamut reads as the system picker reads it. Where they
-        // differ (an edge, anti-aliasing, a hairline), keep the exact device pixel.
-        let pixelsPerPoint = max(1, Int(scale.rounded()))
-        let flat = isUniform(
-            region, x: Int((pointX * scale).rounded()) - originX, y: Int((pointY * scale).rounded()) - originY,
-            size: pixelsPerPoint
-        )
-        let pointColor = try? await pointCapture
-        return (cropped, flat ? (pointColor ?? devicePixel) : devicePixel)
-    }
-
-    /// One point's colour, from a capture downscaled to a pixel per point.
-    ///
-    /// Measured on an MPG272UX QD-OLED (macOS 27): a full-resolution capture of 2pt or more reads a
-    /// colour just beyond the panel's gamut as the nearest colour the panel can show (P3 red as
-    /// `(1, 0, 0.09)` in P3), where a downscaled capture of any size reads it as drawn, `(1, 0, 0)`,
-    /// which is also what the system picker returns. Colours inside the gamut read the same in
-    /// both, to within a half-float step.
-    private static func sourceColor(ofPointAt point: CGPoint, filter: SCContentFilter) async throws -> NSColor? {
-        let config = SCStreamConfiguration()
-        config.sourceRect = CGRect(origin: point, size: CGSize(width: 1, height: 1))
-        config.width = 1
-        config.height = 1
-        config.showsCursor = false
-        return try centerPixelColor(of: await capture(filter: filter, configuration: config))
-    }
-
-    /// Whether the `size`×`size` block of pixels at (`x`, `y`) in `image` is all one colour.
-    static func isUniform(_ image: CGImage, x left: Int, y top: Int, size: Int) -> Bool {
-        guard left >= 0, top >= 0, left + size <= image.width, top + size <= image.height,
-              let first = pixelColor(of: image, x: left, y: top)
-        else { return false }
-        for row in top ..< top + size {
-            for column in left ..< left + size where (column, row) != (left, top) {
-                guard let other = pixelColor(of: image, x: column, y: row),
-                      other.isEqual(first)
-                else { return false }
-            }
-        }
-        return true
-    }
-
-    /// The space the half-float capture is in. Display P3 covers what Mac displays show, and the
-    /// extended range holds anything beyond it rather than clipping. Measured: sRGB swatches read
-    /// back exact, and a P3 swatch keeps its P3 value, where an extended sRGB capture clipped it.
-    static let captureSpaceName = CGColorSpace.extendedLinearDisplayP3
-
-    /// Half-float extended linear Display P3, whatever the colour space setting, so the only 8-bit
-    /// rounding left is the readout's. `captureImage` ignores `pixelFormat` and always returns
-    /// 8-bit BGRA, so this goes through a sample buffer.
-    ///
-    /// On macOS 15 it also asks for HDR values. With a display in HDR mode, an SDR capture squeezes
-    /// the display's whole range into 0…1, so white reads at about 0.9 and every pick comes back
-    /// darker than its source (measured: `#0e1829` read as `#0d1625`). In HDR values 1.0 is SDR
-    /// white, so sRGB and P3 content reads back exactly; on an SDR display the two are the same.
-    private static func capture(
-        filter: SCContentFilter, configuration config: SCStreamConfiguration
-    ) async throws -> CGImage {
-        config.pixelFormat = kCVPixelFormatType_64RGBAHalf
-        config.colorSpaceName = captureSpaceName
-        if #available(macOS 15.0, *) {
-            config.captureDynamicRange = .hdrLocalDisplay
-        }
-        let sampleBuffer = try await SCScreenshotManager.captureSampleBuffer(
-            contentFilter: filter, configuration: config
-        )
-        if let image = image(fromHalfFloat: sampleBuffer) { return image }
-        // Not the format asked for; fall back to an 8-bit capture rather than no sample.
-        config.colorSpaceName = CGColorSpace.displayP3
-        if #available(macOS 15.0, *) {
-            config.captureDynamicRange = .SDR
-        }
-        return try await SCScreenshotManager.captureImage(contentFilter: filter, configuration: config)
-    }
-
-    /// A `kCVPixelFormatType_64RGBAHalf` capture as a CGImage, so the magnifier can draw it and
-    /// `CGImage.cropping` can cut the sample window out of it, as with an 8-bit capture.
-    static func image(fromHalfFloat sampleBuffer: CMSampleBuffer) -> CGImage? {
-        guard let pixelBuffer = sampleBuffer.imageBuffer,
-              CVPixelBufferGetPixelFormatType(pixelBuffer) == kCVPixelFormatType_64RGBAHalf,
-              // Tagged explicitly: an HDR capture carries no colour space attachment.
-              let space = CGColorSpace(name: captureSpaceName)
-        else { return nil }
-        CVPixelBufferLockBaseAddress(pixelBuffer, .readOnly)
-        defer { CVPixelBufferUnlockBaseAddress(pixelBuffer, .readOnly) }
-        guard let base = CVPixelBufferGetBaseAddress(pixelBuffer) else { return nil }
-        let height = CVPixelBufferGetHeight(pixelBuffer)
-        let bytesPerRow = CVPixelBufferGetBytesPerRow(pixelBuffer)
-        let data = Data(bytes: base, count: bytesPerRow * height) as CFData
-        guard let provider = CGDataProvider(data: data) else { return nil }
-        let bitmapInfo = CGBitmapInfo(
-            rawValue: CGImageAlphaInfo.premultipliedLast.rawValue
-                | CGBitmapInfo.floatComponents.rawValue
-                | CGBitmapInfo.byteOrder16Little.rawValue
-        )
-        return CGImage(
-            width: CVPixelBufferGetWidth(pixelBuffer), height: height,
-            bitsPerComponent: 16, bitsPerPixel: 64, bytesPerRow: bytesPerRow,
-            space: space, bitmapInfo: bitmapInfo, provider: provider,
-            decode: nil, shouldInterpolate: false, intent: .defaultIntent
-        )
-    }
-
-    /// An IEEE 754 half-precision value. `Float16` isn't available on Intel Macs.
-    static func float(fromHalf bits: UInt16) -> CGFloat {
-        let sign: CGFloat = bits & 0x8000 == 0 ? 1 : -1
-        let exponent = Int((bits >> 10) & 0x1F)
-        let mantissa = CGFloat(bits & 0x3FF)
-        switch exponent {
-        case 0: return sign * mantissa * pow(2, -24)
-        case 31: return mantissa == 0 ? sign * .infinity : .nan
-        default: return sign * (1 + mantissa / 1024) * pow(2, CGFloat(exponent - 15))
-        }
-    }
-
-    static func centerPixelColor(of image: CGImage) -> NSColor? {
-        pixelColor(of: image, x: max(0, image.width / 2), y: max(0, image.height / 2))
-    }
-
-    static func pixelColor(of image: CGImage, x column: Int, y row: Int) -> NSColor? {
-        let (x, y) = (column, row)
-        // Read the raw pixel and build the colour in the image's *exact* colour space (the
-        // one we captured in). `NSBitmapImageRep.colorAt` reinterprets
-        // the pixel through an intermediate device/calibrated space, so the sampled colour
-        // didn't match what was on screen and drifted when re-picking Pika's own rendered
-        // swatch. Anything but the standard ScreenCaptureKit layout falls back to colorAt.
-        func fallback() -> NSColor? {
-            NSBitmapImageRep(cgImage: image).colorAt(x: x, y: y)
-        }
-
-        // The half-float capture (see `image(fromHalfFloat:)`): RGBA, 16-bit little-endian.
-        if image.bitsPerComponent == 16, image.bitsPerPixel == 64,
-           image.bitmapInfo.contains(.floatComponents),
-           let cgColorSpace = image.colorSpace,
-           let colorSpace = NSColorSpace(cgColorSpace: cgColorSpace),
-           let data = image.dataProvider?.data,
-           let ptr = CFDataGetBytePtr(data)
-        {
-            let offset = y * image.bytesPerRow + x * 8
-            let channels = (0 ..< 3).map { channel in
-                let at = offset + channel * 2
-                return float(fromHalf: UInt16(ptr[at]) | UInt16(ptr[at + 1]) << 8)
-            }
-            return NSColor(colorSpace: colorSpace, components: channels + [1.0], count: 4)
-        }
-
-        guard image.bitsPerComponent == 8, image.bitsPerPixel == 32,
-              let cgColorSpace = image.colorSpace,
-              let colorSpace = NSColorSpace(cgColorSpace: cgColorSpace),
-              let data = image.dataProvider?.data,
-              let ptr = CFDataGetBytePtr(data)
-        else { return fallback() }
-
-        // ScreenCaptureKit hands back 32-bit BGRA (little-endian, alpha-first); screen
-        // pixels are opaque, so no un-premultiply is needed.
-        let alphaFirst = image.alphaInfo == .premultipliedFirst || image.alphaInfo == .first
-            || image.alphaInfo == .noneSkipFirst
-        guard image.bitmapInfo.intersection(.byteOrderMask) == .byteOrder32Little, alphaFirst
-        else { return fallback() }
-
-        let offset = y * image.bytesPerRow + x * 4
-        let blue = CGFloat(ptr[offset]) / 255.0
-        let green = CGFloat(ptr[offset + 1]) / 255.0
-        let red = CGFloat(ptr[offset + 2]) / 255.0
-        return NSColor(colorSpace: colorSpace, components: [red, green, blue, 1.0], count: 4)
     }
 }
 
