@@ -8,9 +8,14 @@ final class ColorSpacePreferenceTests: XCTestCase {
     private static let keys = ["colorSpace", "colorSpaceMatchesDisplay"]
     private var saved: [Any?] = []
 
+    /// What's actually written for `key`, not a registered default (see `isPersisted`).
+    private static func persisted(_ key: String) -> Any? {
+        UserDefaults.standard.persistentDomain(forName: Bundle.main.bundleIdentifier ?? "")?[key]
+    }
+
     override func setUp() {
         super.setUp()
-        saved = Self.keys.map { UserDefaults.standard.object(forKey: $0) }
+        saved = Self.keys.map { Self.persisted($0) }
         Defaults[.colorSpaceMatchesDisplay] = false
         Defaults[.colorSpace] = .sRGB
     }
@@ -18,13 +23,26 @@ final class ColorSpacePreferenceTests: XCTestCase {
     override func tearDown() {
         // Exactly as before, including absent: the test host shares prefs with any installed Pika.
         for (key, value) in zip(Self.keys, saved) {
-            if let value { UserDefaults.standard.set(value, forKey: key) }
-            else { UserDefaults.standard.removeObject(forKey: key) }
+            if let value {
+                UserDefaults.standard.set(value, forKey: key)
+            } else {
+                UserDefaults.standard.removeObject(forKey: key)
+            }
         }
         super.tearDown()
     }
 
     // MARK: - Default and selection
+
+    func test_isPersisted_ignoresRegisteredDefaults() {
+        UserDefaults.standard.removeObject(forKey: "colorSpace")
+        // `Defaults` registers the default, so `object(forKey:)` still answers…
+        XCTAssertEqual(Defaults[.colorSpace], .sRGB)
+        // …but nothing was written.
+        XCTAssertFalse(ColorSpacePreference.isPersisted("colorSpace"))
+        Defaults[.colorSpace] = .displayP3
+        XCTAssertTrue(ColorSpacePreference.isPersisted("colorSpace"))
+    }
 
     func test_default_isSRGB() {
         XCTAssertEqual(Defaults.Keys.colorSpace.defaultValue, .sRGB)
@@ -68,37 +86,86 @@ final class ColorSpacePreferenceTests: XCTestCase {
 
     // MARK: - Stored colours
 
-    func test_reexpressStoredColors_keepsTheSameColours() throws {
-        // `reexpressStoredColors` rewrites all four keys; put each back exactly as it was,
-        // including absent, since the test host shares prefs with any installed Pika.
-        let keys = ["palettes", "colorHistory", "undoStack", "redoStack"]
-        let saved = keys.map { UserDefaults.standard.object(forKey: $0) }
+    /// Puts back exactly what was stored under `keys` (including absent) after `body`: the test
+    /// host shares prefs with any installed Pika.
+    private func preservingDefaults(_ keys: [String], _ body: () throws -> Void) rethrows {
+        let saved = keys.map { Self.persisted($0) }
         defer {
             for (key, value) in zip(keys, saved) {
-                if let value { UserDefaults.standard.set(value, forKey: key) }
-                else { UserDefaults.standard.removeObject(forKey: key) }
+                if let value {
+                    UserDefaults.standard.set(value, forKey: key)
+                } else {
+                    UserDefaults.standard.removeObject(forKey: key)
+                }
             }
         }
-        let pair = ColorPair(id: UUID(), foregroundHex: "#ff8800", backgroundHex: "0a31bc", date: Date())
-        Defaults[.palettes] = [Palette(id: UUID(), name: nil, pairs: [pair], createdAt: Date())]
-        Defaults[.undoStack] = [[pair]]
+        try body()
+    }
 
-        ColorSpacePreference.reexpressStoredColors(from: .adobeRGB1998, to: .sRGB)
+    func test_pinStoredColors_keepsTheColoursTheyWereWrittenIn() throws {
+        try preservingDefaults(["palettes", "colorHistory", "undoStack", "redoStack"]) {
+            UserDefaults.standard.removeObject(forKey: "colorHistory")
+            UserDefaults.standard.removeObject(forKey: "redoStack")
+            let legacy = ColorPair(id: UUID(), foregroundHex: "#ff8800", backgroundHex: "0a31bc", date: Date())
+            Defaults[.palettes] = [Palette(id: UUID(), name: nil, pairs: [legacy], createdAt: Date())]
+            Defaults[.undoStack] = [[legacy]]
 
-        let converted = try XCTUnwrap(Defaults[.palettes].first?.pairs.first)
-        XCTAssertEqual(converted.id, pair.id)
-        XCTAssertTrue(converted.foregroundHex.hasPrefix("#"))
-        XCTAssertFalse(converted.backgroundHex.hasPrefix("#"))
-        XCTAssertEqual(Defaults[.undoStack].first?.first, converted)
-        for (old, new) in [(pair.foregroundHex, converted.foregroundHex), (pair.backgroundHex, converted.backgroundHex)] {
-            let original = try XCTUnwrap(NSColor.fromHex(old, in: .adobeRGB1998))
-            let moved = try XCTUnwrap(NSColor.fromHex(new, in: .sRGB))
-            // Within one 8-bit step: the same colour, re-rounded in sRGB (clipped where Adobe RGB
-            // reaches outside it, which this pair stays clear of).
-            XCTAssertLessThanOrEqual(
-                ColorSpaceMatcher.channelDistance(moved.toHex(in: .sRGB), original.toHex(in: .sRGB)), 1
-            )
+            ColorSpacePreference.pinStoredColors(readingHexIn: .adobeRGB1998)
+
+            let pinned = try XCTUnwrap(Defaults[.palettes].first?.pairs.first)
+            XCTAssertEqual(pinned.id, legacy.id)
+            XCTAssertEqual(pinned.foregroundHex, legacy.foregroundHex, "hex is kept as the record")
+            XCTAssertNotNil(pinned.foregroundComponents)
+            XCTAssertNotNil(Defaults[.undoStack].first?.first?.backgroundComponents)
+            // The colours are the ones the hex described in Adobe RGB, whatever space is set now.
+            for space in [NSColorSpace.sRGB, .displayP3] {
+                Defaults[.colorSpace] = space
+                XCTAssertEqual(pinned.foregroundColor.toHex(in: .adobeRGB1998), 0xFF8800)
+                XCTAssertEqual(pinned.backgroundColor.toHex(in: .adobeRGB1998), 0x0A31BC)
+            }
+            // Keys that weren't stored stay absent.
+            XCTAssertFalse(ColorSpacePreference.isPersisted("colorHistory"))
+            XCTAssertFalse(ColorSpacePreference.isPersisted("redoStack"))
         }
+    }
+
+    func test_colorPair_keepsItsColourWhenTheSpaceChanges() throws {
+        let orange = try XCTUnwrap(NSColor.fromHex("#ff8800", in: .displayP3))
+        let pair = ColorPair(foreground: orange, background: .black)
+        for space in [NSColorSpace.sRGB, .displayP3, .adobeRGB1998] {
+            Defaults[.colorSpace] = space
+            XCTAssertEqual(pair.foregroundColor.toHex(in: .displayP3), 0xFF8800)
+        }
+    }
+
+    func test_colorPair_keepsAColourOutsideTheSpace() throws {
+        // P3 red is outside sRGB; a hex in sRGB would clip it, the components don't.
+        let red = NSColor(displayP3Red: 1, green: 0, blue: 0, alpha: 1)
+        let pair = ColorPair(foreground: red, background: .black)
+        let restored = try XCTUnwrap(pair.foregroundColor.usingColorSpace(.displayP3))
+        XCTAssertEqual(restored.redComponent, 1, accuracy: 1e-5)
+        XCTAssertEqual(restored.greenComponent, 0, accuracy: 1e-5)
+        XCTAssertEqual(restored.blueComponent, 0, accuracy: 1e-5)
+    }
+
+    func test_colorPair_decodesEntriesSavedBefore202() throws {
+        let json = "{\"id\":\"8C2F8E5E-6B7B-4E61-9A1E-6E1B8E0F1A2B\",\"foregroundHex\":\"#112233\","
+            + "\"backgroundHex\":\"#ffffff\",\"date\":0}"
+        let pair = try JSONDecoder().decode(ColorPair.self, from: Data(json.utf8))
+        XCTAssertNil(pair.foregroundComponents)
+        XCTAssertEqual(pair.foregroundColor.toHexString(), "#112233")
+        let roundTrip = try JSONDecoder().decode(ColorPair.self, from: JSONEncoder().encode(pair.pinned(readingHexIn: .sRGB)))
+        XCTAssertNotNil(roundTrip.foregroundComponents)
+        XCTAssertEqual(roundTrip.foregroundColor.toHexString(), "#112233")
+    }
+
+    func test_colorPair_swappedExchangesColoursAndKeepsTheEntry() throws {
+        let orange = try XCTUnwrap(NSColor.fromHex("#ff8800", in: .sRGB))
+        let pair = ColorPair(foreground: orange, background: .black)
+        let swapped = pair.swapped
+        XCTAssertEqual(swapped.id, pair.id)
+        XCTAssertEqual(swapped.foregroundComponents, pair.backgroundComponents)
+        XCTAssertEqual(swapped.backgroundColor.toHexString(), "#ff8800")
     }
 
     // MARK: - Matcher
@@ -179,6 +246,29 @@ final class ColorSpacePreferenceTests: XCTestCase {
         XCTAssertEqual(PickerLoupeController.float(fromHalf: 0xC000), -2)
         XCTAssertEqual(PickerLoupeController.float(fromHalf: 0x0001), pow(2, -24))
         XCTAssertEqual(PickerLoupeController.float(fromHalf: 0x7C00), .infinity)
+    }
+
+    func test_centerPixelColor_readsHalfFloatLinearP3() throws {
+        // What the Pro picker captures (`captureSpaceName`): P3 red, linear, which sRGB can't hold.
+        let halves: [UInt16] = [0x3C00, 0x0000, 0x0000, 0x3C00]
+        let bytes = (0 ..< 9).flatMap { _ in halves.flatMap { [UInt8($0 & 0xFF), UInt8($0 >> 8)] } }
+        let space = try XCTUnwrap(CGColorSpace(name: PickerLoupeController.captureSpaceName))
+        let provider = try XCTUnwrap(CGDataProvider(data: Data(bytes) as CFData))
+        let info = CGBitmapInfo(
+            rawValue: CGImageAlphaInfo.premultipliedLast.rawValue
+                | CGBitmapInfo.floatComponents.rawValue
+                | CGBitmapInfo.byteOrder16Little.rawValue
+        )
+        let image = try XCTUnwrap(CGImage(
+            width: 3, height: 3, bitsPerComponent: 16, bitsPerPixel: 64, bytesPerRow: 24,
+            space: space, bitmapInfo: info, provider: provider,
+            decode: nil, shouldInterpolate: false, intent: .defaultIntent
+        ))
+        let color = try XCTUnwrap(PickerLoupeController.centerPixelColor(of: image))
+        XCTAssertEqual(color.toHex(in: .displayP3), 0xFF0000)
+        let extended = try XCTUnwrap(color.usingColorSpace(.extendedSRGB))
+        XCTAssertGreaterThan(extended.redComponent, 1)
+        XCTAssertLessThan(extended.greenComponent, 0)
     }
 
     func test_centerPixelColor_readsHalfFloatExtendedSRGB() throws {

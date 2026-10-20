@@ -71,51 +71,48 @@ enum ColorSpacePreference {
         }
     }
 
-    /// Before 2.0.2 the default was the main display's profile, offered as "System default".
-    /// Anyone who never chose a space has no stored value, and now gets the new sRGB default.
-    /// Anyone who did choose a display's profile gets "Match display", which follows the screen
-    /// they pick on instead of keeping a snapshot of whichever was main at the time.
+    /// Before 2.0.2 the default was the main display's profile, offered as "System default", and
+    /// history kept only hex, read in whatever space was set. Once, on the first launch of 2.0.2:
+    /// - every stored entry is pinned to the colour it shows now, read in the space its hex was
+    ///   written in, so neither this change nor any later one moves it;
+    /// - anyone who never chose a space then gets the new sRGB default;
+    /// - anyone who chose a display's profile gets "Match display", which follows the screen they
+    ///   pick on instead of keeping a snapshot of whichever was main at the time.
     private static func migrateDisplayProfileChoice() {
         guard !Defaults[.colorSpaceMigrated] else { return }
         Defaults[.colorSpaceMigrated] = true
-        guard UserDefaults.standard.object(forKey: Defaults.Keys.colorSpace.name) != nil else {
-            // History and palettes keep hex, read in the current space. Theirs was written in
-            // the old default, so re-express it in sRGB to keep the same colours.
-            if let previous = NSScreen.main?.colorSpace, previous != .sRGB {
-                reexpressStoredColors(from: previous, to: .sRGB)
-            }
-            return
-        }
-        let stored = Defaults[.colorSpace]
-        if !isCommon(stored), NSScreen.screens.contains(where: { $0.colorSpace == stored }) {
+        let chosen = isPersisted(Defaults.Keys.colorSpace.name)
+        // With nothing stored, the hex was written in the old default.
+        let written = chosen ? Defaults[.colorSpace] : (NSScreen.main?.colorSpace ?? .sRGB)
+        pinStoredColors(readingHexIn: written)
+        if chosen, !isCommon(written), NSScreen.screens.contains(where: { $0.colorSpace == written }) {
             Defaults[.colorSpaceMatchesDisplay] = true
         }
     }
 
-    /// Rewrites every stored hex (history, palettes, undo and redo) from one space to another,
-    /// so the colours they describe stay the same.
-    static func reexpressStoredColors(from old: NSColorSpace, to new: NSColorSpace) {
-        func convert(_ hex: String) -> String {
-            guard let color = NSColor.fromHex(hex, in: old) else { return hex }
-            let digits = String(format: "%06x", color.toHex(in: new))
-            return hex.hasPrefix("#") ? "#" + digits : digits
+    /// Whether `key` has been written. `UserDefaults.object(forKey:)` can't say: `Defaults`
+    /// registers each key's default, so it returns that for a key nobody ever set.
+    static func isPersisted(_ key: String) -> Bool {
+        guard let domain = Bundle.main.bundleIdentifier else { return false }
+        return UserDefaults.standard.persistentDomain(forName: domain)?[key] != nil
+    }
+
+    /// Gives every stored entry (history, palettes, undo and redo) components, read from its hex
+    /// in `space`. Entries that already have them are left alone.
+    static func pinStoredColors(readingHexIn space: NSColorSpace) {
+        let pin = { (pair: ColorPair) in pair.pinned(readingHexIn: space) }
+        // Only keys that exist: writing a default back would create one that wasn't there.
+        func isStored(_ key: Defaults.Keys) -> Bool { isPersisted(key.name) }
+        if isStored(.palettes) {
+            Defaults[.palettes] = Defaults[.palettes].map { palette in
+                var palette = palette
+                palette.pairs = palette.pairs.map(pin)
+                return palette
+            }
         }
-        func convert(_ pair: ColorPair) -> ColorPair {
-            ColorPair(
-                id: pair.id,
-                foregroundHex: convert(pair.foregroundHex),
-                backgroundHex: convert(pair.backgroundHex),
-                date: pair.date
-            )
-        }
-        Defaults[.palettes] = Defaults[.palettes].map { palette in
-            var palette = palette
-            palette.pairs = palette.pairs.map(convert)
-            return palette
-        }
-        Defaults[.colorHistory] = Defaults[.colorHistory].map(convert)
-        Defaults[.undoStack] = Defaults[.undoStack].map { $0.map(convert) }
-        Defaults[.redoStack] = Defaults[.redoStack].map { $0.map(convert) }
+        if isStored(.colorHistory) { Defaults[.colorHistory] = Defaults[.colorHistory].map(pin) }
+        if isStored(.undoStack) { Defaults[.undoStack] = Defaults[.undoStack].map { $0.map(pin) } }
+        if isStored(.redoStack) { Defaults[.redoStack] = Defaults[.redoStack].map { $0.map(pin) } }
     }
 }
 

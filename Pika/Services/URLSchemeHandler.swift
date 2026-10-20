@@ -225,6 +225,10 @@ private struct SeedPair: Decodable {
     let bg: String
 
     func toColorPair() -> ColorPair {
-        ColorPair(id: UUID(), foregroundHex: fg, backgroundHex: bg, date: Date())
+        // Read in the selected space, like a hex sent to `pika://set`.
+        guard let foreground = NSColor.fromHex(fg), let background = NSColor.fromHex(bg) else {
+            return ColorPair(id: UUID(), foregroundHex: fg, backgroundHex: bg, date: Date())
+        }
+        return ColorPair(foreground: foreground, background: background)
     }
 }
