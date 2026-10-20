@@ -741,14 +741,63 @@ final class PickerLoupeController {
         config.height = Int((regionPtH * scale).rounded())
         config.showsCursor = false
 
-        let region = try await capture(filter: filter, configuration: config)
+        // The point holding the sampled (centre) device pixel, captured alongside: see
+        // `sourceColor(ofPointAt:filter:)`.
+        let pointX = (Double(winX + pixelCount / 2) / scale).rounded(.down)
+        let pointY = (Double(winY + pixelCount / 2) / scale).rounded(.down)
+        async let regionCapture = capture(filter: filter, configuration: config)
+        async let pointCapture = sourceColor(ofPointAt: CGPoint(x: pointX, y: pointY), filter: filter)
+
+        let region = try await regionCapture
         // Crop the exact magnifier window out of the whole-point capture (pure pixel op).
-        let offsetX = winX - Int((originPtX * scale).rounded())
-        let offsetY = winY - Int((originPtY * scale).rounded())
+        let originX = Int((originPtX * scale).rounded())
+        let originY = Int((originPtY * scale).rounded())
         let cropped = region.cropping(
-            to: CGRect(x: offsetX, y: offsetY, width: pixelCount, height: pixelCount)
+            to: CGRect(x: winX - originX, y: winY - originY, width: pixelCount, height: pixelCount)
         ) ?? region
-        return (cropped, centerPixelColor(of: cropped))
+        let devicePixel = centerPixelColor(of: cropped)
+
+        // Where the point's device pixels are all one colour, read it from the point capture, so
+        // a colour beyond the display's gamut reads as the system picker reads it. Where they
+        // differ (an edge, anti-aliasing, a hairline), keep the exact device pixel.
+        let pixelsPerPoint = max(1, Int(scale.rounded()))
+        let flat = isUniform(
+            region, x: Int((pointX * scale).rounded()) - originX, y: Int((pointY * scale).rounded()) - originY,
+            size: pixelsPerPoint
+        )
+        let pointColor = try? await pointCapture
+        return (cropped, flat ? (pointColor ?? devicePixel) : devicePixel)
+    }
+
+    /// One point's colour, from a capture downscaled to a pixel per point.
+    ///
+    /// Measured on an MPG272UX QD-OLED (macOS 27): a full-resolution capture of 2pt or more reads a
+    /// colour just beyond the panel's gamut as the nearest colour the panel can show (P3 red as
+    /// `(1, 0, 0.09)` in P3), where a downscaled capture of any size reads it as drawn, `(1, 0, 0)`,
+    /// which is also what the system picker returns. Colours inside the gamut read the same in
+    /// both, to within a half-float step.
+    private static func sourceColor(ofPointAt point: CGPoint, filter: SCContentFilter) async throws -> NSColor? {
+        let config = SCStreamConfiguration()
+        config.sourceRect = CGRect(origin: point, size: CGSize(width: 1, height: 1))
+        config.width = 1
+        config.height = 1
+        config.showsCursor = false
+        return try centerPixelColor(of: await capture(filter: filter, configuration: config))
+    }
+
+    /// Whether the `size`×`size` block of pixels at (`x`, `y`) in `image` is all one colour.
+    static func isUniform(_ image: CGImage, x left: Int, y top: Int, size: Int) -> Bool {
+        guard left >= 0, top >= 0, left + size <= image.width, top + size <= image.height,
+              let first = pixelColor(of: image, x: left, y: top)
+        else { return false }
+        for row in top ..< top + size {
+            for column in left ..< left + size where (column, row) != (left, top) {
+                guard let other = pixelColor(of: image, x: column, y: row),
+                      other.isEqual(first)
+                else { return false }
+            }
+        }
+        return true
     }
 
     /// The space the half-float capture is in. Display P3 covers what Mac displays show, and the
@@ -825,9 +874,11 @@ final class PickerLoupeController {
     }
 
     static func centerPixelColor(of image: CGImage) -> NSColor? {
-        let x = max(0, image.width / 2)
-        let y = max(0, image.height / 2)
+        pixelColor(of: image, x: max(0, image.width / 2), y: max(0, image.height / 2))
+    }
 
+    static func pixelColor(of image: CGImage, x column: Int, y row: Int) -> NSColor? {
+        let (x, y) = (column, row)
         // Read the raw pixel and build the colour in the image's *exact* colour space (the
         // one we captured in). `NSBitmapImageRep.colorAt` reinterprets
         // the pixel through an intermediate device/calibrated space, so the sampled colour

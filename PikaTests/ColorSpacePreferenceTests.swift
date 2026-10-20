@@ -248,6 +248,39 @@ final class ColorSpacePreferenceTests: XCTestCase {
         XCTAssertEqual(PickerLoupeController.float(fromHalf: 0x7C00), .infinity)
     }
 
+    /// A 4×4 half-float linear P3 image: every pixel (0.5, 0.5, 0.5), except (`odd`) one.
+    private func halfFloatImage(odd: (x: Int, y: Int)) throws -> CGImage {
+        var bytes: [UInt8] = []
+        for y in 0 ..< 4 {
+            for x in 0 ..< 4 {
+                let red: UInt16 = (x, y) == odd ? 0x3C00 : 0x3800
+                for half in [red, 0x3800, 0x3800, 0x3C00] {
+                    bytes += [UInt8(half & 0xFF), UInt8(half >> 8)]
+                }
+            }
+        }
+        let space = try XCTUnwrap(CGColorSpace(name: PickerLoupeController.captureSpaceName))
+        let provider = try XCTUnwrap(CGDataProvider(data: Data(bytes) as CFData))
+        let info = CGBitmapInfo(
+            rawValue: CGImageAlphaInfo.premultipliedLast.rawValue
+                | CGBitmapInfo.floatComponents.rawValue
+                | CGBitmapInfo.byteOrder16Little.rawValue
+        )
+        return try XCTUnwrap(CGImage(
+            width: 4, height: 4, bitsPerComponent: 16, bitsPerPixel: 64, bytesPerRow: 32,
+            space: space, bitmapInfo: info, provider: provider,
+            decode: nil, shouldInterpolate: false, intent: .defaultIntent
+        ))
+    }
+
+    func test_isUniform_tellsAFlatPointFromAnEdge() throws {
+        let image = try halfFloatImage(odd: (x: 3, y: 3))
+        XCTAssertTrue(PickerLoupeController.isUniform(image, x: 0, y: 0, size: 2))
+        XCTAssertTrue(PickerLoupeController.isUniform(image, x: 2, y: 0, size: 2))
+        XCTAssertFalse(PickerLoupeController.isUniform(image, x: 2, y: 2, size: 2), "holds the odd pixel")
+        XCTAssertFalse(PickerLoupeController.isUniform(image, x: 3, y: 3, size: 2), "runs off the edge")
+    }
+
     func test_centerPixelColor_readsHalfFloatLinearP3() throws {
         // What the Pro picker captures (`captureSpaceName`): P3 red, linear, which sRGB can't hold.
         let halves: [UInt16] = [0x3C00, 0x0000, 0x0000, 0x3C00]
