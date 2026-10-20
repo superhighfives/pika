@@ -12,29 +12,34 @@ MIN_COLORS=1000
 
 cd "$(dirname "$0")/.."
 DEST="Pika/Assets/ColorNames.json"
+RAW="$(mktemp)"
 TMP="$(mktemp)"
-trap 'rm -f "$TMP"' EXIT
+trap 'rm -f "$RAW" "$TMP"' EXIT
+
+fail() {
+  echo "error: $1; kept the existing list" >&2
+  exit 1
+}
 
 command -v jq >/dev/null || { echo "error: jq is required" >&2; exit 1; }
 
 old=$(jq '.colors | length' "$DEST" 2>/dev/null || echo 0)
 
-curl --fail --retry 3 --retry-delay 5 --retry-all-errors --max-time 60 -sSL "$SOURCE" \
-  | jq -c '{colors: [.[] | {name, hex}]}' > "$TMP"
+# Download and transform as separate steps, so a failed download stops here rather
+# than being hidden by a pipe (plain sh has no pipefail).
+curl --fail --retry 3 --retry-delay 5 --retry-all-errors --max-time 60 -sSL "$SOURCE" -o "$RAW" \
+  || fail "couldn't download $SOURCE"
+jq -c '{colors: [.[] | {name, hex}]}' "$RAW" > "$TMP" || fail "the download isn't the expected JSON"
 
-new=$(jq '.colors | length' "$TMP")
-if [ "$new" -lt "$MIN_COLORS" ]; then
-  echo "error: only $new colours downloaded (expected at least $MIN_COLORS); kept the existing list" >&2
-  exit 1
-fi
+new=$(jq '.colors | length' "$TMP") || fail "couldn't count the downloaded colours"
+case "$new" in '' | *[!0-9]*) fail "couldn't count the downloaded colours" ;; esac
+[ "$new" -ge "$MIN_COLORS" ] || fail "only $new colours downloaded (expected at least $MIN_COLORS)"
 
 # Every entry needs a non-empty name and a #rrggbb hex, or the app can't use it.
 bad=$(jq '[.colors[] | select((.name | type) != "string" or .name == ""
-  or ((.hex | type) != "string") or (.hex | test("^#[0-9a-fA-F]{6}$") | not))] | length' "$TMP")
-if [ "$bad" -ne 0 ]; then
-  echo "error: $bad entries are missing a name or have an invalid hex; kept the existing list" >&2
-  exit 1
-fi
+  or ((.hex | type) != "string") or (.hex | test("^#[0-9a-fA-F]{6}$") | not))] | length' "$TMP") \
+  || fail "couldn't validate the downloaded colours"
+[ "$bad" = 0 ] || fail "$bad entries are missing a name or have an invalid hex"
 
 if cmp -s "$TMP" "$DEST"; then
   echo "ColorNames.json is already up to date ($new colours)."
