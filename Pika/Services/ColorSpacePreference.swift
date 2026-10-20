@@ -81,11 +81,13 @@ enum ColorSpacePreference {
     private static func migrateDisplayProfileChoice() {
         guard !Defaults[.colorSpaceMigrated] else { return }
         Defaults[.colorSpaceMigrated] = true
-        let chosen = isPersisted(Defaults.Keys.colorSpace.name)
-        // With nothing stored, the hex was written in the old default.
-        let written = chosen ? Defaults[.colorSpace] : (NSScreen.main?.colorSpace ?? .sRGB)
+        // A stored space that doesn't decode reads as the key's default, which was the main
+        // display's profile before 2.0.2 (and is sRGB now), so it counts as nothing chosen.
+        let chosen = storedColorSpace()
+        // With nothing chosen, the hex was written in the old default.
+        let written = chosen ?? NSScreen.main?.colorSpace ?? .sRGB
         pinStoredColors(readingHexIn: written)
-        if chosen, !isCommon(written), NSScreen.screens.contains(where: { $0.colorSpace == written }) {
+        if chosen != nil, !isCommon(written), NSScreen.screens.contains(where: { $0.colorSpace == written }) {
             Defaults[.colorSpaceMatchesDisplay] = true
         }
     }
@@ -95,6 +97,15 @@ enum ColorSpacePreference {
     static func isPersisted(_ key: String) -> Bool {
         guard let domain = Bundle.main.bundleIdentifier else { return false }
         return UserDefaults.standard.persistentDomain(forName: domain)?[key] != nil
+    }
+
+    /// The colour space actually stored, or `nil` when none is, or it doesn't decode. `Defaults`
+    /// returns the key's default in both cases, so it can't tell them from a choice of sRGB.
+    static func storedColorSpace() -> NSColorSpace? {
+        guard let domain = Bundle.main.bundleIdentifier,
+              let data = UserDefaults.standard.persistentDomain(forName: domain)?[Defaults.Keys.colorSpace.name] as? Data
+        else { return nil }
+        return try? NSKeyedUnarchiver.unarchivedObject(ofClass: NSColorSpace.self, from: data)
     }
 
     /// Gives every stored entry (history, palettes, undo and redo) components, read from its hex

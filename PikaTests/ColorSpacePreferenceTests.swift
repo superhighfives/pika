@@ -44,6 +44,16 @@ final class ColorSpacePreferenceTests: XCTestCase {
         XCTAssertTrue(ColorSpacePreference.isPersisted("colorSpace"))
     }
 
+    func test_storedColorSpace_isNilWhenMissingOrUndecodable() {
+        UserDefaults.standard.removeObject(forKey: "colorSpace")
+        XCTAssertNil(ColorSpacePreference.storedColorSpace())
+        UserDefaults.standard.set(Data([0x00, 0x01, 0x02]), forKey: "colorSpace")
+        XCTAssertNil(ColorSpacePreference.storedColorSpace(), "corrupt data isn't a choice")
+        XCTAssertEqual(Defaults[.colorSpace], .sRGB, "Defaults falls back to the default")
+        Defaults[.colorSpace] = .adobeRGB1998
+        XCTAssertEqual(ColorSpacePreference.storedColorSpace(), .adobeRGB1998)
+    }
+
     func test_default_isSRGB() {
         XCTAssertEqual(Defaults.Keys.colorSpace.defaultValue, .sRGB)
     }
