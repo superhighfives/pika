@@ -207,6 +207,18 @@ final class PikaUpdateDriverTests: XCTestCase {
         XCTAssertEqual(checks, 1)
     }
 
+    // MARK: - What's new
+
+    /// The changelog page anchors entries as `#v<version>`; without the `v` the link opened the
+    /// page at the top.
+    func test_changelogURL_pointsAtTheVersionsAnchor() {
+        XCTAssertEqual(
+            PikaConstants.changelogURL(version: "2.0.2")?.absoluteString,
+            "https://superhighfives.com/pika/changelog#v2.0.2"
+        )
+        XCTAssertEqual(PikaConstants.changelogURL(version: "2.0.2-beta1")?.fragment, "v2.0.2-beta1")
+    }
+
     // MARK: - Status bar flag
 
     func test_scheduledFind_flagsStatusBar_untilSeen() {
