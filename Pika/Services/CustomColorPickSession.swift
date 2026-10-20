@@ -1,5 +1,6 @@
 import AppKit
 import ApplicationServices
+import CoreMedia
 import Defaults
 import ScreenCaptureKit
 import SwiftUI
@@ -669,12 +670,9 @@ final class PickerLoupeController {
         config.width = Int((regionPtW * scale).rounded())
         config.height = Int((regionPtH * scale).rounded())
         config.showsCursor = false
-        config.colorSpaceName = captureColorSpaceName()
 
         do {
-            let region = try await SCScreenshotManager.captureImage(
-                contentFilter: filter, configuration: config
-            )
+            let region = try await Self.capture(filter: filter, configuration: config)
             // The grab is async: if the pick was cancelled/committed (or a new one began) while
             // it was in flight, this result is stale — discard it so it can't write a colour
             // into a finished pick (the cause of a straggler landing on Escape or a drag).
@@ -742,14 +740,59 @@ final class PickerLoupeController {
         }
     }
 
-    /// Capture in a known colour space and convert deliberately in the commit path —
-    /// sRGB by default, Display P3 when the accuracy preference calls for it.
-    private func captureColorSpaceName() -> CFString {
-        // Compare the NSColorSpace directly, the way the rest of the app does
-        // (see PreferencesView `space == NSColorSpace.displayP3`). Substring-
-        // matching `localizedName` for "P3" was fragile — e.g. "Adobe RGB (1998)"
-        // never matched and silently fell through to sRGB.
-        Defaults[.colorSpace] == .displayP3 ? CGColorSpace.displayP3 : CGColorSpace.sRGB
+    /// Half-float extended sRGB, whatever the colour space setting: nothing outside sRGB is
+    /// clipped, and the only 8-bit rounding left is the readout's. `captureImage` ignores
+    /// `pixelFormat` and always returns 8-bit BGRA, so this goes through a sample buffer.
+    private static func capture(
+        filter: SCContentFilter, configuration config: SCStreamConfiguration
+    ) async throws -> CGImage {
+        config.pixelFormat = kCVPixelFormatType_64RGBAHalf
+        config.colorSpaceName = CGColorSpace.extendedSRGB
+        let sampleBuffer = try await SCScreenshotManager.captureSampleBuffer(
+            contentFilter: filter, configuration: config
+        )
+        if let image = image(fromHalfFloat: sampleBuffer) { return image }
+        // Not the format asked for; fall back to an 8-bit capture rather than no sample.
+        return try await SCScreenshotManager.captureImage(contentFilter: filter, configuration: config)
+    }
+
+    /// A `kCVPixelFormatType_64RGBAHalf` capture as a CGImage, so the magnifier can draw it and
+    /// `CGImage.cropping` can cut the sample window out of it, as with an 8-bit capture.
+    static func image(fromHalfFloat sampleBuffer: CMSampleBuffer) -> CGImage? {
+        guard let pixelBuffer = sampleBuffer.imageBuffer,
+              CVPixelBufferGetPixelFormatType(pixelBuffer) == kCVPixelFormatType_64RGBAHalf,
+              let space = CGColorSpace(name: CGColorSpace.extendedSRGB)
+        else { return nil }
+        CVPixelBufferLockBaseAddress(pixelBuffer, .readOnly)
+        defer { CVPixelBufferUnlockBaseAddress(pixelBuffer, .readOnly) }
+        guard let base = CVPixelBufferGetBaseAddress(pixelBuffer) else { return nil }
+        let height = CVPixelBufferGetHeight(pixelBuffer)
+        let bytesPerRow = CVPixelBufferGetBytesPerRow(pixelBuffer)
+        let data = Data(bytes: base, count: bytesPerRow * height) as CFData
+        guard let provider = CGDataProvider(data: data) else { return nil }
+        let bitmapInfo = CGBitmapInfo(
+            rawValue: CGImageAlphaInfo.premultipliedLast.rawValue
+                | CGBitmapInfo.floatComponents.rawValue
+                | CGBitmapInfo.byteOrder16Little.rawValue
+        )
+        return CGImage(
+            width: CVPixelBufferGetWidth(pixelBuffer), height: height,
+            bitsPerComponent: 16, bitsPerPixel: 64, bytesPerRow: bytesPerRow,
+            space: space, bitmapInfo: bitmapInfo, provider: provider,
+            decode: nil, shouldInterpolate: false, intent: .defaultIntent
+        )
+    }
+
+    /// An IEEE 754 half-precision value. `Float16` isn't available on Intel Macs.
+    static func float(fromHalf bits: UInt16) -> CGFloat {
+        let sign: CGFloat = bits & 0x8000 == 0 ? 1 : -1
+        let exponent = Int((bits >> 10) & 0x1F)
+        let mantissa = CGFloat(bits & 0x3FF)
+        switch exponent {
+        case 0: return sign * mantissa * pow(2, -24)
+        case 31: return mantissa == 0 ? sign * .infinity : .nan
+        default: return sign * (1 + mantissa / 1024) * pow(2, CGFloat(exponent - 15))
+        }
     }
 
     static func centerPixelColor(of image: CGImage) -> NSColor? {
@@ -757,12 +800,28 @@ final class PickerLoupeController {
         let y = max(0, image.height / 2)
 
         // Read the raw pixel and build the colour in the image's *exact* colour space (the
-        // one we captured in — sRGB or Display P3). `NSBitmapImageRep.colorAt` reinterprets
+        // one we captured in). `NSBitmapImageRep.colorAt` reinterprets
         // the pixel through an intermediate device/calibrated space, so the sampled colour
         // didn't match what was on screen and drifted when re-picking Pika's own rendered
         // swatch. Anything but the standard ScreenCaptureKit layout falls back to colorAt.
         func fallback() -> NSColor? {
             NSBitmapImageRep(cgImage: image).colorAt(x: x, y: y)
+        }
+
+        // The half-float capture (see `image(fromHalfFloat:)`): RGBA, 16-bit little-endian.
+        if image.bitsPerComponent == 16, image.bitsPerPixel == 64,
+           image.bitmapInfo.contains(.floatComponents),
+           let cgColorSpace = image.colorSpace,
+           let colorSpace = NSColorSpace(cgColorSpace: cgColorSpace),
+           let data = image.dataProvider?.data,
+           let ptr = CFDataGetBytePtr(data)
+        {
+            let offset = y * image.bytesPerRow + x * 8
+            let channels = (0 ..< 3).map { channel in
+                let at = offset + channel * 2
+                return float(fromHalf: UInt16(ptr[at]) | UInt16(ptr[at + 1]) << 8)
+            }
+            return NSColor(colorSpace: colorSpace, components: channels + [1.0], count: 4)
         }
 
         guard image.bitsPerComponent == 8, image.bitsPerPixel == 32,
