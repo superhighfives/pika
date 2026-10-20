@@ -111,6 +111,24 @@ extension NSColor {
         }
     }
 
+    /// What a copy puts on the clipboard: the readout, except that CSS hex and RGB read in
+    /// Display P3 name their space. Browsers read a bare `#ff8800` or `rgb()` as sRGB, so the
+    /// P3 numbers would paste as a different, duller colour. Built from the same 8-bit values the
+    /// readout shows, so the two describe one colour.
+    func toCopyString(
+        format: ColorFormat,
+        style: CopyFormat,
+        in colorSpace: NSColorSpace = Defaults[.colorSpace]
+    ) -> String {
+        guard style == .css, colorSpace == .displayP3, format == .hex || format == .rgb else {
+            return toFormat(format: format, style: style)
+        }
+        let values = toRGB8BitArray(in: .displayP3).map {
+            (CGFloat(min(max($0, 0), 255)) / 255).colorDecimalString
+        }
+        return "color(display-p3 \(values.joined(separator: " ")))"
+    }
+
     // Black or white — whichever has the higher WCAG contrast against this colour — for legible
     // text/UI drawn on top of it. The crossover (equal contrast to black and white) is at a
     // relative luminance of ~0.179, not 0.5: black wins for everything brighter than that.

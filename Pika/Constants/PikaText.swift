@@ -420,11 +420,37 @@ enum PikaText {
 
     // Color Format
     static let textFormatTitle = NSLocalizedString("preferences.format.title", comment: "Color Format")
-    static let textFormatDescription = NSLocalizedString(
-        "preferences.space.description",
-        comment: "Set your RGB color space"
+
+    // Color Space
+    static let textSpaceTitle = NSLocalizedString("preferences.space.title", comment: "Color Space")
+    static let textSpaceLabel = NSLocalizedString("preferences.space.label", comment: "Read colors in")
+    static let textSpaceDisplay = NSLocalizedString("preferences.space.display", comment: "Match display (%@)")
+    static let textSpaceHintSRGB = NSLocalizedString(
+        "preferences.space.hint.srgb", comment: "Recommended for color space"
     )
-    static let textSystemDefault = NSLocalizedString("preferences.space.default", comment: "System Default")
+    static let textSpaceHintP3 = NSLocalizedString("preferences.space.hint.p3", comment: "Display P3 hint")
+    static let textSpaceHintDisplay = NSLocalizedString(
+        "preferences.space.hint.display", comment: "Match display hint"
+    )
+    static let textSpaceHintOther = NSLocalizedString(
+        "preferences.space.hint.other", comment: "Other color space hint"
+    )
+    static let textSpaceMismatch = NSLocalizedString("color.space.mismatch", comment: "Colors don't match?")
+    static let textSpaceTag = NSLocalizedString("color.space.tag", comment: "Readout color space tag")
+    static let textMatchTitle = NSLocalizedString("match.title", comment: "Check a Color window title")
+    static let textMatchIntro = NSLocalizedString("match.intro", comment: "Check a Color introduction")
+    static let textMatchExpected = NSLocalizedString("match.expected", comment: "Expected hex field")
+    static let textMatchExact = NSLocalizedString("match.exact", comment: "Exact match")
+    static let textMatchClose = NSLocalizedString("match.close", comment: "Match within rounding")
+    static let textMatchOff = NSLocalizedString("match.off", comment: "Channels off by")
+    static let textMatchCurrent = NSLocalizedString(
+        "match.result.current", comment: "Matches the current space"
+    )
+    static let textMatchOther = NSLocalizedString("match.result.other", comment: "Matches another space")
+    static let textMatchNone = NSLocalizedString("match.result.none", comment: "No space matches")
+    static let textMatchUse = NSLocalizedString("match.use", comment: "Use color space button")
+    static let textMatchPick = NSLocalizedString("match.pick", comment: "Pick again button")
+    static let textMatchLearn = NSLocalizedString("match.learn", comment: "Learn more link")
 
     static let textFormatHex = NSLocalizedString("color.format.hex", comment: "Hex format")
     static let textFormatRGB = NSLocalizedString("color.format.rgb", comment: "RGB format")

@@ -15,6 +15,10 @@ enum ColorFormat: String, Codable, CaseIterable, Equatable {
         color.toFormat(format: self, style: style)
     }
 
+    /// Whether the colour space setting changes this format's numbers. Lab and OKLCH describe a
+    /// colour absolutely, so they read the same whatever the space.
+    var readsColorSpace: Bool { self != .lab && self != .oklch }
+
     static func withLabel(_ label: String) -> ColorFormat? {
         allCases.first { label == "\($0)" }
     }
@@ -122,9 +126,12 @@ extension Defaults.Keys {
     static let hideMenuBarIcon = Key<Bool>("hideMenuBarIcon", default: false)
     static let betaUpdates = Key<Bool>("betaUpdates", default: false)
     static let combineCompliance = Key<Bool>("combineCompliance", default: false)
-    static let colorSpace = NSSecureCodingKey<NSColorSpace>(
-        "colorSpace", default: NSScreen.main!.colorSpace!
-    )
+    // sRGB, so a picked hex matches the one in CSS or Figma. Before 2.0.2 this was the main
+    // display's profile, which reads web colours differently (#ff0000 as #ea3323 on a P3 panel).
+    static let colorSpace = NSSecureCodingKey<NSColorSpace>("colorSpace", default: .sRGB)
+    // Keeps `colorSpace` on the profile of the display being picked on. See `ColorSpacePreference`.
+    static let colorSpaceMatchesDisplay = Key<Bool>("colorSpaceMatchesDisplay", default: false)
+    static let colorSpaceMigrated = Key<Bool>("colorSpaceMigrated", default: false)
     static let hideColorNames = Key<Bool>("hideColorNames", default: false)
     static let formatColorsForCSS = Key<Bool>("formatColorsForCSS", default: false)
     static let copyFormat = Key<CopyFormat>("copyFormat", default: .css)

@@ -29,6 +29,7 @@ enum PikaConstants {
     static let gitHubIssueURL = "https://github.com/superhighfives/pika/issues/new/choose"
     static let charlieGleasonWebsiteURL = "https://charliegleason.com"
     static let pikaHelpURL = "https://superhighfives.com/pika/help"
+    static let colorSpaceHelpURL = "https://superhighfives.com/pika/help#colour-spaces"
     static let macAppStoreURL = "https://apps.apple.com/us/app/pika/id6739170421"
 
     // Initial colors

@@ -70,12 +70,6 @@
 /* Set your preferred display format for colors */
 "preferences.format.description" = "Ustaw preferowany format wyświetlania kolorów";
 
-/* Set your RGB color space */
-"preferences.space.description" = "Ustaw profil kolorów RGB";
-
-/* System Default */
-"preferences.space.default" = "Domyślny systemu";
-
 /* Hide Pika while picking */
 "preferences.pick.hide" = "Ukryj Pikę podczas wybierania";
 
@@ -431,7 +425,7 @@
 "help.basics.spaces.title" = "Przestrzenie kolorów";
 
 /* Colour spaces description */
-"help.basics.spaces" = "sRGB pasuje do internetu i większości ekranów. Display P3 obejmuje bardziej nasycone kolory nowszych Maców. Kontrast zawsze liczony jest w sRGB.";
+"help.basics.spaces" = "sRGB zgadza się z CSS, Figmą i większością narzędzi projektowych, i jest domyślne. Display P3 obejmuje bardziej nasycone kolory nowszych Maców. Kontrast zawsze liczony jest w sRGB.";
 
 /* Link to WCAG contrast guidance */
 "help.reference.wcag" = "Więcej o kontraście WCAG";
@@ -782,3 +776,66 @@
 
 /* Pick a foreground then background pair */
 "color.pick.pair" = "Wybierz parę";
+
+/* Color Space */
+"preferences.space.title" = "Przestrzeń barw";
+
+/* Read colors in */
+"preferences.space.label" = "Odczytuj kolory w";
+
+/* Match display (%@) */
+"preferences.space.display" = "Jak ekran (%@)";
+
+/* Recommended for color space */
+"preferences.space.hint.srgb" = "Zalecane. Wartości hex zgadzają się z CSS, Figmą i większością narzędzi projektowych.";
+
+/* Display P3 hint */
+"preferences.space.hint.p3" = "Do plików projektowych i zasobów aplikacji w Display P3. Hex i RGB w CSS kopiowane są jako color(display-p3 …), bo przeglądarki czytają zwykły hex jako sRGB.";
+
+/* Match display hint */
+"preferences.space.hint.display" = "Surowe wartości z ekranu, na którym wybierasz kolor. Wartości hex nie będą zgodne z internetem.";
+
+/* Other color space hint */
+"preferences.space.hint.other" = "Wartości hex nie będą zgodne z internetem, chyba że źródło używa tej samej przestrzeni barw.";
+
+/* Colors don't match? */
+"color.space.mismatch" = "Kolory się nie zgadzają?";
+
+/* Readout color space tag */
+"color.space.tag" = "Wartości w przestrzeni %@";
+
+/* Check a Color window title */
+"match.title" = "Sprawdź kolor";
+
+/* Check a Color introduction */
+"match.intro" = "Wybierz kolor, którego hex już znasz, na przykład próbkę w Figmie lub na stronie, a potem wpisz ten hex. Pika znajdzie przestrzeń barw, która go odtwarza.";
+
+/* Expected hex field */
+"match.expected" = "Oczekiwany hex";
+
+/* Exact match */
+"match.exact" = "Dokładnie";
+
+/* Match within rounding */
+"match.close" = "W granicach zaokrąglenia";
+
+/* Channels off by */
+"match.off" = "Różnica %d";
+
+/* Matches the current space */
+"match.result.current" = "To przestrzeń barw, której używasz, więc wartości się zgadzają.";
+
+/* Matches another space */
+"match.result.other" = "Ten kolor zgadza się w przestrzeni %@.";
+
+/* No space matches */
+"match.result.none" = "Żadna przestrzeń barw się nie zgadza. Aplikacja wyświetlająca ten kolor może nie zarządzać kolorem albo używać własnego profilu.";
+
+/* Use color space button */
+"match.use" = "Użyj %@";
+
+/* Pick again button */
+"match.pick" = "Wybierz ponownie";
+
+/* Learn more link */
+"match.learn" = "Więcej informacji";
