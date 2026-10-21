@@ -44,8 +44,10 @@ enum ColorSpacePreference {
     /// per-panel calibration; copies convert to true P3, so the slack never skews the output.
     static func isDisplayP3Equivalent(_ space: NSColorSpace) -> Bool {
         if space == .displayP3 { return true }
-        guard let extendedP3 = CGColorSpace(name: CGColorSpace.extendedDisplayP3)
-            .flatMap(NSColorSpace.init(cgColorSpace:))
+        // The probes are three components; a gray or CMYK space would throw on the count.
+        guard space.colorSpaceModel == .rgb,
+              let extendedP3 = CGColorSpace(name: CGColorSpace.extendedDisplayP3)
+              .flatMap(NSColorSpace.init(cgColorSpace:))
         else { return false }
         let probes: [[CGFloat]] = [[1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 1, 1], [0.5, 0.5, 0.5], [0.2, 0.6, 0.9]]
         return probes.allSatisfy { probe in
