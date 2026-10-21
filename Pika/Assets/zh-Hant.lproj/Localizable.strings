@@ -70,12 +70,6 @@
 /* Set your preferred display format for colors */
 "preferences.format.description" = "設置偏好的顏色顯示格式";
 
-/* Set your RGB color space */
-"preferences.space.description" = "設置 RGB 色域";
-
-/* System Default */
-"preferences.space.default" = "系統默認";
-
 /* Hide Pika while picking */
 "preferences.pick.hide" = "選擇顏色時隱藏 Pika";
 
@@ -431,7 +425,7 @@
 "help.basics.spaces.title" = "色彩空間";
 
 /* Colour spaces description */
-"help.basics.spaces" = "sRGB 適用於網頁和大多數螢幕。Display P3 涵蓋近期 Mac 更鮮豔的顏色。對比度一律以 sRGB 計算。";
+"help.basics.spaces" = "sRGB 與 CSS、Figma 和大多數設計工具一致，也是預設設定。Display P3 涵蓋近期 Mac 更鮮豔的顏色。對比度一律以 sRGB 計算。";
 
 /* Link to WCAG contrast guidance */
 "help.reference.wcag" = "了解 WCAG 對比度";
@@ -782,6 +776,69 @@
 
 /* Pick a foreground then background pair */
 "color.pick.pair" = "選擇顏色組合";
+
+/* Color Space */
+"preferences.space.title" = "色彩空間";
+
+/* Read colors in */
+"preferences.space.label" = "讀取顏色所用的空間";
+
+/* Match display (%@) */
+"preferences.space.display" = "與顯示器一致（%@）";
+
+/* Recommended for color space */
+"preferences.space.hint.srgb" = "推薦。十六進位值與 CSS、Figma 和大多數設計工具一致。";
+
+/* Display P3 hint */
+"preferences.space.hint.p3" = "適用於 Display P3 設計檔案和 App 素材。瀏覽器會將一般十六進位值視為 sRGB，因此 CSS 十六進位和 RGB 會複製為 color(display-p3 …)。";
+
+/* Match display hint */
+"preferences.space.hint.display" = "取色所在顯示器的原始值。十六進位值將與網頁不一致。";
+
+/* Other color space hint */
+"preferences.space.hint.other" = "除非來源使用相同的色彩空間，否則十六進位值將與網頁不一致。";
+
+/* Colors don't match? */
+"color.space.mismatch" = "顏色不一致？";
+
+/* Readout color space tag */
+"color.space.tag" = "數值以 %@ 讀取";
+
+/* Check a Color window title */
+"match.title" = "檢查顏色";
+
+/* Check a Color introduction */
+"match.intro" = "選取一個你已知十六進位值的顏色，例如 Figma 或網頁中的色塊，然後輸入該值。Pika 會找出能讀出同一數值的色彩空間。";
+
+/* Expected hex field */
+"match.expected" = "預期的十六進位值";
+
+/* Exact match */
+"match.exact" = "完全一致";
+
+/* Match within rounding */
+"match.close" = "在捨入範圍內";
+
+/* Channels off by */
+"match.off" = "相差 %d";
+
+/* Matches the current space */
+"match.result.current" = "這就是你正在使用的色彩空間，因此數值一致。";
+
+/* Matches another space */
+"match.result.other" = "此顏色在 %@ 中一致。";
+
+/* No space matches */
+"match.result.none" = "沒有一致的色彩空間。顯示此顏色的 App 可能沒有進行色彩管理，或使用了自己的描述檔。";
+
+/* Use color space button */
+"match.use" = "使用 %@";
+
+/* Pick again button */
+"match.pick" = "重新取色";
+
+/* Learn more link */
+"match.learn" = "了解更多";
 
 /* Inline update control: an update was found */
 "update.available" = "有可用更新";

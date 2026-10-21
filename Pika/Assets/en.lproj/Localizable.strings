@@ -70,12 +70,6 @@
 /* Set your preferred display format for colors */
 "preferences.format.description" = "Set your preferred display format for colors";
 
-/* Set your RGB color space */
-"preferences.space.description" = "Set your RGB color space";
-
-/* System Default */
-"preferences.space.default" = "System default";
-
 /* Hide Pika while picking */
 "preferences.pick.hide" = "Hide Pika while picking";
 
@@ -461,7 +455,7 @@
 "help.basics.spaces.title" = "Colour spaces";
 
 /* Colour spaces description */
-"help.basics.spaces" = "sRGB suits the web and most screens. Display P3 covers the more vivid colours of recent Macs. Contrast always uses sRGB.";
+"help.basics.spaces" = "sRGB matches CSS, Figma and most design tools, and is the default. Display P3 covers the more vivid colours of recent Macs. Contrast always uses sRGB.";
 
 /* Link to WCAG contrast guidance */
 "help.reference.wcag" = "Learn about WCAG contrast";
@@ -788,6 +782,69 @@
 
 /* Pick a foreground then background pair */
 "color.pick.pair" = "Pick pair";
+
+/* Color Space */
+"preferences.space.title" = "Color Space";
+
+/* Read colors in */
+"preferences.space.label" = "Read colors in";
+
+/* Match display (%@) */
+"preferences.space.display" = "Match display (%@)";
+
+/* Recommended for color space */
+"preferences.space.hint.srgb" = "Recommended. Hex values match CSS, Figma and most design tools.";
+
+/* Display P3 hint */
+"preferences.space.hint.p3" = "For Display P3 design files and app assets. CSS hex and RGB copy as color(display-p3 …), because browsers read a plain hex as sRGB.";
+
+/* Match display hint */
+"preferences.space.hint.display" = "Raw values from your display, following the display you pick on. Hex values won’t match the web.";
+
+/* Other color space hint */
+"preferences.space.hint.other" = "Hex values won’t match the web unless the source uses the same color space.";
+
+/* Colors don't match? */
+"color.space.mismatch" = "Colors don’t match?";
+
+/* Readout color space tag */
+"color.space.tag" = "Values are read in %@";
+
+/* Check a Color window title */
+"match.title" = "Check a Color";
+
+/* Check a Color introduction */
+"match.intro" = "Pick a color whose hex you already know, like a swatch in Figma or on a web page, then enter that hex. Pika finds the color space that reads it back.";
+
+/* Expected hex field */
+"match.expected" = "Expected hex";
+
+/* Exact match */
+"match.exact" = "Exact";
+
+/* Match within rounding */
+"match.close" = "Within rounding";
+
+/* Channels off by */
+"match.off" = "%d off";
+
+/* Matches the current space */
+"match.result.current" = "That’s the color space you’re using, so the values match.";
+
+/* Matches another space */
+"match.result.other" = "This color matches in %@.";
+
+/* No space matches */
+"match.result.none" = "No color space matches. The app showing this color may not manage color, or may use a profile of its own.";
+
+/* Use color space button */
+"match.use" = "Use %@";
+
+/* Pick again button */
+"match.pick" = "Pick Again";
+
+/* Learn more link */
+"match.learn" = "Learn more";
 
 /* Inline update control: an update was found */
 "update.available" = "Update available";

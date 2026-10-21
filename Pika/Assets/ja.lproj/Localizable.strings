@@ -70,12 +70,6 @@
 /* Set your preferred display format for colors */
 "preferences.format.description" = "カラーの表示フォーマットを設定";
 
-/* Set your RGB color space */
-"preferences.space.description" = "RGBカラースペースを設定";
-
-/* System Default */
-"preferences.space.default" = "システムデフォルト";
-
 /* Hide Pika while picking */
 "preferences.pick.hide" = "ピック中はPikaを非表示";
 
@@ -431,7 +425,7 @@
 "help.basics.spaces.title" = "カラースペース";
 
 /* Colour spaces description */
-"help.basics.spaces" = "sRGBはウェブとほとんどの画面向けです。Display P3は最近のMacで表示できる、より鮮やかなカラーを含みます。コントラストは常にsRGBで計算されます。";
+"help.basics.spaces" = "sRGBはCSS、Figma、ほとんどのデザインツールと一致し、デフォルトです。Display P3は最近のMacで表示できる、より鮮やかなカラーを含みます。コントラストは常にsRGBで計算されます。";
 
 /* Link to WCAG contrast guidance */
 "help.reference.wcag" = "WCAGのコントラストについて";
@@ -782,6 +776,69 @@
 
 /* Pick a foreground then background pair */
 "color.pick.pair" = "ペアをピック";
+
+/* Color Space */
+"preferences.space.title" = "カラースペース";
+
+/* Read colors in */
+"preferences.space.label" = "読み取りに使うカラースペース";
+
+/* Match display (%@) */
+"preferences.space.display" = "ディスプレイに合わせる（%@）";
+
+/* Recommended for color space */
+"preferences.space.hint.srgb" = "推奨。HEX値がCSS、Figma、ほとんどのデザインツールと一致します。";
+
+/* Display P3 hint */
+"preferences.space.hint.p3" = "Display P3のデザインファイルやアプリのアセット向けです。ブラウザは通常のHEXをsRGBとして読むため、CSSのHEXとRGBはcolor(display-p3 …)としてコピーされます。";
+
+/* Match display hint */
+"preferences.space.hint.display" = "ピックするディスプレイの生の値です。HEX値はウェブと一致しません。";
+
+/* Other color space hint */
+"preferences.space.hint.other" = "ソースが同じカラースペースを使っていない限り、HEX値はウェブと一致しません。";
+
+/* Colors don't match? */
+"color.space.mismatch" = "カラーが一致しない場合";
+
+/* Readout color space tag */
+"color.space.tag" = "%@ で読み取った値";
+
+/* Check a Color window title */
+"match.title" = "カラーを確認";
+
+/* Check a Color introduction */
+"match.intro" = "FigmaのスウォッチやウェブページなどHEXがわかっているカラーをピックし、そのHEXを入力してください。同じHEXで読み取れるカラースペースをPikaが探します。";
+
+/* Expected hex field */
+"match.expected" = "想定していたHEX";
+
+/* Exact match */
+"match.exact" = "完全一致";
+
+/* Match within rounding */
+"match.close" = "丸め誤差の範囲内";
+
+/* Channels off by */
+"match.off" = "%d段階のずれ";
+
+/* Matches the current space */
+"match.result.current" = "現在使用中のカラースペースなので、値は一致しています。";
+
+/* Matches another space */
+"match.result.other" = "このカラーは %@ で一致します。";
+
+/* No space matches */
+"match.result.none" = "一致するカラースペースがありません。このカラーを表示しているアプリがカラーマネジメントをしていないか、独自のプロファイルを使っている可能性があります。";
+
+/* Use color space button */
+"match.use" = "%@ を使用";
+
+/* Pick again button */
+"match.pick" = "もう一度ピック";
+
+/* Learn more link */
+"match.learn" = "詳しく見る";
 
 /* Inline update control: an update was found */
 "update.available" = "アップデートがあります";

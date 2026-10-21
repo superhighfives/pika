@@ -78,8 +78,9 @@ class Exporter {
         let formatter = isHistory ? ISO8601DateFormatter() : nil
         let entries: [[String: String]] = pairs.map { pair in
             var entry: [String: String] = [
-                "foreground": pair.foregroundHex,
-                "background": pair.backgroundHex,
+                // In the current colour space, like every other value Pika shows or copies.
+                "foreground": pair.foregroundColor.toHexString(),
+                "background": pair.backgroundColor.toHexString(),
             ]
             if let formatter {
                 entry["date"] = formatter.string(from: pair.date)
