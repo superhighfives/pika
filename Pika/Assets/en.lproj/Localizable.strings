@@ -807,8 +807,6 @@
 /* Colors don't match? */
 "color.space.mismatch" = "Colors don’t match?";
 
-/* Readout color space tag */
-"color.space.tag" = "Values are read in %@";
 
 /* Check a Color window title */
 "match.title" = "Check a Color";
@@ -845,6 +843,21 @@
 
 /* Learn more link */
 "match.learn" = "Learn more";
+
+/* Picked colour card title */
+"match.picked" = "Picked";
+
+/* Expected colour card title */
+"match.expected.title" = "Expected";
+
+/* Pick a colour button */
+"match.pick.first" = "Pick Color";
+
+/* Badge on the color space in use */
+"match.badge.current" = "Current";
+
+/* Check a Color empty state */
+"match.empty" = "Pick a color and enter the hex you expected to compare them.";
 
 /* Inline update control: an update was found */
 "update.available" = "Update available";

@@ -801,8 +801,6 @@
 /* Colors don't match? */
 "color.space.mismatch" = "Boje se ne podudaraju?";
 
-/* Readout color space tag */
-"color.space.tag" = "Vrijednosti u prostoru %@";
 
 /* Check a Color window title */
 "match.title" = "Provjeri boju";
@@ -839,6 +837,21 @@
 
 /* Learn more link */
 "match.learn" = "Saznaj više";
+
+/* Picked colour card title */
+"match.picked" = "Odabrano";
+
+/* Expected colour card title */
+"match.expected.title" = "Očekivano";
+
+/* Pick a colour button */
+"match.pick.first" = "Odaberi boju";
+
+/* Badge on the color space in use */
+"match.badge.current" = "Trenutačno";
+
+/* Check a Color empty state */
+"match.empty" = "Odaberite boju i unesite očekivani hex da biste ih usporedili.";
 
 /* Inline update control: an update was found */
 "update.available" = "Dostupno ažuriranje";

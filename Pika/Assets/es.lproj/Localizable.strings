@@ -801,8 +801,6 @@
 /* Colors don't match? */
 "color.space.mismatch" = "¿Los colores no coinciden?";
 
-/* Readout color space tag */
-"color.space.tag" = "Valores leídos en %@";
 
 /* Check a Color window title */
 "match.title" = "Comprobar un color";
@@ -839,6 +837,21 @@
 
 /* Learn more link */
 "match.learn" = "Más información";
+
+/* Picked colour card title */
+"match.picked" = "Seleccionado";
+
+/* Expected colour card title */
+"match.expected.title" = "Esperado";
+
+/* Pick a colour button */
+"match.pick.first" = "Seleccionar color";
+
+/* Badge on the color space in use */
+"match.badge.current" = "Actual";
+
+/* Check a Color empty state */
+"match.empty" = "Selecciona un color e introduce el hex esperado para compararlos.";
 
 /* Inline update control: an update was found */
 "update.available" = "Actualización disponible";

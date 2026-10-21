@@ -801,8 +801,6 @@
 /* Colors don't match? */
 "color.space.mismatch" = "颜色不一致？";
 
-/* Readout color space tag */
-"color.space.tag" = "数值以 %@ 读取";
 
 /* Check a Color window title */
 "match.title" = "检查颜色";
@@ -839,6 +837,21 @@
 
 /* Learn more link */
 "match.learn" = "了解更多";
+
+/* Picked colour card title */
+"match.picked" = "已选取";
+
+/* Expected colour card title */
+"match.expected.title" = "预期";
+
+/* Pick a colour button */
+"match.pick.first" = "选取颜色";
+
+/* Badge on the color space in use */
+"match.badge.current" = "当前";
+
+/* Check a Color empty state */
+"match.empty" = "选取一个颜色并输入预期的十六进制值以进行比较。";
 
 /* Inline update control: an update was found */
 "update.available" = "有可用更新";

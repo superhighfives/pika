@@ -801,8 +801,6 @@
 /* Colors don't match? */
 "color.space.mismatch" = "カラーが一致しない場合";
 
-/* Readout color space tag */
-"color.space.tag" = "%@ で読み取った値";
 
 /* Check a Color window title */
 "match.title" = "カラーを確認";
@@ -839,6 +837,21 @@
 
 /* Learn more link */
 "match.learn" = "詳しく見る";
+
+/* Picked colour card title */
+"match.picked" = "ピックしたカラー";
+
+/* Expected colour card title */
+"match.expected.title" = "想定していたカラー";
+
+/* Pick a colour button */
+"match.pick.first" = "カラーをピック";
+
+/* Badge on the color space in use */
+"match.badge.current" = "使用中";
+
+/* Check a Color empty state */
+"match.empty" = "カラーをピックし、想定していたHEXを入力すると比較できます。";
 
 /* Inline update control: an update was found */
 "update.available" = "アップデートがあります";

@@ -87,13 +87,6 @@ final class ColorSpacePreferenceTests: XCTestCase {
         XCTAssertFalse(ColorSpacePreference.isCommon(.genericRGB))
     }
 
-    func test_readsColorSpace_onlyForRGBBasedFormats() {
-        XCTAssertEqual(
-            ColorFormat.allCases.filter(\.readsColorSpace),
-            [.hex, .rgb, .hsb, .hsl, .opengl]
-        )
-    }
-
     // MARK: - Stored colours
 
     /// Puts back exactly what was stored under `keys` (including absent) after `body`: the test
