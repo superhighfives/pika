@@ -260,7 +260,8 @@ enum ColorSpaceMatcher {
     }
 
     /// Whether the reading's numbers equal the typed ones, and whether each is within one step
-    /// of the coarser of the two precisions (a typed `44` allows ±1; `0.2` allows ±0.1).
+    /// of the precision typed (a typed `44` allows ±1; `0.2` allows ±0.1). On a 0–1 scale a
+    /// whole number is exact, so a typed `1` allows one 8-bit step, not the whole range.
     static func compareNumbers(_ expected: ExpectedColor, _ reading: [String]) -> (exact: Bool, close: Bool) {
         if expected.format == .hex {
             let same = reading.first?.lowercased() == expected.values.first?.lowercased()
@@ -274,6 +275,11 @@ enum ColorSpaceMatcher {
         default: nil
         }
         let hueTurn: Double = expected.style == .swiftUI ? 1 : 360
+        let fractions: Set<Int> = switch (expected.format, expected.style) {
+        case (.rgb, .swiftUI), (.hsb, .swiftUI), (.opengl, _): [0, 1, 2]
+        case (.oklch, _): [1]
+        default: []
+        }
         var exact = true
         var close = true
         for (index, (typed, read)) in zip(expected.values, reading).enumerated() {
@@ -281,7 +287,11 @@ enum ColorSpaceMatcher {
             var difference = abs(lhs - rhs)
             if index == hueIndex { difference = min(difference, hueTurn - difference) }
             if difference > 1e-9 { exact = false }
-            if difference > max(step(typed), step(read)) + 1e-9 { close = false }
+            // A 0–1 reading drops trailing zeros, so its text says nothing about its precision.
+            let allowed = fractions.contains(index)
+                ? max(typed.contains(".") ? step(typed) : 0, 1.0 / 255)
+                : max(step(typed), step(read))
+            if difference > allowed + 1e-9 { close = false }
         }
         return (exact, close)
     }

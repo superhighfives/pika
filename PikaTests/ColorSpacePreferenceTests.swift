@@ -280,6 +280,19 @@ final class ColorSpacePreferenceTests: XCTestCase {
         XCTAssertFalse(ColorSpaceMatcher.compareNumbers(expected, ["3", "50", "50"]).close)
     }
 
+    func test_compareNumbers_wholeNumbersOnAZeroToOneScaleAreExact() throws {
+        let red = try XCTUnwrap(ExpectedColor.parse("Color(red: 1, green: 0, blue: 0)", fallback: .hex))
+        XCTAssertFalse(ColorSpaceMatcher.compareNumbers(red, ["0.2", "0.4", "0.6"]).close)
+        XCTAssertTrue(ColorSpaceMatcher.compareNumbers(red, ["0.998", "0", "0.002"]).close)
+        // A reading of exactly 0 doesn't widen the tolerance of a typed 0.4.
+        let typed = ExpectedColor(format: .rgb, style: .swiftUI, values: ["0.2", "0.4", "0.6"])
+        XCTAssertFalse(ColorSpaceMatcher.compareNumbers(typed, ["0.2", "0", "0.6"]).close)
+        let gl = try XCTUnwrap(ExpectedColor.parse("rgba(1, 0, 0, 1)", fallback: .hex))
+        XCTAssertFalse(ColorSpaceMatcher.compareNumbers(gl, ["0.5", "0.5", "0.5"]).close)
+        let oklch = ExpectedColor(format: .oklch, style: .css, values: ["60", "0", "30"])
+        XCTAssertFalse(ColorSpaceMatcher.compareNumbers(oklch, ["60", "0.2", "30"]).close)
+    }
+
     // MARK: - CSS copy in Display P3
 
     func test_copy_inDisplayP3_namesTheSpaceForCSSHexAndRGB() throws {
