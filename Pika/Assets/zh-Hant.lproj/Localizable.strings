@@ -801,17 +801,15 @@
 /* Colors don't match? */
 "color.space.mismatch" = "顏色不一致？";
 
-/* Readout color space tag */
-"color.space.tag" = "數值以 %@ 讀取";
 
 /* Check a Color window title */
 "match.title" = "檢查顏色";
 
 /* Check a Color introduction */
-"match.intro" = "選取一個你已知十六進位值的顏色，例如 Figma 或網頁中的色塊，然後輸入該值。Pika 會找出能讀出同一數值的色彩空間。";
+"match.intro" = "選取一個你已知數值的顏色，例如 Figma 或網頁中的色塊，然後以任意格式輸入該數值。Pika 會找到能讀出同一數值的色彩空間。";
 
 /* Expected hex field */
-"match.expected" = "預期的十六進位值";
+"match.expected" = "預期的數值";
 
 /* Exact match */
 "match.exact" = "完全一致";
@@ -839,6 +837,30 @@
 
 /* Learn more link */
 "match.learn" = "了解更多";
+
+/* Picked colour card title */
+"match.picked" = "已選取";
+
+/* Expected colour card title */
+"match.expected.title" = "預期";
+
+/* Pick a colour button */
+"match.pick.first" = "選取顏色";
+
+/* Badge on the color space in use */
+"match.badge.current" = "目前";
+
+/* Check a Color empty state */
+"match.empty" = "選取一個顏色並輸入預期的數值以進行比較。";
+
+/* Lab and OKLCH: one reading for every space */
+"match.space.any" = "任意色彩空間";
+
+/* Lab or OKLCH value matches */
+"match.result.absolute" = "一致。Lab 和 OKLCH 在任何色彩空間中描述顏色的方式都相同。";
+
+/* Lab or OKLCH value doesn't match */
+"match.result.absolute.none" = "不一致。Lab 和 OKLCH 在任何色彩空間中的讀數都相同，因此顯示此顏色的 App 可能沒有進行色彩管理。";
 
 /* Inline update control: an update was found */
 "update.available" = "有可用更新";

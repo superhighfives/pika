@@ -112,7 +112,7 @@ extension ColorFormat {
             )
 
         case .hsb:
-            let hsb = color.toHSBComponents()
+            let hsb = color.toHSBComponents(in: cs)
             switch style {
             case .swiftUI:
                 return DecomposedColor(
@@ -138,7 +138,7 @@ extension ColorFormat {
             }
 
         case .hsl:
-            let hsl = color.toHSLComponents()
+            let hsl = color.toHSLComponents(in: cs)
             let comps = angleAndPercents(h: hsl.h, [hsl.s, hsl.l])
             switch style {
             case .css:

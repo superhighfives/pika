@@ -629,11 +629,10 @@ private final class ShadowCasterView: NSView {
 // The "Colors don't match?" window. An extension so `WindowCoordinator` stays within its length.
 extension WindowCoordinator {
     func openColorMatchWindow() {
-        if colorMatchWindow == nil, let eyedroppers {
-            let rootView = ColorMatchView()
-                .environmentObject(eyedroppers)
-                .ignoresSafeArea()
-            let view = NSHostingView(rootView: rootView)
+        if colorMatchWindow == nil {
+            // Its own colour, separate from the app's foreground and background.
+            let model = ColorMatchModel()
+            let view = NSHostingView(rootView: ColorMatchView(model: model))
             colorMatchWindow = PikaWindow.createSecondaryWindow(
                 title: PikaText.textMatchTitle,
                 size: NSRect(origin: .zero, size: view.fittingSize),
@@ -643,6 +642,7 @@ extension WindowCoordinator {
             colorMatchWindow?.setFrameAutosaveName("")
             colorMatchWindow?.contentView = view
             colorMatchWindow?.center()
+            model.window = colorMatchWindow
         }
         NSApp.activate(ignoringOtherApps: true)
         colorMatchWindow?.makeKeyAndOrderFront(nil)
