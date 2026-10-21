@@ -57,7 +57,7 @@ That’s where Pika comes in. Pick a foreground and background from anywhere on 
 - **WCAG and APCA**: WCAG 2 gives a ratio (AA needs 4.5:1 for text). APCA gives an Lc value that accounts for size and weight, but isn’t a standard yet.
 - **Ways to pick a colour**: Basic uses the macOS sampler. Pro adds a live loupe and needs Screen Recording. <kbd>⌘ S</kbd> opens the macOS colour panel.
 - **Editing values**: Click a value to type, drag or two-finger scroll to scrub, and press <kbd>↑</kbd> or <kbd>↓</kbd> to step. <kbd>⌘ Z</kbd> undoes.
-- **Colour spaces**: sRGB suits the web and most screens. Display P3 covers the more vivid colours of recent Macs. Contrast always uses sRGB.
+- **Colour spaces**: sRGB matches CSS, Figma and most design tools, and is the default. Display P3 covers the more vivid colours of recent Macs. Contrast always uses sRGB.
 
 Learn more about [WCAG contrast](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) and [APCA](https://git.apcacontrast.com/documentation/APCA_in_a_Nutshell).
 

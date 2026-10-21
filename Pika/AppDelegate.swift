@@ -96,6 +96,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             self.updateController = updateController
         #endif
 
+        // Before `Eyedroppers` loads history, which the colour space migration may rewrite.
+        prepareColorSpace()
         eyedroppers = Eyedroppers()
         setupInterface()
         #if TARGET_SPARKLE
@@ -104,7 +106,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         setupAppMode()
         registerTogglePikaShortcut()
         presentSplashIfNeeded()
-        validateColorSpace()
         showPikaIfConfigured()
         registerGlobalKeyMonitor()
 
@@ -183,9 +184,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
-    private func validateColorSpace() {
-        if !NSColorSpace.availableColorSpaces(with: .rgb).contains(Defaults[.colorSpace]) {
-            Defaults[.colorSpace] = Defaults.Keys.colorSpace.defaultValue
+    private func prepareColorSpace() {
+        ColorSpacePreference.prepareOnLaunch()
+        // "Match display" follows the screen, so a display arriving or leaving can change it.
+        NotificationCenter.default.addObserver(
+            forName: NSApplication.didChangeScreenParametersNotification, object: nil, queue: .main
+        ) { _ in
+            ColorSpacePreference.followDisplay(NSScreen.main)
         }
     }
 
@@ -329,6 +334,7 @@ extension AppDelegate {
     @IBAction func openAboutWindow(_: Any?) { windowCoordinator.openAboutWindow() }
     @IBAction func openHelpWindow(_: Any?) { windowCoordinator.openHelpWindow() }
     @IBAction func openPreferencesWindow(_: Any?) { windowCoordinator.openPreferencesWindow() }
+    @IBAction func openColorMatchWindow(_: Any?) { windowCoordinator.openColorMatchWindow() }
     @IBAction func openSplashWindow(_: Any?) { windowCoordinator.openSplashWindow() }
     @IBAction func showPika(_: Any) { windowCoordinator.showPika() }
     @IBAction func hidePika(_: Any) { windowCoordinator.hidePika() }

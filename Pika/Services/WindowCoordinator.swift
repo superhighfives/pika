@@ -41,6 +41,7 @@ class WindowCoordinator: NSObject {
     private var aboutWindow: NSWindow?
     private var helpWindow: NSWindow?
     private var preferencesWindow: NSWindow?
+    fileprivate var colorMatchWindow: NSWindow?
 
     private var pikaTouchBarController: PikaTouchBarController!
     private var splashTouchBarController: SplashTouchBarController?
@@ -85,6 +86,7 @@ class WindowCoordinator: NSObject {
             self?.aboutWindow?.level = level
             self?.helpWindow?.level = level
             self?.preferencesWindow?.level = level
+            self?.colorMatchWindow?.level = level
             self?.splashWindow?.level = level
         }.tieToLifetime(of: self)
 
@@ -621,5 +623,28 @@ private final class ShadowCasterView: NSView {
         CATransaction.setDisableActions(true)
         body()
         CATransaction.commit()
+    }
+}
+
+// The "Colors don't match?" window. An extension so `WindowCoordinator` stays within its length.
+extension WindowCoordinator {
+    func openColorMatchWindow() {
+        if colorMatchWindow == nil, let eyedroppers {
+            let rootView = ColorMatchView()
+                .environmentObject(eyedroppers)
+                .ignoresSafeArea()
+            let view = NSHostingView(rootView: rootView)
+            colorMatchWindow = PikaWindow.createSecondaryWindow(
+                title: PikaText.textMatchTitle,
+                size: NSRect(origin: .zero, size: view.fittingSize),
+                styleMask: [.titled, .closable, .fullSizeContentView]
+            )
+            colorMatchWindow?.titlebarAppearsTransparent = true
+            colorMatchWindow?.setFrameAutosaveName("")
+            colorMatchWindow?.contentView = view
+            colorMatchWindow?.center()
+        }
+        NSApp.activate(ignoringOtherApps: true)
+        colorMatchWindow?.makeKeyAndOrderFront(nil)
     }
 }

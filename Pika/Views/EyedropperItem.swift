@@ -40,7 +40,7 @@ struct EyedropperItem: View {
             .onReceive(NotificationCenter.default.publisher(for: eyedropper.type.copyNotification)) { _ in
                 showToast = true
                 pasteboard.clearContents()
-                let contents = "\(eyedropper.color.toFormat(format: colorFormat, style: Defaults[.copyFormat]))"
+                let contents = eyedropper.color.toCopyString(format: colorFormat, style: Defaults[.copyFormat])
                 pasteboard.setString(contents, forType: .string)
             }
             .onReceive(NotificationCenter.default.publisher(for: eyedropper.type.systemPickerNotification)) { _ in

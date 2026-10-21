@@ -70,12 +70,6 @@
 /* Set your preferred display format for colors */
 "preferences.format.description" = "Postavi format za prikaz boja";
 
-/* Set your RGB color space */
-"preferences.space.description" = "Postavi RGB prostor boja";
-
-/* System Default */
-"preferences.space.default" = "Standard sustava";
-
 /* Hide Pika while picking */
 "preferences.pick.hide" = "Sakrij Pika tijekom biranja";
 
@@ -431,7 +425,7 @@
 "help.basics.spaces.title" = "Prostori boja";
 
 /* Colour spaces description */
-"help.basics.spaces" = "sRGB odgovara webu i većini zaslona. Display P3 obuhvaća živopisnije boje novijih Maca. Kontrast se uvijek izračunava u prostoru sRGB.";
+"help.basics.spaces" = "sRGB odgovara CSS-u, Figmi i većini alata za dizajn te je zadan. Display P3 obuhvaća živopisnije boje novijih Maca. Kontrast se uvijek izračunava u prostoru sRGB.";
 
 /* Link to WCAG contrast guidance */
 "help.reference.wcag" = "Više o WCAG kontrastu";
@@ -782,6 +776,69 @@
 
 /* Pick a foreground then background pair */
 "color.pick.pair" = "Odaberi par";
+
+/* Color Space */
+"preferences.space.title" = "Prostor boja";
+
+/* Read colors in */
+"preferences.space.label" = "Čitaj boje u";
+
+/* Match display (%@) */
+"preferences.space.display" = "Prema zaslonu (%@)";
+
+/* Recommended for color space */
+"preferences.space.hint.srgb" = "Preporučeno. Hex vrijednosti odgovaraju CSS-u, Figmi i većini alata za dizajn.";
+
+/* Display P3 hint */
+"preferences.space.hint.p3" = "Za dizajnerske datoteke i resurse aplikacija u Display P3. CSS hex i RGB kopiraju se kao color(display-p3 …), jer preglednici običan hex čitaju kao sRGB.";
+
+/* Match display hint */
+"preferences.space.hint.display" = "Neobrađene vrijednosti zaslona na kojem birate. Hex vrijednosti neće odgovarati webu.";
+
+/* Other color space hint */
+"preferences.space.hint.other" = "Hex vrijednosti neće odgovarati webu, osim ako izvor koristi isti prostor boja.";
+
+/* Colors don't match? */
+"color.space.mismatch" = "Boje se ne podudaraju?";
+
+/* Readout color space tag */
+"color.space.tag" = "Vrijednosti u prostoru %@";
+
+/* Check a Color window title */
+"match.title" = "Provjeri boju";
+
+/* Check a Color introduction */
+"match.intro" = "Odaberite boju čiji hex već znate, poput uzorka u Figmi ili na web stranici, pa unesite taj hex. Pika pronalazi prostor boja u kojem se očitava isti hex.";
+
+/* Expected hex field */
+"match.expected" = "Očekivani hex";
+
+/* Exact match */
+"match.exact" = "Točno";
+
+/* Match within rounding */
+"match.close" = "U granicama zaokruživanja";
+
+/* Channels off by */
+"match.off" = "Razlika: %d";
+
+/* Matches the current space */
+"match.result.current" = "To je prostor boja koji koristite, pa se vrijednosti podudaraju.";
+
+/* Matches another space */
+"match.result.other" = "Ova se boja podudara u prostoru %@.";
+
+/* No space matches */
+"match.result.none" = "Nijedan se prostor boja ne podudara. Aplikacija koja prikazuje ovu boju možda ne upravlja bojama ili koristi vlastiti profil.";
+
+/* Use color space button */
+"match.use" = "Koristi %@";
+
+/* Pick again button */
+"match.pick" = "Odaberi ponovno";
+
+/* Learn more link */
+"match.learn" = "Saznaj više";
 
 /* Inline update control: an update was found */
 "update.available" = "Dostupno ažuriranje";
