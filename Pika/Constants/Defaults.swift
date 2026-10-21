@@ -15,10 +15,6 @@ enum ColorFormat: String, Codable, CaseIterable, Equatable {
         color.toFormat(format: self, style: style)
     }
 
-    /// Whether the colour space setting changes this format's numbers. Lab and OKLCH describe a
-    /// colour absolutely, so they read the same whatever the space.
-    var readsColorSpace: Bool { self != .lab && self != .oklch }
-
     static func withLabel(_ label: String) -> ColorFormat? {
         allCases.first { label == "\($0)" }
     }

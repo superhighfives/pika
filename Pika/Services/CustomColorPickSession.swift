@@ -12,6 +12,10 @@ import SwiftUI
 ///
 /// See `plans/ready/2026-07-19-custom-color-picker.md`.
 final class CustomColorPickSession: ColorPickSession {
+    /// Whether the pick previews live into the app's foreground or background. Off for a pick
+    /// that belongs to something else (Check a Color), so the app's colours stay as they are.
+    var previewsIntoApp = true
+
     func begin(
         target: Eyedropper.Types,
         comparison: NSColor?,
@@ -22,6 +26,7 @@ final class CustomColorPickSession: ColorPickSession {
             target: target,
             comparison: comparison,
             willChain: willChain,
+            previewsIntoApp: previewsIntoApp,
             completion: completion
         )
     }
@@ -168,6 +173,8 @@ final class PickerLoupeController {
     private var refinedCursor: NSPoint?
     /// A commit waiting on that read.
     private var isCommitting = false
+    /// See `CustomColorPickSession.previewsIntoApp`.
+    private var previewsIntoApp = true
     private var currentCursor: NSPoint = .zero
 
     // MARK: - Session lifecycle
@@ -176,12 +183,14 @@ final class PickerLoupeController {
         target: Eyedropper.Types,
         comparison: NSColor?,
         willChain: Bool,
+        previewsIntoApp: Bool = true,
         completion: @escaping (NSColor?) -> Void
     ) {
         pickGeneration += 1
         resetRefinement()
         self.completion = completion
         self.willChain = willChain
+        self.previewsIntoApp = previewsIntoApp
         rearmSafety?.invalidate()
         rearmSafety = nil
 
@@ -328,7 +337,7 @@ final class PickerLoupeController {
     /// The eyedropper being picked into, for the live preview. Resolved live so it always
     /// reflects `viewModel.target` (which flips to `.background` on a chained pair pick).
     private var targetEyedropper: Eyedropper? {
-        guard let eyedroppers = AppDelegate.shared?.eyedroppers else { return nil }
+        guard previewsIntoApp, let eyedroppers = AppDelegate.shared?.eyedroppers else { return nil }
         return viewModel.target == .foreground ? eyedroppers.foreground : eyedroppers.background
     }
 

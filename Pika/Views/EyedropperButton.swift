@@ -226,9 +226,6 @@ struct EyedropperButton: View {
                         // Hit-testable, unlike the rest of this row, so its tooltip can show.
                         OutOfGamutIndicator(uiColor: eyedropper.color.getUIColor())
                     }
-                    if !valueInvalid, colorFormat.readsColorSpace, !ColorSpacePreference.isCommon(colorSpace) {
-                        ColorSpaceTag(space: colorSpace, uiColor: eyedropper.color.getUIColor())
-                    }
                     // Reserves the pill's height in this row at all times (zero width, so it
                     // never otherwise affects layout) so toggling the pill doesn't change the
                     // row's height. The content below is anchored `.bottomLeading` in its parent
