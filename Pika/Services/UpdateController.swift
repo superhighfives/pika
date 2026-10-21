@@ -17,7 +17,8 @@
         case installing
         /// Shown briefly after a check by hand that found nothing newer.
         case upToDate
-        /// Only reached after a user action: Sparkle doesn't report scheduled-check failures.
+        /// Reached after a user action, or if the updater fails to start: Sparkle doesn't
+        /// report scheduled-check failures.
         case failed(message: String)
     }
 
@@ -355,12 +356,14 @@
             }
         }
 
-        /// Starts the updater, which schedules automatic checks.
+        /// Starts the updater, which schedules automatic checks. A failure shows in the inline
+        /// control, as Sparkle's standard driver would have shown it in an alert.
         func start() {
             do {
                 try updater.start()
             } catch {
                 NSLog("Pika: couldn't start the updater: \(error.localizedDescription)")
+                driver.updaterError(message: error.localizedDescription, acknowledgement: {})
             }
         }
 
