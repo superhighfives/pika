@@ -34,6 +34,7 @@
 		CC2000000000000000001F01 /* HelpKeyCapsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000001F00 /* HelpKeyCapsTests.swift */; };
 		CC2000000000000000000A01 /* CGFloatFormatTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000A00 /* CGFloatFormatTests.swift */; };
 		CC2000000000000000000B01 /* ColorPairTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000B00 /* ColorPairTests.swift */; };
+		C545D5AC3DF1105CEC927A45 /* EyedroppersHistoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5881BAD6DC1F23DBCEF9D73 /* EyedroppersHistoryTests.swift */; };
 		C5DE3C7F4A4CC1AEA37337A8 /* ColorSpacePreferenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C57E89F81F89DA8A7FBEBA54 /* ColorSpacePreferenceTests.swift */; };
 		DEC0FACE0000000000000011 /* ColorDecompositionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC0FACE0000000000000010 /* ColorDecompositionTests.swift */; };
 		CC2000000000000000000C01 /* ClosestVectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000C00 /* ClosestVectorTests.swift */; };
@@ -273,6 +274,7 @@
 		CC2000000000000000001F00 /* HelpKeyCapsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpKeyCapsTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000000A00 /* CGFloatFormatTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGFloatFormatTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000000B00 /* ColorPairTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPairTests.swift; sourceTree = "<group>"; };
+		C5881BAD6DC1F23DBCEF9D73 /* EyedroppersHistoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyedroppersHistoryTests.swift; sourceTree = "<group>"; };
 		C57E89F81F89DA8A7FBEBA54 /* ColorSpacePreferenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSpacePreferenceTests.swift; sourceTree = "<group>"; };
 		DEC0FACE0000000000000010 /* ColorDecompositionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorDecompositionTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000000C00 /* ClosestVectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosestVectorTests.swift; sourceTree = "<group>"; };
@@ -617,6 +619,7 @@
 				CC2000000000000000001F00 /* HelpKeyCapsTests.swift */,
 				CC2000000000000000000A00 /* CGFloatFormatTests.swift */,
 				CC2000000000000000000B00 /* ColorPairTests.swift */,
+				C5881BAD6DC1F23DBCEF9D73 /* EyedroppersHistoryTests.swift */,
 				C57E89F81F89DA8A7FBEBA54 /* ColorSpacePreferenceTests.swift */,
 				DEC0FACE0000000000000010 /* ColorDecompositionTests.swift */,
 				CC2000000000000000000C00 /* ClosestVectorTests.swift */,
@@ -1204,6 +1207,7 @@
 				CC2000000000000000001F01 /* HelpKeyCapsTests.swift in Sources */,
 				CC2000000000000000000A01 /* CGFloatFormatTests.swift in Sources */,
 				CC2000000000000000000B01 /* ColorPairTests.swift in Sources */,
+				C545D5AC3DF1105CEC927A45 /* EyedroppersHistoryTests.swift in Sources */,
 				C5DE3C7F4A4CC1AEA37337A8 /* ColorSpacePreferenceTests.swift in Sources */,
 				DEC0FACE0000000000000011 /* ColorDecompositionTests.swift in Sources */,
 				CC2000000000000000000C01 /* ClosestVectorTests.swift in Sources */,
