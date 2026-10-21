@@ -36,6 +36,29 @@ enum ColorSpacePreference {
         space == .sRGB || space == .displayP3
     }
 
+    /// Whether `space` is Display P3 in all but name. Apple's display profiles ("Studio Display",
+    /// "Color LCD") describe P3 colorimetrically but don't compare equal to `.displayP3`, so on a
+    /// P3 screen "Match display" would otherwise copy CSS as a bare hex. Measured: Studio Display
+    /// lands P3's primaries, white and mid-tones exactly; a QD-OLED's wider profile is 76 steps
+    /// out, and cinema DCI-P3 (another white point and gamma) 68. Two steps of slack for a
+    /// per-panel calibration; copies convert to true P3, so the slack never skews the output.
+    static func isDisplayP3Equivalent(_ space: NSColorSpace) -> Bool {
+        if space == .displayP3 { return true }
+        // The probes are three components; a gray or CMYK space would throw on the count.
+        guard space.colorSpaceModel == .rgb,
+              let extendedP3 = CGColorSpace(name: CGColorSpace.extendedDisplayP3)
+              .flatMap(NSColorSpace.init(cgColorSpace:))
+        else { return false }
+        let probes: [[CGFloat]] = [[1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 1, 1], [0.5, 0.5, 0.5], [0.2, 0.6, 0.9]]
+        return probes.allSatisfy { probe in
+            guard let read = NSColor(colorSpace: space, components: probe + [1], count: 4)
+                .usingColorSpace(extendedP3)
+            else { return false }
+            return zip([read.redComponent, read.greenComponent, read.blueComponent], probe)
+                .allSatisfy { abs($0 - $1) * 255 <= CGFloat(ColorSpaceMatcher.tolerance) }
+        }
+    }
+
     /// While matching the display, adopt `screen`'s profile. Called on launch, when displays
     /// change, and as a pick commits, with the screen it was made on.
     static func followDisplay(_ screen: NSScreen?) {
@@ -216,7 +239,10 @@ enum ColorSpaceMatcher {
 
     static func candidates(screens: [NSScreen] = NSScreen.screens) -> [NSColorSpace] {
         var spaces: [NSColorSpace] = [.sRGB, .displayP3]
-        for space in screens.compactMap(\.colorSpace) where !spaces.contains(space) {
+        // A P3-equivalent screen profile would only repeat the Display P3 row.
+        for space in screens.compactMap(\.colorSpace)
+            where !spaces.contains(space) && !ColorSpacePreference.isDisplayP3Equivalent(space)
+        {
             spaces.append(space)
         }
         if !spaces.contains(.adobeRGB1998) { spaces.append(.adobeRGB1998) }

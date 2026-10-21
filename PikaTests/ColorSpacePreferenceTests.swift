@@ -293,6 +293,37 @@ final class ColorSpacePreferenceTests: XCTestCase {
         XCTAssertFalse(ColorSpaceMatcher.compareNumbers(oklch, ["60", "0.2", "30"]).close)
     }
 
+    // MARK: - Display P3 in all but name
+
+    /// Display P3 under another name: its own ICC profile with one letter of the description
+    /// changed, so the colours are identical but it isn't `.displayP3`, like Apple's display
+    /// profiles ("Studio Display", "Color LCD").
+    private func renamedDisplayP3() throws -> NSColorSpace {
+        var data = try XCTUnwrap(NSColorSpace.displayP3.iccProfileData)
+        let name = Array("Display P3".utf16).flatMap { [UInt8($0 >> 8), UInt8($0 & 0xFF)] }
+        let range = try XCTUnwrap(data.firstRange(of: Data(name)))
+        data[range.upperBound - 3] = UInt8(ascii: "Q")
+        let space = try XCTUnwrap(NSColorSpace(iccProfileData: data))
+        XCTAssertNotEqual(space, .displayP3)
+        return space
+    }
+
+    func test_isDisplayP3Equivalent() throws {
+        XCTAssertTrue(ColorSpacePreference.isDisplayP3Equivalent(.displayP3))
+        XCTAssertTrue(try ColorSpacePreference.isDisplayP3Equivalent(renamedDisplayP3()))
+        XCTAssertFalse(ColorSpacePreference.isDisplayP3Equivalent(.sRGB))
+        XCTAssertFalse(ColorSpacePreference.isDisplayP3Equivalent(.adobeRGB1998))
+        let cinema = try XCTUnwrap(CGColorSpace(name: CGColorSpace.dcip3).flatMap(NSColorSpace.init(cgColorSpace:)))
+        XCTAssertFalse(ColorSpacePreference.isDisplayP3Equivalent(cinema), "DCI-P3: another white point and gamma")
+    }
+
+    func test_copy_inAP3EquivalentProfile_namesDisplayP3() throws {
+        let space = try renamedDisplayP3()
+        let color = try XCTUnwrap(NSColor.fromHex("#ff8800", in: space))
+        XCTAssertEqual(color.toCopyString(format: .hex, style: .css, in: space), "color(display-p3 1 0.5333 0)")
+        XCTAssertEqual(color.toCopyString(format: .hex, style: .design, in: space), color.toFormat(format: .hex, style: .design))
+    }
+
     // MARK: - CSS copy in Display P3
 
     func test_copy_inDisplayP3_namesTheSpaceForCSSHexAndRGB() throws {
