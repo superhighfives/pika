@@ -213,6 +213,73 @@ final class ColorSpacePreferenceTests: XCTestCase {
         XCTAssertTrue(candidates.contains(.adobeRGB1998))
     }
 
+    // MARK: - Expected values in any format
+
+    func test_parse_detectsTheFormatFromTheValue() throws {
+        let cases: [(String, ColorFormat, CopyFormat, [String])] = [
+            ("#3A7BD5", .hex, .css, ["3a7bd5"]),
+            ("3a7bd5", .hex, .css, ["3a7bd5"]),
+            ("#fff", .hex, .css, ["ffffff"]),
+            ("rgb(58, 123, 213)", .rgb, .css, ["58", "123", "213"]),
+            ("hsl(215, 64%, 53%)", .hsl, .css, ["215", "64", "53"]),
+            ("hsb(215, 73%, 84%)", .hsb, .css, ["215", "73", "84"]),
+            ("oklch(55.6% 0.15 258)", .oklch, .css, ["55.6", "0.15", "258"]),
+            ("lab(51.2 6.9 -55.4)", .lab, .css, ["51.2", "6.9", "-55.4"]),
+            ("rgba(0.23, 0.48, 0.84, 1.0)", .opengl, .css, ["0.23", "0.48", "0.84"]),
+            ("Color(red: 0.2, green: 0.4, blue: 0.6)", .rgb, .swiftUI, ["0.2", "0.4", "0.6"]),
+        ]
+        for (text, format, style, values) in cases {
+            let parsed = try XCTUnwrap(ExpectedColor.parse(text, fallback: .hex), text)
+            XCTAssertEqual(parsed.format, format, text)
+            XCTAssertEqual(parsed.style, style, text)
+            XCTAssertEqual(parsed.values, values, text)
+        }
+    }
+
+    func test_parse_readsBareNumbersInTheFallbackFormat() throws {
+        XCTAssertEqual(ExpectedColor.parse("58, 123, 213", fallback: .rgb)?.format, .rgb)
+        XCTAssertEqual(ExpectedColor.parse("215 64 53", fallback: .hsl)?.format, .hsl)
+        XCTAssertNil(ExpectedColor.parse("nonsense", fallback: .rgb))
+        XCTAssertNil(ExpectedColor.parse("58, 123", fallback: .rgb))
+        XCTAssertNil(ExpectedColor.parse("", fallback: .hex))
+    }
+
+    func test_compare_rgbFindsTheSpace() throws {
+        let picked = try XCTUnwrap(NSColor.fromHex("#3a7bd5", in: .sRGB))
+        let expected = try XCTUnwrap(ExpectedColor.parse("rgb(58, 123, 213)", fallback: .hex))
+        let best = try XCTUnwrap(ColorSpaceMatcher.compare(picked, expected: expected, in: [.displayP3, .sRGB]).first)
+        XCTAssertEqual(best.space, .sRGB)
+        XCTAssertTrue(best.isExact)
+        XCTAssertEqual(best.reading, "rgb(58, 123, 213)")
+    }
+
+    func test_compare_hslWithinItsOwnRounding() throws {
+        // #3a7bd5 is hsl(215.4°, 64.6%, 53.1%): typed as whole numbers, a step off at most.
+        let picked = try XCTUnwrap(NSColor.fromHex("#3a7bd5", in: .sRGB))
+        let expected = try XCTUnwrap(ExpectedColor.parse("hsl(215, 65%, 53%)", fallback: .hex))
+        let matches = ColorSpaceMatcher.compare(picked, expected: expected, in: [.sRGB, .displayP3])
+        XCTAssertEqual(matches.first?.space, .sRGB)
+        XCTAssertEqual(matches.first?.isMatch, true)
+        XCTAssertEqual(matches.last?.isMatch, false)
+    }
+
+    func test_compare_oklchIsOneReadingForEverySpace() throws {
+        let picked = try XCTUnwrap(NSColor.fromHex("#3a7bd5", in: .sRGB))
+        let reading = ColorFormat.oklch.decompose(picked, style: .css, in: .sRGB).joined()
+        let expected = try XCTUnwrap(ExpectedColor.parse(reading, fallback: .hex))
+        XCTAssertTrue(expected.isAbsolute)
+        let matches = ColorSpaceMatcher.compare(picked, expected: expected)
+        XCTAssertEqual(matches.count, 1)
+        XCTAssertEqual(matches.first?.reading, reading)
+        XCTAssertEqual(matches.first?.isExact, true)
+    }
+
+    func test_compareNumbers_hueWrapsAround() throws {
+        let expected = ExpectedColor(format: .hsl, style: .css, values: ["359", "50", "50"])
+        XCTAssertTrue(ColorSpaceMatcher.compareNumbers(expected, ["0", "50", "50"]).close)
+        XCTAssertFalse(ColorSpaceMatcher.compareNumbers(expected, ["3", "50", "50"]).close)
+    }
+
     // MARK: - CSS copy in Display P3
 
     func test_copy_inDisplayP3_namesTheSpaceForCSSHexAndRGB() throws {

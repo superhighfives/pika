@@ -41,10 +41,22 @@ final class ColorMatchModel: ObservableObject {
 struct ColorMatchView: View {
     @ObservedObject var model: ColorMatchModel
     @State private var expected = ""
+    /// The format bare numbers are read in; a value with its own shape (`#…`, `hsl(…)`) says.
+    @State private var fallbackFormat = Defaults[.colorFormat]
     @State private var currentSpace = Defaults[.colorSpace]
 
-    private var expectedHex: UInt32? {
-        NSColor.fromHex(expected, in: .sRGB)?.toHex(in: .sRGB)
+    private var parsed: ExpectedColor? {
+        ExpectedColor.parse(expected, fallback: fallbackFormat)
+    }
+
+    /// The menu shows the format the value is being read in.
+    private var format: Binding<ColorFormat> {
+        Binding(get: { parsed?.format ?? fallbackFormat }, set: { fallbackFormat = $0 })
+    }
+
+    private var placeholder: String {
+        let example = NSColor.fromHex("0e1829", in: .sRGB) ?? .black
+        return format.wrappedValue.decompose(example, style: .css, in: .sRGB).joined()
     }
 
     var body: some View {
@@ -56,6 +68,8 @@ struct ColorMatchView: View {
 
             HStack(alignment: .top, spacing: 12.0) {
                 SwatchCard(title: PikaText.textMatchPicked, color: model.picked, placeholder: "eyedropper") {
+                    EmptyView()
+                } control: {
                     Button {
                         model.pick()
                     } label: {
@@ -69,20 +83,35 @@ struct ColorMatchView: View {
                 }
                 SwatchCard(
                     title: PikaText.textMatchExpectedTitle,
-                    color: expectedHex.flatMap { NSColor.fromHex(String(format: "%06x", $0), in: .sRGB) },
+                    color: parsed?.color(in: .sRGB),
                     placeholder: "number"
                 ) {
-                    TextField("#0e1829", text: $expected)
+                    // Which format bare numbers are read in; a value with its own shape picks it.
+                    Menu {
+                        Picker(PikaText.textFormatTitle, selection: format) {
+                            ForEach(ColorFormat.allCases, id: \.self) { Text($0.rawValue).tag($0) }
+                        }
+                        .pickerStyle(.inline)
+                        .labelsHidden()
+                    } label: {
+                        Text(format.wrappedValue.rawValue)
+                    }
+                    .menuStyle(.borderlessButton)
+                    .controlSize(.small)
+                    .fixedSize()
+                    .accessibilityLabel(PikaText.textFormatTitle)
+                } control: {
+                    TextField(placeholder, text: $expected)
                         .textFieldStyle(.roundedBorder)
                         .font(.system(.body, design: .monospaced))
                         .accessibilityLabel(PikaText.textMatchExpected)
                 }
             }
 
-            if let picked = model.picked, let expectedHex {
-                let matches = ColorSpaceMatcher.compare(picked, expected: expectedHex)
-                ResultsList(matches: matches, currentSpace: currentSpace)
-                Summary(matches: matches, currentSpace: currentSpace)
+            if let picked = model.picked, let parsed {
+                let matches = ColorSpaceMatcher.compare(picked, expected: parsed)
+                ResultsList(matches: matches, currentSpace: currentSpace, absolute: parsed.isAbsolute)
+                Summary(matches: matches, currentSpace: currentSpace, absolute: parsed.isAbsolute)
             } else {
                 Text(PikaText.textMatchEmpty)
                     .font(.callout)
@@ -98,19 +127,26 @@ struct ColorMatchView: View {
     }
 }
 
-/// A titled swatch with one control under it.
-private struct SwatchCard<Control: View>: View {
+/// A titled swatch with one control under it, and an optional accessory beside the title.
+private struct SwatchCard<Accessory: View, Control: View>: View {
     let title: String
     let color: NSColor?
     let placeholder: String
+    @ViewBuilder let accessory: Accessory
     @ViewBuilder let control: Control
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8.0) {
-            Text(title.uppercased())
-                .font(.caption2.weight(.semibold))
-                .tracking(0.6)
-                .foregroundStyle(.secondary)
+            HStack(spacing: 6.0) {
+                Text(title.uppercased())
+                    .font(.caption2.weight(.semibold))
+                    .tracking(0.6)
+                    .foregroundStyle(.secondary)
+                Spacer(minLength: 0)
+                accessory
+            }
+            // The same height with or without an accessory, so the two swatches line up.
+            .frame(height: 18.0)
             ZStack {
                 if let color {
                     RoundedRectangle(cornerRadius: 10.0, style: .continuous)
@@ -139,29 +175,37 @@ private struct SwatchCard<Control: View>: View {
 private struct ResultsList: View {
     let matches: [ColorSpaceMatch]
     let currentSpace: NSColorSpace
+    /// Lab and OKLCH: one reading, true in every space.
+    let absolute: Bool
 
     var body: some View {
         VStack(spacing: 0) {
             ForEach(Array(matches.enumerated()), id: \.element.space) { index, match in
                 if index > 0 { Divider().padding(.leading, 12.0) }
-                HStack(spacing: 8.0) {
-                    Text(ColorSpacePreference.name(of: match.space))
-                        .lineLimit(1)
-                        .truncationMode(.middle)
-                    if match.space == currentSpace {
-                        Text(PikaText.textMatchCurrentBadge)
-                            .font(.caption2.weight(.semibold))
+                HStack(spacing: 12.0) {
+                    VStack(alignment: .leading, spacing: 2.0) {
+                        HStack(spacing: 6.0) {
+                            Text(absolute ? PikaText.textMatchAnySpace : ColorSpacePreference.name(of: match.space))
+                                .lineLimit(1)
+                                .truncationMode(.middle)
+                            if !absolute, match.space == currentSpace {
+                                Text(PikaText.textMatchCurrentBadge)
+                                    .font(.caption2.weight(.semibold))
+                                    .foregroundStyle(.secondary)
+                                    .padding(.horizontal, 6.0)
+                                    .padding(.vertical, 2.0)
+                                    .background(Capsule().fill(.quaternary))
+                            }
+                        }
+                        Text(match.reading)
+                            .font(.system(.callout, design: .monospaced))
                             .foregroundStyle(.secondary)
-                            .padding(.horizontal, 6.0)
-                            .padding(.vertical, 2.0)
-                            .background(Capsule().fill(.quaternary))
+                            .lineLimit(1)
+                            .truncationMode(.tail)
+                            .textSelection(.enabled)
                     }
-                    Spacer(minLength: 12.0)
-                    Text(String(format: "#%06x", match.hex))
-                        .font(.system(.body, design: .monospaced))
-                        .foregroundStyle(.secondary)
+                    Spacer(minLength: 8.0)
                     status(match)
-                        .frame(width: 128.0, alignment: .trailing)
                 }
                 .padding(.horizontal, 12.0)
                 .padding(.vertical, 8.0)
@@ -177,7 +221,7 @@ private struct ResultsList: View {
     @ViewBuilder
     private func status(_ match: ColorSpaceMatch) -> some View {
         if match.isMatch {
-            Label(match.distance == 0 ? PikaText.textMatchExact : PikaText.textMatchClose,
+            Label(match.isExact ? PikaText.textMatchExact : PikaText.textMatchClose,
                   systemImage: "checkmark.circle.fill")
                 .foregroundStyle(.green)
                 .font(.callout.weight(.medium))
@@ -193,15 +237,20 @@ private struct ResultsList: View {
 private struct Summary: View {
     let matches: [ColorSpaceMatch]
     let currentSpace: NSColorSpace
+    let absolute: Bool
 
     var body: some View {
         let matching = matches.filter(\.isMatch)
         HStack(alignment: .center, spacing: 10.0) {
-            if matching.contains(where: { $0.space == currentSpace }) {
+            if absolute, !matching.isEmpty {
+                icon("checkmark.seal.fill", .green)
+                message(PikaText.textMatchAbsolute)
+                Spacer(minLength: 0)
+            } else if !absolute, matching.contains(where: { $0.space == currentSpace }) {
                 icon("checkmark.seal.fill", .green)
                 message(PikaText.textMatchCurrent)
                 Spacer(minLength: 0)
-            } else if let best = matching.first {
+            } else if !absolute, let best = matching.first {
                 let name = ColorSpacePreference.name(of: best.space)
                 icon("arrow.triangle.2.circlepath", .accentColor)
                 message(String(format: PikaText.textMatchOther, name))
@@ -213,7 +262,7 @@ private struct Summary: View {
                 .keyboardShortcut(.defaultAction)
             } else {
                 icon("exclamationmark.triangle.fill", .orange)
-                message(PikaText.textMatchNone)
+                message(absolute ? PikaText.textMatchAbsoluteNone : PikaText.textMatchNone)
                 Spacer(minLength: 12.0)
                 Link(PikaText.textMatchLearn, destination: URL(string: PikaConstants.colorSpaceHelpURL)!)
             }

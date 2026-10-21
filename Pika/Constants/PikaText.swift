@@ -453,7 +453,7 @@ enum PikaText {
     static let textSpaceMismatch = NSLocalizedString("color.space.mismatch", comment: "Colors don't match?")
     static let textMatchTitle = NSLocalizedString("match.title", comment: "Check a Color window title")
     static let textMatchIntro = NSLocalizedString("match.intro", comment: "Check a Color introduction")
-    static let textMatchExpected = NSLocalizedString("match.expected", comment: "Expected hex field")
+    static let textMatchExpected = NSLocalizedString("match.expected", comment: "Expected value field")
     static let textMatchExact = NSLocalizedString("match.exact", comment: "Exact match")
     static let textMatchClose = NSLocalizedString("match.close", comment: "Match within rounding")
     static let textMatchOff = NSLocalizedString("match.off", comment: "Channels off by")
@@ -470,6 +470,13 @@ enum PikaText {
     static let textMatchPickFirst = NSLocalizedString("match.pick.first", comment: "Pick a colour button")
     static let textMatchCurrentBadge = NSLocalizedString("match.badge.current", comment: "Badge on the color space in use")
     static let textMatchEmpty = NSLocalizedString("match.empty", comment: "Check a Color empty state")
+    static let textMatchAnySpace = NSLocalizedString(
+        "match.space.any", comment: "Lab and OKLCH: one reading for every space"
+    )
+    static let textMatchAbsolute = NSLocalizedString("match.result.absolute", comment: "Lab or OKLCH value matches")
+    static let textMatchAbsoluteNone = NSLocalizedString(
+        "match.result.absolute.none", comment: "Lab or OKLCH value doesn't match"
+    )
 
     static let textFormatHex = NSLocalizedString("color.format.hex", comment: "Hex format")
     static let textFormatRGB = NSLocalizedString("color.format.rgb", comment: "RGB format")

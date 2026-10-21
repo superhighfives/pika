@@ -13,18 +13,19 @@ extension NSColor {
      * HSB
      */
 
-    public final func toHSBComponents() -> HSBComponents {
+    /// HSB as read in `colorSpace` (the colour space setting unless given).
+    final func toHSBComponents(in colorSpace: NSColorSpace = Defaults[.colorSpace]) -> HSBComponents {
         var h: CGFloat = 0.0
         var s: CGFloat = 0.0
         var b: CGFloat = 0.0
 
-        guard let rgbaColor = usingColorSpace(Defaults[.colorSpace]) else {
+        guard let rgbaColor = usingColorSpace(colorSpace) else {
             fatalError("Could not convert color to RGBA.")
         }
 
-        if toHexString() == NSColor.black.toHexString() {
+        if toHex(in: colorSpace) == 0x000000 {
             return HSBComponents(h: 0.0, s: 0.0, b: 0.0)
-        } else if toHexString() == NSColor.white.toHexString() {
+        } else if toHex(in: colorSpace) == 0xFFFFFF {
             return HSBComponents(h: 0.0, s: 0.0, b: 1.0)
         }
 
@@ -64,19 +65,20 @@ extension NSColor {
      * HSL
      */
 
-    public final func toHSLComponents() -> HSLComponents {
+    /// HSL as read in `colorSpace` (the colour space setting unless given).
+    final func toHSLComponents(in colorSpace: NSColorSpace = Defaults[.colorSpace]) -> HSLComponents {
         var h: CGFloat = 0.0
         var s: CGFloat = 0.0
         var l: CGFloat = 0.0
 
-        let RGB = toRGBAComponents()
+        let RGB = toRGBAComponents(in: colorSpace)
         let r = RGB.r
         let g = RGB.g
         let b = RGB.b
 
-        if toHexString() == NSColor.black.toHexString() {
+        if toHex(in: colorSpace) == 0x000000 {
             return HSLComponents(h: 0.0, s: 0.0, l: 0.0)
-        } else if toHexString() == NSColor.white.toHexString() {
+        } else if toHex(in: colorSpace) == 0xFFFFFF {
             return HSLComponents(h: 0.0, s: 0.0, l: 1.0)
         }
 

@@ -127,21 +127,89 @@ enum ColorSpacePreference {
     }
 }
 
-/// How a picked colour reads in one colour space, against the hex the user expected.
-struct ColorSpaceMatch: Equatable {
-    let space: NSColorSpace
-    let hex: UInt32
-    /// The largest difference in any one 8-bit channel.
-    let distance: Int
+/// A colour value the user typed, in any of Pika's formats, read without a colour space so it
+/// can be rebuilt in each candidate one.
+struct ExpectedColor: Equatable {
+    let format: ColorFormat
+    let style: CopyFormat
+    /// The numbers as typed (for hex, the six digits).
+    let values: [String]
 
-    var isMatch: Bool { distance <= ColorSpaceMatcher.tolerance }
+    /// Lab and OKLCH describe a colour the same way in every colour space.
+    var isAbsolute: Bool { format == .lab || format == .oklch }
+
+    /// Reads `text`, detecting the format from its own shape (`#…`, `rgb(…)`, `hsl(…)`,
+    /// `Color(red: …)`), and using `fallback` for bare numbers. `nil` if it doesn't parse.
+    static func parse(_ text: String, fallback: ColorFormat) -> ExpectedColor? {
+        let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        let lower = trimmed.lowercased()
+        guard !lower.isEmpty else { return nil }
+        let (format, style) = detect(lower) ?? (fallback, .css)
+        if format == .hex {
+            let digits = lower.hasPrefix("#") ? String(lower.dropFirst()) : lower
+            guard NSColor.fromHex(digits, in: .sRGB) != nil else { return nil }
+            let full = digits.count == 3 ? digits.map { "\($0)\($0)" }.joined() : digits
+            return ExpectedColor(format: .hex, style: style, values: [full])
+        }
+        let numbers = numbers(in: lower)
+        guard numbers.count >= 3 else { return nil }
+        let expected = ExpectedColor(format: format, style: style, values: Array(numbers.prefix(3)))
+        return expected.color(in: .sRGB) == nil ? nil : expected
+    }
+
+    /// The colour these numbers make in `space` (or, for Lab and OKLCH, in any space).
+    func color(in space: NSColorSpace) -> NSColor? {
+        format.recompose(values, style: style, in: space)
+    }
+
+    private static func detect(_ text: String) -> (ColorFormat, CopyFormat)? {
+        if text.hasPrefix("#") { return (.hex, .css) }
+        if text.hasPrefix("color(red") { return (.rgb, .swiftUI) }
+        if text.hasPrefix("color(hue") { return (.hsb, .swiftUI) }
+        let prefixes: [(String, ColorFormat)] = [
+            ("oklch(", .oklch), ("lab(", .lab), ("hsl(", .hsl), ("hsb(", .hsb), ("hsv(", .hsb),
+            ("rgba(", .opengl), ("rgb(", .rgb),
+        ]
+        if let match = prefixes.first(where: { text.hasPrefix($0.0) }) { return (match.1, .css) }
+        // Six (or three) hex digits on their own.
+        if [3, 6].contains(text.count), text.allSatisfy(\.isHexDigit), text.contains(where: \.isLetter) {
+            return (.hex, .css)
+        }
+        return nil
+    }
+
+    private static func numbers(in text: String) -> [String] {
+        let pattern = try? NSRegularExpression(pattern: "-?\\d*\\.?\\d+")
+        let range = NSRange(text.startIndex..., in: text)
+        return pattern?.matches(in: text, range: range).compactMap {
+            Range($0.range, in: text).map { String(text[$0]) }
+        } ?? []
+    }
 }
 
-/// Finds the colour space that reads a picked colour back as the hex the user expected.
+/// How a picked colour reads in one colour space, against the value the user expected.
+struct ColorSpaceMatch: Equatable {
+    let space: NSColorSpace
+    /// The picked colour's hex in `space`.
+    let hex: UInt32
+    /// The picked colour in `space`, written in the expected value's own format.
+    let reading: String
+    /// The largest difference in any one 8-bit channel between the expected colour and the pick.
+    let distance: Int
+    /// The reading's numbers are the typed numbers.
+    let isExact: Bool
+    /// Every number is within one step of the precision typed (or shown).
+    let isWithinRounding: Bool
+
+    var isMatch: Bool { isExact || isWithinRounding || distance <= ColorSpaceMatcher.tolerance }
+}
+
+/// Finds the colour space that reads a picked colour back as the value the user expected.
 ///
-/// The app showing the colour turned its hex into display pixels through some colour space, and
-/// Pika captured those pixels. Reading the capture in that same space recovers the hex, so the
-/// candidate that lands closest is the space the source app used.
+/// The app showing the colour turned its value into display pixels through some colour space,
+/// and Pika captured those pixels. Reading the capture in that same space recovers the value, so
+/// the candidate that lands closest is the space the source app used. Lab and OKLCH don't depend
+/// on a space, so for them there's one reading, and only whether it matches.
 enum ColorSpaceMatcher {
     /// Display output and capture are each 8-bit, so a round trip can land a step or two away.
     static let tolerance = 2
@@ -155,16 +223,33 @@ enum ColorSpaceMatcher {
         return spaces
     }
 
-    /// Every candidate's reading, closest first. Ties keep candidate order, so sRGB wins one.
+    /// Every candidate's reading of a hex, closest first.
     static func compare(
         _ color: NSColor, expected: UInt32, in spaces: [NSColorSpace] = candidates()
     ) -> [ColorSpaceMatch] {
-        let matches = spaces.enumerated().map { index, space in
+        let value = ExpectedColor(format: .hex, style: .css, values: [String(format: "%06x", expected)])
+        return compare(color, expected: value, in: spaces)
+    }
+
+    /// Every candidate's reading, closest first. Ties keep candidate order, so sRGB wins one. For
+    /// Lab and OKLCH, a single reading (in sRGB, which makes no difference to them).
+    static func compare(
+        _ color: NSColor, expected: ExpectedColor, in spaces: [NSColorSpace] = candidates()
+    ) -> [ColorSpaceMatch] {
+        let spaces = expected.isAbsolute ? [NSColorSpace.sRGB] : spaces
+        let matches = spaces.enumerated().compactMap { index, space -> (Int, ColorSpaceMatch)? in
+            guard let target = expected.color(in: space) else { return nil }
             let hex = color.toHex(in: space)
-            return (index, ColorSpaceMatch(space: space, hex: hex, distance: channelDistance(hex, expected)))
+            let reading = expected.format.decompose(color, style: expected.style, in: space)
+            let (exact, close) = compareNumbers(expected, reading.values)
+            return (index, ColorSpaceMatch(
+                space: space, hex: hex, reading: reading.joined(),
+                distance: channelDistance(hex, target.toHex(in: space)),
+                isExact: exact, isWithinRounding: close
+            ))
         }
         return matches
-            .sorted { ($0.1.distance, $0.0) < ($1.1.distance, $1.0) }
+            .sorted { ($0.1.isMatch ? 0 : 1, $0.1.distance, $0.0) < ($1.1.isMatch ? 0 : 1, $1.1.distance, $1.0) }
             .map(\.1)
     }
 
@@ -172,5 +257,38 @@ enum ColorSpaceMatcher {
         [16, 8, 0].map { shift in
             abs(Int((lhs >> shift) & 0xFF) - Int((rhs >> shift) & 0xFF))
         }.max() ?? 0
+    }
+
+    /// Whether the reading's numbers equal the typed ones, and whether each is within one step
+    /// of the coarser of the two precisions (a typed `44` allows ±1; `0.2` allows ±0.1).
+    static func compareNumbers(_ expected: ExpectedColor, _ reading: [String]) -> (exact: Bool, close: Bool) {
+        if expected.format == .hex {
+            let same = reading.first?.lowercased() == expected.values.first?.lowercased()
+            return (same, same)
+        }
+        guard reading.count == expected.values.count else { return (false, false) }
+        // Hue wraps: 359 and 1 are 2 apart.
+        let hueIndex: Int? = switch expected.format {
+        case .hsl, .hsb: 0
+        case .oklch: 2
+        default: nil
+        }
+        let hueTurn: Double = expected.style == .swiftUI ? 1 : 360
+        var exact = true
+        var close = true
+        for (index, (typed, read)) in zip(expected.values, reading).enumerated() {
+            guard let lhs = Double(typed), let rhs = Double(read) else { return (false, false) }
+            var difference = abs(lhs - rhs)
+            if index == hueIndex { difference = min(difference, hueTurn - difference) }
+            if difference > 1e-9 { exact = false }
+            if difference > max(step(typed), step(read)) + 1e-9 { close = false }
+        }
+        return (exact, close)
+    }
+
+    /// One unit in the last decimal place written: `44` → 1, `0.186` → 0.001.
+    private static func step(_ number: String) -> Double {
+        guard let dot = number.firstIndex(of: ".") else { return 1 }
+        return pow(10, -Double(number.distance(from: dot, to: number.endIndex) - 1))
     }
 }

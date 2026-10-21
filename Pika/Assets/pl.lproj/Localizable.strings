@@ -806,10 +806,10 @@
 "match.title" = "Sprawdź kolor";
 
 /* Check a Color introduction */
-"match.intro" = "Wybierz kolor, którego hex już znasz, na przykład próbkę w Figmie lub na stronie, a potem wpisz ten hex. Pika znajdzie przestrzeń kolorów, w której odczytuje się ten sam hex.";
+"match.intro" = "Wybierz kolor, którego wartość już znasz, na przykład próbkę w Figmie lub na stronie, a potem wpisz tę wartość w dowolnym formacie. Pika znajdzie przestrzeń kolorów, w której odczytuje się tę samą wartość.";
 
 /* Expected hex field */
-"match.expected" = "Oczekiwany hex";
+"match.expected" = "Oczekiwana wartość";
 
 /* Exact match */
 "match.exact" = "Dokładnie";
@@ -851,7 +851,16 @@
 "match.badge.current" = "Bieżąca";
 
 /* Check a Color empty state */
-"match.empty" = "Wybierz kolor i wpisz oczekiwany hex, aby je porównać.";
+"match.empty" = "Wybierz kolor i wpisz oczekiwaną wartość, aby je porównać.";
+
+/* Lab and OKLCH: one reading for every space */
+"match.space.any" = "Dowolna przestrzeń kolorów";
+
+/* Lab or OKLCH value matches */
+"match.result.absolute" = "Zgadza się. Lab i OKLCH opisują kolor tak samo w każdej przestrzeni kolorów.";
+
+/* Lab or OKLCH value doesn't match */
+"match.result.absolute.none" = "Nie zgadza się. Lab i OKLCH odczytuje się tak samo w każdej przestrzeni kolorów, więc aplikacja wyświetlająca ten kolor może nie zarządzać kolorem.";
 
 /* Inline update control: an update was found */
 "update.available" = "Dostępna aktualizacja";
