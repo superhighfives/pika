@@ -808,7 +808,7 @@
 /* Check a Color introduction */
 "match.intro" = "Odaberite boju čiju vrijednost već znate, poput uzorka u Figmi ili na web stranici, pa unesite tu vrijednost u bilo kojem formatu. Pika pronalazi prostor boja u kojem se očitava ista vrijednost.";
 
-/* Expected hex field */
+/* Expected value field */
 "match.expected" = "Očekivana vrijednost";
 
 /* Exact match */

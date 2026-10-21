@@ -808,7 +808,7 @@
 /* Check a Color introduction */
 "match.intro" = "Selecciona un color cuyo valor ya conozcas, como una muestra en Figma o en una página web, e introduce ese valor en cualquier formato. Pika encuentra el espacio de color en el que se lee ese mismo valor.";
 
-/* Expected hex field */
+/* Expected value field */
 "match.expected" = "Valor esperado";
 
 /* Exact match */

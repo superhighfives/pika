@@ -808,7 +808,7 @@
 /* Check a Color introduction */
 "match.intro" = "Figmaやウェブページのスウォッチなど、値がわかっているカラーをピックし、その値を任意のフォーマットで入力してください。同じ値で読み取れるカラースペースをPikaが探します。";
 
-/* Expected hex field */
+/* Expected value field */
 "match.expected" = "想定していた値";
 
 /* Exact match */
