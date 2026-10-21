@@ -120,7 +120,11 @@ extension NSColor {
         style: CopyFormat,
         in colorSpace: NSColorSpace = Defaults[.colorSpace]
     ) -> String {
-        guard style == .css, colorSpace == .displayP3, format == .hex || format == .rgb else {
+        // Display P3 itself, or a display profile that is P3 in all but name ("Match display" on a
+        // P3 screen); the values are converted to true P3 either way.
+        guard style == .css, format == .hex || format == .rgb,
+              ColorSpacePreference.isDisplayP3Equivalent(colorSpace)
+        else {
             return toFormat(format: format, style: style)
         }
         let values = toRGB8BitArray(in: .displayP3).map {
