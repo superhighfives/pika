@@ -105,7 +105,17 @@ class Eyedroppers: ObservableObject {
         }
     }
 
+    /// Clears history down to the pair you're on, which stays as it is.
     func clearHistory() {
+        pushUndo()
+        let pair = ColorPair(foreground: foreground.color, background: background.color)
+        autoHistory = [pair]
+        activeHistoryID = pair.id
+    }
+
+    /// Deleting the only entry left: starts again from a fresh pair, since keeping the current
+    /// one would leave the delete looking like it did nothing.
+    private func resetHistory() {
         pushUndo()
         foreground.color = PikaConstants.initialColors.randomElement()!
         background.color = NSColor.black
@@ -131,7 +141,7 @@ class Eyedroppers: ObservableObject {
         var history = autoHistory
 
         if history.count <= 1 {
-            clearHistory()
+            resetHistory()
             return
         }
 
@@ -149,7 +159,7 @@ class Eyedroppers: ObservableObject {
         var history = autoHistory
 
         if history.count <= 1 {
-            clearHistory()
+            resetHistory()
             return
         }
 
