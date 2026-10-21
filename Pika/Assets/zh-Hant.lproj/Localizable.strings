@@ -808,7 +808,7 @@
 /* Check a Color introduction */
 "match.intro" = "選取一個你已知數值的顏色，例如 Figma 或網頁中的色塊，然後以任意格式輸入該數值。Pika 會找到能讀出同一數值的色彩空間。";
 
-/* Expected hex field */
+/* Expected value field */
 "match.expected" = "預期的數值";
 
 /* Exact match */

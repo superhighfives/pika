@@ -814,7 +814,7 @@
 /* Check a Color introduction */
 "match.intro" = "Pick a color whose value you already know, like a swatch in Figma or on a web page, then enter that value in any format. Pika finds the color space that reads it back.";
 
-/* Expected hex field */
+/* Expected value field */
 "match.expected" = "Expected value";
 
 /* Exact match */

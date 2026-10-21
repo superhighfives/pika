@@ -808,7 +808,7 @@
 /* Check a Color introduction */
 "match.intro" = "Wählen Sie eine Farbe aus, deren Wert Sie kennen, etwa ein Farbfeld in Figma oder auf einer Webseite, und geben Sie diesen Wert in einem beliebigen Format ein. Pika ermittelt den Farbraum, in dem genau dieser Wert gelesen wird.";
 
-/* Expected hex field */
+/* Expected value field */
 "match.expected" = "Erwarteter Wert";
 
 /* Exact match */
