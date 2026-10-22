@@ -795,6 +795,9 @@
 /* Match display hint */
 "preferences.space.hint.display" = "Valores sin procesar de la pantalla en la que seleccionas. Los valores hex no coincidirán con la web.";
 
+/* Match display hint on a P3 screen */
+"preferences.space.hint.display.p3" = "Valores sin procesar de la pantalla en la que seleccionas. Esta pantalla es Display P3, así que hex y RGB de CSS se copian como color(display-p3 …).";
+
 /* Other color space hint */
 "preferences.space.hint.other" = "Los valores hex no coincidirán con la web salvo que el origen use el mismo espacio de color.";
 

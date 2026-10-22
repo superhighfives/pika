@@ -795,6 +795,9 @@
 /* Match display hint */
 "preferences.space.hint.display" = "Rohwerte des Displays, auf dem Sie auswählen. Hex-Werte stimmen nicht mit dem Web überein.";
 
+/* Match display hint on a P3 screen */
+"preferences.space.hint.display.p3" = "Rohwerte des Displays, auf dem Sie auswählen. Dieses Display ist Display P3, daher werden CSS-Hex und -RGB als color(display-p3 …) kopiert.";
+
 /* Other color space hint */
 "preferences.space.hint.other" = "Hex-Werte stimmen nicht mit dem Web überein, es sei denn, die Quelle nutzt denselben Farbraum.";
 

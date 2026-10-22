@@ -795,6 +795,9 @@
 /* Match display hint */
 "preferences.space.hint.display" = "Surowe wartości z ekranu, na którym wybierasz kolor. Wartości hex nie będą zgodne z tymi w przeglądarce.";
 
+/* Match display hint on a P3 screen */
+"preferences.space.hint.display.p3" = "Surowe wartości z ekranu, na którym wybierasz kolor. Ten ekran to Display P3, więc hex i RGB w CSS kopiowane są jako color(display-p3 …).";
+
 /* Other color space hint */
 "preferences.space.hint.other" = "Wartości hex nie będą zgodne z tymi w przeglądarce, chyba że źródło używa tej samej przestrzeni kolorów.";
 

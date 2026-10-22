@@ -795,6 +795,9 @@
 /* Match display hint */
 "preferences.space.hint.display" = "Neobrađene vrijednosti zaslona na kojem birate. Hex vrijednosti neće odgovarati webu.";
 
+/* Match display hint on a P3 screen */
+"preferences.space.hint.display.p3" = "Neobrađene vrijednosti zaslona na kojem birate. Ovaj zaslon je Display P3, pa se CSS hex i RGB kopiraju kao color(display-p3 …).";
+
 /* Other color space hint */
 "preferences.space.hint.other" = "Hex vrijednosti neće odgovarati webu, osim ako izvor koristi isti prostor boja.";
 

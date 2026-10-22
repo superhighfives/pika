@@ -11,8 +11,10 @@ enum ColorFormat: String, Codable, CaseIterable, Equatable {
     case opengl = "OpenGL"
     case oklch = "OKLCH"
 
+    /// What copying `color` in this format gives, for the example in Settings (in Display P3,
+    /// CSS hex and RGB copy as `color(display-p3 …)`, unlike the readout).
     func getExample(color: NSColor, style: CopyFormat) -> String {
-        color.toFormat(format: self, style: style)
+        color.toCopyString(format: self, style: style)
     }
 
     static func withLabel(_ label: String) -> ColorFormat? {

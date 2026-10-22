@@ -262,7 +262,12 @@ private struct ColorSpaceSection: View {
         switch option {
         case .space(.sRGB): return PikaText.textSpaceHintSRGB
         case .space(.displayP3): return PikaText.textSpaceHintP3
-        case .matchDisplay: return PikaText.textSpaceHintDisplay
+        case .matchDisplay:
+            // On a P3 screen the display's own profile is P3, and copies say so.
+            if let space = NSScreen.main?.colorSpace, ColorSpacePreference.isDisplayP3Equivalent(space) {
+                return PikaText.textSpaceHintDisplayP3
+            }
+            return PikaText.textSpaceHintDisplay
         case .space: return PikaText.textSpaceHintOther
         }
     }
