@@ -1,5 +1,8 @@
 import Cocoa
 import Defaults
+#if DEBUG
+    import ScreenCaptureKit
+#endif
 
 /// Handles `pika://` URL scheme events and dispatches the corresponding app actions.
 final class URLSchemeHandler: NSObject {
@@ -43,9 +46,86 @@ final class URLSchemeHandler: NSObject {
         case "swap": NSApp.sendAction(#selector(AppDelegate.triggerSwap), to: nil, from: nil)
         case "undo": NSApp.sendAction(#selector(AppDelegate.triggerUndo), to: nil, from: nil)
         case "redo": NSApp.sendAction(#selector(AppDelegate.triggerRedo), to: nil, from: nil)
+        #if DEBUG
+            case "debug": handleDebug(task: task, arg1: arg1, url: url)
+        #endif
         default: break
         }
     }
+
+    #if DEBUG
+        /// Debug builds only:
+        /// - `pika://debug/sample/<foreground|background>?x=…&y=…`: samples the screen at a point
+        ///   through the Pro picker's own capture (see `debugSample`)
+        /// - `pika://debug/update/<state>` and `pika://debug/update/scheduled` (Sparkle build):
+        ///   checks the inline update control (see `debugUpdate`)
+        private func handleDebug(task: String?, arg1: String?, url: URL) {
+            switch task {
+            case "sample": debugSample(arg1: arg1, url: url)
+            #if TARGET_SPARKLE
+                case "update": debugUpdate(arg1)
+            #endif
+            default: break
+            }
+        }
+
+        /// Samples the screen at a point (global, top-left origin, in points, like a `CGEvent`
+        /// location) through the Pro picker's own capture, and sets the colour as a pick would.
+        /// Lets tests check picking accuracy without driving the mouse.
+        private func debugSample(arg1: String?, url: URL) {
+            let items = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems ?? []
+            func value(_ name: String) -> Double? {
+                items.first { $0.name == name }?.value.flatMap(Double.init)
+            }
+            guard let left = value("x"), let top = value("y"),
+                  let primary = NSScreen.screens.first,
+                  let appDelegate = AppDelegate.shared
+            else { return }
+            let point = NSPoint(x: left, y: primary.frame.maxY - top)
+            guard let screen = NSScreen.screens.first(where: { NSMouseInRect(point, $0.frame, false) })
+            else { return }
+            let eyedropper = arg1 == "background"
+                ? appDelegate.eyedroppers.background
+                : appDelegate.eyedroppers.foreground
+            Task { @MainActor in
+                guard let content = try? await SCShareableContent.current,
+                      let display = content.displays.first(where: { $0.displayID == screen.displayID }),
+                      case let filter = SCContentFilter(display: display, excludingWindows: []),
+                      let sample = try? await PickerLoupeController.captureWindow(
+                          around: point, on: screen, pixelCount: 15, filter: filter
+                      ),
+                      let devicePixel = sample.pixel
+                else { return }
+                // As a committed pick does: a flat point is read as drawn.
+                var pixel = devicePixel
+                if let flatPoint = sample.flatPoint,
+                   let drawn = try? await PickerLoupeController.sourceColor(ofPointAt: flatPoint, filter: filter)
+                {
+                    pixel = drawn
+                }
+                ColorSpacePreference.followDisplay(screen)
+                eyedropper.set(pixel)
+                NotificationCenter.default.post(name: .colorPicked, object: nil)
+            }
+        }
+
+        #if TARGET_SPARKLE
+            /// - `<state>`: available, downloading, ready, installing, checking, uptodate, failed or
+            ///   idle, with stand-in replies (see `PikaUpdateDriver.debugShow`)
+            /// - `scheduled`: a real scheduled-style check against the feed now
+            private func debugUpdate(_ arg1: String?) {
+                // Apple events arrive on the main thread.
+                MainActor.assumeIsolated {
+                    guard let controller = AppDelegate.shared?.updateController, let arg1 else { return }
+                    if arg1 == "scheduled" {
+                        controller.updater.checkForUpdatesInBackground()
+                    } else {
+                        controller.driver.debugShow(arg1)
+                    }
+                }
+            }
+        #endif
+    #endif
 
     private func handleFormat(task: String?) {
         if let task, let format = ColorFormat.withLabel(task) {
@@ -225,6 +305,10 @@ private struct SeedPair: Decodable {
     let bg: String
 
     func toColorPair() -> ColorPair {
-        ColorPair(id: UUID(), foregroundHex: fg, backgroundHex: bg, date: Date())
+        // Read in the selected space, like a hex sent to `pika://set`.
+        guard let foreground = NSColor.fromHex(fg), let background = NSColor.fromHex(bg) else {
+            return ColorPair(id: UUID(), foregroundHex: fg, backgroundHex: bg, date: Date())
+        }
+        return ColorPair(foreground: foreground, background: background)
     }
 }

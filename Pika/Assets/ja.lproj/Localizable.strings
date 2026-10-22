@@ -70,12 +70,6 @@
 /* Set your preferred display format for colors */
 "preferences.format.description" = "カラーの表示フォーマットを設定";
 
-/* Set your RGB color space */
-"preferences.space.description" = "RGBカラースペースを設定";
-
-/* System Default */
-"preferences.space.default" = "システムデフォルト";
-
 /* Hide Pika while picking */
 "preferences.pick.hide" = "ピック中はPikaを非表示";
 
@@ -191,16 +185,16 @@
 "color.wcag.70" = "WCAG 2 レベルAAAは通常テキストに少なくとも7:1のコントラスト比を要求します。";
 
 /* APCA 30 */
-"color.apca.30" = "APCA >= 30 はベースラインテキストと非テキストコンテンツの最小コントラストです。大きなテキスト、プレースホルダー、無効化された要素に適しています。";
+"color.apca.30" = "APCA Lc 30は、あらゆるテキストに対する絶対的な最小値です。プレースホルダー、無効化されたコントロール、著作権表示など、すらすらと読む必要のないテキストにのみ使います。塗りつぶしのアイコンなどの非テキストコンテンツにも適しています。";
 
 /* APCA 45 */
-"color.apca.45" = "APCA >= 45 は見出しテキストの最小コントラストです。大きな見出し、ナビゲーション要素、重要なUIコンポーネントに適しています。";
+"color.apca.45" = "APCA Lc 45は、見出しなどの大きなテキストの最小値です。通常のウェイトで36px以上、または太字で24px以上が必要です。";
 
 /* APCA 60 */
-"color.apca.60" = "APCA >= 60 はタイトルテキストの最小コントラストです。サブ見出し、キャプション、明確に読める必要のある補助コンテンツに適しています。";
+"color.apca.60" = "APCA Lc 60は、サブ見出しやキャプションなど、本文以外のコンテンツテキストの最小値です。通常のウェイトで24px以上、または太字で16px以上が必要です。";
 
 /* APCA 75 */
-"color.apca.75" = "APCA >= 75 は本文テキストの最小コントラストです。主要コンテンツ、通常サイズのテキスト、長文の読み物に適しています。";
+"color.apca.75" = "APCA Lc 75は本文テキストの最小値です。通常のウェイトで18px以上、または太字で14px以上が必要です。長い文章にはLc 90が推奨されます。";
 
 /* Baseline */
 "color.apca.baseline" = "ベースライン";
@@ -350,7 +344,7 @@
 "menu.help" = "ヘルプ";
 
 /* Help description */
-"help.description" = "キーボードショートカットからURL自動化まで、Pikaの使い方をすべて説明します。";
+"help.description" = "Pikaは画面上のどこからでもカラーをピックし、組み合わせの読みやすさを確認できます。使い方は次のとおりです。";
 
 /* Keyboard Shortcuts */
 "help.shortcuts" = "キーボードショートカット";
@@ -375,6 +369,69 @@
 
 /* Support on the Mac App Store */
 "help.mas" = "Mac App Storeでサポート";
+
+/* Which keyboard shortcuts are global and which need Pika focused */
+"help.shortcuts.description" = "ほとんどのショートカットはPikaが最前面のときに使えます。Pikaの表示／非表示と、前景色と背景色のピック（[⌥⌘D]）はどのアプリからでも使え、「設定」→「グローバルショートカット」で設定できます。";
+
+/* Basics */
+"help.basics" = "基本";
+
+/* Basics intro: what colour contrast is */
+"help.basics.intro.1" = "カラーコントラストとは、テキストとその後ろにあるものとの明るさの差のことです。差が小さすぎると、文字が背景に溶け込んでしまいます。ロービジョンや色覚特性のある人にとっては深刻な問題ですが、日差しの下でスマートフォンを見るときや、画面を暗くしたノートパソコンを使うときなど、誰にでも起こりうることです。";
+
+/* Basics intro: accessibility guidelines */
+"help.basics.intro.2" = "アクセシビリティのガイドラインは、できるだけ多くの人がテキストを読めるよう、コントラストの最低基準を定めています。WCAG 2は多くのガイドラインや法律が参照する標準規格で、APCAはフォントのサイズとウェイトも考慮する新しい方法です。後からデザインを作り直すより、早めに確認するほうがずっと簡単です。";
+
+/* Basics intro: where Pika fits */
+"help.basics.intro.3" = "そこで役立つのがPikaです。デザインファイルでも、ウェブサイトでも、スクリーンショットでも、画面上のどこからでも前景色と背景色をピックすると、Pikaがすぐにコントラストを表示します。カラーも必要なフォーマットで並んで表示されるので、そのままコピーできます。";
+
+/* Expand the Basics intro */
+"help.basics.intro.more" = "続きを読む";
+
+/* Collapse the Basics intro */
+"help.basics.intro.less" = "表示を減らす";
+
+/* Foreground and background */
+"help.basics.pair.title" = "前景色と背景色";
+
+/* Foreground and background description */
+"help.basics.pair" = "前景色はテキストやアイコン、背景色はその後ろにある面のカラーです。[X]を押すと入れ替えられます。";
+
+/* Why check contrast */
+"help.basics.contrast.title" = "コントラストを確認する理由";
+
+/* Why check contrast description */
+"help.basics.contrast" = "コントラストの低いテキストは読みにくくなります。ロービジョンや色覚特性のある人、まぶしい環境では特にそうです。";
+
+/* WCAG and APCA */
+"help.basics.standards.title" = "WCAGとAPCA";
+
+/* WCAG and APCA description */
+"help.basics.standards" = "WCAG 2はコントラスト比を示します（AAではテキストに4.5:1が必要）。APCAはサイズとウェイトを考慮したLc値を示しますが、まだ標準規格ではありません。";
+
+/* Ways to pick a colour */
+"help.basics.pickers.title" = "カラーのピック方法";
+
+/* Basic, Pro and system colour picker description */
+"help.basics.pickers" = "ベーシックピッカーはmacOSのカラーサンプラーです。Proピッカーはリアルタイムのルーペを備え、画面収録のアクセス権が必要です。[⌘S]でmacOSのカラーパネルが開きます。";
+
+/* Editing values */
+"help.basics.editing.title" = "値の編集";
+
+/* Editing values description */
+"help.basics.editing" = "値をクリックして入力、ドラッグか2本指スクロールで連続調整、[↑]か[↓]で1段階ずつ変更できます。[⌘Z]で取り消せます。";
+
+/* Colour spaces */
+"help.basics.spaces.title" = "カラースペース";
+
+/* Colour spaces description */
+"help.basics.spaces" = "sRGBはCSS、Figma、ほとんどのデザインツールと一致し、デフォルトです。Display P3は最近のMacで表示できる、より鮮やかなカラーを含みます。コントラストは常にsRGBで計算されます。";
+
+/* Link to WCAG contrast guidance */
+"help.reference.wcag" = "WCAGのコントラストについて";
+
+/* Link to APCA guidance */
+"help.reference.apca" = "APCAについて";
 
 /* Check for updates */
 "menu.updates" = "アップデートを確認";
@@ -719,3 +776,130 @@
 
 /* Pick a foreground then background pair */
 "color.pick.pair" = "ペアをピック";
+
+/* Color Space */
+"preferences.space.title" = "カラースペース";
+
+/* Read colors in */
+"preferences.space.label" = "読み取りに使うカラースペース";
+
+/* Match display (%@) */
+"preferences.space.display" = "ディスプレイに合わせる（%@）";
+
+/* Recommended for color space */
+"preferences.space.hint.srgb" = "推奨。HEX値がCSS、Figma、ほとんどのデザインツールと一致します。";
+
+/* Display P3 hint */
+"preferences.space.hint.p3" = "Display P3のデザインファイルやアプリのアセット向けです。ブラウザは通常のHEXをsRGBとして読むため、CSSのHEXとRGBはcolor(display-p3 …)としてコピーされます。";
+
+/* Match display hint */
+"preferences.space.hint.display" = "ピックするディスプレイの生の値です。HEX値はウェブと一致しません。";
+
+/* Match display hint on a P3 screen */
+"preferences.space.hint.display.p3" = "ピックするディスプレイの生の値です。このディスプレイはDisplay P3なので、CSSのHEXとRGBはcolor(display-p3 …)としてコピーされます。";
+
+/* Other color space hint */
+"preferences.space.hint.other" = "ソースが同じカラースペースを使っていない限り、HEX値はウェブと一致しません。";
+
+/* Colors don't match? */
+"color.space.mismatch" = "カラーが一致しない場合";
+
+
+/* Check a Color window title */
+"match.title" = "カラーを確認";
+
+/* Check a Color introduction */
+"match.intro" = "Figmaやウェブページのスウォッチなど、値がわかっているカラーをピックし、その値を任意のフォーマットで入力してください。同じ値で読み取れるカラースペースをPikaが探します。";
+
+/* Expected value field */
+"match.expected" = "想定していた値";
+
+/* Exact match */
+"match.exact" = "完全一致";
+
+/* Match within rounding */
+"match.close" = "丸め誤差の範囲内";
+
+/* Channels off by */
+"match.off" = "%d段階のずれ";
+
+/* Matches the current space */
+"match.result.current" = "現在使用中のカラースペースなので、値は一致しています。";
+
+/* Matches another space */
+"match.result.other" = "このカラーは %@ で一致します。";
+
+/* No space matches */
+"match.result.none" = "一致するカラースペースがありません。このカラーを表示しているアプリがカラーマネジメントをしていないか、独自のプロファイルを使っている可能性があります。";
+
+/* Use color space button */
+"match.use" = "%@ を使用";
+
+/* Pick again button */
+"match.pick" = "もう一度ピック";
+
+/* Learn more link */
+"match.learn" = "詳しく見る";
+
+/* Picked colour card title */
+"match.picked" = "ピックしたカラー";
+
+/* Expected colour card title */
+"match.expected.title" = "想定していたカラー";
+
+/* Pick a colour button */
+"match.pick.first" = "カラーをピック";
+
+/* Badge on the color space in use */
+"match.badge.current" = "使用中";
+
+/* Check a Color empty state */
+"match.empty" = "カラーをピックし、想定していた値を入力すると比較できます。";
+
+/* Lab and OKLCH: one reading for every space */
+"match.space.any" = "すべてのカラースペース";
+
+/* Lab or OKLCH value matches */
+"match.result.absolute" = "一致しています。LabとOKLCHはどのカラースペースでも同じようにカラーを表します。";
+
+/* Lab or OKLCH value doesn't match */
+"match.result.absolute.none" = "一致しません。LabとOKLCHはどのカラースペースでも同じように読み取られるため、このカラーを表示しているアプリがカラーマネジメントをしていない可能性があります。";
+
+/* Inline update control: an update was found */
+"update.available" = "アップデートがあります";
+
+/* Inline update control: start downloading the update */
+"update.update" = "アップデート";
+
+/* Inline update control: skip this version */
+"update.ignore" = "無視";
+
+/* Inline update control: install the downloaded update and relaunch */
+"update.restart" = "再起動してアップデート";
+
+/* Inline update control: link to the release notes */
+"update.whats_new" = "新機能";
+
+/* Inline update control: no newer version was found */
+"update.up_to_date" = "最新です";
+
+/* Inline update control: the update failed */
+"update.failed" = "アップデートに失敗しました";
+
+/* Inline update control: retry after a failure */
+"update.try_again" = "再試行";
+
+/* Inline update control: a check by hand is in progress */
+"update.checking" = "アップデートを確認中…";
+
+/* Inline update control: the update is downloading */
+"update.downloading" = "アップデートをダウンロード中…";
+
+/* Inline update control: the update is installing */
+"update.installing" = "アップデートをインストール中…";
+
+/* Inline update control: dismiss a message */
+"update.dismiss" = "閉じる";
+
+/* Inline update control: the version on offer, linking to its release notes */
+"update.version" = "バージョン %@";

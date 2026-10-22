@@ -232,6 +232,8 @@ extension Eyedropper {
     }
 
     private func commitPick(_ selectedColor: NSColor, chainContrasting: Bool, useCustom: Bool) {
+        // Read the pick in the profile of the display it was made on, when matching the display.
+        ColorSpacePreference.followDisplay(ColorSpacePreference.screen(containing: NSEvent.mouseLocation))
         let normalizedColor = selectedColor.usingColorSpace(.extendedSRGB) ?? selectedColor
 
         // The custom loupe already shows the colour live during the pick, so the

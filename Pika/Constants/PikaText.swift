@@ -56,6 +56,33 @@ enum PikaText {
     static let textHelpOpenSourceDescription = NSLocalizedString("help.open_source.description", comment: "Open Source description")
     static let textHelpViewOnGitHub = NSLocalizedString("help.github", comment: "View on GitHub")
     static let textHelpSupportOnMAS = NSLocalizedString("help.mas", comment: "Support on the Mac App Store")
+    static let textHelpShortcutsDescription = NSLocalizedString(
+        "help.shortcuts.description", comment: "Which keyboard shortcuts are global and which need Pika focused"
+    )
+
+    // Help Basics
+    static let textHelpBasics = NSLocalizedString("help.basics", comment: "Basics")
+    static let textHelpBasicsIntro = [
+        NSLocalizedString("help.basics.intro.1", comment: "Basics intro: what colour contrast is"),
+        NSLocalizedString("help.basics.intro.2", comment: "Basics intro: accessibility guidelines"),
+        NSLocalizedString("help.basics.intro.3", comment: "Basics intro: where Pika fits"),
+    ]
+    static let textHelpBasicsIntroMore = NSLocalizedString("help.basics.intro.more", comment: "Expand the Basics intro")
+    static let textHelpBasicsIntroLess = NSLocalizedString("help.basics.intro.less", comment: "Collapse the Basics intro")
+    static let textHelpBasicsPairTitle = NSLocalizedString("help.basics.pair.title", comment: "Foreground and background")
+    static let textHelpBasicsPair = NSLocalizedString("help.basics.pair", comment: "Foreground and background description")
+    static let textHelpBasicsContrastTitle = NSLocalizedString("help.basics.contrast.title", comment: "Why check contrast")
+    static let textHelpBasicsContrast = NSLocalizedString("help.basics.contrast", comment: "Why check contrast description")
+    static let textHelpBasicsStandardsTitle = NSLocalizedString("help.basics.standards.title", comment: "WCAG and APCA")
+    static let textHelpBasicsStandards = NSLocalizedString("help.basics.standards", comment: "WCAG and APCA description")
+    static let textHelpBasicsPickersTitle = NSLocalizedString("help.basics.pickers.title", comment: "Ways to pick a colour")
+    static let textHelpBasicsPickers = NSLocalizedString("help.basics.pickers", comment: "Basic, Pro and system colour picker description")
+    static let textHelpBasicsEditingTitle = NSLocalizedString("help.basics.editing.title", comment: "Editing values")
+    static let textHelpBasicsEditing = NSLocalizedString("help.basics.editing", comment: "Editing values description")
+    static let textHelpBasicsSpacesTitle = NSLocalizedString("help.basics.spaces.title", comment: "Colour spaces")
+    static let textHelpBasicsSpaces = NSLocalizedString("help.basics.spaces", comment: "Colour spaces description")
+    static let textHelpReferenceWCAG = NSLocalizedString("help.reference.wcag", comment: "Link to WCAG contrast guidance")
+    static let textHelpReferenceAPCA = NSLocalizedString("help.reference.apca", comment: "Link to APCA guidance")
 
     static let textMenuAbout = NSLocalizedString("menu.about", comment: "About")
     static let textMenuShowSplash = NSLocalizedString(
@@ -63,6 +90,21 @@ enum PikaText {
     )
     static let textMenuShowPika = NSLocalizedString("menu.showPika", comment: "Show Pika")
     static let textMenuUpdates = NSLocalizedString("menu.updates", comment: "Check for updates")
+
+    // Inline update control
+    static let textUpdateAvailable = NSLocalizedString("update.available", comment: "Inline update control: an update was found")
+    static let textUpdateUpdate = NSLocalizedString("update.update", comment: "Inline update control: start downloading the update")
+    static let textUpdateIgnore = NSLocalizedString("update.ignore", comment: "Inline update control: skip this version")
+    static let textUpdateRestart = NSLocalizedString("update.restart", comment: "Inline update control: install the downloaded update and relaunch")
+    static let textUpdateWhatsNew = NSLocalizedString("update.whats_new", comment: "Inline update control: link to the release notes")
+    static let textUpdateUpToDate = NSLocalizedString("update.up_to_date", comment: "Inline update control: no newer version was found")
+    static let textUpdateFailed = NSLocalizedString("update.failed", comment: "Inline update control: the update failed")
+    static let textUpdateTryAgain = NSLocalizedString("update.try_again", comment: "Inline update control: retry after a failure")
+    static let textUpdateChecking = NSLocalizedString("update.checking", comment: "Inline update control: a check by hand is in progress")
+    static let textUpdateDownloading = NSLocalizedString("update.downloading", comment: "Inline update control: the update is downloading")
+    static let textUpdateInstalling = NSLocalizedString("update.installing", comment: "Inline update control: the update is installing")
+    static let textUpdateDismiss = NSLocalizedString("update.dismiss", comment: "Inline update control: dismiss a message")
+    static let textUpdateVersion = NSLocalizedString("update.version", comment: "Inline update control: the version on offer, linking to its release notes")
     static let textMenuPreferences = NSLocalizedString("menu.preferences", comment: "Preferences")
     static let textMenuWebsite = NSLocalizedString("menu.website", comment: "Pika website")
     static let textMenuGitHubIssue = NSLocalizedString("menu.issue", comment: "Report feedback")
@@ -393,11 +435,51 @@ enum PikaText {
 
     // Color Format
     static let textFormatTitle = NSLocalizedString("preferences.format.title", comment: "Color Format")
-    static let textFormatDescription = NSLocalizedString(
-        "preferences.space.description",
-        comment: "Set your RGB color space"
+
+    // Color Space
+    static let textSpaceTitle = NSLocalizedString("preferences.space.title", comment: "Color Space")
+    static let textSpaceLabel = NSLocalizedString("preferences.space.label", comment: "Read colors in")
+    static let textSpaceDisplay = NSLocalizedString("preferences.space.display", comment: "Match display (%@)")
+    static let textSpaceHintSRGB = NSLocalizedString(
+        "preferences.space.hint.srgb", comment: "Recommended for color space"
     )
-    static let textSystemDefault = NSLocalizedString("preferences.space.default", comment: "System Default")
+    static let textSpaceHintP3 = NSLocalizedString("preferences.space.hint.p3", comment: "Display P3 hint")
+    static let textSpaceHintDisplay = NSLocalizedString(
+        "preferences.space.hint.display", comment: "Match display hint"
+    )
+    static let textSpaceHintDisplayP3 = NSLocalizedString(
+        "preferences.space.hint.display.p3", comment: "Match display hint on a P3 screen"
+    )
+    static let textSpaceHintOther = NSLocalizedString(
+        "preferences.space.hint.other", comment: "Other color space hint"
+    )
+    static let textSpaceMismatch = NSLocalizedString("color.space.mismatch", comment: "Colors don't match?")
+    static let textMatchTitle = NSLocalizedString("match.title", comment: "Check a Color window title")
+    static let textMatchIntro = NSLocalizedString("match.intro", comment: "Check a Color introduction")
+    static let textMatchExpected = NSLocalizedString("match.expected", comment: "Expected value field")
+    static let textMatchExact = NSLocalizedString("match.exact", comment: "Exact match")
+    static let textMatchClose = NSLocalizedString("match.close", comment: "Match within rounding")
+    static let textMatchOff = NSLocalizedString("match.off", comment: "Channels off by")
+    static let textMatchCurrent = NSLocalizedString(
+        "match.result.current", comment: "Matches the current space"
+    )
+    static let textMatchOther = NSLocalizedString("match.result.other", comment: "Matches another space")
+    static let textMatchNone = NSLocalizedString("match.result.none", comment: "No space matches")
+    static let textMatchUse = NSLocalizedString("match.use", comment: "Use color space button")
+    static let textMatchPick = NSLocalizedString("match.pick", comment: "Pick again button")
+    static let textMatchLearn = NSLocalizedString("match.learn", comment: "Learn more link")
+    static let textMatchPicked = NSLocalizedString("match.picked", comment: "Picked colour card title")
+    static let textMatchExpectedTitle = NSLocalizedString("match.expected.title", comment: "Expected colour card title")
+    static let textMatchPickFirst = NSLocalizedString("match.pick.first", comment: "Pick a colour button")
+    static let textMatchCurrentBadge = NSLocalizedString("match.badge.current", comment: "Badge on the color space in use")
+    static let textMatchEmpty = NSLocalizedString("match.empty", comment: "Check a Color empty state")
+    static let textMatchAnySpace = NSLocalizedString(
+        "match.space.any", comment: "Lab and OKLCH: one reading for every space"
+    )
+    static let textMatchAbsolute = NSLocalizedString("match.result.absolute", comment: "Lab or OKLCH value matches")
+    static let textMatchAbsoluteNone = NSLocalizedString(
+        "match.result.absolute.none", comment: "Lab or OKLCH value doesn't match"
+    )
 
     static let textFormatHex = NSLocalizedString("color.format.hex", comment: "Hex format")
     static let textFormatRGB = NSLocalizedString("color.format.rgb", comment: "RGB format")

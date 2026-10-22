@@ -79,6 +79,7 @@ private struct PikaCommands: Commands {
         CommandGroup(replacing: .help) {
             Button(PikaText.textMenuWebsite) { send(#selector(AppDelegate.openWebsite)) }
                 .keyboardShortcut("?", modifiers: .command)
+            Button(PikaText.textSpaceMismatch + "…") { send(#selector(AppDelegate.openColorMatchWindow)) }
             Button(PikaText.textMenuGitHubIssue) { send(#selector(AppDelegate.openGitHubIssue)) }
         }
     }

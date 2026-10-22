@@ -70,12 +70,6 @@
 /* Set your preferred display format for colors */
 "preferences.format.description" = "Establece tu formato de color preferido";
 
-/* Set your RGB color space */
-"preferences.space.description" = "Establece tu espacio de color RGB";
-
-/* System Default */
-"preferences.space.default" = "Por defecto";
-
 /* Hide Pika while picking */
 "preferences.pick.hide" = "Ocultar Pika durante la selección";
 
@@ -191,16 +185,16 @@
 "color.wcag.70" = "El nivel AAA de WCAG 2 requiere una proporción de contraste de al menos 7:1 para texto normal.";
 
 /* APCA 30 */
-"color.apca.30" = "APCA >= 30 es el contraste mínimo para texto base y contenido no textual. Adecuado para texto más grande, marcadores de posición y elementos deshabilitados.";
+"color.apca.30" = "APCA Lc 30 es el mínimo absoluto para cualquier texto, y solo para texto que no necesita leerse con fluidez, como marcadores de posición, controles deshabilitados y avisos de copyright. También sirve para iconos sólidos y otro contenido no textual.";
 
 /* APCA 45 */
-"color.apca.45" = "APCA >= 45 es el contraste mínimo para texto de encabezado. Adecuado para encabezados grandes, elementos de navegación y componentes importantes de la interfaz.";
+"color.apca.45" = "APCA Lc 45 es el mínimo para texto grande como los titulares: al menos 36px con peso normal, o 24px en negrita.";
 
 /* APCA 60 */
-"color.apca.60" = "APCA >= 60 es el contraste mínimo para texto de título. Adecuado para subtítulos, leyendas y contenido secundario que debe ser claramente legible.";
+"color.apca.60" = "APCA Lc 60 es el mínimo para texto de contenido que no es texto de cuerpo, como subtítulos y leyendas: al menos 24px con peso normal, o 16px en negrita.";
 
 /* APCA 75 */
-"color.apca.75" = "APCA >= 75 es el contraste mínimo para texto de cuerpo. Adecuado para contenido principal, texto de tamaño normal y material de lectura extendida.";
+"color.apca.75" = "APCA Lc 75 es el mínimo para texto de cuerpo: al menos 18px con peso normal, o 14px en negrita. Para pasajes largos se prefiere Lc 90.";
 
 /* Baseline */
 "color.apca.baseline" = "Base";
@@ -350,7 +344,7 @@
 "menu.help" = "Ayuda";
 
 /* Help description */
-"help.description" = "Todo lo que necesitas saber sobre el uso de Pika, desde atajos de teclado hasta automatización URL.";
+"help.description" = "Pika toma colores de cualquier parte de la pantalla y comprueba lo legibles que son juntos. Así funciona.";
 
 /* Keyboard Shortcuts */
 "help.shortcuts" = "Atajos de teclado";
@@ -375,6 +369,69 @@
 
 /* Support on the Mac App Store */
 "help.mas" = "Apoyar en el Mac App Store";
+
+/* Which keyboard shortcuts are global and which need Pika focused */
+"help.shortcuts.description" = "Casi todos los atajos requieren Pika delante. Mostrar/ocultar Pika y Seleccionar par ([⌥⌘D]) funcionan desde cualquier app; configúralos en Ajustes → Atajo Global.";
+
+/* Basics */
+"help.basics" = "Conceptos básicos";
+
+/* Basics intro: what colour contrast is */
+"help.basics.intro.1" = "El contraste de color es la diferencia de luminosidad entre el texto y lo que hay detrás. Si es demasiado bajo, las palabras se confunden con el fondo. Es un problema real para las personas con baja visión o daltonismo, y también afecta a todos los demás, como al leer el móvil a pleno sol o en un portátil con el brillo al mínimo.";
+
+/* Basics intro: accessibility guidelines */
+"help.basics.intro.2" = "Las pautas de accesibilidad fijan niveles mínimos de contraste para que el texto sea legible para el mayor número de personas posible. WCAG 2 es el estándar al que remiten la mayoría de pautas y leyes, y APCA es un método más reciente que también tiene en cuenta el tamaño y el peso de la fuente. Comprobarlo desde el principio es mucho más fácil que rehacer un diseño después.";
+
+/* Basics intro: where Pika fits */
+"help.basics.intro.3" = "Ahí es donde entra Pika. Selecciona un primer plano y un segundo plano de cualquier parte de la pantalla, ya sea un archivo de diseño, un sitio web o una captura, y Pika te muestra el contraste al instante, junto con los colores en el formato que necesites, listos para copiar.";
+
+/* Expand the Basics intro */
+"help.basics.intro.more" = "Seguir leyendo";
+
+/* Collapse the Basics intro */
+"help.basics.intro.less" = "Mostrar menos";
+
+/* Foreground and background */
+"help.basics.pair.title" = "Primer plano y segundo plano";
+
+/* Foreground and background description */
+"help.basics.pair" = "El primer plano es texto o un icono; el segundo plano es la superficie que hay detrás. Pulsa [X] para intercambiarlos.";
+
+/* Why check contrast */
+"help.basics.contrast.title" = "Por qué comprobar el contraste";
+
+/* Why check contrast description */
+"help.basics.contrast" = "El texto con poco contraste es difícil de leer, sobre todo con baja visión, daltonismo o reflejos.";
+
+/* WCAG and APCA */
+"help.basics.standards.title" = "WCAG y APCA";
+
+/* WCAG and APCA description */
+"help.basics.standards" = "WCAG 2 da una proporción (AA requiere 4.5:1 para texto). APCA da un valor Lc que tiene en cuenta el tamaño y el peso, pero aún no es un estándar.";
+
+/* Ways to pick a colour */
+"help.basics.pickers.title" = "Formas de seleccionar un color";
+
+/* Basic, Pro and system colour picker description */
+"help.basics.pickers" = "El selector básico usa el muestreador de macOS. El Pro añade una lupa en tiempo real y necesita Grabación de pantalla. [⌘S] abre el panel de colores de macOS.";
+
+/* Editing values */
+"help.basics.editing.title" = "Editar valores";
+
+/* Editing values description */
+"help.basics.editing" = "Haz clic en un valor para escribir, arrastra o desplázate con dos dedos para ajustarlo, y pulsa [↑] o [↓] para ir paso a paso. [⌘Z] deshace.";
+
+/* Colour spaces */
+"help.basics.spaces.title" = "Espacios de color";
+
+/* Colour spaces description */
+"help.basics.spaces" = "sRGB coincide con CSS, Figma y la mayoría de herramientas de diseño, y es el predeterminado. Display P3 cubre los colores más vivos de los Mac recientes. El contraste siempre usa sRGB.";
+
+/* Link to WCAG contrast guidance */
+"help.reference.wcag" = "Más sobre el contraste WCAG";
+
+/* Link to APCA guidance */
+"help.reference.apca" = "Más sobre APCA";
 
 /* Check for updates */
 "menu.updates" = "Comprobar actualizaciones";
@@ -719,3 +776,130 @@
 
 /* Pick a foreground then background pair */
 "color.pick.pair" = "Elegir par";
+
+/* Color Space */
+"preferences.space.title" = "Espacio de color";
+
+/* Read colors in */
+"preferences.space.label" = "Leer colores en";
+
+/* Match display (%@) */
+"preferences.space.display" = "Según la pantalla (%@)";
+
+/* Recommended for color space */
+"preferences.space.hint.srgb" = "Recomendado. Los valores hex coinciden con CSS, Figma y la mayoría de herramientas de diseño.";
+
+/* Display P3 hint */
+"preferences.space.hint.p3" = "Para archivos de diseño y recursos de apps en Display P3. Hex y RGB de CSS se copian como color(display-p3 …), porque los navegadores leen un hex simple como sRGB.";
+
+/* Match display hint */
+"preferences.space.hint.display" = "Valores sin procesar de la pantalla en la que seleccionas. Los valores hex no coincidirán con la web.";
+
+/* Match display hint on a P3 screen */
+"preferences.space.hint.display.p3" = "Valores sin procesar de la pantalla en la que seleccionas. Esta pantalla es Display P3, así que hex y RGB de CSS se copian como color(display-p3 …).";
+
+/* Other color space hint */
+"preferences.space.hint.other" = "Los valores hex no coincidirán con la web salvo que el origen use el mismo espacio de color.";
+
+/* Colors don't match? */
+"color.space.mismatch" = "¿Los colores no coinciden?";
+
+
+/* Check a Color window title */
+"match.title" = "Comprobar un color";
+
+/* Check a Color introduction */
+"match.intro" = "Selecciona un color cuyo valor ya conozcas, como una muestra en Figma o en una página web, e introduce ese valor en cualquier formato. Pika encuentra el espacio de color en el que se lee ese mismo valor.";
+
+/* Expected value field */
+"match.expected" = "Valor esperado";
+
+/* Exact match */
+"match.exact" = "Exacto";
+
+/* Match within rounding */
+"match.close" = "Dentro del redondeo";
+
+/* Channels off by */
+"match.off" = "%d de diferencia";
+
+/* Matches the current space */
+"match.result.current" = "Es el espacio de color que estás usando, así que los valores coinciden.";
+
+/* Matches another space */
+"match.result.other" = "Este color coincide en %@.";
+
+/* No space matches */
+"match.result.none" = "Ningún espacio de color coincide. Puede que la app que muestra este color no gestione el color o use su propio perfil.";
+
+/* Use color space button */
+"match.use" = "Usar %@";
+
+/* Pick again button */
+"match.pick" = "Volver a seleccionar";
+
+/* Learn more link */
+"match.learn" = "Más información";
+
+/* Picked colour card title */
+"match.picked" = "Seleccionado";
+
+/* Expected colour card title */
+"match.expected.title" = "Esperado";
+
+/* Pick a colour button */
+"match.pick.first" = "Seleccionar color";
+
+/* Badge on the color space in use */
+"match.badge.current" = "Actual";
+
+/* Check a Color empty state */
+"match.empty" = "Selecciona un color e introduce el valor esperado para compararlos.";
+
+/* Lab and OKLCH: one reading for every space */
+"match.space.any" = "Cualquier espacio de color";
+
+/* Lab or OKLCH value matches */
+"match.result.absolute" = "Coincide. Lab y OKLCH describen un color igual en cualquier espacio de color.";
+
+/* Lab or OKLCH value doesn't match */
+"match.result.absolute.none" = "No coincide. Lab y OKLCH se leen igual en cualquier espacio de color, así que puede que la app que muestra este color no gestione el color.";
+
+/* Inline update control: an update was found */
+"update.available" = "Actualización disponible";
+
+/* Inline update control: start downloading the update */
+"update.update" = "Actualizar";
+
+/* Inline update control: skip this version */
+"update.ignore" = "Ignorar";
+
+/* Inline update control: install the downloaded update and relaunch */
+"update.restart" = "Reiniciar para actualizar";
+
+/* Inline update control: link to the release notes */
+"update.whats_new" = "Novedades";
+
+/* Inline update control: no newer version was found */
+"update.up_to_date" = "Actualizado";
+
+/* Inline update control: the update failed */
+"update.failed" = "Error al actualizar";
+
+/* Inline update control: retry after a failure */
+"update.try_again" = "Reintentar";
+
+/* Inline update control: a check by hand is in progress */
+"update.checking" = "Buscando actualizaciones…";
+
+/* Inline update control: the update is downloading */
+"update.downloading" = "Descargando actualización…";
+
+/* Inline update control: the update is installing */
+"update.installing" = "Instalando actualización…";
+
+/* Inline update control: dismiss a message */
+"update.dismiss" = "Descartar";
+
+/* Inline update control: the version on offer, linking to its release notes */
+"update.version" = "Versión %@";

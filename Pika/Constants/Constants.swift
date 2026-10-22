@@ -24,9 +24,20 @@ enum PikaConstants {
 
     static let pikaWebsiteURL = "https://superhighfives.com/pika"
     static let gitHubRepoURL = "https://github.com/superhighfives/pika"
+    static let wcagContrastURL = "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html"
+    static let apcaGuideURL = "https://git.apcacontrast.com/documentation/APCA_in_a_Nutshell"
     static let gitHubIssueURL = "https://github.com/superhighfives/pika/issues/new/choose"
     static let charlieGleasonWebsiteURL = "https://charliegleason.com"
     static let pikaHelpURL = "https://superhighfives.com/pika/help"
+    static let colorSpaceHelpURL = "https://superhighfives.com/pika/help#colour-spaces"
+
+    /// The changelog entry for one version, for the update control's "What's new" link. The
+    /// changelog page anchors each entry as `v` + the version (`#v2.0.1`, `#v2.0.1-beta1`), and
+    /// Sparkle's display version is the feed's `shortVersionString`, which is that same version.
+    static func changelogURL(version: String) -> URL? {
+        URL(string: "https://superhighfives.com/pika/changelog#v\(version)")
+    }
+
     static let macAppStoreURL = "https://apps.apple.com/us/app/pika/id6739170421"
 
     // Initial colors
