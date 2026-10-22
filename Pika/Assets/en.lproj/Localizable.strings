@@ -801,6 +801,9 @@
 /* Match display hint */
 "preferences.space.hint.display" = "Raw values from your display, following the display you pick on. Hex values won’t match the web.";
 
+/* Match display hint on a P3 screen */
+"preferences.space.hint.display.p3" = "Raw values from your display, following the display you pick on. This display is Display P3, so CSS hex and RGB copy as color(display-p3 …).";
+
 /* Other color space hint */
 "preferences.space.hint.other" = "Hex values won’t match the web unless the source uses the same color space.";
 

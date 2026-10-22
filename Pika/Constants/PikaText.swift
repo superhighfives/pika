@@ -447,6 +447,9 @@ enum PikaText {
     static let textSpaceHintDisplay = NSLocalizedString(
         "preferences.space.hint.display", comment: "Match display hint"
     )
+    static let textSpaceHintDisplayP3 = NSLocalizedString(
+        "preferences.space.hint.display.p3", comment: "Match display hint on a P3 screen"
+    )
     static let textSpaceHintOther = NSLocalizedString(
         "preferences.space.hint.other", comment: "Other color space hint"
     )

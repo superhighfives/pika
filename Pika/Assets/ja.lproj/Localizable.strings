@@ -795,6 +795,9 @@
 /* Match display hint */
 "preferences.space.hint.display" = "ピックするディスプレイの生の値です。HEX値はウェブと一致しません。";
 
+/* Match display hint on a P3 screen */
+"preferences.space.hint.display.p3" = "ピックするディスプレイの生の値です。このディスプレイはDisplay P3なので、CSSのHEXとRGBはcolor(display-p3 …)としてコピーされます。";
+
 /* Other color space hint */
 "preferences.space.hint.other" = "ソースが同じカラースペースを使っていない限り、HEX値はウェブと一致しません。";
 

@@ -350,6 +350,16 @@ final class ColorSpacePreferenceTests: XCTestCase {
         XCTAssertEqual(srgb.toCopyString(format: .hex, style: .css, in: .sRGB), "#ff8800")
     }
 
+    func test_getExample_isWhatCopyGives() throws {
+        Defaults[.colorSpace] = .displayP3
+        let color = try XCTUnwrap(NSColor.fromHex("#ff8800", in: .displayP3))
+        XCTAssertEqual(ColorFormat.hex.getExample(color: color, style: .css), "color(display-p3 1 0.5333 0)")
+        XCTAssertEqual(ColorFormat.hex.getExample(color: color, style: .design), color.toFormat(format: .hex, style: .design))
+        Defaults[.colorSpace] = .sRGB
+        let srgb = try XCTUnwrap(NSColor.fromHex("#ff8800", in: .sRGB))
+        XCTAssertEqual(ColorFormat.hex.getExample(color: srgb, style: .css), "#ff8800")
+    }
+
     // MARK: - Half-float capture
 
     func test_floatFromHalf() {
