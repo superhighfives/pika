@@ -795,6 +795,9 @@
 /* Match display hint */
 "preferences.space.hint.display" = "取色所在显示器的原始值。十六进制值将与网页不一致。";
 
+/* Match display hint on a P3 screen */
+"preferences.space.hint.display.p3" = "取色所在显示器的原始值。此显示器为 Display P3，因此 CSS 十六进制和 RGB 会复制为 color(display-p3 …)。";
+
 /* Other color space hint */
 "preferences.space.hint.other" = "除非来源使用相同的色彩空间，否则十六进制值将与网页不一致。";
 
