@@ -1,0 +1,727 @@
+/* Pika */
+"app.name" = "Pika";
+
+/* Cancel */
+"general.cancel" = "لغو";
+
+/* Clear */
+"general.clear" = "پاک کردن";
+
+/* Version */
+"app.version" = "نسخه";
+
+/* Build */
+"app.build" = "ساخت";
+
+/* Unknown */
+"app.unknown" = "ناشناخته";
+
+/* Designed by */
+"app.designed" = "طراحی‌شده توسط";
+
+/* Website */
+"app.website" = "وب‌سایت";
+
+/* GitHub */
+"app.github" = "GitHub";
+
+/* Mac App Store */
+"app.store.mas" = "Mac App Store";
+
+/* Downloaded from the internet */
+"app.store.download" = "دانلودشده از اینترنت";
+
+/* Global Shortcut */
+"preferences.hotkey.title" = "میانبر سراسری";
+
+/* Set a global hotkey shortcut to invoke Pika */
+"preferences.hotkey.description" = "تنظیم کلید میانبر سراسری برای فراخوانی Pika";
+
+/* Copy Settings */
+"preferences.copy.title" = "تنظیمات کپی";
+
+/* Export color for */
+"preferences.copy.export" = "برون‌بری رنگ برای";
+
+/* Example output */
+"preferences.copy.export.example" = "نمونهٔ خروجی";
+
+/* Export Format */
+"preferences.copy.format" = "قالب برون‌بری";
+
+/* Unformatted */
+"preferences.copy.options.unformatted" = "بدون قالب‌بندی";
+
+/* Design Application */
+"preferences.copy.options.design" = "نرم‌افزار طراحی";
+
+/* CSS */
+"preferences.copy.options.css" = "CSS";
+
+/* SwiftUI */
+"preferences.copy.options.swiftui" = "SwiftUI";
+
+/* Automatically copy color to clipboard on pick */
+"preferences.copy.automatic" = "کپی خودکار رنگ در کلیپ‌بورد هنگام برداشتن";
+
+/* Color Format */
+"preferences.format.title" = "قالب رنگ";
+
+/* Set your preferred display format for colors */
+"preferences.format.description" = "تنظیم قالب نمایش دلخواه برای رنگ‌ها";
+
+/* Set your RGB color space */
+"preferences.space.description" = "تنظیم فضای رنگی RGB";
+
+/* System Default */
+"preferences.space.default" = "پیش‌فرض سیستم";
+
+/* Hide Pika while picking */
+"preferences.pick.hide" = "پنهان کردن Pika هنگام برداشتن";
+
+/* Pick a contrasting background color after the foreground */
+"preferences.pick.contrasting" = "برداشتن رنگ دارای کنتراست پس از پیش‌زمینه";
+
+/* Window shadow */
+"preferences.shadow.description" = "سایهٔ پنجره";
+
+/* Window Settings */
+"preferences.window.title" = "تنظیمات پنجره";
+
+/* Window shadow: always on */
+"preferences.shadow.options.always" = "نمایش سایه";
+
+/* Window shadow: hidden while picking */
+"preferences.shadow.options.hiddenWhilePicking" = "پنهان کردن سایه هنگام برداشتن";
+
+/* Window shadow: never */
+"preferences.shadow.options.never" = "پنهان کردن سایه";
+
+/* Expand the window to fit hidden elements */
+"content.expandToFit" = "گسترش برای جاگیری";
+
+/* General Settings */
+"preferences.general.title" = "تنظیمات عمومی";
+
+/* Selection Settings */
+"preferences.selection.title" = "تنظیمات انتخاب";
+
+/* Hide menu bar icon */
+"preferences.icon.description" = "پنهان کردن نماد نوار منو";
+
+/* Launch at login */
+"preferences.launch.description" = "اجرا هنگام ورود";
+
+/* Hide color names */
+"preferences.names.description" = "پنهان کردن نام رنگ‌ها";
+
+/* Subscribe to beta releases */
+"preferences.beta.description" = "دریافت نسخه‌های بتا";
+
+/* Float above windows */
+"preferences.float.description" = "شناور ماندن روی پنجره‌ها";
+
+/* Always show Pika on launch */
+"preferences.show.description" = "نمایش همیشگی Pika هنگام اجرا";
+
+/* App Settings */
+"preferences.app.title" = "تنظیمات برنامه";
+
+/* Menu bar */
+"preferences.app.menubar.title" = "نوار منو";
+
+/* Show in menu bar */
+"preferences.app.menubar.description" = "نمایش در نوار منو";
+
+/* Dock */
+"preferences.app.dock.title" = "Dock";
+
+/* Show in dock */
+"preferences.app.dock.description" = "نمایش در Dock";
+
+/* Hidden */
+"preferences.app.hidden.title" = "پنهان";
+
+/* Hide app */
+"preferences.app.hidden.description" = "پنهان کردن برنامه";
+
+/* Popover */
+"preferences.app.menubarPopover.title" = "پنجرهٔ بازشو";
+
+/* Show as menu bar popover */
+"preferences.app.menubarPopover.description" = "پنجرهٔ بازشوی نوار منو";
+
+/* Appearance */
+"preferences.appearance.title" = "ظاهر";
+
+/* Weight */
+"preferences.appearance.weight.title" = "وزن";
+
+/* View WCAG compliance by weight, from normal to large */
+"preferences.appearance.weight.description" = "مشاهدهٔ انطباق با WCAG بر اساس وزن، از عادی تا بزرگ";
+
+/* Contrast */
+"preferences.appearance.contrast.title" = "کنتراست";
+
+/* View WCAG compliance by contrast, from 3:1 to 7:1 */
+"preferences.appearance.contrast.description" = "مشاهدهٔ انطباق با WCAG بر اساس کنتراست، از 3:1 تا 7:1";
+
+/* Contrast Value */
+"preferences.appearance.apca.title" = "مقدار کنتراست";
+
+/* View APCA contrast value by lightness contrast (Lc), from 30 to 75 */
+"preferences.appearance.apca.description" = "مشاهدهٔ مقدار کنتراست APCA بر اساس کنتراست روشنایی (Lc)، از 30 تا 75";
+
+/* Contrast Calculation Standard */
+"preferences.contrast.standard" = "استاندارد محاسبهٔ کنتراست";
+
+/* Both (combined WCAG and APCA) */
+"color.standard.both" = "هر دو";
+
+/* Contrast ratio */
+"color.ratio" = "کنتراست";
+
+/* Contrast ratio is a measure of the difference in perceived brightness between two colors, used to calculate the contrast ratio. */
+"color.ratio.description" = "نسبت کنتراست معیاری برای سنجش تفاوت روشنایی ادراک‌شده میان دو رنگ است که برای محاسبهٔ نسبت کنتراست استفاده می‌شود.";
+
+/* Contrast Value (Lc) */
+"color.lc" = "کنتراست (Lc)";
+
+/* Lightness contrast (Lc) is a measure of the lightness difference between two colors, used to calculate the contrast value. */
+"color.lc.description" = "کنتراست روشنایی (Lc) معیاری برای سنجش تفاوت روشنایی بین دو رنگ است که برای محاسبهٔ مقدار کنتراست استفاده می‌شود.";
+
+/* WCAG Compliance */
+"color.wcag" = "انطباق با WCAG";
+
+/* APCA Contrast Reference */
+"color.apca" = "مرجع کنتراست APCA";
+
+/* Foreground */
+"color.foreground" = "پیش‌زمینه";
+
+/* Background */
+"color.background" = "پس‌زمینه";
+
+/* Invalid input */
+"color.edit.invalid" = "ورودی نامعتبر";
+
+/* Outside the display's color range */
+"color.gamut.outside" = "نمایشگر شما قادر به نمایش این رنگ نیست، بنابراین نمونه نزدیک‌ترین رنگ ممکن را نشان می‌دهد. Lab و OKLCH مقدار دقیقی را که وارد کرده‌اید حفظ می‌کنند؛ Hex و RGB نزدیک‌ترین رنگ را نشان می‌دهند.";
+
+/* WCAG 3:1 */
+"color.wcag.30" = "سطح AA در WCAG 2 نیازمند نسبت کنتراست حداقل 3:1 برای متن‌های بزرگ (18pt / ~24px) یا ضخیم (14pt / ~18.6px) و برای محتوای غیرمتنی مانند رابط کاربری است.";
+
+/* WCAG 4.5:1 */
+"color.wcag.45" = "سطح AA در WCAG 2 نیازمند نسبت کنتراست حداقل 4.5:1 برای متن عادی است. سطح AAA در WCAG 2 نیازمند حداقل 4.5:1 برای متن بزرگ (18pt / ~24px) یا ضخیم (14pt / ~18.6px) است.";
+
+/* WCAG 7:1 */
+"color.wcag.70" = "سطح AAA در WCAG 2 نیازمند نسبت کنتراست حداقل 7:1 برای متن عادی است.";
+
+/* APCA 30 */
+"color.apca.30" = "مقدار APCA >= 30 حداقل کنتراست برای متن پایه و محتوای غیرمتنی است. مناسب برای متن‌های بزرگ‌تر، متن‌های جای‌نگهدار و عناصر غیرفعال.";
+
+/* APCA 45 */
+"color.apca.45" = "مقدار APCA >= 45 حداقل کنتراست برای متن تیتر است. مناسب برای عنوان‌های بزرگ، عناصر ناوبری و اجزای مهم رابط کاربری.";
+
+/* APCA 60 */
+"color.apca.60" = "مقدار APCA >= 60 حداقل کنتراست برای متن عنوان است. مناسب برای زیرعنوان‌ها، زیرنویس‌ها و محتوای ثانویه‌ای که باید به‌وضوح خوانا باشد.";
+
+/* APCA 75 */
+"color.apca.75" = "مقدار APCA >= 75 حداقل کنتراست برای متن بدنه است. مناسب برای محتوای اصلی، متن با اندازهٔ عادی و مطالب طولانی برای خواندن.";
+
+/* Baseline */
+"color.apca.baseline" = "پایه";
+
+/* Headline */
+"color.apca.headline" = "تیتر";
+
+/* Title */
+"color.apca.title" = "عنوان";
+
+/* Body Text */
+"color.apca.body" = "بدنه";
+
+/* Pass */
+"color.wcag.pass" = "قبول";
+
+/* Fail */
+"color.wcag.fail" = "رد";
+
+/* Normal */
+"color.wcag.normal" = "عادی";
+
+/* Large */
+"color.wcag.large" = "بزرگ";
+
+/* LG */
+"color.wcag.large.abbr" = "LG";
+
+/* Global shortcut */
+"splash.hotkey" = "میانبر سراسری";
+
+/* Launch at login */
+"splash.launch" = "اجرا هنگام ورود";
+
+/* Get started */
+"splash.start" = "شروع کنید";
+
+/* Pick */
+"color.pick" = "برداشتن";
+
+/* Swap */
+"color.swap" = "جابه‌جا کردن";
+
+/* Swap colors */
+"color.swap.detail" = "جابه‌جا کردن رنگ‌ها";
+
+/* Undo */
+"color.undo" = "واگرد";
+
+/* Redo */
+"color.redo" = "ازنو";
+
+/* Pick foreground */
+"color.pick.foreground" = "برداشتن پیش‌زمینه";
+
+/* Pick background */
+"color.pick.background" = "برداشتن پس‌زمینه";
+
+/* Pick foreground then background */
+"color.pick.contrast" = "برداشتن پیش‌زمینه و پس‌زمینه";
+
+/* Copy */
+"color.copy" = "کپی";
+
+/* Copy foreground */
+"color.copy.foreground" = "کپی پیش‌زمینه";
+
+/* Copy background */
+"color.copy.background" = "کپی پس‌زمینه";
+
+/* Copy all as text */
+"color.copy.text" = "کپی همه به‌صورت متن";
+
+/* Copy all as JSON */
+"color.copy.data" = "کپی همه به‌صورت JSON";
+
+/* Copied */
+"color.copy.toast" = "کپی شد";
+
+/* Copy current format */
+"color.copy.current" = "کپی قالب فعلی";
+
+/* Copy HEX values */
+"color.copy.hex" = "کپی مقادیر Hex";
+
+/* Copy HSB values */
+"color.copy.hsb" = "کپی مقادیر HSB";
+
+/* Copy HSL values */
+"color.copy.hsl" = "کپی مقادیر HSL";
+
+/* Copy RGB values */
+"color.copy.rgb" = "کپی مقادیر RGB";
+
+/* Copy OpenGL values */
+"color.copy.opengl" = "کپی مقادیر OpenGL";
+
+/* Copy LAB values */
+"color.copy.lab" = "کپی مقادیر LAB";
+
+/* System color picker */
+"color.system" = "انتخاب‌گر رنگ سیستم";
+
+/* Use foreground system color picker */
+"color.system.foreground" = "استفاده از انتخاب‌گر رنگ سیستم برای پیش‌زمینه";
+
+/* Use background system color picker */
+"color.system.background" = "استفاده از انتخاب‌گر رنگ سیستم برای پس‌زمینه";
+
+/* System foreground */
+"color.system.foreground.simple" = "پیش‌زمینهٔ سیستم";
+
+/* System background */
+"color.system.background.simple" = "پس‌زمینهٔ سیستم";
+
+/* HEX format */
+"color.format.hex" = "قالب Hex";
+
+/* HSB format */
+"color.format.hsb" = "قالب HSB";
+
+/* HSL format */
+"color.format.hsl" = "قالب HSL";
+
+/* RGB format */
+"color.format.rgb" = "قالب RGB";
+
+/* OpenGL format */
+"color.format.opengl" = "قالب OpenGL";
+
+/* LAB format */
+"color.format.lab" = "قالب LAB";
+
+/* OKLCH format */
+"color.format.oklch" = "قالب OKLCH";
+
+/* Copy foreground */
+"menu.copy.foreground" = "کپی پیش‌زمینه";
+
+/* Copy background */
+"menu.copy.background" = "کپی پس‌زمینه";
+
+/* Export */
+"menu.export" = "برون‌بری";
+
+/* About */
+"menu.about" = "درباره";
+
+/* Help */
+"menu.help" = "راهنما";
+
+/* Help description */
+"help.description" = "همهٔ آنچه باید دربارهٔ استفاده از Pika بدانید، از میانبرهای صفحه‌کلید تا خودکارسازی با URL.";
+
+/* Keyboard Shortcuts */
+"help.shortcuts" = "میانبرهای صفحه‌کلید";
+
+/* URL Triggers */
+"help.url_triggers" = "راه‌اندازهای URL";
+
+/* URL Triggers description */
+"help.url_triggers.description" = "خودکارسازی Pika از برنامه‌های دیگر با استفاده از طرحوارهٔ URL به نام pika://. همچنین می‌توانید قالبی را به عملیات برداشتن یا کپی اضافه کنید، مانند pika://pick/foreground/hex.";
+
+/* Formats */
+"help.formats" = "قالب‌ها";
+
+/* Open Source */
+"help.open_source" = "متن‌باز";
+
+/* Open Source description */
+"help.open_source.description" = "برنامهٔ Pika رایگان و متن‌باز است که در GitHub ساخته و نگهداری می‌شود. همواره از مشارکت‌ها، گزارش‌های اشکال و درخواست‌های قابلیت استقبال می‌شود.";
+
+/* View on GitHub */
+"help.github" = "مشاهده در GitHub";
+
+/* Support on the Mac App Store */
+"help.mas" = "پشتیبانی در Mac App Store";
+
+/* Check for updates */
+"menu.updates" = "بررسی به‌روزرسانی‌ها";
+
+/* Preferences */
+"menu.preferences" = "تنظیمات";
+
+/* Pika Website */
+"menu.website" = "وب‌سایت Pika";
+
+/* Report Bug or Feedback */
+"menu.issue" = "ارسال بازخورد";
+
+/* Quit */
+"menu.quit" = "خروج";
+
+/* Show foreground color on background color */
+"preferences.preview.show" = "نمایش رنگ پیش‌زمینه روی رنگ پس‌زمینه";
+
+/* Show color overlay after picking */
+"preferences.overlay.show" = "نمایش هم‌پوشانی رنگ پس از برداشتن";
+
+/* Duration: */
+"preferences.overlay.duration" = "مدت‌زمان";
+
+/* History */
+"history.title" = "تاریخچه";
+
+/* Toggle palettes */
+"history.toggle" = "تغییر وضعیت پالت‌ها";
+
+/* Toggle color preview */
+"color.preview.toggle" = "تغییر وضعیت پیش‌نمایش رنگ";
+
+/* Toggle compliance */
+"compliance.toggle" = "تغییر وضعیت انطباق";
+
+/* Sample preview text */
+"color.preview.sample" = "روباه قهوه‌ای چابک از روی سگ تنبل می‌پرد";
+
+/* Apply foreground only */
+"history.apply.foreground" = "اعمال فقط پیش‌زمینه";
+
+/* Apply background only */
+"history.apply.background" = "اعمال فقط پس‌زمینه";
+
+/* Remove from history */
+"history.remove" = "حذف از تاریخچه";
+
+/* Clear history */
+"history.clear" = "پاک کردن تاریخچه";
+
+/* New palette… */
+"palette.new" = "پالت جدید…";
+
+/* Rename palette */
+"palette.rename" = "تغییر نام پالت";
+
+/* Delete palette */
+"palette.delete" = "حذف پالت";
+
+/* Remove from palette */
+"palette.remove" = "حذف از پالت";
+
+/* Palette name */
+"palette.name.prompt" = "نام پالت";
+
+/* My palette */
+"palette.name.placeholder" = "پالت من";
+
+/* Add to palette */
+"palette.add" = "افزودن به پالت";
+
+/* Export palette */
+"palette.export" = "برون‌بری پالت";
+
+/* Export color history */
+"history.export" = "برون‌بری تاریخچهٔ رنگ";
+
+/* Are you sure you want to clear all history? */
+"history.clear.confirm" = "آیا از پاک کردن تمام تاریخچه مطمئن هستید؟";
+
+/* Pick */
+"help.url.group.pick" = "برداشتن";
+
+/* Copy */
+"help.url.group.copy" = "کپی";
+
+/* Change Format */
+"help.url.group.change_format" = "تغییر قالب";
+
+/* Actions */
+"help.url.group.actions" = "عملیات";
+
+/* Set Color */
+"help.url.group.set_color" = "تنظیم رنگ";
+
+/* History */
+"help.url.group.history" = "تاریخچه";
+
+/* Window */
+"help.url.group.window" = "پنجره";
+
+/* Appearance */
+"help.url.group.appearance" = "ظاهر";
+
+/* Pick foreground in a specific format */
+"help.url.pick.foreground_format" = "برداشتن پیش‌زمینه در قالبی مشخص";
+
+/* Pick background in a specific format */
+"help.url.pick.background_format" = "برداشتن پس‌زمینه در قالبی مشخص";
+
+/* Copy foreground in a specific format */
+"help.url.copy.foreground_format" = "کپی پیش‌زمینه در قالبی مشخص";
+
+/* Copy background in a specific format */
+"help.url.copy.background_format" = "کپی پس‌زمینه در قالبی مشخص";
+/* Set foreground color */
+"help.url.set.foreground" = "تنظیم رنگ پیش‌زمینه";
+
+/* Set background color */
+"help.url.set.background" = "تنظیم رنگ پس‌زمینه";
+
+/* Show the history drawer */
+"help.url.history.show" = "نمایش کشوی تاریخچه";
+
+/* Hide the history drawer */
+"help.url.history.hide" = "پنهان کردن کشوی تاریخچه";
+
+/* Toggle the history drawer */
+"help.url.history.toggle" = "تغییر وضعیت کشوی تاریخچه";
+
+/* Show compliance */
+"help.url.compliance.show" = "نمایش انطباق";
+
+/* Hide compliance */
+"help.url.compliance.hide" = "پنهان کردن انطباق";
+
+/* Toggle compliance */
+"help.url.compliance.toggle" = "تغییر وضعیت انطباق";
+
+/* Show colour preview */
+"help.url.preview.show" = "نمایش پیش‌نمایش رنگ";
+
+/* Hide colour preview */
+"help.url.preview.hide" = "پنهان کردن پیش‌نمایش رنگ";
+
+/* Toggle colour preview */
+"help.url.preview.toggle" = "تغییر وضعیت پیش‌نمایش رنگ";
+
+/* Compliance */
+"help.url.group.compliance" = "انطباق";
+
+/* Preview */
+"help.url.group.preview" = "پیش‌نمایش";
+
+/* Open the About window */
+"help.url.window.about" = "باز کردن پنجرهٔ درباره";
+
+/* Open the Help window */
+"help.url.window.help" = "باز کردن پنجرهٔ راهنما";
+
+/* Open the Preferences window */
+"help.url.window.preferences" = "باز کردن پنجرهٔ تنظیمات";
+
+/* Open the Splash window */
+"help.url.window.splash" = "باز کردن پنجرهٔ خوش‌آمدگویی";
+
+/* Resize window */
+"help.url.window.resize" = "تغییر اندازهٔ پنجره";
+
+/* Force light appearance */
+"help.url.appearance.light" = "اجبار ظاهر روشن";
+
+/* Force dark appearance */
+"help.url.appearance.dark" = "اجبار ظاهر تیره";
+
+/* Restore system appearance */
+"help.url.appearance.system" = "بازگردانی ظاهر سیستم";
+
+/* Show Pika */
+"menu.showPika" = "نمایش Pika";
+
+/* Show the welcome splash */
+"menu.showSplash" = "نمایش پنجرهٔ خوش‌آمدگویی";
+
+/* Splash setup heading */
+"splash.setup.title" = "به Pika خوش آمدید";
+
+/* Splash setup subheading */
+"splash.setup.subtitle" = "چند گزینهٔ سریع برای شروع کار.";
+
+/* Global shortcut row subtitle */
+"splash.shortcut.subtitle" = "نمایش و پنهان کردن Pika از همه‌جا";
+
+/* Pick-pair shortcut row subtitle */
+"splash.pair.subtitle" = "برداشتن پیش‌زمینه و سپس پس‌زمینه";
+
+/* Launch at login row subtitle */
+"splash.launch.subtitle" = "اجرای Pika هنگام ورود به سیستم";
+
+/* Custom picker recommended badge */
+"splash.picker.recommended" = "توصیه‌شده";
+
+/* Pro picker capability note: needs the Screen Recording permission */
+"picker.requiresScreenRecording" = "نیازمند Screen Recording";
+
+/* Button to grant the optional Accessibility permission for the Pro picker */
+"picker.grantAccessibility" = "اعطای دسترسی Accessibility";
+
+/* Label for the Pro picker loupe theme setting */
+"loupe.theme" = "سبک ذره‌بین";
+
+/* Loupe theme: coloured rim with engraved text */
+"loupe.theme.lens" = "عدسی";
+
+/* Loupe theme: white badges on the inside edge */
+"loupe.theme.badge" = "نشان";
+
+/* Loupe theme: plain magnifier with a readout card beside it */
+"loupe.theme.card" = "کارت";
+
+/* Intro line above the Pro picker permission buttons */
+"picker.permissions.intro" = "برای فعال‌سازی انتخاب‌گر حرفه‌ای، باید مجوزهای زیر را اعطا کنید:";
+
+/* Permission pill label: Screen Recording */
+"picker.perm.screenRecording" = "Screen Recording";
+
+/* Permission pill label: Accessibility */
+"picker.perm.accessibility" = "Accessibility";
+
+/* Explains what the optional Accessibility permission adds to the Pro picker */
+"picker.accessibilityNote" = "اختیاری — امکان استفاده از Escape و جابه‌جایی با کلیدهای جهت‌نما هنگام برداشتن رنگ روی سایر برنامه‌ها را فراهم می‌کند.";
+
+/* Custom picker permission note */
+"splash.picker.permission" = "نیازمند مجوز Screen Recording";
+
+/* Pro picker declined fallback note */
+"splash.picker.fallback" = "فعلاً نه؟ از انتخاب‌گر پایه استفاده خواهید کرد.";
+
+/* Splash footer note */
+"splash.footer" = "می‌توانید همهٔ این موارد را در «تنظیمات» تغییر دهید.";
+
+/* Splash: pre-selected checkbox to stop showing the splash on launch */
+"splash.dontShowAgain" = "دیگر نشان داده نشود";
+
+/* Get started confirmation title when the Basic picker is selected */
+"splash.confirm.title" = "استفاده از انتخاب‌گر حرفه‌ای Pika؟";
+
+/* Get started confirmation body */
+"splash.confirm.body" = "انتخاب‌گر حرفه‌ای هنگام برداشتن رنگ، رنگ، قالب آن و کنتراست زنده را مستقیماً درون ذره‌بین نمایش می‌دهد — تجربه‌ای بسیار بهتر از نمونه‌گیر macOS. همیشه می‌توانید بعداً در «تنظیمات» این گزینه را تغییر دهید.";
+
+/* Confirmation: enable Pro picker */
+"splash.confirm.enable" = "فعال‌سازی انتخاب‌گر حرفه‌ای";
+
+/* Confirmation: keep the Basic picker */
+"splash.confirm.continue" = "ادامه با انتخاب‌گر پایه";
+
+/* Colour name list section title */
+"preferences.colornames.title" = "نام‌های رنگ";
+
+/* Colour name list section subtitle */
+"preferences.colornames.subtitle" = "فهرستی را که Pika برای نام‌گذاری رنگ‌ها استفاده می‌کند انتخاب کنید. فهرست‌ها از color.pizza دریافت می‌شوند و به‌طور خودکار به‌روزرسانی می‌شوند؛ فهرست پیش‌فرض به‌صورت آفلاین کار می‌کند.";
+
+/* Default colour list name */
+"preferences.colornames.default" = "پیش‌فرض";
+
+/* Colour list tooltip: a refresh is in progress */
+"preferences.colornames.status.checking" = "در حال بررسی color.pizza برای به‌روزرسانی…";
+
+/* Colour list tooltip: when the list was last refreshed (%@ is a date) */
+"preferences.colornames.status.updated" = "به‌روزرسانی‌شده در %@";
+
+/* Colour list tooltip: the last refresh failed, cached/bundled names are in use */
+"preferences.colornames.status.offline" = "اتصال به color.pizza برقرار نشد. استفاده از فهرست رنگ‌های ذخیره‌شده.";
+
+/* Colour list tooltip: no network refresh has happened yet */
+"preferences.colornames.status.builtin" = "در حال استفاده از فهرست داخلی رنگ‌ها.";
+
+/* Colour picker style section title */
+"preferences.picker.title" = "انتخاب‌گر رنگ";
+
+/* Basic picker tile title */
+"preferences.picker.system.title" = "انتخاب‌گر پایه";
+
+/* Basic picker tile subtitle */
+"preferences.picker.system.description" = "نمونه‌گیر رنگ macOS";
+
+/* Pro picker tile title */
+"preferences.picker.custom.title" = "انتخاب‌گر حرفه‌ای";
+
+/* Pro picker tile subtitle */
+"preferences.picker.custom.description" = "کنتراست و قالب زنده";
+
+/* Pair pick mode toggle */
+"preferences.picker.pair" = "برداشتن پس‌زمینه بلافاصله پس از پیش‌زمینه";
+
+/* Screen recording permission explanation */
+"preferences.picker.permission" = "برنامهٔ Pika برای نمونه‌برداری از پیکسل‌ها در انتخاب‌گر حرفه‌ای، به مجوز Screen Recording نیاز دارد.";
+
+/* Screen recording relaunch guidance */
+"preferences.picker.relaunch.note" = "مجوز Screen Recording را برای Pika در System Settings فعال کنید، سپس Pika را دوباره راه‌اندازی کنید تا فعال‌سازی انتخاب‌گر حرفه‌ای تکمیل شود.";
+
+/* Relaunch Pika button */
+"preferences.picker.relaunch.button" = "راه‌اندازی مجدد Pika";
+
+/* Grant Screen Recording permission button */
+"preferences.picker.grant.button" = "اعطای مجوز";
+
+/* Permission revoked alert title */
+"picker.reverted.title" = "تغییر به انتخاب‌گر پایه";
+
+/* Permission revoked alert body */
+"picker.reverted.body" = "انتخاب‌گر حرفه‌ای Pika به مجوز Screen Recording نیاز دارد که در حال حاضر اعطا نشده است. پس از تأیید مجوز، می‌توانید آن را دوباره در «تنظیمات» فعال کنید.";
+
+/* Splash picker choice label */
+"splash.picker.prompt" = "انتخاب‌گر رنگ";
+
+/* Pick a foreground then background pair */
+"color.pick.pair" = "برداشتن جفت رنگ";
