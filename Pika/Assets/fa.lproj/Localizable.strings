@@ -70,12 +70,6 @@
 /* Set your preferred display format for colors */
 "preferences.format.description" = "تنظیم قالب نمایش دلخواه برای رنگ‌ها";
 
-/* Set your RGB color space */
-"preferences.space.description" = "تنظیم فضای رنگی RGB";
-
-/* System Default */
-"preferences.space.default" = "پیش‌فرض سیستم";
-
 /* Hide Pika while picking */
 "preferences.pick.hide" = "پنهان کردن Pika هنگام برداشتن";
 
@@ -406,6 +400,69 @@
 /* Support on the Mac App Store */
 "help.mas" = "پشتیبانی در Mac App Store";
 
+/* Which keyboard shortcuts are global and which need Pika focused */
+"help.shortcuts.description" = "بیشتر میانبرها فقط زمانی کار می‌کنند که Pika در جلو باشد. «نمایش/پنهان کردن Pika» و «برداشتن جفت رنگ» ([⌥⌘D]) در هر برنامه‌ای کار می‌کنند؛ آن‌ها را در «تنظیمات» ← «میانبر سراسری» تنظیم کنید.";
+
+/* Basics */
+"help.basics" = "مبانی";
+
+/* Basics intro: what colour contrast is */
+"help.basics.intro.1" = "کنتراست رنگ، تفاوت روشنایی میان متن و هر چیزی است که پشت آن قرار دارد. اگر این تفاوت کم باشد، واژه‌ها در پس‌زمینه محو می‌شوند. این مشکلی جدی برای افراد کم‌بینا یا دارای کوررنگی است و دیگران را هم گرفتار می‌کند؛ مثلاً هنگام خواندن گوشی زیر نور آفتاب یا لپ‌تاپی با روشنایی کم.";
+
+/* Basics intro: accessibility guidelines */
+"help.basics.intro.2" = "رهنمودهای دسترس‌پذیری حداقل سطح کنتراست را تعیین می‌کنند تا متن برای هرچه بیشتر افراد خوانا بماند. WCAG 2 استانداردی است که بیشتر رهنمودها و قوانین به آن ارجاع می‌دهند، و APCA روشی جدیدتر است که اندازه و ضخامت قلم را نیز در نظر می‌گیرد. بررسی در مراحل اولیه بسیار آسان‌تر از بازطراحی در آینده است.";
+
+/* Basics intro: where Pika fits */
+"help.basics.intro.3" = "اینجاست که Pika به کار می‌آید. پیش‌زمینه و پس‌زمینه را از هر جای صفحه‌نمایش بردارید، چه یک فایل طراحی باشد، چه یک وب‌سایت یا یک تصویر صفحه، و Pika بلافاصله کنتراست را همراه با رنگ‌ها در قالب مورد نیازتان و آمادهٔ کپی نشان می‌دهد.";
+
+/* Expand the Basics intro */
+"help.basics.intro.more" = "بیشتر بخوانید";
+
+/* Collapse the Basics intro */
+"help.basics.intro.less" = "نمایش کمتر";
+
+/* Foreground and background */
+"help.basics.pair.title" = "پیش‌زمینه و پس‌زمینه";
+
+/* Foreground and background description */
+"help.basics.pair" = "پیش‌زمینه متن یا نماد است؛ پس‌زمینه سطحی است که پشت آن قرار دارد. برای جابه‌جا کردن آن‌ها [X] را فشار دهید.";
+
+/* Why check contrast */
+"help.basics.contrast.title" = "چرا کنتراست را بررسی کنیم";
+
+/* Why check contrast description */
+"help.basics.contrast" = "خواندن متن کم‌کنتراست دشوار است، به‌ویژه برای افراد کم‌بینا یا دارای کوررنگی، یا زیر نور خیره‌کننده.";
+
+/* WCAG and APCA */
+"help.basics.standards.title" = "WCAG و APCA";
+
+/* WCAG and APCA description */
+"help.basics.standards" = "استاندارد WCAG 2 یک نسبت ارائه می‌دهد (سطح AA برای متن به 4.5:1 نیاز دارد). روش APCA مقدار Lc را ارائه می‌دهد که اندازه و ضخامت قلم را در نظر می‌گیرد، اما هنوز استاندارد نشده است.";
+
+/* Ways to pick a colour */
+"help.basics.pickers.title" = "روش‌های برداشتن رنگ";
+
+/* Basic, Pro and system colour picker description */
+"help.basics.pickers" = "انتخاب‌گر پایه از نمونه‌گیر macOS استفاده می‌کند. انتخاب‌گر حرفه‌ای یک ذره‌بین زنده اضافه می‌کند و به مجوز Screen Recording نیاز دارد. با [⌘S] پانل رنگ macOS باز می‌شود.";
+
+/* Editing values */
+"help.basics.editing.title" = "ویرایش مقادیر";
+
+/* Editing values description */
+"help.basics.editing" = "برای تایپ روی یک مقدار کلیک کنید، برای تغییر تدریجی آن را بکشید یا با دو انگشت پیمایش کنید، و برای تغییر گام‌به‌گام [↑] یا [↓] را فشار دهید. با [⌘Z] واگرد کنید.";
+
+/* Colour spaces */
+"help.basics.spaces.title" = "فضاهای رنگی";
+
+/* Colour spaces description */
+"help.basics.spaces" = "فضای sRGB با CSS، Figma و بیشتر ابزارهای طراحی مطابقت دارد و پیش‌فرض است. فضای Display P3 رنگ‌های زنده‌تر مک‌های جدید را پوشش می‌دهد. کنتراست همیشه با sRGB محاسبه می‌شود.";
+
+/* Link to WCAG contrast guidance */
+"help.reference.wcag" = "دربارهٔ کنتراست WCAG بیشتر بدانید";
+
+/* Link to APCA guidance */
+"help.reference.apca" = "دربارهٔ APCA بیشتر بدانید";
+
 /* Check for updates */
 "menu.updates" = "بررسی به‌روزرسانی‌ها";
 
@@ -725,3 +782,130 @@
 
 /* Pick a foreground then background pair */
 "color.pick.pair" = "برداشتن جفت رنگ";
+
+/* Color Space */
+"preferences.space.title" = "فضای رنگی";
+
+/* Read colors in */
+"preferences.space.label" = "خواندن رنگ‌ها در";
+
+/* Match display (%@) */
+"preferences.space.display" = "مطابق نمایشگر (%@)";
+
+/* Recommended for color space */
+"preferences.space.hint.srgb" = "توصیه‌شده. مقادیر Hex با CSS، Figma و بیشتر ابزارهای طراحی مطابقت دارند.";
+
+/* Display P3 hint */
+"preferences.space.hint.p3" = "برای فایل‌های طراحی و منابع برنامه با Display P3. مقادیر Hex و RGB در CSS به‌صورت color(display-p3 …) کپی می‌شوند، زیرا مرورگرها Hex ساده را sRGB می‌خوانند.";
+
+/* Match display hint */
+"preferences.space.hint.display" = "مقادیر خام از نمایشگر شما، بر اساس نمایشگری که روی آن رنگ برمی‌دارید. مقادیر Hex با وب مطابقت نخواهند داشت.";
+
+/* Match display hint on a P3 screen */
+"preferences.space.hint.display.p3" = "مقادیر خام از نمایشگر شما، بر اساس نمایشگری که روی آن رنگ برمی‌دارید. این نمایشگر Display P3 است، بنابراین مقادیر Hex و RGB در CSS به‌صورت color(display-p3 …) کپی می‌شوند.";
+
+/* Other color space hint */
+"preferences.space.hint.other" = "مقادیر Hex با وب مطابقت نخواهند داشت، مگر اینکه منبع از همین فضای رنگی استفاده کند.";
+
+/* Colors don't match? */
+"color.space.mismatch" = "رنگ‌ها مطابقت ندارند؟";
+
+
+/* Check a Color window title */
+"match.title" = "بررسی یک رنگ";
+
+/* Check a Color introduction */
+"match.intro" = "رنگی را بردارید که مقدارش را از قبل می‌دانید، مانند یک نمونه در Figma یا در یک صفحهٔ وب، سپس آن مقدار را در هر قالبی وارد کنید. برنامهٔ Pika فضای رنگی‌ای را پیدا می‌کند که همان مقدار را بازمی‌خواند.";
+
+/* Expected value field */
+"match.expected" = "مقدار مورد انتظار";
+
+/* Exact match */
+"match.exact" = "دقیق";
+
+/* Match within rounding */
+"match.close" = "در حد گرد کردن";
+
+/* Channels off by */
+"match.off" = "%d واحد اختلاف";
+
+/* Matches the current space */
+"match.result.current" = "این همان فضای رنگی است که استفاده می‌کنید، بنابراین مقادیر مطابقت دارند.";
+
+/* Matches another space */
+"match.result.other" = "این رنگ در %@ مطابقت دارد.";
+
+/* No space matches */
+"match.result.none" = "هیچ فضای رنگی مطابقت ندارد. ممکن است برنامه‌ای که این رنگ را نشان می‌دهد مدیریت رنگ نداشته باشد یا از نمایهٔ رنگی خودش استفاده کند.";
+
+/* Use color space button */
+"match.use" = "استفاده از %@";
+
+/* Pick again button */
+"match.pick" = "برداشتن دوباره";
+
+/* Learn more link */
+"match.learn" = "بیشتر بدانید";
+
+/* Picked colour card title */
+"match.picked" = "برداشته‌شده";
+
+/* Expected colour card title */
+"match.expected.title" = "مورد انتظار";
+
+/* Pick a colour button */
+"match.pick.first" = "برداشتن رنگ";
+
+/* Badge on the color space in use */
+"match.badge.current" = "فعلی";
+
+/* Check a Color empty state */
+"match.empty" = "رنگی را بردارید و مقداری را که انتظار داشتید وارد کنید تا آن‌ها را مقایسه کنید.";
+
+/* Lab and OKLCH: one reading for every space */
+"match.space.any" = "هر فضای رنگی";
+
+/* Lab or OKLCH value matches */
+"match.result.absolute" = "مطابقت دارد. Lab و OKLCH یک رنگ را در همهٔ فضاهای رنگی به یک شکل توصیف می‌کنند.";
+
+/* Lab or OKLCH value doesn't match */
+"match.result.absolute.none" = "مطابقت ندارد. Lab و OKLCH در همهٔ فضاهای رنگی یکسان خوانده می‌شوند، بنابراین ممکن است برنامه‌ای که این رنگ را نشان می‌دهد مدیریت رنگ نداشته باشد.";
+
+/* Inline update control: an update was found */
+"update.available" = "به‌روزرسانی در دسترس است";
+
+/* Inline update control: start downloading the update */
+"update.update" = "به‌روزرسانی";
+
+/* Inline update control: skip this version */
+"update.ignore" = "نادیده گرفتن";
+
+/* Inline update control: install the downloaded update and relaunch */
+"update.restart" = "راه‌اندازی مجدد برای به‌روزرسانی";
+
+/* Inline update control: link to the release notes */
+"update.whats_new" = "تازه‌ها";
+
+/* Inline update control: no newer version was found */
+"update.up_to_date" = "به‌روز است";
+
+/* Inline update control: the update failed */
+"update.failed" = "به‌روزرسانی ناموفق بود";
+
+/* Inline update control: retry after a failure */
+"update.try_again" = "تلاش دوباره";
+
+/* Inline update control: a check by hand is in progress */
+"update.checking" = "در حال بررسی به‌روزرسانی‌ها…";
+
+/* Inline update control: the update is downloading */
+"update.downloading" = "در حال دانلود به‌روزرسانی…";
+
+/* Inline update control: the update is installing */
+"update.installing" = "در حال نصب به‌روزرسانی…";
+
+/* Inline update control: dismiss a message */
+"update.dismiss" = "بستن";
+
+/* Inline update control: the version on offer, linking to its release notes */
+"update.version" = "نسخهٔ %@";
