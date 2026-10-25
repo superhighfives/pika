@@ -1,6 +1,14 @@
 import SwiftUI
 
 struct HelpView: View {
+    @State private var showFullIntro = false
+    /// The shortcuts note names Pick pair by its default keys; show the user's binding instead.
+    private var shortcutsDescription: String {
+        let keys = pickPairKeys().joined()
+        guard !keys.isEmpty else { return PikaText.textHelpShortcutsDescription }
+        return PikaText.textHelpShortcutsDescription.replacingOccurrences(of: "[⌥⌘D]", with: "[\(keys)]")
+    }
+
     @Environment(\.colorScheme) var colorScheme: ColorScheme
 
     var body: some View {
@@ -29,9 +37,45 @@ struct HelpView: View {
                 HelpDescriptionRow(text: PikaText.textHelpDescription)
                 Divider()
 
+                // MARK: Basics
+
+                HelpSectionHeader(title: PikaText.textHelpBasics)
+                Divider()
+                VStack(alignment: .leading, spacing: 10) {
+                    let paragraphs = PikaText.textHelpBasicsIntro
+                    ForEach(Array(paragraphs.prefix(showFullIntro ? paragraphs.count : 1).enumerated()), id: \.offset) { _, paragraph in
+                        Text(paragraph)
+                            .font(.system(size: 13))
+                            .foregroundStyle(.primary.opacity(0.85))
+                            .lineSpacing(5)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    HelpReadMoreButton(expanded: showFullIntro) { showFullIntro.toggle() }
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, 20)
+                .padding(.top, 14)
+                HelpBasicsGrid(entries: basics)
+                VStack(spacing: 0) {
+                    HelpExternalLinkRow(title: PikaText.textHelpReferenceWCAG, url: PikaConstants.wcagContrastURL, shorthand: "w3.org/…/contrast-minimum")
+                    Divider().padding(.horizontal, 20)
+                    HelpExternalLinkRow(title: PikaText.textHelpReferenceAPCA, url: PikaConstants.apcaGuideURL, shorthand: "git.apcacontrast.com/…")
+                }
+                .padding(.bottom, 10)
+                Divider()
+
                 // MARK: Keyboard Shortcuts
 
                 HelpSectionHeader(title: PikaText.textHelpKeyboardShortcuts)
+                Divider()
+                HelpKeycapText(text: shortcutsDescription, keySize: 11)
+                    .font(.system(size: 13))
+                    .foregroundStyle(.secondary)
+                    .lineSpacing(5)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 14)
                 Divider()
                 ForEach(shortcutGroups.indices, id: \.self) { gi in
                     let group = shortcutGroups[gi]

@@ -70,12 +70,6 @@
 /* Set your preferred display format for colors */
 "preferences.format.description" = "设置偏好的颜色显示格式";
 
-/* Set your RGB color space */
-"preferences.space.description" = "设置 RGB 色域";
-
-/* System Default */
-"preferences.space.default" = "系统默认";
-
 /* Hide Pika while picking */
 "preferences.pick.hide" = "选择颜色时隐藏 Pika";
 
@@ -191,16 +185,16 @@
 "color.wcag.70" = "WCAG 2 级别 AAA 要求普通文本的对比度至少为 7:1。";
 
 /* APCA 30 */
-"color.apca.30" = "APCA >= 30 是基线文本和非文本内容的最低对比度。适用于较大文本、占位符和禁用元素。";
+"color.apca.30" = "APCA Lc 30 是任何文本的绝对最低值，且仅适用于无需流畅阅读的文本，例如占位符、已停用的控件和版权声明。也适用于实心图标和其他非文本内容。";
 
 /* APCA 45 */
-"color.apca.45" = "APCA >= 45 是标题文本的最低对比度。适用于大标题、导航元素和重要的 UI 组件。";
+"color.apca.45" = "APCA Lc 45 是大文本（如标题）的最低值：常规字重至少 36px，或粗体至少 24px。";
 
 /* APCA 60 */
-"color.apca.60" = "APCA >= 60 是标题文本的最低对比度。适用于副标题、说明文字和需要清晰可读的次要内容。";
+"color.apca.60" = "APCA Lc 60 是非正文内容文本（如副标题和说明文字）的最低值：常规字重至少 24px，或粗体至少 16px。";
 
 /* APCA 75 */
-"color.apca.75" = "APCA >= 75 是正文的最低对比度。适用于主要内容、正常大小的文本和扩展阅读材料。";
+"color.apca.75" = "APCA Lc 75 是正文的最低值：常规字重至少 18px，或粗体至少 14px。长篇段落建议使用 Lc 90。";
 
 /* Baseline */
 "color.apca.baseline" = "基准";
@@ -350,7 +344,7 @@
 "menu.help" = "帮助";
 
 /* Help description */
-"help.description" = "关于使用 Pika 的一切，从键盘快捷键到 URL 自动化。";
+"help.description" = "Pika 可以从屏幕上的任意位置拾取颜色，并检查它们搭配时是否清晰易读。下面介绍它的用法。";
 
 /* Keyboard Shortcuts */
 "help.shortcuts" = "键盘快捷键";
@@ -375,6 +369,69 @@
 
 /* Support on the Mac App Store */
 "help.mas" = "在 Mac App Store 支持";
+
+/* Which keyboard shortcuts are global and which need Pika focused */
+"help.shortcuts.description" = "大多数快捷键需要 Pika 位于最前面。显示和隐藏 Pika 以及选择前景色和背景色（[⌥⌘D]）在任何 App 中都能使用，可在“设置 → 全局快捷键”中设置。";
+
+/* Basics */
+"help.basics" = "基础知识";
+
+/* Basics intro: what colour contrast is */
+"help.basics.intro.1" = "颜色对比度是指文字与其后方内容之间的明暗差异。对比度太低，文字就会和背景混在一起。这对低视力或色盲人士来说是实实在在的困扰，其他人也难免遇到，比如在阳光下看手机，或是笔记本电脑屏幕调得很暗的时候。";
+
+/* Basics intro: accessibility guidelines */
+"help.basics.intro.2" = "无障碍指南规定了最低对比度，让尽可能多的人都能看清文字。WCAG 2 是大多数指南和法规所依据的标准，APCA 则是一种较新的方法，还会考虑文字大小和粗细。尽早检查，比日后返工修改设计要轻松得多。";
+
+/* Basics intro: where Pika fits */
+"help.basics.intro.3" = "这正是 Pika 的用武之地。从屏幕上的任意位置选择前景色和背景色，无论是设计文件、网站还是截图，Pika 都会立即显示对比度，并按您需要的格式列出颜色，随时可以复制。";
+
+/* Expand the Basics intro */
+"help.basics.intro.more" = "继续阅读";
+
+/* Collapse the Basics intro */
+"help.basics.intro.less" = "收起";
+
+/* Foreground and background */
+"help.basics.pair.title" = "前景色和背景色";
+
+/* Foreground and background description */
+"help.basics.pair" = "前景色是文字或图标，背景色是其后方的表面。按 [X] 可交换它们。";
+
+/* Why check contrast */
+"help.basics.contrast.title" = "为什么要检查对比度";
+
+/* Why check contrast description */
+"help.basics.contrast" = "对比度低的文字很难阅读，对低视力或色盲人士来说尤其如此，在强光下也是一样。";
+
+/* WCAG and APCA */
+"help.basics.standards.title" = "WCAG 和 APCA";
+
+/* WCAG and APCA description */
+"help.basics.standards" = "WCAG 2 给出对比度（AA 要求文本达到 4.5:1）。APCA 给出的 Lc 值会考虑文字大小和粗细，但它目前还不是正式标准。";
+
+/* Ways to pick a colour */
+"help.basics.pickers.title" = "取色方式";
+
+/* Basic, Pro and system colour picker description */
+"help.basics.pickers" = "基础取色器使用 macOS 的颜色取样器。专业取色器增加了实时放大镜，需要屏幕录制权限。[⌘S] 可打开 macOS 的颜色面板。";
+
+/* Editing values */
+"help.basics.editing.title" = "编辑数值";
+
+/* Editing values description */
+"help.basics.editing" = "点按数值即可输入，拖移或用双指滚动可连续调整，按 [↑] 或 [↓] 逐步调整。[⌘Z] 可撤销。";
+
+/* Colour spaces */
+"help.basics.spaces.title" = "色彩空间";
+
+/* Colour spaces description */
+"help.basics.spaces" = "sRGB 与 CSS、Figma 和大多数设计工具一致，也是默认设置。Display P3 涵盖近年来 Mac 显示器上更鲜艳的颜色。对比度始终在 sRGB 中计算。";
+
+/* Link to WCAG contrast guidance */
+"help.reference.wcag" = "了解 WCAG 对比度";
+
+/* Link to APCA guidance */
+"help.reference.apca" = "了解 APCA";
 
 /* Check for updates */
 "menu.updates" = "检查更新";
@@ -719,3 +776,130 @@
 
 /* Pick a foreground then background pair */
 "color.pick.pair" = "选择颜色对";
+
+/* Color Space */
+"preferences.space.title" = "色彩空间";
+
+/* Read colors in */
+"preferences.space.label" = "读取颜色所用的空间";
+
+/* Match display (%@) */
+"preferences.space.display" = "与显示器一致（%@）";
+
+/* Recommended for color space */
+"preferences.space.hint.srgb" = "推荐。十六进制值与 CSS、Figma 和大多数设计工具一致。";
+
+/* Display P3 hint */
+"preferences.space.hint.p3" = "适用于 Display P3 设计文件和应用素材。浏览器会将普通十六进制值视为 sRGB，因此 CSS 十六进制和 RGB 会复制为 color(display-p3 …)。";
+
+/* Match display hint */
+"preferences.space.hint.display" = "取色所在显示器的原始值。十六进制值将与网页不一致。";
+
+/* Match display hint on a P3 screen */
+"preferences.space.hint.display.p3" = "取色所在显示器的原始值。此显示器为 Display P3，因此 CSS 十六进制和 RGB 会复制为 color(display-p3 …)。";
+
+/* Other color space hint */
+"preferences.space.hint.other" = "除非来源使用相同的色彩空间，否则十六进制值将与网页不一致。";
+
+/* Colors don't match? */
+"color.space.mismatch" = "颜色不一致？";
+
+
+/* Check a Color window title */
+"match.title" = "检查颜色";
+
+/* Check a Color introduction */
+"match.intro" = "选取一个你已知数值的颜色，例如 Figma 或网页中的色块，然后以任意格式输入该数值。Pika 会找到能读出同一数值的色彩空间。";
+
+/* Expected value field */
+"match.expected" = "预期的数值";
+
+/* Exact match */
+"match.exact" = "完全一致";
+
+/* Match within rounding */
+"match.close" = "在舍入范围内";
+
+/* Channels off by */
+"match.off" = "相差 %d";
+
+/* Matches the current space */
+"match.result.current" = "这就是你正在使用的色彩空间，因此数值一致。";
+
+/* Matches another space */
+"match.result.other" = "此颜色在 %@ 中一致。";
+
+/* No space matches */
+"match.result.none" = "没有一致的色彩空间。显示此颜色的应用可能没有进行色彩管理，或使用了自己的描述文件。";
+
+/* Use color space button */
+"match.use" = "使用 %@";
+
+/* Pick again button */
+"match.pick" = "重新取色";
+
+/* Learn more link */
+"match.learn" = "了解更多";
+
+/* Picked colour card title */
+"match.picked" = "已选取";
+
+/* Expected colour card title */
+"match.expected.title" = "预期";
+
+/* Pick a colour button */
+"match.pick.first" = "选取颜色";
+
+/* Badge on the color space in use */
+"match.badge.current" = "当前";
+
+/* Check a Color empty state */
+"match.empty" = "选取一个颜色并输入预期的数值以进行比较。";
+
+/* Lab and OKLCH: one reading for every space */
+"match.space.any" = "任意色彩空间";
+
+/* Lab or OKLCH value matches */
+"match.result.absolute" = "一致。Lab 和 OKLCH 在任何色彩空间中描述颜色的方式都相同。";
+
+/* Lab or OKLCH value doesn't match */
+"match.result.absolute.none" = "不一致。Lab 和 OKLCH 在任何色彩空间中的读数都相同，因此显示此颜色的应用可能没有进行色彩管理。";
+
+/* Inline update control: an update was found */
+"update.available" = "有可用更新";
+
+/* Inline update control: start downloading the update */
+"update.update" = "更新";
+
+/* Inline update control: skip this version */
+"update.ignore" = "忽略";
+
+/* Inline update control: install the downloaded update and relaunch */
+"update.restart" = "重新启动以更新";
+
+/* Inline update control: link to the release notes */
+"update.whats_new" = "新功能";
+
+/* Inline update control: no newer version was found */
+"update.up_to_date" = "已是最新版本";
+
+/* Inline update control: the update failed */
+"update.failed" = "更新失败";
+
+/* Inline update control: retry after a failure */
+"update.try_again" = "重试";
+
+/* Inline update control: a check by hand is in progress */
+"update.checking" = "正在检查更新…";
+
+/* Inline update control: the update is downloading */
+"update.downloading" = "正在下载更新…";
+
+/* Inline update control: the update is installing */
+"update.installing" = "正在安装更新…";
+
+/* Inline update control: dismiss a message */
+"update.dismiss" = "关闭";
+
+/* Inline update control: the version on offer, linking to its release notes */
+"update.version" = "版本 %@";

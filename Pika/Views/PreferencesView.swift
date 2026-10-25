@@ -242,71 +242,81 @@ private struct CopySettingsSection: View {
     }
 }
 
-private struct ColorFormatSection: View {
-    @State var colorSpace: NSColorSpace = Defaults[.colorSpace]
+private struct ColorSpaceSection: View {
+    @State private var option = ColorSpacePreference.current
 
-    private struct ColorSpaceConfig {
-        let systemDefault: NSColorSpace
-        let primary: [NSColorSpace]
-        let additional: [NSColorSpace]
+    /// Spaces offered after the divider: everything else the system has, without the three
+    /// named choices above it.
+    private var otherSpaces: [NSColorSpace] {
+        var spaces = NSColorSpace.availableColorSpaces(with: .rgb).unique().filter {
+            !ColorSpacePreference.isCommon($0) && $0.localizedName != nil
+        }
+        // Keep a chosen space listed even if the system no longer offers it.
+        if case let .space(space) = option, !ColorSpacePreference.isCommon(space), !spaces.contains(space) {
+            spaces.append(space)
+        }
+        return spaces.sorted { ($0.localizedName ?? "") < ($1.localizedName ?? "") }
     }
 
-    private func getColorSpaces() -> ColorSpaceConfig {
-        let systemDefaultSpace: NSColorSpace = NSScreen.main!.colorSpace!
-        var availableSpaces = NSColorSpace.availableColorSpaces(with: .rgb).unique()
-        if !availableSpaces.contains(systemDefaultSpace) {
-            availableSpaces.append(systemDefaultSpace)
-        }
-        var primarySpaces: [NSColorSpace] = []
-        for space in availableSpaces {
-            if space == NSColorSpace.sRGB || space == NSColorSpace.adobeRGB1998
-                || space == NSColorSpace.displayP3 || space == systemDefaultSpace
-            {
-                guard let index = availableSpaces.firstIndex(of: space) else { continue }
-                availableSpaces.remove(at: index)
-                if space == systemDefaultSpace {
-                    primarySpaces.insert(space, at: 0)
-                } else {
-                    primarySpaces.append(space)
-                }
+    private var hint: String {
+        switch option {
+        case .space(.sRGB): return PikaText.textSpaceHintSRGB
+        case .space(.displayP3): return PikaText.textSpaceHintP3
+        case .matchDisplay:
+            // On a P3 screen the display's own profile is P3, and copies say so.
+            if let space = NSScreen.main?.colorSpace, ColorSpacePreference.isDisplayP3Equivalent(space) {
+                return PikaText.textSpaceHintDisplayP3
             }
+            return PikaText.textSpaceHintDisplay
+        case .space: return PikaText.textSpaceHintOther
         }
-        return ColorSpaceConfig(systemDefault: systemDefaultSpace, primary: primarySpaces, additional: availableSpaces)
     }
 
     var body: some View {
-        let spaces = getColorSpaces()
-        let primarySpaces = spaces.primary
-        let availableSpaces = spaces.additional
-        let systemDefaultSpace = spaces.systemDefault
-
         VStack(alignment: .leading, spacing: 8.0) {
-            Text(PikaText.textFormatTitle).font(.system(size: 16))
-            VStack(alignment: .leading, spacing: 12.0) {
-                Picker(
-                    PikaText.textFormatDescription,
-                    selection: $colorSpace.onChange(perform: {
-                        NSColorPanel.shared.close()
-                        Defaults[.colorSpace] = $0
-                    })
-                ) {
-                    ForEach(primarySpaces, id: \.self) { value in
-                        if value == systemDefaultSpace {
-                            Text("\(PikaText.textSystemDefault) (\(value.localizedName!))").tag(value)
-                        } else {
-                            Text(value.localizedName!).tag(value)
-                        }
-                    }
-                    Divider()
-                    ForEach(availableSpaces, id: \.self) { value in
-                        Text(value.localizedName!).tag(value)
-                    }
+            Text(PikaText.textSpaceTitle).font(.system(size: 16))
+            VStack(alignment: .leading, spacing: 8.0) {
+                Picker(PikaText.textSpaceLabel, selection: $option.onChange { ColorSpacePreference.select($0) }) {
+                    ColorSpaceOptions(otherSpaces: otherSpaces)
                 }
                 .pickerStyle(.menu)
-                .accessibilityLabel(PikaText.textFormatDescription)
+                .fixedSize()
+                .accessibilityLabel(PikaText.textSpaceLabel)
+                Text(hint)
+                    .font(.system(size: 12))
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+                Button(PikaText.textSpaceMismatch + "…") {
+                    NSApp.sendAction(#selector(AppDelegate.openColorMatchWindow), to: nil, from: nil)
+                }
+                .buttonStyle(.link)
+                .font(.system(size: 12))
             }
         }
         .padding(.horizontal, 24.0)
+        // The readout's tag can change the space too.
+        .onReceive(NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification)) { _ in
+            let current = ColorSpacePreference.current
+            if current != option { option = current }
+        }
+    }
+}
+
+/// The colour space choices, shared by Preferences and the readout's tag menu.
+struct ColorSpaceOptions: View {
+    var otherSpaces: [NSColorSpace] = []
+
+    var body: some View {
+        Text("sRGB").tag(ColorSpaceOption.space(.sRGB))
+        Text("Display P3").tag(ColorSpaceOption.space(.displayP3))
+        Text(String(format: PikaText.textSpaceDisplay, ColorSpacePreference.displaySpaceName ?? "—"))
+            .tag(ColorSpaceOption.matchDisplay)
+        if !otherSpaces.isEmpty {
+            Divider()
+            ForEach(otherSpaces, id: \.self) { space in
+                Text(space.localizedName ?? "").tag(ColorSpaceOption.space(space))
+            }
+        }
     }
 }
 
@@ -403,7 +413,7 @@ struct PreferencesView: View {
 
                     Divider().padding(.vertical, 16.0)
 
-                    ColorFormatSection()
+                    ColorSpaceSection()
 
                     Divider().padding(.vertical, 16.0)
 
