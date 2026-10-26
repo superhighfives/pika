@@ -21,9 +21,6 @@ class Eyedroppers: ObservableObject {
     }
 
     func updateActiveEntry() {
-        let fgHex = foreground.color.toHexString()
-        let bgHex = background.color.toHexString()
-
         let paletteIndex = Defaults[.activePaletteIndex]
         var palettes = Defaults[.palettes]
         guard paletteIndex >= 0, paletteIndex < palettes.count,
@@ -32,28 +29,22 @@ class Eyedroppers: ObservableObject {
         else { return }
 
         let entry = palettes[paletteIndex].pairs[index]
-        if entry.foregroundHex == fgHex, entry.backgroundHex == bgHex { return }
+        if entry.holds(foreground: foreground.color, background: background.color) { return }
 
         palettes[paletteIndex].pairs[index] = ColorPair(
-            id: entry.id,
-            foregroundHex: fgHex,
-            backgroundHex: bgHex,
-            date: entry.date
+            id: entry.id, foreground: foreground.color, background: background.color, date: entry.date
         )
         Defaults[.palettes] = palettes
     }
 
     func recordHistory() {
-        let fgHex = foreground.color.toHexString()
-        let bgHex = background.color.toHexString()
-
         let history = autoHistory
-        if let last = history.first, last.foregroundHex == fgHex, last.backgroundHex == bgHex {
+        if let last = history.first, last.holds(foreground: foreground.color, background: background.color) {
             return
         }
 
         if !history.isEmpty { pushUndo() }
-        let pair = ColorPair(id: UUID(), foregroundHex: fgHex, backgroundHex: bgHex, date: Date())
+        let pair = ColorPair(foreground: foreground.color, background: background.color)
         var updated = [pair] + history
         if updated.count > ColorPair.maxHistory {
             updated = Array(updated.prefix(ColorPair.maxHistory))
@@ -75,13 +66,7 @@ class Eyedroppers: ObservableObject {
               let index = palettes[paletteIndex].pairs.firstIndex(where: { $0.id == id })
         else { return }
 
-        let entry = palettes[paletteIndex].pairs[index]
-        palettes[paletteIndex].pairs[index] = ColorPair(
-            id: entry.id,
-            foregroundHex: entry.backgroundHex,
-            backgroundHex: entry.foregroundHex,
-            date: entry.date
-        )
+        palettes[paletteIndex].pairs[index] = palettes[paletteIndex].pairs[index].swapped
         Defaults[.palettes] = palettes
     }
 
@@ -120,16 +105,21 @@ class Eyedroppers: ObservableObject {
         }
     }
 
+    /// Clears history down to the pair you're on, which stays as it is.
     func clearHistory() {
+        pushUndo()
+        let pair = ColorPair(foreground: foreground.color, background: background.color)
+        autoHistory = [pair]
+        activeHistoryID = pair.id
+    }
+
+    /// Deleting the only entry left: starts again from a fresh pair, since keeping the current
+    /// one would leave the delete looking like it did nothing.
+    private func resetHistory() {
         pushUndo()
         foreground.color = PikaConstants.initialColors.randomElement()!
         background.color = NSColor.black
-        let pair = ColorPair(
-            id: UUID(),
-            foregroundHex: foreground.color.toHexString(),
-            backgroundHex: background.color.toHexString(),
-            date: Date()
-        )
+        let pair = ColorPair(foreground: foreground.color, background: background.color)
         autoHistory = [pair]
         activeHistoryID = pair.id
     }
@@ -151,7 +141,7 @@ class Eyedroppers: ObservableObject {
         var history = autoHistory
 
         if history.count <= 1 {
-            clearHistory()
+            resetHistory()
             return
         }
 
@@ -169,7 +159,7 @@ class Eyedroppers: ObservableObject {
         var history = autoHistory
 
         if history.count <= 1 {
-            clearHistory()
+            resetHistory()
             return
         }
 
@@ -287,12 +277,7 @@ private extension Eyedroppers {
 
 extension Eyedroppers {
     func savePalette(name: String) {
-        let current = ColorPair(
-            id: UUID(),
-            foregroundHex: foreground.color.toHexString(),
-            backgroundHex: background.color.toHexString(),
-            date: Date()
-        )
+        let current = ColorPair(foreground: foreground.color, background: background.color)
         let palette = Palette(id: UUID(), name: name, pairs: [current], createdAt: Date())
         var palettes = Defaults[.palettes]
         palettes.append(palette)
@@ -325,12 +310,7 @@ extension Eyedroppers {
     func addCurrentToPalette(at index: Int) {
         var palettes = Defaults[.palettes]
         guard index > 0, index < palettes.count else { return }
-        let pair = ColorPair(
-            id: UUID(),
-            foregroundHex: foreground.color.toHexString(),
-            backgroundHex: background.color.toHexString(),
-            date: Date()
-        )
+        let pair = ColorPair(foreground: foreground.color, background: background.color)
         palettes[index].pairs.insert(pair, at: 0)
         Defaults[.palettes] = palettes
         activeHistoryID = pair.id

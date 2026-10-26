@@ -45,6 +45,30 @@ class StatusBarController: NSObject, NSMenuDelegate, NSPopoverDelegate {
         }.tieToLifetime(of: self)
     }
 
+    /// Flags the icon with a dot, for an update found while no Pika window was showing.
+    func setNeedsAttention(_ needsAttention: Bool) {
+        guard let button = statusBarItem?.button, let icon = NSImage(named: "StatusBarIcon") else { return }
+        button.image = needsAttention ? Self.iconWithDot(icon) : icon
+    }
+
+    /// The template icon with a small dot cut into its top-right corner.
+    private static func iconWithDot(_ icon: NSImage) -> NSImage {
+        let image = NSImage(size: icon.size, flipped: false) { rect in
+            icon.draw(in: rect)
+            let diameter = (rect.width * 0.36).rounded()
+            let dot = NSRect(x: rect.maxX - diameter, y: rect.maxY - diameter, width: diameter, height: diameter)
+            // Clear a ring around the dot so it reads against the icon beneath.
+            NSGraphicsContext.current?.compositingOperation = .clear
+            NSBezierPath(ovalIn: dot.insetBy(dx: -1.5, dy: -1.5)).fill()
+            NSGraphicsContext.current?.compositingOperation = .sourceOver
+            NSColor.black.setFill()
+            NSBezierPath(ovalIn: dot).fill()
+            return true
+        }
+        image.isTemplate = true
+        return image
+    }
+
     private var isStatusBarItemVisible: Bool {
         let mode = Defaults[.appMode]
         if mode.usesPopover { return true }

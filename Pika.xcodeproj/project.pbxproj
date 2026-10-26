@@ -12,6 +12,11 @@
 		CC1100000000000000000200 /* URLSchemeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1100000000000000000100 /* URLSchemeHandler.swift */; };
 		CC1100000000000000000201 /* WindowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1100000000000000000101 /* WindowCoordinator.swift */; };
 		CC1100000000000000000202 /* StatusBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1100000000000000000102 /* StatusBarController.swift */; };
+		CC3000000000000000000101 /* UpdateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3000000000000000000100 /* UpdateController.swift */; };
+		CC3000000000000000000141 /* PikaUpdateDriver+Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3000000000000000000140 /* PikaUpdateDriver+Debug.swift */; };
+		CC3000000000000000000142 /* PikaUpdateDriver+Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3000000000000000000140 /* PikaUpdateDriver+Debug.swift */; };
+		CC3000000000000000000102 /* UpdateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3000000000000000000100 /* UpdateController.swift */; };
+		CC3000000000000000000111 /* PikaUpdateDriverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3000000000000000000110 /* PikaUpdateDriverTests.swift */; };
 		CC1100000000000000000203 /* URLSchemeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1100000000000000000100 /* URLSchemeHandler.swift */; };
 		CC1100000000000000000204 /* WindowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1100000000000000000101 /* WindowCoordinator.swift */; };
 		CC1100000000000000000205 /* StatusBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1100000000000000000102 /* StatusBarController.swift */; };
@@ -26,8 +31,12 @@
 		CC2000000000000000000701 /* WCAGComplianceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000700 /* WCAGComplianceTests.swift */; };
 		CC2000000000000000000801 /* APCAComplianceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000800 /* APCAComplianceTests.swift */; };
 		CC2000000000000000000901 /* NotificationNamesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000900 /* NotificationNamesTests.swift */; };
+		CC2000000000000000001F01 /* HelpKeyCapsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000001F00 /* HelpKeyCapsTests.swift */; };
 		CC2000000000000000000A01 /* CGFloatFormatTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000A00 /* CGFloatFormatTests.swift */; };
 		CC2000000000000000000B01 /* ColorPairTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000B00 /* ColorPairTests.swift */; };
+		C5D4183CF9E366786AD38BD1 /* ExpectedColorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B4F83AD6DDFA56F86CA937 /* ExpectedColorTests.swift */; };
+		C545D5AC3DF1105CEC927A45 /* EyedroppersHistoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5881BAD6DC1F23DBCEF9D73 /* EyedroppersHistoryTests.swift */; };
+		C5DE3C7F4A4CC1AEA37337A8 /* ColorSpacePreferenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C57E89F81F89DA8A7FBEBA54 /* ColorSpacePreferenceTests.swift */; };
 		DEC0FACE0000000000000011 /* ColorDecompositionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC0FACE0000000000000010 /* ColorDecompositionTests.swift */; };
 		CC2000000000000000000C01 /* ClosestVectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000C00 /* ClosestVectorTests.swift */; };
 		CC2000000000000000000D01 /* SequenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000D00 /* SequenceTests.swift */; };
@@ -42,6 +51,7 @@
 		221600FD25A636D600B8B7D9 /* ConditionalModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221600FC25A636D600B8B7D9 /* ConditionalModifier.swift */; };
 		226FD61025A940F90021A67F /* VisualEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226FD60F25A940F90021A67F /* VisualEffect.swift */; };
 		22903B0328294F4A004BB9F0 /* ColorExampleRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22903B0228294F49004BB9F0 /* ColorExampleRow.swift */; };
+		C5F809485B539D9753F3977D /* ColorMatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C544F2B79D1047E428011460 /* ColorMatchView.swift */; };
 		22D28DB72862377F00FC7DD4 /* OverflowContentViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D28DB62862377F00FC7DD4 /* OverflowContentViewModifier.swift */; };
 		CC11000000000000000000E1 /* HorizontalScrollWheelAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC11000000000000000000E0 /* HorizontalScrollWheelAdapter.swift */; };
 		CC11000000000000000000E2 /* HorizontalScrollWheelAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC11000000000000000000E0 /* HorizontalScrollWheelAdapter.swift */; };
@@ -66,7 +76,9 @@
 		CC000001000000000000AB11 /* CGFloat+Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000001000000000000AB10 /* CGFloat+Format.swift */; };
 		CC000001000000000000AB12 /* CGFloat+Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000001000000000000AB10 /* CGFloat+Format.swift */; };
 		EA03E39B2F5E618E00998D8B /* ColorPair.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA03E39A2F5E618E00998D8B /* ColorPair.swift */; };
+		C582710EA67BF93089A53BED /* ColorSpacePreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5AAEDBC5A5B0FEBBA83A98B /* ColorSpacePreference.swift */; };
 		EA03E39C2F5E618E00998D8B /* ColorPair.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA03E39A2F5E618E00998D8B /* ColorPair.swift */; };
+		C514AC0A6DF3B04DC2E9B3EF /* ColorSpacePreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5AAEDBC5A5B0FEBBA83A98B /* ColorSpacePreference.swift */; };
 		DEC0FACE0000000000000002 /* ColorDecomposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC0FACE0000000000000001 /* ColorDecomposition.swift */; };
 		DEC0FACE0000000000000003 /* ColorDecomposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC0FACE0000000000000001 /* ColorDecomposition.swift */; };
 		EA03E39E2F5E619800998D8B /* ColorHistoryDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA03E39D2F5E619800998D8B /* ColorHistoryDrawer.swift */; };
@@ -108,6 +120,8 @@
 		EABAEAE0284D50D1000716AE /* ComplianceButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = EABAEADF284D50D1000716AE /* ComplianceButtons.swift */; };
 		EACA8A45260501210064035C /* Exporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EACA8A44260501210064035C /* Exporter.swift */; };
 		EAD0B6CC259CED1C00FA2F67 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6CB259CED1C00FA2F67 /* AppDelegate.swift */; };
+		CC3000000000000000000201 /* AppDelegate+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3000000000000000000200 /* AppDelegate+Actions.swift */; };
+		CC3000000000000000000202 /* AppDelegate+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3000000000000000000200 /* AppDelegate+Actions.swift */; };
 		CCFEED0002000000000000A2 /* PikaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFEED0001000000000000A1 /* PikaApp.swift */; };
 		CCFEED0003000000000000A3 /* PikaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFEED0001000000000000A1 /* PikaApp.swift */; };
 		CCFEED0011000000000000B2 /* PopoverContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFEED0010000000000000B1 /* PopoverContentView.swift */; };
@@ -132,6 +146,8 @@
 		EAD0B713259CFD2000FA2F67 /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B712259CFD2000FA2F67 /* Defaults.swift */; };
 		EAD0B718259D146200FA2F67 /* EyedropperButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B717259D146200FA2F67 /* EyedropperButtonStyle.swift */; };
 		EAD0B71C259D151400FA2F67 /* NavigationMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B71B259D151400FA2F67 /* NavigationMenu.swift */; };
+		CC3000000000000000000121 /* UpdateControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3000000000000000000120 /* UpdateControl.swift */; };
+		CC3000000000000000000122 /* UpdateControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3000000000000000000120 /* UpdateControl.swift */; };
 		EAE23DA72D032A38005BB270 /* MetalShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA72BB8A25A537C3008205E7 /* MetalShader.swift */; };
 		EAE23DA82D032A38005BB270 /* Sequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EF1D9A25B7AA18001102FA /* Sequence.swift */; };
 		EAE23DA92D032A38005BB270 /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6F4259CF29300FA2F67 /* PreferencesView.swift */; };
@@ -182,6 +198,7 @@
 		EAE23DD12D032A38005BB270 /* AppVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6F5259CF29300FA2F67 /* AppVersion.swift */; };
 		EAE23DD22D032A38005BB270 /* Footer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8124C0259E307D00033F0B /* Footer.swift */; };
 		EAE23DD32D032A38005BB270 /* ColorExampleRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22903B0228294F49004BB9F0 /* ColorExampleRow.swift */; };
+		C5A261E106FCF6164B6685D5 /* ColorMatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C544F2B79D1047E428011460 /* ColorMatchView.swift */; };
 		EAE23DD42D032A38005BB270 /* BindingOnChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DDB25B4E90B0014D91A /* BindingOnChange.swift */; };
 		EAE23DD52D032A38005BB270 /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B712259CFD2000FA2F67 /* Defaults.swift */; };
 		EAE23DD62D032A38005BB270 /* VisualEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226FD60F25A940F90021A67F /* VisualEffect.swift */; };
@@ -208,7 +225,9 @@
 		CCB1CA0000000000000000F2 /* ColorPickSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CA0000000000000000F1 /* ColorPickSession.swift */; };
 		CCB1CA0000000000000000F3 /* ColorPickSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CA0000000000000000F1 /* ColorPickSession.swift */; };
 		CCB1CA0000000000000000F5 /* CustomColorPickSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CA0000000000000000F4 /* CustomColorPickSession.swift */; };
+		C59795F7EE718689904F682A /* PickerLoupeCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5CC39646FAA705E90838F44 /* PickerLoupeCapture.swift */; };
 		CCB1CA0000000000000000F6 /* CustomColorPickSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CA0000000000000000F4 /* CustomColorPickSession.swift */; };
+		C5D7AFF6343E2A94731847DA /* PickerLoupeCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5CC39646FAA705E90838F44 /* PickerLoupeCapture.swift */; };
 		CCB1CA0000000000000000F8 /* PickerLoupePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CA0000000000000000F7 /* PickerLoupePanel.swift */; };
 		CCB1CA0000000000000000F9 /* PickerLoupePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CA0000000000000000F7 /* PickerLoupePanel.swift */; };
 		CCB1CA000000000000000101 /* PickerLoupeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CA000000000000000100 /* PickerLoupeView.swift */; };
@@ -238,6 +257,9 @@
 		CC1100000000000000000100 /* URLSchemeHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSchemeHandler.swift; sourceTree = "<group>"; };
 		CC1100000000000000000101 /* WindowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowCoordinator.swift; sourceTree = "<group>"; };
 		CC1100000000000000000102 /* StatusBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarController.swift; sourceTree = "<group>"; };
+		CC3000000000000000000100 /* UpdateController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateController.swift; sourceTree = "<group>"; };
+		CC3000000000000000000140 /* PikaUpdateDriver+Debug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PikaUpdateDriver+Debug.swift"; sourceTree = "<group>"; };
+		CC3000000000000000000110 /* PikaUpdateDriverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PikaUpdateDriverTests.swift; sourceTree = "<group>"; };
 
 		CC20000000000000000000D2 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_FRAMEWORKS_DIR; };
 		CC20000000000000000000E2 /* PikaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PikaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -250,8 +272,12 @@
 		CC2000000000000000000700 /* WCAGComplianceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCAGComplianceTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000000800 /* APCAComplianceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APCAComplianceTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000000900 /* NotificationNamesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationNamesTests.swift; sourceTree = "<group>"; };
+		CC2000000000000000001F00 /* HelpKeyCapsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpKeyCapsTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000000A00 /* CGFloatFormatTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGFloatFormatTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000000B00 /* ColorPairTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPairTests.swift; sourceTree = "<group>"; };
+		C5B4F83AD6DDFA56F86CA937 /* ExpectedColorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpectedColorTests.swift; sourceTree = "<group>"; };
+		C5881BAD6DC1F23DBCEF9D73 /* EyedroppersHistoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyedroppersHistoryTests.swift; sourceTree = "<group>"; };
+		C57E89F81F89DA8A7FBEBA54 /* ColorSpacePreferenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSpacePreferenceTests.swift; sourceTree = "<group>"; };
 		DEC0FACE0000000000000010 /* ColorDecompositionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorDecompositionTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000000C00 /* ClosestVectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosestVectorTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000000D00 /* SequenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceTests.swift; sourceTree = "<group>"; };
@@ -268,6 +294,7 @@
 		223FDEEF2B038A9B000F89A0 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		226FD60F25A940F90021A67F /* VisualEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffect.swift; sourceTree = "<group>"; };
 		22903B0228294F49004BB9F0 /* ColorExampleRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExampleRow.swift; sourceTree = "<group>"; };
+		C544F2B79D1047E428011460 /* ColorMatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorMatchView.swift; sourceTree = "<group>"; };
 		22D28DB62862377F00FC7DD4 /* OverflowContentViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverflowContentViewModifier.swift; sourceTree = "<group>"; };
 		CC11000000000000000000E0 /* HorizontalScrollWheelAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalScrollWheelAdapter.swift; sourceTree = "<group>"; };
 		22EF1D9A25B7AA18001102FA /* Sequence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sequence.swift; sourceTree = "<group>"; };
@@ -291,6 +318,7 @@
 		CC000001000000000000AB00 /* NSColor+RGB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+RGB.swift"; sourceTree = "<group>"; };
 		CC000001000000000000AB10 /* CGFloat+Format.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+Format.swift"; sourceTree = "<group>"; };
 		EA03E39A2F5E618E00998D8B /* ColorPair.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPair.swift; sourceTree = "<group>"; };
+		C5AAEDBC5A5B0FEBBA83A98B /* ColorSpacePreference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSpacePreference.swift; sourceTree = "<group>"; };
 		DEC0FACE0000000000000001 /* ColorDecomposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorDecomposition.swift; sourceTree = "<group>"; };
 		EA03E39D2F5E619800998D8B /* ColorHistoryDrawer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorHistoryDrawer.swift; sourceTree = "<group>"; };
 		35086BCEF529498582A432A1 /* PaletteComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteComponents.swift; sourceTree = "<group>"; };
@@ -317,7 +345,9 @@
 		EA64D70C2F25FB9B00A3F295 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		EA64D70E2F25FBC500A3F295 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/Main.strings; sourceTree = "<group>"; };
 		FA0000000000000000000A01 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		336B141863FD05D1A4E3FD3E /* fa */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fa; path = fa.lproj/Localizable.strings; sourceTree = "<group>"; };
 		FA0000000000000000000A02 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Main.strings; sourceTree = "<group>"; };
+		1D6D58C332386D760672E1B6 /* fa */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fa; path = fa.lproj/Main.strings; sourceTree = "<group>"; };
 		EA72BB8225A5334B008205E7 /* MetalShader.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = MetalShader.metal; sourceTree = "<group>"; };
 		EA72BB8725A53750008205E7 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		EA72BB8A25A537C3008205E7 /* MetalShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalShader.swift; sourceTree = "<group>"; };
@@ -336,6 +366,7 @@
 		EACA8A44260501210064035C /* Exporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exporter.swift; sourceTree = "<group>"; };
 		EAD0B6C8259CED1C00FA2F67 /* Pika.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pika.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAD0B6CB259CED1C00FA2F67 /* AppDelegate.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; tabWidth = 4; };
+		CC3000000000000000000200 /* AppDelegate+Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Actions.swift"; sourceTree = "<group>"; };
 		CCFEED0001000000000000A1 /* PikaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PikaApp.swift; sourceTree = "<group>"; };
 		CCFEED0010000000000000B1 /* PopoverContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverContentView.swift; sourceTree = "<group>"; };
 		CCFEED0020000000000000C1 /* PikaShortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PikaShortcuts.swift; sourceTree = "<group>"; };
@@ -357,6 +388,7 @@
 		EAD0B712259CFD2000FA2F67 /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
 		EAD0B717259D146200FA2F67 /* EyedropperButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyedropperButtonStyle.swift; sourceTree = "<group>"; };
 		EAD0B71B259D151400FA2F67 /* NavigationMenu.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = NavigationMenu.swift; sourceTree = "<group>"; tabWidth = 4; };
+		CC3000000000000000000120 /* UpdateControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateControl.swift; sourceTree = "<group>"; };
 		EAE23DE82D032A38005BB270 /* Pika.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pika.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAE2EB9B2D03697600FA9BC9 /* Info (Mac App Store).plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info (Mac App Store).plist"; sourceTree = "<group>"; };
 		EAE2EB9E2D03C3DA00FA9BC9 /* LookUpAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookUpAPI.swift; sourceTree = "<group>"; };
@@ -369,6 +401,7 @@
 		F8ABAC5C2EAAD0F0008CD152 /* ColorPickOverlayWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickOverlayWindow.swift; sourceTree = "<group>"; };
 		CCB1CA0000000000000000F1 /* ColorPickSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickSession.swift; sourceTree = "<group>"; };
 		CCB1CA0000000000000000F4 /* CustomColorPickSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColorPickSession.swift; sourceTree = "<group>"; };
+		C5CC39646FAA705E90838F44 /* PickerLoupeCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerLoupeCapture.swift; sourceTree = "<group>"; };
 		CCB1CA0000000000000000F7 /* PickerLoupePanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerLoupePanel.swift; sourceTree = "<group>"; };
 		CCB1CA000000000000000100 /* PickerLoupeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerLoupeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -473,6 +506,7 @@
 			isa = PBXGroup;
 			children = (
 				EAD0B6CB259CED1C00FA2F67 /* AppDelegate.swift */,
+				CC3000000000000000000200 /* AppDelegate+Actions.swift */,
 				CCFEED0001000000000000A1 /* PikaApp.swift */,
 				EA0C525725AB576C00AFF716 /* Assets */,
 				EA0C525925AB57AE00AFF716 /* Constants */,
@@ -525,9 +559,11 @@
 			isa = PBXGroup;
 			children = (
 				EA03E39A2F5E618E00998D8B /* ColorPair.swift */,
+				C5AAEDBC5A5B0FEBBA83A98B /* ColorSpacePreference.swift */,
 				DEC0FACE0000000000000001 /* ColorDecomposition.swift */,
 				CCB1CA0000000000000000F1 /* ColorPickSession.swift */,
 				CCB1CA0000000000000000F4 /* CustomColorPickSession.swift */,
+				C5CC39646FAA705E90838F44 /* PickerLoupeCapture.swift */,
 				CC1100000000000000000007 /* Models */,
 				CC1100000000000000000008 /* Export */,
 				CC1100000000000000000009 /* Windows */,
@@ -584,10 +620,15 @@
 				CC2000000000000000000700 /* WCAGComplianceTests.swift */,
 				CC2000000000000000000800 /* APCAComplianceTests.swift */,
 				CC2000000000000000000900 /* NotificationNamesTests.swift */,
+				CC2000000000000000001F00 /* HelpKeyCapsTests.swift */,
 				CC2000000000000000000A00 /* CGFloatFormatTests.swift */,
 				CC2000000000000000000B00 /* ColorPairTests.swift */,
+				C5B4F83AD6DDFA56F86CA937 /* ExpectedColorTests.swift */,
+				C5881BAD6DC1F23DBCEF9D73 /* EyedroppersHistoryTests.swift */,
+				C57E89F81F89DA8A7FBEBA54 /* ColorSpacePreferenceTests.swift */,
 				DEC0FACE0000000000000010 /* ColorDecompositionTests.swift */,
 				CC2000000000000000000C00 /* ClosestVectorTests.swift */,
+				CC3000000000000000000110 /* PikaUpdateDriverTests.swift */,
 				CC2000000000000000000D00 /* SequenceTests.swift */,
 				CC2000000000000000003E00 /* PickerLoupePanelTests.swift */,
 				CC2000000000000000000E00 /* ExporterTests.swift */,
@@ -627,6 +668,7 @@
 				220D5E9328DB154300B6285E /* AppModeButtons.swift */,
 				220D5E9728DB158400B6285E /* AppModeToggleGroup.swift */,
 				22903B0228294F49004BB9F0 /* ColorExampleRow.swift */,
+				C544F2B79D1047E428011460 /* ColorMatchView.swift */,
 				EAD0B6F4259CF29300FA2F67 /* PreferencesView.swift */,
 			);
 			name = Preferences;
@@ -651,6 +693,7 @@
 			isa = PBXGroup;
 			children = (
 				EAD0B71B259D151400FA2F67 /* NavigationMenu.swift */,
+				CC3000000000000000000120 /* UpdateControl.swift */,
 				EA0C525F25AB5A2B00AFF716 /* NavigationMenuItems.swift */,
 			);
 			name = Navigation;
@@ -711,6 +754,8 @@
 			isa = PBXGroup;
 			children = (
 				CC1100000000000000000102 /* StatusBarController.swift */,
+				CC3000000000000000000100 /* UpdateController.swift */,
+				CC3000000000000000000140 /* PikaUpdateDriver+Debug.swift */,
 			);
 			name = StatusBar;
 			sourceTree = "<group>";
@@ -831,6 +876,7 @@
 				pl,
 				hr,
 				ja,
+				fa,
 			);
 			mainGroup = EAD0B6BF259CED1C00FA2F67;
 			packageReferences = (
@@ -976,6 +1022,7 @@
 				EA0C525025AA729300AFF716 /* Visualisation.swift in Sources */,
 				EAD0B6FB259CF29300FA2F67 /* ContentView.swift in Sources */,
 				EAD0B6CC259CED1C00FA2F67 /* AppDelegate.swift in Sources */,
+				CC3000000000000000000201 /* AppDelegate+Actions.swift in Sources */,
 				CCFEED0002000000000000A2 /* PikaApp.swift in Sources */,
 				CCFEED0011000000000000B2 /* PopoverContentView.swift in Sources */,
 				CCFEED0021000000000000C2 /* PikaShortcuts.swift in Sources */,
@@ -992,6 +1039,7 @@
 				EAF100CD25C785C4006E1EC3 /* TouchBarVisual.swift in Sources */,
 				EA801285259F8F480026D5D9 /* ComplianceToggle.swift in Sources */,
 				EA03E39B2F5E618E00998D8B /* ColorPair.swift in Sources */,
+				C582710EA67BF93089A53BED /* ColorSpacePreference.swift in Sources */,
 				DEC0FACE0000000000000002 /* ColorDecomposition.swift in Sources */,
 				221600FD25A636D600B8B7D9 /* ConditionalModifier.swift in Sources */,
 				EA03E39E2F5E619800998D8B /* ColorHistoryDrawer.swift in Sources */,
@@ -999,6 +1047,7 @@
 				EA03E3A12F5E619800998D8B /* ColorPreview.swift in Sources */,
 				EA635DF125B5A6D80014D91A /* Toast.swift in Sources */,
 				EAD0B71C259D151400FA2F67 /* NavigationMenu.swift in Sources */,
+				CC3000000000000000000121 /* UpdateControl.swift in Sources */,
 				22FE80B325BA0F820063759E /* KeyboardShortcutItem.swift in Sources */,
 				F8ABAC5A2EAAD0DF008CD152 /* ColorPickOverlay.swift in Sources */,
 				EAD0B6F8259CF29300FA2F67 /* AboutView.swift in Sources */,
@@ -1027,6 +1076,7 @@
 				F8ABAC5D2EAAD0F0008CD152 /* ColorPickOverlayWindow.swift in Sources */,
 				CCB1CA0000000000000000F2 /* ColorPickSession.swift in Sources */,
 				CCB1CA0000000000000000F5 /* CustomColorPickSession.swift in Sources */,
+				C59795F7EE718689904F682A /* PickerLoupeCapture.swift in Sources */,
 				CCB1CA0000000000000000F8 /* PickerLoupePanel.swift in Sources */,
 				CCB1CA000000000000000101 /* PickerLoupeView.swift in Sources */,
 				EA635DE125B4FC580014D91A /* ColorPickers.swift in Sources */,
@@ -1035,12 +1085,15 @@
 				EAD0B6FA259CF29300FA2F67 /* AppVersion.swift in Sources */,
 				EA8124C1259E307D00033F0B /* Footer.swift in Sources */,
 				22903B0328294F4A004BB9F0 /* ColorExampleRow.swift in Sources */,
+				C5F809485B539D9753F3977D /* ColorMatchView.swift in Sources */,
 				EA635DDC25B4E90B0014D91A /* BindingOnChange.swift in Sources */,
 				EAD0B713259CFD2000FA2F67 /* Defaults.swift in Sources */,
 				226FD61025A940F90021A67F /* VisualEffect.swift in Sources */,
 				CC1100000000000000000200 /* URLSchemeHandler.swift in Sources */,
 				CC1100000000000000000201 /* WindowCoordinator.swift in Sources */,
 				CC1100000000000000000202 /* StatusBarController.swift in Sources */,
+				CC3000000000000000000101 /* UpdateController.swift in Sources */,
+				CC3000000000000000000141 /* PikaUpdateDriver+Debug.swift in Sources */,
 				EAD0B6FE259CF29C00FA2F67 /* Constants.swift in Sources */,
 				50635DBB6B3442498CD8F803 /* PikaText.swift in Sources */,
 			);
@@ -1077,14 +1130,17 @@
 				F8ABAC5E2EAAD0F0008CD152 /* ColorPickOverlayWindow.swift in Sources */,
 				CCB1CA0000000000000000F3 /* ColorPickSession.swift in Sources */,
 				CCB1CA0000000000000000F6 /* CustomColorPickSession.swift in Sources */,
+				C5D7AFF6343E2A94731847DA /* PickerLoupeCapture.swift in Sources */,
 				CCB1CA0000000000000000F9 /* PickerLoupePanel.swift in Sources */,
 				CCB1CA000000000000000102 /* PickerLoupeView.swift in Sources */,
 				EAE23DB12D032A38005BB270 /* AppModeToggleGroup.swift in Sources */,
 				EAE23DB22D032A38005BB270 /* Visualisation.swift in Sources */,
 				EA03E39C2F5E618E00998D8B /* ColorPair.swift in Sources */,
+				C514AC0A6DF3B04DC2E9B3EF /* ColorSpacePreference.swift in Sources */,
 				DEC0FACE0000000000000003 /* ColorDecomposition.swift in Sources */,
 				EAE23DB32D032A38005BB270 /* ContentView.swift in Sources */,
 				EAE23DB42D032A38005BB270 /* AppDelegate.swift in Sources */,
+				CC3000000000000000000202 /* AppDelegate+Actions.swift in Sources */,
 				CCFEED0003000000000000A3 /* PikaApp.swift in Sources */,
 				CCFEED0012000000000000B3 /* PopoverContentView.swift in Sources */,
 				CCFEED0022000000000000C3 /* PikaShortcuts.swift in Sources */,
@@ -1103,6 +1159,7 @@
 				EAE23DC12D032A38005BB270 /* ConditionalModifier.swift in Sources */,
 				EAE23DC22D032A38005BB270 /* Toast.swift in Sources */,
 				EAE23DC32D032A38005BB270 /* NavigationMenu.swift in Sources */,
+				CC3000000000000000000122 /* UpdateControl.swift in Sources */,
 				EAE23DC42D032A38005BB270 /* KeyboardShortcutItem.swift in Sources */,
 				EAE23DC52D032A38005BB270 /* AboutView.swift in Sources */,
 				E2298A573187471D9484E53E /* HelpView.swift in Sources */,
@@ -1126,12 +1183,15 @@
 				EAE23DD12D032A38005BB270 /* AppVersion.swift in Sources */,
 				EAE23DD22D032A38005BB270 /* Footer.swift in Sources */,
 				EAE23DD32D032A38005BB270 /* ColorExampleRow.swift in Sources */,
+				C5A261E106FCF6164B6685D5 /* ColorMatchView.swift in Sources */,
 				EAE23DD42D032A38005BB270 /* BindingOnChange.swift in Sources */,
 				EAE23DD52D032A38005BB270 /* Defaults.swift in Sources */,
 				EAE23DD62D032A38005BB270 /* VisualEffect.swift in Sources */,
 				CC1100000000000000000203 /* URLSchemeHandler.swift in Sources */,
 				CC1100000000000000000204 /* WindowCoordinator.swift in Sources */,
 				CC1100000000000000000205 /* StatusBarController.swift in Sources */,
+				CC3000000000000000000102 /* UpdateController.swift in Sources */,
+				CC3000000000000000000142 /* PikaUpdateDriver+Debug.swift in Sources */,
 				EAE23DD72D032A38005BB270 /* Constants.swift in Sources */,
 				C39625300DCB48C7BC20CB98 /* PikaText.swift in Sources */,
 			);
@@ -1150,10 +1210,15 @@
 				CC2000000000000000000701 /* WCAGComplianceTests.swift in Sources */,
 				CC2000000000000000000801 /* APCAComplianceTests.swift in Sources */,
 				CC2000000000000000000901 /* NotificationNamesTests.swift in Sources */,
+				CC2000000000000000001F01 /* HelpKeyCapsTests.swift in Sources */,
 				CC2000000000000000000A01 /* CGFloatFormatTests.swift in Sources */,
 				CC2000000000000000000B01 /* ColorPairTests.swift in Sources */,
+				C5D4183CF9E366786AD38BD1 /* ExpectedColorTests.swift in Sources */,
+				C545D5AC3DF1105CEC927A45 /* EyedroppersHistoryTests.swift in Sources */,
+				C5DE3C7F4A4CC1AEA37337A8 /* ColorSpacePreferenceTests.swift in Sources */,
 				DEC0FACE0000000000000011 /* ColorDecompositionTests.swift in Sources */,
 				CC2000000000000000000C01 /* ClosestVectorTests.swift in Sources */,
+				CC3000000000000000000111 /* PikaUpdateDriverTests.swift in Sources */,
 				CC2000000000000000000D01 /* SequenceTests.swift in Sources */,
 				CC2000000000000000003E01 /* PickerLoupePanelTests.swift in Sources */,
 				CC2000000000000000000E01 /* ExporterTests.swift in Sources */,
@@ -1177,6 +1242,7 @@
 				EA64D70A2F25FB6700A3F295 /* hr */,
 				EA64D70C2F25FB9B00A3F295 /* en */,
 				FA0000000000000000000A01 /* ja */,
+				336B141863FD05D1A4E3FD3E /* fa */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -1194,6 +1260,7 @@
 				B581F92C2EDF40D700392413 /* pl */,
 				EA64D70E2F25FBC500A3F295 /* hr */,
 				FA0000000000000000000A02 /* ja */,
+				1D6D58C332386D760672E1B6 /* fa */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -1330,7 +1397,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 108;
+				CURRENT_PROJECT_VERSION = 110;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Pika/Preview Content\"";
 				DEVELOPMENT_TEAM = TGHU37N6EX;
@@ -1344,7 +1411,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 2.0.1;
+				MARKETING_VERSION = 2.0.2-beta1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.superhighfives.Pika;
 				PRODUCT_NAME = Pika;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG TARGET_SPARKLE";
@@ -1362,7 +1429,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 108;
+				CURRENT_PROJECT_VERSION = 110;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Pika/Preview Content\"";
 				DEVELOPMENT_TEAM = TGHU37N6EX;
@@ -1376,7 +1443,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 2.0.1;
+				MARKETING_VERSION = 2.0.2-beta1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.superhighfives.Pika;
 				PRODUCT_NAME = Pika;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = TARGET_SPARKLE;
@@ -1409,7 +1476,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 2.0.1;
+				MARKETING_VERSION = 2.0.2-beta1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.superhighfives.Pika;
 				PRODUCT_NAME = Pika;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG TARGET_MAS";
@@ -1443,7 +1510,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 2.0.1;
+				MARKETING_VERSION = 2.0.2-beta1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.superhighfives.Pika;
 				PRODUCT_NAME = Pika;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = TARGET_MAS;

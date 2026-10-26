@@ -11,8 +11,10 @@ enum ColorFormat: String, Codable, CaseIterable, Equatable {
     case opengl = "OpenGL"
     case oklch = "OKLCH"
 
+    /// What copying `color` in this format gives, for the example in Settings (in Display P3,
+    /// CSS hex and RGB copy as `color(display-p3 …)`, unlike the readout).
     func getExample(color: NSColor, style: CopyFormat) -> String {
-        color.toFormat(format: self, style: style)
+        color.toCopyString(format: self, style: style)
     }
 
     static func withLabel(_ label: String) -> ColorFormat? {
@@ -122,9 +124,12 @@ extension Defaults.Keys {
     static let hideMenuBarIcon = Key<Bool>("hideMenuBarIcon", default: false)
     static let betaUpdates = Key<Bool>("betaUpdates", default: false)
     static let combineCompliance = Key<Bool>("combineCompliance", default: false)
-    static let colorSpace = NSSecureCodingKey<NSColorSpace>(
-        "colorSpace", default: NSScreen.main!.colorSpace!
-    )
+    // sRGB, so a picked hex matches the one in CSS or Figma. Before 2.0.2 this was the main
+    // display's profile, which reads web colours differently (#ff0000 as #ea3323 on a P3 panel).
+    static let colorSpace = NSSecureCodingKey<NSColorSpace>("colorSpace", default: .sRGB)
+    // Keeps `colorSpace` on the profile of the display being picked on. See `ColorSpacePreference`.
+    static let colorSpaceMatchesDisplay = Key<Bool>("colorSpaceMatchesDisplay", default: false)
+    static let colorSpaceMigrated = Key<Bool>("colorSpaceMigrated", default: false)
     static let hideColorNames = Key<Bool>("hideColorNames", default: false)
     static let formatColorsForCSS = Key<Bool>("formatColorsForCSS", default: false)
     static let copyFormat = Key<CopyFormat>("copyFormat", default: .css)
