@@ -345,7 +345,9 @@
 		EA64D70C2F25FB9B00A3F295 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		EA64D70E2F25FBC500A3F295 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/Main.strings; sourceTree = "<group>"; };
 		FA0000000000000000000A01 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		336B141863FD05D1A4E3FD3E /* fa */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fa; path = fa.lproj/Localizable.strings; sourceTree = "<group>"; };
 		FA0000000000000000000A02 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Main.strings; sourceTree = "<group>"; };
+		1D6D58C332386D760672E1B6 /* fa */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fa; path = fa.lproj/Main.strings; sourceTree = "<group>"; };
 		EA72BB8225A5334B008205E7 /* MetalShader.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = MetalShader.metal; sourceTree = "<group>"; };
 		EA72BB8725A53750008205E7 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		EA72BB8A25A537C3008205E7 /* MetalShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalShader.swift; sourceTree = "<group>"; };
@@ -874,6 +876,7 @@
 				pl,
 				hr,
 				ja,
+				fa,
 			);
 			mainGroup = EAD0B6BF259CED1C00FA2F67;
 			packageReferences = (
@@ -1239,6 +1242,7 @@
 				EA64D70A2F25FB6700A3F295 /* hr */,
 				EA64D70C2F25FB9B00A3F295 /* en */,
 				FA0000000000000000000A01 /* ja */,
+				336B141863FD05D1A4E3FD3E /* fa */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -1256,6 +1260,7 @@
 				B581F92C2EDF40D700392413 /* pl */,
 				EA64D70E2F25FBC500A3F295 /* hr */,
 				FA0000000000000000000A02 /* ja */,
+				1D6D58C332386D760672E1B6 /* fa */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";

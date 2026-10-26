@@ -1,0 +1,135 @@
+
+/* Class = "NSMenuItem"; title = "Pika"; ObjectID = "1Xt-HY-uBw"; */
+"1Xt-HY-uBw.title" = "Pika";
+
+/* Class = "NSMenuItem"; title = "Quit Pika"; ObjectID = "4sb-4s-VLi"; */
+"4sb-4s-VLi.title" = "خروج از Pika";
+
+/* Class = "NSMenuItem"; title = "Edit"; ObjectID = "5QF-Oa-p0T"; */
+"5QF-Oa-p0T.title" = "ویرایش";
+
+/* Class = "NSMenuItem"; title = "About Pika"; ObjectID = "5kV-Vb-QxS"; */
+"5kV-Vb-QxS.title" = "دربارهٔ Pika";
+
+/* Class = "NSMenuItem"; title = "Redo"; ObjectID = "6dh-zS-Vam"; */
+"6dh-zS-Vam.title" = "تکرار";
+
+/* Class = "NSMenuItem"; title = "Swap colors"; ObjectID = "6j0-AT-P3M"; */
+"6j0-AT-P3M.title" = "جابه‌جایی رنگ‌ها";
+
+/* Class = "NSMenu"; title = "Main Menu"; ObjectID = "AYu-sK-qS6"; */
+"AYu-sK-qS6.title" = "منوی اصلی";
+
+/* Class = "NSMenuItem"; title = "Check for updates…"; ObjectID = "BOF-NM-1cW"; */
+"BOF-NM-1cW.title" = "بررسی به‌روزرسانی…";
+
+/* Class = "NSMenuItem"; title = "Use system picker for background"; ObjectID = "CnG-MW-7x1"; */
+"CnG-MW-7x1.title" = "استفاده از انتخاب‌گر سیستم برای پس‌زمینه";
+
+/* Class = "NSMenuItem"; title = "Copy all as text"; ObjectID = "D8e-06-QFY"; */
+"D8e-06-QFY.title" = "کپی همه به‌صورت متن";
+
+/* Class = "NSMenu"; title = "Help"; ObjectID = "F2S-fz-NVQ"; */
+"F2S-fz-NVQ.title" = "راهنما";
+
+/* Class = "NSMenuItem"; title = "Pika website"; ObjectID = "FKE-Sm-Kum"; */
+"FKE-Sm-Kum.title" = "وب‌سایت Pika";
+
+/* Class = "NSMenuItem"; title = "HSB"; ObjectID = "GfU-Et-UCF"; */
+"GfU-Et-UCF.title" = "HSB";
+
+/* Class = "NSMenuItem"; title = "RGB"; ObjectID = "Jrv-mf-bNr"; */
+"Jrv-mf-bNr.title" = "RGB";
+
+/* Class = "NSMenu"; title = "Eyedroppers"; ObjectID = "KHB-9b-hO2"; */
+"KHB-9b-hO2.title" = "قطره‌چکان‌ها";
+
+/* Class = "NSMenuItem"; title = "Show All"; ObjectID = "Kd2-mp-pUS"; */
+"Kd2-mp-pUS.title" = "نمایش همه";
+
+/* Class = "NSMenuItem"; title = "Services"; ObjectID = "NMo-om-nkz"; */
+"NMo-om-nkz.title" = "خدمات";
+
+/* Class = "NSMenuItem"; title = "Preferences…"; ObjectID = "NQA-cg-qc7"; */
+"NQA-cg-qc7.title" = "تنظیمات…";
+
+/* Class = "NSMenuItem"; title = "Pick foreground..."; ObjectID = "Nec-cr-B3a"; */
+"Nec-cr-B3a.title" = "برداشتن پیش‌زمینه...";
+
+/* Class = "NSMenuItem"; title = "LAB"; ObjectID = "Nwx-nK-ndW"; */
+"Nwx-nK-ndW.title" = "LAB";
+
+/* Class = "NSMenuItem"; title = "Hide Pika"; ObjectID = "Olw-nP-bQN"; */
+"Olw-nP-bQN.title" = "پنهان کردن Pika";
+
+/* Class = "NSMenuItem"; title = "Copy all as JSON"; ObjectID = "U40-Ip-3Uj"; */
+"U40-Ip-3Uj.title" = "کپی همه به‌صورت JSON";
+
+/* Class = "NSMenuItem"; title = "Hide Others"; ObjectID = "Vdr-fp-XzO"; */
+"Vdr-fp-XzO.title" = "پنهان کردن بقیه";
+
+/* Class = "NSMenuItem"; title = "Close window"; ObjectID = "VpE-fH-2gc"; */
+"VpE-fH-2gc.title" = "بستن پنجره";
+
+/* Class = "NSMenu"; title = "Edit"; ObjectID = "W48-6f-4Dl"; */
+"W48-6f-4Dl.title" = "ویرایش";
+
+/* Class = "NSMenuItem"; title = "Pick background..."; ObjectID = "YF5-6a-ACB"; */
+"YF5-6a-ACB.title" = "برداشتن پس‌زمینه...";
+
+/* Class = "NSMenuItem"; title = "OpenGL"; ObjectID = "caq-wZ-Zn0"; */
+"caq-wZ-Zn0.title" = "OpenGL";
+
+/* Class = "NSMenuItem"; title = "Eyedroppers"; ObjectID = "dNS-BC-3MB"; */
+"dNS-BC-3MB.title" = "قطره‌چکان‌ها";
+
+/* Class = "NSMenuItem"; title = "Undo"; ObjectID = "dRJ-4n-Yzg"; */
+"dRJ-4n-Yzg.title" = "واگرد";
+
+/* Class = "NSMenuItem"; title = "Use system picker for foreground"; ObjectID = "hMH-To-rZ9"; */
+"hMH-To-rZ9.title" = "استفاده از انتخاب‌گر سیستم برای پیش‌زمینه";
+
+/* Class = "NSMenuItem"; title = "Delete history item"; ObjectID = "hst-Dl-mnu"; */
+"hst-Dl-mnu.title" = "حذف مورد تاریخچه";
+
+/* Class = "NSMenuItem"; title = "Next history item"; ObjectID = "hst-Nx-mnu"; */
+"hst-Nx-mnu.title" = "مورد بعدی تاریخچه";
+
+/* Class = "NSMenuItem"; title = "Previous history item"; ObjectID = "hst-Pv-mnu"; */
+"hst-Pv-mnu.title" = "مورد قبلی تاریخچه";
+
+/* Class = "NSMenuItem"; title = "Report feedback"; ObjectID = "hxD-2G-mEq"; */
+"hxD-2G-mEq.title" = "ارسال بازخورد";
+
+/* Class = "NSMenu"; title = "Services"; ObjectID = "hz9-B4-Xy5"; */
+"hz9-B4-Xy5.title" = "خدمات";
+
+/* Class = "NSMenuItem"; title = "Format"; ObjectID = "jQ5-Ak-Ocb"; */
+"jQ5-Ak-Ocb.title" = "قالب";
+
+/* Class = "NSMenuItem"; title = "OKLCH"; ObjectID = "oKl-Ch-7fM"; */
+"oKl-Ch-7fM.title" = "OKLCH";
+
+/* Class = "NSMenuItem"; title = "Copy background"; ObjectID = "p7U-sR-JqZ"; */
+"p7U-sR-JqZ.title" = "کپی پس‌زمینه";
+
+/* Class = "NSMenuItem"; title = "Hex"; ObjectID = "rJ3-3M-xcY"; */
+"rJ3-3M-xcY.title" = "Hex";
+
+/* Class = "NSMenuItem"; title = "HSL"; ObjectID = "t7X-bM-FAM"; */
+"t7X-bM-FAM.title" = "HSL";
+
+/* Class = "NSMenuItem"; title = "Toggle history"; ObjectID = "tgl-Hs-mnu"; */
+"tgl-Hs-mnu.title" = "تغییر وضعیت تاریخچه";
+
+/* Class = "NSMenu"; title = "Pika"; ObjectID = "uQy-DD-JDr"; */
+"uQy-DD-JDr.title" = "Pika";
+
+/* Class = "NSMenuItem"; title = "Help"; ObjectID = "wpr-3q-Mcd"; */
+"wpr-3q-Mcd.title" = "راهنما";
+
+/* Class = "NSMenuItem"; title = "Copy foreground"; ObjectID = "x3v-GG-iWU"; */
+"x3v-GG-iWU.title" = "کپی پیش‌زمینه";
+
+/* Class = "NSMenu"; title = "Eyedroppers"; ObjectID = "z8G-HT-ae8"; */
+"z8G-HT-ae8.title" = "قطره‌چکان‌ها";
