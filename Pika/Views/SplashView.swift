@@ -512,11 +512,13 @@ private struct PickerComparisonTile: View {
         VStack(spacing: 6.0) {
             Button(action: onSelect, label: {
                 preview.frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .overlay(alignment: .topTrailing) {
-                        if let badge { badgeView(badge) }
-                    }
             })
             .buttonStyle(AppearanceButtonStyle(title: title, description: description, selected: selected))
+            // Over the button rather than in its label, so the style's edge fades don't cover it.
+            // The tile is the top of the style's stack, so top-trailing still lands in its corner.
+            .overlay(alignment: .topTrailing) {
+                if let badge { badgeView(badge).allowsHitTesting(false) }
+            }
             .disabled(disabled)
             .opacity(disabled ? 0.4 : 1.0)
             .animation(.easeInOut(duration: 0.18), value: selected)
