@@ -24,6 +24,11 @@ jobs:
     # posting a review. tests.yml already builds and runs the suite (~90s), so
     # the review doesn't need to. Reading-only, it runs fast on the default
     # ubuntu runner and posts every time.
+    #
+    # Skipped for PRs from forks, like tests.yml: GitHub doesn't pass secrets to
+    # those runs, so the app token step fails before the review starts. Merge a
+    # fork PR into a branch here to have that branch's PR reviewed.
+    if: github.event.pull_request.head.repo.full_name == github.repository
     uses: superhighfives/control-room/.github/workflows/review.yml@main
     secrets:
       CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
