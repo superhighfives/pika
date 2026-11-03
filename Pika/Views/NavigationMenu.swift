@@ -61,11 +61,6 @@ struct NavigationMenu: View {
                 ToolbarToggles()
             } else {
                 Menu {
-                    Toggle(PikaText.textViewPreview, isOn: Binding(
-                        get: { showColorPreview },
-                        set: { _ in NSApp.sendAction(#selector(AppDelegate.triggerToggleColorPreview), to: nil, from: nil) }
-                    ))
-                    .keyboardShortcut("p", modifiers: [])
                     Toggle(PikaText.textViewContrast, isOn: Binding(
                         get: { showCompliance },
                         set: { _ in NSApp.sendAction(#selector(AppDelegate.triggerToggleCompliance), to: nil, from: nil) }
@@ -76,6 +71,11 @@ struct NavigationMenu: View {
                         set: { _ in NSApp.sendAction(#selector(AppDelegate.triggerToggleHistory), to: nil, from: nil) }
                     ))
                     .keyboardShortcut("h", modifiers: [])
+                    Toggle(PikaText.textViewPreview, isOn: Binding(
+                        get: { showColorPreview },
+                        set: { _ in NSApp.sendAction(#selector(AppDelegate.triggerToggleColorPreview), to: nil, from: nil) }
+                    ))
+                    .keyboardShortcut("p", modifiers: [])
                 } label: {
                     Text(PikaText.textViewMenu)
                 }
@@ -221,14 +221,14 @@ private struct ToolbarToggles: View {
 
     var body: some View {
         HStack(spacing: 2.0) {
-            chip(PikaText.textToolbarPreview, icon: "textformat", key: "P", isOn: showColorPreview) {
-                NSApp.sendAction(#selector(AppDelegate.triggerToggleColorPreview), to: nil, from: nil)
-            }
             chip(PikaText.textViewContrast, icon: "circle.lefthalf.filled", key: "C", isOn: showCompliance) {
                 NSApp.sendAction(#selector(AppDelegate.triggerToggleCompliance), to: nil, from: nil)
             }
             chip(PikaText.textViewPalettes, icon: "square.on.square", key: "H", isOn: historyDrawerVisible) {
                 NSApp.sendAction(#selector(AppDelegate.triggerToggleHistory), to: nil, from: nil)
+            }
+            chip(PikaText.textToolbarPreview, icon: "textformat", key: "P", isOn: showColorPreview) {
+                NSApp.sendAction(#selector(AppDelegate.triggerToggleColorPreview), to: nil, from: nil)
             }
         }
     }

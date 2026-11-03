@@ -36,8 +36,8 @@ struct NavigationMenuItems: View {
     }
 
     var body: some View {
-        Button("\(PikaText.textPickForeground)...") { send(#selector(AppDelegate.triggerPickForeground)) }
-        Button("\(PikaText.textPickBackground)...") { send(#selector(AppDelegate.triggerPickBackground)) }
+        Button("\(PikaText.textPickForeground)…") { send(#selector(AppDelegate.triggerPickForeground)) }
+        Button("\(PikaText.textPickBackground)…") { send(#selector(AppDelegate.triggerPickBackground)) }
 
         MenuGroup(title: PikaText.textColorCopy) {
             Button(PikaText.textColorForeground) { send(#selector(AppDelegate.triggerCopyForeground)) }
@@ -70,12 +70,12 @@ struct NavigationMenuItems: View {
             Button(PikaText.textMenuHelp) { send(#selector(AppDelegate.openHelpWindow)) }
             Button(PikaText.textMenuShowSplash) { send(#selector(AppDelegate.openSplashWindow)) }
             #if TARGET_SPARKLE
-                Button("\(PikaText.textMenuUpdates)...") { send(#selector(AppDelegate.checkForUpdates)) }
+                Button("\(PikaText.textMenuUpdates)…") { send(#selector(AppDelegate.checkForUpdates)) }
             #endif
             Button(PikaText.textMenuGitHubIssue) { send(#selector(AppDelegate.openGitHubIssue)) }
         }
 
-        Button("\(PikaText.textMenuPreferences)...") { send(#selector(AppDelegate.openPreferencesWindow)) }
+        Button("\(PikaText.textMenuPreferences)…") { send(#selector(AppDelegate.openPreferencesWindow)) }
 
         Divider()
 

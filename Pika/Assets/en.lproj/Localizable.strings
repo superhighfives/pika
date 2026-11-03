@@ -266,7 +266,7 @@
 "color.swap" = "Swap";
 
 /* Swap colors */
-"color.swap.detail" = "Swap colors";
+"color.swap.detail" = "Swap Colors";
 
 /* Undo */
 "color.undo" = "Undo";
@@ -275,10 +275,10 @@
 "color.redo" = "Redo";
 
 /* Pick foreground */
-"color.pick.foreground" = "Pick foreground";
+"color.pick.foreground" = "Pick Foreground";
 
 /* Pick background */
-"color.pick.background" = "Pick background";
+"color.pick.background" = "Pick Background";
 
 /* Pick foreground then background */
 "color.pick.contrast" = "Pick foreground and background";
@@ -287,16 +287,16 @@
 "color.copy" = "Copy";
 
 /* Copy foreground */
-"color.copy.foreground" = "Copy foreground";
+"color.copy.foreground" = "Copy Foreground";
 
 /* Copy background */
-"color.copy.background" = "Copy background";
+"color.copy.background" = "Copy Background";
 
 /* Copy all as text */
-"color.copy.text" = "Copy all as text";
+"color.copy.text" = "Copy All as Text";
 
 /* Copy all as JSON */
-"color.copy.data" = "Copy all as JSON";
+"color.copy.data" = "Copy All as JSON";
 
 /* Copied */
 "color.copy.toast" = "Copied";
@@ -323,13 +323,13 @@
 "color.copy.lab" = "Copy LAB values";
 
 /* System color picker */
-"color.system" = "System color picker";
+"color.system" = "System Color Picker";
 
 /* Use foreground system color picker */
-"color.system.foreground" = "Use foreground system color picker";
+"color.system.foreground" = "Use Foreground System Color Picker";
 
 /* Use background system color picker */
-"color.system.background" = "Use background system color picker";
+"color.system.background" = "Use Background System Color Picker";
 
 /* System foreground */
 "color.system.foreground.simple" = "System foreground";
@@ -465,16 +465,16 @@
 "help.reference.apca" = "Learn about APCA";
 
 /* Check for updates */
-"menu.updates" = "Check for updates";
+"menu.updates" = "Check for Updates";
 
 /* Preferences */
 "menu.preferences" = "Settings";
 
 /* Pika Website */
-"menu.website" = "Pika website";
+"menu.website" = "Pika Website";
 
 /* Report Bug or Feedback */
-"menu.issue" = "Report feedback";
+"menu.issue" = "Report Feedback";
 
 /* Quit */
 "menu.quit" = "Quit";
@@ -492,13 +492,13 @@
 "history.title" = "History";
 
 /* Toggle palettes */
-"history.toggle" = "Toggle palettes";
+"history.toggle" = "Toggle Palettes";
 
 /* Toggle color preview */
-"color.preview.toggle" = "Toggle color preview";
+"color.preview.toggle" = "Toggle Color Preview";
 
 /* Toggle compliance */
-"compliance.toggle" = "Toggle compliance";
+"compliance.toggle" = "Toggle Compliance";
 
 /* Sample preview text */
 "color.preview.sample" = "The quick brown fox jumps over the lazy dog";
@@ -516,7 +516,7 @@
 "history.clear" = "Clear history";
 
 /* New palette… */
-"palette.new" = "New palette…";
+"palette.new" = "New Palette…";
 
 /* Rename palette */
 "palette.rename" = "Rename palette";
@@ -537,10 +537,10 @@
 "palette.add" = "Add to palette";
 
 /* Export palette */
-"palette.export" = "Export palette";
+"palette.export" = "Export Palette";
 
 /* Export color history */
-"history.export" = "Export color history";
+"history.export" = "Export Color History";
 
 /* Are you sure you want to clear all history? */
 "history.clear.confirm" = "Are you sure you want to clear all history?";
@@ -647,7 +647,7 @@
 "menu.showPika" = "Show Pika";
 
 /* Show the welcome splash */
-"menu.showSplash" = "Show splash";
+"menu.showSplash" = "Show Splash";
 
 /* Splash setup heading */
 "splash.setup.title" = "Welcome to Pika";
@@ -782,7 +782,7 @@
 "splash.picker.prompt" = "Colour picker";
 
 /* Pick a foreground then background pair */
-"color.pick.pair" = "Pick pair";
+"color.pick.pair" = "Pick Pair";
 
 /* Color Space */
 "preferences.space.title" = "Color Space";
@@ -842,7 +842,7 @@
 "preferences.space.hint.other" = "Hex values won’t match the web unless the source uses the same color space.";
 
 /* Colors don't match? */
-"color.space.mismatch" = "Colors don’t match?";
+"color.space.mismatch" = "Colors Don’t Match?";
 
 
 /* Check a Color window title */
