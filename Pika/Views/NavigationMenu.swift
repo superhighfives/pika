@@ -27,7 +27,9 @@ struct NavigationMenu: View {
             .labelsHidden()
             .fixedSize()
             .frame(width: 100.0)
-            .padding(.trailing, 4.0)
+
+            ColorSpaceMenu()
+                .padding(.trailing, 4.0)
 
             Button(action: {
                 NSApp.sendAction(#selector(AppDelegate.triggerToggleColorPreview), to: nil, from: nil)
@@ -112,6 +114,55 @@ struct NavigationMenu: View {
                     colorFormat = .rgb
                 }
             }
+        }
+    }
+}
+
+/// The colour space setting, beside the format it applies to, so the space the readout and copies
+/// are in is always visible. One for the whole app: a menu on each swatch read as per-swatch spaces.
+private struct ColorSpaceMenu: View {
+    @State private var option = ColorSpacePreference.current
+
+    private var label: String {
+        switch option {
+        case .space(.sRGB): return "sRGB"
+        case .space(.displayP3): return "Display P3"
+        case .matchDisplay: return PikaText.textSpaceShortDisplay
+        case let .space(space): return space.localizedName ?? "—"
+        }
+    }
+
+    var body: some View {
+        Menu {
+            Picker(PikaText.textSpaceTitle, selection: Binding(
+                get: { option },
+                set: { ColorSpacePreference.select($0) }
+            )) {
+                // A space chosen in Settings outside the three main ones stays listed.
+                ColorSpaceOptions(otherSpaces: {
+                    if case let .space(space) = option, !ColorSpacePreference.isCommon(space) { return [space] }
+                    return []
+                }())
+            }
+            .pickerStyle(.inline)
+            .labelsHidden()
+            Divider()
+            Button(PikaText.textSpaceMismatch) {
+                NSApp.sendAction(#selector(AppDelegate.openColorMatchWindow), to: nil, from: nil)
+            }
+            Button(PikaText.textSpaceLearn) {
+                NSWorkspace.shared.open(URL(string: PikaConstants.colorSpaceHelpURL)!)
+            }
+        } label: {
+            Text(label)
+        }
+        .fixedSize()
+        .help(PikaText.textSpaceTitle)
+        .accessibilityLabel(PikaText.textSpaceTitle)
+        // Settings, Check a Color and Match display following the screen change it too.
+        .onReceive(NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification)) { _ in
+            let current = ColorSpacePreference.current
+            if current != option { option = current }
         }
     }
 }

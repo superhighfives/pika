@@ -787,17 +787,23 @@
 /* Match display (%@) */
 "preferences.space.display" = "与显示器一致（%@）";
 
+/* Short label for Match display, in the toolbar */
+"color.space.short.display" = "显示器";
+
+/* Toolbar colour space menu item that opens the Colour Spaces help */
+"color.space.learn" = "关于色彩空间";
+
 /* Recommended for color space */
 "preferences.space.hint.srgb" = "推荐。十六进制值与 CSS、Figma 和大多数设计工具一致。";
 
 /* Display P3 hint */
-"preferences.space.hint.p3" = "适用于 Display P3 设计文件和应用素材。浏览器会将普通十六进制值视为 sRGB，因此 CSS 十六进制和 RGB 会复制为 color(display-p3 …)。";
+"preferences.space.hint.p3" = "适用于 Display P3 设计文件和应用素材。浏览器会将普通十六进制值视为 sRGB，因此用于 CSS 时请以 P3 格式复制。";
 
 /* Match display hint */
 "preferences.space.hint.display" = "取色所在显示器的原始值。十六进制值将与网页不一致。";
 
 /* Match display hint on a P3 screen */
-"preferences.space.hint.display.p3" = "取色所在显示器的原始值。此显示器为 Display P3，因此 CSS 十六进制和 RGB 会复制为 color(display-p3 …)。";
+"preferences.space.hint.display.p3" = "取色所在显示器的原始值。此显示器为 Display P3，因此用于 CSS 时请以 P3 格式复制。";
 
 /* Other color space hint */
 "preferences.space.hint.other" = "除非来源使用相同的色彩空间，否则十六进制值将与网页不一致。";

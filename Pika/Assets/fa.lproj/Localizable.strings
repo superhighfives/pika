@@ -793,17 +793,23 @@
 /* Match display (%@) */
 "preferences.space.display" = "مطابق نمایشگر (%@)";
 
+/* Short label for Match display, in the toolbar */
+"color.space.short.display" = "نمایشگر";
+
+/* Toolbar colour space menu item that opens the Colour Spaces help */
+"color.space.learn" = "درباره فضاهای رنگی";
+
 /* Recommended for color space */
 "preferences.space.hint.srgb" = "توصیه‌شده. مقادیر Hex با CSS، Figma و بیشتر ابزارهای طراحی مطابقت دارند.";
 
 /* Display P3 hint */
-"preferences.space.hint.p3" = "برای فایل‌های طراحی و منابع برنامه با Display P3. مقادیر Hex و RGB در CSS به‌صورت color(display-p3 …) کپی می‌شوند، زیرا مرورگرها Hex ساده را sRGB می‌خوانند.";
+"preferences.space.hint.p3" = "برای فایل‌های طراحی و منابع برنامه با Display P3. مرورگرها Hex ساده را sRGB می‌خوانند، پس برای CSS با قالب P3 کپی کنید.";
 
 /* Match display hint */
 "preferences.space.hint.display" = "مقادیر خام از نمایشگر شما، بر اساس نمایشگری که روی آن رنگ برمی‌دارید. مقادیر Hex با وب مطابقت نخواهند داشت.";
 
 /* Match display hint on a P3 screen */
-"preferences.space.hint.display.p3" = "مقادیر خام از نمایشگر شما، بر اساس نمایشگری که روی آن رنگ برمی‌دارید. این نمایشگر Display P3 است، بنابراین مقادیر Hex و RGB در CSS به‌صورت color(display-p3 …) کپی می‌شوند.";
+"preferences.space.hint.display.p3" = "مقادیر خام از نمایشگر شما، بر اساس نمایشگری که روی آن رنگ برمی‌دارید. این نمایشگر Display P3 است، پس برای CSS با قالب P3 کپی کنید.";
 
 /* Other color space hint */
 "preferences.space.hint.other" = "مقادیر Hex با وب مطابقت نخواهند داشت، مگر اینکه منبع از همین فضای رنگی استفاده کند.";

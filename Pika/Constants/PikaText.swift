@@ -440,6 +440,10 @@ enum PikaText {
     static let textSpaceTitle = NSLocalizedString("preferences.space.title", comment: "Color Space")
     static let textSpaceLabel = NSLocalizedString("preferences.space.label", comment: "Read colors in")
     static let textSpaceDisplay = NSLocalizedString("preferences.space.display", comment: "Match display (%@)")
+    static let textSpaceShortDisplay = NSLocalizedString(
+        "color.space.short.display", comment: "Short label for Match display, in the toolbar"
+    )
+    static let textSpaceLearn = NSLocalizedString("color.space.learn", comment: "About Color Spaces")
     static let textSpaceHintSRGB = NSLocalizedString(
         "preferences.space.hint.srgb", comment: "Recommended for color space"
     )

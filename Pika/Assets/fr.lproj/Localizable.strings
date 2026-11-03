@@ -787,17 +787,23 @@
 /* Match display (%@) */
 "preferences.space.display" = "Comme l’écran (%@)";
 
+/* Short label for Match display, in the toolbar */
+"color.space.short.display" = "Écran";
+
+/* Toolbar colour space menu item that opens the Colour Spaces help */
+"color.space.learn" = "À propos des espaces colorimétriques";
+
 /* Recommended for color space */
 "preferences.space.hint.srgb" = "Recommandé. Les valeurs hex correspondent à CSS, Figma et à la plupart des outils de design.";
 
 /* Display P3 hint */
-"preferences.space.hint.p3" = "Pour les fichiers de design et les ressources d’app en Display P3. Le hex et le RGB CSS sont copiés en color(display-p3 …), car les navigateurs lisent un hex simple comme du sRGB.";
+"preferences.space.hint.p3" = "Pour les fichiers de design et les ressources d’app en Display P3. Les navigateurs lisent un hex simple comme du sRGB : pour le CSS, copiez au format P3.";
 
 /* Match display hint */
 "preferences.space.hint.display" = "Valeurs brutes de l’écran sur lequel vous sélectionnez. Les valeurs hex ne correspondront pas au web.";
 
 /* Match display hint on a P3 screen */
-"preferences.space.hint.display.p3" = "Valeurs brutes de l’écran sur lequel vous sélectionnez. Cet écran est en Display P3 : le hex et le RGB CSS sont copiés en color(display-p3 …).";
+"preferences.space.hint.display.p3" = "Valeurs brutes de l’écran sur lequel vous sélectionnez. Cet écran est en Display P3 : pour le CSS, copiez au format P3.";
 
 /* Other color space hint */
 "preferences.space.hint.other" = "Les valeurs hex ne correspondront pas au web, sauf si la source utilise le même espace colorimétrique.";

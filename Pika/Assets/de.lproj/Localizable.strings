@@ -787,17 +787,23 @@
 /* Match display (%@) */
 "preferences.space.display" = "An Display anpassen (%@)";
 
+/* Short label for Match display, in the toolbar */
+"color.space.short.display" = "Display";
+
+/* Toolbar colour space menu item that opens the Colour Spaces help */
+"color.space.learn" = "Über Farbräume";
+
 /* Recommended for color space */
 "preferences.space.hint.srgb" = "Empfohlen. Hex-Werte stimmen mit CSS, Figma und den meisten Design-Tools überein.";
 
 /* Display P3 hint */
-"preferences.space.hint.p3" = "Für Display-P3-Designdateien und App-Assets. CSS-Hex und -RGB werden als color(display-p3 …) kopiert, da Browser einen einfachen Hex-Wert als sRGB interpretieren.";
+"preferences.space.hint.p3" = "Für Display-P3-Designdateien und App-Assets. Browser interpretieren einen einfachen Hex-Wert als sRGB, kopieren Sie für CSS daher im P3-Format.";
 
 /* Match display hint */
 "preferences.space.hint.display" = "Rohwerte des Displays, auf dem Sie auswählen. Hex-Werte stimmen nicht mit dem Web überein.";
 
 /* Match display hint on a P3 screen */
-"preferences.space.hint.display.p3" = "Rohwerte des Displays, auf dem Sie auswählen. Dieses Display ist Display P3, daher werden CSS-Hex und -RGB als color(display-p3 …) kopiert.";
+"preferences.space.hint.display.p3" = "Rohwerte des Displays, auf dem Sie auswählen. Dieses Display ist Display P3, kopieren Sie für CSS daher im P3-Format.";
 
 /* Other color space hint */
 "preferences.space.hint.other" = "Hex-Werte stimmen nicht mit dem Web überein, es sei denn, die Quelle nutzt denselben Farbraum.";

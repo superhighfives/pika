@@ -787,17 +787,23 @@
 /* Match display (%@) */
 "preferences.space.display" = "Según la pantalla (%@)";
 
+/* Short label for Match display, in the toolbar */
+"color.space.short.display" = "Pantalla";
+
+/* Toolbar colour space menu item that opens the Colour Spaces help */
+"color.space.learn" = "Acerca de los espacios de color";
+
 /* Recommended for color space */
 "preferences.space.hint.srgb" = "Recomendado. Los valores hex coinciden con CSS, Figma y la mayoría de herramientas de diseño.";
 
 /* Display P3 hint */
-"preferences.space.hint.p3" = "Para archivos de diseño y recursos de apps en Display P3. Hex y RGB de CSS se copian como color(display-p3 …), porque los navegadores leen un hex simple como sRGB.";
+"preferences.space.hint.p3" = "Para archivos de diseño y recursos de apps en Display P3. Los navegadores leen un hex simple como sRGB, así que copia en formato P3 para CSS.";
 
 /* Match display hint */
 "preferences.space.hint.display" = "Valores sin procesar de la pantalla en la que seleccionas. Los valores hex no coincidirán con la web.";
 
 /* Match display hint on a P3 screen */
-"preferences.space.hint.display.p3" = "Valores sin procesar de la pantalla en la que seleccionas. Esta pantalla es Display P3, así que hex y RGB de CSS se copian como color(display-p3 …).";
+"preferences.space.hint.display.p3" = "Valores sin procesar de la pantalla en la que seleccionas. Esta pantalla es Display P3, así que copia en formato P3 para CSS.";
 
 /* Other color space hint */
 "preferences.space.hint.other" = "Los valores hex no coincidirán con la web salvo que el origen use el mismo espacio de color.";
