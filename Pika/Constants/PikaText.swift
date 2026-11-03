@@ -488,6 +488,7 @@ enum PikaText {
     static let textFormatOpenGL = NSLocalizedString("color.format.opengl", comment: "OpenGL format")
     static let textFormatLAB = NSLocalizedString("color.format.lab", comment: "LAB format")
     static let textFormatOKLCH = NSLocalizedString("color.format.oklch", comment: "OKLCH format")
+    static let textFormatP3 = NSLocalizedString("color.format.p3", comment: "Display P3 format")
 
     // Global Shortcut
     static let textHotkeyTitle = NSLocalizedString("preferences.hotkey.title", comment: "Global Shortcut")

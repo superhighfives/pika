@@ -357,6 +357,7 @@
 
 /* OKLCH format */
 "color.format.oklch" = "قالب OKLCH";
+"color.format.p3" = "قالب Display P3";
 
 /* Copy foreground */
 "menu.copy.foreground" = "کپی پیش‌زمینه";

@@ -123,4 +123,8 @@ extension AppDelegate {
     @IBAction func triggerFormatOKLCH(_: Any) {
         notificationCenter.post(name: .triggerFormatOKLCH, object: self)
     }
+
+    @IBAction func triggerFormatP3(_: Any) {
+        notificationCenter.post(name: .triggerFormatP3, object: self)
+    }
 }

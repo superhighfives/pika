@@ -327,6 +327,7 @@
 
 /* OKLCH format */
 "color.format.oklch" = "OKLCH-Format";
+"color.format.p3" = "Display-P3-Format";
 
 /* Copy foreground */
 "menu.copy.foreground" = "Vordergrund kopieren";

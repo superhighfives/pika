@@ -327,6 +327,7 @@
 
 /* OKLCH format */
 "color.format.oklch" = "OKLCH 格式";
+"color.format.p3" = "Display P3 格式";
 
 /* Copy foreground */
 "menu.copy.foreground" = "複製前景色";

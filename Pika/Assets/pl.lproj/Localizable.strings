@@ -327,6 +327,7 @@
 
 /* OKLCH format */
 "color.format.oklch" = "Format OKLCH";
+"color.format.p3" = "Format Display P3";
 
 /* Copy foreground */
 "menu.copy.foreground" = "Kopiuj pierwszy plan";

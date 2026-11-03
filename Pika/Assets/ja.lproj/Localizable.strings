@@ -327,6 +327,7 @@
 
 /* OKLCH format */
 "color.format.oklch" = "OKLCHフォーマット";
+"color.format.p3" = "Display P3フォーマット";
 
 /* Copy foreground */
 "menu.copy.foreground" = "前景色をコピー";

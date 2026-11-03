@@ -164,6 +164,12 @@ enum PikaShortcuts {
             action: #selector(AppDelegate.triggerFormatOKLCH),
             notificationName: .triggerFormatOKLCH
         ),
+        PikaShortcut(
+            title: PikaText.textFormatP3,
+            displayKeys: ["⌘", "8"], character: "8", modifiers: .command,
+            action: #selector(AppDelegate.triggerFormatP3),
+            notificationName: .triggerFormatP3
+        ),
     ]
 
     /// Returns the shortcut matching the given key event, if any. Shortcuts that
