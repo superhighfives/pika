@@ -20,20 +20,24 @@ struct NavigationMenu: View {
             // Format and colour space as one control: the readout is "Hex in sRGB".
             HStack(spacing: 0) {
                 Menu {
-                    Picker(PikaText.textFormatTitle, selection: $colorFormat) {
-                        ForEach(ColorFormat.allCases, id: \.self) { value in
-                            Text(value.rawValue)
-                                .selectionDisabled(isFormatDisabled(value))
+                    // Toggles rather than an inline picker, so each format shows its ⌘ shortcut.
+                    Section(PikaText.textFormatTitle) {
+                        ForEach(Array(ColorFormat.allCases.enumerated()), id: \.element) { index, value in
+                            Toggle(value.rawValue, isOn: Binding(
+                                get: { colorFormat == value },
+                                set: { if $0 { colorFormat = value } }
+                            ))
+                            .keyboardShortcut(KeyEquivalent(Character("\(index + 1)")), modifiers: .command)
+                            .disabled(isFormatDisabled(value))
                         }
                     }
-                    .pickerStyle(.inline)
-                    .labelsHidden()
                 } label: {
                     Text(colorFormat.rawValue).fontWeight(.semibold)
                 }
+                .accessibilityLabel(PikaText.textFormatTitle)
+                .accessibilityValue(colorFormat.rawValue)
                 .toolbarMenuSegment()
                 .help(PikaText.textFormatTitle)
-                .accessibilityLabel(PikaText.textFormatTitle)
 
                 Rectangle()
                     .fill(Color(nsColor: .separatorColor))
@@ -68,7 +72,7 @@ struct NavigationMenu: View {
             Menu {
                 NavigationMenuItems()
             } label: {
-                IconImage(name: "ellipsis.circle")
+                IconImage(name: "ellipsis")
             }
             .menuStyle(BorderlessButtonMenuStyle())
             .menuIndicator(.hidden)
@@ -146,8 +150,8 @@ private struct ColorSpaceMenu: View {
                     return []
                 }())
             }
+            // The label shows as the section's header.
             .pickerStyle(.inline)
-            .labelsHidden()
             Divider()
             Button(PikaText.textSpaceMismatch) {
                 NSApp.sendAction(#selector(AppDelegate.openColorMatchWindow), to: nil, from: nil)
@@ -158,9 +162,10 @@ private struct ColorSpaceMenu: View {
         } label: {
             Text(label).foregroundStyle(.secondary)
         }
+        .accessibilityLabel(PikaText.textSpaceTitle)
+        .accessibilityValue(label)
         .toolbarMenuSegment()
         .help(PikaText.textSpaceTitle)
-        .accessibilityLabel(PikaText.textSpaceTitle)
         // Settings, Check a Color and Match display following the screen change it too.
         .onReceive(NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification)) { _ in
             let current = ColorSpacePreference.current
