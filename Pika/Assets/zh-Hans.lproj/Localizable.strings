@@ -808,6 +808,18 @@
 /* Toolbar menu of actions */
 "toolbar.more" = "更多";
 
+/* Toolbar toggle for the text preview pill */
+"toolbar.preview" = "预览";
+
+/* Colour space menu: follow the display being picked on */
+"toolbar.space.display" = "与显示器一致";
+
+/* Colour space menu: what sRGB is for */
+"toolbar.space.srgb.subtitle" = "网页、CSS 和大多数设计工具";
+
+/* Colour space menu: what Display P3 is for */
+"toolbar.space.p3.subtitle" = "广色域设计文件和应用";
+
 /* Recommended for color space */
 "preferences.space.hint.srgb" = "推荐。十六进制值与 CSS、Figma 和大多数设计工具一致。";
 

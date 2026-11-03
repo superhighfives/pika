@@ -808,6 +808,18 @@
 /* Toolbar menu of actions */
 "toolbar.more" = "Više";
 
+/* Toolbar toggle for the text preview pill */
+"toolbar.preview" = "Pregled";
+
+/* Colour space menu: follow the display being picked on */
+"toolbar.space.display" = "Prema zaslonu";
+
+/* Colour space menu: what sRGB is for */
+"toolbar.space.srgb.subtitle" = "Web, CSS i većina alata za dizajn";
+
+/* Colour space menu: what Display P3 is for */
+"toolbar.space.p3.subtitle" = "Dizajnerske datoteke i aplikacije širokog gamuta";
+
 /* Recommended for color space */
 "preferences.space.hint.srgb" = "Preporučeno. Hex vrijednosti odgovaraju CSS-u, Figmi i većini alata za dizajn.";
 

@@ -808,6 +808,18 @@
 /* Toolbar menu of actions */
 "toolbar.more" = "Más";
 
+/* Toolbar toggle for the text preview pill */
+"toolbar.preview" = "Vista previa";
+
+/* Colour space menu: follow the display being picked on */
+"toolbar.space.display" = "Según la pantalla";
+
+/* Colour space menu: what sRGB is for */
+"toolbar.space.srgb.subtitle" = "Web, CSS y la mayoría de herramientas de diseño";
+
+/* Colour space menu: what Display P3 is for */
+"toolbar.space.p3.subtitle" = "Archivos de diseño y apps de gama amplia";
+
 /* Recommended for color space */
 "preferences.space.hint.srgb" = "Recomendado. Los valores hex coinciden con CSS, Figma y la mayoría de herramientas de diseño.";
 

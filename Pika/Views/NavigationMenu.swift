@@ -7,6 +7,15 @@ struct NavigationMenu: View {
     @Default(.historyDrawerVisible) var historyDrawerVisible
     @Default(.showColorPreview) var showColorPreview
     @Default(.showCompliance) var showCompliance
+    @Default(.toolbarLabelledToggles) var toolbarLabelledToggles
+    @State private var hostWindow: NSWindow?
+    @State private var windowWidth: CGFloat = 0
+
+    /// Too narrow for the labelled toggles. The popover is a fixed width with room for them.
+    private var isCompact: Bool {
+        guard let hostWindow, !(hostWindow.className.contains("Popover")) else { return false }
+        return windowWidth < 560
+    }
 
     func isFormatDisabled(_ format: ColorFormat) -> Bool {
         if copyFormat == .swiftUI {
@@ -47,30 +56,40 @@ struct NavigationMenu: View {
             }
             .toolbarMenuChrome()
 
-            Menu {
-                Toggle(PikaText.textViewPreview, isOn: Binding(
-                    get: { showColorPreview },
-                    set: { _ in NSApp.sendAction(#selector(AppDelegate.triggerToggleColorPreview), to: nil, from: nil) }
-                ))
-                .keyboardShortcut("p", modifiers: [])
-                Toggle(PikaText.textViewContrast, isOn: Binding(
-                    get: { showCompliance },
-                    set: { _ in NSApp.sendAction(#selector(AppDelegate.triggerToggleCompliance), to: nil, from: nil) }
-                ))
-                .keyboardShortcut("c", modifiers: [])
-                Toggle(PikaText.textViewPalettes, isOn: Binding(
-                    get: { historyDrawerVisible },
-                    set: { _ in NSApp.sendAction(#selector(AppDelegate.triggerToggleHistory), to: nil, from: nil) }
-                ))
-                .keyboardShortcut("h", modifiers: [])
-            } label: {
-                Text(PikaText.textViewMenu)
+            // A narrow window has no room for the labelled toggles, so they fold into View.
+            if toolbarLabelledToggles, !isCompact {
+                ToolbarToggles()
+            } else {
+                Menu {
+                    Toggle(PikaText.textViewPreview, isOn: Binding(
+                        get: { showColorPreview },
+                        set: { _ in NSApp.sendAction(#selector(AppDelegate.triggerToggleColorPreview), to: nil, from: nil) }
+                    ))
+                    .keyboardShortcut("p", modifiers: [])
+                    Toggle(PikaText.textViewContrast, isOn: Binding(
+                        get: { showCompliance },
+                        set: { _ in NSApp.sendAction(#selector(AppDelegate.triggerToggleCompliance), to: nil, from: nil) }
+                    ))
+                    .keyboardShortcut("c", modifiers: [])
+                    Toggle(PikaText.textViewPalettes, isOn: Binding(
+                        get: { historyDrawerVisible },
+                        set: { _ in NSApp.sendAction(#selector(AppDelegate.triggerToggleHistory), to: nil, from: nil) }
+                    ))
+                    .keyboardShortcut("h", modifiers: [])
+                } label: {
+                    Text(PikaText.textViewMenu)
+                }
+                .toolbarMenuSegment()
+                .toolbarMenuChrome()
             }
-            .toolbarMenuSegment()
-            .toolbarMenuChrome()
 
             Menu {
                 NavigationMenuItems()
+                #if DEBUG
+                    // Temporary, while comparing toolbar layouts; removed before merging.
+                    Divider()
+                    Toggle("Toolbar: Labelled Toggles", isOn: $toolbarLabelledToggles)
+                #endif
             } label: {
                 IconImage(name: "ellipsis")
             }
@@ -114,6 +133,14 @@ struct NavigationMenu: View {
             .frame(width: 0, height: 0)
             .allowsHitTesting(false)
         }
+        .background(HostWindowReader { window in
+            hostWindow = window
+            windowWidth = window?.frame.width ?? 0
+        })
+        .onReceive(NotificationCenter.default.publisher(for: NSWindow.didResizeNotification)) { note in
+            guard let window = note.object as? NSWindow, window === hostWindow else { return }
+            windowWidth = window.frame.width
+        }
         .onChange(of: copyFormat) {
             if copyFormat == .swiftUI {
                 if PikaConstants.disabledFormats.contains(colorFormat) {
@@ -138,20 +165,32 @@ private struct ColorSpaceMenu: View {
         }
     }
 
+    /// A checkable space, with a second line saying what it's for.
+    private func spaceItem(_ value: ColorSpaceOption, title: String, subtitle: String?) -> some View {
+        Toggle(isOn: Binding(
+            get: { option == value },
+            set: { if $0 { ColorSpacePreference.select(value) } }
+        )) {
+            Text(title)
+            if let subtitle { Text(subtitle) }
+        }
+    }
+
     var body: some View {
         Menu {
-            Picker(PikaText.textSpaceTitle, selection: Binding(
-                get: { option },
-                set: { ColorSpacePreference.select($0) }
-            )) {
+            Section(PikaText.textSpaceTitle) {
+                spaceItem(.space(.sRGB), title: "sRGB", subtitle: PikaText.textSpaceSubtitleSRGB)
+                spaceItem(.space(.displayP3), title: "Display P3", subtitle: PikaText.textSpaceSubtitleP3)
+                spaceItem(
+                    .matchDisplay,
+                    title: PikaText.textSpaceMatchDisplay,
+                    subtitle: ColorSpacePreference.displaySpaceName
+                )
                 // A space chosen in Settings outside the three main ones stays listed.
-                ColorSpaceOptions(otherSpaces: {
-                    if case let .space(space) = option, !ColorSpacePreference.isCommon(space) { return [space] }
-                    return []
-                }())
+                if case let .space(space) = option, !ColorSpacePreference.isCommon(space) {
+                    spaceItem(option, title: space.localizedName ?? "—", subtitle: nil)
+                }
             }
-            // The label shows as the section's header.
-            .pickerStyle(.inline)
             Divider()
             Button(PikaText.textSpaceMismatch) {
                 NSApp.sendAction(#selector(AppDelegate.openColorMatchWindow), to: nil, from: nil)
@@ -172,6 +211,79 @@ private struct ColorSpaceMenu: View {
             if current != option { option = current }
         }
     }
+}
+
+/// Option A: the preview, contrast and palettes toggles as labelled buttons.
+private struct ToolbarToggles: View {
+    @Default(.historyDrawerVisible) var historyDrawerVisible
+    @Default(.showColorPreview) var showColorPreview
+    @Default(.showCompliance) var showCompliance
+
+    var body: some View {
+        HStack(spacing: 2.0) {
+            chip(PikaText.textToolbarPreview, icon: "textformat", key: "P", isOn: showColorPreview) {
+                NSApp.sendAction(#selector(AppDelegate.triggerToggleColorPreview), to: nil, from: nil)
+            }
+            chip(PikaText.textViewContrast, icon: "circle.lefthalf.filled", key: "C", isOn: showCompliance) {
+                NSApp.sendAction(#selector(AppDelegate.triggerToggleCompliance), to: nil, from: nil)
+            }
+            chip(PikaText.textViewPalettes, icon: "square.on.square", key: "H", isOn: historyDrawerVisible) {
+                NSApp.sendAction(#selector(AppDelegate.triggerToggleHistory), to: nil, from: nil)
+            }
+        }
+    }
+
+    private func chip(
+        _ title: String, icon: String, key: String, isOn: Bool, action: @escaping () -> Void
+    ) -> some View {
+        Button(action: action) {
+            HStack(spacing: 4.0) {
+                Image(systemName: icon)
+                Text(title).fixedSize()
+            }
+            .font(.system(size: 12.0))
+            .padding(.horizontal, 7.0)
+            .frame(height: 22.0)
+            .foregroundStyle(isOn ? Color.accentColor : Color.secondary)
+            .background(
+                RoundedRectangle(cornerRadius: 6.0, style: .continuous)
+                    .fill(isOn ? Color.accentColor.opacity(0.15) : Color.clear)
+            )
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .help("\(title) (\(key))")
+        .accessibilityLabel(title)
+        .accessibilityAddTraits(isOn ? .isSelected : [])
+    }
+}
+
+/// Reports the window the toolbar is hosted in, so it can follow the window's width.
+private struct HostWindowReader: NSViewRepresentable {
+    let onWindow: (NSWindow?) -> Void
+
+    func makeNSView(context _: Context) -> NSView {
+        let view = WindowView()
+        view.onWindow = onWindow
+        return view
+    }
+
+    func updateNSView(_: NSView, context _: Context) {}
+
+    private final class WindowView: NSView {
+        var onWindow: ((NSWindow?) -> Void)?
+
+        override func viewDidMoveToWindow() {
+            super.viewDidMoveToWindow()
+            let window = window
+            DispatchQueue.main.async { self.onWindow?(window) }
+        }
+    }
+}
+
+extension Defaults.Keys {
+    /// Temporary: which toolbar layout to show while comparing them. Removed before merging.
+    static let toolbarLabelledToggles = Key<Bool>("toolbarLabelledToggles", default: false)
 }
 
 private extension View {
