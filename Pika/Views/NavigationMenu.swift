@@ -192,7 +192,7 @@ private struct ColorSpaceMenu: View {
                 }
             }
             Divider()
-            Button(PikaText.textSpaceMismatch) {
+            Button(PikaText.textMatchTitle) {
                 NSApp.sendAction(#selector(AppDelegate.openColorMatchWindow), to: nil, from: nil)
             }
             Button(PikaText.textSpaceLearn) {
@@ -300,10 +300,10 @@ private extension View {
     func toolbarMenuChrome() -> some View {
         background(
             RoundedRectangle(cornerRadius: 6.0, style: .continuous)
-                .fill(Color(nsColor: .controlColor))
+                .fill(Color.primary.opacity(0.05))
                 .overlay(
                     RoundedRectangle(cornerRadius: 6.0, style: .continuous)
-                        .strokeBorder(Color(nsColor: .separatorColor))
+                        .strokeBorder(Color.primary.opacity(0.1))
                 )
         )
     }
