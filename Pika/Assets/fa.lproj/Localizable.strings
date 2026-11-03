@@ -799,6 +799,21 @@
 /* Toolbar colour space menu item that opens the Colour Spaces help */
 "color.space.learn" = "درباره فضاهای رنگی";
 
+/* Toolbar menu of what the window shows */
+"toolbar.view" = "نما";
+
+/* View menu: text preview pill */
+"toolbar.view.preview" = "پیش‌نمایش متن";
+
+/* View menu: contrast footer */
+"toolbar.view.contrast" = "کنتراست";
+
+/* View menu: palettes drawer */
+"toolbar.view.palettes" = "پالت‌ها";
+
+/* Toolbar menu of actions */
+"toolbar.more" = "بیشتر";
+
 /* Recommended for color space */
 "preferences.space.hint.srgb" = "توصیه‌شده. مقادیر Hex با CSS، Figma و بیشتر ابزارهای طراحی مطابقت دارند.";
 

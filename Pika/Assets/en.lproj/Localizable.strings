@@ -799,6 +799,21 @@
 /* Toolbar colour space menu item that opens the Colour Spaces help */
 "color.space.learn" = "About Color Spaces";
 
+/* Toolbar menu of what the window shows */
+"toolbar.view" = "View";
+
+/* View menu: text preview pill */
+"toolbar.view.preview" = "Text Preview";
+
+/* View menu: contrast footer */
+"toolbar.view.contrast" = "Contrast";
+
+/* View menu: palettes drawer */
+"toolbar.view.palettes" = "Palettes";
+
+/* Toolbar menu of actions */
+"toolbar.more" = "More";
+
 /* Recommended for color space */
 "preferences.space.hint.srgb" = "Recommended. Hex values match CSS, Figma and most design tools.";
 

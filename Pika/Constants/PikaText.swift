@@ -444,6 +444,11 @@ enum PikaText {
         "color.space.short.display", comment: "Short label for Match display, in the toolbar"
     )
     static let textSpaceLearn = NSLocalizedString("color.space.learn", comment: "About Color Spaces")
+    static let textViewMenu = NSLocalizedString("toolbar.view", comment: "Toolbar menu of what the window shows")
+    static let textViewPreview = NSLocalizedString("toolbar.view.preview", comment: "View menu: text preview pill")
+    static let textViewContrast = NSLocalizedString("toolbar.view.contrast", comment: "View menu: contrast footer")
+    static let textViewPalettes = NSLocalizedString("toolbar.view.palettes", comment: "View menu: palettes drawer")
+    static let textToolbarMore = NSLocalizedString("toolbar.more", comment: "Toolbar menu of actions")
     static let textSpaceHintSRGB = NSLocalizedString(
         "preferences.space.hint.srgb", comment: "Recommended for color space"
     )

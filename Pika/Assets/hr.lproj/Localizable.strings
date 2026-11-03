@@ -793,6 +793,21 @@
 /* Toolbar colour space menu item that opens the Colour Spaces help */
 "color.space.learn" = "O prostorima boja";
 
+/* Toolbar menu of what the window shows */
+"toolbar.view" = "Prikaz";
+
+/* View menu: text preview pill */
+"toolbar.view.preview" = "Pregled teksta";
+
+/* View menu: contrast footer */
+"toolbar.view.contrast" = "Kontrast";
+
+/* View menu: palettes drawer */
+"toolbar.view.palettes" = "Palete";
+
+/* Toolbar menu of actions */
+"toolbar.more" = "Više";
+
 /* Recommended for color space */
 "preferences.space.hint.srgb" = "Preporučeno. Hex vrijednosti odgovaraju CSS-u, Figmi i većini alata za dizajn.";
 

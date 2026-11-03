@@ -793,6 +793,21 @@
 /* Toolbar colour space menu item that opens the Colour Spaces help */
 "color.space.learn" = "關於色彩空間";
 
+/* Toolbar menu of what the window shows */
+"toolbar.view" = "顯示";
+
+/* View menu: text preview pill */
+"toolbar.view.preview" = "文字預覽";
+
+/* View menu: contrast footer */
+"toolbar.view.contrast" = "對比";
+
+/* View menu: palettes drawer */
+"toolbar.view.palettes" = "調色盤";
+
+/* Toolbar menu of actions */
+"toolbar.more" = "更多";
+
 /* Recommended for color space */
 "preferences.space.hint.srgb" = "推薦。十六進位值與 CSS、Figma 和大多數設計工具一致。";
 

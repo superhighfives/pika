@@ -16,64 +16,66 @@ struct NavigationMenu: View {
     }
 
     var body: some View {
-        HStack(spacing: 4.0) {
-            Picker(PikaText.textFormatTitle, selection: $colorFormat) {
-                ForEach(ColorFormat.allCases, id: \.self) { value in
-                    Text(value.rawValue)
-                        .selectionDisabled(isFormatDisabled(value))
+        HStack(spacing: 8.0) {
+            // Format and colour space as one control: the readout is "Hex in sRGB".
+            HStack(spacing: 0) {
+                Menu {
+                    Picker(PikaText.textFormatTitle, selection: $colorFormat) {
+                        ForEach(ColorFormat.allCases, id: \.self) { value in
+                            Text(value.rawValue)
+                                .selectionDisabled(isFormatDisabled(value))
+                        }
+                    }
+                    .pickerStyle(.inline)
+                    .labelsHidden()
+                } label: {
+                    Text(colorFormat.rawValue).fontWeight(.semibold)
                 }
+                .toolbarMenuSegment()
+                .help(PikaText.textFormatTitle)
+                .accessibilityLabel(PikaText.textFormatTitle)
+
+                Rectangle()
+                    .fill(Color(nsColor: .separatorColor))
+                    .frame(width: 1, height: 14)
+
+                ColorSpaceMenu()
             }
-            .pickerStyle(.menu)
-            .labelsHidden()
-            .fixedSize()
-            .frame(width: 100.0)
+            .toolbarMenuChrome()
 
-            ColorSpaceMenu()
-                .padding(.trailing, 4.0)
-
-            Button(action: {
-                NSApp.sendAction(#selector(AppDelegate.triggerToggleColorPreview), to: nil, from: nil)
-            }, label: {
-                IconImage(name: showColorPreview ? "eye" : "eye.slash")
-            })
-            .buttonStyle(PlainButtonStyle())
-            .padding(.horizontal, 6.0)
-            .foregroundStyle(showColorPreview ? Color.accentColor : Color.primary)
-            .help("\(PikaText.textColorPreviewToggle) (P)")
-
-            Button(action: {
-                NSApp.sendAction(#selector(AppDelegate.triggerToggleCompliance), to: nil, from: nil)
-            }, label: {
-                IconImage(name: showCompliance ? "checkmark.shield.fill" : "checkmark.shield")
-            })
-            .buttonStyle(PlainButtonStyle())
-            .padding(.horizontal, 6.0)
-            .foregroundStyle(showCompliance ? Color.accentColor : Color.primary)
-            .help("\(PikaText.textComplianceToggle) (C)")
-
-            Button(action: {
-                withAnimation(.easeInOut(duration: 0.25)) {
-                    historyDrawerVisible.toggle()
-                }
-            }, label: {
-                IconImage(name: historyDrawerVisible ? "clock.arrow.circlepath" : "clock")
-            })
-            .buttonStyle(PlainButtonStyle())
-            .padding(.horizontal, 6.0)
-            .foregroundStyle(historyDrawerVisible ? Color.accentColor : Color.primary)
-            .help("\(PikaText.textHistoryToggle) (H)")
+            Menu {
+                Toggle(PikaText.textViewPreview, isOn: Binding(
+                    get: { showColorPreview },
+                    set: { _ in NSApp.sendAction(#selector(AppDelegate.triggerToggleColorPreview), to: nil, from: nil) }
+                ))
+                .keyboardShortcut("p", modifiers: [])
+                Toggle(PikaText.textViewContrast, isOn: Binding(
+                    get: { showCompliance },
+                    set: { _ in NSApp.sendAction(#selector(AppDelegate.triggerToggleCompliance), to: nil, from: nil) }
+                ))
+                .keyboardShortcut("c", modifiers: [])
+                Toggle(PikaText.textViewPalettes, isOn: Binding(
+                    get: { historyDrawerVisible },
+                    set: { _ in NSApp.sendAction(#selector(AppDelegate.triggerToggleHistory), to: nil, from: nil) }
+                ))
+                .keyboardShortcut("h", modifiers: [])
+            } label: {
+                Text(PikaText.textViewMenu)
+            }
+            .toolbarMenuSegment()
+            .toolbarMenuChrome()
 
             Menu {
                 NavigationMenuItems()
             } label: {
-                IconImage(name: "gearshape")
+                IconImage(name: "ellipsis.circle")
             }
             .menuStyle(BorderlessButtonMenuStyle())
-            .menuIndicator(.visible)
-            .frame(alignment: .leading)
-            .padding(.leading, 6.0)
-            .padding(.trailing, 10.0)
+            .menuIndicator(.hidden)
             .fixedSize()
+            .padding(.trailing, 8.0)
+            .help(PikaText.textToolbarMore)
+            .accessibilityLabel(PikaText.textToolbarMore)
         }
         .background {
             let values = ColorFormat.allCases.map { $0 }
@@ -154,9 +156,9 @@ private struct ColorSpaceMenu: View {
                 NSWorkspace.shared.open(URL(string: PikaConstants.colorSpaceHelpURL)!)
             }
         } label: {
-            Text(label)
+            Text(label).foregroundStyle(.secondary)
         }
-        .fixedSize()
+        .toolbarMenuSegment()
         .help(PikaText.textSpaceTitle)
         .accessibilityLabel(PikaText.textSpaceTitle)
         // Settings, Check a Color and Match display following the screen change it too.
@@ -164,6 +166,29 @@ private struct ColorSpaceMenu: View {
             let current = ColorSpacePreference.current
             if current != option { option = current }
         }
+    }
+}
+
+private extension View {
+    /// One half of a toolbar menu control: a borderless menu with its own chevron.
+    func toolbarMenuSegment() -> some View {
+        menuStyle(BorderlessButtonMenuStyle())
+            .menuIndicator(.visible)
+            .fixedSize()
+            .padding(.horizontal, 8.0)
+            .frame(height: 22.0)
+    }
+
+    /// The bezel the toolbar's menus sit in, so the format/space pair reads as one control.
+    func toolbarMenuChrome() -> some View {
+        background(
+            RoundedRectangle(cornerRadius: 6.0, style: .continuous)
+                .fill(Color(nsColor: .controlColor))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 6.0, style: .continuous)
+                        .strokeBorder(Color(nsColor: .separatorColor))
+                )
+        )
     }
 }
 
