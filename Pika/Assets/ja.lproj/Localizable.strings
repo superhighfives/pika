@@ -808,9 +808,6 @@
 /* Toolbar menu of actions */
 "toolbar.more" = "その他";
 
-/* Toolbar toggle for the text preview pill */
-"toolbar.preview" = "プレビュー";
-
 /* Colour space menu: follow the display being picked on */
 "toolbar.space.display" = "ディスプレイに合わせる";
 

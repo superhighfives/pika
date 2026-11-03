@@ -808,9 +808,6 @@
 /* Toolbar menu of actions */
 "toolbar.more" = "更多";
 
-/* Toolbar toggle for the text preview pill */
-"toolbar.preview" = "預覽";
-
 /* Colour space menu: follow the display being picked on */
 "toolbar.space.display" = "與顯示器一致";
 

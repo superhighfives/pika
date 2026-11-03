@@ -449,7 +449,6 @@ enum PikaText {
     static let textViewContrast = NSLocalizedString("toolbar.view.contrast", comment: "View menu: contrast footer")
     static let textViewPalettes = NSLocalizedString("toolbar.view.palettes", comment: "View menu: palettes drawer")
     static let textToolbarMore = NSLocalizedString("toolbar.more", comment: "Toolbar menu of actions")
-    static let textToolbarPreview = NSLocalizedString("toolbar.preview", comment: "Toolbar toggle for the text preview pill")
     static let textSpaceMatchDisplay = NSLocalizedString("toolbar.space.display", comment: "Colour space menu: follow the display being picked on")
     static let textSpaceSubtitleSRGB = NSLocalizedString("toolbar.space.srgb.subtitle", comment: "Colour space menu: what sRGB is for")
     static let textSpaceSubtitleP3 = NSLocalizedString("toolbar.space.p3.subtitle", comment: "Colour space menu: what Display P3 is for")

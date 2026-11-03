@@ -808,9 +808,6 @@
 /* Toolbar menu of actions */
 "toolbar.more" = "Więcej";
 
-/* Toolbar toggle for the text preview pill */
-"toolbar.preview" = "Podgląd";
-
 /* Colour space menu: follow the display being picked on */
 "toolbar.space.display" = "Zgodnie z ekranem";
 

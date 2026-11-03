@@ -814,9 +814,6 @@
 /* Toolbar menu of actions */
 "toolbar.more" = "More";
 
-/* Toolbar toggle for the text preview pill */
-"toolbar.preview" = "Preview";
-
 /* Colour space menu: follow the display being picked on */
 "toolbar.space.display" = "Match Display";
 
