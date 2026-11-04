@@ -256,6 +256,9 @@
 /* Copy */
 "color.copy" = "Kopiraj";
 
+/* Paste */
+"color.paste" = "Zalijepi";
+
 /* Copy foreground */
 "color.copy.foreground" = "Kopiraj prednju boju";
 

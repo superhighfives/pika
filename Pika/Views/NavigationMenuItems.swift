@@ -47,6 +47,11 @@ struct NavigationMenuItems: View {
             Button(PikaText.textMenuCopyAllAsJSON) { send(#selector(AppDelegate.triggerCopyData)) }
         }
 
+        MenuGroup(title: PikaText.textColorPaste) {
+            Button(PikaText.textColorForeground) { send(#selector(AppDelegate.triggerPasteForeground)) }
+            Button(PikaText.textColorBackground) { send(#selector(AppDelegate.triggerPasteBackground)) }
+        }
+
         MenuGroup(title: PikaText.textColorSystemPicker) {
             Button(PikaText.textColorForeground) { send(#selector(AppDelegate.triggerSystemPickerForeground)) }
             Button(PikaText.textColorBackground) { send(#selector(AppDelegate.triggerSystemPickerBackground)) }

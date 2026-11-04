@@ -256,6 +256,9 @@
 /* Copy */
 "color.copy" = "复制";
 
+/* Paste */
+"color.paste" = "粘贴";
+
 /* Copy foreground */
 "color.copy.foreground" = "复制前景色";
 

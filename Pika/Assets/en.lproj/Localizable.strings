@@ -286,6 +286,9 @@
 /* Copy */
 "color.copy" = "Copy";
 
+/* Paste */
+"color.paste" = "Paste";
+
 /* Copy foreground */
 "color.copy.foreground" = "Copy Foreground";
 
