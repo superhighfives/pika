@@ -282,8 +282,11 @@ private final class ToggleMenuRow: NSView {
 
     private var isHighlighted: Bool { enclosingMenuItem?.isHighlighted ?? false }
 
+    /// The state just set by a click, until the setting itself is read again on the next open.
+    private var shownOn: Bool?
+
     private func refresh() {
-        let on = isOn()
+        let on = shownOn ?? isOn()
         check.isHidden = !on
         setAccessibilityValue(on)
         let highlighted = isHighlighted
@@ -303,11 +306,27 @@ private final class ToggleMenuRow: NSView {
     }
 
     override func mouseUp(with _: NSEvent) {
+        flip()
+    }
+
+    override func accessibilityPerformPress() -> Bool {
+        flip()
+        return true
+    }
+
+    /// Toggles the setting and shows it at once. While a menu is open the app runs the menu's own
+    /// event loop, which holds back queued work and SwiftUI's redraws until it closes, so a click
+    /// looked like it did nothing. The check is set from the flip rather than read back, and the
+    /// windows behind are laid out and drawn now.
+    private func flip() {
+        let wasOn = isOn()
         toggle()
-        // The toggle lands through a notification; read the setting back once it has.
-        DispatchQueue.main.async { [weak self] in
-            self?.refresh()
-            self?.needsDisplay = true
+        shownOn = !wasOn
+        refresh()
+        display()
+        for window in NSApp.windows where window.isVisible && window !== self.window {
+            window.contentView?.layoutSubtreeIfNeeded()
+            window.displayIfNeeded()
         }
     }
 }
