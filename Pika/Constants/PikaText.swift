@@ -39,6 +39,7 @@ enum PikaText {
     static let textColorUndo = NSLocalizedString("color.undo", comment: "Undo")
     static let textColorRedo = NSLocalizedString("color.redo", comment: "Redo")
     static let textColorCopy = NSLocalizedString("color.copy", comment: "Copy")
+    static let textColorPaste = NSLocalizedString("color.paste", comment: "Paste")
     static let textColorSystemPicker = NSLocalizedString("color.system", comment: "System picker")
     static let textColorCopied = NSLocalizedString("color.copy.toast", comment: "Copied")
 

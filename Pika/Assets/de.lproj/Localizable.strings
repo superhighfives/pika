@@ -256,6 +256,9 @@
 /* Copy */
 "color.copy" = "Kopieren";
 
+/* Paste */
+"color.paste" = "Einsetzen";
+
 /* Copy foreground */
 "color.copy.foreground" = "Vordergrund kopieren";
 

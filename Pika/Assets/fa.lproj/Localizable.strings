@@ -286,6 +286,9 @@
 /* Copy */
 "color.copy" = "کپی";
 
+/* Paste */
+"color.paste" = "چسباندن";
+
 /* Copy foreground */
 "color.copy.foreground" = "کپی پیش‌زمینه";
 
