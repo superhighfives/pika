@@ -292,6 +292,12 @@
 /* Copy background */
 "color.copy.background" = "Copy Background";
 
+/* Paste foreground */
+"color.paste.foreground" = "Paste Foreground";
+
+/* Paste background */
+"color.paste.background" = "Paste Background";
+
 /* Copy all as text */
 "color.copy.text" = "Copy All as Text";
 

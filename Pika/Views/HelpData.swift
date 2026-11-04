@@ -73,6 +73,8 @@ var shortcutGroups: [ShortcutGroup] { [
     (PikaText.textUrlGroupCopy, [
         ShortcutEntry(title: PikaText.textCopyForeground, keys: ["⌘", "C"], notificationName: .triggerCopyForeground),
         ShortcutEntry(title: PikaText.textCopyBackground, keys: ["⇧", "⌘", "C"], notificationName: .triggerCopyBackground),
+        ShortcutEntry(title: PikaText.textPasteForeground, keys: ["⌘", "V"], notificationName: .triggerPasteForeground),
+        ShortcutEntry(title: PikaText.textPasteBackground, keys: ["⇧", "⌘", "V"], notificationName: .triggerPasteBackground),
     ]),
     (PikaText.textColorSystemPicker, [
         ShortcutEntry(title: PikaText.textColorSystemPickerForegroundSimple, keys: ["⌘", "S"], notificationName: .triggerSystemPickerForeground),

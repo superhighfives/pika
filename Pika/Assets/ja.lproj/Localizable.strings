@@ -262,6 +262,12 @@
 /* Copy background */
 "color.copy.background" = "背景色をコピー";
 
+/* Paste foreground */
+"color.paste.foreground" = "前景色にペースト";
+
+/* Paste background */
+"color.paste.background" = "背景色にペースト";
+
 /* Copy all as text */
 "color.copy.text" = "すべてをテキストでコピー";
 

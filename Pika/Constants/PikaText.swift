@@ -281,6 +281,8 @@ enum PikaText {
     )
     static let textCopyForeground = NSLocalizedString("color.copy.foreground", comment: "Copy foreground")
     static let textCopyBackground = NSLocalizedString("color.copy.background", comment: "Copy background")
+    static let textPasteForeground = NSLocalizedString("color.paste.foreground", comment: "Paste foreground")
+    static let textPasteBackground = NSLocalizedString("color.paste.background", comment: "Paste background")
     static let textColorSystemPickerForeground = NSLocalizedString(
         "color.system.foreground",
         comment: "Use foreground system color picker"
