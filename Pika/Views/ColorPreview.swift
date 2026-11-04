@@ -46,7 +46,7 @@ struct SwapPreviewButton: View {
     @State private var displayMode: DisplayMode = .standalone
     @State private var fadePhase: FadePhase = .visible
     @State private var swapHovered: Bool = false
-    @State private var transitionTask: Task<Void, Never>?
+    @State private var transitionGeneration = 0
 
     private enum DisplayMode {
         case preview, standalone
@@ -120,13 +120,15 @@ struct SwapPreviewButton: View {
         .onChange(of: showPreview) { _, newValue in
             let targetMode: DisplayMode = newValue ? .preview : .standalone
 
-            transitionTask?.cancel()
-            transitionTask = Task { @MainActor in
-                withAnimation(.easeInOut(duration: 0.15)) {
-                    fadePhase = .fadingOut
-                }
-                try? await Task.sleep(for: .milliseconds(150))
-                guard !Task.isCancelled else { return }
+            // Chained on the fade-out's completion rather than a sleeping task: a task doesn't
+            // resume while a menu is open, so toggling Preview from the View menu only showed once
+            // the menu closed. A newer toggle supersedes this one's swap.
+            transitionGeneration += 1
+            let generation = transitionGeneration
+            withAnimation(.easeInOut(duration: 0.15)) {
+                fadePhase = .fadingOut
+            } completion: {
+                guard generation == transitionGeneration else { return }
                 displayMode = targetMode
                 withAnimation(.easeInOut(duration: 0.15)) {
                     fadePhase = .visible

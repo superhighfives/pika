@@ -174,16 +174,12 @@ private struct ViewMenuButton: View {
         let title: String
         let key: String
         let setting: Defaults.Key<Bool>
-        let action: Selector
     }
 
     private static let rows = [
-        Row(title: PikaText.textViewContrast, key: "C", setting: .showCompliance,
-            action: #selector(AppDelegate.triggerToggleCompliance)),
-        Row(title: PikaText.textViewPalettes, key: "H", setting: .historyDrawerVisible,
-            action: #selector(AppDelegate.triggerToggleHistory)),
-        Row(title: PikaText.textViewPreview, key: "P", setting: .showColorPreview,
-            action: #selector(AppDelegate.triggerToggleColorPreview)),
+        Row(title: PikaText.textViewContrast, key: "C", setting: .showCompliance),
+        Row(title: PikaText.textViewPalettes, key: "H", setting: .historyDrawerVisible),
+        Row(title: PikaText.textViewPreview, key: "P", setting: .showColorPreview),
     ]
 
     @State private var anchor: NSView?
@@ -210,8 +206,10 @@ private struct ViewMenuButton: View {
         let menu = NSMenu()
         for row in Self.rows {
             let item = NSMenuItem()
+            // Written here rather than through the toggle action: that lands in a SwiftUI
+            // handler, which waits for the menu to close.
             item.view = ToggleMenuRow(title: row.title, key: row.key, isOn: { Defaults[row.setting] }) {
-                NSApp.sendAction(row.action, to: nil, from: nil)
+                withAnimation(.easeInOut(duration: 0.25)) { Defaults[row.setting].toggle() }
             }
             menu.addItem(item)
         }
@@ -316,18 +314,16 @@ private final class ToggleMenuRow: NSView {
 
     /// Toggles the setting and shows it at once. While a menu is open the app runs the menu's own
     /// event loop, which holds back queued work and SwiftUI's redraws until it closes, so a click
-    /// looked like it did nothing. The check is set from the flip rather than read back, and the
-    /// windows behind are laid out and drawn now.
+    /// looked like it did nothing. The check is set from the flip rather than read back.
     private func flip() {
         let wasOn = isOn()
         toggle()
         shownOn = !wasOn
         refresh()
         display()
-        for window in NSApp.windows where window.isVisible && window !== self.window {
-            window.contentView?.layoutSubtreeIfNeeded()
-            window.displayIfNeeded()
-        }
+        // Let the app's normal run loop turn once, so SwiftUI applies the change and redraws the
+        // window behind the menu now rather than when the menu closes.
+        RunLoop.main.run(mode: .default, before: Date(timeIntervalSinceNow: 0.05))
     }
 }
 
