@@ -321,9 +321,13 @@ private final class ToggleMenuRow: NSView {
         shownOn = !wasOn
         refresh()
         display()
-        // Let the app's normal run loop turn once, so SwiftUI applies the change and redraws the
-        // window behind the menu now rather than when the menu closes.
-        RunLoop.main.run(mode: .default, before: Date(timeIntervalSinceNow: 0.05))
+        // Run the app's normal run loop for as long as the window's transitions take (0.3 s at
+        // most), so SwiftUI applies the change and animates it behind the menu now; in the menu's
+        // own loop an animation starts but doesn't advance until the menu closes.
+        let settle = Date(timeIntervalSinceNow: 0.35)
+        while Date() < settle {
+            RunLoop.main.run(mode: .default, before: settle)
+        }
     }
 }
 

@@ -43,18 +43,16 @@ struct SwapPreviewButton: View {
     let onSwap: () -> Void
 
     @State private var angle: Double = 0
-    @State private var displayMode: DisplayMode = .standalone
-    @State private var fadePhase: FadePhase = .visible
     @State private var swapHovered: Bool = false
-    @State private var transitionGeneration = 0
 
     private enum DisplayMode {
         case preview, standalone
     }
 
-    private enum FadePhase {
-        case visible, fadingOut
-    }
+    /// Read straight from `showPreview`, and cross-faded (below). It used to fade out, swap and
+    /// fade back in through a sleeping task and then an animation completion, but neither runs
+    /// while a menu is open, so toggling Preview from the View menu only showed once it closed.
+    private var displayMode: DisplayMode { showPreview ? .preview : .standalone }
 
     private var swapButton: some View {
         // The half-turn comes from `.triggerSwap` (below), which `onSwap` posts and which also
@@ -101,6 +99,7 @@ struct SwapPreviewButton: View {
                 .onChange(of: isVisible) { _, visible in
                     if !visible { swapHovered = false }
                 }
+                .transition(.opacity)
 
             case .standalone:
                 swapButton
@@ -110,33 +109,12 @@ struct SwapPreviewButton: View {
                         ltr: true,
                         onHoverChange: onHoverChange
                     ))
+                    .transition(.opacity)
             }
         }
-        .opacity(fadePhase == .visible ? 1 : 0)
-        .allowsHitTesting(fadePhase == .visible)
+        .animation(.easeInOut(duration: 0.3), value: showPreview)
         .onReceive(NotificationCenter.default.publisher(for: .triggerSwap)) { _ in
             angle -= 180
-        }
-        .onChange(of: showPreview) { _, newValue in
-            let targetMode: DisplayMode = newValue ? .preview : .standalone
-
-            // Chained on the fade-out's completion rather than a sleeping task: a task doesn't
-            // resume while a menu is open, so toggling Preview from the View menu only showed once
-            // the menu closed. A newer toggle supersedes this one's swap.
-            transitionGeneration += 1
-            let generation = transitionGeneration
-            withAnimation(.easeInOut(duration: 0.15)) {
-                fadePhase = .fadingOut
-            } completion: {
-                guard generation == transitionGeneration else { return }
-                displayMode = targetMode
-                withAnimation(.easeInOut(duration: 0.15)) {
-                    fadePhase = .visible
-                }
-            }
-        }
-        .onAppear {
-            displayMode = showPreview ? .preview : .standalone
         }
     }
 }
