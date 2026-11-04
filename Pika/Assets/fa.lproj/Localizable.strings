@@ -855,7 +855,10 @@
 
 
 /* Check a Color window title */
-"match.title" = "بررسی یک رنگ";
+"match.title" = "بررسی یک رنگ…";
+
+/* Check a Color (toolbar colour space menu item) */
+"match.menu" = "بررسی یک رنگ";
 
 /* Check a Color introduction */
 "match.intro" = "رنگی را بردارید که مقدارش را از قبل می‌دانید، مانند یک نمونه در Figma یا در یک صفحهٔ وب، سپس آن مقدار را در هر قالبی وارد کنید. برنامهٔ Pika فضای رنگی‌ای را پیدا می‌کند که همان مقدار را بازمی‌خواند.";

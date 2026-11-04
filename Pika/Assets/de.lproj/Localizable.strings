@@ -849,7 +849,10 @@
 
 
 /* Check a Color window title */
-"match.title" = "Farbe prüfen";
+"match.title" = "Farbe prüfen…";
+
+/* Check a Color (toolbar colour space menu item) */
+"match.menu" = "Farbe prüfen";
 
 /* Check a Color introduction */
 "match.intro" = "Wählen Sie eine Farbe aus, deren Wert Sie kennen, etwa ein Farbfeld in Figma oder auf einer Webseite, und geben Sie diesen Wert in einem beliebigen Format ein. Pika ermittelt den Farbraum, in dem genau dieser Wert gelesen wird.";

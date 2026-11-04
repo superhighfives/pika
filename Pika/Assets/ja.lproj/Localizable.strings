@@ -849,7 +849,10 @@
 
 
 /* Check a Color window title */
-"match.title" = "カラーを確認";
+"match.title" = "カラーを確認…";
+
+/* Check a Color (toolbar colour space menu item) */
+"match.menu" = "カラーを確認";
 
 /* Check a Color introduction */
 "match.intro" = "Figmaやウェブページのスウォッチなど、値がわかっているカラーをピックし、その値を任意のフォーマットで入力してください。同じ値で読み取れるカラースペースをPikaが探します。";

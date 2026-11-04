@@ -849,7 +849,10 @@
 
 
 /* Check a Color window title */
-"match.title" = "Provjeri boju";
+"match.title" = "Provjeri boju…";
+
+/* Check a Color (toolbar colour space menu item) */
+"match.menu" = "Provjeri boju";
 
 /* Check a Color introduction */
 "match.intro" = "Odaberite boju čiju vrijednost već znate, poput uzorka u Figmi ili na web stranici, pa unesite tu vrijednost u bilo kojem formatu. Pika pronalazi prostor boja u kojem se očitava ista vrijednost.";

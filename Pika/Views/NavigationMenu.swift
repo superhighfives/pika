@@ -145,7 +145,7 @@ private struct ColorSpaceMenu: View {
                 }
             }
             Divider()
-            Button(PikaText.textMatchTitle) {
+            Button(PikaText.textMatchMenu) {
                 NSApp.sendAction(#selector(AppDelegate.openColorMatchWindow), to: nil, from: nil)
             }
             Button(PikaText.textSpaceLearn) {

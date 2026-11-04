@@ -473,6 +473,7 @@ enum PikaText {
         "color.space.mismatch.prompt", comment: "Colors don’t match? (before the Check a Color link)"
     )
     static let textMatchTitle = NSLocalizedString("match.title", comment: "Check a Color window title")
+    static let textMatchMenu = NSLocalizedString("match.menu", comment: "Check a Color (toolbar colour space menu item)")
     static let textMatchIntro = NSLocalizedString("match.intro", comment: "Check a Color introduction")
     static let textMatchExpected = NSLocalizedString("match.expected", comment: "Expected value field")
     static let textMatchExact = NSLocalizedString("match.exact", comment: "Exact match")
