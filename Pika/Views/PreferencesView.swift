@@ -286,10 +286,15 @@ private struct ColorSpaceSection: View {
                     .font(.system(size: 12))
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
-                Button(PikaText.textSpaceMismatch + "…") {
-                    NSApp.sendAction(#selector(AppDelegate.openColorMatchWindow), to: nil, from: nil)
+                // "Colors don't match? Check a Color", with only the window's name as the link.
+                HStack(spacing: 4.0) {
+                    Text(PikaText.textSpaceMismatchPrompt)
+                        .foregroundStyle(.secondary)
+                    Button(PikaText.textMatchTitle) {
+                        NSApp.sendAction(#selector(AppDelegate.openColorMatchWindow), to: nil, from: nil)
+                    }
+                    .buttonStyle(.link)
                 }
-                .buttonStyle(.link)
                 .font(.system(size: 12))
             }
         }

@@ -844,6 +844,9 @@
 /* Colors don't match? */
 "color.space.mismatch" = "Boje se ne podudaraju?";
 
+/* Colors don’t match? (before the Check a Color link in Settings) */
+"color.space.mismatch.prompt" = "Boje se ne podudaraju?";
+
 
 /* Check a Color window title */
 "match.title" = "Provjeri boju";

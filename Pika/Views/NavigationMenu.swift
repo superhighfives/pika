@@ -47,27 +47,7 @@ struct NavigationMenu: View {
             }
             .toolbarMenuChrome()
 
-            Menu {
-                Toggle(PikaText.textViewContrast, isOn: Binding(
-                    get: { showCompliance },
-                    set: { _ in NSApp.sendAction(#selector(AppDelegate.triggerToggleCompliance), to: nil, from: nil) }
-                ))
-                .keyboardShortcut("c", modifiers: [])
-                Toggle(PikaText.textViewPalettes, isOn: Binding(
-                    get: { historyDrawerVisible },
-                    set: { _ in NSApp.sendAction(#selector(AppDelegate.triggerToggleHistory), to: nil, from: nil) }
-                ))
-                .keyboardShortcut("h", modifiers: [])
-                Toggle(PikaText.textViewPreview, isOn: Binding(
-                    get: { showColorPreview },
-                    set: { _ in NSApp.sendAction(#selector(AppDelegate.triggerToggleColorPreview), to: nil, from: nil) }
-                ))
-                .keyboardShortcut("p", modifiers: [])
-            } label: {
-                Text(PikaText.textViewMenu)
-            }
-            .toolbarMenuSegment()
-            .toolbarMenuChrome()
+            ViewMenuButton()
 
             Menu {
                 NavigationMenuItems()
@@ -182,6 +162,152 @@ private struct ColorSpaceMenu: View {
         .onReceive(NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification)) { _ in
             let current = ColorSpacePreference.current
             if current != option { option = current }
+        }
+    }
+}
+
+/// The View control: the window's optional parts as checkable rows. An AppKit menu rather than a
+/// SwiftUI `Menu`, so a row can stay open after a click (a macOS menu closes on any standard item,
+/// but not on one drawn by a custom view) and several parts can be switched in one visit.
+private struct ViewMenuButton: View {
+    private struct Row {
+        let title: String
+        let key: String
+        let setting: Defaults.Key<Bool>
+        let action: Selector
+    }
+
+    private static let rows = [
+        Row(title: PikaText.textViewContrast, key: "C", setting: .showCompliance,
+            action: #selector(AppDelegate.triggerToggleCompliance)),
+        Row(title: PikaText.textViewPalettes, key: "H", setting: .historyDrawerVisible,
+            action: #selector(AppDelegate.triggerToggleHistory)),
+        Row(title: PikaText.textViewPreview, key: "P", setting: .showColorPreview,
+            action: #selector(AppDelegate.triggerToggleColorPreview)),
+    ]
+
+    @State private var anchor: NSView?
+
+    var body: some View {
+        Button(action: showMenu) {
+            HStack(spacing: 4.0) {
+                Text(PikaText.textViewMenu)
+                Image(systemName: "chevron.down")
+                    .font(.system(size: 9.0, weight: .semibold))
+            }
+            .padding(.horizontal, 8.0)
+            .frame(height: 22.0)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .background(MenuAnchor { anchor = $0 })
+        .toolbarMenuChrome()
+        .accessibilityLabel(PikaText.textViewMenu)
+    }
+
+    private func showMenu() {
+        guard let anchor else { return }
+        let menu = NSMenu()
+        for row in Self.rows {
+            let item = NSMenuItem()
+            item.view = ToggleMenuRow(title: row.title, key: row.key, isOn: { Defaults[row.setting] }) {
+                NSApp.sendAction(row.action, to: nil, from: nil)
+            }
+            menu.addItem(item)
+        }
+        // Just below the control, like the format and space menus.
+        let below = anchor.isFlipped ? anchor.bounds.maxY + 4.0 : -4.0
+        menu.popUp(positioning: nil, at: NSPoint(x: -4.0, y: below), in: anchor)
+    }
+}
+
+/// A plain view behind a SwiftUI control, for an AppKit menu to pop up from.
+private struct MenuAnchor: NSViewRepresentable {
+    let onView: (NSView) -> Void
+
+    func makeNSView(context _: Context) -> NSView {
+        let view = NSView()
+        DispatchQueue.main.async { onView(view) }
+        return view
+    }
+
+    func updateNSView(_: NSView, context _: Context) {}
+}
+
+/// A checkable menu row that toggles in place without closing its menu. Draws what a standard
+/// item would: a checkmark, the title, the key on the right, and the highlight under the pointer.
+private final class ToggleMenuRow: NSView {
+    private let isOn: () -> Bool
+    private let toggle: () -> Void
+    private let check = NSImageView()
+    private let titleLabel: NSTextField
+    private let keyLabel: NSTextField
+
+    init(title: String, key: String, isOn: @escaping () -> Bool, toggle: @escaping () -> Void) {
+        self.isOn = isOn
+        self.toggle = toggle
+        titleLabel = NSTextField(labelWithString: title)
+        keyLabel = NSTextField(labelWithString: key)
+        super.init(frame: NSRect(x: 0, y: 0, width: 200, height: 24))
+        autoresizingMask = [.width]
+
+        let font = NSFont.menuFont(ofSize: 0)
+        titleLabel.font = font
+        keyLabel.font = font
+        keyLabel.alignment = .right
+        check.image = NSImage(systemSymbolName: "checkmark", accessibilityDescription: nil)?
+            .withSymbolConfiguration(.init(pointSize: font.pointSize - 1, weight: .semibold))
+
+        for view in [check, titleLabel, keyLabel] {
+            view.translatesAutoresizingMaskIntoConstraints = false
+            addSubview(view)
+        }
+        NSLayoutConstraint.activate([
+            check.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
+            check.centerYAnchor.constraint(equalTo: centerYAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 30),
+            titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            keyLabel.leadingAnchor.constraint(greaterThanOrEqualTo: titleLabel.trailingAnchor, constant: 24),
+            keyLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            keyLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+        ])
+        setAccessibilityElement(true)
+        setAccessibilityRole(.checkBox)
+        setAccessibilityLabel(title)
+        refresh()
+    }
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) { fatalError("init(coder:) has not been implemented") }
+
+    private var isHighlighted: Bool { enclosingMenuItem?.isHighlighted ?? false }
+
+    private func refresh() {
+        let on = isOn()
+        check.isHidden = !on
+        setAccessibilityValue(on)
+        let highlighted = isHighlighted
+        titleLabel.textColor = highlighted ? .selectedMenuItemTextColor : .labelColor
+        keyLabel.textColor = highlighted ? .selectedMenuItemTextColor : .secondaryLabelColor
+        check.contentTintColor = highlighted ? .selectedMenuItemTextColor : .labelColor
+    }
+
+    override func draw(_ dirtyRect: NSRect) {
+        // The menu marks a custom item highlighted as the pointer moves over it and redraws it.
+        if isHighlighted {
+            NSColor.selectedContentBackgroundColor.setFill()
+            NSBezierPath(roundedRect: bounds.insetBy(dx: 5, dy: 0), xRadius: 5, yRadius: 5).fill()
+        }
+        refresh()
+        super.draw(dirtyRect)
+    }
+
+    override func mouseUp(with _: NSEvent) {
+        toggle()
+        // The toggle lands through a notification; read the setting back once it has.
+        DispatchQueue.main.async { [weak self] in
+            self?.refresh()
+            self?.needsDisplay = true
         }
     }
 }

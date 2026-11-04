@@ -850,6 +850,9 @@
 /* Colors don't match? */
 "color.space.mismatch" = "رنگ‌ها مطابقت ندارند؟";
 
+/* Colors don’t match? (before the Check a Color link in Settings) */
+"color.space.mismatch.prompt" = "رنگ‌ها مطابقت ندارند؟";
+
 
 /* Check a Color window title */
 "match.title" = "بررسی یک رنگ";

@@ -844,6 +844,9 @@
 /* Colors don't match? */
 "color.space.mismatch" = "顏色不一致？";
 
+/* Colors don’t match? (before the Check a Color link in Settings) */
+"color.space.mismatch.prompt" = "顏色不一致？";
+
 
 /* Check a Color window title */
 "match.title" = "檢查顏色";
