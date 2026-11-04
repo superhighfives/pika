@@ -45,6 +45,34 @@ final class ExpectedColorTests: XCTestCase {
         XCTAssertNil(ExpectedColor.parse("", fallback: .hex))
     }
 
+    func test_formatConversion_roundTripsWithoutDrift() throws {
+        var conversion = ExpectedFormatConversion()
+        var value = "#123456"
+        var seen: [String] = []
+        for format in [ColorFormat.hsl, .oklch, .rgb, .hex] {
+            value = try XCTUnwrap(conversion.convert(value, fallback: .hex, to: format))
+            seen.append(value)
+        }
+        XCTAssertEqual(seen[0], "hsl(210, 65%, 20%)")
+        XCTAssertTrue(seen[1].hasPrefix("oklch("), seen[1])
+        XCTAssertEqual(seen[2], "rgb(18, 52, 86)")
+        // Each format rounds; converting text to text came back #123354.
+        XCTAssertEqual(seen[3], "#123456")
+    }
+
+    func test_formatConversion_startsFromAnEditedValue() throws {
+        var conversion = ExpectedFormatConversion()
+        _ = conversion.convert("#123456", fallback: .hex, to: .hsl)
+        // A value typed after a conversion is converted itself, not the earlier colour.
+        XCTAssertEqual(conversion.convert("#ff0000", fallback: .hsl, to: .rgb), "rgb(255, 0, 0)")
+    }
+
+    func test_formatConversion_leavesUnparseableAndSameFormatValues() {
+        var conversion = ExpectedFormatConversion()
+        XCTAssertNil(conversion.convert("not a colour", fallback: .hex, to: .rgb))
+        XCTAssertNil(conversion.convert("#123456", fallback: .hex, to: .hex))
+    }
+
     func test_compare_rgbFindsTheSpace() throws {
         let picked = try XCTUnwrap(NSColor.fromHex("#3a7bd5", in: .sRGB))
         let expected = try XCTUnwrap(ExpectedColor.parse("rgb(58, 123, 213)", fallback: .hex))

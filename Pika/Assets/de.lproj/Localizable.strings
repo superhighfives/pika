@@ -553,6 +553,9 @@
 /* Open the Splash window */
 "help.url.window.splash" = "Begrüßungs-Fenster öffnen";
 
+/* Open the Check Color window */
+"help.url.window.check" = "Fenster „Farbe prüfen“ öffnen";
+
 /* Resize window */
 "help.url.window.resize" = "Fenstergröße ändern";
 
@@ -844,9 +847,18 @@
 /* Colors don't match? */
 "color.space.mismatch" = "Farben stimmen nicht überein?";
 
+/* Colors don’t match? (before the Check a Color link in Settings) */
+"color.space.mismatch.prompt" = "Farben stimmen nicht überein?";
+
 
 /* Check a Color window title */
-"match.title" = "Farbe prüfen";
+"match.title" = "Farbe prüfen…";
+
+/* Check a Color (toolbar colour space menu item) */
+"match.menu" = "Farbe prüfen";
+
+/* Check Color (window title) */
+"match.window" = "Farbe prüfen";
 
 /* Check a Color introduction */
 "match.intro" = "Wählen Sie eine Farbe aus, deren Wert Sie kennen, etwa ein Farbfeld in Figma oder auf einer Webseite, und geben Sie diesen Wert in einem beliebigen Format ein. Pika ermittelt den Farbraum, in dem genau dieser Wert gelesen wird.";

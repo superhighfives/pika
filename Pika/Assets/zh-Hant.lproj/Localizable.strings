@@ -553,6 +553,9 @@
 /* Open the Splash window */
 "help.url.window.splash" = "打開歡迎視窗";
 
+/* Open the Check Color window */
+"help.url.window.check" = "打開「檢查顏色」視窗";
+
 /* Resize window */
 "help.url.window.resize" = "調整視窗大小";
 
@@ -844,9 +847,18 @@
 /* Colors don't match? */
 "color.space.mismatch" = "顏色不一致？";
 
+/* Colors don’t match? (before the Check a Color link in Settings) */
+"color.space.mismatch.prompt" = "顏色不一致？";
+
 
 /* Check a Color window title */
-"match.title" = "檢查顏色";
+"match.title" = "檢查顏色…";
+
+/* Check a Color (toolbar colour space menu item) */
+"match.menu" = "檢查顏色";
+
+/* Check Color (window title) */
+"match.window" = "檢查顏色";
 
 /* Check a Color introduction */
 "match.intro" = "選取一個你已知數值的顏色，例如 Figma 或網頁中的色塊，然後以任意格式輸入該數值。Pika 會找到能讀出同一數值的色彩空間。";

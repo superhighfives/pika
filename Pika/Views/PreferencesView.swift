@@ -286,10 +286,15 @@ private struct ColorSpaceSection: View {
                     .font(.system(size: 12))
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
-                Button(PikaText.textSpaceMismatch + "…") {
-                    NSApp.sendAction(#selector(AppDelegate.openColorMatchWindow), to: nil, from: nil)
+                // "Colors don't match? Check a Color", with only the window's name as the link.
+                HStack(spacing: 4.0) {
+                    Text(PikaText.textSpaceMismatchPrompt)
+                        .foregroundStyle(.secondary)
+                    Button(PikaText.textMatchTitle) {
+                        NSApp.sendAction(#selector(AppDelegate.openColorMatchWindow), to: nil, from: nil)
+                    }
+                    .buttonStyle(.link)
                 }
-                .buttonStyle(.link)
                 .font(.system(size: 12))
             }
         }
@@ -367,12 +372,37 @@ private struct PreferencesVersionInfo: View {
 // MARK: - Main View
 
 struct PreferencesView: View {
+    private static let headerHeight: CGFloat = 180
+
+    /// How far the content has scrolled up.
+    @State private var scrollOffset: CGFloat = 0
+
     var body: some View {
+        // Outside the safe area, so the header's purple can run up behind the transparent
+        // titlebar; the reader still sees the titlebar's height as its top inset.
+        GeometryReader { proxy in
+            let titlebarHeight = proxy.safeAreaInsets.top
+            scrollContent
+                .ignoresSafeArea()
+                // Once the header has scrolled up under the titlebar, content would show through
+                // it behind the window buttons. Fill it in the way a toolbar would.
+                .overlay(alignment: .top) {
+                    TitlebarBackdrop()
+                        .frame(height: titlebarHeight)
+                        .opacity(scrollOffset > Self.headerHeight - titlebarHeight ? 1 : 0)
+                        .animation(.easeInOut(duration: 0.15), value: scrollOffset > Self.headerHeight - titlebarHeight)
+                        .ignoresSafeArea()
+                        .allowsHitTesting(false)
+                }
+        }
+    }
+
+    private var scrollContent: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
                 // MARK: Header
 
-                VisualisationHeader(height: 180) {
+                VisualisationHeader(height: Self.headerHeight) {
                     PreferencesVersionInfo()
                         .padding(.horizontal, 20)
                         .padding(.bottom, 14)
@@ -426,7 +456,35 @@ struct PreferencesView: View {
                 .padding(.bottom, 24.0)
             }
         }
+        .modifier(ScrollOffsetReader(offset: $scrollOffset))
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+}
+
+/// Reports how far a scroll view has scrolled. macOS 15 and later: a geometry reader inside the
+/// content isn't re-run as it scrolls, so on 14 the offset stays 0 (and the titlebar backdrop off).
+private struct ScrollOffsetReader: ViewModifier {
+    @Binding var offset: CGFloat
+
+    func body(content: Content) -> some View {
+        if #available(macOS 15.0, *) {
+            content.onScrollGeometryChange(for: CGFloat.self) { geometry in
+                geometry.contentOffset.y + geometry.contentInsets.top
+            } action: { _, newValue in
+                offset = newValue
+            }
+        } else {
+            content
+        }
+    }
+}
+
+/// What a toolbar draws behind the titlebar: the bar material with a hairline under it.
+private struct TitlebarBackdrop: View {
+    var body: some View {
+        Rectangle()
+            .fill(.bar)
+            .overlay(alignment: .bottom) { Divider() }
     }
 }
 

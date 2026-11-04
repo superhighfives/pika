@@ -469,7 +469,12 @@ enum PikaText {
         "preferences.space.hint.other", comment: "Other color space hint"
     )
     static let textSpaceMismatch = NSLocalizedString("color.space.mismatch", comment: "Colors don't match?")
+    static let textSpaceMismatchPrompt = NSLocalizedString(
+        "color.space.mismatch.prompt", comment: "Colors don’t match? (before the Check a Color link)"
+    )
     static let textMatchTitle = NSLocalizedString("match.title", comment: "Check a Color window title")
+    static let textMatchMenu = NSLocalizedString("match.menu", comment: "Check a Color (toolbar colour space menu item)")
+    static let textMatchWindow = NSLocalizedString("match.window", comment: "Check Color (window title)")
     static let textMatchIntro = NSLocalizedString("match.intro", comment: "Check a Color introduction")
     static let textMatchExpected = NSLocalizedString("match.expected", comment: "Expected value field")
     static let textMatchExact = NSLocalizedString("match.exact", comment: "Exact match")
@@ -572,6 +577,7 @@ enum PikaText {
         comment: "Open the Preferences window"
     )
     static let textUrlWindowSplash = NSLocalizedString("help.url.window.splash", comment: "Open the Splash window")
+    static let textUrlWindowCheck = NSLocalizedString("help.url.window.check", comment: "Open the Check Color window")
     static let textUrlWindowResize = NSLocalizedString("help.url.window.resize", comment: "Resize window")
 
     // URL Trigger Descriptions — Compliance

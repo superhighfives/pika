@@ -553,6 +553,9 @@
 /* Open the Splash window */
 "help.url.window.splash" = "Otwórz okno powitalne";
 
+/* Open the Check Color window */
+"help.url.window.check" = "Otwórz okno Sprawdź kolor";
+
 /* Resize window */
 "help.url.window.resize" = "Zmień rozmiar okna";
 
@@ -844,9 +847,18 @@
 /* Colors don't match? */
 "color.space.mismatch" = "Kolory się nie zgadzają?";
 
+/* Colors don’t match? (before the Check a Color link in Settings) */
+"color.space.mismatch.prompt" = "Kolory się nie zgadzają?";
+
 
 /* Check a Color window title */
-"match.title" = "Sprawdź kolor";
+"match.title" = "Sprawdź kolor…";
+
+/* Check a Color (toolbar colour space menu item) */
+"match.menu" = "Sprawdź kolor";
+
+/* Check Color (window title) */
+"match.window" = "Sprawdź kolor";
 
 /* Check a Color introduction */
 "match.intro" = "Wybierz kolor, którego wartość już znasz, na przykład próbkę w Figmie lub na stronie, a potem wpisz tę wartość w dowolnym formacie. Pika znajdzie przestrzeń kolorów, w której odczytuje się tę samą wartość.";

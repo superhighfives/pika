@@ -610,6 +610,9 @@
 /* Open the Splash window */
 "help.url.window.splash" = "Otvori prozor dobrodošlice";
 
+/* Open the Check Color window */
+"help.url.window.check" = "Otvori prozor Provjeri boju";
+
 /* Resize window */
 "help.url.window.resize" = "Promijeni veličinu prozora";
 
@@ -844,9 +847,18 @@
 /* Colors don't match? */
 "color.space.mismatch" = "Boje se ne podudaraju?";
 
+/* Colors don’t match? (before the Check a Color link in Settings) */
+"color.space.mismatch.prompt" = "Boje se ne podudaraju?";
+
 
 /* Check a Color window title */
-"match.title" = "Provjeri boju";
+"match.title" = "Provjeri boju…";
+
+/* Check a Color (toolbar colour space menu item) */
+"match.menu" = "Provjeri boju";
+
+/* Check Color (window title) */
+"match.window" = "Provjeri boju";
 
 /* Check a Color introduction */
 "match.intro" = "Odaberite boju čiju vrijednost već znate, poput uzorka u Figmi ili na web stranici, pa unesite tu vrijednost u bilo kojem formatu. Pika pronalazi prostor boja u kojem se očitava ista vrijednost.";
