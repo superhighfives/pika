@@ -610,6 +610,9 @@
 /* Open the Splash window */
 "help.url.window.splash" = "スプラッシュウィンドウを開く";
 
+/* Open the Check Color window */
+"help.url.window.check" = "「カラーを確認」ウインドウを開く";
+
 /* Resize window */
 "help.url.window.resize" = "ウィンドウサイズを変更";
 

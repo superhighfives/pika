@@ -199,6 +199,7 @@ final class URLSchemeHandler: NSObject {
         case "help": NSApp.sendAction(#selector(AppDelegate.openHelpWindow), to: nil, from: nil)
         case "preferences": NSApp.sendAction(#selector(AppDelegate.openPreferencesWindow), to: nil, from: nil)
         case "splash": NSApp.sendAction(#selector(AppDelegate.openSplashWindow), to: nil, from: nil)
+        case "check": NSApp.sendAction(#selector(AppDelegate.openColorMatchWindow), to: nil, from: nil)
         case "resize": handleWindowResize(width: arg1, height: arg2)
         default: break
         }

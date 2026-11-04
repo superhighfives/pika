@@ -640,6 +640,9 @@
 /* Open the Splash window */
 "help.url.window.splash" = "Open the Splash window";
 
+/* Open the Check Color window */
+"help.url.window.check" = "Open the Check Color window";
+
 /* Resize window */
 "help.url.window.resize" = "Resize window";
 
@@ -858,7 +861,7 @@
 "match.title" = "Check a color…";
 
 /* Check a Color (toolbar colour space menu item) */
-"match.menu" = "Check a Color";
+"match.menu" = "Check Color";
 
 /* Check Color (window title) */
 "match.window" = "Check Color";

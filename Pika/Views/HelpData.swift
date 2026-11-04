@@ -165,6 +165,7 @@ let urlGroups: [URLGroup] = [
         ("pika://window/help", PikaText.textUrlWindowHelp),
         ("pika://window/preferences", PikaText.textUrlWindowPreferences),
         ("pika://window/splash", PikaText.textUrlWindowSplash),
+        ("pika://window/check", PikaText.textUrlWindowCheck),
         ("pika://window/resize/<w>/<h>", PikaText.textUrlWindowResize),
     ]),
     (PikaText.textUrlGroupAppearance, [

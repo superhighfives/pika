@@ -44,14 +44,31 @@ struct ColorMatchView: View {
     /// The format bare numbers are read in; a value with its own shape (`#…`, `hsl(…)`) says.
     @State private var fallbackFormat = Defaults[.colorFormat]
     @State private var currentSpace = Defaults[.colorSpace]
+    /// The colour a format change converted from, and the text it wrote.
+    @State private var conversionSource: NSColor?
+    @State private var convertedText: String?
 
     private var parsed: ExpectedColor? {
         ExpectedColor.parse(expected, fallback: fallbackFormat)
     }
 
-    /// The menu shows the format the value is being read in.
+    /// The menu shows the format the value is being read in. Choosing another rewrites the value
+    /// in it: a value with its own shape (`#…`) is read by that shape, so changing only the
+    /// fallback did nothing. Read and rewritten in sRGB, so hex, RGB, HSB, HSL and OpenGL convert
+    /// number for number; Lab, OKLCH and P3 take the value as sRGB.
     private var format: Binding<ColorFormat> {
-        Binding(get: { parsed?.format ?? fallbackFormat }, set: { fallbackFormat = $0 })
+        Binding(get: { parsed?.format ?? fallbackFormat }, set: { newFormat in
+            // From the colour first converted, while the text is still what a conversion wrote:
+            // each format rounds, so Hex → HSL → Hex otherwise drifted (#123456 came back #123354).
+            let source = expected == convertedText ? conversionSource : parsed?.color(in: .sRGB)
+            if let parsed, parsed.format != newFormat, let source {
+                let text = newFormat.decompose(source, style: .css, in: .sRGB).joined()
+                conversionSource = source
+                convertedText = text
+                expected = text
+            }
+            fallbackFormat = newFormat
+        })
     }
 
     private var placeholder: String {

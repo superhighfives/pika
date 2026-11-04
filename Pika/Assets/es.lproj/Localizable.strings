@@ -553,6 +553,9 @@
 /* Open the Splash window */
 "help.url.window.splash" = "Abrir la ventana de Bienvenida";
 
+/* Open the Check Color window */
+"help.url.window.check" = "Abrir la ventana Comprobar color";
+
 /* Resize window */
 "help.url.window.resize" = "Redimensionar ventana";
 
@@ -852,7 +855,7 @@
 "match.title" = "Comprobar un color…";
 
 /* Check a Color (toolbar colour space menu item) */
-"match.menu" = "Comprobar un color";
+"match.menu" = "Comprobar color";
 
 /* Check Color (window title) */
 "match.window" = "Comprobar color";

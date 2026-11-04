@@ -553,6 +553,9 @@
 /* Open the Splash window */
 "help.url.window.splash" = "Otwórz okno powitalne";
 
+/* Open the Check Color window */
+"help.url.window.check" = "Otwórz okno Sprawdź kolor";
+
 /* Resize window */
 "help.url.window.resize" = "Zmień rozmiar okna";
 

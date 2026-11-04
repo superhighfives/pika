@@ -553,6 +553,9 @@
 /* Open the Splash window */
 "help.url.window.splash" = "打开欢迎窗口";
 
+/* Open the Check Color window */
+"help.url.window.check" = "打开“检查颜色”窗口";
+
 /* Resize window */
 "help.url.window.resize" = "调整窗口大小";
 

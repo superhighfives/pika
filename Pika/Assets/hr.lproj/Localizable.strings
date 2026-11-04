@@ -610,6 +610,9 @@
 /* Open the Splash window */
 "help.url.window.splash" = "Otvori prozor dobrodošlice";
 
+/* Open the Check Color window */
+"help.url.window.check" = "Otvori prozor Provjeri boju";
+
 /* Resize window */
 "help.url.window.resize" = "Promijeni veličinu prozora";
 

@@ -640,6 +640,9 @@
 /* Open the Splash window */
 "help.url.window.splash" = "باز کردن پنجرهٔ خوش‌آمدگویی";
 
+/* Open the Check Color window */
+"help.url.window.check" = "باز کردن پنجرهٔ بررسی رنگ";
+
 /* Resize window */
 "help.url.window.resize" = "تغییر اندازهٔ پنجره";
 
@@ -858,7 +861,7 @@
 "match.title" = "بررسی یک رنگ…";
 
 /* Check a Color (toolbar colour space menu item) */
-"match.menu" = "بررسی یک رنگ";
+"match.menu" = "بررسی رنگ";
 
 /* Check Color (window title) */
 "match.window" = "بررسی رنگ";
