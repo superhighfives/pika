@@ -453,9 +453,10 @@ class WindowCoordinator: NSObject {
             // pinning both would demand the full 580 for content *and* leave the scroller
             // with nowhere to go, pushing it past the right edge where the window clips it.
             // Letting the content flex mirrors the Help window, whose scroller sits inboard.
+            // `PreferencesView` ignores the safe area itself, inside a reader that needs the
+            // titlebar's height.
             let rootView = PreferencesView()
                 .frame(maxWidth: .infinity, minHeight: 400, maxHeight: .infinity)
-                .ignoresSafeArea()
                 .environmentObject(eyedroppers)
             let view = NSHostingView(rootView: rootView)
             preferencesWindow = PikaWindow.createSecondaryWindow(
