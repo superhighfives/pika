@@ -75,6 +75,7 @@ enum PikaConstants {
     static let ncTriggerFormatOpenGL = "triggerFormatOpenGL"
     static let ncTriggerFormatLAB = "triggerFormatLAB"
     static let ncTriggerFormatOKLCH = "triggerFormatOKLCH"
+    static let ncTriggerFormatP3 = "triggerFormatP3"
     static let ncTriggerQuit = "triggerQuit"
     static let ncColorPicked = "colorPicked"
     static let ncToggleHistory = "toggleHistory"
@@ -116,6 +117,7 @@ extension Notification.Name {
     static let triggerFormatOpenGL = Notification.Name(PikaConstants.ncTriggerFormatOpenGL)
     static let triggerFormatLAB = Notification.Name(PikaConstants.ncTriggerFormatLAB)
     static let triggerFormatOKLCH = Notification.Name(PikaConstants.ncTriggerFormatOKLCH)
+    static let triggerFormatP3 = Notification.Name(PikaConstants.ncTriggerFormatP3)
     static let triggerQuit = Notification.Name(PikaConstants.ncTriggerQuit)
     static let colorPicked = Notification.Name(PikaConstants.ncColorPicked)
     static let toggleHistory = Notification.Name(PikaConstants.ncToggleHistory)

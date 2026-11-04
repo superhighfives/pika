@@ -31,131 +31,55 @@ struct NavigationMenuItems: View {
         return PikaText.textHistoryExport
     }
 
+    private func send(_ action: Selector) {
+        NSApp.sendAction(action, to: nil, from: nil)
+    }
+
     var body: some View {
-        Group {
-            Button("\(PikaText.textPickForeground)...", action: {
-                NSApp.sendAction(#selector(AppDelegate.triggerPickForeground), to: nil, from: nil)
-            })
+        Button("\(PikaText.textPickForeground)…") { send(#selector(AppDelegate.triggerPickForeground)) }
+        Button("\(PikaText.textPickBackground)…") { send(#selector(AppDelegate.triggerPickBackground)) }
 
-            Button("\(PikaText.textPickBackground)...", action: {
-                NSApp.sendAction(#selector(AppDelegate.triggerPickBackground), to: nil, from: nil)
-            })
-
-            VStack {
-                Divider()
-            }
-
-            Button(PikaText.textCopyForeground, action: {
-                NSApp.sendAction(#selector(AppDelegate.triggerCopyForeground), to: nil, from: nil)
-            })
-
-            Button(PikaText.textCopyBackground, action: {
-                NSApp.sendAction(#selector(AppDelegate.triggerCopyBackground), to: nil, from: nil)
-            })
-
-            VStack {
-                Divider()
-            }
-
-            Button(PikaText.textColorSystemPickerForeground, action: {
-                NSApp.sendAction(#selector(AppDelegate.triggerSystemPickerForeground), to: nil, from: nil)
-            })
-
-            Button(PikaText.textColorSystemPickerBackground, action: {
-                NSApp.sendAction(#selector(AppDelegate.triggerSystemPickerBackground), to: nil, from: nil)
-            })
-
-            VStack {
-                Divider()
-            }
-
-            Button(PikaText.textMenuCopyAllAsText, action: {
-                NSApp.sendAction(#selector(AppDelegate.triggerCopyText), to: nil, from: nil)
-            })
-
-            Button(PikaText.textMenuCopyAllAsJSON, action: {
-                NSApp.sendAction(#selector(AppDelegate.triggerCopyData), to: nil, from: nil)
-            })
-        }
-
-        VStack {
+        MenuGroup(title: PikaText.textColorCopy) {
+            Button(PikaText.textColorForeground) { send(#selector(AppDelegate.triggerCopyForeground)) }
+            Button(PikaText.textColorBackground) { send(#selector(AppDelegate.triggerCopyBackground)) }
             Divider()
+            Button(PikaText.textMenuCopyAllAsText) { send(#selector(AppDelegate.triggerCopyText)) }
+            Button(PikaText.textMenuCopyAllAsJSON) { send(#selector(AppDelegate.triggerCopyData)) }
         }
 
-        Button(PikaText.textHistoryToggle, action: {
-            NSApp.sendAction(#selector(AppDelegate.triggerToggleHistory), to: nil, from: nil)
-        })
-
-        Button(PikaText.textComplianceToggle, action: {
-            NSApp.sendAction(#selector(AppDelegate.triggerToggleCompliance), to: nil, from: nil)
-        })
-
-        Button(PikaText.textColorPreviewToggle, action: {
-            NSApp.sendAction(#selector(AppDelegate.triggerToggleColorPreview), to: nil, from: nil)
-        })
-
-        VStack {
-            Divider()
+        MenuGroup(title: PikaText.textColorSystemPicker) {
+            Button(PikaText.textColorForeground) { send(#selector(AppDelegate.triggerSystemPickerForeground)) }
+            Button(PikaText.textColorBackground) { send(#selector(AppDelegate.triggerSystemPickerBackground)) }
         }
 
-        Button(PikaText.textPaletteNew, action: {
-            NotificationCenter.default.post(name: .savePalette, object: nil)
-        })
+        Divider()
 
-        Button(exportLabel, action: {
-            NotificationCenter.default.post(name: .exportPalette, object: nil)
-        })
+        Button(PikaText.textColorSwapDetail) { send(#selector(AppDelegate.triggerSwap)) }
+        Button(PikaText.textColorUndo) { send(#selector(AppDelegate.triggerUndo)) }
+        Button(PikaText.textColorRedo) { send(#selector(AppDelegate.triggerRedo)) }
 
-        VStack {
-            Divider()
+        Divider()
+
+        MenuGroup(title: PikaText.textViewPalettes) {
+            Button(PikaText.textPaletteNew) { NotificationCenter.default.post(name: .savePalette, object: nil) }
+            Button(exportLabel) { NotificationCenter.default.post(name: .exportPalette, object: nil) }
         }
 
-        Button(PikaText.textColorSwapDetail, action: {
-            NSApp.sendAction(#selector(AppDelegate.triggerSwap), to: nil, from: nil)
-        })
-
-        Button(PikaText.textColorUndo, action: {
-            NSApp.sendAction(#selector(AppDelegate.triggerUndo), to: nil, from: nil)
-        })
-
-        Button(PikaText.textColorRedo, action: {
-            NSApp.sendAction(#selector(AppDelegate.triggerRedo), to: nil, from: nil)
-        })
-
-        VStack {
-            Divider()
-        }
-
-        Group {
-            Button(PikaText.textMenuAbout, action: {
-                NSApp.sendAction(#selector(AppDelegate.openAboutWindow), to: nil, from: nil)
-            })
-            Button(PikaText.textMenuShowSplash, action: {
-                NSApp.sendAction(#selector(AppDelegate.openSplashWindow), to: nil, from: nil)
-            })
-            Button(PikaText.textMenuHelp, action: {
-                NSApp.sendAction(#selector(AppDelegate.openHelpWindow), to: nil, from: nil)
-            })
+        MenuGroup(title: "Pika") {
+            Button(PikaText.textMenuAbout) { send(#selector(AppDelegate.openAboutWindow)) }
+            Button(PikaText.textMenuHelp) { send(#selector(AppDelegate.openHelpWindow)) }
+            Button(PikaText.textMenuShowSplash) { send(#selector(AppDelegate.openSplashWindow)) }
             #if TARGET_SPARKLE
-                Button("\(PikaText.textMenuUpdates)...", action: {
-                    NSApp.sendAction(#selector(AppDelegate.checkForUpdates), to: nil, from: nil)
-                })
+                Button("\(PikaText.textMenuUpdates)…") { send(#selector(AppDelegate.checkForUpdates)) }
             #endif
-            Button(PikaText.textMenuGitHubIssue, action: {
-                NSApp.sendAction(#selector(AppDelegate.openGitHubIssue), to: nil, from: nil)
-            })
-            Button("\(PikaText.textMenuPreferences)...", action: {
-                NSApp.sendAction(#selector(AppDelegate.openPreferencesWindow), to: nil, from: nil)
-            })
+            Button(PikaText.textMenuGitHubIssue) { send(#selector(AppDelegate.openGitHubIssue)) }
         }
 
-        VStack {
-            Divider()
-        }
+        Button("\(PikaText.textMenuPreferences)…") { send(#selector(AppDelegate.openPreferencesWindow)) }
 
-        Button(PikaText.textMenuQuit, action: {
-            NSApplication.shared.terminate(self)
-        })
+        Divider()
+
+        Button(PikaText.textMenuQuit) { NSApplication.shared.terminate(nil) }
     }
 }
 

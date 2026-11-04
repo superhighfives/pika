@@ -327,6 +327,7 @@
 
 /* OKLCH format */
 "color.format.oklch" = "OKLCH format";
+"color.format.p3" = "Display P3 format";
 
 /* Copy foreground */
 "menu.copy.foreground" = "Kopiraj prednju boju";
@@ -786,17 +787,47 @@
 /* Match display (%@) */
 "preferences.space.display" = "Prema zaslonu (%@)";
 
+/* Short label for Match display, in the toolbar */
+"color.space.short.display" = "Zaslon";
+
+/* Toolbar colour space menu item that opens the Colour Spaces help */
+"color.space.learn" = "O prostorima boja";
+
+/* Toolbar menu of what the window shows */
+"toolbar.view" = "Prikaz";
+
+/* View menu: text preview pill */
+"toolbar.view.preview" = "Pregled teksta";
+
+/* View menu: contrast footer */
+"toolbar.view.contrast" = "Kontrast";
+
+/* View menu: palettes drawer */
+"toolbar.view.palettes" = "Palete";
+
+/* Toolbar menu of actions */
+"toolbar.more" = "Više";
+
+/* Colour space menu: follow the display being picked on */
+"toolbar.space.display" = "Prema zaslonu";
+
+/* Colour space menu: what sRGB is for */
+"toolbar.space.srgb.subtitle" = "Web, CSS i većina alata za dizajn";
+
+/* Colour space menu: what Display P3 is for */
+"toolbar.space.p3.subtitle" = "Dizajnerske datoteke i aplikacije širokog gamuta";
+
 /* Recommended for color space */
 "preferences.space.hint.srgb" = "Preporučeno. Hex vrijednosti odgovaraju CSS-u, Figmi i većini alata za dizajn.";
 
 /* Display P3 hint */
-"preferences.space.hint.p3" = "Za dizajnerske datoteke i resurse aplikacija u Display P3. CSS hex i RGB kopiraju se kao color(display-p3 …), jer preglednici običan hex čitaju kao sRGB.";
+"preferences.space.hint.p3" = "Za dizajnerske datoteke i resurse aplikacija u Display P3. Preglednici običan hex čitaju kao sRGB, pa za CSS kopirajte u formatu P3.";
 
 /* Match display hint */
 "preferences.space.hint.display" = "Neobrađene vrijednosti zaslona na kojem birate. Hex vrijednosti neće odgovarati webu.";
 
 /* Match display hint on a P3 screen */
-"preferences.space.hint.display.p3" = "Neobrađene vrijednosti zaslona na kojem birate. Ovaj zaslon je Display P3, pa se CSS hex i RGB kopiraju kao color(display-p3 …).";
+"preferences.space.hint.display.p3" = "Neobrađene vrijednosti zaslona na kojem birate. Ovaj zaslon je Display P3, pa za CSS kopirajte u formatu P3.";
 
 /* Other color space hint */
 "preferences.space.hint.other" = "Hex vrijednosti neće odgovarati webu, osim ako izvor koristi isti prostor boja.";

@@ -327,6 +327,7 @@
 
 /* OKLCH format */
 "color.format.oklch" = "OKLCH-Format";
+"color.format.p3" = "Display-P3-Format";
 
 /* Copy foreground */
 "menu.copy.foreground" = "Vordergrund kopieren";
@@ -786,17 +787,47 @@
 /* Match display (%@) */
 "preferences.space.display" = "An Display anpassen (%@)";
 
+/* Short label for Match display, in the toolbar */
+"color.space.short.display" = "Display";
+
+/* Toolbar colour space menu item that opens the Colour Spaces help */
+"color.space.learn" = "Über Farbräume";
+
+/* Toolbar menu of what the window shows */
+"toolbar.view" = "Ansicht";
+
+/* View menu: text preview pill */
+"toolbar.view.preview" = "Textvorschau";
+
+/* View menu: contrast footer */
+"toolbar.view.contrast" = "Kontrast";
+
+/* View menu: palettes drawer */
+"toolbar.view.palettes" = "Paletten";
+
+/* Toolbar menu of actions */
+"toolbar.more" = "Mehr";
+
+/* Colour space menu: follow the display being picked on */
+"toolbar.space.display" = "An Display anpassen";
+
+/* Colour space menu: what sRGB is for */
+"toolbar.space.srgb.subtitle" = "Web, CSS und die meisten Design-Tools";
+
+/* Colour space menu: what Display P3 is for */
+"toolbar.space.p3.subtitle" = "Designdateien und Apps mit großem Farbraum";
+
 /* Recommended for color space */
 "preferences.space.hint.srgb" = "Empfohlen. Hex-Werte stimmen mit CSS, Figma und den meisten Design-Tools überein.";
 
 /* Display P3 hint */
-"preferences.space.hint.p3" = "Für Display-P3-Designdateien und App-Assets. CSS-Hex und -RGB werden als color(display-p3 …) kopiert, da Browser einen einfachen Hex-Wert als sRGB interpretieren.";
+"preferences.space.hint.p3" = "Für Display-P3-Designdateien und App-Assets. Browser interpretieren einen einfachen Hex-Wert als sRGB, kopieren Sie für CSS daher im P3-Format.";
 
 /* Match display hint */
 "preferences.space.hint.display" = "Rohwerte des Displays, auf dem Sie auswählen. Hex-Werte stimmen nicht mit dem Web überein.";
 
 /* Match display hint on a P3 screen */
-"preferences.space.hint.display.p3" = "Rohwerte des Displays, auf dem Sie auswählen. Dieses Display ist Display P3, daher werden CSS-Hex und -RGB als color(display-p3 …) kopiert.";
+"preferences.space.hint.display.p3" = "Rohwerte des Displays, auf dem Sie auswählen. Dieses Display ist Display P3, kopieren Sie für CSS daher im P3-Format.";
 
 /* Other color space hint */
 "preferences.space.hint.other" = "Hex-Werte stimmen nicht mit dem Web überein, es sei denn, die Quelle nutzt denselben Farbraum.";

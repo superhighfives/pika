@@ -483,7 +483,11 @@ struct EditableColorValue: View {
         // clamped region and back down, and you land on exactly the colour you began with.
         var liveValues = sessionStartValues.count == layout.components.count ? sessionStartValues : layout.values
         guard index < liveValues.count else { return value }
-        liveValues[index] = ColorComponentField.formattedDragValue(value, kind: layout.components[index].kind)
+        // At the scrub's own precision, the one the pill shows: built from the unrounded value, a
+        // 0–1 component scrubbed at 3 places landed on a 4th (0.959 in the pill, 0.9594 on release).
+        liveValues[index] = ColorComponentField.formattedDragValue(
+            value, kind: layout.components[index].kind, stableDecimalPlaces: decimals
+        )
         guard let color = format.recompose(liveValues, style: style, in: colorSpace) else { return value }
         eyedropper.set(color)
         lastPreviewedColor = eyedropper.color

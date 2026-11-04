@@ -237,47 +237,50 @@ final class ColorSpacePreferenceTests: XCTestCase {
         XCTAssertFalse(ColorSpacePreference.isDisplayP3Equivalent(cinema), "DCI-P3: another white point and gamma")
     }
 
-    func test_copy_inAP3EquivalentProfile_namesDisplayP3() throws {
-        let space = try renamedDisplayP3()
-        let color = try XCTUnwrap(NSColor.fromHex("#ff8800", in: space))
-        XCTAssertEqual(color.toCopyString(format: .hex, style: .css, in: space), "color(display-p3 1 0.5333 0)")
-        XCTAssertEqual(color.toCopyString(format: .hex, style: .design, in: space), color.toFormat(format: .hex, style: .design))
-    }
+    // MARK: - Copy matches the readout; P3 is its own format
 
-    // MARK: - CSS copy in Display P3
-
-    func test_copy_inDisplayP3_namesTheSpaceForCSSHexAndRGB() throws {
-        let color = try XCTUnwrap(NSColor.fromHex("#ff8800", in: .displayP3))
-        XCTAssertEqual(
-            color.toCopyString(format: .hex, style: .css, in: .displayP3), "color(display-p3 1 0.5333 0)"
-        )
-        XCTAssertEqual(
-            color.toCopyString(format: .rgb, style: .css, in: .displayP3), "color(display-p3 1 0.5333 0)"
-        )
-    }
-
-    func test_copy_otherwiseMatchesTheReadout() throws {
+    func test_copy_hexAndRGB_inDisplayP3_areTheReadout() throws {
         Defaults[.colorSpace] = .displayP3
         let color = try XCTUnwrap(NSColor.fromHex("#ff8800", in: .displayP3))
-        for (format, style) in [(ColorFormat.hex, CopyFormat.design), (.hex, .unformatted), (.oklch, .css), (.hsl, .css)] {
-            XCTAssertEqual(
-                color.toCopyString(format: format, style: style, in: .displayP3),
-                color.toFormat(format: format, style: style)
-            )
+        XCTAssertEqual(color.toFormat(format: .hex, style: .css), "#ff8800")
+        XCTAssertEqual(color.toFormat(format: .rgb, style: .css), "rgb(255, 136, 0)")
+        XCTAssertEqual(ColorFormat.hex.getExample(color: color, style: .css), "#ff8800")
+        Defaults[.colorSpace] = .sRGB
+    }
+
+    func test_p3_namesDisplayP3InEveryStyle() throws {
+        let color = try XCTUnwrap(NSColor.fromHex("#ff8800", in: .displayP3))
+        XCTAssertEqual(color.toFormat(format: .p3, style: .css), "color(display-p3 1 0.5333 0)")
+        XCTAssertEqual(color.toFormat(format: .p3, style: .design), "color(display-p3 1 0.5333 0)")
+        XCTAssertEqual(
+            color.toFormat(format: .p3, style: .swiftUI), "Color(.displayP3, red: 1, green: 0.5333, blue: 0)"
+        )
+        XCTAssertEqual(color.toFormat(format: .p3, style: .unformatted), "1, 0.5333, 0")
+    }
+
+    func test_p3_isTheSameWhateverTheColorSpace() throws {
+        let color = try XCTUnwrap(NSColor.fromHex("#ff8800", in: .sRGB))
+        let readings = try [NSColorSpace.sRGB, .displayP3, .adobeRGB1998, renamedDisplayP3()].map { space in
+            Defaults[.colorSpace] = space
+            return color.toFormat(format: .p3, style: .css)
         }
         Defaults[.colorSpace] = .sRGB
-        let srgb = try XCTUnwrap(NSColor.fromHex("#ff8800", in: .sRGB))
-        XCTAssertEqual(srgb.toCopyString(format: .hex, style: .css, in: .sRGB), "#ff8800")
+        XCTAssertEqual(Set(readings), ["color(display-p3 0.9387 0.5576 0.2057)"])
     }
 
-    func test_getExample_isWhatCopyGives() throws {
-        Defaults[.colorSpace] = .displayP3
-        let color = try XCTUnwrap(NSColor.fromHex("#ff8800", in: .displayP3))
-        XCTAssertEqual(ColorFormat.hex.getExample(color: color, style: .css), "color(display-p3 1 0.5333 0)")
-        XCTAssertEqual(ColorFormat.hex.getExample(color: color, style: .design), color.toFormat(format: .hex, style: .design))
-        Defaults[.colorSpace] = .sRGB
-        let srgb = try XCTUnwrap(NSColor.fromHex("#ff8800", in: .sRGB))
-        XCTAssertEqual(ColorFormat.hex.getExample(color: srgb, style: .css), "#ff8800")
+    func test_p3_parsesItsOwnShape() throws {
+        let css = try XCTUnwrap(ExpectedColor.parse("color(display-p3 1 0.5333 0)", fallback: .hex))
+        XCTAssertEqual(css.format, .p3)
+        XCTAssertEqual(css.values, ["1", "0.5333", "0"])
+        XCTAssertTrue(css.isAbsolute)
+        let swiftUI = try XCTUnwrap(
+            ExpectedColor.parse("Color(.displayP3, red: 1, green: 0.5333, blue: 0)", fallback: .hex)
+        )
+        XCTAssertEqual(swiftUI.format, .p3)
+        XCTAssertEqual(swiftUI.style, .swiftUI)
+        XCTAssertEqual(swiftUI.values, ["1", "0.5333", "0"])
+        let rebuilt = try XCTUnwrap(css.color(in: .sRGB))
+        XCTAssertEqual(rebuilt.toHex(in: .displayP3), 0xFF8800)
     }
 
     // MARK: - Half-float capture

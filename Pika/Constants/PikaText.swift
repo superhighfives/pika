@@ -86,7 +86,7 @@ enum PikaText {
 
     static let textMenuAbout = NSLocalizedString("menu.about", comment: "About")
     static let textMenuShowSplash = NSLocalizedString(
-        "menu.showSplash", value: "Show splash", comment: "Show the welcome splash"
+        "menu.showSplash", value: "Show Splash", comment: "Show the welcome splash"
     )
     static let textMenuShowPika = NSLocalizedString("menu.showPika", comment: "Show Pika")
     static let textMenuUpdates = NSLocalizedString("menu.updates", comment: "Check for updates")
@@ -440,6 +440,18 @@ enum PikaText {
     static let textSpaceTitle = NSLocalizedString("preferences.space.title", comment: "Color Space")
     static let textSpaceLabel = NSLocalizedString("preferences.space.label", comment: "Read colors in")
     static let textSpaceDisplay = NSLocalizedString("preferences.space.display", comment: "Match display (%@)")
+    static let textSpaceShortDisplay = NSLocalizedString(
+        "color.space.short.display", comment: "Short label for Match display, in the toolbar"
+    )
+    static let textSpaceLearn = NSLocalizedString("color.space.learn", comment: "About Color Spaces")
+    static let textViewMenu = NSLocalizedString("toolbar.view", comment: "Toolbar menu of what the window shows")
+    static let textViewPreview = NSLocalizedString("toolbar.view.preview", comment: "View menu: text preview pill")
+    static let textViewContrast = NSLocalizedString("toolbar.view.contrast", comment: "View menu: contrast footer")
+    static let textViewPalettes = NSLocalizedString("toolbar.view.palettes", comment: "View menu: palettes drawer")
+    static let textToolbarMore = NSLocalizedString("toolbar.more", comment: "Toolbar menu of actions")
+    static let textSpaceMatchDisplay = NSLocalizedString("toolbar.space.display", comment: "Colour space menu: follow the display being picked on")
+    static let textSpaceSubtitleSRGB = NSLocalizedString("toolbar.space.srgb.subtitle", comment: "Colour space menu: what sRGB is for")
+    static let textSpaceSubtitleP3 = NSLocalizedString("toolbar.space.p3.subtitle", comment: "Colour space menu: what Display P3 is for")
     static let textSpaceHintSRGB = NSLocalizedString(
         "preferences.space.hint.srgb", comment: "Recommended for color space"
     )
@@ -488,6 +500,7 @@ enum PikaText {
     static let textFormatOpenGL = NSLocalizedString("color.format.opengl", comment: "OpenGL format")
     static let textFormatLAB = NSLocalizedString("color.format.lab", comment: "LAB format")
     static let textFormatOKLCH = NSLocalizedString("color.format.oklch", comment: "OKLCH format")
+    static let textFormatP3 = NSLocalizedString("color.format.p3", comment: "Display P3 format")
 
     // Global Shortcut
     static let textHotkeyTitle = NSLocalizedString("preferences.hotkey.title", comment: "Global Shortcut")
