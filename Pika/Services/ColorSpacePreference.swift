@@ -214,6 +214,30 @@ struct ExpectedColor: Equatable {
     }
 }
 
+/// Rewrites an expected value in another format when Check Color's format menu changes, so the
+/// menu does something for a value with its own shape (`#…`, which is otherwise always read as
+/// hex). Read and written in sRGB: hex, RGB, HSB, HSL and OpenGL convert number for number, and
+/// Lab, OKLCH and P3 take the value as sRGB.
+struct ExpectedFormatConversion {
+    /// The colour the last conversion started from, and the text it wrote. While the value is
+    /// still that text, the next conversion starts from the same colour: each format rounds, so
+    /// converting text to text drifted (#123456 → HSL → Hex came back #123354).
+    private(set) var source: NSColor?
+    private(set) var text: String?
+
+    /// `value` (read with `fallback` for bare numbers) written in `format`, or nil to leave it
+    /// as it is: it doesn't parse, or it's already in `format`.
+    mutating func convert(_ value: String, fallback: ColorFormat, to format: ColorFormat) -> String? {
+        guard let parsed = ExpectedColor.parse(value, fallback: fallback), parsed.format != format,
+              let color = value == text ? source : parsed.color(in: .sRGB)
+        else { return nil }
+        let converted = format.decompose(color, style: .css, in: .sRGB).joined()
+        source = color
+        text = converted
+        return converted
+    }
+}
+
 /// How a picked colour reads in one colour space, against the value the user expected.
 struct ColorSpaceMatch: Equatable {
     let space: NSColorSpace
