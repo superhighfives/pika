@@ -629,7 +629,7 @@ final class PickerLoupeController {
         case 126: nudge(dx: 0, dy: step); return true // up
         case 48 where !event.modifierFlags.contains(.command):
             cycleLoupeTheme(reverse: event.modifierFlags.contains(.shift)); return true // Tab
-        case 9 where event.modifierFlags.contains(.command): // ⌘V
+        case 9 where event.modifierFlags.contains(.command) && NSApp.isActive: // ⌘V
             pickFromClipboard(); return true
         default:
             // Swallow bare keys so Pika's own single-key shortcuts (x to swap, h/p/c, the
