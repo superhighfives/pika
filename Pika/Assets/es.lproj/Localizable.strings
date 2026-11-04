@@ -262,6 +262,12 @@
 /* Copy background */
 "color.copy.background" = "Copiar segundo plano";
 
+/* Paste foreground */
+"color.paste.foreground" = "Pegar primer plano";
+
+/* Paste background */
+"color.paste.background" = "Pegar segundo plano";
+
 /* Copy all as text */
 "color.copy.text" = "Copiar todo como texto";
 

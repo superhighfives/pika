@@ -262,6 +262,12 @@
 /* Copy background */
 "color.copy.background" = "Kopiraj boju pozadine";
 
+/* Paste foreground */
+"color.paste.foreground" = "Zalijepi prednju boju";
+
+/* Paste background */
+"color.paste.background" = "Zalijepi boju pozadine";
+
 /* Copy all as text */
 "color.copy.text" = "Kopiraj sve kao tekst";
 

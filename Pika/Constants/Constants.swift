@@ -56,6 +56,8 @@ enum PikaConstants {
 
     // Notification Center constants
     static let ncTriggerCopyForeground = "triggerCopyForeground"
+    static let ncTriggerPasteForeground = "triggerPasteForeground"
+    static let ncTriggerPasteBackground = "triggerPasteBackground"
     static let ncTriggerCopyBackground = "triggerCopyBackground"
     static let ncTriggerCopyText = "triggerCopyText"
     static let ncTriggerCopyData = "triggerCopyData"
@@ -100,6 +102,8 @@ extension Notification.Name {
     /// "Pick pair"'s own row highlights instead of piggybacking on "Pick foreground"'s.
     static let triggerPickPair = Notification.Name(PikaConstants.ncTriggerPickPair)
     static let triggerCopyForeground = Notification.Name(PikaConstants.ncTriggerCopyForeground)
+    static let triggerPasteForeground = Notification.Name(PikaConstants.ncTriggerPasteForeground)
+    static let triggerPasteBackground = Notification.Name(PikaConstants.ncTriggerPasteBackground)
     static let triggerCopyBackground = Notification.Name(PikaConstants.ncTriggerCopyBackground)
     static let triggerCopyText = Notification.Name(PikaConstants.ncTriggerCopyText)
     static let triggerCopyData = Notification.Name(PikaConstants.ncTriggerCopyData)

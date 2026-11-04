@@ -262,6 +262,12 @@
 /* Copy background */
 "color.copy.background" = "複製背景色";
 
+/* Paste foreground */
+"color.paste.foreground" = "貼上為前景色";
+
+/* Paste background */
+"color.paste.background" = "貼上為背景色";
+
 /* Copy all as text */
 "color.copy.text" = "複製全部為文本";
 
