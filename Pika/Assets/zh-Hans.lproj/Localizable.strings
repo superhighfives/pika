@@ -854,6 +854,9 @@
 /* Check a Color (toolbar colour space menu item) */
 "match.menu" = "检查颜色";
 
+/* Check Color (window title) */
+"match.window" = "检查颜色";
+
 /* Check a Color introduction */
 "match.intro" = "选取一个你已知数值的颜色，例如 Figma 或网页中的色块，然后以任意格式输入该数值。Pika 会找到能读出同一数值的色彩空间。";
 

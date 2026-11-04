@@ -860,6 +860,9 @@
 /* Check a Color (toolbar colour space menu item) */
 "match.menu" = "Check a Color";
 
+/* Check Color (window title) */
+"match.window" = "Check Color";
+
 /* Check a Color introduction */
 "match.intro" = "Pick a color whose value you already know, like a swatch in Figma or on a web page, then enter that value in any format. Pika finds the color space that reads it back.";
 

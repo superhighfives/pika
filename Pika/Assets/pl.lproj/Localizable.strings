@@ -854,6 +854,9 @@
 /* Check a Color (toolbar colour space menu item) */
 "match.menu" = "Sprawdź kolor";
 
+/* Check Color (window title) */
+"match.window" = "Sprawdź kolor";
+
 /* Check a Color introduction */
 "match.intro" = "Wybierz kolor, którego wartość już znasz, na przykład próbkę w Figmie lub na stronie, a potem wpisz tę wartość w dowolnym formacie. Pika znajdzie przestrzeń kolorów, w której odczytuje się tę samą wartość.";
 

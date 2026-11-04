@@ -635,7 +635,7 @@ extension WindowCoordinator {
             let model = ColorMatchModel()
             let view = NSHostingView(rootView: ColorMatchView(model: model))
             colorMatchWindow = PikaWindow.createSecondaryWindow(
-                title: PikaText.textMatchTitle,
+                title: PikaText.textMatchWindow,
                 size: NSRect(origin: .zero, size: view.fittingSize),
                 styleMask: [.titled, .closable, .fullSizeContentView]
             )
