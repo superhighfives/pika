@@ -6,6 +6,14 @@ enum VerticalDirection {
 }
 
 struct ColorHistoryDrawer: View {
+    /// The palette tabs across the top of the drawer.
+    static let tabBarHeight: CGFloat = 28
+    /// The row of colour chips below them.
+    static let chipRowHeight: CGFloat = 44
+    /// The whole drawer: its top divider, the tab bar, the divider under it and the chip row.
+    /// The popover grows by this much to fit the drawer.
+    static let height = AdaptiveDivider.thickness + tabBarHeight + AdaptiveDivider.thickness + chipRowHeight
+
     @EnvironmentObject var eyedroppers: Eyedroppers
     @ObservedObject var foreground: Eyedropper
     @ObservedObject var background: Eyedropper
@@ -58,7 +66,7 @@ struct ColorHistoryDrawer: View {
                     .transition(slideTransition)
                     .translateVerticalScrollToHorizontal()
                 }
-                .frame(maxWidth: .infinity, maxHeight: 44)
+                .frame(maxWidth: .infinity, maxHeight: Self.chipRowHeight)
                 .clipped()
                 .overlay(alignment: .trailing) {
                     Rectangle()
@@ -103,7 +111,7 @@ struct ColorHistoryDrawer: View {
                 }
                 .frame(width: 50)
             }
-            .frame(maxWidth: .infinity, maxHeight: 44, alignment: .leading)
+            .frame(maxWidth: .infinity, maxHeight: Self.chipRowHeight, alignment: .leading)
         }
         .background(
             ZStack {

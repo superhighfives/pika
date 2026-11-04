@@ -8,13 +8,10 @@ struct PopoverContentView: View {
 
     /// Content height with the history drawer closed.
     private static let baseHeight: CGFloat = 280
-    /// The drawer's tab bar, chip row and dividers. The popover grows by this when history is
-    /// shown, keeping the swatches the same size and clearing `PikaAdaptiveHeight.palettes`,
-    /// below which `ContentView` hides the drawer.
-    private static let historyDrawerHeight: CGFloat = 74
-
     var body: some View {
-        let height = Self.baseHeight + (historyDrawerVisible ? Self.historyDrawerHeight : 0)
+        // Grows by the drawer's height, so the swatches keep their size and the content clears
+        // `PikaAdaptiveHeight.palettes`, below which `ContentView` hides the drawer.
+        let height = Self.baseHeight + (historyDrawerVisible ? ColorHistoryDrawer.height : 0)
         VStack(spacing: 0) {
             HStack {
                 Spacer()
