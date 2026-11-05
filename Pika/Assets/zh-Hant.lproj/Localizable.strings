@@ -803,7 +803,7 @@
 "color.space.short.display" = "顯示器";
 
 /* Toolbar colour space menu item that opens the Colour Spaces help */
-"color.space.learn" = "關於色彩空間";
+"color.space.learn" = "關於色彩空間…";
 
 /* Toolbar menu of what the window shows */
 "toolbar.view" = "顯示";

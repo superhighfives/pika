@@ -803,7 +803,7 @@
 "color.space.short.display" = "Écran";
 
 /* Toolbar colour space menu item that opens the Colour Spaces help */
-"color.space.learn" = "À propos des espaces colorimétriques";
+"color.space.learn" = "À propos des espaces colorimétriques…";
 
 /* Toolbar menu of what the window shows */
 "toolbar.view" = "Présentation";

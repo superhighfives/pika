@@ -175,6 +175,7 @@ struct HelpView: View {
             }
             .padding(.bottom, 8)
         }
+        .modifier(HeaderTitlebarBackdrop(headerHeight: 180))
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }

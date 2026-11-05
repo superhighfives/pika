@@ -374,27 +374,9 @@ private struct PreferencesVersionInfo: View {
 struct PreferencesView: View {
     private static let headerHeight: CGFloat = 180
 
-    /// How far the content has scrolled up.
-    @State private var scrollOffset: CGFloat = 0
-
     var body: some View {
-        // Outside the safe area, so the header's purple can run up behind the transparent
-        // titlebar; the reader still sees the titlebar's height as its top inset.
-        GeometryReader { proxy in
-            let titlebarHeight = proxy.safeAreaInsets.top
-            scrollContent
-                .ignoresSafeArea()
-                // Once the header has scrolled up under the titlebar, content would show through
-                // it behind the window buttons. Fill it in the way a toolbar would.
-                .overlay(alignment: .top) {
-                    TitlebarBackdrop()
-                        .frame(height: titlebarHeight)
-                        .opacity(scrollOffset > Self.headerHeight - titlebarHeight ? 1 : 0)
-                        .animation(.easeInOut(duration: 0.15), value: scrollOffset > Self.headerHeight - titlebarHeight)
-                        .ignoresSafeArea()
-                        .allowsHitTesting(false)
-                }
-        }
+        scrollContent
+            .modifier(HeaderTitlebarBackdrop(headerHeight: Self.headerHeight))
     }
 
     private var scrollContent: some View {
@@ -456,8 +438,36 @@ struct PreferencesView: View {
                 .padding(.bottom, 24.0)
             }
         }
-        .modifier(ScrollOffsetReader(offset: $scrollOffset))
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+}
+
+/// For a window whose scrolling header runs up behind its transparent titlebar (Settings, Help):
+/// lays the scroll view out under the titlebar, and once the header has scrolled up beneath it,
+/// fills the titlebar in the way a toolbar would, so content doesn't show behind the window
+/// buttons. The window's root view mustn't ignore the safe area itself: the reader here needs
+/// the titlebar's height as its top inset.
+struct HeaderTitlebarBackdrop: ViewModifier {
+    let headerHeight: CGFloat
+    /// How far the content has scrolled up.
+    @State private var scrollOffset: CGFloat = 0
+
+    func body(content: Content) -> some View {
+        GeometryReader { proxy in
+            let titlebarHeight = proxy.safeAreaInsets.top
+            let scrolledUnder = scrollOffset > headerHeight - titlebarHeight
+            content
+                .modifier(ScrollOffsetReader(offset: $scrollOffset))
+                .ignoresSafeArea()
+                .overlay(alignment: .top) {
+                    TitlebarBackdrop()
+                        .frame(height: titlebarHeight)
+                        .opacity(scrolledUnder ? 1 : 0)
+                        .animation(.easeInOut(duration: 0.15), value: scrolledUnder)
+                        .ignoresSafeArea()
+                        .allowsHitTesting(false)
+                }
+        }
     }
 }
 

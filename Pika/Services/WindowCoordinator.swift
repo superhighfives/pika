@@ -430,9 +430,9 @@ class WindowCoordinator: NSObject {
 
     func openHelpWindow() {
         if helpWindow == nil {
+            // `HelpView` ignores the safe area itself (see `HeaderTitlebarBackdrop`).
             let rootView = HelpView()
                 .frame(minWidth: 440, maxWidth: .infinity, minHeight: 400, maxHeight: .infinity)
-                .ignoresSafeArea()
             let view = NSHostingView(rootView: rootView)
             helpWindow = PikaWindow.createSecondaryWindow(
                 title: PikaText.textMenuHelp,

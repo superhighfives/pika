@@ -809,7 +809,7 @@
 "color.space.short.display" = "نمایشگر";
 
 /* Toolbar colour space menu item that opens the Colour Spaces help */
-"color.space.learn" = "درباره فضاهای رنگی";
+"color.space.learn" = "درباره فضاهای رنگی…";
 
 /* Toolbar menu of what the window shows */
 "toolbar.view" = "نما";
