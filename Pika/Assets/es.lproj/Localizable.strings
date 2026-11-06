@@ -700,6 +700,18 @@
 /* Permission pill label: Accessibility */
 "picker.perm.accessibility" = "Accesibilidad";
 
+/* permission.drag.title */
+"permission.drag.title" = "Arrastra Pika a la lista";
+
+/* permission.drag.screenRecording */
+"permission.drag.screenRecording" = "Suéltalo en la lista de Grabación de pantalla. Si Pika ya está, actívalo.";
+
+/* permission.drag.accessibility */
+"permission.drag.accessibility" = "Suéltalo en la lista de Accesibilidad. Si Pika ya está, actívalo.";
+
+/* permission.drag.close */
+"permission.drag.close" = "Cerrar";
+
 /* Explains what the optional Accessibility permission adds to the Pro picker */
 "picker.accessibilityNote" = "Opcional: permite usar Escape y mover con las flechas mientras seleccionas sobre otras apps.";
 

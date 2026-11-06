@@ -706,6 +706,18 @@
 /* Permission pill label: Accessibility */
 "picker.perm.accessibility" = "Accessibility";
 
+/* permission.drag.title */
+"permission.drag.title" = "Drag Pika into the list";
+
+/* permission.drag.screenRecording */
+"permission.drag.screenRecording" = "Drop it in the Screen Recording list. If Pika’s already there, switch it on.";
+
+/* permission.drag.accessibility */
+"permission.drag.accessibility" = "Drop it in the Accessibility list. If Pika’s already there, switch it on.";
+
+/* permission.drag.close */
+"permission.drag.close" = "Close";
+
 /* Explains what the optional Accessibility permission adds to the Pro picker */
 "picker.accessibilityNote" = "Optional — lets Escape and arrow-key nudging work while picking over other apps.";
 

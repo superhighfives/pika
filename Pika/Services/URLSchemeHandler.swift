@@ -59,9 +59,14 @@ final class URLSchemeHandler: NSObject {
         ///   through the Pro picker's own capture (see `debugSample`)
         /// - `pika://debug/update/<state>` and `pika://debug/update/scheduled` (Sparkle build):
         ///   checks the inline update control (see `debugUpdate`)
+        /// - `pika://debug/permission/<screen|accessibility>`: opens that privacy pane with the
+        ///   drag panel, whatever the permission's state (`PermissionDragHelper`)
         private func handleDebug(task: String?, arg1: String?, url: URL) {
             switch task {
             case "sample": debugSample(arg1: arg1, url: url)
+            case "permission":
+                let permission: PermissionDragHelper.Permission = arg1 == "accessibility" ? .accessibility : .screenRecording
+                Task { @MainActor in PermissionDragHelper.shared.show(permission) }
             #if TARGET_SPARKLE
                 case "update": debugUpdate(arg1)
             #endif

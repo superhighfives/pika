@@ -700,6 +700,18 @@
 /* Permission pill label: Accessibility */
 "picker.perm.accessibility" = "アクセシビリティ";
 
+/* permission.drag.title */
+"permission.drag.title" = "Pikaをリストにドラッグ";
+
+/* permission.drag.screenRecording */
+"permission.drag.screenRecording" = "「画面収録」のリストにドロップします。すでにある場合はオンにしてください。";
+
+/* permission.drag.accessibility */
+"permission.drag.accessibility" = "「アクセシビリティ」のリストにドロップします。すでにある場合はオンにしてください。";
+
+/* permission.drag.close */
+"permission.drag.close" = "閉じる";
+
 /* Explains what the optional Accessibility permission adds to the Pro picker */
 "picker.accessibilityNote" = "任意 — 他のアプリの上でピックするときに、Escキーや矢印キーでの微調整が使えるようになります。";
 
