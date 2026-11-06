@@ -122,7 +122,7 @@
 "preferences.app.title" = "App Settings";
 
 /* Menu bar */
-"preferences.app.menubar.title" = "Menu bar";
+"preferences.app.menubar.title" = "Menu Bar";
 
 /* Show in menu bar */
 "preferences.app.menubar.description" = "Show in menu bar";
@@ -131,7 +131,7 @@
 "preferences.app.dock.title" = "Dock";
 
 /* Show in dock */
-"preferences.app.dock.description" = "Show in dock";
+"preferences.app.dock.description" = "Show in Dock";
 
 /* Hidden */
 "preferences.app.hidden.title" = "Hidden";
@@ -251,13 +251,13 @@
 "color.wcag.large.abbr" = "LG";
 
 /* Global shortcut */
-"splash.hotkey" = "Global shortcut";
+"splash.hotkey" = "Global Shortcut";
 
 /* Launch at login */
-"splash.launch" = "Launch at login";
+"splash.launch" = "Launch at Login";
 
 /* Get started */
-"splash.start" = "Get started";
+"splash.start" = "Get Started";
 
 /* Pick */
 "color.pick" = "Pick";
@@ -384,7 +384,7 @@
 "menu.help" = "Help";
 
 /* Help description */
-"help.description" = "Pika picks colours from anywhere on your screen and checks how readable they are together. Here’s how it works.";
+"help.description" = "Pika picks colors from anywhere on your screen and checks how readable they are together. Here’s how it works.";
 
 /* Keyboard Shortcuts */
 "help.shortcuts" = "Keyboard Shortcuts";
@@ -417,13 +417,13 @@
 "help.basics" = "Basics";
 
 /* Basics intro: what colour contrast is */
-"help.basics.intro.1" = "Colour contrast is the difference in lightness between text and whatever’s behind it. With too little, words blur into their background. That’s a real problem for people with low vision or colour blindness, and it catches everyone else too, like reading a phone in the sun or a laptop turned down low.";
+"help.basics.intro.1" = "Color contrast is the difference in lightness between text and whatever’s behind it. With too little, words blur into their background. That’s a real problem for people with low vision or color blindness, and it catches everyone else too, like reading a phone in the sun or a laptop turned down low.";
 
 /* Basics intro: accessibility guidelines */
 "help.basics.intro.2" = "Accessibility guidelines set minimum contrast levels so text stays readable for as many people as possible. WCAG 2 is the standard most guidelines and laws point to, and APCA is a newer method that also weighs up font size and weight. Checking early is much easier than reworking a design later.";
 
 /* Basics intro: where Pika fits */
-"help.basics.intro.3" = "That’s where Pika comes in. Pick a foreground and background from anywhere on your screen, whether it’s a design file, a website or a screenshot, and Pika shows the contrast straight away, alongside the colours in the format you need, ready to copy.";
+"help.basics.intro.3" = "That’s where Pika comes in. Pick a foreground and background from anywhere on your screen, whether it’s a design file, a website or a screenshot, and Pika shows the contrast straight away, alongside the colors in the format you need, ready to copy.";
 
 /* Expand the Basics intro */
 "help.basics.intro.more" = "Read more";
@@ -441,7 +441,7 @@
 "help.basics.contrast.title" = "Why check contrast";
 
 /* Why check contrast description */
-"help.basics.contrast" = "Low-contrast text is hard to read, especially with low vision, colour blindness or glare.";
+"help.basics.contrast" = "Low-contrast text is hard to read, especially with low vision, color blindness or glare.";
 
 /* WCAG and APCA */
 "help.basics.standards.title" = "WCAG and APCA";
@@ -450,10 +450,10 @@
 "help.basics.standards" = "WCAG 2 gives a ratio (AA needs 4.5:1 for text). APCA gives an Lc value that accounts for size and weight, but isn’t a standard yet.";
 
 /* Ways to pick a colour */
-"help.basics.pickers.title" = "Ways to pick a colour";
+"help.basics.pickers.title" = "Ways to Pick a Color";
 
 /* Basic, Pro and system colour picker description */
-"help.basics.pickers" = "Basic uses the macOS sampler. Pro adds a live loupe and needs Screen Recording. [⌘S] opens the macOS colour panel.";
+"help.basics.pickers" = "Basic uses the macOS sampler. Pro adds a live loupe and needs Screen Recording. [⌘S] opens the macOS color panel.";
 
 /* Editing values */
 "help.basics.editing.title" = "Editing values";
@@ -462,10 +462,10 @@
 "help.basics.editing" = "Click a value to type, drag or two-finger scroll to scrub, and press [↑] or [↓] to step. [⌘Z] undoes.";
 
 /* Colour spaces */
-"help.basics.spaces.title" = "Colour spaces";
+"help.basics.spaces.title" = "Color Spaces";
 
 /* Colour spaces description */
-"help.basics.spaces" = "sRGB matches CSS, Figma and most design tools, and is the default. Display P3 covers the more vivid colours of recent Macs. Contrast always uses sRGB.";
+"help.basics.spaces" = "sRGB matches CSS, Figma and most design tools, and is the default. Display P3 covers the more vivid colors of recent Macs. Contrast always uses sRGB.";
 
 /* Link to WCAG contrast guidance */
 "help.reference.wcag" = "Learn about WCAG contrast";
@@ -614,13 +614,13 @@
 "help.url.compliance.toggle" = "Toggle compliance";
 
 /* Show colour preview */
-"help.url.preview.show" = "Show colour preview";
+"help.url.preview.show" = "Show color preview";
 
 /* Hide colour preview */
-"help.url.preview.hide" = "Hide colour preview";
+"help.url.preview.hide" = "Hide color preview";
 
 /* Toggle colour preview */
-"help.url.preview.toggle" = "Toggle colour preview";
+"help.url.preview.toggle" = "Toggle color preview";
 
 /* Compliance */
 "help.url.group.compliance" = "Compliance";
@@ -725,7 +725,7 @@
 "splash.confirm.title" = "Use Pika’s Pro picker?";
 
 /* Get started confirmation body */
-"splash.confirm.body" = "The Pro picker shows the colour, its format, and live contrast right in the loupe as you pick — a much nicer experience than the macOS sampler. You can always switch later in Settings.";
+"splash.confirm.body" = "The Pro picker shows the color, its format, and live contrast right in the loupe as you pick — a much nicer experience than the macOS sampler. You can always switch later in Settings.";
 
 /* Confirmation: enable Pro picker */
 "splash.confirm.enable" = "Enable Pro Picker";
@@ -734,10 +734,10 @@
 "splash.confirm.continue" = "Continue with Basic Picker";
 
 /* Colour name list section title */
-"preferences.colornames.title" = "Colour Names";
+"preferences.colornames.title" = "Color Names";
 
 /* Colour name list section subtitle */
-"preferences.colornames.subtitle" = "Choose the list Pika uses to name colours. Lists come from color.pizza and update automatically; the default works offline.";
+"preferences.colornames.subtitle" = "Choose the list Pika uses to name colors. Lists come from color.pizza and update automatically; the default works offline.";
 
 /* Default colour list name */
 "preferences.colornames.default" = "Default";
@@ -749,22 +749,22 @@
 "preferences.colornames.status.updated" = "Updated %@";
 
 /* Colour list tooltip: the last refresh failed, cached/bundled names are in use */
-"preferences.colornames.status.offline" = "Couldn’t reach color.pizza. Using the saved colour list.";
+"preferences.colornames.status.offline" = "Couldn’t reach color.pizza. Using the saved color list.";
 
 /* Colour list tooltip: no network refresh has happened yet */
-"preferences.colornames.status.builtin" = "Using the built-in colour list.";
+"preferences.colornames.status.builtin" = "Using the built-in color list.";
 
 /* Colour picker style section title */
-"preferences.picker.title" = "Colour Picker";
+"preferences.picker.title" = "Color Picker";
 
 /* Basic picker tile title */
-"preferences.picker.system.title" = "Basic picker";
+"preferences.picker.system.title" = "Basic Picker";
 
 /* Basic picker tile subtitle */
-"preferences.picker.system.description" = "macOS colour sampler";
+"preferences.picker.system.description" = "macOS color sampler";
 
 /* Pro picker tile title */
-"preferences.picker.custom.title" = "Pro picker";
+"preferences.picker.custom.title" = "Pro Picker";
 
 /* Pro picker tile subtitle */
 "preferences.picker.custom.description" = "Live contrast & format";
@@ -791,7 +791,7 @@
 "picker.reverted.body" = "Pika’s Pro picker needs Screen Recording permission, which isn’t currently granted. You can re-enable it in Settings once permission is allowed.";
 
 /* Splash picker choice label */
-"splash.picker.prompt" = "Colour picker";
+"splash.picker.prompt" = "Color Picker";
 
 /* Pick a foreground then background pair */
 "color.pick.pair" = "Pick Pair";
