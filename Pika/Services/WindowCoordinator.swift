@@ -425,7 +425,7 @@ class WindowCoordinator: NSObject {
             aboutWindow?.contentView = view
         }
         aboutTouchBarController = SplashTouchBarController(window: aboutWindow!)
-        aboutWindow?.makeKeyAndOrderFront(nil)
+        bringForward(aboutWindow)
     }
 
     func openHelpWindow() {
@@ -444,7 +444,18 @@ class WindowCoordinator: NSObject {
             helpWindow?.contentMinSize = NSSize(width: 440, height: 400)
             helpWindow?.contentView = view
         }
-        helpWindow?.makeKeyAndOrderFront(nil)
+        bringForward(helpWindow)
+    }
+
+    /// Activates Pika and brings a window to the front. As an accessory app (menu bar and
+    /// popover modes) Pika isn't active when its status menu is used, so a window opened from
+    /// there went in behind other apps until something else activated Pika, such as opening the
+    /// popover. macOS can turn an activation request down, so `orderFrontRegardless` raises the
+    /// window either way.
+    private func bringForward(_ window: NSWindow?) {
+        NSApp.activate()
+        window?.makeKeyAndOrderFront(nil)
+        window?.orderFrontRegardless()
     }
 
     func openPreferencesWindow() {
@@ -472,7 +483,7 @@ class WindowCoordinator: NSObject {
             preferencesWindow?.contentMinSize = NSSize(width: 580, height: 400)
             preferencesWindow?.contentView = view
         }
-        preferencesWindow?.makeKeyAndOrderFront(nil)
+        bringForward(preferencesWindow)
         preferencesWindow?.makeFirstResponder(nil)
         notificationCenter.post(name: .triggerPreferences, object: self)
     }
@@ -495,7 +506,7 @@ class WindowCoordinator: NSObject {
             splashTouchBarController = SplashTouchBarController(window: splashWindow)
             splashWindow.contentView = NSHostingView(rootView: SplashView().ignoresSafeArea())
         }
-        splashWindow.makeKeyAndOrderFront(nil)
+        bringForward(splashWindow)
         splashWindow.fadeIn(nil)
     }
 }
@@ -645,7 +656,6 @@ extension WindowCoordinator {
             colorMatchWindow?.center()
             model.window = colorMatchWindow
         }
-        NSApp.activate(ignoringOtherApps: true)
-        colorMatchWindow?.makeKeyAndOrderFront(nil)
+        bringForward(colorMatchWindow)
     }
 }
