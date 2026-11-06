@@ -186,6 +186,16 @@ enum PikaText {
         "picker.perm.accessibility", value: "Accessibility",
         comment: "Permission pill label: Accessibility"
     )
+    static let textPermissionDragTitle = NSLocalizedString(
+        "permission.drag.title", comment: "Drag Pika into the list (panel beside System Settings)"
+    )
+    static let textPermissionDragScreenRecording = NSLocalizedString(
+        "permission.drag.screenRecording", comment: "Where to drop Pika for Screen Recording"
+    )
+    static let textPermissionDragAccessibility = NSLocalizedString(
+        "permission.drag.accessibility", comment: "Where to drop Pika for Accessibility"
+    )
+    static let textPermissionDragClose = NSLocalizedString("permission.drag.close", comment: "Close the drag panel")
     static let textPickerAccessibilityNote = NSLocalizedString(
         "picker.accessibilityNote",
         value: "Optional — lets Escape and arrow-key nudging work while picking over other apps.",

@@ -706,6 +706,18 @@
 /* Permission pill label: Accessibility */
 "picker.perm.accessibility" = "Accessibility";
 
+/* permission.drag.title */
+"permission.drag.title" = "Pika را به فهرست بکشید";
+
+/* permission.drag.screenRecording */
+"permission.drag.screenRecording" = "آن را در فهرست ضبط صفحه رها کنید. اگر Pika از قبل آنجاست، روشنش کنید.";
+
+/* permission.drag.accessibility */
+"permission.drag.accessibility" = "آن را در فهرست دسترس‌پذیری رها کنید. اگر Pika از قبل آنجاست، روشنش کنید.";
+
+/* permission.drag.close */
+"permission.drag.close" = "بستن";
+
 /* Explains what the optional Accessibility permission adds to the Pro picker */
 "picker.accessibilityNote" = "اختیاری — امکان استفاده از Escape و جابه‌جایی با کلیدهای جهت‌نما هنگام برداشتن رنگ روی سایر برنامه‌ها را فراهم می‌کند.";
 

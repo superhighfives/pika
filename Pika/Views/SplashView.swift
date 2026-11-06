@@ -461,35 +461,18 @@ struct PickerChoiceView: View {
             pendingRelaunch.wrappedValue = !granted
             // The system only shows its prompt the first time; once the choice has been made
             // (e.g. the user revoked it), the request is a no-op — so open the Screen
-            // Recording pane directly so they can toggle it back on.
-            if !granted, let url = URL(string:
-                "x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture")
-            {
-                NSWorkspace.shared.open(url)
+            // Recording pane directly, with Pika's icon beside it to drag in.
+            if !granted {
+                Task { @MainActor in PermissionDragHelper.shared.show(.screenRecording) }
             }
         }
     }
 
-    // Prompts for the optional Accessibility permission (System Settings → Privacy &
-    // Security → Accessibility). It takes effect live — the global key monitor starts
-    // firing once trusted — so no relaunch is needed.
+    // Opens System Settings → Privacy & Security → Accessibility, with Pika's icon beside it
+    // to drag in, rather than the system's alert, which only points the way there. It takes
+    // effect live — the global key monitor starts firing once trusted — so no relaunch.
     static func requestAccessibility() {
-        // The Accessibility prompt is a regular app alert (unlike the Screen Recording
-        // system dialog, which sits above floating windows), so a floating splash/Settings
-        // window would cover it. Drop the key window to normal level for the prompt and
-        // restore its floating level once the user returns to it.
-        if let window = NSApp.keyWindow, window.level == .floating {
-            window.level = .normal
-            var token: NSObjectProtocol?
-            token = NotificationCenter.default.addObserver(
-                forName: NSWindow.didBecomeKeyNotification, object: window, queue: .main
-            ) { _ in
-                window.level = Defaults[.appFloating] ? .floating : .normal
-                if let token { NotificationCenter.default.removeObserver(token) }
-            }
-        }
-        let promptKey = kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String
-        _ = AXIsProcessTrustedWithOptions([promptKey: true] as CFDictionary)
+        PermissionDragHelper.shared.show(.accessibility)
     }
 }
 

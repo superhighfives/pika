@@ -700,6 +700,18 @@
 /* Permission pill label: Accessibility */
 "picker.perm.accessibility" = "輔助使用";
 
+/* permission.drag.title */
+"permission.drag.title" = "將 Pika 拖到列表中";
+
+/* permission.drag.screenRecording */
+"permission.drag.screenRecording" = "將其放到「螢幕錄製」列表中。如果 Pika 已在列表中，請將其開啟。";
+
+/* permission.drag.accessibility */
+"permission.drag.accessibility" = "將其放到「輔助使用」列表中。如果 Pika 已在列表中，請將其開啟。";
+
+/* permission.drag.close */
+"permission.drag.close" = "關閉";
+
 /* Explains what the optional Accessibility permission adds to the Pro picker */
 "picker.accessibilityNote" = "可選：在其他 App 上方取色時，可使用 Esc 鍵和方向鍵微調。";
 

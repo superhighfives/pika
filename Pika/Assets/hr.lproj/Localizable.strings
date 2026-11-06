@@ -700,6 +700,18 @@
 /* Permission pill label: Accessibility */
 "picker.perm.accessibility" = "Pristupačnost";
 
+/* permission.drag.title */
+"permission.drag.title" = "Povucite Piku na popis";
+
+/* permission.drag.screenRecording */
+"permission.drag.screenRecording" = "Ispustite je na popis Snimanje zaslona. Ako je Pika već tamo, uključite je.";
+
+/* permission.drag.accessibility */
+"permission.drag.accessibility" = "Ispustite je na popis Pristupačnost. Ako je Pika već tamo, uključite je.";
+
+/* permission.drag.close */
+"permission.drag.close" = "Zatvori";
+
 /* Explains what the optional Accessibility permission adds to the Pro picker */
 "picker.accessibilityNote" = "Neobavezno – omogućuje tipku Escape i pomicanje strelicama tijekom biranja iznad drugih aplikacija.";
 
