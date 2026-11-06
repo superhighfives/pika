@@ -80,6 +80,10 @@ class StatusBarController: NSObject, NSMenuDelegate, NSPopoverDelegate {
         popover.behavior = .semitransient
         popover.animates = true
         let host = NSHostingController(rootView: rootView)
+        // Report the content's ideal size, so the popover follows it both ways: without this it
+        // only grew when the content's minimum outgrew it (showing palettes) and never shrank
+        // back when they were hidden, which stretched the swatches instead.
+        host.sizingOptions = [.preferredContentSize]
         popover.contentViewController = host
         popover.delegate = self
         self.popover = popover
