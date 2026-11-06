@@ -27,10 +27,14 @@ struct PikaMenuAction {
     /// Foreground" rather than "Copy › Foreground"). Defaults to `title`.
     var flatTitle: String?
     let action: Selector
-    var key: String = ""
-    var modifiers: NSEvent.ModifierFlags = .command
     /// Only in the More menu: things about the window (Undo, Redo), not quick actions.
     var windowOnly = false
+
+    /// The action's shortcut, from `PikaShortcuts`, the list the menu bar, popover and Help
+    /// use too, so a menu can't show a different key from the one that works.
+    var shortcut: PikaShortcut? { PikaShortcuts.all.first { $0.action == action } }
+    var key: String { shortcut?.character ?? "" }
+    var modifiers: NSEvent.ModifierFlags { shortcut?.modifiers ?? [] }
 }
 
 enum PikaMenuEntry {
@@ -44,13 +48,11 @@ enum PikaMenuEntry {
 
 enum PikaMenu {
     private static func pair(
-        flat foreground: String, _ background: String, action fgAction: Selector, _ bgAction: Selector, key: String
+        flat foreground: String, _ background: String, action fgAction: Selector, _ bgAction: Selector
     ) -> [PikaMenuEntry] {
         [
-            .action(PikaMenuAction(title: PikaText.textColorForeground, flatTitle: foreground,
-                                   action: fgAction, key: key)),
-            .action(PikaMenuAction(title: PikaText.textColorBackground, flatTitle: background,
-                                   action: bgAction, key: key, modifiers: [.command, .shift])),
+            .action(PikaMenuAction(title: PikaText.textColorForeground, flatTitle: foreground, action: fgAction)),
+            .action(PikaMenuAction(title: PikaText.textColorBackground, flatTitle: background, action: bgAction)),
         ]
     }
 
@@ -68,14 +70,12 @@ enum PikaMenu {
                                            action: #selector(AppDelegate.openGitHubIssue))))
         return [
             .action(PikaMenuAction(title: "\(PikaText.textPickForeground)…",
-                                   action: #selector(AppDelegate.triggerPickForeground), key: "d")),
+                                   action: #selector(AppDelegate.triggerPickForeground))),
             .action(PikaMenuAction(title: "\(PikaText.textPickBackground)…",
-                                   action: #selector(AppDelegate.triggerPickBackground), key: "d",
-                                   modifiers: [.command, .shift])),
+                                   action: #selector(AppDelegate.triggerPickBackground))),
             .group(PikaText.textColorCopy, pair(
                 flat: PikaText.textCopyForeground, PikaText.textCopyBackground,
-                action: #selector(AppDelegate.triggerCopyForeground), #selector(AppDelegate.triggerCopyBackground),
-                key: "c"
+                action: #selector(AppDelegate.triggerCopyForeground), #selector(AppDelegate.triggerCopyBackground)
             ) + [
                 .divider,
                 .action(PikaMenuAction(title: PikaText.textMenuCopyAllAsText, action: #selector(AppDelegate.triggerCopyText))),
@@ -83,29 +83,24 @@ enum PikaMenu {
             ]),
             .group(PikaText.textColorPaste, pair(
                 flat: PikaText.textPasteForeground, PikaText.textPasteBackground,
-                action: #selector(AppDelegate.triggerPasteForeground), #selector(AppDelegate.triggerPasteBackground),
-                key: "v"
+                action: #selector(AppDelegate.triggerPasteForeground), #selector(AppDelegate.triggerPasteBackground)
             )),
             .group(PikaText.textColorSystemPicker, pair(
                 flat: PikaText.textColorSystemPickerForeground, PikaText.textColorSystemPickerBackground,
                 action: #selector(AppDelegate.triggerSystemPickerForeground),
-                #selector(AppDelegate.triggerSystemPickerBackground),
-                key: "s"
+                #selector(AppDelegate.triggerSystemPickerBackground)
             )),
             .divider,
-            .action(PikaMenuAction(title: PikaText.textColorSwapDetail, action: #selector(AppDelegate.triggerSwap),
-                                   key: "x", modifiers: [])),
-            .action(PikaMenuAction(title: PikaText.textColorUndo, action: #selector(AppDelegate.triggerUndo),
-                                   key: "z", windowOnly: true)),
-            .action(PikaMenuAction(title: PikaText.textColorRedo, action: #selector(AppDelegate.triggerRedo),
-                                   key: "z", modifiers: [.command, .shift], windowOnly: true)),
+            .action(PikaMenuAction(title: PikaText.textColorSwapDetail, action: #selector(AppDelegate.triggerSwap))),
+            .action(PikaMenuAction(title: PikaText.textColorUndo, action: #selector(AppDelegate.triggerUndo), windowOnly: true)),
+            .action(PikaMenuAction(title: PikaText.textColorRedo, action: #selector(AppDelegate.triggerRedo), windowOnly: true)),
             .divider,
             .palettes,
             .group("Pika", pika),
             .action(PikaMenuAction(title: "\(PikaText.textMenuPreferences)…",
-                                   action: #selector(AppDelegate.openPreferencesWindow), key: ",")),
+                                   action: #selector(AppDelegate.openPreferencesWindow))),
             .divider,
-            .action(PikaMenuAction(title: PikaText.textMenuQuit, action: #selector(AppDelegate.terminatePika), key: "q")),
+            .action(PikaMenuAction(title: PikaText.textMenuQuit, action: #selector(AppDelegate.terminatePika))),
         ]
     }
 
