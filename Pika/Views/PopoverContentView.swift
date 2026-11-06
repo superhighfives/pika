@@ -18,8 +18,8 @@ struct PopoverContentView: View {
                 NavigationMenu()
             }
             .padding(.horizontal, 12)
-            .padding(.top, 10)
-            .padding(.bottom, 4)
+            // The same above and below, so the controls sit in the middle of the bar.
+            .padding(.vertical, 7)
             ContentView()
                 .frame(minHeight: height, idealHeight: height, alignment: .center)
         }
