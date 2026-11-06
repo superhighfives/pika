@@ -64,7 +64,7 @@ enum PikaText {
     // Help Basics
     static let textHelpBasics = NSLocalizedString("help.basics", comment: "Basics")
     static let textHelpBasicsIntro = [
-        NSLocalizedString("help.basics.intro.1", comment: "Basics intro: what colour contrast is"),
+        NSLocalizedString("help.basics.intro.1", comment: "Basics intro: what color contrast is"),
         NSLocalizedString("help.basics.intro.2", comment: "Basics intro: accessibility guidelines"),
         NSLocalizedString("help.basics.intro.3", comment: "Basics intro: where Pika fits"),
     ]
@@ -76,12 +76,12 @@ enum PikaText {
     static let textHelpBasicsContrast = NSLocalizedString("help.basics.contrast", comment: "Why check contrast description")
     static let textHelpBasicsStandardsTitle = NSLocalizedString("help.basics.standards.title", comment: "WCAG and APCA")
     static let textHelpBasicsStandards = NSLocalizedString("help.basics.standards", comment: "WCAG and APCA description")
-    static let textHelpBasicsPickersTitle = NSLocalizedString("help.basics.pickers.title", comment: "Ways to pick a colour")
-    static let textHelpBasicsPickers = NSLocalizedString("help.basics.pickers", comment: "Basic, Pro and system colour picker description")
+    static let textHelpBasicsPickersTitle = NSLocalizedString("help.basics.pickers.title", comment: "Ways to pick a color")
+    static let textHelpBasicsPickers = NSLocalizedString("help.basics.pickers", comment: "Basic, Pro and system color picker description")
     static let textHelpBasicsEditingTitle = NSLocalizedString("help.basics.editing.title", comment: "Editing values")
     static let textHelpBasicsEditing = NSLocalizedString("help.basics.editing", comment: "Editing values description")
-    static let textHelpBasicsSpacesTitle = NSLocalizedString("help.basics.spaces.title", comment: "Colour spaces")
-    static let textHelpBasicsSpaces = NSLocalizedString("help.basics.spaces", comment: "Colour spaces description")
+    static let textHelpBasicsSpacesTitle = NSLocalizedString("help.basics.spaces.title", comment: "Color spaces")
+    static let textHelpBasicsSpaces = NSLocalizedString("help.basics.spaces", comment: "Color spaces description")
     static let textHelpReferenceWCAG = NSLocalizedString("help.reference.wcag", comment: "Link to WCAG contrast guidance")
     static let textHelpReferenceAPCA = NSLocalizedString("help.reference.apca", comment: "Link to APCA guidance")
 
@@ -166,7 +166,7 @@ enum PikaText {
         "loupe.theme", value: "Loupe style", comment: "Label for the Pro picker loupe theme setting"
     )
     static let textLoupeThemeLens = NSLocalizedString(
-        "loupe.theme.lens", value: "Lens", comment: "Loupe theme: coloured rim with engraved text"
+        "loupe.theme.lens", value: "Lens", comment: "Loupe theme: colored rim with engraved text"
     )
     static let textLoupeThemeBadge = NSLocalizedString(
         "loupe.theme.badge", value: "Badge", comment: "Loupe theme: white badges on the inside edge"
@@ -213,7 +213,7 @@ enum PikaText {
     )
     static let textSplashConfirmBody = NSLocalizedString(
         "splash.confirm.body",
-        value: "The Pro picker shows the colour, its format, and live contrast right in the "
+        value: "The Pro picker shows the color, its format, and live contrast right in the "
             + "loupe as you pick — a much nicer experience than the macOS sampler. "
             + "You can always switch later in Settings.",
         comment: "Get started confirmation body"
@@ -342,33 +342,33 @@ enum PikaText {
         comment: "Hide color names"
     )
     static let textColorListTitle = NSLocalizedString(
-        "preferences.colornames.title", value: "Colour Names", comment: "Colour name list section title"
+        "preferences.colornames.title", value: "Color Names", comment: "Color name list section title"
     )
     static let textColorListSubtitle = NSLocalizedString(
         "preferences.colornames.subtitle",
-        value: "Choose the list Pika uses to name colours. Lists come from color.pizza and "
+        value: "Choose the list Pika uses to name colors. Lists come from color.pizza and "
             + "update automatically; the default works offline.",
-        comment: "Colour name list section subtitle"
+        comment: "Color name list section subtitle"
     )
     static let textColorListDefault = NSLocalizedString(
-        "preferences.colornames.default", value: "Default", comment: "Default colour list name"
+        "preferences.colornames.default", value: "Default", comment: "Default color list name"
     )
     static let textColorListStatusChecking = NSLocalizedString(
         "preferences.colornames.status.checking", value: "Checking color.pizza for updates…",
-        comment: "Colour list tooltip: a refresh is in progress"
+        comment: "Color list tooltip: a refresh is in progress"
     )
     static let textColorListStatusUpdatedFormat = NSLocalizedString(
         "preferences.colornames.status.updated", value: "Updated %@",
-        comment: "Colour list tooltip: when the list was last refreshed (%@ is a date)"
+        comment: "Color list tooltip: when the list was last refreshed (%@ is a date)"
     )
     static let textColorListStatusOffline = NSLocalizedString(
         "preferences.colornames.status.offline",
-        value: "Couldn’t reach color.pizza. Using the saved colour list.",
-        comment: "Colour list tooltip: the last refresh failed, cached/bundled names are in use"
+        value: "Couldn’t reach color.pizza. Using the saved color list.",
+        comment: "Color list tooltip: the last refresh failed, cached/bundled names are in use"
     )
     static let textColorListStatusBuiltIn = NSLocalizedString(
-        "preferences.colornames.status.builtin", value: "Using the built-in colour list.",
-        comment: "Colour list tooltip: no network refresh has happened yet"
+        "preferences.colornames.status.builtin", value: "Using the built-in color list.",
+        comment: "Color list tooltip: no network refresh has happened yet"
     )
     static let textFloatDescription = NSLocalizedString(
         "preferences.float.description",
@@ -452,9 +452,9 @@ enum PikaText {
     static let textViewContrast = NSLocalizedString("toolbar.view.contrast", comment: "View menu: contrast footer")
     static let textViewPalettes = NSLocalizedString("toolbar.view.palettes", comment: "View menu: palettes drawer")
     static let textToolbarMore = NSLocalizedString("toolbar.more", comment: "Toolbar menu of actions")
-    static let textSpaceMatchDisplay = NSLocalizedString("toolbar.space.display", comment: "Colour space menu: follow the display being picked on")
-    static let textSpaceSubtitleSRGB = NSLocalizedString("toolbar.space.srgb.subtitle", comment: "Colour space menu: what sRGB is for")
-    static let textSpaceSubtitleP3 = NSLocalizedString("toolbar.space.p3.subtitle", comment: "Colour space menu: what Display P3 is for")
+    static let textSpaceMatchDisplay = NSLocalizedString("toolbar.space.display", comment: "Color space menu: follow the display being picked on")
+    static let textSpaceSubtitleSRGB = NSLocalizedString("toolbar.space.srgb.subtitle", comment: "Color space menu: what sRGB is for")
+    static let textSpaceSubtitleP3 = NSLocalizedString("toolbar.space.p3.subtitle", comment: "Color space menu: what Display P3 is for")
     static let textSpaceHintSRGB = NSLocalizedString(
         "preferences.space.hint.srgb", comment: "Recommended for color space"
     )
@@ -473,7 +473,7 @@ enum PikaText {
         "color.space.mismatch.prompt", comment: "Colors don’t match? (before the Check a Color link)"
     )
     static let textMatchTitle = NSLocalizedString("match.title", comment: "Check a Color window title")
-    static let textMatchMenu = NSLocalizedString("match.menu", comment: "Check a Color (toolbar colour space menu item)")
+    static let textMatchMenu = NSLocalizedString("match.menu", comment: "Check a Color (toolbar color space menu item)")
     static let textMatchWindow = NSLocalizedString("match.window", comment: "Check Color (window title)")
     static let textMatchIntro = NSLocalizedString("match.intro", comment: "Check a Color introduction")
     static let textMatchExpected = NSLocalizedString("match.expected", comment: "Expected value field")
@@ -488,9 +488,9 @@ enum PikaText {
     static let textMatchUse = NSLocalizedString("match.use", comment: "Use color space button")
     static let textMatchPick = NSLocalizedString("match.pick", comment: "Pick again button")
     static let textMatchLearn = NSLocalizedString("match.learn", comment: "Learn more link")
-    static let textMatchPicked = NSLocalizedString("match.picked", comment: "Picked colour card title")
-    static let textMatchExpectedTitle = NSLocalizedString("match.expected.title", comment: "Expected colour card title")
-    static let textMatchPickFirst = NSLocalizedString("match.pick.first", comment: "Pick a colour button")
+    static let textMatchPicked = NSLocalizedString("match.picked", comment: "Picked color card title")
+    static let textMatchExpectedTitle = NSLocalizedString("match.expected.title", comment: "Expected color card title")
+    static let textMatchPickFirst = NSLocalizedString("match.pick.first", comment: "Pick a color button")
     static let textMatchCurrentBadge = NSLocalizedString("match.badge.current", comment: "Badge on the color space in use")
     static let textMatchEmpty = NSLocalizedString("match.empty", comment: "Check a Color empty state")
     static let textMatchAnySpace = NSLocalizedString(
@@ -586,9 +586,9 @@ enum PikaText {
     static let textUrlComplianceToggle = NSLocalizedString("help.url.compliance.toggle", comment: "Toggle compliance")
 
     // URL Trigger Descriptions — Preview
-    static let textUrlPreviewShow = NSLocalizedString("help.url.preview.show", comment: "Show colour preview")
-    static let textUrlPreviewHide = NSLocalizedString("help.url.preview.hide", comment: "Hide colour preview")
-    static let textUrlPreviewToggle = NSLocalizedString("help.url.preview.toggle", comment: "Toggle colour preview")
+    static let textUrlPreviewShow = NSLocalizedString("help.url.preview.show", comment: "Show color preview")
+    static let textUrlPreviewHide = NSLocalizedString("help.url.preview.hide", comment: "Hide color preview")
+    static let textUrlPreviewToggle = NSLocalizedString("help.url.preview.toggle", comment: "Toggle color preview")
 
     // URL Trigger Descriptions — Appearance
     static let textUrlAppearanceLight = NSLocalizedString("help.url.appearance.light", comment: "Force light appearance")
@@ -599,21 +599,21 @@ enum PikaText {
     )
 
     /*
-     * Custom colour picker
+     * Custom color picker
      */
 
     // Settings — picker style tiles
     static let textPickerStyleTitle = NSLocalizedString(
-        "preferences.picker.title", value: "Colour Picker", comment: "Colour picker style section title"
+        "preferences.picker.title", value: "Color Picker", comment: "Color picker style section title"
     )
     static let textPickerSystemTitle = NSLocalizedString(
-        "preferences.picker.system.title", value: "Basic picker", comment: "Basic picker tile title"
+        "preferences.picker.system.title", value: "Basic Picker", comment: "Basic Picker tile title"
     )
     static let textPickerSystemDescription = NSLocalizedString(
-        "preferences.picker.system.description", value: "macOS colour sampler", comment: "Basic picker tile subtitle"
+        "preferences.picker.system.description", value: "macOS color sampler", comment: "Basic picker tile subtitle"
     )
     static let textPickerCustomTitle = NSLocalizedString(
-        "preferences.picker.custom.title", value: "Pro picker", comment: "Pro picker tile title"
+        "preferences.picker.custom.title", value: "Pro Picker", comment: "Pro Picker tile title"
     )
     static let textPickerCustomDescription = NSLocalizedString(
         "preferences.picker.custom.description",
@@ -656,7 +656,7 @@ enum PikaText {
 
     // Splash picker choice
     static let textSplashPickerPrompt = NSLocalizedString(
-        "splash.picker.prompt", value: "Colour picker", comment: "Splash picker choice label"
+        "splash.picker.prompt", value: "Color picker", comment: "Splash picker choice label"
     )
 
     // Pick pair shortcut
