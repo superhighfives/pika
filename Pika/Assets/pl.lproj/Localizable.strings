@@ -803,7 +803,7 @@
 "color.space.short.display" = "Ekran";
 
 /* Toolbar colour space menu item that opens the Colour Spaces help */
-"color.space.learn" = "O przestrzeniach barw";
+"color.space.learn" = "O przestrzeniach barw…";
 
 /* Toolbar menu of what the window shows */
 "toolbar.view" = "Widok";

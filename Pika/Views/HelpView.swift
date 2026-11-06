@@ -1,6 +1,9 @@
 import SwiftUI
 
 struct HelpView: View {
+    /// The header's height; the titlebar backdrop switches on once it has scrolled away.
+    private static let headerHeight: CGFloat = 180
+
     @State private var showFullIntro = false
     /// The shortcuts note names Pick pair by its default keys; show the user's binding instead.
     private var shortcutsDescription: String {
@@ -16,7 +19,7 @@ struct HelpView: View {
             VStack(spacing: 0) {
                 // MARK: Header
 
-                VisualisationHeader(height: 180) {
+                VisualisationHeader(height: Self.headerHeight) {
                     Text(PikaText.textMenuHelp)
                         .font(.title2)
                         .fontWeight(.semibold)
@@ -175,6 +178,7 @@ struct HelpView: View {
             }
             .padding(.bottom, 8)
         }
+        .modifier(HeaderTitlebarBackdrop(headerHeight: Self.headerHeight))
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
