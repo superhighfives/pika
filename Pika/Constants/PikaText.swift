@@ -656,7 +656,7 @@ enum PikaText {
 
     // Splash picker choice
     static let textSplashPickerPrompt = NSLocalizedString(
-        "splash.picker.prompt", value: "Color picker", comment: "Splash picker choice label"
+        "splash.picker.prompt", value: "Color Picker", comment: "Splash picker choice label"
     )
 
     // Pick pair shortcut
