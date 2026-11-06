@@ -115,7 +115,7 @@ final class PermissionDragHelper {
         panel.backgroundColor = .clear
         panel.hasShadow = true
         // Not every Space: it belongs with System Settings, and `tick` shows it only while that's
-        // the active app, so switching to another app or Space doesn't leave it behind.
+        // the active app, so switching to another app doesn't leave it behind.
         panel.collectionBehavior = [.fullScreenAuxiliary]
         return panel
     }
@@ -133,8 +133,9 @@ final class PermissionDragHelper {
         }
         hasSeenSettingsWindow = true
         panel.setFrameOrigin(Self.origin(beside: frame))
-        // Only beside System Settings while the user is in it: switching away hid it
-        // (another app, another Space), coming back shows it again.
+        // Only beside System Settings while the user is in it: switching to another app hides it,
+        // coming back shows it again. Switching Space takes Settings off screen, so the nil frame
+        // above closes the helper instead.
         let settingsActive = NSWorkspace.shared.frontmostApplication?.bundleIdentifier == Self.settingsBundleID
         if settingsActive, !panel.isVisible {
             panel.orderFrontRegardless()
