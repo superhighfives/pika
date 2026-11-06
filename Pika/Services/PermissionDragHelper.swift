@@ -3,11 +3,12 @@ import Cocoa
 import Defaults
 import SwiftUI
 
-/// A small panel beside System Settings with Pika's icon, to drag into a privacy list. Dragging
-/// the app in adds it already switched on, which saves finding it with + in a file dialog.
-/// Opens the pane itself, follows the System Settings window, and closes once the permission
-/// is granted, System Settings closes, or the user dismisses it, and hides while the user is in
-/// another app.
+/// Helps grant a privacy permission by dragging Pika into System Settings' list. Opens the pane,
+/// flies a Pika chip from where the user clicked into System Settings, then docks a panel inside
+/// the bottom of its window ("Drag Pika into the … list above", with a row to drag). Dragging the
+/// app in adds it already switched on, which saves finding it with + in a file dialog. The panel
+/// follows the window, hides while the user is in another app, and closes once the permission is
+/// granted, System Settings closes, or the user dismisses it.
 @MainActor
 final class PermissionDragHelper {
     enum Permission {
@@ -22,7 +23,7 @@ final class PermissionDragHelper {
             }
         }
 
-        var message: String {
+        var instruction: String {
             switch self {
             case .screenRecording: PikaText.textPermissionDragScreenRecording
             case .accessibility: PikaText.textPermissionDragAccessibility
@@ -42,19 +43,32 @@ final class PermissionDragHelper {
     static let shared = PermissionDragHelper()
 
     private var panel: NSPanel?
+    private var flyer: NSPanel?
     private var timer: Timer?
     private var permission: Permission?
     /// When the panel was shown, so a System Settings that never opens doesn't leave it waiting.
     private var shownAt = Date()
     private var hasSeenSettingsWindow = false
+    private var isFlying = false
+    /// Where the user clicked, for the chip to fly from.
+    private var flightStart = NSPoint.zero
     /// Puts a lowered floating window back once the user returns to it.
     private var restoreObserver: NSObjectProtocol?
 
-    private static let size = NSSize(width: 300, height: 92)
     private static let settingsBundleID = "com.apple.systempreferences"
+    /// The dock's height, and its inset from System Settings' window edges.
+    private static let dockHeight: CGFloat = 128
+    private static let inset: CGFloat = 12
+    /// System Settings' sidebar, as a share of its window's width; the dock sits in the content
+    /// area beside it.
+    private static let sidebarShare: CGFloat = 0.315
+    /// The draggable row inside the dock: its height, and its inset from the dock's edges.
+    private static let rowHeight: CGFloat = 48
+    private static let rowInset: CGFloat = 16
 
     func show(_ permission: Permission) {
         lowerFloatingWindow()
+        flightStart = NSEvent.mouseLocation
         if let url = permission.paneURL { NSWorkspace.shared.open(url) }
         self.permission = permission
         shownAt = Date()
@@ -62,16 +76,14 @@ final class PermissionDragHelper {
 
         let panel = self.panel ?? makePanel()
         self.panel = panel
-        let host = NSHostingView(rootView: PermissionDragView(message: permission.message) { [weak self] in
+        panel.contentView = NSHostingView(rootView: PermissionDockView(instruction: permission.instruction) { [weak self] in
             self?.close()
         })
-        host.frame = NSRect(origin: .zero, size: Self.size)
-        panel.contentView = host
-        // Shown by `tick` once System Settings is up and active, beside its window.
+        // Shown by `tick` once System Settings is up and active, docked in its window.
         panel.orderOut(nil)
 
         timer?.invalidate()
-        timer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) { [weak self] _ in
+        timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
             MainActor.assumeIsolated { self?.tick() }
         }
     }
@@ -80,6 +92,8 @@ final class PermissionDragHelper {
         timer?.invalidate()
         timer = nil
         panel?.orderOut(nil)
+        flyer?.orderOut(nil)
+        isFlying = false
         permission = nil
     }
 
@@ -100,13 +114,9 @@ final class PermissionDragHelper {
         }
     }
 
-    private func makePanel() -> NSPanel {
-        let panel = NSPanel(
-            contentRect: NSRect(origin: .zero, size: Self.size),
-            styleMask: [.nonactivatingPanel, .borderless],
-            backing: .buffered,
-            defer: false
-        )
+    private static func makeFloatingPanel(_ rect: NSRect) -> NSPanel {
+        let panel = NSPanel(contentRect: rect, styleMask: [.nonactivatingPanel, .borderless],
+                            backing: .buffered, defer: false)
         // Above System Settings, without taking focus from it.
         panel.level = .floating
         panel.isFloatingPanel = true
@@ -120,6 +130,10 @@ final class PermissionDragHelper {
         return panel
     }
 
+    private func makePanel() -> NSPanel {
+        Self.makeFloatingPanel(NSRect(x: 0, y: 0, width: 400, height: Self.dockHeight))
+    }
+
     private func tick() {
         guard let permission, let panel else { return }
         if permission.isGranted {
@@ -131,12 +145,20 @@ final class PermissionDragHelper {
             if hasSeenSettingsWindow || Date().timeIntervalSince(shownAt) > 10 { close() }
             return
         }
-        hasSeenSettingsWindow = true
-        panel.setFrameOrigin(Self.origin(beside: frame))
-        // Only beside System Settings while the user is in it: switching to another app hides it,
-        // coming back shows it again. Switching Space takes Settings off screen, so the nil frame
-        // above closes the helper instead.
+        let dock = Self.dockFrame(in: frame)
         let settingsActive = NSWorkspace.shared.frontmostApplication?.bundleIdentifier == Self.settingsBundleID
+        if !hasSeenSettingsWindow {
+            // Wait for System Settings to come forward, then fly the chip in from the click.
+            guard settingsActive else { return }
+            hasSeenSettingsWindow = true
+            panel.setFrame(dock, display: false)
+            fly(to: Self.rowFrame(in: dock)) { [weak self] in self?.reveal() }
+            return
+        }
+        guard !isFlying else { return }
+        if panel.frame != dock { panel.setFrame(dock, display: true) }
+        // Only while the user is in System Settings: switching to another app hides it, coming
+        // back shows it again.
         if settingsActive, !panel.isVisible {
             panel.orderFrontRegardless()
         } else if !settingsActive, panel.isVisible {
@@ -144,15 +166,53 @@ final class PermissionDragHelper {
         }
     }
 
-    /// Just under System Settings' window, centred on it, or above it when there's no room.
-    private static func origin(beside frame: NSRect) -> NSPoint {
-        let gap: CGFloat = 12
-        let screen = NSScreen.screens.first { $0.frame.intersects(frame) } ?? NSScreen.main
-        let visible = screen?.visibleFrame ?? frame
-        var origin = NSPoint(x: frame.midX - size.width / 2, y: frame.minY - gap - size.height)
-        if origin.y < visible.minY { origin.y = frame.maxY + gap }
-        origin.x = min(max(origin.x, visible.minX), visible.maxX - size.width)
-        return origin
+    /// Flies a Pika chip from where the user clicked to the dock's row.
+    private func fly(to target: NSRect, completion: @escaping () -> Void) {
+        let start = NSRect(x: flightStart.x - 110, y: flightStart.y - Self.rowHeight / 2,
+                           width: 220, height: Self.rowHeight)
+        let flyer = self.flyer ?? Self.makeFloatingPanel(start)
+        self.flyer = flyer
+        flyer.contentView = NSHostingView(rootView: PermissionChip())
+        flyer.setFrame(start, display: true)
+        flyer.alphaValue = 1
+        flyer.orderFrontRegardless()
+        isFlying = true
+        let reduceMotion = NSWorkspace.shared.accessibilityDisplayShouldReduceMotion
+        NSAnimationContext.runAnimationGroup { context in
+            context.duration = reduceMotion ? 0 : 0.55
+            context.timingFunction = CAMediaTimingFunction(controlPoints: 0.2, 0.8, 0.2, 1)
+            flyer.animator().setFrame(target, display: true)
+        } completionHandler: {
+            MainActor.assumeIsolated { completion() }
+        }
+    }
+
+    /// Fades the dock in around the landed chip, then drops the chip.
+    private func reveal() {
+        guard let panel, permission != nil else { return }
+        panel.alphaValue = 0
+        panel.orderFrontRegardless()
+        NSAnimationContext.runAnimationGroup { context in
+            context.duration = 0.2
+            panel.animator().alphaValue = 1
+        } completionHandler: { [weak self] in
+            MainActor.assumeIsolated {
+                self?.flyer?.orderOut(nil)
+                self?.isFlying = false
+            }
+        }
+    }
+
+    /// The bottom of System Settings' content area, beside its sidebar.
+    private static func dockFrame(in frame: NSRect) -> NSRect {
+        let left = frame.minX + (frame.width * sidebarShare).rounded() + inset
+        return NSRect(x: left, y: frame.minY + inset, width: frame.maxX - inset - left, height: dockHeight)
+    }
+
+    /// Where the draggable row sits inside the dock, in screen coordinates.
+    private static func rowFrame(in dock: NSRect) -> NSRect {
+        NSRect(x: dock.minX + rowInset, y: dock.minY + rowInset,
+               width: dock.width - rowInset * 2, height: rowHeight)
     }
 
     /// System Settings' main window in Cocoa coordinates. Window bounds are readable without
@@ -177,41 +237,71 @@ final class PermissionDragHelper {
     }
 }
 
-/// Pika's icon to drag, with what to do with it.
-private struct PermissionDragView: View {
-    let message: String
+/// Pika's icon and name: the row to drag into the list, and the chip that flies in.
+private struct PermissionChip: View {
+    private var name: String {
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String
+            ?? Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String ?? "Pika"
+    }
+
+    var body: some View {
+        HStack(spacing: 10.0) {
+            Image(nsImage: NSApp.applicationIconImage)
+                .resizable()
+                .frame(width: 28, height: 28)
+            Text(name)
+                .font(.system(size: 13, weight: .semibold))
+            Spacer(minLength: 0)
+        }
+        .padding(.horizontal, 12.0)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 10.0, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: 10.0, style: .continuous)
+                .strokeBorder(Color.primary.opacity(0.08))
+        )
+    }
+}
+
+/// The panel docked in System Settings: what to do, and the row to drag.
+private struct PermissionDockView: View {
+    let instruction: String
     let onClose: () -> Void
 
     var body: some View {
-        HStack(spacing: 12.0) {
-            Image(nsImage: NSApp.applicationIconImage)
-                .resizable()
-                .frame(width: 52, height: 52)
-                // A file URL, as Finder drags an app: the format the privacy lists accept.
-                .onDrag { NSItemProvider(object: Bundle.main.bundleURL as NSURL) }
-                .help(PikaText.textPermissionDragTitle)
-                .accessibilityLabel(PikaText.textPermissionDragTitle)
-            VStack(alignment: .leading, spacing: 3.0) {
-                Text(PikaText.textPermissionDragTitle)
-                    .font(.system(size: 13, weight: .semibold))
-                Text(message)
-                    .font(.system(size: 11))
-                    .foregroundStyle(.secondary)
-                    .fixedSize(horizontal: false, vertical: true)
+        VStack(alignment: .leading, spacing: 0) {
+            HStack(alignment: .firstTextBaseline, spacing: 8.0) {
+                Image(systemName: "arrow.up")
+                    .font(.system(size: 12, weight: .semibold))
+                VStack(alignment: .leading, spacing: 2.0) {
+                    Text(instruction)
+                        .font(.system(size: 13, weight: .semibold))
+                    Text(PikaText.textPermissionDragHint)
+                        .font(.system(size: 11))
+                        .foregroundStyle(.secondary)
+                }
+                Spacer(minLength: 0)
+                Button(action: onClose) {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundStyle(.secondary)
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(PikaText.textPermissionDragClose)
             }
             Spacer(minLength: 0)
+            PermissionChip()
+                .frame(height: 48)
+                // A file URL, as Finder drags an app: the format the privacy lists accept.
+                .onDrag { NSItemProvider(object: Bundle.main.bundleURL as NSURL) }
+                .help(instruction)
+                .accessibilityLabel(instruction)
         }
-        .padding(14.0)
-        .frame(width: 300, height: 92, alignment: .leading)
-        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 14.0, style: .continuous))
-        .overlay(alignment: .topTrailing) {
-            Button(action: onClose) {
-                Image(systemName: "xmark.circle.fill")
-                    .foregroundStyle(.secondary)
-            }
-            .buttonStyle(.plain)
-            .padding(8.0)
-            .accessibilityLabel(PikaText.textPermissionDragClose)
-        }
+        .padding(16.0)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 18.0, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: 18.0, style: .continuous)
+                .strokeBorder(Color.primary.opacity(0.1))
+        )
     }
 }
