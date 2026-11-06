@@ -6,7 +6,8 @@ import SwiftUI
 /// A small panel beside System Settings with Pika's icon, to drag into a privacy list. Dragging
 /// the app in adds it already switched on, which saves finding it with + in a file dialog.
 /// Opens the pane itself, follows the System Settings window, and closes once the permission
-/// is granted, System Settings closes, or the user dismisses it.
+/// is granted, System Settings closes, or the user dismisses it, and hides while the user is in
+/// another app.
 @MainActor
 final class PermissionDragHelper {
     enum Permission {
@@ -66,12 +67,8 @@ final class PermissionDragHelper {
         })
         host.frame = NSRect(origin: .zero, size: Self.size)
         panel.contentView = host
-        // Centred until System Settings has a window to sit beside.
-        if let screen = NSScreen.main {
-            panel.setFrameOrigin(NSPoint(x: screen.visibleFrame.midX - Self.size.width / 2,
-                                         y: screen.visibleFrame.minY + 80))
-        }
-        panel.orderFrontRegardless()
+        // Shown by `tick` once System Settings is up and active, beside its window.
+        panel.orderOut(nil)
 
         timer?.invalidate()
         timer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) { [weak self] _ in
@@ -117,7 +114,9 @@ final class PermissionDragHelper {
         panel.isOpaque = false
         panel.backgroundColor = .clear
         panel.hasShadow = true
-        panel.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
+        // Not every Space: it belongs with System Settings, and `tick` shows it only while that's
+        // the active app, so switching to another app or Space doesn't leave it behind.
+        panel.collectionBehavior = [.fullScreenAuxiliary]
         return panel
     }
 
@@ -134,6 +133,14 @@ final class PermissionDragHelper {
         }
         hasSeenSettingsWindow = true
         panel.setFrameOrigin(Self.origin(beside: frame))
+        // Only beside System Settings while the user is in it: switching away hid it
+        // (another app, another Space), coming back shows it again.
+        let settingsActive = NSWorkspace.shared.frontmostApplication?.bundleIdentifier == Self.settingsBundleID
+        if settingsActive, !panel.isVisible {
+            panel.orderFrontRegardless()
+        } else if !settingsActive, panel.isVisible {
+            panel.orderOut(nil)
+        }
     }
 
     /// Just under System Settings' window, centred on it, or above it when there's no room.
@@ -179,7 +186,8 @@ private struct PermissionDragView: View {
             Image(nsImage: NSApp.applicationIconImage)
                 .resizable()
                 .frame(width: 52, height: 52)
-                .onDrag { NSItemProvider(contentsOf: Bundle.main.bundleURL) ?? NSItemProvider() }
+                // A file URL, as Finder drags an app: the format the privacy lists accept.
+                .onDrag { NSItemProvider(object: Bundle.main.bundleURL as NSURL) }
                 .help(PikaText.textPermissionDragTitle)
                 .accessibilityLabel(PikaText.textPermissionDragTitle)
             VStack(alignment: .leading, spacing: 3.0) {
