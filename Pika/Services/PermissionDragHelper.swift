@@ -50,6 +50,9 @@ final class PermissionDragHelper {
     private var shownAt = Date()
     private var hasSeenSettingsWindow = false
     private var isFlying = false
+    /// Moves on with every show and close, so a flight that finishes after either is ignored
+    /// rather than revealing the wrong dock.
+    private var flight = 0
     /// Where the user clicked, for the chip to fly from.
     private var flightStart = NSPoint.zero
     /// Puts a lowered floating window back once the user returns to it.
@@ -73,6 +76,9 @@ final class PermissionDragHelper {
         self.permission = permission
         shownAt = Date()
         hasSeenSettingsWindow = false
+        flight += 1
+        isFlying = false
+        flyer?.orderOut(nil)
 
         let panel = self.panel ?? makePanel()
         self.panel = panel
@@ -89,6 +95,7 @@ final class PermissionDragHelper {
     }
 
     func close() {
+        flight += 1
         timer?.invalidate()
         timer = nil
         panel?.orderOut(nil)
@@ -177,19 +184,30 @@ final class PermissionDragHelper {
         flyer.alphaValue = 1
         flyer.orderFrontRegardless()
         isFlying = true
+        let current = flight
         let reduceMotion = NSWorkspace.shared.accessibilityDisplayShouldReduceMotion
         NSAnimationContext.runAnimationGroup { context in
             context.duration = reduceMotion ? 0 : 0.55
             context.timingFunction = CAMediaTimingFunction(controlPoints: 0.2, 0.8, 0.2, 1)
             flyer.animator().setFrame(target, display: true)
-        } completionHandler: {
-            MainActor.assumeIsolated { completion() }
+        } completionHandler: { [weak self] in
+            MainActor.assumeIsolated {
+                guard let self, current == self.flight else { return }
+                completion()
+            }
         }
     }
 
-    /// Fades the dock in around the landed chip, then drops the chip.
+    /// Fades the dock in around the landed chip, then drops the chip. Only over System Settings:
+    /// if the user switched away mid-flight, `tick` shows the dock when they come back.
     private func reveal() {
         guard let panel, permission != nil else { return }
+        guard NSWorkspace.shared.frontmostApplication?.bundleIdentifier == Self.settingsBundleID else {
+            flyer?.orderOut(nil)
+            isFlying = false
+            return
+        }
+        let current = flight
         panel.alphaValue = 0
         panel.orderFrontRegardless()
         NSAnimationContext.runAnimationGroup { context in
@@ -197,8 +215,9 @@ final class PermissionDragHelper {
             panel.animator().alphaValue = 1
         } completionHandler: { [weak self] in
             MainActor.assumeIsolated {
-                self?.flyer?.orderOut(nil)
-                self?.isFlying = false
+                guard let self, current == self.flight else { return }
+                self.flyer?.orderOut(nil)
+                self.isFlying = false
             }
         }
     }
