@@ -256,11 +256,20 @@
 /* Copy */
 "color.copy" = "コピー";
 
+/* Paste */
+"color.paste" = "ペースト";
+
 /* Copy foreground */
 "color.copy.foreground" = "前景色をコピー";
 
 /* Copy background */
 "color.copy.background" = "背景色をコピー";
+
+/* Paste foreground */
+"color.paste.foreground" = "前景色にペースト";
+
+/* Paste background */
+"color.paste.background" = "背景色にペースト";
 
 /* Copy all as text */
 "color.copy.text" = "すべてをテキストでコピー";
@@ -327,6 +336,7 @@
 
 /* OKLCH format */
 "color.format.oklch" = "OKLCHフォーマット";
+"color.format.p3" = "Display P3フォーマット";
 
 /* Copy foreground */
 "menu.copy.foreground" = "前景色をコピー";
@@ -600,6 +610,9 @@
 /* Open the Splash window */
 "help.url.window.splash" = "スプラッシュウィンドウを開く";
 
+/* Open the Check Color window */
+"help.url.window.check" = "「カラーを確認」ウインドウを開く";
+
 /* Resize window */
 "help.url.window.resize" = "ウィンドウサイズを変更";
 
@@ -686,6 +699,18 @@
 
 /* Permission pill label: Accessibility */
 "picker.perm.accessibility" = "アクセシビリティ";
+
+/* permission.drag.hint */
+"permission.drag.hint" = "すでにリストにある場合はオンにしてください。";
+
+/* permission.drag.screenRecording */
+"permission.drag.screenRecording" = "Pikaを上の「画面収録」のリストにドラッグ";
+
+/* permission.drag.accessibility */
+"permission.drag.accessibility" = "Pikaを上の「アクセシビリティ」のリストにドラッグ";
+
+/* permission.drag.close */
+"permission.drag.close" = "閉じる";
 
 /* Explains what the optional Accessibility permission adds to the Pro picker */
 "picker.accessibilityNote" = "任意 — 他のアプリの上でピックするときに、Escキーや矢印キーでの微調整が使えるようになります。";
@@ -786,17 +811,47 @@
 /* Match display (%@) */
 "preferences.space.display" = "ディスプレイに合わせる（%@）";
 
+/* Short label for Match display, in the toolbar */
+"color.space.short.display" = "ディスプレイ";
+
+/* Toolbar colour space menu item that opens the Colour Spaces help */
+"color.space.learn" = "カラースペースについて…";
+
+/* Toolbar menu of what the window shows */
+"toolbar.view" = "表示";
+
+/* View menu: text preview pill */
+"toolbar.view.preview" = "テキストプレビュー";
+
+/* View menu: contrast footer */
+"toolbar.view.contrast" = "コントラスト";
+
+/* View menu: palettes drawer */
+"toolbar.view.palettes" = "パレット";
+
+/* Toolbar menu of actions */
+"toolbar.more" = "その他";
+
+/* Colour space menu: follow the display being picked on */
+"toolbar.space.display" = "ディスプレイに合わせる";
+
+/* Colour space menu: what sRGB is for */
+"toolbar.space.srgb.subtitle" = "Web、CSS、ほとんどのデザインツール";
+
+/* Colour space menu: what Display P3 is for */
+"toolbar.space.p3.subtitle" = "広色域のデザインファイルとアプリ";
+
 /* Recommended for color space */
 "preferences.space.hint.srgb" = "推奨。HEX値がCSS、Figma、ほとんどのデザインツールと一致します。";
 
 /* Display P3 hint */
-"preferences.space.hint.p3" = "Display P3のデザインファイルやアプリのアセット向けです。ブラウザは通常のHEXをsRGBとして読むため、CSSのHEXとRGBはcolor(display-p3 …)としてコピーされます。";
+"preferences.space.hint.p3" = "Display P3のデザインファイルやアプリのアセット向けです。ブラウザは通常のHEXをsRGBとして読むため、CSSにはP3形式でコピーしてください。";
 
 /* Match display hint */
 "preferences.space.hint.display" = "ピックするディスプレイの生の値です。HEX値はウェブと一致しません。";
 
 /* Match display hint on a P3 screen */
-"preferences.space.hint.display.p3" = "ピックするディスプレイの生の値です。このディスプレイはDisplay P3なので、CSSのHEXとRGBはcolor(display-p3 …)としてコピーされます。";
+"preferences.space.hint.display.p3" = "ピックするディスプレイの生の値です。このディスプレイはDisplay P3なので、CSSにはP3形式でコピーしてください。";
 
 /* Other color space hint */
 "preferences.space.hint.other" = "ソースが同じカラースペースを使っていない限り、HEX値はウェブと一致しません。";
@@ -804,9 +859,18 @@
 /* Colors don't match? */
 "color.space.mismatch" = "カラーが一致しない場合";
 
+/* Colors don’t match? (before the Check a Color link in Settings) */
+"color.space.mismatch.prompt" = "カラーが一致しませんか？";
+
 
 /* Check a Color window title */
-"match.title" = "カラーを確認";
+"match.title" = "カラーを確認…";
+
+/* Check a Color (toolbar colour space menu item) */
+"match.menu" = "カラーを確認";
+
+/* Check Color (window title) */
+"match.window" = "カラーを確認";
 
 /* Check a Color introduction */
 "match.intro" = "Figmaやウェブページのスウォッチなど、値がわかっているカラーをピックし、その値を任意のフォーマットで入力してください。同じ値で読み取れるカラースペースをPikaが探します。";

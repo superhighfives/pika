@@ -629,6 +629,8 @@ final class PickerLoupeController {
         case 126: nudge(dx: 0, dy: step); return true // up
         case 48 where !event.modifierFlags.contains(.command):
             cycleLoupeTheme(reverse: event.modifierFlags.contains(.shift)); return true // Tab
+        case 9 where event.modifierFlags.contains(.command) && NSApp.isActive: // ⌘V
+            pickFromClipboard(); return true
         default:
             // Swallow bare keys so Pika's own single-key shortcuts (x to swap, h/p/c, the
             // format keys) can't fire mid-pick — but ONLY while Pika is frontmost. The
@@ -637,6 +639,24 @@ final class PickerLoupeController {
             // shortcuts can't fire when it isn't active anyway. Command combos always pass.
             return NSApp.isActive && !event.modifierFlags.contains(.command)
         }
+    }
+
+    /// Picks the colour on the clipboard as if it were under the loupe (#285): a hex or any of
+    /// Pika's formats, read in the current colour space like a typed value. It ends the pick the
+    /// way a click does, so it's recorded, copied on pick and chains to the background.
+    private func pickFromClipboard() {
+        guard completion != nil, !isCommitting else { return }
+        guard let text = NSPasteboard.general.string(forType: .string),
+              let expected = ExpectedColor.parse(text, fallback: Defaults[.colorFormat]),
+              let color = expected.color(in: Defaults[.colorSpace])
+        else {
+            NSSound.beep()
+            return
+        }
+        refineTask?.cancel()
+        viewModel.sampleColor = color
+        targetEyedropper?.set(color)
+        finish(with: color)
     }
 
     /// Steps the live loupe through the available themes (Shift+Tab reverses), so you can

@@ -40,6 +40,7 @@
 		DEC0FACE0000000000000011 /* ColorDecompositionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC0FACE0000000000000010 /* ColorDecompositionTests.swift */; };
 		CC2000000000000000000C01 /* ClosestVectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000C00 /* ClosestVectorTests.swift */; };
 		CC2000000000000000000D01 /* SequenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000D00 /* SequenceTests.swift */; };
+		7030CA4A567B42B6C4DE8044 /* PikaMenuTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038E22F237EC9D166276B0B9 /* PikaMenuTests.swift */; };
 		CC2000000000000000003E01 /* PickerLoupePanelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000003E00 /* PickerLoupePanelTests.swift */; };
 		CC2000000000000000000E01 /* ExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000E00 /* ExporterTests.swift */; };
 		CC2000000000000000000F01 /* EditableColorValueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000F00 /* EditableColorValueTests.swift */; };
@@ -225,8 +226,10 @@
 		CCB1CA0000000000000000F2 /* ColorPickSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CA0000000000000000F1 /* ColorPickSession.swift */; };
 		CCB1CA0000000000000000F3 /* ColorPickSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CA0000000000000000F1 /* ColorPickSession.swift */; };
 		CCB1CA0000000000000000F5 /* CustomColorPickSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CA0000000000000000F4 /* CustomColorPickSession.swift */; };
+		D385AAE6CD35D76168FB0A28 /* PermissionDragHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51E208D9E36C5E642FC86BE /* PermissionDragHelper.swift */; };
 		C59795F7EE718689904F682A /* PickerLoupeCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5CC39646FAA705E90838F44 /* PickerLoupeCapture.swift */; };
 		CCB1CA0000000000000000F6 /* CustomColorPickSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CA0000000000000000F4 /* CustomColorPickSession.swift */; };
+		834647F57E3804CE9147A149 /* PermissionDragHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51E208D9E36C5E642FC86BE /* PermissionDragHelper.swift */; };
 		C5D7AFF6343E2A94731847DA /* PickerLoupeCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5CC39646FAA705E90838F44 /* PickerLoupeCapture.swift */; };
 		CCB1CA0000000000000000F8 /* PickerLoupePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CA0000000000000000F7 /* PickerLoupePanel.swift */; };
 		CCB1CA0000000000000000F9 /* PickerLoupePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CA0000000000000000F7 /* PickerLoupePanel.swift */; };
@@ -281,6 +284,7 @@
 		DEC0FACE0000000000000010 /* ColorDecompositionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorDecompositionTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000000C00 /* ClosestVectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosestVectorTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000000D00 /* SequenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceTests.swift; sourceTree = "<group>"; };
+		038E22F237EC9D166276B0B9 /* PikaMenuTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PikaMenuTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000003E00 /* PickerLoupePanelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerLoupePanelTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000000E00 /* ExporterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExporterTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000000F00 /* EditableColorValueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableColorValueTests.swift; sourceTree = "<group>"; };
@@ -401,6 +405,7 @@
 		F8ABAC5C2EAAD0F0008CD152 /* ColorPickOverlayWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickOverlayWindow.swift; sourceTree = "<group>"; };
 		CCB1CA0000000000000000F1 /* ColorPickSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickSession.swift; sourceTree = "<group>"; };
 		CCB1CA0000000000000000F4 /* CustomColorPickSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColorPickSession.swift; sourceTree = "<group>"; };
+		F51E208D9E36C5E642FC86BE /* PermissionDragHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionDragHelper.swift; sourceTree = "<group>"; };
 		C5CC39646FAA705E90838F44 /* PickerLoupeCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerLoupeCapture.swift; sourceTree = "<group>"; };
 		CCB1CA0000000000000000F7 /* PickerLoupePanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerLoupePanel.swift; sourceTree = "<group>"; };
 		CCB1CA000000000000000100 /* PickerLoupeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerLoupeView.swift; sourceTree = "<group>"; };
@@ -563,6 +568,7 @@
 				DEC0FACE0000000000000001 /* ColorDecomposition.swift */,
 				CCB1CA0000000000000000F1 /* ColorPickSession.swift */,
 				CCB1CA0000000000000000F4 /* CustomColorPickSession.swift */,
+				F51E208D9E36C5E642FC86BE /* PermissionDragHelper.swift */,
 				C5CC39646FAA705E90838F44 /* PickerLoupeCapture.swift */,
 				CC1100000000000000000007 /* Models */,
 				CC1100000000000000000008 /* Export */,
@@ -630,6 +636,7 @@
 				CC2000000000000000000C00 /* ClosestVectorTests.swift */,
 				CC3000000000000000000110 /* PikaUpdateDriverTests.swift */,
 				CC2000000000000000000D00 /* SequenceTests.swift */,
+				038E22F237EC9D166276B0B9 /* PikaMenuTests.swift */,
 				CC2000000000000000003E00 /* PickerLoupePanelTests.swift */,
 				CC2000000000000000000E00 /* ExporterTests.swift */,
 				CC2000000000000000000F00 /* EditableColorValueTests.swift */,
@@ -1076,6 +1083,7 @@
 				F8ABAC5D2EAAD0F0008CD152 /* ColorPickOverlayWindow.swift in Sources */,
 				CCB1CA0000000000000000F2 /* ColorPickSession.swift in Sources */,
 				CCB1CA0000000000000000F5 /* CustomColorPickSession.swift in Sources */,
+				D385AAE6CD35D76168FB0A28 /* PermissionDragHelper.swift in Sources */,
 				C59795F7EE718689904F682A /* PickerLoupeCapture.swift in Sources */,
 				CCB1CA0000000000000000F8 /* PickerLoupePanel.swift in Sources */,
 				CCB1CA000000000000000101 /* PickerLoupeView.swift in Sources */,
@@ -1130,6 +1138,7 @@
 				F8ABAC5E2EAAD0F0008CD152 /* ColorPickOverlayWindow.swift in Sources */,
 				CCB1CA0000000000000000F3 /* ColorPickSession.swift in Sources */,
 				CCB1CA0000000000000000F6 /* CustomColorPickSession.swift in Sources */,
+				834647F57E3804CE9147A149 /* PermissionDragHelper.swift in Sources */,
 				C5D7AFF6343E2A94731847DA /* PickerLoupeCapture.swift in Sources */,
 				CCB1CA0000000000000000F9 /* PickerLoupePanel.swift in Sources */,
 				CCB1CA000000000000000102 /* PickerLoupeView.swift in Sources */,
@@ -1220,6 +1229,7 @@
 				CC2000000000000000000C01 /* ClosestVectorTests.swift in Sources */,
 				CC3000000000000000000111 /* PikaUpdateDriverTests.swift in Sources */,
 				CC2000000000000000000D01 /* SequenceTests.swift in Sources */,
+				7030CA4A567B42B6C4DE8044 /* PikaMenuTests.swift in Sources */,
 				CC2000000000000000003E01 /* PickerLoupePanelTests.swift in Sources */,
 				CC2000000000000000000E01 /* ExporterTests.swift in Sources */,
 				CC2000000000000000000F01 /* EditableColorValueTests.swift in Sources */,

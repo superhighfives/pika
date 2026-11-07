@@ -75,6 +75,18 @@ enum PikaShortcuts {
             notificationName: .triggerCopyBackground
         ),
         PikaShortcut(
+            title: PikaText.textPasteForeground,
+            displayKeys: ["⌘", "V"], character: "v", modifiers: .command,
+            action: #selector(AppDelegate.triggerPasteForeground),
+            notificationName: .triggerPasteForeground
+        ),
+        PikaShortcut(
+            title: PikaText.textPasteBackground,
+            displayKeys: ["⇧", "⌘", "V"], character: "v", modifiers: [.command, .shift],
+            action: #selector(AppDelegate.triggerPasteBackground),
+            notificationName: .triggerPasteBackground
+        ),
+        PikaShortcut(
             title: PikaText.textColorSystemPickerForegroundSimple,
             displayKeys: ["⌘", "S"], character: "s", modifiers: .command,
             action: #selector(AppDelegate.triggerSystemPickerForeground),
@@ -163,6 +175,12 @@ enum PikaShortcuts {
             displayKeys: ["⌘", "7"], character: "7", modifiers: .command,
             action: #selector(AppDelegate.triggerFormatOKLCH),
             notificationName: .triggerFormatOKLCH
+        ),
+        PikaShortcut(
+            title: PikaText.textFormatP3,
+            displayKeys: ["⌘", "8"], character: "8", modifiers: .command,
+            action: #selector(AppDelegate.triggerFormatP3),
+            notificationName: .triggerFormatP3
         ),
     ]
 

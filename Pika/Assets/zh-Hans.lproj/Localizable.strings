@@ -256,11 +256,20 @@
 /* Copy */
 "color.copy" = "复制";
 
+/* Paste */
+"color.paste" = "粘贴";
+
 /* Copy foreground */
 "color.copy.foreground" = "复制前景色";
 
 /* Copy background */
 "color.copy.background" = "复制背景色";
+
+/* Paste foreground */
+"color.paste.foreground" = "粘贴为前景色";
+
+/* Paste background */
+"color.paste.background" = "粘贴为背景色";
 
 /* Copy all as text */
 "color.copy.text" = "复制全部为文本";
@@ -327,6 +336,7 @@
 
 /* OKLCH format */
 "color.format.oklch" = "OKLCH 格式";
+"color.format.p3" = "Display P3 格式";
 
 /* Copy foreground */
 "menu.copy.foreground" = "复制前景色";
@@ -543,6 +553,9 @@
 /* Open the Splash window */
 "help.url.window.splash" = "打开欢迎窗口";
 
+/* Open the Check Color window */
+"help.url.window.check" = "打开“检查颜色”窗口";
+
 /* Resize window */
 "help.url.window.resize" = "调整窗口大小";
 
@@ -687,6 +700,18 @@
 /* Permission pill label: Accessibility */
 "picker.perm.accessibility" = "辅助功能";
 
+/* permission.drag.hint */
+"permission.drag.hint" = "如果 Pika 已在列表中，请将其打开。";
+
+/* permission.drag.screenRecording */
+"permission.drag.screenRecording" = "将 Pika 拖到上方的“录屏”列表中";
+
+/* permission.drag.accessibility */
+"permission.drag.accessibility" = "将 Pika 拖到上方的“辅助功能”列表中";
+
+/* permission.drag.close */
+"permission.drag.close" = "关闭";
+
 /* Explains what the optional Accessibility permission adds to the Pro picker */
 "picker.accessibilityNote" = "可选：在其他 App 上方取色时，可使用 Esc 键和方向键微调。";
 
@@ -786,17 +811,47 @@
 /* Match display (%@) */
 "preferences.space.display" = "与显示器一致（%@）";
 
+/* Short label for Match display, in the toolbar */
+"color.space.short.display" = "显示器";
+
+/* Toolbar colour space menu item that opens the Colour Spaces help */
+"color.space.learn" = "关于色彩空间…";
+
+/* Toolbar menu of what the window shows */
+"toolbar.view" = "显示";
+
+/* View menu: text preview pill */
+"toolbar.view.preview" = "文本预览";
+
+/* View menu: contrast footer */
+"toolbar.view.contrast" = "对比度";
+
+/* View menu: palettes drawer */
+"toolbar.view.palettes" = "调色板";
+
+/* Toolbar menu of actions */
+"toolbar.more" = "更多";
+
+/* Colour space menu: follow the display being picked on */
+"toolbar.space.display" = "与显示器一致";
+
+/* Colour space menu: what sRGB is for */
+"toolbar.space.srgb.subtitle" = "网页、CSS 和大多数设计工具";
+
+/* Colour space menu: what Display P3 is for */
+"toolbar.space.p3.subtitle" = "广色域设计文件和应用";
+
 /* Recommended for color space */
 "preferences.space.hint.srgb" = "推荐。十六进制值与 CSS、Figma 和大多数设计工具一致。";
 
 /* Display P3 hint */
-"preferences.space.hint.p3" = "适用于 Display P3 设计文件和应用素材。浏览器会将普通十六进制值视为 sRGB，因此 CSS 十六进制和 RGB 会复制为 color(display-p3 …)。";
+"preferences.space.hint.p3" = "适用于 Display P3 设计文件和应用素材。浏览器会将普通十六进制值视为 sRGB，因此用于 CSS 时请以 P3 格式复制。";
 
 /* Match display hint */
 "preferences.space.hint.display" = "取色所在显示器的原始值。十六进制值将与网页不一致。";
 
 /* Match display hint on a P3 screen */
-"preferences.space.hint.display.p3" = "取色所在显示器的原始值。此显示器为 Display P3，因此 CSS 十六进制和 RGB 会复制为 color(display-p3 …)。";
+"preferences.space.hint.display.p3" = "取色所在显示器的原始值。此显示器为 Display P3，因此用于 CSS 时请以 P3 格式复制。";
 
 /* Other color space hint */
 "preferences.space.hint.other" = "除非来源使用相同的色彩空间，否则十六进制值将与网页不一致。";
@@ -804,9 +859,18 @@
 /* Colors don't match? */
 "color.space.mismatch" = "颜色不一致？";
 
+/* Colors don’t match? (before the Check a Color link in Settings) */
+"color.space.mismatch.prompt" = "颜色不一致？";
+
 
 /* Check a Color window title */
-"match.title" = "检查颜色";
+"match.title" = "检查颜色…";
+
+/* Check a Color (toolbar colour space menu item) */
+"match.menu" = "检查颜色";
+
+/* Check Color (window title) */
+"match.window" = "检查颜色";
 
 /* Check a Color introduction */
 "match.intro" = "选取一个你已知数值的颜色，例如 Figma 或网页中的色块，然后以任意格式输入该数值。Pika 会找到能读出同一数值的色彩空间。";
