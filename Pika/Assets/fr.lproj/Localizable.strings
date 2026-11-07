@@ -700,14 +700,14 @@
 /* Permission pill label: Accessibility */
 "picker.perm.accessibility" = "Accessibilité";
 
-/* permission.drag.title */
-"permission.drag.title" = "Faites glisser Pika dans la liste";
+/* permission.drag.hint */
+"permission.drag.hint" = "Si Pika est déjà dans la liste, activez-le.";
 
 /* permission.drag.screenRecording */
-"permission.drag.screenRecording" = "Déposez-le dans la liste Enregistrement de l’écran. Si Pika y est déjà, activez-le.";
+"permission.drag.screenRecording" = "Faites glisser Pika dans la liste Enregistrement de l’écran ci-dessus";
 
 /* permission.drag.accessibility */
-"permission.drag.accessibility" = "Déposez-le dans la liste Accessibilité. Si Pika y est déjà, activez-le.";
+"permission.drag.accessibility" = "Faites glisser Pika dans la liste Accessibilité ci-dessus";
 
 /* permission.drag.close */
 "permission.drag.close" = "Fermer";

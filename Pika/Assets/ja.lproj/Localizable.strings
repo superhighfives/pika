@@ -700,14 +700,14 @@
 /* Permission pill label: Accessibility */
 "picker.perm.accessibility" = "アクセシビリティ";
 
-/* permission.drag.title */
-"permission.drag.title" = "Pikaをリストにドラッグ";
+/* permission.drag.hint */
+"permission.drag.hint" = "すでにリストにある場合はオンにしてください。";
 
 /* permission.drag.screenRecording */
-"permission.drag.screenRecording" = "「画面収録」のリストにドロップします。すでにある場合はオンにしてください。";
+"permission.drag.screenRecording" = "Pikaを上の「画面収録」のリストにドラッグ";
 
 /* permission.drag.accessibility */
-"permission.drag.accessibility" = "「アクセシビリティ」のリストにドロップします。すでにある場合はオンにしてください。";
+"permission.drag.accessibility" = "Pikaを上の「アクセシビリティ」のリストにドラッグ";
 
 /* permission.drag.close */
 "permission.drag.close" = "閉じる";

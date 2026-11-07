@@ -700,14 +700,14 @@
 /* Permission pill label: Accessibility */
 "picker.perm.accessibility" = "Pristupačnost";
 
-/* permission.drag.title */
-"permission.drag.title" = "Povucite Piku na popis";
+/* permission.drag.hint */
+"permission.drag.hint" = "Ako je Pika već na popisu, uključite je.";
 
 /* permission.drag.screenRecording */
-"permission.drag.screenRecording" = "Ispustite je na popis Snimanje zaslona. Ako je Pika već tamo, uključite je.";
+"permission.drag.screenRecording" = "Povucite Piku na popis Snimanje zaslona iznad";
 
 /* permission.drag.accessibility */
-"permission.drag.accessibility" = "Ispustite je na popis Pristupačnost. Ako je Pika već tamo, uključite je.";
+"permission.drag.accessibility" = "Povucite Piku na popis Pristupačnost iznad";
 
 /* permission.drag.close */
 "permission.drag.close" = "Zatvori";

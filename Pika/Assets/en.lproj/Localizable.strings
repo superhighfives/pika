@@ -706,14 +706,14 @@
 /* Permission pill label: Accessibility */
 "picker.perm.accessibility" = "Accessibility";
 
-/* permission.drag.title */
-"permission.drag.title" = "Drag Pika into the list";
+/* permission.drag.hint */
+"permission.drag.hint" = "If Pika’s already in the list, switch it on.";
 
 /* permission.drag.screenRecording */
-"permission.drag.screenRecording" = "Drop it in the Screen Recording list. If Pika’s already there, switch it on.";
+"permission.drag.screenRecording" = "Drag Pika into the Screen Recording list above";
 
 /* permission.drag.accessibility */
-"permission.drag.accessibility" = "Drop it in the Accessibility list. If Pika’s already there, switch it on.";
+"permission.drag.accessibility" = "Drag Pika into the Accessibility list above";
 
 /* permission.drag.close */
 "permission.drag.close" = "Close";

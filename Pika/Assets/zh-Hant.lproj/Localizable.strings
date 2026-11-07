@@ -700,14 +700,14 @@
 /* Permission pill label: Accessibility */
 "picker.perm.accessibility" = "輔助使用";
 
-/* permission.drag.title */
-"permission.drag.title" = "將 Pika 拖到列表中";
+/* permission.drag.hint */
+"permission.drag.hint" = "如果 Pika 已在列表中，請將其開啟。";
 
 /* permission.drag.screenRecording */
-"permission.drag.screenRecording" = "將其放到「螢幕錄製」列表中。如果 Pika 已在列表中，請將其開啟。";
+"permission.drag.screenRecording" = "將 Pika 拖到上方的「螢幕錄製」列表中";
 
 /* permission.drag.accessibility */
-"permission.drag.accessibility" = "將其放到「輔助使用」列表中。如果 Pika 已在列表中，請將其開啟。";
+"permission.drag.accessibility" = "將 Pika 拖到上方的「輔助使用」列表中";
 
 /* permission.drag.close */
 "permission.drag.close" = "關閉";
