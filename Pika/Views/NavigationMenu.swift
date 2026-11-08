@@ -204,11 +204,12 @@ private struct ViewMenuButton: View {
     private func showMenu() {
         guard let anchor else { return }
         let menu = NSMenu()
+        let rows = ToggleMenuRows()
         for row in Self.rows {
             let item = NSMenuItem()
             // Written here rather than through the toggle action: that lands in a SwiftUI
             // handler, which waits for the menu to close.
-            item.view = ToggleMenuRow(title: row.title, key: row.key, isOn: { Defaults[row.setting] }) {
+            item.view = ToggleMenuRow(title: row.title, key: row.key, rows: rows, isOn: { Defaults[row.setting] }) {
                 withAnimation(.easeInOut(duration: 0.25)) { Defaults[row.setting].toggle() }
             }
             menu.addItem(item)
@@ -230,105 +231,6 @@ private struct MenuAnchor: NSViewRepresentable {
     }
 
     func updateNSView(_: NSView, context _: Context) {}
-}
-
-/// A checkable menu row that toggles in place without closing its menu. Draws what a standard
-/// item would: a checkmark, the title, the key on the right, and the highlight under the pointer.
-private final class ToggleMenuRow: NSView {
-    private let isOn: () -> Bool
-    private let toggle: () -> Void
-    private let check = NSImageView()
-    private let titleLabel: NSTextField
-    private let keyLabel: NSTextField
-
-    init(title: String, key: String, isOn: @escaping () -> Bool, toggle: @escaping () -> Void) {
-        self.isOn = isOn
-        self.toggle = toggle
-        titleLabel = NSTextField(labelWithString: title)
-        keyLabel = NSTextField(labelWithString: key)
-        super.init(frame: NSRect(x: 0, y: 0, width: 200, height: 24))
-        autoresizingMask = [.width]
-
-        let font = NSFont.menuFont(ofSize: 0)
-        titleLabel.font = font
-        keyLabel.font = font
-        keyLabel.alignment = .right
-        check.image = NSImage(systemSymbolName: "checkmark", accessibilityDescription: nil)?
-            .withSymbolConfiguration(.init(pointSize: font.pointSize - 1, weight: .semibold))
-
-        for view in [check, titleLabel, keyLabel] {
-            view.translatesAutoresizingMaskIntoConstraints = false
-            addSubview(view)
-        }
-        NSLayoutConstraint.activate([
-            check.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
-            check.centerYAnchor.constraint(equalTo: centerYAnchor),
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 30),
-            titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            keyLabel.leadingAnchor.constraint(greaterThanOrEqualTo: titleLabel.trailingAnchor, constant: 24),
-            keyLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            keyLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-        ])
-        setAccessibilityElement(true)
-        setAccessibilityRole(.checkBox)
-        setAccessibilityLabel(title)
-        refresh()
-    }
-
-    @available(*, unavailable)
-    required init?(coder _: NSCoder) { fatalError("init(coder:) has not been implemented") }
-
-    private var isHighlighted: Bool { enclosingMenuItem?.isHighlighted ?? false }
-
-    /// The state just set by a click, until the setting itself is read again on the next open.
-    private var shownOn: Bool?
-
-    private func refresh() {
-        let on = shownOn ?? isOn()
-        check.isHidden = !on
-        setAccessibilityValue(on)
-        let highlighted = isHighlighted
-        titleLabel.textColor = highlighted ? .selectedMenuItemTextColor : .labelColor
-        keyLabel.textColor = highlighted ? .selectedMenuItemTextColor : .secondaryLabelColor
-        check.contentTintColor = highlighted ? .selectedMenuItemTextColor : .labelColor
-    }
-
-    override func draw(_ dirtyRect: NSRect) {
-        // The menu marks a custom item highlighted as the pointer moves over it and redraws it.
-        if isHighlighted {
-            NSColor.selectedContentBackgroundColor.setFill()
-            NSBezierPath(roundedRect: bounds.insetBy(dx: 5, dy: 0), xRadius: 5, yRadius: 5).fill()
-        }
-        refresh()
-        super.draw(dirtyRect)
-    }
-
-    override func mouseUp(with _: NSEvent) {
-        flip()
-    }
-
-    override func accessibilityPerformPress() -> Bool {
-        flip()
-        return true
-    }
-
-    /// Toggles the setting and shows it at once. While a menu is open the app runs the menu's own
-    /// event loop, which holds back queued work and SwiftUI's redraws until it closes, so a click
-    /// looked like it did nothing. The check is set from the flip rather than read back.
-    private func flip() {
-        let wasOn = isOn()
-        toggle()
-        shownOn = !wasOn
-        refresh()
-        display()
-        // Run the app's normal run loop for as long as the window's transitions take (0.3 s at
-        // most), so SwiftUI applies the change and animates it behind the menu now; in the menu's
-        // own loop an animation starts but doesn't advance until the menu closes.
-        let settle = Date(timeIntervalSinceNow: 0.35)
-        while Date() < settle {
-            RunLoop.main.run(mode: .default, before: settle)
-        }
-    }
 }
 
 private extension View {
