@@ -195,6 +195,7 @@ final class URLSchemeHandler: NSObject {
 
     private func handleWindow(task: String?, arg1: String?, arg2: String?) {
         switch task {
+        case "show": NSApp.sendAction(#selector(AppDelegate.showMainInterface), to: nil, from: nil)
         case "about": NSApp.sendAction(#selector(AppDelegate.openAboutWindow), to: nil, from: nil)
         case "help": NSApp.sendAction(#selector(AppDelegate.openHelpWindow), to: nil, from: nil)
         case "preferences": NSApp.sendAction(#selector(AppDelegate.openPreferencesWindow), to: nil, from: nil)

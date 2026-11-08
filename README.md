@@ -1,3 +1,4 @@
+| Windows | `pika://window/show` | Show Pika (main window, or popover in popover mode) |
 <img width="128" alt="Pika icon, an eye against a multicoloured background" src="https://user-images.githubusercontent.com/449385/103492506-4dbd3700-4e23-11eb-97ca-44a959f171c6.png">
 
 # Pika
