@@ -57,8 +57,8 @@ final class URLSchemeHandler: NSObject {
         /// Debug builds only:
         /// - `pika://debug/sample/<foreground|background>?x=…&y=…`: samples the screen at a point
         ///   through the Pro picker's own capture (see `debugSample`)
-        /// - `pika://debug/update/<state>` and `pika://debug/update/scheduled` (Sparkle build):
-        ///   checks the inline update control (see `debugUpdate`)
+        /// - `pika://debug/update/<state>` (Sparkle build): shows a state in the inline update
+        ///   control (see `debugUpdate`)
         /// - `pika://debug/permission/<screen|accessibility>`: opens that privacy pane with the
         ///   drag panel, whatever the permission's state (`PermissionDragHelper`)
         private func handleDebug(task: String?, arg1: String?, url: URL) {
@@ -115,18 +115,14 @@ final class URLSchemeHandler: NSObject {
         }
 
         #if TARGET_SPARKLE
-            /// - `<state>`: available, downloading, ready, installing, checking, uptodate, failed or
-            ///   idle, with stand-in replies (see `PikaUpdateDriver.debugShow`)
-            /// - `scheduled`: a real scheduled-style check against the feed now
+            /// `<state>`: available, downloading, ready, installing, checking, uptodate, failed or idle,
+            /// with stand-in replies (see `PikaUpdateDriver.debugShow`). There's no real check: Debug
+            /// builds refuse every check against the feed (`updater(_:mayPerform:)` in AppDelegate).
             private func debugUpdate(_ arg1: String?) {
                 // Apple events arrive on the main thread.
                 MainActor.assumeIsolated {
                     guard let controller = AppDelegate.shared?.updateController, let arg1 else { return }
-                    if arg1 == "scheduled" {
-                        controller.updater.checkForUpdatesInBackground()
-                    } else {
-                        controller.driver.debugShow(arg1)
-                    }
+                    controller.driver.debugShow(arg1)
                 }
             }
         #endif
