@@ -20,7 +20,7 @@ brew install --cask pika
 
 - Pick colours from anywhere on screen, with the macOS sampler or Pika's Pro picker and its live loupe
 - Check contrast between a foreground and background with WCAG 2 or APCA
-- Hex, RGB, HSB, HSL, LAB, OpenGL and OKLCH formats, in sRGB or Display P3
+- Hex, RGB, HSB, HSL, LAB, OpenGL, OKLCH and Display P3 formats, in sRGB or Display P3
 - Click, type, scrub or step any colour value
 - Colour names, history, undo and redo
 - Global shortcuts and a `pika://` URL scheme for automation
@@ -63,7 +63,7 @@ Learn more about [WCAG contrast](https://www.w3.org/WAI/WCAG22/Understanding/con
 
 ## Keyboard Shortcuts
 
-Most shortcuts need Pika in front. Show/hide Pika and Pick pair (<kbd>⌥ ⌘ D</kbd>) work from any app; set them in Settings → Global Shortcut.
+The View menu in the toolbar shows or hides Contrast, Palettes and Text Preview, and its keys (<kbd>C</kbd>, <kbd>H</kbd> and <kbd>P</kbd>) work while it's open. Most shortcuts need Pika in front. Show/hide Pika and Pick pair (<kbd>⌥ ⌘ D</kbd>) work from any app; set them in Settings → Global Shortcut.
 
 | Group | Shortcut | Action |
 | --- | --- | --- |
@@ -72,6 +72,8 @@ Most shortcuts need Pika in front. Show/hide Pika and Pick pair (<kbd>⌥ ⌘ D<
 | Pick | <kbd>⌥ ⌘ D</kbd> | Pick foreground and background |
 | Copy | <kbd>⌘ C</kbd> | Copy foreground |
 | Copy | <kbd>⌘ ⇧ C</kbd> | Copy background |
+| Paste | <kbd>⌘ V</kbd> | Paste foreground |
+| Paste | <kbd>⌘ ⇧ V</kbd> | Paste background |
 | System picker | <kbd>⌘ S</kbd> | Use for foreground |
 | System picker | <kbd>⌘ ⇧ S</kbd> | Use for background |
 | Change format | <kbd>⌘ 1</kbd> | Format Hex |
@@ -81,20 +83,21 @@ Most shortcuts need Pika in front. Show/hide Pika and Pick pair (<kbd>⌥ ⌘ D<
 | Change format | <kbd>⌘ 5</kbd> | Format LAB |
 | Change format | <kbd>⌘ 6</kbd> | Format OpenGL |
 | Change format | <kbd>⌘ 7</kbd> | Format OKLCH |
+| Change format | <kbd>⌘ 8</kbd> | Format Display P3 |
 | Actions | <kbd>X</kbd> | Swap colors |
-| Actions | <kbd>H</kbd> | Toggle history |
-| Actions | <kbd>C</kbd> | Toggle compliance |
-| Actions | <kbd>P</kbd> | Toggle colour preview |
+| Actions | <kbd>H</kbd> | Toggle palettes |
+| Actions | <kbd>C</kbd> | Toggle contrast |
+| Actions | <kbd>P</kbd> | Toggle text preview |
 | Actions | <kbd>⌘ Z</kbd> | Undo last pick |
 | Actions | <kbd>⌘ ⇧ Z</kbd> | Redo last pick |
-| Actions | <kbd>⌘ ,</kbd> | Preferences |
+| Actions | <kbd>⌘ ,</kbd> | Settings |
 | Actions | <kbd>⌘ Q</kbd> | Quit Pika |
 
 ## URL Triggers
 
 You can also trigger Pika using the `pika://` URL scheme.
 
-When picking or copying, you can append a format to the URL — `<format>` is one of `hex`, `rgb`, `hsb`, `hsl`, `lab`, `opengl`, or `oklch`. For example, `pika://pick/foreground/hex`.
+When picking or copying, you can append a format to the URL — `<format>` is one of `hex`, `rgb`, `hsb`, `hsl`, `lab`, `opengl`, `oklch` or `p3`. For example, `pika://pick/foreground/hex`.
 
 | Group | URL | Action |
 | --- | --- | --- |
@@ -118,6 +121,7 @@ When picking or copying, you can append a format to the URL — `<format>` is on
 | Change format | `pika://format/lab` | Format LAB |
 | Change format | `pika://format/opengl` | Format OpenGL |
 | Change format | `pika://format/oklch` | Format OKLCH |
+| Change format | `pika://format/p3` | Format Display P3 |
 | Actions | `pika://swap` | Swap colors |
 | Actions | `pika://undo` | Undo last pick |
 | Actions | `pika://redo` | Redo last pick |
@@ -136,6 +140,7 @@ When picking or copying, you can append a format to the URL — `<format>` is on
 | Windows | `pika://window/help` | Open Help |
 | Windows | `pika://window/preferences` | Open Preferences |
 | Windows | `pika://window/splash` | Open Splash |
+| Windows | `pika://window/check` | Open Check Color |
 | Windows | `pika://window/resize/<w>/<h>` | Resize window |
 | Appearance | `pika://appearance/light` | Force light appearance |
 | Appearance | `pika://appearance/dark` | Force dark appearance |
