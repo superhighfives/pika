@@ -40,6 +40,7 @@
 		DEC0FACE0000000000000011 /* ColorDecompositionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC0FACE0000000000000010 /* ColorDecompositionTests.swift */; };
 		CC2000000000000000000C01 /* ClosestVectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000C00 /* ClosestVectorTests.swift */; };
 		CC2000000000000000000D01 /* SequenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000D00 /* SequenceTests.swift */; };
+		C593C068B6949597E6AFB74D /* ToggleMenuRowsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C520BA01FEE0144A1C677C6A /* ToggleMenuRowsTests.swift */; };
 		7030CA4A567B42B6C4DE8044 /* PikaMenuTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038E22F237EC9D166276B0B9 /* PikaMenuTests.swift */; };
 		CC2000000000000000003E01 /* PickerLoupePanelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000003E00 /* PickerLoupePanelTests.swift */; };
 		CC2000000000000000000E01 /* ExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000E00 /* ExporterTests.swift */; };
@@ -286,6 +287,7 @@
 		DEC0FACE0000000000000010 /* ColorDecompositionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorDecompositionTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000000C00 /* ClosestVectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosestVectorTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000000D00 /* SequenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceTests.swift; sourceTree = "<group>"; };
+		C520BA01FEE0144A1C677C6A /* ToggleMenuRowsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleMenuRowsTests.swift; sourceTree = "<group>"; };
 		038E22F237EC9D166276B0B9 /* PikaMenuTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PikaMenuTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000003E00 /* PickerLoupePanelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerLoupePanelTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000000E00 /* ExporterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExporterTests.swift; sourceTree = "<group>"; };
@@ -640,6 +642,7 @@
 				CC3000000000000000000110 /* PikaUpdateDriverTests.swift */,
 				CC2000000000000000000D00 /* SequenceTests.swift */,
 				038E22F237EC9D166276B0B9 /* PikaMenuTests.swift */,
+				C520BA01FEE0144A1C677C6A /* ToggleMenuRowsTests.swift */,
 				CC2000000000000000003E00 /* PickerLoupePanelTests.swift */,
 				CC2000000000000000000E00 /* ExporterTests.swift */,
 				CC2000000000000000000F00 /* EditableColorValueTests.swift */,
@@ -1236,6 +1239,7 @@
 				CC3000000000000000000111 /* PikaUpdateDriverTests.swift in Sources */,
 				CC2000000000000000000D01 /* SequenceTests.swift in Sources */,
 				7030CA4A567B42B6C4DE8044 /* PikaMenuTests.swift in Sources */,
+				C593C068B6949597E6AFB74D /* ToggleMenuRowsTests.swift in Sources */,
 				CC2000000000000000003E01 /* PickerLoupePanelTests.swift in Sources */,
 				CC2000000000000000000E01 /* ExporterTests.swift in Sources */,
 				CC2000000000000000000F01 /* EditableColorValueTests.swift in Sources */,

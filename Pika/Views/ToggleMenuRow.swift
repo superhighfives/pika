@@ -22,28 +22,28 @@ final class ToggleMenuRows {
 
     /// A key typed while the menu is open. Returns false to leave it to the menu (Esc closes it).
     func handle(_ event: NSEvent) -> Bool {
-        let modifiers = event.modifierFlags.intersection(.deviceIndependentFlagsMask)
-            .subtracting([.numericPad, .function])
-        guard modifiers.isEmpty else { return false }
-        switch event.specialKey {
-        case .downArrow?:
+        guard let key = MenuKey(event) else { return false }
+        return handle(key)
+    }
+
+    func handle(_ key: MenuKey) -> Bool {
+        // Held down, only the arrows repeat: a held letter would toggle its row over and over.
+        if key.isRepeat, key.press != .down, key.press != .up { return true }
+        switch key.press {
+        case .down:
             move(by: 1)
-        case .upArrow?:
+        case .up:
             move(by: -1)
-        case .carriageReturn?, .enter?:
+        case .return:
             // With nothing highlighted, Return closes the menu as usual.
             guard let highlighted else { return false }
             highlighted.toggleFromKey()
-        default:
-            // A row's key toggles it, and so does Space on the highlighted row.
-            let key = event.charactersIgnoringModifiers?.lowercased()
-            if key == " ", let highlighted {
-                highlighted.toggleFromKey()
-            } else if let row = all.first(where: { $0.key.lowercased() == key }) {
-                row.toggleFromKey()
-            } else {
-                return false
-            }
+        case .space:
+            guard let highlighted else { return false }
+            highlighted.toggleFromKey()
+        case let .character(character):
+            guard let row = all.first(where: { $0.key.lowercased() == character }) else { return false }
+            row.toggleFromKey()
         }
         return true
     }
@@ -54,6 +54,40 @@ final class ToggleMenuRows {
         let start = highlighted.flatMap { row in all.firstIndex { $0 === row } }
         let next = start.map { ($0 + step + all.count) % all.count } ?? (step > 0 ? 0 : all.count - 1)
         highlighted = all[next]
+    }
+}
+
+/// A key pressed while a menu of `ToggleMenuRows` is open, without modifiers.
+struct MenuKey: Equatable {
+    enum Press: Equatable {
+        case down, up, `return`, space
+        /// A character key, lowercased.
+        case character(String)
+    }
+
+    let press: Press
+    var isRepeat = false
+
+    /// Nil for a key with modifiers, which is left to the menu.
+    init?(_ event: NSEvent) {
+        let modifiers = event.modifierFlags.intersection(.deviceIndependentFlagsMask)
+            .subtracting([.numericPad, .function, .capsLock])
+        guard modifiers.isEmpty else { return nil }
+        switch event.specialKey {
+        case .downArrow?: press = .down
+        case .upArrow?: press = .up
+        case .carriageReturn?, .enter?: press = .return
+        default:
+            guard let characters = event.charactersIgnoringModifiers?.lowercased(), !characters.isEmpty
+            else { return nil }
+            press = characters == " " ? .space : .character(characters)
+        }
+        isRepeat = event.isARepeat
+    }
+
+    init(_ press: Press, isRepeat: Bool = false) {
+        self.press = press
+        self.isRepeat = isRepeat
     }
 }
 
