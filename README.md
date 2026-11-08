@@ -20,7 +20,7 @@ brew install --cask pika
 
 - Pick colours from anywhere on screen, with the macOS sampler or Pika's Pro picker and its live loupe
 - Check contrast between a foreground and background with WCAG 2 or APCA
-- Hex, RGB, HSB, HSL, LAB, OpenGL, OKLCH and Display P3 formats, in sRGB or Display P3
+- Hex, RGB, HSB, HSL, LAB, OpenGL, OKLCH and a Display P3 format, in sRGB or Display P3
 - Click, type, scrub or step any colour value
 - Colour names, history, undo and redo
 - Global shortcuts and a `pika://` URL scheme for automation
@@ -138,7 +138,7 @@ When picking or copying, you can append a format to the URL — `<format>` is on
 | Preview | `pika://preview/toggle` | Toggle colour preview |
 | Windows | `pika://window/about` | Open About |
 | Windows | `pika://window/help` | Open Help |
-| Windows | `pika://window/preferences` | Open Preferences |
+| Windows | `pika://window/preferences` | Open Settings |
 | Windows | `pika://window/splash` | Open Splash |
 | Windows | `pika://window/check` | Open Check Color |
 | Windows | `pika://window/resize/<w>/<h>` | Resize window |
