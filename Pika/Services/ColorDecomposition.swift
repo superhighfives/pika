@@ -208,6 +208,28 @@ extension ColorFormat {
                     leading: "oklch(", components: comps, separators: [", ", ", "], trailing: ")"
                 )
             }
+
+        case .p3:
+            // Always Display P3, whatever `cs` is (see `toP3String`).
+            let p3 = color.toRGBAComponents(in: .displayP3)
+            let comps = floatComponents([p3.r, p3.g, p3.b].map { min(max($0, 0), 1) }, range: 0 ... 1)
+            switch style {
+            case .swiftUI:
+                return DecomposedColor(
+                    leading: "Color(.displayP3, red: ",
+                    components: comps,
+                    separators: [", green: ", ", blue: "],
+                    trailing: ")"
+                )
+            case .unformatted:
+                return DecomposedColor(
+                    leading: "", components: comps, separators: [", ", ", "], trailing: ""
+                )
+            default:
+                return DecomposedColor(
+                    leading: "color(display-p3 ", components: comps, separators: [" ", " "], trailing: ")"
+                )
+            }
         }
     }
 
@@ -271,6 +293,11 @@ extension ColorFormat {
             let c = clamp(triple[1], 0, 1)
             let h = clamp(triple[2], 0, 360)
             return NSColor.fromOklch(l: l, c: c, h: h)
+
+        case .p3:
+            guard let triple = doubles(values, count: 3) else { return nil }
+            let rgb = triple.map { clamp($0, 0, 1) }
+            return NSColor(colorSpace: .displayP3, components: rgb + [1], count: 4)
         }
     }
 }

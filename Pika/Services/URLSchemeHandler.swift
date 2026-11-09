@@ -57,11 +57,16 @@ final class URLSchemeHandler: NSObject {
         /// Debug builds only:
         /// - `pika://debug/sample/<foreground|background>?x=…&y=…`: samples the screen at a point
         ///   through the Pro picker's own capture (see `debugSample`)
-        /// - `pika://debug/update/<state>` and `pika://debug/update/scheduled` (Sparkle build):
-        ///   checks the inline update control (see `debugUpdate`)
+        /// - `pika://debug/update/<state>` (Sparkle build): shows a state in the inline update
+        ///   control (see `debugUpdate`)
+        /// - `pika://debug/permission/<screen|accessibility>`: opens that privacy pane with the
+        ///   drag panel, whatever the permission's state (`PermissionDragHelper`)
         private func handleDebug(task: String?, arg1: String?, url: URL) {
             switch task {
             case "sample": debugSample(arg1: arg1, url: url)
+            case "permission":
+                let permission: PermissionDragHelper.Permission = arg1 == "accessibility" ? .accessibility : .screenRecording
+                Task { @MainActor in PermissionDragHelper.shared.show(permission) }
             #if TARGET_SPARKLE
                 case "update": debugUpdate(arg1)
             #endif
@@ -110,18 +115,14 @@ final class URLSchemeHandler: NSObject {
         }
 
         #if TARGET_SPARKLE
-            /// - `<state>`: available, downloading, ready, installing, checking, uptodate, failed or
-            ///   idle, with stand-in replies (see `PikaUpdateDriver.debugShow`)
-            /// - `scheduled`: a real scheduled-style check against the feed now
+            /// `<state>`: available, downloading, ready, installing, checking, uptodate, failed or idle,
+            /// with stand-in replies (see `PikaUpdateDriver.debugShow`). There's no real check: Debug
+            /// builds refuse every check against the feed (`updater(_:mayPerform:)` in AppDelegate).
             private func debugUpdate(_ arg1: String?) {
                 // Apple events arrive on the main thread.
                 MainActor.assumeIsolated {
                     guard let controller = AppDelegate.shared?.updateController, let arg1 else { return }
-                    if arg1 == "scheduled" {
-                        controller.updater.checkForUpdatesInBackground()
-                    } else {
-                        controller.driver.debugShow(arg1)
-                    }
+                    controller.driver.debugShow(arg1)
                 }
             }
         #endif
@@ -195,10 +196,12 @@ final class URLSchemeHandler: NSObject {
 
     private func handleWindow(task: String?, arg1: String?, arg2: String?) {
         switch task {
+        case "show": NSApp.sendAction(#selector(AppDelegate.showMainInterface), to: nil, from: nil)
         case "about": NSApp.sendAction(#selector(AppDelegate.openAboutWindow), to: nil, from: nil)
         case "help": NSApp.sendAction(#selector(AppDelegate.openHelpWindow), to: nil, from: nil)
         case "preferences": NSApp.sendAction(#selector(AppDelegate.openPreferencesWindow), to: nil, from: nil)
         case "splash": NSApp.sendAction(#selector(AppDelegate.openSplashWindow), to: nil, from: nil)
+        case "check": NSApp.sendAction(#selector(AppDelegate.openColorMatchWindow), to: nil, from: nil)
         case "resize": handleWindowResize(width: arg1, height: arg2)
         default: break
         }

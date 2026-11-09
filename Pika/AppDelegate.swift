@@ -388,5 +388,13 @@ extension AppDelegate {
         func feedURLString(for _: SPUUpdater) -> String? {
             PikaConstants.url()
         }
+
+        #if DEBUG
+            /// Debug builds have their own bundle ID, and an update from the real feed would replace one
+            /// with the release app, which shares its prefs and privacy grants. Use pika://debug/update/….
+            func updater(_: SPUUpdater, mayPerform _: SPUUpdateCheck) throws {
+                throw NSError(domain: "com.superhighfives.Pika.debug", code: 1, userInfo: [NSLocalizedDescriptionKey: "Debug builds don’t check for updates."])
+            }
+        #endif
     }
 #endif

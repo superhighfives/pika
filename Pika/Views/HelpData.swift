@@ -73,6 +73,8 @@ var shortcutGroups: [ShortcutGroup] { [
     (PikaText.textUrlGroupCopy, [
         ShortcutEntry(title: PikaText.textCopyForeground, keys: ["⌘", "C"], notificationName: .triggerCopyForeground),
         ShortcutEntry(title: PikaText.textCopyBackground, keys: ["⇧", "⌘", "C"], notificationName: .triggerCopyBackground),
+        ShortcutEntry(title: PikaText.textPasteForeground, keys: ["⌘", "V"], notificationName: .triggerPasteForeground),
+        ShortcutEntry(title: PikaText.textPasteBackground, keys: ["⇧", "⌘", "V"], notificationName: .triggerPasteBackground),
     ]),
     (PikaText.textColorSystemPicker, [
         ShortcutEntry(title: PikaText.textColorSystemPickerForegroundSimple, keys: ["⌘", "S"], notificationName: .triggerSystemPickerForeground),
@@ -86,6 +88,7 @@ var shortcutGroups: [ShortcutGroup] { [
         ShortcutEntry(title: PikaText.textFormatLAB, keys: ["⌘", "5"], notificationName: .triggerFormatLAB),
         ShortcutEntry(title: PikaText.textFormatOpenGL, keys: ["⌘", "6"], notificationName: .triggerFormatOpenGL),
         ShortcutEntry(title: PikaText.textFormatOKLCH, keys: ["⌘", "7"], notificationName: .triggerFormatOKLCH),
+        ShortcutEntry(title: PikaText.textFormatP3, keys: ["⌘", "8"], notificationName: .triggerFormatP3),
     ]),
     (PikaText.textUrlGroupActions, [
         ShortcutEntry(title: PikaText.textColorSwapDetail, keys: ["X"], notificationName: .triggerSwap),
@@ -131,6 +134,7 @@ let urlGroups: [URLGroup] = [
         ("pika://format/lab", PikaText.textFormatLAB),
         ("pika://format/opengl", PikaText.textFormatOpenGL),
         ("pika://format/oklch", PikaText.textFormatOKLCH),
+        ("pika://format/p3", PikaText.textFormatP3),
     ]),
     (PikaText.textUrlGroupActions, [
         ("pika://swap", PikaText.textColorSwapDetail),
@@ -157,10 +161,12 @@ let urlGroups: [URLGroup] = [
         ("pika://preview/toggle", PikaText.textUrlPreviewToggle),
     ]),
     (PikaText.textUrlGroupWindow, [
+        ("pika://window/show", PikaText.textMenuShowPika),
         ("pika://window/about", PikaText.textUrlWindowAbout),
         ("pika://window/help", PikaText.textUrlWindowHelp),
         ("pika://window/preferences", PikaText.textUrlWindowPreferences),
         ("pika://window/splash", PikaText.textUrlWindowSplash),
+        ("pika://window/check", PikaText.textUrlWindowCheck),
         ("pika://window/resize/<w>/<h>", PikaText.textUrlWindowResize),
     ]),
     (PikaText.textUrlGroupAppearance, [
@@ -186,4 +192,5 @@ let formats: [HelpFormat] = [
     HelpFormat(name: PikaText.textFormatLAB, example: "36, 62, −69", shortcut: "5"),
     HelpFormat(name: PikaText.textFormatOpenGL, example: "0.56, 0.06, 0.82", shortcut: "6"),
     HelpFormat(name: PikaText.textFormatOKLCH, example: "0.45, 0.24, 299°", shortcut: "7"),
+    HelpFormat(name: PikaText.textFormatP3, example: "0.51, 0.12, 0.79", shortcut: "8"),
 ]

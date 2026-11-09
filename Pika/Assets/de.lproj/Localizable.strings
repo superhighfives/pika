@@ -256,11 +256,20 @@
 /* Copy */
 "color.copy" = "Kopieren";
 
+/* Paste */
+"color.paste" = "Einsetzen";
+
 /* Copy foreground */
 "color.copy.foreground" = "Vordergrund kopieren";
 
 /* Copy background */
 "color.copy.background" = "Hintergrund kopieren";
+
+/* Paste foreground */
+"color.paste.foreground" = "Vordergrund einsetzen";
+
+/* Paste background */
+"color.paste.background" = "Hintergrund einsetzen";
 
 /* Copy all as text */
 "color.copy.text" = "Als Text kopieren";
@@ -327,6 +336,7 @@
 
 /* OKLCH format */
 "color.format.oklch" = "OKLCH-Format";
+"color.format.p3" = "Display-P3-Format";
 
 /* Copy foreground */
 "menu.copy.foreground" = "Vordergrund kopieren";
@@ -543,6 +553,9 @@
 /* Open the Splash window */
 "help.url.window.splash" = "Begrüßungs-Fenster öffnen";
 
+/* Open the Check Color window */
+"help.url.window.check" = "Fenster „Farbe prüfen“ öffnen";
+
 /* Resize window */
 "help.url.window.resize" = "Fenstergröße ändern";
 
@@ -687,6 +700,18 @@
 /* Permission pill label: Accessibility */
 "picker.perm.accessibility" = "Bedienungshilfen";
 
+/* permission.drag.hint */
+"permission.drag.hint" = "Ist Pika schon in der Liste, schalte es ein.";
+
+/* permission.drag.screenRecording */
+"permission.drag.screenRecording" = "Ziehe Pika in die Liste „Bildschirmaufnahme“ oben";
+
+/* permission.drag.accessibility */
+"permission.drag.accessibility" = "Ziehe Pika in die Liste „Bedienungshilfen“ oben";
+
+/* permission.drag.close */
+"permission.drag.close" = "Schließen";
+
 /* Explains what the optional Accessibility permission adds to the Pro picker */
 "picker.accessibilityNote" = "Optional – damit Escape und das Verschieben mit den Pfeiltasten auch beim Auswählen über anderen Apps funktionieren.";
 
@@ -786,17 +811,47 @@
 /* Match display (%@) */
 "preferences.space.display" = "An Display anpassen (%@)";
 
+/* Short label for Match display, in the toolbar */
+"color.space.short.display" = "Display";
+
+/* Toolbar colour space menu item that opens the Colour Spaces help */
+"color.space.learn" = "Über Farbräume…";
+
+/* Toolbar menu of what the window shows */
+"toolbar.view" = "Ansicht";
+
+/* View menu: text preview pill */
+"toolbar.view.preview" = "Textvorschau";
+
+/* View menu: contrast footer */
+"toolbar.view.contrast" = "Kontrast";
+
+/* View menu: palettes drawer */
+"toolbar.view.palettes" = "Paletten";
+
+/* Toolbar menu of actions */
+"toolbar.more" = "Mehr";
+
+/* Colour space menu: follow the display being picked on */
+"toolbar.space.display" = "An Display anpassen";
+
+/* Colour space menu: what sRGB is for */
+"toolbar.space.srgb.subtitle" = "Web, CSS und die meisten Design-Tools";
+
+/* Colour space menu: what Display P3 is for */
+"toolbar.space.p3.subtitle" = "Designdateien und Apps mit großem Farbraum";
+
 /* Recommended for color space */
 "preferences.space.hint.srgb" = "Empfohlen. Hex-Werte stimmen mit CSS, Figma und den meisten Design-Tools überein.";
 
 /* Display P3 hint */
-"preferences.space.hint.p3" = "Für Display-P3-Designdateien und App-Assets. CSS-Hex und -RGB werden als color(display-p3 …) kopiert, da Browser einen einfachen Hex-Wert als sRGB interpretieren.";
+"preferences.space.hint.p3" = "Für Display-P3-Designdateien und App-Assets. Browser interpretieren einen einfachen Hex-Wert als sRGB, kopieren Sie für CSS daher im P3-Format.";
 
 /* Match display hint */
 "preferences.space.hint.display" = "Rohwerte des Displays, auf dem Sie auswählen. Hex-Werte stimmen nicht mit dem Web überein.";
 
 /* Match display hint on a P3 screen */
-"preferences.space.hint.display.p3" = "Rohwerte des Displays, auf dem Sie auswählen. Dieses Display ist Display P3, daher werden CSS-Hex und -RGB als color(display-p3 …) kopiert.";
+"preferences.space.hint.display.p3" = "Rohwerte des Displays, auf dem Sie auswählen. Dieses Display ist Display P3, kopieren Sie für CSS daher im P3-Format.";
 
 /* Other color space hint */
 "preferences.space.hint.other" = "Hex-Werte stimmen nicht mit dem Web überein, es sei denn, die Quelle nutzt denselben Farbraum.";
@@ -804,9 +859,18 @@
 /* Colors don't match? */
 "color.space.mismatch" = "Farben stimmen nicht überein?";
 
+/* Colors don’t match? (before the Check a Color link in Settings) */
+"color.space.mismatch.prompt" = "Farben stimmen nicht überein?";
+
 
 /* Check a Color window title */
-"match.title" = "Farbe prüfen";
+"match.title" = "Farbe prüfen…";
+
+/* Check a Color (toolbar colour space menu item) */
+"match.menu" = "Farbe prüfen";
+
+/* Check Color (window title) */
+"match.window" = "Farbe prüfen";
 
 /* Check a Color introduction */
 "match.intro" = "Wählen Sie eine Farbe aus, deren Wert Sie kennen, etwa ein Farbfeld in Figma oder auf einer Webseite, und geben Sie diesen Wert in einem beliebigen Format ein. Pika ermittelt den Farbraum, in dem genau dieser Wert gelesen wird.";

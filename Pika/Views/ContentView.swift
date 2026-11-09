@@ -12,7 +12,7 @@ import UniformTypeIdentifiers
 enum PikaAdaptiveHeight {
     static let floor: CGFloat = 160 // bare minimum content height (matches window frame min ≈ 200pt window)
     static let expandCornerBelow: CGFloat = 200 // below this content height (~240pt window) the button tucks top-right
-    static let palettes: CGFloat = 300 // history drawer (~74pt)
+    static let palettes: CGFloat = 300 // history drawer (`ColorHistoryDrawer.height`, 74pt)
     static let contrast: CGFloat = 250 // compliance footer (~50pt)
     static let preview: CGFloat = 200 // preview pill
     static let colorNames: CGFloat = 175 // CSS colour name under each value
@@ -62,7 +62,6 @@ struct ContentView: View {
     @Default(.historyDrawerVisible) var historyDrawerVisible
     @Default(.showColorPreview) var showColorPreview
     @Default(.showCompliance) var showCompliance
-    @Default(.appMode) var appMode
     @Default(.palettes) var palettes
     @Default(.activePaletteIndex) var activePaletteIndex
     @Environment(\.colorScheme) var colorScheme: ColorScheme
@@ -176,7 +175,7 @@ struct ContentView: View {
                     }
                     .focusable(false)
                     .padding(.horizontal, 16.0)
-                    .padding(.top, appMode.usesPopover ? 42.0 : 16.0)
+                    .padding(.top, 16.0)
                     .frame(maxHeight: .infinity, alignment: .top)
                 )
                 // Expand-to-fit sits over the colour tiles (not the whole app), so it
@@ -359,6 +358,8 @@ struct AdaptivePanelBackground: View {
 /// renders too light over the footer/drawer materials in light mode (looks white rather
 /// than a darker separator), so tint explicitly with `primary`, which flips per scheme.
 struct AdaptiveDivider: View {
+    static let thickness: CGFloat = 1
+
     @Environment(\.colorScheme) private var colorScheme
     var axis: Axis = .horizontal
 
@@ -366,8 +367,8 @@ struct AdaptiveDivider: View {
         Rectangle()
             .fill(colorScheme == .dark ? Color.white.opacity(0.14) : Color.black.opacity(0.24))
             .frame(
-                width: axis == .vertical ? 1 : nil,
-                height: axis == .horizontal ? 1 : nil
+                width: axis == .vertical ? Self.thickness : nil,
+                height: axis == .horizontal ? Self.thickness : nil
             )
     }
 }

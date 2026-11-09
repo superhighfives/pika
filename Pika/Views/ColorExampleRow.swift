@@ -7,7 +7,7 @@ struct ColorExampleRow: View {
 
     var availableFormats: [ColorFormat] {
         if copyFormat == .swiftUI {
-            return [.rgb, .hsb]
+            return [.rgb, .hsb, .p3]
         }
         return ColorFormat.allCases
     }
