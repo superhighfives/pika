@@ -68,14 +68,14 @@ The View menu in the toolbar shows or hides Contrast, Palettes and Text Preview,
 | Group | Shortcut | Action |
 | --- | --- | --- |
 | Pick | <kbd>⌘ D</kbd> | Pick foreground |
-| Pick | <kbd>⌘ ⇧ D</kbd> | Pick background |
+| Pick | <kbd>⇧ ⌘ D</kbd> | Pick background |
 | Pick | <kbd>⌥ ⌘ D</kbd> | Pick foreground and background |
 | Copy | <kbd>⌘ C</kbd> | Copy foreground |
-| Copy | <kbd>⌘ ⇧ C</kbd> | Copy background |
+| Copy | <kbd>⇧ ⌘ C</kbd> | Copy background |
 | Paste | <kbd>⌘ V</kbd> | Paste foreground |
-| Paste | <kbd>⌘ ⇧ V</kbd> | Paste background |
+| Paste | <kbd>⇧ ⌘ V</kbd> | Paste background |
 | System picker | <kbd>⌘ S</kbd> | Use for foreground |
-| System picker | <kbd>⌘ ⇧ S</kbd> | Use for background |
+| System picker | <kbd>⇧ ⌘ S</kbd> | Use for background |
 | Change format | <kbd>⌘ 1</kbd> | Format Hex |
 | Change format | <kbd>⌘ 2</kbd> | Format RGB |
 | Change format | <kbd>⌘ 3</kbd> | Format HSB |
@@ -88,8 +88,8 @@ The View menu in the toolbar shows or hides Contrast, Palettes and Text Preview,
 | Actions | <kbd>H</kbd> | Toggle palettes |
 | Actions | <kbd>C</kbd> | Toggle contrast |
 | Actions | <kbd>P</kbd> | Toggle text preview |
-| Actions | <kbd>⌘ Z</kbd> | Undo last pick |
-| Actions | <kbd>⌘ ⇧ Z</kbd> | Redo last pick |
+| Actions | <kbd>⌘ Z</kbd> | Undo |
+| Actions | <kbd>⇧ ⌘ Z</kbd> | Redo |
 | Actions | <kbd>⌘ ,</kbd> | Settings |
 | Actions | <kbd>⌘ Q</kbd> | Quit Pika |
 
@@ -123,8 +123,8 @@ When picking or copying, you can append a format to the URL — `<format>` is on
 | Change format | `pika://format/oklch` | Format OKLCH |
 | Change format | `pika://format/p3` | Format Display P3 |
 | Actions | `pika://swap` | Swap colors |
-| Actions | `pika://undo` | Undo last pick |
-| Actions | `pika://redo` | Redo last pick |
+| Actions | `pika://undo` | Undo |
+| Actions | `pika://redo` | Redo |
 | Set colour | `pika://set/foreground/<hex>` | Set foreground |
 | Set colour | `pika://set/background/<hex>` | Set background |
 | History | `pika://history/show` | Show history |
