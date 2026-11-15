@@ -80,6 +80,10 @@ class StatusBarController: NSObject, NSMenuDelegate, NSPopoverDelegate {
         popover.behavior = .semitransient
         popover.animates = true
         let host = NSHostingController(rootView: rootView)
+        // Report the content's ideal size, so the popover follows it both ways: without this it
+        // only grew when the content's minimum outgrew it (showing palettes) and never shrank
+        // back when they were hidden, which stretched the swatches instead.
+        host.sizingOptions = [.preferredContentSize]
         popover.contentViewController = host
         popover.delegate = self
         self.popover = popover
@@ -126,74 +130,8 @@ class StatusBarController: NSObject, NSMenuDelegate, NSPopoverDelegate {
         popover.contentViewController?.view.window?.makeKeyAndOrderFront(nil)
     }
 
-    private func menuItem(
-        title: String,
-        action: Selector,
-        key: String,
-        modifiers: NSEvent.ModifierFlags = .command
-    ) -> NSMenuItem {
-        let item = NSMenuItem(title: title, action: action, keyEquivalent: key)
-        item.keyEquivalentModifierMask = modifiers
-        return item
-    }
-
     private func buildMenu() -> NSMenu {
-        let menu = NSMenu(title: "Status Bar Menu")
-        menu.delegate = self
-
-        menu.addItem(menuItem(title: "\(PikaText.textPickForeground)...",
-                              action: #selector(AppDelegate.triggerPickForeground),
-                              key: "d"))
-        menu.addItem(menuItem(title: "\(PikaText.textPickBackground)...",
-                              action: #selector(AppDelegate.triggerPickBackground),
-                              key: "d", modifiers: [.command, .shift]))
-
-        menu.addItem(NSMenuItem.separator())
-
-        menu.addItem(menuItem(title: PikaText.textCopyForeground,
-                              action: #selector(AppDelegate.triggerCopyForeground),
-                              key: "c"))
-        menu.addItem(menuItem(title: PikaText.textCopyBackground,
-                              action: #selector(AppDelegate.triggerCopyBackground),
-                              key: "c", modifiers: [.command, .shift]))
-
-        menu.addItem(NSMenuItem.separator())
-
-        menu.addItem(menuItem(title: PikaText.textColorSystemPickerForeground,
-                              action: #selector(AppDelegate.triggerSystemPickerForeground),
-                              key: "s"))
-        menu.addItem(menuItem(title: PikaText.textColorSystemPickerBackground,
-                              action: #selector(AppDelegate.triggerSystemPickerBackground),
-                              key: "s", modifiers: [.command, .shift]))
-
-        menu.addItem(NSMenuItem.separator())
-
-        menu.addItem(menuItem(title: PikaText.textColorSwapDetail,
-                              action: #selector(AppDelegate.triggerSwap),
-                              key: "x", modifiers: []))
-
-        menu.addItem(NSMenuItem.separator())
-
-        menu.addItem(menuItem(title: PikaText.textMenuAbout,
-                              action: #selector(AppDelegate.openAboutWindow),
-                              key: ""))
-        menu.addItem(menuItem(title: "\(PikaText.textMenuUpdates)...",
-                              action: #selector(AppDelegate.checkForUpdates),
-                              key: ""))
-        menu.addItem(menuItem(title: PikaText.textMenuGitHubIssue,
-                              action: #selector(AppDelegate.openGitHubIssue),
-                              key: ""))
-        menu.addItem(menuItem(title: "\(PikaText.textMenuPreferences)...",
-                              action: #selector(AppDelegate.openPreferencesWindow),
-                              key: ","))
-
-        menu.addItem(NSMenuItem.separator())
-
-        menu.addItem(menuItem(title: PikaText.textMenuQuit,
-                              action: #selector(AppDelegate.terminatePika),
-                              key: "q"))
-
-        return menu
+        PikaMenu.statusMenu(delegate: self)
     }
 
     @objc func statusBarClicked(sender _: NSStatusBarButton) {

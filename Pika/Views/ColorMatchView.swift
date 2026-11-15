@@ -44,14 +44,21 @@ struct ColorMatchView: View {
     /// The format bare numbers are read in; a value with its own shape (`#…`, `hsl(…)`) says.
     @State private var fallbackFormat = Defaults[.colorFormat]
     @State private var currentSpace = Defaults[.colorSpace]
+    @State private var conversion = ExpectedFormatConversion()
 
     private var parsed: ExpectedColor? {
         ExpectedColor.parse(expected, fallback: fallbackFormat)
     }
 
-    /// The menu shows the format the value is being read in.
+    /// The menu shows the format the value is being read in. Choosing another rewrites the
+    /// value in it (see `ExpectedFormatConversion`).
     private var format: Binding<ColorFormat> {
-        Binding(get: { parsed?.format ?? fallbackFormat }, set: { fallbackFormat = $0 })
+        Binding(get: { parsed?.format ?? fallbackFormat }, set: { newFormat in
+            if let converted = conversion.convert(expected, fallback: fallbackFormat, to: newFormat) {
+                expected = converted
+            }
+            fallbackFormat = newFormat
+        })
     }
 
     private var placeholder: String {

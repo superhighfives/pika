@@ -158,8 +158,8 @@ struct ExpectedColor: Equatable {
     /// The numbers as typed (for hex, the six digits).
     let values: [String]
 
-    /// Lab and OKLCH describe a colour the same way in every colour space.
-    var isAbsolute: Bool { format == .lab || format == .oklch }
+    /// Lab, OKLCH and P3 describe a colour the same way in every colour space.
+    var isAbsolute: Bool { format == .lab || format == .oklch || format == .p3 }
 
     /// Reads `text`, detecting the format from its own shape (`#…`, `rgb(…)`, `hsl(…)`,
     /// `Color(red: …)`), and using `fallback` for bare numbers. `nil` if it doesn't parse.
@@ -174,7 +174,9 @@ struct ExpectedColor: Equatable {
             let full = digits.count == 3 ? digits.map { "\($0)\($0)" }.joined() : digits
             return ExpectedColor(format: .hex, style: style, values: [full])
         }
-        let numbers = numbers(in: lower)
+        // `display-p3`/`.displayP3` would otherwise read as a number.
+        let numbers = numbers(in: lower.replacingOccurrences(of: "display-p3", with: "")
+            .replacingOccurrences(of: "displayp3", with: ""))
         guard numbers.count >= 3 else { return nil }
         let expected = ExpectedColor(format: format, style: style, values: Array(numbers.prefix(3)))
         return expected.color(in: .sRGB) == nil ? nil : expected
@@ -189,6 +191,8 @@ struct ExpectedColor: Equatable {
         if text.hasPrefix("#") { return (.hex, .css) }
         if text.hasPrefix("color(red") { return (.rgb, .swiftUI) }
         if text.hasPrefix("color(hue") { return (.hsb, .swiftUI) }
+        if text.hasPrefix("color(.displayp3") { return (.p3, .swiftUI) }
+        if text.hasPrefix("color(display-p3") { return (.p3, .css) }
         let prefixes: [(String, ColorFormat)] = [
             ("oklch(", .oklch), ("lab(", .lab), ("hsl(", .hsl), ("hsb(", .hsb), ("hsv(", .hsb),
             ("rgba(", .opengl), ("rgb(", .rgb),
@@ -207,6 +211,30 @@ struct ExpectedColor: Equatable {
         return pattern?.matches(in: text, range: range).compactMap {
             Range($0.range, in: text).map { String(text[$0]) }
         } ?? []
+    }
+}
+
+/// Rewrites an expected value in another format when Check Color's format menu changes, so the
+/// menu does something for a value with its own shape (`#…`, which is otherwise always read as
+/// hex). Read and written in sRGB: hex, RGB, HSB, HSL and OpenGL convert number for number, and
+/// Lab, OKLCH and P3 take the value as sRGB.
+struct ExpectedFormatConversion {
+    /// The colour the last conversion started from, and the text it wrote. While the value is
+    /// still that text, the next conversion starts from the same colour: each format rounds, so
+    /// converting text to text drifted (#123456 → HSL → Hex came back #123354).
+    private(set) var source: NSColor?
+    private(set) var text: String?
+
+    /// `value` (read with `fallback` for bare numbers) written in `format`, or nil to leave it
+    /// as it is: it doesn't parse, or it's already in `format`.
+    mutating func convert(_ value: String, fallback: ColorFormat, to format: ColorFormat) -> String? {
+        guard let parsed = ExpectedColor.parse(value, fallback: fallback), parsed.format != format,
+              let color = value == text ? source : parsed.color(in: .sRGB)
+        else { return nil }
+        let converted = format.decompose(color, style: .css, in: .sRGB).joined()
+        source = color
+        text = converted
+        return converted
     }
 }
 
@@ -302,7 +330,7 @@ enum ColorSpaceMatcher {
         }
         let hueTurn: Double = expected.style == .swiftUI ? 1 : 360
         let fractions: Set<Int> = switch (expected.format, expected.style) {
-        case (.rgb, .swiftUI), (.hsb, .swiftUI), (.opengl, _): [0, 1, 2]
+        case (.rgb, .swiftUI), (.hsb, .swiftUI), (.opengl, _), (.p3, _): [0, 1, 2]
         case (.oklch, _): [1]
         default: []
         }

@@ -425,14 +425,14 @@ class WindowCoordinator: NSObject {
             aboutWindow?.contentView = view
         }
         aboutTouchBarController = SplashTouchBarController(window: aboutWindow!)
-        aboutWindow?.makeKeyAndOrderFront(nil)
+        bringForward(aboutWindow)
     }
 
     func openHelpWindow() {
         if helpWindow == nil {
+            // `HelpView` ignores the safe area itself (see `HeaderTitlebarBackdrop`).
             let rootView = HelpView()
                 .frame(minWidth: 440, maxWidth: .infinity, minHeight: 400, maxHeight: .infinity)
-                .ignoresSafeArea()
             let view = NSHostingView(rootView: rootView)
             helpWindow = PikaWindow.createSecondaryWindow(
                 title: PikaText.textMenuHelp,
@@ -444,7 +444,18 @@ class WindowCoordinator: NSObject {
             helpWindow?.contentMinSize = NSSize(width: 440, height: 400)
             helpWindow?.contentView = view
         }
-        helpWindow?.makeKeyAndOrderFront(nil)
+        bringForward(helpWindow)
+    }
+
+    /// Activates Pika and brings a window to the front. As an accessory app (menu bar and
+    /// popover modes) Pika isn't active when its status menu is used, so a window opened from
+    /// there went in behind other apps until something else activated Pika, such as opening the
+    /// popover. macOS can turn an activation request down, so `orderFrontRegardless` raises the
+    /// window either way.
+    private func bringForward(_ window: NSWindow?) {
+        NSApp.activate()
+        window?.makeKeyAndOrderFront(nil)
+        window?.orderFrontRegardless()
     }
 
     func openPreferencesWindow() {
@@ -453,9 +464,10 @@ class WindowCoordinator: NSObject {
             // pinning both would demand the full 580 for content *and* leave the scroller
             // with nowhere to go, pushing it past the right edge where the window clips it.
             // Letting the content flex mirrors the Help window, whose scroller sits inboard.
+            // `PreferencesView` ignores the safe area itself, inside a reader that needs the
+            // titlebar's height.
             let rootView = PreferencesView()
                 .frame(maxWidth: .infinity, minHeight: 400, maxHeight: .infinity)
-                .ignoresSafeArea()
                 .environmentObject(eyedroppers)
             let view = NSHostingView(rootView: rootView)
             preferencesWindow = PikaWindow.createSecondaryWindow(
@@ -471,7 +483,7 @@ class WindowCoordinator: NSObject {
             preferencesWindow?.contentMinSize = NSSize(width: 580, height: 400)
             preferencesWindow?.contentView = view
         }
-        preferencesWindow?.makeKeyAndOrderFront(nil)
+        bringForward(preferencesWindow)
         preferencesWindow?.makeFirstResponder(nil)
         notificationCenter.post(name: .triggerPreferences, object: self)
     }
@@ -494,7 +506,7 @@ class WindowCoordinator: NSObject {
             splashTouchBarController = SplashTouchBarController(window: splashWindow)
             splashWindow.contentView = NSHostingView(rootView: SplashView().ignoresSafeArea())
         }
-        splashWindow.makeKeyAndOrderFront(nil)
+        bringForward(splashWindow)
         splashWindow.fadeIn(nil)
     }
 }
@@ -634,7 +646,7 @@ extension WindowCoordinator {
             let model = ColorMatchModel()
             let view = NSHostingView(rootView: ColorMatchView(model: model))
             colorMatchWindow = PikaWindow.createSecondaryWindow(
-                title: PikaText.textMatchTitle,
+                title: PikaText.textMatchWindow,
                 size: NSRect(origin: .zero, size: view.fittingSize),
                 styleMask: [.titled, .closable, .fullSizeContentView]
             )
@@ -644,7 +656,6 @@ extension WindowCoordinator {
             colorMatchWindow?.center()
             model.window = colorMatchWindow
         }
-        NSApp.activate(ignoringOtherApps: true)
-        colorMatchWindow?.makeKeyAndOrderFront(nil)
+        bringForward(colorMatchWindow)
     }
 }

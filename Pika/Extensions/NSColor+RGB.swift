@@ -108,29 +108,25 @@ extension NSColor {
             return toLabString(style: style)
         case .oklch:
             return toOklchString(style: style)
+        case .p3:
+            return toP3String(style: style)
         }
     }
 
-    /// What a copy puts on the clipboard: the readout, except that CSS hex and RGB read in
-    /// Display P3 name their space. Browsers read a bare `#ff8800` or `rgb()` as sRGB, so the
-    /// P3 numbers would paste as a different, duller colour. Built from the same 8-bit values the
-    /// readout shows, so the two describe one colour.
-    func toCopyString(
-        format: ColorFormat,
-        style: CopyFormat,
-        in colorSpace: NSColorSpace = Defaults[.colorSpace]
-    ) -> String {
-        // Display P3 itself, or a display profile that is P3 in all but name ("Match display" on a
-        // P3 screen); the values are converted to true P3 either way.
-        guard style == .css, format == .hex || format == .rgb,
-              ColorSpacePreference.isDisplayP3Equivalent(colorSpace)
-        else {
-            return toFormat(format: format, style: style)
+    /// The colour in Display P3, whatever the chosen colour space, so the value names its own
+    /// space: a browser reads a bare `#…` or `rgb()` as sRGB, but `color(display-p3 …)` pastes as
+    /// the same colour. Clamped to the gamut, like the 8-bit formats.
+    func toP3String(style: CopyFormat = .css) -> String {
+        let p3 = toRGBAComponents(in: .displayP3)
+        let values = [p3.r, p3.g, p3.b].map { Swift.min(Swift.max($0, 0), 1).colorDecimalString }
+        switch style {
+        case .css, .design:
+            return "color(display-p3 \(values.joined(separator: " ")))"
+        case .swiftUI:
+            return "Color(.displayP3, red: \(values[0]), green: \(values[1]), blue: \(values[2]))"
+        case .unformatted:
+            return values.joined(separator: ", ")
         }
-        let values = toRGB8BitArray(in: .displayP3).map {
-            (CGFloat(min(max($0, 0), 255)) / 255).colorDecimalString
-        }
-        return "color(display-p3 \(values.joined(separator: " ")))"
     }
 
     // Black or white — whichever has the higher WCAG contrast against this colour — for legible

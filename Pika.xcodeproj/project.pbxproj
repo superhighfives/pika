@@ -40,6 +40,8 @@
 		DEC0FACE0000000000000011 /* ColorDecompositionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC0FACE0000000000000010 /* ColorDecompositionTests.swift */; };
 		CC2000000000000000000C01 /* ClosestVectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000C00 /* ClosestVectorTests.swift */; };
 		CC2000000000000000000D01 /* SequenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000D00 /* SequenceTests.swift */; };
+		C593C068B6949597E6AFB74D /* ToggleMenuRowsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C520BA01FEE0144A1C677C6A /* ToggleMenuRowsTests.swift */; };
+		7030CA4A567B42B6C4DE8044 /* PikaMenuTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038E22F237EC9D166276B0B9 /* PikaMenuTests.swift */; };
 		CC2000000000000000003E01 /* PickerLoupePanelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000003E00 /* PickerLoupePanelTests.swift */; };
 		CC2000000000000000000E01 /* ExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000E00 /* ExporterTests.swift */; };
 		CC2000000000000000000F01 /* EditableColorValueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2000000000000000000F00 /* EditableColorValueTests.swift */; };
@@ -51,6 +53,7 @@
 		221600FD25A636D600B8B7D9 /* ConditionalModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221600FC25A636D600B8B7D9 /* ConditionalModifier.swift */; };
 		226FD61025A940F90021A67F /* VisualEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226FD60F25A940F90021A67F /* VisualEffect.swift */; };
 		22903B0328294F4A004BB9F0 /* ColorExampleRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22903B0228294F49004BB9F0 /* ColorExampleRow.swift */; };
+		C558A41B503E62F03E8D207F /* ToggleMenuRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F3681DD2683280AA41B6F7 /* ToggleMenuRow.swift */; };
 		C5F809485B539D9753F3977D /* ColorMatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C544F2B79D1047E428011460 /* ColorMatchView.swift */; };
 		22D28DB72862377F00FC7DD4 /* OverflowContentViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D28DB62862377F00FC7DD4 /* OverflowContentViewModifier.swift */; };
 		CC11000000000000000000E1 /* HorizontalScrollWheelAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC11000000000000000000E0 /* HorizontalScrollWheelAdapter.swift */; };
@@ -198,6 +201,7 @@
 		EAE23DD12D032A38005BB270 /* AppVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B6F5259CF29300FA2F67 /* AppVersion.swift */; };
 		EAE23DD22D032A38005BB270 /* Footer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8124C0259E307D00033F0B /* Footer.swift */; };
 		EAE23DD32D032A38005BB270 /* ColorExampleRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22903B0228294F49004BB9F0 /* ColorExampleRow.swift */; };
+		C55E3E36EBBC694DF953EA6E /* ToggleMenuRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F3681DD2683280AA41B6F7 /* ToggleMenuRow.swift */; };
 		C5A261E106FCF6164B6685D5 /* ColorMatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C544F2B79D1047E428011460 /* ColorMatchView.swift */; };
 		EAE23DD42D032A38005BB270 /* BindingOnChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DDB25B4E90B0014D91A /* BindingOnChange.swift */; };
 		EAE23DD52D032A38005BB270 /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B712259CFD2000FA2F67 /* Defaults.swift */; };
@@ -225,8 +229,10 @@
 		CCB1CA0000000000000000F2 /* ColorPickSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CA0000000000000000F1 /* ColorPickSession.swift */; };
 		CCB1CA0000000000000000F3 /* ColorPickSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CA0000000000000000F1 /* ColorPickSession.swift */; };
 		CCB1CA0000000000000000F5 /* CustomColorPickSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CA0000000000000000F4 /* CustomColorPickSession.swift */; };
+		D385AAE6CD35D76168FB0A28 /* PermissionDragHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51E208D9E36C5E642FC86BE /* PermissionDragHelper.swift */; };
 		C59795F7EE718689904F682A /* PickerLoupeCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5CC39646FAA705E90838F44 /* PickerLoupeCapture.swift */; };
 		CCB1CA0000000000000000F6 /* CustomColorPickSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CA0000000000000000F4 /* CustomColorPickSession.swift */; };
+		834647F57E3804CE9147A149 /* PermissionDragHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51E208D9E36C5E642FC86BE /* PermissionDragHelper.swift */; };
 		C5D7AFF6343E2A94731847DA /* PickerLoupeCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5CC39646FAA705E90838F44 /* PickerLoupeCapture.swift */; };
 		CCB1CA0000000000000000F8 /* PickerLoupePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CA0000000000000000F7 /* PickerLoupePanel.swift */; };
 		CCB1CA0000000000000000F9 /* PickerLoupePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB1CA0000000000000000F7 /* PickerLoupePanel.swift */; };
@@ -281,6 +287,8 @@
 		DEC0FACE0000000000000010 /* ColorDecompositionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorDecompositionTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000000C00 /* ClosestVectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosestVectorTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000000D00 /* SequenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceTests.swift; sourceTree = "<group>"; };
+		C520BA01FEE0144A1C677C6A /* ToggleMenuRowsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleMenuRowsTests.swift; sourceTree = "<group>"; };
+		038E22F237EC9D166276B0B9 /* PikaMenuTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PikaMenuTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000003E00 /* PickerLoupePanelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerLoupePanelTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000000E00 /* ExporterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExporterTests.swift; sourceTree = "<group>"; };
 		CC2000000000000000000F00 /* EditableColorValueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableColorValueTests.swift; sourceTree = "<group>"; };
@@ -294,6 +302,7 @@
 		223FDEEF2B038A9B000F89A0 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		226FD60F25A940F90021A67F /* VisualEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffect.swift; sourceTree = "<group>"; };
 		22903B0228294F49004BB9F0 /* ColorExampleRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExampleRow.swift; sourceTree = "<group>"; };
+		C5F3681DD2683280AA41B6F7 /* ToggleMenuRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleMenuRow.swift; sourceTree = "<group>"; };
 		C544F2B79D1047E428011460 /* ColorMatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorMatchView.swift; sourceTree = "<group>"; };
 		22D28DB62862377F00FC7DD4 /* OverflowContentViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverflowContentViewModifier.swift; sourceTree = "<group>"; };
 		CC11000000000000000000E0 /* HorizontalScrollWheelAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalScrollWheelAdapter.swift; sourceTree = "<group>"; };
@@ -401,6 +410,7 @@
 		F8ABAC5C2EAAD0F0008CD152 /* ColorPickOverlayWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickOverlayWindow.swift; sourceTree = "<group>"; };
 		CCB1CA0000000000000000F1 /* ColorPickSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickSession.swift; sourceTree = "<group>"; };
 		CCB1CA0000000000000000F4 /* CustomColorPickSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColorPickSession.swift; sourceTree = "<group>"; };
+		F51E208D9E36C5E642FC86BE /* PermissionDragHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionDragHelper.swift; sourceTree = "<group>"; };
 		C5CC39646FAA705E90838F44 /* PickerLoupeCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerLoupeCapture.swift; sourceTree = "<group>"; };
 		CCB1CA0000000000000000F7 /* PickerLoupePanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerLoupePanel.swift; sourceTree = "<group>"; };
 		CCB1CA000000000000000100 /* PickerLoupeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerLoupeView.swift; sourceTree = "<group>"; };
@@ -563,6 +573,7 @@
 				DEC0FACE0000000000000001 /* ColorDecomposition.swift */,
 				CCB1CA0000000000000000F1 /* ColorPickSession.swift */,
 				CCB1CA0000000000000000F4 /* CustomColorPickSession.swift */,
+				F51E208D9E36C5E642FC86BE /* PermissionDragHelper.swift */,
 				C5CC39646FAA705E90838F44 /* PickerLoupeCapture.swift */,
 				CC1100000000000000000007 /* Models */,
 				CC1100000000000000000008 /* Export */,
@@ -630,6 +641,8 @@
 				CC2000000000000000000C00 /* ClosestVectorTests.swift */,
 				CC3000000000000000000110 /* PikaUpdateDriverTests.swift */,
 				CC2000000000000000000D00 /* SequenceTests.swift */,
+				038E22F237EC9D166276B0B9 /* PikaMenuTests.swift */,
+				C520BA01FEE0144A1C677C6A /* ToggleMenuRowsTests.swift */,
 				CC2000000000000000003E00 /* PickerLoupePanelTests.swift */,
 				CC2000000000000000000E00 /* ExporterTests.swift */,
 				CC2000000000000000000F00 /* EditableColorValueTests.swift */,
@@ -669,6 +682,7 @@
 				220D5E9728DB158400B6285E /* AppModeToggleGroup.swift */,
 				22903B0228294F49004BB9F0 /* ColorExampleRow.swift */,
 				C544F2B79D1047E428011460 /* ColorMatchView.swift */,
+				C5F3681DD2683280AA41B6F7 /* ToggleMenuRow.swift */,
 				EAD0B6F4259CF29300FA2F67 /* PreferencesView.swift */,
 			);
 			name = Preferences;
@@ -1076,6 +1090,7 @@
 				F8ABAC5D2EAAD0F0008CD152 /* ColorPickOverlayWindow.swift in Sources */,
 				CCB1CA0000000000000000F2 /* ColorPickSession.swift in Sources */,
 				CCB1CA0000000000000000F5 /* CustomColorPickSession.swift in Sources */,
+				D385AAE6CD35D76168FB0A28 /* PermissionDragHelper.swift in Sources */,
 				C59795F7EE718689904F682A /* PickerLoupeCapture.swift in Sources */,
 				CCB1CA0000000000000000F8 /* PickerLoupePanel.swift in Sources */,
 				CCB1CA000000000000000101 /* PickerLoupeView.swift in Sources */,
@@ -1086,6 +1101,7 @@
 				EA8124C1259E307D00033F0B /* Footer.swift in Sources */,
 				22903B0328294F4A004BB9F0 /* ColorExampleRow.swift in Sources */,
 				C5F809485B539D9753F3977D /* ColorMatchView.swift in Sources */,
+				C558A41B503E62F03E8D207F /* ToggleMenuRow.swift in Sources */,
 				EA635DDC25B4E90B0014D91A /* BindingOnChange.swift in Sources */,
 				EAD0B713259CFD2000FA2F67 /* Defaults.swift in Sources */,
 				226FD61025A940F90021A67F /* VisualEffect.swift in Sources */,
@@ -1130,6 +1146,7 @@
 				F8ABAC5E2EAAD0F0008CD152 /* ColorPickOverlayWindow.swift in Sources */,
 				CCB1CA0000000000000000F3 /* ColorPickSession.swift in Sources */,
 				CCB1CA0000000000000000F6 /* CustomColorPickSession.swift in Sources */,
+				834647F57E3804CE9147A149 /* PermissionDragHelper.swift in Sources */,
 				C5D7AFF6343E2A94731847DA /* PickerLoupeCapture.swift in Sources */,
 				CCB1CA0000000000000000F9 /* PickerLoupePanel.swift in Sources */,
 				CCB1CA000000000000000102 /* PickerLoupeView.swift in Sources */,
@@ -1184,6 +1201,7 @@
 				EAE23DD22D032A38005BB270 /* Footer.swift in Sources */,
 				EAE23DD32D032A38005BB270 /* ColorExampleRow.swift in Sources */,
 				C5A261E106FCF6164B6685D5 /* ColorMatchView.swift in Sources */,
+				C55E3E36EBBC694DF953EA6E /* ToggleMenuRow.swift in Sources */,
 				EAE23DD42D032A38005BB270 /* BindingOnChange.swift in Sources */,
 				EAE23DD52D032A38005BB270 /* Defaults.swift in Sources */,
 				EAE23DD62D032A38005BB270 /* VisualEffect.swift in Sources */,
@@ -1220,6 +1238,8 @@
 				CC2000000000000000000C01 /* ClosestVectorTests.swift in Sources */,
 				CC3000000000000000000111 /* PikaUpdateDriverTests.swift in Sources */,
 				CC2000000000000000000D01 /* SequenceTests.swift in Sources */,
+				7030CA4A567B42B6C4DE8044 /* PikaMenuTests.swift in Sources */,
+				C593C068B6949597E6AFB74D /* ToggleMenuRowsTests.swift in Sources */,
 				CC2000000000000000003E01 /* PickerLoupePanelTests.swift in Sources */,
 				CC2000000000000000000E01 /* ExporterTests.swift in Sources */,
 				CC2000000000000000000F01 /* EditableColorValueTests.swift in Sources */,
@@ -1397,7 +1417,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 111;
+				CURRENT_PROJECT_VERSION = 113;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Pika/Preview Content\"";
 				DEVELOPMENT_TEAM = TGHU37N6EX;
@@ -1411,8 +1431,8 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 2.0.2;
-				PRODUCT_BUNDLE_IDENTIFIER = com.superhighfives.Pika;
+				MARKETING_VERSION = 2.0.3-beta1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.superhighfives.Pika.debug;
 				PRODUCT_NAME = Pika;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG TARGET_SPARKLE";
 				SWIFT_VERSION = 5.0;
@@ -1429,7 +1449,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 111;
+				CURRENT_PROJECT_VERSION = 113;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Pika/Preview Content\"";
 				DEVELOPMENT_TEAM = TGHU37N6EX;
@@ -1443,7 +1463,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 2.0.2;
+				MARKETING_VERSION = 2.0.3-beta1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.superhighfives.Pika;
 				PRODUCT_NAME = Pika;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = TARGET_SPARKLE;
@@ -1476,7 +1496,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 2.0.2;
+				MARKETING_VERSION = 2.0.3-beta1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.superhighfives.Pika;
 				PRODUCT_NAME = Pika;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG TARGET_MAS";
@@ -1510,7 +1530,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 2.0.2;
+				MARKETING_VERSION = 2.0.3-beta1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.superhighfives.Pika;
 				PRODUCT_NAME = Pika;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = TARGET_MAS;

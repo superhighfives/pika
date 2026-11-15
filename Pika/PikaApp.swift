@@ -60,6 +60,10 @@ private struct PikaCommands: Commands {
                 .keyboardShortcut("c", modifiers: .command)
             Button(PikaText.textCopyBackground) { send(#selector(AppDelegate.triggerCopyBackground)) }
                 .keyboardShortcut("c", modifiers: [.command, .shift])
+            Button(PikaText.textPasteForeground) { send(#selector(AppDelegate.triggerPasteForeground)) }
+                .keyboardShortcut("v", modifiers: .command)
+            Button(PikaText.textPasteBackground) { send(#selector(AppDelegate.triggerPasteBackground)) }
+                .keyboardShortcut("v", modifiers: [.command, .shift])
 
             Divider()
 

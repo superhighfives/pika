@@ -184,7 +184,7 @@ struct PaletteTabBar: View {
                 scrollToEnd(proxy: proxy)
             }
         }
-        .frame(height: 28)
+        .frame(height: ColorHistoryDrawer.tabBarHeight)
         .background(Color.black.opacity(0.05))
         .onReceive(NotificationCenter.default.publisher(for: .savePalette)) { _ in
             if !historyDrawerVisible {

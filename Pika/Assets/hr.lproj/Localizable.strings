@@ -256,11 +256,20 @@
 /* Copy */
 "color.copy" = "Kopiraj";
 
+/* Paste */
+"color.paste" = "Zalijepi";
+
 /* Copy foreground */
 "color.copy.foreground" = "Kopiraj prednju boju";
 
 /* Copy background */
 "color.copy.background" = "Kopiraj boju pozadine";
+
+/* Paste foreground */
+"color.paste.foreground" = "Zalijepi prednju boju";
+
+/* Paste background */
+"color.paste.background" = "Zalijepi boju pozadine";
 
 /* Copy all as text */
 "color.copy.text" = "Kopiraj sve kao tekst";
@@ -327,6 +336,7 @@
 
 /* OKLCH format */
 "color.format.oklch" = "OKLCH format";
+"color.format.p3" = "Display P3 format";
 
 /* Copy foreground */
 "menu.copy.foreground" = "Kopiraj prednju boju";
@@ -600,6 +610,9 @@
 /* Open the Splash window */
 "help.url.window.splash" = "Otvori prozor dobrodošlice";
 
+/* Open the Check Color window */
+"help.url.window.check" = "Otvori prozor Provjeri boju";
+
 /* Resize window */
 "help.url.window.resize" = "Promijeni veličinu prozora";
 
@@ -686,6 +699,18 @@
 
 /* Permission pill label: Accessibility */
 "picker.perm.accessibility" = "Pristupačnost";
+
+/* permission.drag.hint */
+"permission.drag.hint" = "Ako je Pika već na popisu, uključite je.";
+
+/* permission.drag.screenRecording */
+"permission.drag.screenRecording" = "Povucite Piku na popis Snimanje zaslona iznad";
+
+/* permission.drag.accessibility */
+"permission.drag.accessibility" = "Povucite Piku na popis Pristupačnost iznad";
+
+/* permission.drag.close */
+"permission.drag.close" = "Zatvori";
 
 /* Explains what the optional Accessibility permission adds to the Pro picker */
 "picker.accessibilityNote" = "Neobavezno – omogućuje tipku Escape i pomicanje strelicama tijekom biranja iznad drugih aplikacija.";
@@ -786,17 +811,47 @@
 /* Match display (%@) */
 "preferences.space.display" = "Prema zaslonu (%@)";
 
+/* Short label for Match display, in the toolbar */
+"color.space.short.display" = "Zaslon";
+
+/* Toolbar colour space menu item that opens the Colour Spaces help */
+"color.space.learn" = "O prostorima boja…";
+
+/* Toolbar menu of what the window shows */
+"toolbar.view" = "Prikaz";
+
+/* View menu: text preview pill */
+"toolbar.view.preview" = "Pregled teksta";
+
+/* View menu: contrast footer */
+"toolbar.view.contrast" = "Kontrast";
+
+/* View menu: palettes drawer */
+"toolbar.view.palettes" = "Palete";
+
+/* Toolbar menu of actions */
+"toolbar.more" = "Više";
+
+/* Colour space menu: follow the display being picked on */
+"toolbar.space.display" = "Prema zaslonu";
+
+/* Colour space menu: what sRGB is for */
+"toolbar.space.srgb.subtitle" = "Web, CSS i većina alata za dizajn";
+
+/* Colour space menu: what Display P3 is for */
+"toolbar.space.p3.subtitle" = "Dizajnerske datoteke i aplikacije širokog gamuta";
+
 /* Recommended for color space */
 "preferences.space.hint.srgb" = "Preporučeno. Hex vrijednosti odgovaraju CSS-u, Figmi i većini alata za dizajn.";
 
 /* Display P3 hint */
-"preferences.space.hint.p3" = "Za dizajnerske datoteke i resurse aplikacija u Display P3. CSS hex i RGB kopiraju se kao color(display-p3 …), jer preglednici običan hex čitaju kao sRGB.";
+"preferences.space.hint.p3" = "Za dizajnerske datoteke i resurse aplikacija u Display P3. Preglednici običan hex čitaju kao sRGB, pa za CSS kopirajte u formatu P3.";
 
 /* Match display hint */
 "preferences.space.hint.display" = "Neobrađene vrijednosti zaslona na kojem birate. Hex vrijednosti neće odgovarati webu.";
 
 /* Match display hint on a P3 screen */
-"preferences.space.hint.display.p3" = "Neobrađene vrijednosti zaslona na kojem birate. Ovaj zaslon je Display P3, pa se CSS hex i RGB kopiraju kao color(display-p3 …).";
+"preferences.space.hint.display.p3" = "Neobrađene vrijednosti zaslona na kojem birate. Ovaj zaslon je Display P3, pa za CSS kopirajte u formatu P3.";
 
 /* Other color space hint */
 "preferences.space.hint.other" = "Hex vrijednosti neće odgovarati webu, osim ako izvor koristi isti prostor boja.";
@@ -804,9 +859,18 @@
 /* Colors don't match? */
 "color.space.mismatch" = "Boje se ne podudaraju?";
 
+/* Colors don’t match? (before the Check a Color link in Settings) */
+"color.space.mismatch.prompt" = "Boje se ne podudaraju?";
+
 
 /* Check a Color window title */
-"match.title" = "Provjeri boju";
+"match.title" = "Provjeri boju…";
+
+/* Check a Color (toolbar colour space menu item) */
+"match.menu" = "Provjeri boju";
+
+/* Check Color (window title) */
+"match.window" = "Provjeri boju";
 
 /* Check a Color introduction */
 "match.intro" = "Odaberite boju čiju vrijednost već znate, poput uzorka u Figmi ili na web stranici, pa unesite tu vrijednost u bilo kojem formatu. Pika pronalazi prostor boja u kojem se očitava ista vrijednost.";

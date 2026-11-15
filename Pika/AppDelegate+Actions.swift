@@ -1,4 +1,5 @@
 import Cocoa
+import Defaults
 
 // MARK: - Notification dispatch
 
@@ -14,6 +15,30 @@ extension AppDelegate {
     @IBAction func triggerPickContrast(_: Any) {
         notificationCenter.post(name: .triggerPickForeground, object: self, userInfo: ["chain": true])
         notificationCenter.post(name: .triggerPickPair, object: self)
+    }
+
+    @IBAction func triggerPasteForeground(_: Any) {
+        pasteColor(into: eyedroppers.foreground, notification: .triggerPasteForeground)
+    }
+
+    @IBAction func triggerPasteBackground(_: Any) {
+        pasteColor(into: eyedroppers.background, notification: .triggerPasteBackground)
+    }
+
+    /// Sets `eyedropper` to the colour on the clipboard (#285): a hex, or a value in any of
+    /// Pika's formats, read in the current colour space like a typed value. The readout then
+    /// shows it in the current format. Recorded like a typed edit; anything else beeps.
+    private func pasteColor(into eyedropper: Eyedropper, notification: Notification.Name) {
+        guard let text = NSPasteboard.general.string(forType: .string),
+              let expected = ExpectedColor.parse(text, fallback: Defaults[.colorFormat]),
+              let color = expected.color(in: Defaults[.colorSpace])
+        else {
+            NSSound.beep()
+            return
+        }
+        eyedropper.set(color)
+        notificationCenter.post(name: .colorPicked, object: nil)
+        notificationCenter.post(name: notification, object: self)
     }
 
     @IBAction func triggerCopyForeground(_: Any) {
@@ -122,5 +147,9 @@ extension AppDelegate {
 
     @IBAction func triggerFormatOKLCH(_: Any) {
         notificationCenter.post(name: .triggerFormatOKLCH, object: self)
+    }
+
+    @IBAction func triggerFormatP3(_: Any) {
+        notificationCenter.post(name: .triggerFormatP3, object: self)
     }
 }

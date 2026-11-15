@@ -56,6 +56,8 @@ enum PikaConstants {
 
     // Notification Center constants
     static let ncTriggerCopyForeground = "triggerCopyForeground"
+    static let ncTriggerPasteForeground = "triggerPasteForeground"
+    static let ncTriggerPasteBackground = "triggerPasteBackground"
     static let ncTriggerCopyBackground = "triggerCopyBackground"
     static let ncTriggerCopyText = "triggerCopyText"
     static let ncTriggerCopyData = "triggerCopyData"
@@ -75,6 +77,7 @@ enum PikaConstants {
     static let ncTriggerFormatOpenGL = "triggerFormatOpenGL"
     static let ncTriggerFormatLAB = "triggerFormatLAB"
     static let ncTriggerFormatOKLCH = "triggerFormatOKLCH"
+    static let ncTriggerFormatP3 = "triggerFormatP3"
     static let ncTriggerQuit = "triggerQuit"
     static let ncColorPicked = "colorPicked"
     static let ncToggleHistory = "toggleHistory"
@@ -100,6 +103,8 @@ extension Notification.Name {
     /// "Pick pair"'s own row highlights instead of piggybacking on "Pick foreground"'s.
     static let triggerPickPair = Notification.Name(PikaConstants.ncTriggerPickPair)
     static let triggerCopyForeground = Notification.Name(PikaConstants.ncTriggerCopyForeground)
+    static let triggerPasteForeground = Notification.Name(PikaConstants.ncTriggerPasteForeground)
+    static let triggerPasteBackground = Notification.Name(PikaConstants.ncTriggerPasteBackground)
     static let triggerCopyBackground = Notification.Name(PikaConstants.ncTriggerCopyBackground)
     static let triggerCopyText = Notification.Name(PikaConstants.ncTriggerCopyText)
     static let triggerCopyData = Notification.Name(PikaConstants.ncTriggerCopyData)
@@ -116,6 +121,7 @@ extension Notification.Name {
     static let triggerFormatOpenGL = Notification.Name(PikaConstants.ncTriggerFormatOpenGL)
     static let triggerFormatLAB = Notification.Name(PikaConstants.ncTriggerFormatLAB)
     static let triggerFormatOKLCH = Notification.Name(PikaConstants.ncTriggerFormatOKLCH)
+    static let triggerFormatP3 = Notification.Name(PikaConstants.ncTriggerFormatP3)
     static let triggerQuit = Notification.Name(PikaConstants.ncTriggerQuit)
     static let colorPicked = Notification.Name(PikaConstants.ncColorPicked)
     static let toggleHistory = Notification.Name(PikaConstants.ncToggleHistory)
