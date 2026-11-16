@@ -134,6 +134,7 @@ private struct ClickShield: NSViewRepresentable {
 
 struct EyedropperButton: View {
     @ObservedObject var eyedropper: Eyedropper
+    @EnvironmentObject var eyedroppers: Eyedroppers
     /// Shared with the other swatch (owned by `ColorPickers`) rather than local: a click on
     /// *this* swatch's `PickTarget` can be dismissing a field focused on the *other* swatch,
     /// since the first-responder check that decides "dismiss vs. pick" is window-wide, not
@@ -203,6 +204,19 @@ struct EyedropperButton: View {
             .opacity(isPressed ? 0.8 : 1.0)
             .animation(.easeIn(duration: 0.15), value: Color(eyedropper.color))
             .animation(.easeIn(duration: 0.15), value: isPressed)
+
+            // The other colour set as text on this one, so the pair reads both ways round.
+            // Not hit-testable: a click here still picks.
+            if adaptive.showsPreview {
+                SwatchPreview(
+                    other: eyedropper.type == .foreground ? eyedroppers.background : eyedroppers.foreground
+                )
+                .padding(.horizontal, 10.0)
+                .padding(.top, 14.0)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                .allowsHitTesting(false)
+                .transition(.opacity)
+            }
 
             // Content overlay, lifted out of the pick button so the value's fields receive
             // clicks. The type label and colour name disable hit-testing so clicks fall
@@ -283,7 +297,7 @@ struct EyedropperButton: View {
                 }
             }
             .padding(.horizontal, 10.0)
-            .padding(.bottom, 10.0)
+            .padding(.bottom, 10.0 + adaptive.bottomInset)
             // Roomier above than below, so the hairline doesn't crowd the type label.
             .padding(.top, 16.0)
             // Measured *before* the shared height is imposed below, so this reports what the
@@ -413,6 +427,24 @@ struct EyedropperButton: View {
                 hoverTask = nil
             }
         }
+    }
+}
+
+/// "Aa" and a line of sample text in the other swatch's colour, drawn on this one.
+private struct SwatchPreview: View {
+    @ObservedObject var other: Eyedropper
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4.0) {
+            Text("Aa")
+                .font(.system(size: 34, weight: .bold))
+            Text(NSLocalizedString("color.preview.sample", comment: "Sample preview text"))
+                .font(.system(size: 13))
+                .lineLimit(2)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .foregroundStyle(Color(other.color))
+        .accessibilityHidden(true)
     }
 }
 

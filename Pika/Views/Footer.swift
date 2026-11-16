@@ -194,6 +194,9 @@ struct Footer: View {
     /// Whether there's width for the compliance badges. WCAG/APCA drop the badges entirely
     /// when there isn't; the denser "both" view instead clips its right edge (below).
     var showsCompliance: Bool = true
+    /// Drawn as a rounded panel that floats over the bottom of the colours, rather than as a
+    /// band across the window.
+    var floating: Bool = false
 
     var body: some View {
         Group {
@@ -221,8 +224,28 @@ struct Footer: View {
         // WCAG/APCA instead drop their badges outright (see `showsCompliance`), so nothing
         // there overflows and the clip is a harmless no-op for them.
         .clipped()
-        .background(AdaptivePanelBackground())
+        .modify { footer in
+            if floating {
+                footer
+                    .padding(.vertical, 2.0)
+                    .background(.regularMaterial, in: RoundedRectangle(cornerRadius: Self.floatingCornerRadius, style: .continuous))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: Self.floatingCornerRadius, style: .continuous)
+                            .strokeBorder(Color.primary.opacity(0.14))
+                    )
+                    .clipShape(RoundedRectangle(cornerRadius: Self.floatingCornerRadius, style: .continuous))
+                    .shadow(color: .black.opacity(0.25), radius: 10, x: 0, y: 4)
+            } else {
+                footer.background(AdaptivePanelBackground())
+            }
+        }
     }
+
+    static let floatingCornerRadius: CGFloat = 14
+    /// Gap between the floating bar and the edges of the colours.
+    static let floatingInset: CGFloat = 10
+    /// The bar's height when floating: the row's 50pt plus its vertical padding.
+    static let floatingHeight: CGFloat = 54
 }
 
 struct FooterView_Previews: PreviewProvider {

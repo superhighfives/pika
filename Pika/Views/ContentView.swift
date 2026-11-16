@@ -41,6 +41,12 @@ struct PikaAdaptiveVisibility: Equatable {
     /// the tree: a `GeometryReader`/preference round trip placed inside `EyedropperButton`'s own
     /// `ZStack` was found to never fire past its initial (zero) value.
     var swatchWidth: CGFloat = 0
+    /// Space kept clear at the bottom of each swatch for the floating contrast bar, so the
+    /// readouts sit above it. 0 when the bar is hidden.
+    var bottomInset: CGFloat = 0
+    /// Whether each swatch shows the text preview: the other colour set as "Aa" and a line of
+    /// sample text, so the pair reads both ways round.
+    var showsPreview: Bool = false
 }
 
 private struct PikaAdaptiveVisibilityKey: EnvironmentKey {
@@ -131,6 +137,7 @@ struct ContentView: View {
             let allowContrast = allowContrastHeight && allowContrastWidth
             let allowPalettes = height >= PikaAdaptiveHeight.palettes && width >= PikaAdaptiveWidth.palettes
             let previewVisible = showColorPreview && allowPreview
+            let contrastVisible = showCompliance && allowContrastHeight
 
             // An enabled element we're hiding purely for space. When any exist, offer to
             // grow the window back to a size that fits everything the user has turned on.
@@ -158,7 +165,7 @@ struct ContentView: View {
                     SwapPreviewButton(
                         foreground: eyedroppers.foreground,
                         background: eyedroppers.background,
-                        showPreview: previewVisible,
+                        showPreview: false,
                         isVisible: swapVisible,
                         onHoverChange: { hovered in
                             swapButtonHovered = hovered
@@ -174,9 +181,9 @@ struct ContentView: View {
                         }
                     }
                     .focusable(false)
-                    .padding(.horizontal, 16.0)
-                    .padding(.top, 16.0)
-                    .frame(maxHeight: .infinity, alignment: .top)
+                    // Centred on the seam, in the middle of the pick area above the readouts.
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                    .padding(.bottom, (contrastVisible ? Footer.floatingHeight + Footer.floatingInset : 0) + 70)
                 )
                 // Expand-to-fit sits over the colour tiles (not the whole app), so it
                 // centres on the swatches rather than drifting down over the footer.
@@ -193,17 +200,21 @@ struct ContentView: View {
                     }
                 }
 
-                if showCompliance, allowContrastHeight {
-                    AdaptiveDivider()
-                    // Slide only — no opacity fade, so the footer is always full opacity.
-                    // `showsCompliance` drops the right-hand badges when there isn't the
-                    // width for them, so the footer stays put and only sheds on height.
-                    Footer(
-                        foreground: eyedroppers.foreground,
-                        background: eyedroppers.background,
-                        showsCompliance: allowContrastWidth
-                    )
-                    .transition(.move(edge: .bottom))
+                // The contrast bar floats over the bottom of the colours rather than sitting
+                // in a band under them. The swatches keep `bottomInset` clear for it.
+                .overlay(alignment: .bottom) {
+                    if contrastVisible {
+                        // `showsCompliance` drops the right-hand badges when there isn't the
+                        // width for them, so the bar stays put and only sheds on height.
+                        Footer(
+                            foreground: eyedroppers.foreground,
+                            background: eyedroppers.background,
+                            showsCompliance: allowContrastWidth,
+                            floating: true
+                        )
+                        .padding(Footer.floatingInset)
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                    }
                 }
                 if historyDrawerVisible, allowPalettes {
                     ColorHistoryDrawer(foreground: eyedroppers.foreground, background: eyedroppers.background)
@@ -222,7 +233,9 @@ struct ContentView: View {
                 // above any threshold that would drop the labels on their own account.
                 showsTypeLabels: true,
                 showsColorNames: height >= PikaAdaptiveHeight.colorNames,
-                swatchWidth: width / 2
+                swatchWidth: width / 2,
+                bottomInset: contrastVisible ? Footer.floatingHeight + Footer.floatingInset : 0,
+                showsPreview: previewVisible
             ))
             // Continuous hover is stable when the button appears under the cursor —
             // plain `.onHover` re-fires enter/exit as the overlay mounts, which flickers
@@ -233,6 +246,7 @@ struct ContentView: View {
                 case .ended: isHovering = false
                 }
             }
+            .animation(.easeInOut(duration: 0.2), value: contrastVisible)
             .animation(.easeInOut(duration: 0.2), value: allowContrastHeight)
             .animation(.easeInOut(duration: 0.2), value: allowContrastWidth)
             .animation(.easeInOut(duration: 0.2), value: allowPalettes)
