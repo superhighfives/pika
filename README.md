@@ -139,7 +139,7 @@ When picking or copying, you can append a format to the URL — `<format>` is on
 | Windows | `pika://window/show` | Show Pika (main window, or popover in popover mode) |
 | Windows | `pika://window/about` | Open About |
 | Windows | `pika://window/help` | Open Help |
-| Windows | `pika://window/preferences` | Open Settings |
+| Windows | `pika://window/settings` | Open the Settings window |
 | Windows | `pika://window/splash` | Open Splash |
 | Windows | `pika://window/check` | Open Check Color |
 | Windows | `pika://window/resize/<w>/<h>` | Resize window |

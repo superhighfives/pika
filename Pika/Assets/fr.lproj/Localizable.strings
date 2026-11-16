@@ -548,7 +548,7 @@
 "help.url.window.help" = "Ouvrir la fenêtre d'Aide";
 
 /* Open the Preferences window */
-"help.url.window.preferences" = "Ouvrir la fenêtre des Préférences";
+"help.url.window.settings" = "Ouvrir la fenêtre des Paramètres";
 
 /* Open the Splash window */
 "help.url.window.splash" = "Ouvrir la fenêtre d'Accueil";

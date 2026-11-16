@@ -199,7 +199,9 @@ final class URLSchemeHandler: NSObject {
         case "show": NSApp.sendAction(#selector(AppDelegate.showMainInterface), to: nil, from: nil)
         case "about": NSApp.sendAction(#selector(AppDelegate.openAboutWindow), to: nil, from: nil)
         case "help": NSApp.sendAction(#selector(AppDelegate.openHelpWindow), to: nil, from: nil)
-        case "preferences": NSApp.sendAction(#selector(AppDelegate.openPreferencesWindow), to: nil, from: nil)
+        // `preferences` predates the Settings name. It stays working for existing scripts and
+        // launchers, but Help and the docs only list `settings`.
+        case "settings", "preferences": NSApp.sendAction(#selector(AppDelegate.openPreferencesWindow), to: nil, from: nil)
         case "splash": NSApp.sendAction(#selector(AppDelegate.openSplashWindow), to: nil, from: nil)
         case "check": NSApp.sendAction(#selector(AppDelegate.openColorMatchWindow), to: nil, from: nil)
         case "resize": handleWindowResize(width: arg1, height: arg2)

@@ -548,7 +548,7 @@
 "help.url.window.help" = "打開輔助說明視窗";
 
 /* Open the Preferences window */
-"help.url.window.preferences" = "打開偏好設定視窗";
+"help.url.window.settings" = "打開設置視窗";
 
 /* Open the Splash window */
 "help.url.window.splash" = "打開歡迎視窗";

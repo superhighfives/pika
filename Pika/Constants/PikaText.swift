@@ -582,9 +582,9 @@ enum PikaText {
     // URL Trigger Descriptions — Window
     static let textUrlWindowAbout = NSLocalizedString("help.url.window.about", comment: "Open the About window")
     static let textUrlWindowHelp = NSLocalizedString("help.url.window.help", comment: "Open the Help window")
-    static let textUrlWindowPreferences = NSLocalizedString(
-        "help.url.window.preferences",
-        comment: "Open the Preferences window"
+    static let textUrlWindowSettings = NSLocalizedString(
+        "help.url.window.settings",
+        comment: "Open the Settings window"
     )
     static let textUrlWindowSplash = NSLocalizedString("help.url.window.splash", comment: "Open the Splash window")
     static let textUrlWindowCheck = NSLocalizedString("help.url.window.check", comment: "Open the Check Color window")
