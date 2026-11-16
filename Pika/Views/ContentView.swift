@@ -181,9 +181,10 @@ struct ContentView: View {
                         }
                     }
                     .focusable(false)
-                    // Centred on the seam, in the middle of the pick area above the readouts.
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-                    .padding(.bottom, (contrastVisible ? Footer.floatingHeight + Footer.floatingInset : 0) + 70)
+                    // On the seam, low in the pick area: just above the readouts and clear of the
+                    // previews at the top.
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+                    .padding(.bottom, (contrastVisible ? Footer.floatingHeight + Footer.floatingInset : 0) + 110)
                 )
                 // Expand-to-fit sits over the colour tiles (not the whole app), so it
                 // centres on the swatches rather than drifting down over the footer.

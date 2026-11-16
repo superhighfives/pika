@@ -228,7 +228,13 @@ struct Footer: View {
             if floating {
                 footer
                     .padding(.vertical, 2.0)
-                    .background(.regularMaterial, in: RoundedRectangle(cornerRadius: Self.floatingCornerRadius, style: .continuous))
+                    // Material plus a wash of the window colour: the colours still show through,
+                    // but not enough to tint the bar's text.
+                    .background(
+                        RoundedRectangle(cornerRadius: Self.floatingCornerRadius, style: .continuous)
+                            .fill(Color(NSColor.windowBackgroundColor).opacity(0.6))
+                            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: Self.floatingCornerRadius, style: .continuous))
+                    )
                     .overlay(
                         RoundedRectangle(cornerRadius: Self.floatingCornerRadius, style: .continuous)
                             .strokeBorder(Color.primary.opacity(0.14))

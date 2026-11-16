@@ -100,6 +100,12 @@ struct EditableColorValue: View {
     /// via `onFocusChange` — doesn't reliably fire for it, leaving this view's local state (and
     /// its focus outline) stuck showing "focused" even once AppKit itself has moved on.
     var dismissEditingTrigger: Int = 0
+    /// Drawn straight after the value, as the last item on its row, so it follows the text and
+    /// wraps with it rather than sitting at the far edge of the column.
+    var trailingAccessory: AnyView?
+    /// Width the accessory takes. The value is sized to fit what's left after it, so the two
+    /// share a line whenever the value fits on one.
+    var accessoryWidth: CGFloat = 0
 
     private let baseSize: CGFloat = 18
     private let minSize: CGFloat = 11
@@ -120,6 +126,8 @@ struct EditableColorValue: View {
     /// content's outer edge) has to have them subtracted back out here.
     private let horizontalInset: CGFloat = 52
     private var effectiveWidth: CGFloat { max(availableWidth - horizontalInset, 0) }
+    /// The width the value itself is fitted to: the row, less room for the trailing accessory.
+    private var fitWidth: CGFloat { max(effectiveWidth - accessoryWidth, 0) }
 
     /// Working component strings. Kept in sync with the colour when idle; owned by the user
     /// while a field is focused.
@@ -222,6 +230,11 @@ struct EditableColorValue: View {
                         affix(layout.trailing, size: size)
                     }
                 }
+            }
+            if let trailingAccessory {
+                trailingAccessory
+                    .padding(.leading, 10)
+                    .frame(height: ceil(size * 1.25))
             }
         }
         // Decorative overlay: it doesn't feed into the row's reported size, so it can appear and
@@ -675,7 +688,7 @@ private extension EditableColorValue {
     /// split. Long styles break unevenly at unit boundaries: SwiftUI's `Color(red:` sat alone on
     /// line 1 and everything else overflowed line 2, clipping the value.
     func fontSize(forUnits units: [(value: String?, affix: String)]) -> (size: CGFloat, lines: Int) {
-        guard effectiveWidth > 4 else { return (baseSize, maxLines) }
+        guard fitWidth > 4 else { return (baseSize, maxLines) }
         for lines in [maxLines, fallbackMaxLines] {
             var size = baseSize
             while size >= minSize {
@@ -696,7 +709,7 @@ private extension EditableColorValue {
 
     /// Mirrors `FlowLayout`'s greedy wrap rule; keep the two in step if either changes.
     func wrapsWithinLines(_ widths: [CGFloat], lines maxLineCount: Int) -> Bool {
-        let lineLimit = effectiveWidth - wrapSafetyMargin
+        let lineLimit = fitWidth - wrapSafetyMargin
         var lines = 1
         var lineWidth: CGFloat = 0
         for width in widths {

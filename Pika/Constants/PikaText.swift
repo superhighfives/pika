@@ -42,6 +42,12 @@ enum PikaText {
     static let textColorPaste = NSLocalizedString("color.paste", comment: "Paste")
     static let textColorSystemPicker = NSLocalizedString("color.system", comment: "System picker")
     static let textColorCopied = NSLocalizedString("color.copy.toast", comment: "Copied")
+    static let textColorCopyAs = NSLocalizedString("color.copy.as", comment: "Copy a colour in a format other than the shown one")
+    static func textSwatchActions(_ type: Eyedropper.Types) -> String {
+        type == .foreground
+            ? NSLocalizedString("color.actions.foreground", comment: "Foreground colour actions menu")
+            : NSLocalizedString("color.actions.background", comment: "Background colour actions menu")
+    }
 
     /*
      * Menu

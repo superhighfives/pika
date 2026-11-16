@@ -37,6 +37,31 @@ private struct PickTarget: NSViewRepresentable {
         var onPressChange: ((Bool) -> Void)?
         var onDismissEditing: (() -> Void)?
 
+        /// The eyedropper cursor is the pick area's affordance: nothing is drawn on the colour.
+        /// Set from a tracking area rather than a cursor rect, which the SwiftUI hosting view
+        /// overrides with its own arrow.
+        override func updateTrackingAreas() {
+            super.updateTrackingAreas()
+            trackingAreas.forEach(removeTrackingArea)
+            addTrackingArea(NSTrackingArea(
+                rect: .zero,
+                options: [.cursorUpdate, .mouseEnteredAndExited, .mouseMoved, .activeAlways, .inVisibleRect],
+                owner: self
+            ))
+        }
+
+        override func cursorUpdate(with event: NSEvent) { showEyedropper(for: event) }
+        override func mouseEntered(with event: NSEvent) { showEyedropper(for: event) }
+        override func mouseMoved(with event: NSEvent) { showEyedropper(for: event) }
+
+        /// Only where this view is what a click would hit: over Swap, the floating bar or the
+        /// readout, those set their own cursor.
+        private func showEyedropper(for event: NSEvent) {
+            guard let window else { return }
+            let root = window.contentView?.superview ?? window.contentView
+            if root?.hitTest(event.locationInWindow) === self { EyedropperCursor.shared.set() }
+        }
+
         override func mouseDown(with _: NSEvent) {
             if window?.firstResponder is NSText {
                 window?.endEditing(for: nil)
@@ -129,6 +154,20 @@ private struct ClickShield: NSViewRepresentable {
         // receiving their clicks, but the labels, colour name, and the gaps between them no
         // longer act as a pick target.
         override func mouseDown(with _: NSEvent) {}
+
+        // The readout isn't a pick target, so it keeps the ordinary arrow.
+        override func updateTrackingAreas() {
+            super.updateTrackingAreas()
+            trackingAreas.forEach(removeTrackingArea)
+            addTrackingArea(NSTrackingArea(
+                rect: .zero,
+                options: [.cursorUpdate, .mouseEnteredAndExited, .activeAlways, .inVisibleRect],
+                owner: self
+            ))
+        }
+
+        override func cursorUpdate(with _: NSEvent) { NSCursor.arrow.set() }
+        override func mouseEntered(with _: NSEvent) { NSCursor.arrow.set() }
     }
 }
 
@@ -264,8 +303,8 @@ struct EyedropperButton: View {
                 // height: the name has to be able to collapse to nothing, and a `VStack`
                 // spacing would still be contributing 6pt when it did.
                 VStack(alignment: .leading, spacing: 0) {
-                    // Trailing gutter keeps the value clear of the copy / system-picker hover
-                    // buttons; the value shrinks to fit as its column narrows.
+                    // The quiet Copy, Pick and ⋯ icons follow the value on its row. The value
+                    // shrinks and wraps to fit what's left of the column after them.
                     EditableColorValue(
                         eyedropper: eyedropper,
                         format: colorFormat,
@@ -273,9 +312,17 @@ struct EyedropperButton: View {
                         colorSpace: colorSpace,
                         availableWidth: adaptive.swatchWidth,
                         isInvalid: $valueInvalid,
-                        dismissEditingTrigger: dismissEditingTrigger
+                        dismissEditingTrigger: dismissEditingTrigger,
+                        trailingAccessory: AnyView(SwatchActionIcons(
+                            eyedropper: eyedropper,
+                            isVisible: hoverVisible,
+                            onHoverChange: { hover in
+                                childHovered = hover
+                                updateButtonVisibility()
+                            }
+                        )),
+                        accessoryWidth: Self.actionIconsWidth
                     )
-                    .padding(.trailing, 32.0)
 
                     // Always in the hierarchy, collapsing to zero height rather than being
                     // inserted and removed. This block is bottom-anchored, so a row appearing
@@ -296,6 +343,7 @@ struct EyedropperButton: View {
                     withAnimation(.easeInOut(duration: 0.2)) { colorNameVisible = shows }
                 }
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 10.0)
             .padding(.bottom, 10.0 + adaptive.bottomInset)
             // Roomier above than below, so the hairline doesn't crowd the type label.
@@ -338,55 +386,12 @@ struct EyedropperButton: View {
             }
             .animation(.easeInOut(duration: 0.15), value: showsReadoutBoundary)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
-
-            VStack(spacing: 4.0) {
-                Button(action: {
-                    NSApp.sendAction(eyedropper.type.copySelector, to: nil, from: nil)
-                }, label: {
-                    IconImage(name: "doc.on.doc", resizable: true)
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 14, height: 14)
-                })
-                .buttonStyle(SwapButtonStyle(
-                    isVisible: hoverVisible,
-                    alt: PikaText.textColorCopy,
-                    onHoverChange: { hover in
-                        childHovered = hover
-                        updateButtonVisibility()
-                    }
-                ))
-                .frame(maxWidth: .infinity, alignment: .trailing)
-                .focusable(false)
-                // The style only draws `alt` on hover; the label itself is a bare SF Symbol.
-                .accessibilityLabel(PikaText.textColorCopy)
-
-                Button(action: {
-                    NSApp.sendAction(eyedropper.type.systemPickerSelector, to: nil, from: nil)
-                }, label: {
-                    IconImage(name: "paintpalette", resizable: true)
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 14, height: 14)
-                })
-                .buttonStyle(SwapButtonStyle(
-                    isVisible: hoverVisible,
-                    alt: PikaText.textColorSystemPicker,
-                    onHoverChange: { hover in
-                        childHovered = hover
-                        updateButtonVisibility()
-                    }
-                ))
-                .frame(maxWidth: .infinity, alignment: .trailing)
-                .focusable(false)
-                // The style only draws `alt` on hover; the label itself is a bare SF Symbol.
-                .accessibilityLabel(PikaText.textColorSystemPicker)
-            }
-            .padding(.all, 8.0)
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
         }
         .onReceive(NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification)) { _ in
             colorSpace = Defaults[.colorSpace]
         }
         .coordinateSpace(name: Self.swatchSpace)
+        .contextMenu { SwatchActionsMenu(eyedropper: eyedropper) }
         .onContinuousHover(coordinateSpace: .named(Self.swatchSpace)) { phase in
             let inReadout: Bool
             let inPickArea: Bool
@@ -398,8 +403,10 @@ struct EyedropperButton: View {
                 inReadout = false
                 inPickArea = false
             }
-            if inReadout != readoutHovered {
-                readoutHovered = inReadout
+            // The icons show while anywhere on the colour is hovered.
+            let inSwatch = inReadout || inPickArea
+            if inSwatch != readoutHovered {
+                readoutHovered = inSwatch
                 updateButtonVisibility()
             }
             if inPickArea != pickAreaHovered {
@@ -410,6 +417,9 @@ struct EyedropperButton: View {
     }
 
     private static let swatchSpace = "swatch"
+    /// Room the Copy, Pick and ⋯ icons take after the value: three 18pt icons, the gaps
+    /// between them and the gap before them.
+    private static let actionIconsWidth: CGFloat = 3 * 18 + 2 * 10 + 10
 
     /// Shows the Copy and system picker buttons while the readout or the buttons are hovered,
     /// and hides them a moment after neither is, so crossing the gap onto a button doesn't
@@ -438,7 +448,7 @@ private struct SwatchPreview: View {
         VStack(alignment: .leading, spacing: 4.0) {
             Text("Aa")
                 .font(.system(size: 34, weight: .bold))
-            Text(NSLocalizedString("color.preview.sample", comment: "Sample preview text"))
+            Text(Self.sampleText)
                 .font(.system(size: 13))
                 .lineLimit(2)
                 .fixedSize(horizontal: false, vertical: true)
@@ -446,6 +456,18 @@ private struct SwatchPreview: View {
         .foregroundStyle(Color(other.color))
         .accessibilityHidden(true)
     }
+
+    /// The sample sentence broken over two lines at the space nearest its middle, so it reads
+    /// as a short block rather than one long line. Languages without spaces wrap as they fall.
+    static let sampleText: String = {
+        let sample = NSLocalizedString("color.preview.sample", comment: "Sample preview text")
+        let middle = sample.index(sample.startIndex, offsetBy: sample.count / 2)
+        let spaces = sample.indices.filter { sample[$0] == " " }
+        guard let split = spaces.min(by: {
+            abs(sample.distance(from: $0, to: middle)) < abs(sample.distance(from: $1, to: middle))
+        }) else { return sample }
+        return sample.replacingCharacters(in: split ... split, with: "\n")
+    }()
 }
 
 struct EyedropperButton_Previews: PreviewProvider {
