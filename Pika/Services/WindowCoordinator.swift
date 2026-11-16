@@ -69,6 +69,13 @@ class WindowCoordinator: NSObject {
             self.resizeMainWindow(toFitContent: size)
         }
 
+        // Opening the palettes sidebar widens the window by the sidebar, and closing it narrows
+        // the window again, so the colours keep their size.
+        Defaults.observe(.historyDrawerVisible, options: []) { [weak self] change in
+            guard change.oldValue != change.newValue else { return }
+            DispatchQueue.main.async { self?.resizeForSidebar(shown: change.newValue) }
+        }.tieToLifetime(of: self)
+
         // Re-apply the whole shadow configuration when the setting changes.
         Defaults.observe(.windowShadow) { [weak self] _ in
             self?.applyShadowState(animated: false)
@@ -659,5 +666,29 @@ extension WindowCoordinator {
             model.window = colorMatchWindow
         }
         bringForward(colorMatchWindow)
+    }
+}
+
+private extension WindowCoordinator {
+    /// Grows or shrinks the main window by the sidebar's width, on the left, so the colours keep
+    /// their size and place on screen. Kept on screen, and within the window's size limits.
+    func resizeForSidebar(shown: Bool) {
+        guard !Defaults[.appMode].usesPopover, pikaWindow.isVisible, pikaWindow.contentView != nil else { return }
+        let sidebar = PaletteSidebar.width + AdaptiveDivider.thickness
+        var frame = pikaWindow.frame
+        // Too narrow for the sidebar, it was never showing, so there's nothing to give back.
+        if !shown, frame.width < PikaAdaptiveWidth.base + sidebar { return }
+
+        let minWidth = pikaWindow.contentMinSize.width
+        let maxWidth = pikaWindow.contentMaxSize.width
+        let width = min(max(frame.width + (shown ? sidebar : -sidebar), minWidth), maxWidth)
+        let change = width - frame.width
+        guard change != 0 else { return }
+        frame.size.width = width
+        frame.origin.x -= change
+        if let screen = pikaWindow.screen?.visibleFrame {
+            frame.origin.x = min(max(frame.origin.x, screen.minX), screen.maxX - frame.width)
+        }
+        pikaWindow.setFrame(frame, display: true, animate: true)
     }
 }
