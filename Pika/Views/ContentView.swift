@@ -166,90 +166,94 @@ struct ContentView: View {
             // on top of the colour values.
             let expandAlignment: Alignment = .topTrailing
 
-            HStack(spacing: 0) {
-                if sidebarShown {
-                    PaletteSidebar()
-                        .transition(.move(edge: .leading).combined(with: .opacity))
-                    AdaptiveDivider(axis: .vertical)
-                }
-                VStack(alignment: .trailing, spacing: 0) {
-                    Divider()
-                    // Swap shows over the pick areas (and while it's hovered itself), not the
-                    // readouts, where the Copy and system picker buttons live.
-                    ColorPickers(onPickAreaHover: { hovered in
-                        swapAreaHovered = hovered
-                        updateSwapVisibility()
-                    })
-                    .onReceive(swapTimer) { _ in
-                        if !swapAreaHovered, !swapButtonHovered { swapVisible = false }
-                        swapTimerSubscription?.cancel()
-                        swapTimerSubscription = nil
+            // One divider under the title bar, across the sidebar and the colours.
+            VStack(spacing: 0) {
+                Divider()
+                HStack(spacing: 0) {
+                    if sidebarShown {
+                        PaletteSidebar()
+                            .transition(.move(edge: .leading).combined(with: .opacity))
+                        AdaptiveDivider(axis: .vertical)
                     }
-                    .overlay(
-                        SwapPreviewButton(
-                            foreground: eyedroppers.foreground,
-                            background: eyedroppers.background,
-                            showPreview: false,
-                            isVisible: swapVisible,
-                            onHoverChange: { hovered in
-                                swapButtonHovered = hovered
-                                updateSwapVisibility()
-                            },
-                            onSwap: {
-                                NSApp.sendAction(#selector(AppDelegate.triggerSwap), to: nil, from: nil)
-                            }
-                        )
-                        .onReceive(NotificationCenter.default.publisher(for: .triggerSwap)) { _ in
-                            withAnimation(.easeInOut(duration: 0.2)) {
-                                eyedroppers.swap()
-                            }
+                    VStack(alignment: .trailing, spacing: 0) {
+                        // Swap shows over the pick areas (and while it's hovered itself), not the
+                        // readouts, where the Copy and system picker buttons live.
+                        ColorPickers(onPickAreaHover: { hovered in
+                            swapAreaHovered = hovered
+                            updateSwapVisibility()
+                        })
+                        .onReceive(swapTimer) { _ in
+                            if !swapAreaHovered, !swapButtonHovered { swapVisible = false }
+                            swapTimerSubscription?.cancel()
+                            swapTimerSubscription = nil
                         }
-                        .focusable(false)
-                        // On the seam, low in the pick area: just above the readouts and clear of the
-                        // previews at the top.
-                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
-                        .padding(.bottom, (contrastVisible ? Footer.floatingHeight + Footer.floatingInset : 0) + 110)
-                    )
-                    // Expand-to-fit sits over the colour tiles (not the whole app), so it
-                    // centres on the swatches rather than drifting down over the footer.
-                    .overlay(alignment: expandAlignment) {
-                        if suppressed, isHovering {
-                            ExpandToFitButton {
-                                NotificationCenter.default.post(
-                                    name: .expandToFit,
-                                    object: NSValue(size: expandTargetSize())
-                                )
-                            }
-                            .padding(expandAlignment == .topTrailing ? 8 : 0)
-                            .transition(.scale(scale: 0.9).combined(with: .opacity))
-                        }
-                    }
-
-                    // The contrast bar floats over the bottom of the colours rather than sitting
-                    // in a band under them. The swatches keep `bottomInset` clear for it.
-                    .overlay(alignment: .bottom) {
-                        if contrastVisible {
-                            // `showsCompliance` drops the right-hand badges when there isn't the
-                            // width for them, so the bar stays put and only sheds on height.
-                            Footer(
+                        .overlay(
+                            SwapPreviewButton(
                                 foreground: eyedroppers.foreground,
                                 background: eyedroppers.background,
-                                showsCompliance: allowContrastWidth,
-                                floating: true
+                                showPreview: false,
+                                isVisible: swapVisible,
+                                onHoverChange: { hovered in
+                                    swapButtonHovered = hovered
+                                    updateSwapVisibility()
+                                },
+                                onSwap: {
+                                    NSApp.sendAction(#selector(AppDelegate.triggerSwap), to: nil, from: nil)
+                                }
                             )
-                            .padding(Footer.floatingInset)
-                            .transition(.move(edge: .bottom).combined(with: .opacity))
+                            .onReceive(NotificationCenter.default.publisher(for: .triggerSwap)) { _ in
+                                withAnimation(.easeInOut(duration: 0.2)) {
+                                    eyedroppers.swap()
+                                }
+                            }
+                            .focusable(false)
+                            // On the seam, low in the pick area: just above the readouts and clear of the
+                            // previews at the top.
+                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+                            .padding(.bottom, (contrastVisible ? Footer.floatingHeight + Footer.floatingInset : 0) + 110)
+                        )
+                        // Expand-to-fit sits over the colour tiles (not the whole app), so it
+                        // centres on the swatches rather than drifting down over the footer.
+                        .overlay(alignment: expandAlignment) {
+                            if suppressed, isHovering {
+                                ExpandToFitButton {
+                                    NotificationCenter.default.post(
+                                        name: .expandToFit,
+                                        object: NSValue(size: expandTargetSize())
+                                    )
+                                }
+                                .padding(expandAlignment == .topTrailing ? 8 : 0)
+                                .transition(.scale(scale: 0.9).combined(with: .opacity))
+                            }
                         }
+
+                        // The contrast bar floats over the bottom of the colours rather than sitting
+                        // in a band under them. The swatches keep `bottomInset` clear for it.
+                        .overlay(alignment: .bottom) {
+                            if contrastVisible {
+                                // `showsCompliance` drops the right-hand badges when there isn't the
+                                // width for them, so the bar stays put and only sheds on height.
+                                Footer(
+                                    foreground: eyedroppers.foreground,
+                                    background: eyedroppers.background,
+                                    showsCompliance: allowContrastWidth,
+                                    floating: true
+                                )
+                                .padding(Footer.floatingInset)
+                                .transition(.move(edge: .bottom).combined(with: .opacity))
+                            }
+                        }
+                        if historyDrawerVisible, allowPalettes, !usesSidebar {
+                            ColorHistoryDrawer(foreground: eyedroppers.foreground, background: eyedroppers.background)
+                                .transition(.move(edge: .bottom).combined(with: .opacity))
+                        }
+                        #if TARGET_SPARKLE
+                            InlineUpdateControl()
+                        #endif
                     }
-                    if historyDrawerVisible, allowPalettes, !usesSidebar {
-                        ColorHistoryDrawer(foreground: eyedroppers.foreground, background: eyedroppers.background)
-                            .transition(.move(edge: .bottom).combined(with: .opacity))
-                    }
-                    #if TARGET_SPARKLE
-                        InlineUpdateControl()
-                    #endif
+                    .frame(width: width, alignment: .top)
+                    .frame(maxHeight: .infinity, alignment: .top)
                 }
-                .frame(width: width, height: geo.size.height, alignment: .top)
             }
             .frame(width: geo.size.width, height: geo.size.height, alignment: .topLeading)
             .environment(\.pikaAdaptiveVisibility, PikaAdaptiveVisibility(

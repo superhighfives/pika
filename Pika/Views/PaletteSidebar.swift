@@ -74,32 +74,36 @@ struct PaletteSidebar: View {
             }
             .padding(.trailing, 12)
 
-            ScrollView {
-                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: 3), spacing: 6) {
-                    ForEach(activePalette?.pairs ?? []) { pair in
-                        SidebarSwatch(
-                            pair: pair,
-                            isActive: pair.id == eyedroppers.activeHistoryID,
-                            isAutoHistory: isAutoHistory,
-                            onApplyBoth: { eyedroppers.applyHistoryEntry(pair) },
-                            onApplyForeground: {
-                                eyedroppers.foreground.set(pair.foregroundColor)
-                                eyedroppers.recordHistory()
-                            },
-                            onApplyBackground: {
-                                eyedroppers.background.set(pair.backgroundColor)
-                                eyedroppers.recordHistory()
-                            },
-                            onRemove: { remove(pair) },
-                            onClearAll: isAutoHistory ? { isShowingClearConfirm = true } : nil
-                        )
+            GeometryReader { geo in
+                let tileHeight = Self.tileHeight(showingHalfRowIn: geo.size.height)
+                ScrollView {
+                    LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: 3), spacing: Self.rowSpacing) {
+                        ForEach(activePalette?.pairs ?? []) { pair in
+                            SidebarSwatch(
+                                pair: pair,
+                                tileHeight: tileHeight,
+                                isActive: pair.id == eyedroppers.activeHistoryID,
+                                isAutoHistory: isAutoHistory,
+                                onApplyBoth: { eyedroppers.applyHistoryEntry(pair) },
+                                onApplyForeground: {
+                                    eyedroppers.foreground.set(pair.foregroundColor)
+                                    eyedroppers.recordHistory()
+                                },
+                                onApplyBackground: {
+                                    eyedroppers.background.set(pair.backgroundColor)
+                                    eyedroppers.recordHistory()
+                                },
+                                onRemove: { remove(pair) },
+                                onClearAll: isAutoHistory ? { isShowingClearConfirm = true } : nil
+                            )
+                        }
                     }
+                    .padding(.horizontal, 16)
+                    // Room for the selected swatch's ring, which sits outside the tile.
+                    .padding(.top, 4)
+                    .padding(.bottom, 12)
+                    .animation(.easeInOut(duration: 0.2), value: activePalette?.pairs)
                 }
-                .padding(.horizontal, 16)
-                // Room for the selected swatch's ring, which sits outside the tile.
-                .padding(.top, 4)
-                .padding(.bottom, 12)
-                .animation(.easeInOut(duration: 0.2), value: activePalette?.pairs)
             }
         }
         .padding(.top, 8)
@@ -118,6 +122,21 @@ struct PaletteSidebar: View {
         } message: {
             Text(PikaText.textHistoryClearConfirm)
         }
+    }
+
+    private static let rowSpacing: CGFloat = 6
+    /// A swatch's row, less the tile: the gap above the ratio, the ratio and the row spacing.
+    private static let rowExtras: CGFloat = 3 + 13 + rowSpacing
+
+    /// Tile height that leaves half a row showing at the bottom of `height`, so it's clear the
+    /// grid scrolls. Picks the whole number of rows nearest the default tile size, then sizes
+    /// the tiles to fit that many and a half.
+    static func tileHeight(showingHalfRowIn height: CGFloat) -> CGFloat {
+        let preferred: CGFloat = 34
+        let available = height - 4
+        guard available > 0 else { return preferred }
+        let rows = max(1, ((available / (preferred + rowExtras)) - 0.5).rounded())
+        return min(max(available / (rows + 0.5) - rowExtras, 28), 44)
     }
 
     private func title(of palette: Palette) -> String {
@@ -241,6 +260,7 @@ private struct DiagonalHalf: Shape {
 /// bold when it passes AA for normal text.
 private struct SidebarSwatch: View {
     let pair: ColorPair
+    var tileHeight: CGFloat = 34
     let isActive: Bool
     let isAutoHistory: Bool
     let onApplyBoth: () -> Void
@@ -259,7 +279,7 @@ private struct SidebarSwatch: View {
                 .font(.system(size: 14, weight: .bold))
                 .foregroundStyle(Color(pair.foregroundColor))
                 .frame(maxWidth: .infinity)
-                .frame(height: 34)
+                .frame(height: tileHeight)
                 .background(Color(pair.backgroundColor), in: RoundedRectangle(cornerRadius: 8, style: .continuous))
                 .overlay(
                     RoundedRectangle(cornerRadius: 8, style: .continuous)
