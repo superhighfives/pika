@@ -605,7 +605,7 @@
 "help.url.window.help" = "Otvori prozor Pomoć";
 
 /* Open the Preferences window */
-"help.url.window.preferences" = "Otvori prozor Postavke";
+"help.url.window.settings" = "Otvori prozor Postavke";
 
 /* Open the Splash window */
 "help.url.window.splash" = "Otvori prozor dobrodošlice";

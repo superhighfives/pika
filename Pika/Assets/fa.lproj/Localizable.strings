@@ -635,7 +635,7 @@
 "help.url.window.help" = "باز کردن پنجرهٔ راهنما";
 
 /* Open the Preferences window */
-"help.url.window.preferences" = "باز کردن پنجرهٔ تنظیمات";
+"help.url.window.settings" = "باز کردن پنجرهٔ تنظیمات";
 
 /* Open the Splash window */
 "help.url.window.splash" = "باز کردن پنجرهٔ خوش‌آمدگویی";

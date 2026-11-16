@@ -605,7 +605,7 @@
 "help.url.window.help" = "ヘルプウィンドウを開く";
 
 /* Open the Preferences window */
-"help.url.window.preferences" = "設定ウィンドウを開く";
+"help.url.window.settings" = "設定ウィンドウを開く";
 
 /* Open the Splash window */
 "help.url.window.splash" = "スプラッシュウィンドウを開く";
