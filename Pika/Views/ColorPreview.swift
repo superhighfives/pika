@@ -114,7 +114,7 @@ struct SwapPreviewButton: View {
         }
         .animation(.easeInOut(duration: 0.3), value: showPreview)
         // Swap sits over the pick area, but isn't a pick target, so it keeps the arrow.
-        .onHover { inside in if inside { NSCursor.arrow.set() } }
+        .defaultPointer()
         .onReceive(NotificationCenter.default.publisher(for: .triggerSwap)) { _ in
             angle -= 180
         }

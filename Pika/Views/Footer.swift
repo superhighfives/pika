@@ -241,6 +241,8 @@ struct Footer: View {
                     )
                     .clipShape(RoundedRectangle(cornerRadius: Self.floatingCornerRadius, style: .continuous))
                     .shadow(color: .black.opacity(0.25), radius: 10, x: 0, y: 4)
+                    // Floats over the pick areas, but isn't one.
+                    .defaultPointer()
             } else {
                 footer.background(AdaptivePanelBackground())
             }

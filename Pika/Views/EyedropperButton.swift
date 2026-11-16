@@ -70,6 +70,7 @@ struct EyedropperButton: View {
                 onDismissEditing: { dismissEditingTrigger += 1 }
             )
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .eyedropperPointer()
             .background(Color(eyedropper.color))
             .opacity(isPressed ? 0.8 : 1.0)
             .animation(.easeIn(duration: 0.15), value: Color(eyedropper.color))
@@ -196,6 +197,7 @@ struct EyedropperButton: View {
             }
             // Both of these sit outside the shadow above, so the hairline stays crisp.
             .background(ClickShield())
+            .defaultPointer()
             .background(
                 GeometryReader { geo in
                     let top = geo.frame(in: .named(Self.swatchSpace)).minY
@@ -242,7 +244,9 @@ struct EyedropperButton: View {
                 onPickAreaHover(inPickArea)
                 // The eyedropper is the pick area's only affordance. Pushed and popped with the
                 // hover, since SwiftUI's hosting view resets a cursor merely set from AppKit.
-                if inPickArea { EyedropperCursor.shared.push() } else { NSCursor.pop() }
+                if #unavailable(macOS 15) {
+                    if inPickArea { EyedropperCursor.shared.push() } else { NSCursor.pop() }
+                }
             }
         }
     }
