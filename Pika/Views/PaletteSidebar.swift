@@ -313,3 +313,27 @@ private struct SidebarSwatch: View {
         .accessibilityAddTraits(.isButton)
     }
 }
+
+/// The title bar's sidebar button, beside the traffic lights, as in Finder and Mail. It flips the
+/// same setting as View → Palettes, so the two can't disagree. Main window only: the popover has
+/// no sidebar, and its View menu still shows and hides the palette drawer.
+struct SidebarToggleButton: View {
+    @Default(.historyDrawerVisible) var historyDrawerVisible
+
+    var body: some View {
+        Button {
+            withAnimation(.easeInOut(duration: 0.25)) { historyDrawerVisible.toggle() }
+        } label: {
+            IconImage(name: "sidebar.left")
+                .foregroundStyle(historyDrawerVisible ? Color.primary : Color.secondary)
+                .frame(width: 28, height: 22)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .focusable(false)
+        .padding(.leading, 6.0)
+        .help(PikaText.textViewPalettes)
+        .accessibilityLabel(PikaText.textViewPalettes)
+        .accessibilityAddTraits(historyDrawerVisible ? .isSelected : [])
+    }
+}

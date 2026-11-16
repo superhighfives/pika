@@ -44,6 +44,14 @@ class PikaWindow {
         titlebarAccessory.layoutAttribute = .trailing
         window.addTitlebarAccessoryViewController(titlebarAccessory)
 
+        // The palettes sidebar's toggle, after the traffic lights.
+        let sidebarButton = FittingHostingView(rootView: SidebarToggleButton())
+        sidebarButton.frame.size = sidebarButton.fittingSize
+        let sidebarAccessory = NSTitlebarAccessoryViewController()
+        sidebarAccessory.view = sidebarButton
+        sidebarAccessory.layoutAttribute = .leading
+        window.addTitlebarAccessoryViewController(sidebarAccessory)
+
         // Restore the previously saved frame so size and position survive quitting
         // and reopening. `setFrameAutosaveName` alone does not reliably re-apply a
         // saved frame, so restore it explicitly and only center on first launch.
