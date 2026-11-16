@@ -144,36 +144,36 @@ extension Eyedropper.Types {
 /// Drawn from the SF Symbol in white with a dark outline so it reads on any colour, with its
 /// hotspot at the tip.
 enum EyedropperCursor {
+    /// Sized like the system's own cursors: a 16pt symbol in an 18pt canvas.
     static let shared: NSCursor = {
-        let size: CGFloat = 20
-        let config = NSImage.SymbolConfiguration(pointSize: size - 4, weight: .semibold)
-        guard let symbol = NSImage(systemSymbolName: "eyedropper.halffull", accessibilityDescription: nil)?
-            .withSymbolConfiguration(config)
+        let side: CGFloat = 18
+        let inset: CGFloat = 1.5
+        guard let symbol = NSImage(systemSymbolName: "eyedropper.halffull", accessibilityDescription: nil)
         else { return .crosshair }
+        let glyph = NSRect(x: inset, y: inset, width: side - inset * 2, height: side - inset * 2)
 
         func tinted(_ color: NSColor) -> NSImage {
-            let image = NSImage(size: symbol.size)
+            let image = NSImage(size: NSSize(width: side, height: side))
             image.lockFocus()
-            symbol.draw(in: NSRect(origin: .zero, size: symbol.size))
+            symbol.draw(in: glyph)
             color.set()
-            NSRect(origin: .zero, size: symbol.size).fill(using: .sourceAtop)
+            NSRect(x: 0, y: 0, width: side, height: side).fill(using: .sourceAtop)
             image.unlockFocus()
             return image
         }
 
         let outline = tinted(.black)
         let fill = tinted(.white)
-        let canvas = NSSize(width: symbol.size.width + 4, height: symbol.size.height + 4)
-        let image = NSImage(size: canvas)
+        let image = NSImage(size: NSSize(width: side, height: side))
         image.lockFocus()
         for dx in [-1.0, 0, 1] {
             for dy in [-1.0, 0, 1] where dx != 0 || dy != 0 {
-                outline.draw(at: NSPoint(x: 2 + dx, y: 2 + dy), from: .zero, operation: .sourceOver, fraction: 0.9)
+                outline.draw(at: NSPoint(x: dx, y: dy), from: .zero, operation: .sourceOver, fraction: 0.85)
             }
         }
-        fill.draw(at: NSPoint(x: 2, y: 2), from: .zero, operation: .sourceOver, fraction: 1)
+        fill.draw(at: .zero, from: .zero, operation: .sourceOver, fraction: 1)
         image.unlockFocus()
         // The symbol's tip is its bottom-left corner; cursor hotspots count down from the top.
-        return NSCursor(image: image, hotSpot: NSPoint(x: 3, y: canvas.height - 3))
+        return NSCursor(image: image, hotSpot: NSPoint(x: inset + 1, y: side - inset - 1))
     }()
 }

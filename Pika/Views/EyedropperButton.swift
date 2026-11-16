@@ -37,31 +37,6 @@ private struct PickTarget: NSViewRepresentable {
         var onPressChange: ((Bool) -> Void)?
         var onDismissEditing: (() -> Void)?
 
-        /// The eyedropper cursor is the pick area's affordance: nothing is drawn on the colour.
-        /// Set from a tracking area rather than a cursor rect, which the SwiftUI hosting view
-        /// overrides with its own arrow.
-        override func updateTrackingAreas() {
-            super.updateTrackingAreas()
-            trackingAreas.forEach(removeTrackingArea)
-            addTrackingArea(NSTrackingArea(
-                rect: .zero,
-                options: [.cursorUpdate, .mouseEnteredAndExited, .mouseMoved, .activeAlways, .inVisibleRect],
-                owner: self
-            ))
-        }
-
-        override func cursorUpdate(with event: NSEvent) { showEyedropper(for: event) }
-        override func mouseEntered(with event: NSEvent) { showEyedropper(for: event) }
-        override func mouseMoved(with event: NSEvent) { showEyedropper(for: event) }
-
-        /// Only where this view is what a click would hit: over Swap, the floating bar or the
-        /// readout, those set their own cursor.
-        private func showEyedropper(for event: NSEvent) {
-            guard let window else { return }
-            let root = window.contentView?.superview ?? window.contentView
-            if root?.hitTest(event.locationInWindow) === self { EyedropperCursor.shared.set() }
-        }
-
         override func mouseDown(with _: NSEvent) {
             if window?.firstResponder is NSText {
                 window?.endEditing(for: nil)
@@ -154,20 +129,6 @@ private struct ClickShield: NSViewRepresentable {
         // receiving their clicks, but the labels, colour name, and the gaps between them no
         // longer act as a pick target.
         override func mouseDown(with _: NSEvent) {}
-
-        // The readout isn't a pick target, so it keeps the ordinary arrow.
-        override func updateTrackingAreas() {
-            super.updateTrackingAreas()
-            trackingAreas.forEach(removeTrackingArea)
-            addTrackingArea(NSTrackingArea(
-                rect: .zero,
-                options: [.cursorUpdate, .mouseEnteredAndExited, .activeAlways, .inVisibleRect],
-                owner: self
-            ))
-        }
-
-        override func cursorUpdate(with _: NSEvent) { NSCursor.arrow.set() }
-        override func mouseEntered(with _: NSEvent) { NSCursor.arrow.set() }
     }
 }
 
@@ -412,6 +373,9 @@ struct EyedropperButton: View {
             if inPickArea != pickAreaHovered {
                 pickAreaHovered = inPickArea
                 onPickAreaHover(inPickArea)
+                // The eyedropper is the pick area's only affordance. Pushed and popped with the
+                // hover, since SwiftUI's hosting view resets a cursor merely set from AppKit.
+                if inPickArea { EyedropperCursor.shared.push() } else { NSCursor.pop() }
             }
         }
     }

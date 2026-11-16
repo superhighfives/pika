@@ -58,6 +58,17 @@ extension EnvironmentValues {
         get { self[PikaAdaptiveVisibilityKey.self] }
         set { self[PikaAdaptiveVisibilityKey.self] = newValue }
     }
+
+    /// Whether palettes show as a sidebar (the main window) rather than a drawer along the
+    /// bottom (the menu bar popover, which has no room for one).
+    var pikaUsesSidebar: Bool {
+        get { self[PikaUsesSidebarKey.self] }
+        set { self[PikaUsesSidebarKey.self] = newValue }
+    }
+}
+
+private struct PikaUsesSidebarKey: EnvironmentKey {
+    static let defaultValue = false
 }
 
 struct ContentView: View {
@@ -71,6 +82,7 @@ struct ContentView: View {
     @Default(.palettes) var palettes
     @Default(.activePaletteIndex) var activePaletteIndex
     @Environment(\.colorScheme) var colorScheme: ColorScheme
+    @Environment(\.pikaUsesSidebar) var usesSidebar
     let pasteboard = NSPasteboard.general
 
     @State var swapVisible: Bool = false
@@ -123,7 +135,11 @@ struct ContentView: View {
     var body: some View {
         GeometryReader { geo in
             let height = geo.size.height
-            let width = geo.size.width
+            // The palettes sidebar takes its width off the left; everything else lays out in
+            // what's left, so the colours and their thresholds see the main area only.
+            let sidebarShown = usesSidebar && historyDrawerVisible
+                && geo.size.width >= PikaAdaptiveWidth.base + PaletteSidebar.width
+            let width = sidebarShown ? geo.size.width - PaletteSidebar.width - AdaptiveDivider.thickness : geo.size.width
             // Room-for flags: an element needs both enough height AND enough width, or it
             // clips. ANDed with user preferences below so the saved toggles survive
             // resizing (suppress-but-remember).
@@ -135,7 +151,9 @@ struct ContentView: View {
             let allowContrastHeight = height >= PikaAdaptiveHeight.expandCornerBelow
             let allowContrastWidth = width >= PikaAdaptiveWidth.contrast
             let allowContrast = allowContrastHeight && allowContrastWidth
-            let allowPalettes = height >= PikaAdaptiveHeight.palettes && width >= PikaAdaptiveWidth.palettes
+            let allowPalettes = usesSidebar
+                ? sidebarShown
+                : height >= PikaAdaptiveHeight.palettes && width >= PikaAdaptiveWidth.palettes
             let previewVisible = showColorPreview && allowPreview
             let contrastVisible = showCompliance && allowContrastHeight
 
@@ -148,84 +166,92 @@ struct ContentView: View {
             // on top of the colour values.
             let expandAlignment: Alignment = .topTrailing
 
-            VStack(alignment: .trailing, spacing: 0) {
-                Divider()
-                // Swap shows over the pick areas (and while it's hovered itself), not the
-                // readouts, where the Copy and system picker buttons live.
-                ColorPickers(onPickAreaHover: { hovered in
-                    swapAreaHovered = hovered
-                    updateSwapVisibility()
-                })
-                .onReceive(swapTimer) { _ in
-                    if !swapAreaHovered, !swapButtonHovered { swapVisible = false }
-                    swapTimerSubscription?.cancel()
-                    swapTimerSubscription = nil
+            HStack(spacing: 0) {
+                if sidebarShown {
+                    PaletteSidebar()
+                        .transition(.move(edge: .leading).combined(with: .opacity))
+                    AdaptiveDivider(axis: .vertical)
                 }
-                .overlay(
-                    SwapPreviewButton(
-                        foreground: eyedroppers.foreground,
-                        background: eyedroppers.background,
-                        showPreview: false,
-                        isVisible: swapVisible,
-                        onHoverChange: { hovered in
-                            swapButtonHovered = hovered
-                            updateSwapVisibility()
-                        },
-                        onSwap: {
-                            NSApp.sendAction(#selector(AppDelegate.triggerSwap), to: nil, from: nil)
-                        }
-                    )
-                    .onReceive(NotificationCenter.default.publisher(for: .triggerSwap)) { _ in
-                        withAnimation(.easeInOut(duration: 0.2)) {
-                            eyedroppers.swap()
-                        }
+                VStack(alignment: .trailing, spacing: 0) {
+                    Divider()
+                    // Swap shows over the pick areas (and while it's hovered itself), not the
+                    // readouts, where the Copy and system picker buttons live.
+                    ColorPickers(onPickAreaHover: { hovered in
+                        swapAreaHovered = hovered
+                        updateSwapVisibility()
+                    })
+                    .onReceive(swapTimer) { _ in
+                        if !swapAreaHovered, !swapButtonHovered { swapVisible = false }
+                        swapTimerSubscription?.cancel()
+                        swapTimerSubscription = nil
                     }
-                    .focusable(false)
-                    // On the seam, low in the pick area: just above the readouts and clear of the
-                    // previews at the top.
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
-                    .padding(.bottom, (contrastVisible ? Footer.floatingHeight + Footer.floatingInset : 0) + 110)
-                )
-                // Expand-to-fit sits over the colour tiles (not the whole app), so it
-                // centres on the swatches rather than drifting down over the footer.
-                .overlay(alignment: expandAlignment) {
-                    if suppressed, isHovering {
-                        ExpandToFitButton {
-                            NotificationCenter.default.post(
-                                name: .expandToFit,
-                                object: NSValue(size: expandTargetSize())
-                            )
-                        }
-                        .padding(expandAlignment == .topTrailing ? 8 : 0)
-                        .transition(.scale(scale: 0.9).combined(with: .opacity))
-                    }
-                }
-
-                // The contrast bar floats over the bottom of the colours rather than sitting
-                // in a band under them. The swatches keep `bottomInset` clear for it.
-                .overlay(alignment: .bottom) {
-                    if contrastVisible {
-                        // `showsCompliance` drops the right-hand badges when there isn't the
-                        // width for them, so the bar stays put and only sheds on height.
-                        Footer(
+                    .overlay(
+                        SwapPreviewButton(
                             foreground: eyedroppers.foreground,
                             background: eyedroppers.background,
-                            showsCompliance: allowContrastWidth,
-                            floating: true
+                            showPreview: false,
+                            isVisible: swapVisible,
+                            onHoverChange: { hovered in
+                                swapButtonHovered = hovered
+                                updateSwapVisibility()
+                            },
+                            onSwap: {
+                                NSApp.sendAction(#selector(AppDelegate.triggerSwap), to: nil, from: nil)
+                            }
                         )
-                        .padding(Footer.floatingInset)
-                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                        .onReceive(NotificationCenter.default.publisher(for: .triggerSwap)) { _ in
+                            withAnimation(.easeInOut(duration: 0.2)) {
+                                eyedroppers.swap()
+                            }
+                        }
+                        .focusable(false)
+                        // On the seam, low in the pick area: just above the readouts and clear of the
+                        // previews at the top.
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+                        .padding(.bottom, (contrastVisible ? Footer.floatingHeight + Footer.floatingInset : 0) + 110)
+                    )
+                    // Expand-to-fit sits over the colour tiles (not the whole app), so it
+                    // centres on the swatches rather than drifting down over the footer.
+                    .overlay(alignment: expandAlignment) {
+                        if suppressed, isHovering {
+                            ExpandToFitButton {
+                                NotificationCenter.default.post(
+                                    name: .expandToFit,
+                                    object: NSValue(size: expandTargetSize())
+                                )
+                            }
+                            .padding(expandAlignment == .topTrailing ? 8 : 0)
+                            .transition(.scale(scale: 0.9).combined(with: .opacity))
+                        }
                     }
+
+                    // The contrast bar floats over the bottom of the colours rather than sitting
+                    // in a band under them. The swatches keep `bottomInset` clear for it.
+                    .overlay(alignment: .bottom) {
+                        if contrastVisible {
+                            // `showsCompliance` drops the right-hand badges when there isn't the
+                            // width for them, so the bar stays put and only sheds on height.
+                            Footer(
+                                foreground: eyedroppers.foreground,
+                                background: eyedroppers.background,
+                                showsCompliance: allowContrastWidth,
+                                floating: true
+                            )
+                            .padding(Footer.floatingInset)
+                            .transition(.move(edge: .bottom).combined(with: .opacity))
+                        }
+                    }
+                    if historyDrawerVisible, allowPalettes, !usesSidebar {
+                        ColorHistoryDrawer(foreground: eyedroppers.foreground, background: eyedroppers.background)
+                            .transition(.move(edge: .bottom).combined(with: .opacity))
+                    }
+                    #if TARGET_SPARKLE
+                        InlineUpdateControl()
+                    #endif
                 }
-                if historyDrawerVisible, allowPalettes {
-                    ColorHistoryDrawer(foreground: eyedroppers.foreground, background: eyedroppers.background)
-                        .transition(.move(edge: .bottom).combined(with: .opacity))
-                }
-                #if TARGET_SPARKLE
-                    InlineUpdateControl()
-                #endif
+                .frame(width: width, height: geo.size.height, alignment: .top)
             }
-            .frame(width: geo.size.width, height: geo.size.height, alignment: .top)
+            .frame(width: geo.size.width, height: geo.size.height, alignment: .topLeading)
             .environment(\.pikaAdaptiveVisibility, PikaAdaptiveVisibility(
                 // Not tied to the preview pill: the pill is anchored to the top of the
                 // swatches and the labels to the bottom, so they don't contend for the same
@@ -251,6 +277,7 @@ struct ContentView: View {
             .animation(.easeInOut(duration: 0.2), value: allowContrastHeight)
             .animation(.easeInOut(duration: 0.2), value: allowContrastWidth)
             .animation(.easeInOut(duration: 0.2), value: allowPalettes)
+            .animation(.easeInOut(duration: 0.25), value: sidebarShown)
             .animation(.easeInOut(duration: 0.15), value: suppressed)
             .animation(.easeInOut(duration: 0.15), value: isHovering)
             #if TARGET_SPARKLE

@@ -299,13 +299,15 @@ class WindowCoordinator: NSObject {
         guard let eyedroppers = eyedroppers else { return }
         let contentView = ContentView()
             .environmentObject(eyedroppers)
+            .environment(\.pikaUsesSidebar, true)
             // Floor is well below the "everything visible" height: ContentView sheds
             // elements adaptively as it shrinks (see PikaAdaptiveHeight), so the window
             // can get compact again. Ideal stays at the comfortable first-launch size.
             .frame(
                 minWidth: 360,
                 idealWidth: 480,
-                maxWidth: 650,
+                // Room for the palettes sidebar beside the widest the colours go.
+                maxWidth: 650 + PaletteSidebar.width,
                 minHeight: 160,
                 idealHeight: 280,
                 maxHeight: 400,
