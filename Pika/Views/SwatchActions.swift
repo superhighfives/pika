@@ -10,6 +10,8 @@ struct SwatchActionIcons: View {
     var isVisible: Bool
     var onHoverChange: (Bool) -> Void = { _ in }
 
+    @Default(.colorFormat) private var colorFormat
+    @Default(.copyFormat) private var copyFormat
     @State private var copied = false
     @State private var copiedTask: Task<Void, Never>?
 
@@ -18,7 +20,11 @@ struct SwatchActionIcons: View {
     var body: some View {
         HStack(spacing: 10.0) {
             iconButton(copied ? "checkmark" : "doc.on.doc", label: PikaText.textColorCopy) {
-                NSApp.sendAction(eyedropper.type.copySelector, to: nil, from: nil)
+                // Copied here rather than through the copy action, which also shows the toast:
+                // the tick on the icon is the feedback for a click. ⌘C keeps the toast.
+                let pasteboard = NSPasteboard.general
+                pasteboard.clearContents()
+                pasteboard.setString(eyedropper.color.toFormat(format: colorFormat, style: copyFormat), forType: .string)
                 showCopied()
             }
             iconButton("eyedropper", label: eyedropper.type.pickTitle) {

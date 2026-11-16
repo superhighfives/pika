@@ -96,6 +96,8 @@ struct PaletteSidebar: View {
                     }
                 }
                 .padding(.horizontal, 16)
+                // Room for the selected swatch's ring, which sits outside the tile.
+                .padding(.top, 4)
                 .padding(.bottom, 12)
                 .animation(.easeInOut(duration: 0.2), value: activePalette?.pairs)
             }

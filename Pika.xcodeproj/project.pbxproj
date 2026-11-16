@@ -95,6 +95,8 @@
 		EA0C526425AB5D1700AFF716 /* PikaWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C526325AB5D1700AFF716 /* PikaWindow.swift */; };
 		EA0C526F25AB683400AFF716 /* EyedropperButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C526E25AB683400AFF716 /* EyedropperButton.swift */; };
 		C5B33CDD3DB49E866A30F914 /* SwatchActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC9D3F92C638E65C55E3DD /* SwatchActions.swift */; };
+		C569679815A50F9B197692D4 /* AdaptiveViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5AC198D07759E99C71329C8 /* AdaptiveViews.swift */; };
+		C5D5127AE97E5770150C11B9 /* PickTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EE99501CF0E745DB040721 /* PickTarget.swift */; };
 		C58711A905E801FC9385CD10 /* PaletteSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5CD784C924BA97A367C9500 /* PaletteSidebar.swift */; };
 		DEC0FACE0000000000000022 /* EditableColorValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC0FACE0000000000000020 /* EditableColorValue.swift */; };
 		8B7DF0908AB8B8B9BA673C6C /* FlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53C02D08D06EB2DC10A9D8B /* FlowLayout.swift */; };
@@ -190,6 +192,8 @@
 		EAE23DC62D032A38005BB270 /* KeyboardShortcutKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA8AE1825B8EC070049299B /* KeyboardShortcutKey.swift */; };
 		EAE23DC72D032A38005BB270 /* EyedropperButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C526E25AB683400AFF716 /* EyedropperButton.swift */; };
 		C5C45E1A311690DDB7C40858 /* SwatchActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC9D3F92C638E65C55E3DD /* SwatchActions.swift */; };
+		C53D9D0D66A64DC5F7FDD51F /* AdaptiveViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5AC198D07759E99C71329C8 /* AdaptiveViews.swift */; };
+		C5AD4A539B2FEC4538294B20 /* PickTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EE99501CF0E745DB040721 /* PickTarget.swift */; };
 		C572E45DCCCB03D0C16DC26D /* PaletteSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5CD784C924BA97A367C9500 /* PaletteSidebar.swift */; };
 		DEC0FACE0000000000000023 /* EditableColorValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC0FACE0000000000000020 /* EditableColorValue.swift */; };
 		FA970E37631A882EE51A223F /* FlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53C02D08D06EB2DC10A9D8B /* FlowLayout.swift */; };
@@ -341,6 +345,8 @@
 		EA0C526325AB5D1700AFF716 /* PikaWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PikaWindow.swift; sourceTree = "<group>"; };
 		EA0C526E25AB683400AFF716 /* EyedropperButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyedropperButton.swift; sourceTree = "<group>"; };
 		C5EC9D3F92C638E65C55E3DD /* SwatchActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwatchActions.swift; sourceTree = "<group>"; };
+		C5AC198D07759E99C71329C8 /* AdaptiveViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptiveViews.swift; sourceTree = "<group>"; };
+		C5EE99501CF0E745DB040721 /* PickTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickTarget.swift; sourceTree = "<group>"; };
 		C5CD784C924BA97A367C9500 /* PaletteSidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteSidebar.swift; sourceTree = "<group>"; };
 		DEC0FACE0000000000000020 /* EditableColorValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableColorValue.swift; sourceTree = "<group>"; };
 		C53C02D08D06EB2DC10A9D8B /* FlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowLayout.swift; sourceTree = "<group>"; };
@@ -664,6 +670,8 @@
 				EA635DE025B4FC580014D91A /* ColorPickers.swift */,
 				EA0C526E25AB683400AFF716 /* EyedropperButton.swift */,
 				C5EC9D3F92C638E65C55E3DD /* SwatchActions.swift */,
+				C5AC198D07759E99C71329C8 /* AdaptiveViews.swift */,
+				C5EE99501CF0E745DB040721 /* PickTarget.swift */,
 				C5CD784C924BA97A367C9500 /* PaletteSidebar.swift */,
 				DEC0FACE0000000000000020 /* EditableColorValue.swift */,
 				C53C02D08D06EB2DC10A9D8B /* FlowLayout.swift */,
@@ -1088,6 +1096,8 @@
 				EAA8AE1925B8EC070049299B /* KeyboardShortcutKey.swift in Sources */,
 				EA0C526F25AB683400AFF716 /* EyedropperButton.swift in Sources */,
 				C5B33CDD3DB49E866A30F914 /* SwatchActions.swift in Sources */,
+				C569679815A50F9B197692D4 /* AdaptiveViews.swift in Sources */,
+				C5D5127AE97E5770150C11B9 /* PickTarget.swift in Sources */,
 				C58711A905E801FC9385CD10 /* PaletteSidebar.swift in Sources */,
 				DEC0FACE0000000000000022 /* EditableColorValue.swift in Sources */,
 				8B7DF0908AB8B8B9BA673C6C /* FlowLayout.swift in Sources */,
@@ -1196,6 +1206,8 @@
 				F8ABAC5B2EAAD0DF008CD152 /* ColorPickOverlay.swift in Sources */,
 				EAE23DC72D032A38005BB270 /* EyedropperButton.swift in Sources */,
 				C5C45E1A311690DDB7C40858 /* SwatchActions.swift in Sources */,
+				C53D9D0D66A64DC5F7FDD51F /* AdaptiveViews.swift in Sources */,
+				C5AD4A539B2FEC4538294B20 /* PickTarget.swift in Sources */,
 				C572E45DCCCB03D0C16DC26D /* PaletteSidebar.swift in Sources */,
 				DEC0FACE0000000000000023 /* EditableColorValue.swift in Sources */,
 				FA970E37631A882EE51A223F /* FlowLayout.swift in Sources */,

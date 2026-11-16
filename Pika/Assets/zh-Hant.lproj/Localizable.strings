@@ -280,6 +280,15 @@
 /* Copied */
 "color.copy.toast" = "已複製";
 
+/* Copy a colour in a format other than the shown one */
+"color.copy.as" = "複製為";
+
+/* Foreground colour actions menu */
+"color.actions.foreground" = "前景色操作";
+
+/* Background colour actions menu */
+"color.actions.background" = "背景色操作";
+
 /* Copy current format */
 "color.copy.current" = "複製當前格式";
 

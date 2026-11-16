@@ -310,6 +310,15 @@
 /* Copied */
 "color.copy.toast" = "کپی شد";
 
+/* Copy a colour in a format other than the shown one */
+"color.copy.as" = "کپی به‌صورت";
+
+/* Foreground colour actions menu */
+"color.actions.foreground" = "کارهای پیش‌زمینه";
+
+/* Background colour actions menu */
+"color.actions.background" = "کارهای پس‌زمینه";
+
 /* Copy current format */
 "color.copy.current" = "کپی قالب فعلی";
 

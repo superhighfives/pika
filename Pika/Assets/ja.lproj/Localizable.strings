@@ -280,6 +280,15 @@
 /* Copied */
 "color.copy.toast" = "コピーしました";
 
+/* Copy a colour in a format other than the shown one */
+"color.copy.as" = "形式を指定してコピー";
+
+/* Foreground colour actions menu */
+"color.actions.foreground" = "前景色のアクション";
+
+/* Background colour actions menu */
+"color.actions.background" = "背景色のアクション";
+
 /* Copy current format */
 "color.copy.current" = "現在のフォーマットでコピー";
 
