@@ -44,6 +44,10 @@ struct EyedropperButton: View {
     /// re-evaluates the whole tree, and `.animation(_:value:)` doesn't catch that — the row just
     /// snapped to full height. Driving an explicit state change is what makes it a transition.
     @State private var colorNameVisible = false
+    /// `adaptive.showsPreview` and `adaptive.bottomInset`, changed inside `withAnimation` for
+    /// the same reason as `colorNameVisible`: from the environment they snapped into place.
+    @State private var previewShown = false
+    @State private var bottomInset: CGFloat = 0
 
     private var wantsColorName: Bool { !hideColorNames && adaptive.showsColorNames }
 
@@ -78,7 +82,7 @@ struct EyedropperButton: View {
 
             // The other colour set as text on this one, so the pair reads both ways round.
             // Not hit-testable: a click here still picks.
-            if adaptive.showsPreview {
+            if previewShown {
                 SwatchPreview(
                     other: eyedropper.type == .foreground ? eyedroppers.background : eyedroppers.foreground
                 )
@@ -174,7 +178,7 @@ struct EyedropperButton: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 10.0)
-            .padding(.bottom, 10.0 + adaptive.bottomInset)
+            .padding(.bottom, 10.0 + bottomInset)
             // Roomier above than below, so the hairline doesn't crowd the type label.
             .padding(.top, 16.0)
             // Measured *before* the shared height is imposed below, so this reports what the
@@ -219,6 +223,16 @@ struct EyedropperButton: View {
         }
         .onReceive(NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification)) { _ in
             colorSpace = Defaults[.colorSpace]
+        }
+        .onAppear {
+            previewShown = adaptive.showsPreview
+            bottomInset = adaptive.bottomInset
+        }
+        .onChange(of: adaptive.showsPreview) { shows in
+            withAnimation(.easeInOut(duration: 0.25)) { previewShown = shows }
+        }
+        .onChange(of: adaptive.bottomInset) { inset in
+            withAnimation(.easeInOut(duration: 0.2)) { bottomInset = inset }
         }
         .coordinateSpace(name: Self.swatchSpace)
         .contextMenu { SwatchActionsMenu(eyedropper: eyedropper) }

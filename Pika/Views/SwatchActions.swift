@@ -39,7 +39,10 @@ struct SwatchActionIcons: View {
                     .frame(width: 18, height: 18)
                     .contentShape(Rectangle())
             }
-            .menuStyle(.borderlessButton)
+            // A plain button style, so the label keeps the ink: the borderless menu style drew it
+            // in its own colour, white even on light colours.
+            .menuStyle(.button)
+            .buttonStyle(.plain)
             .menuIndicator(.hidden)
             .fixedSize()
             .accessibilityLabel(PikaText.textSwatchActions(eyedropper.type))

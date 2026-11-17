@@ -171,8 +171,9 @@ struct ContentView: View {
                 Divider()
                 HStack(spacing: 0) {
                     if sidebarShown {
+                        // The window makes room for it, so it fades in rather than sliding.
                         PaletteSidebar()
-                            .transition(.move(edge: .leading).combined(with: .opacity))
+                            .transition(.opacity)
                         AdaptiveDivider(axis: .vertical)
                     }
                     VStack(alignment: .trailing, spacing: 0) {

@@ -73,7 +73,9 @@ class WindowCoordinator: NSObject {
         // the window again, so the colours keep their size.
         Defaults.observe(.historyDrawerVisible, options: []) { [weak self] change in
             guard change.oldValue != change.newValue else { return }
-            DispatchQueue.main.async { self?.resizeForSidebar(shown: change.newValue) }
+            // Straight away, before SwiftUI lays out the change, so the colours never squeeze
+            // to make room and then stretch back.
+            self?.resizeForSidebar(shown: change.newValue)
         }.tieToLifetime(of: self)
 
         // Re-apply the whole shadow configuration when the setting changes.
@@ -689,6 +691,6 @@ private extension WindowCoordinator {
         if let screen = pikaWindow.screen?.visibleFrame {
             frame.origin.x = min(max(frame.origin.x, screen.minX), screen.maxX - frame.width)
         }
-        pikaWindow.setFrame(frame, display: true, animate: true)
+        pikaWindow.setFrame(frame, display: true, animate: false)
     }
 }
