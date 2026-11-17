@@ -83,6 +83,7 @@ struct ContentView: View {
     @Default(.activePaletteIndex) var activePaletteIndex
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     @Environment(\.pikaUsesSidebar) var usesSidebar
+    @ObservedObject private var sidebarLayout = SidebarLayout.shared
     let pasteboard = NSPasteboard.general
 
     @State var swapVisible: Bool = false
@@ -135,11 +136,11 @@ struct ContentView: View {
     var body: some View {
         GeometryReader { geo in
             let height = geo.size.height
-            // The palettes sidebar takes its width off the left; everything else lays out in
+            // The palettes sidebar takes its column off the left; everything else lays out in
             // what's left, so the colours and their thresholds see the main area only.
-            let sidebarShown = usesSidebar && historyDrawerVisible
-                && geo.size.width >= PikaAdaptiveWidth.base + PaletteSidebar.width
-            let width = sidebarShown ? geo.size.width - PaletteSidebar.width - AdaptiveDivider.thickness : geo.size.width
+            let sidebarColumn = usesSidebar ? sidebarLayout.column(in: geo.size.width) : 0
+            let sidebarShown = sidebarColumn > 0
+            let width = geo.size.width - sidebarColumn
             // Room-for flags: an element needs both enough height AND enough width, or it
             // clips. ANDed with user preferences below so the saved toggles survive
             // resizing (suppress-but-remember).
@@ -171,10 +172,14 @@ struct ContentView: View {
                 Divider()
                 HStack(spacing: 0) {
                     if sidebarShown {
-                        // The window makes room for it, so it fades in rather than sliding.
-                        PaletteSidebar()
-                            .transition(.opacity)
-                        AdaptiveDivider(axis: .vertical)
+                        // Revealed by its column as the window widens, rather than drawn in a
+                        // transition of its own, so the colours never change width.
+                        HStack(spacing: 0) {
+                            PaletteSidebar()
+                            AdaptiveDivider(axis: .vertical)
+                        }
+                        .frame(width: sidebarColumn, alignment: .trailing)
+                        .clipped()
                     }
                     VStack(alignment: .trailing, spacing: 0) {
                         // Swap shows over the pick areas (and while it's hovered itself), not the
@@ -282,7 +287,6 @@ struct ContentView: View {
             .animation(.easeInOut(duration: 0.2), value: allowContrastHeight)
             .animation(.easeInOut(duration: 0.2), value: allowContrastWidth)
             .animation(.easeInOut(duration: 0.2), value: allowPalettes)
-            .animation(.easeInOut(duration: 0.25), value: sidebarShown)
             .animation(.easeInOut(duration: 0.15), value: suppressed)
             .animation(.easeInOut(duration: 0.15), value: isHovering)
             #if TARGET_SPARKLE

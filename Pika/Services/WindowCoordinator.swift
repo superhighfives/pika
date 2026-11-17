@@ -672,25 +672,43 @@ extension WindowCoordinator {
 }
 
 private extension WindowCoordinator {
-    /// Grows or shrinks the main window by the sidebar's width, on the right, so the colours keep
-    /// their size and the title bar's sidebar button stays under the pointer. Kept on screen, and
-    /// within the window's size limits.
+    /// Shows or hides the main window's sidebar by growing or shrinking the window, on the right,
+    /// so the colours keep their size and the title bar's sidebar button stays put. The colours'
+    /// width is held while the window animates, and the sidebar's column is the difference.
+    /// Kept on screen, and within the window's size limits.
     func resizeForSidebar(shown: Bool) {
-        guard !Defaults[.appMode].usesPopover, pikaWindow.isVisible, pikaWindow.contentView != nil else { return }
-        let sidebar = PaletteSidebar.width + AdaptiveDivider.thickness
+        let layout = SidebarLayout.shared
+        guard !Defaults[.appMode].usesPopover, pikaWindow.isVisible, pikaWindow.contentView != nil else {
+            layout.isVisible = shown
+            return
+        }
+        let sidebar = SidebarLayout.fullWidth
         var frame = pikaWindow.frame
-        // Too narrow for the sidebar, it was never showing, so there's nothing to give back.
-        if !shown, frame.width < PikaAdaptiveWidth.base + sidebar { return }
-
+        // Hidden for want of room, it isn't taking any width, so closing gives nothing back.
+        let wasShowing = layout.column(in: frame.width) > 0
         let minWidth = pikaWindow.contentMinSize.width
         let maxWidth = pikaWindow.contentMaxSize.width
-        let width = min(max(frame.width + (shown ? sidebar : -sidebar), minWidth), maxWidth)
+        let width = shown
+            ? min(frame.width + sidebar, maxWidth)
+            : max(frame.width - (wasShowing ? sidebar : 0), minWidth)
         let change = width - frame.width
-        guard change != 0 else { return }
+        guard change != 0 else {
+            layout.isVisible = shown
+            return
+        }
+
+        layout.heldColourWidth = shown ? frame.width : frame.width - sidebar
+        layout.isVisible = shown
         frame.size.width = width
         if let screen = pikaWindow.screen?.visibleFrame {
             frame.origin.x = min(max(frame.origin.x, screen.minX), screen.maxX - frame.width)
         }
-        pikaWindow.setFrame(frame, display: true, animate: false)
+        NSAnimationContext.runAnimationGroup { context in
+            context.duration = 0.25
+            context.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+            pikaWindow.animator().setFrame(frame, display: true)
+        } completionHandler: {
+            layout.heldColourWidth = nil
+        }
     }
 }

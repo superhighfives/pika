@@ -4,6 +4,30 @@ import SwiftUI
 /// The main window's palettes, as a library down the left: the palettes listed with their counts,
 /// then the selected one's pairs as small "Aa" tiles in the pair's own colours, each with its
 /// contrast ratio. The menu bar popover keeps the drawer instead (`ColorHistoryDrawer`).
+/// Whether the main window's sidebar shows, and how wide its column is while the window resizes
+/// for it. `WindowCoordinator` drives this rather than the layout reading `historyDrawerVisible`
+/// directly: it notes the colours' width, then animates the window, and the column is whatever
+/// the window has added. The colours keep their width the whole way, where reading the setting
+/// straight away squeezed them to make room before the window had grown.
+final class SidebarLayout: ObservableObject {
+    static let shared = SidebarLayout()
+
+    /// The sidebar and the divider beside it.
+    static let fullWidth = PaletteSidebar.width + AdaptiveDivider.thickness
+
+    @Published var isVisible = Defaults[.historyDrawerVisible]
+    /// The colours' width, held while the window resizes for the sidebar. `nil` otherwise.
+    @Published var heldColourWidth: CGFloat?
+
+    /// The sidebar's column in a window `width` wide.
+    func column(in width: CGFloat) -> CGFloat {
+        if let held = heldColourWidth {
+            return min(max(width - held, 0), Self.fullWidth)
+        }
+        return isVisible && width >= PikaAdaptiveWidth.base + Self.fullWidth ? Self.fullWidth : 0
+    }
+}
+
 struct PaletteSidebar: View {
     static let width: CGFloat = 200
 

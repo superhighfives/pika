@@ -74,7 +74,7 @@ struct EyedropperButton: View {
                 onDismissEditing: { dismissEditingTrigger += 1 }
             )
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .eyedropperPointer()
+            .eyedropperPointer(ink: eyedropper.color.getUIColor())
             .background(Color(eyedropper.color))
             .opacity(isPressed ? 0.8 : 1.0)
             .animation(.easeIn(duration: 0.15), value: Color(eyedropper.color))
@@ -259,7 +259,11 @@ struct EyedropperButton: View {
                 // The eyedropper is the pick area's only affordance. Pushed and popped with the
                 // hover, since SwiftUI's hosting view resets a cursor merely set from AppKit.
                 if #unavailable(macOS 15) {
-                    if inPickArea { EyedropperCursor.shared.push() } else { NSCursor.pop() }
+                    if inPickArea {
+                        EyedropperCursor.cursor(ink: eyedropper.color.getUIColor()).push()
+                    } else {
+                        NSCursor.pop()
+                    }
                 }
             }
         }

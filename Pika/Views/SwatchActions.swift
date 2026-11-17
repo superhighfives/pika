@@ -150,16 +150,25 @@ extension Eyedropper.Types {
 }
 
 /// The cursor over a colour's pick area: an eyedropper, which is the hint that a click picks.
-/// Drawn from the SF Symbol in white with a hairline dark outline so it reads on any colour,
-/// a little smaller than the arrow, with its hotspot at the tip.
+/// The size of the system's own colour sampler, in the colour's label ink (like the Pick icon
+/// after the value), with a hairline outline in the opposite ink so it shows on any colour.
+/// Its hotspot is the tip.
 enum EyedropperCursor {
-    private static let side: CGFloat = 16
+    private static let side: CGFloat = 20
     private static let inset: CGFloat = 2
     /// The tip, in the image's own coordinates (from the bottom left).
     private static let tip = NSPoint(x: inset + 0.5, y: inset + 0.5)
 
-    static let image: NSImage = {
-        guard let symbol = NSImage(systemSymbolName: "eyedropper", accessibilityDescription: nil)
+    /// Dark on light colours, light on dark ones.
+    static func image(ink: NSColor) -> NSImage {
+        ink == .white ? light : dark
+    }
+
+    private static let dark = draw(fill: .black, outline: .white)
+    private static let light = draw(fill: .white, outline: .black)
+
+    private static func draw(fill fillColor: NSColor, outline outlineColor: NSColor) -> NSImage {
+        guard let symbol = NSImage(systemSymbolName: "eyedropper.halffull", accessibilityDescription: nil)
         else { return NSImage(size: NSSize(width: side, height: side)) }
         let glyph = NSRect(x: inset, y: inset, width: side - inset * 2, height: side - inset * 2)
 
@@ -173,34 +182,36 @@ enum EyedropperCursor {
             return image
         }
 
-        let outline = tinted(.black)
-        let fill = tinted(.white)
+        let outline = tinted(outlineColor)
+        let fill = tinted(fillColor)
         let image = NSImage(size: NSSize(width: side, height: side))
         image.lockFocus()
         // Half-point offsets: a one-pixel outline on a Retina display.
         for dx in [-0.5, 0, 0.5] {
             for dy in [-0.5, 0, 0.5] where dx != 0 || dy != 0 {
-                outline.draw(at: NSPoint(x: dx, y: dy), from: .zero, operation: .sourceOver, fraction: 0.9)
+                outline.draw(at: NSPoint(x: dx, y: dy), from: .zero, operation: .sourceOver, fraction: 0.8)
             }
         }
-        fill.draw(at: .zero, from: .zero, operation: .sourceOver, fraction: 1)
+        fill.draw(at: .zero, from: .zero, operation: .sourceOver, fraction: 0.85)
         image.unlockFocus()
         return image
-    }()
+    }
 
     /// The tip as a SwiftUI hotspot, which counts down from the top.
     static let hotSpot = UnitPoint(x: tip.x / side, y: 1 - tip.y / side)
 
     /// For macOS 14, which has no SwiftUI pointer styles. Cursor hotspots count down from the top.
-    static let shared = NSCursor(image: image, hotSpot: NSPoint(x: tip.x, y: side - tip.y))
+    static func cursor(ink: NSColor) -> NSCursor {
+        NSCursor(image: image(ink: ink), hotSpot: NSPoint(x: tip.x, y: side - tip.y))
+    }
 }
 
 extension View {
     /// The eyedropper over a pick area. On macOS 15 and later SwiftUI owns the pointer, which
     /// holds where a cursor set from AppKit was reset after a moment; macOS 14 pushes it on hover.
-    @ViewBuilder func eyedropperPointer() -> some View {
+    @ViewBuilder func eyedropperPointer(ink: NSColor) -> some View {
         if #available(macOS 15, *) {
-            pointerStyle(.image(Image(nsImage: EyedropperCursor.image), hotSpot: EyedropperCursor.hotSpot))
+            pointerStyle(.image(Image(nsImage: EyedropperCursor.image(ink: ink)), hotSpot: EyedropperCursor.hotSpot))
         } else {
             self
         }
