@@ -670,8 +670,9 @@ extension WindowCoordinator {
 }
 
 private extension WindowCoordinator {
-    /// Grows or shrinks the main window by the sidebar's width, on the left, so the colours keep
-    /// their size and place on screen. Kept on screen, and within the window's size limits.
+    /// Grows or shrinks the main window by the sidebar's width, on the right, so the colours keep
+    /// their size and the title bar's sidebar button stays under the pointer. Kept on screen, and
+    /// within the window's size limits.
     func resizeForSidebar(shown: Bool) {
         guard !Defaults[.appMode].usesPopover, pikaWindow.isVisible, pikaWindow.contentView != nil else { return }
         let sidebar = PaletteSidebar.width + AdaptiveDivider.thickness
@@ -685,7 +686,6 @@ private extension WindowCoordinator {
         let change = width - frame.width
         guard change != 0 else { return }
         frame.size.width = width
-        frame.origin.x -= change
         if let screen = pikaWindow.screen?.visibleFrame {
             frame.origin.x = min(max(frame.origin.x, screen.minX), screen.maxX - frame.width)
         }
