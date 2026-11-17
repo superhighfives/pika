@@ -215,8 +215,7 @@ struct ContentView: View {
                                 }
                             }
                             .focusable(false)
-                            // The bottom-right corner, just above the contrast bar: clear of both
-                            // previews and both values. It expands leftwards into "Swap" on hover.
+                            // Bottom right, above the contrast bar and clear of the previews and values.
                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
                             .padding(.trailing, Footer.floatingInset)
                             .padding(.bottom, (contrastVisible ? Footer.floatingHeight + Footer.floatingInset : 0) + Footer.floatingInset)
