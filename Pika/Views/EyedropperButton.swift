@@ -84,7 +84,8 @@ struct EyedropperButton: View {
             // Not hit-testable: a click here still picks.
             if previewShown {
                 SwatchPreview(
-                    other: eyedropper.type == .foreground ? eyedroppers.background : eyedroppers.foreground
+                    other: eyedropper.type == .foreground ? eyedroppers.background : eyedroppers.foreground,
+                    showsSentence: adaptive.showsPreviewSentence
                 )
                 .padding(.horizontal, 10.0)
                 .padding(.top, 14.0)
@@ -312,16 +313,21 @@ struct EyedropperButton: View {
 /// "Aa" and a line of sample text in the other swatch's colour, drawn on this one.
 private struct SwatchPreview: View {
     @ObservedObject var other: Eyedropper
+    var showsSentence = true
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4.0) {
             Text("Aa")
                 .font(.system(size: 34, weight: .bold))
-            Text(Self.sampleText)
-                .font(.system(size: 13))
-                .lineLimit(2)
-                .fixedSize(horizontal: false, vertical: true)
+            if showsSentence {
+                Text(Self.sampleText)
+                    .font(.system(size: 13))
+                    .lineLimit(2)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .transition(.opacity)
+            }
         }
+        .animation(.easeInOut(duration: 0.2), value: showsSentence)
         .foregroundStyle(Color(other.color))
         .accessibilityHidden(true)
     }

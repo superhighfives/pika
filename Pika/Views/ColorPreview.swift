@@ -106,7 +106,7 @@ struct SwapPreviewButton: View {
                     .buttonStyle(SwapButtonStyle(
                         isVisible: isVisible,
                         alt: PikaText.textColorSwap,
-                        ltr: true,
+                        ltr: false,
                         onHoverChange: onHoverChange
                     ))
                     .transition(.opacity)

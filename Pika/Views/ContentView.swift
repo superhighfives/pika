@@ -47,6 +47,8 @@ struct PikaAdaptiveVisibility: Equatable {
     /// Whether each swatch shows the text preview: the other colour set as "Aa" and a line of
     /// sample text, so the pair reads both ways round.
     var showsPreview: Bool = false
+    /// Whether the preview has room for its sample sentence; without it, it's just "Aa".
+    var showsPreviewSentence: Bool = true
 }
 
 private struct PikaAdaptiveVisibilityKey: EnvironmentKey {
@@ -213,10 +215,11 @@ struct ContentView: View {
                                 }
                             }
                             .focusable(false)
-                            // On the seam, low in the pick area: just above the readouts and clear of the
-                            // previews at the top.
-                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
-                            .padding(.bottom, (contrastVisible ? Footer.floatingHeight + Footer.floatingInset : 0) + 110)
+                            // The bottom-right corner, just above the contrast bar: clear of both
+                            // previews and both values. It expands leftwards into "Swap" on hover.
+                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+                            .padding(.trailing, Footer.floatingInset)
+                            .padding(.bottom, (contrastVisible ? Footer.floatingHeight + Footer.floatingInset : 0) + Footer.floatingInset)
                         )
                         // Expand-to-fit sits over the colour tiles (not the whole app), so it
                         // centres on the swatches rather than drifting down over the footer.
@@ -263,16 +266,14 @@ struct ContentView: View {
             }
             .frame(width: geo.size.width, height: geo.size.height, alignment: .topLeading)
             .environment(\.pikaAdaptiveVisibility, PikaAdaptiveVisibility(
-                // Not tied to the preview pill: the pill is anchored to the top of the
-                // swatches and the labels to the bottom, so they don't contend for the same
-                // space — measured at every height from the pill's own minimum (200) upward,
-                // the smallest gap between them is still ~30pt. The window floor keeps height
-                // above any threshold that would drop the labels on their own account.
+                // The previews sit at the top of the colours and the labels at the bottom, so
+                // the window floor keeps the labels whatever the preview does.
                 showsTypeLabels: true,
                 showsColorNames: height >= PikaAdaptiveHeight.colorNames,
                 swatchWidth: width / 2,
                 bottomInset: contrastVisible ? Footer.floatingHeight + Footer.floatingInset : 0,
-                showsPreview: previewVisible
+                showsPreview: previewVisible,
+                showsPreviewSentence: width / 2 >= 230 && height >= 290
             ))
             // Continuous hover is stable when the button appears under the cursor —
             // plain `.onHover` re-fires enter/exit as the overlay mounts, which flickers
