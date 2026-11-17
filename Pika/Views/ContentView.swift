@@ -26,7 +26,7 @@ enum PikaAdaptiveWidth {
     // they appear/disappear together — different values read as a bug.
     static let palettes: CGFloat = 410
     static let contrast: CGFloat = 410
-    static let preview: CGFloat = 420 // preview pill
+    static let preview: CGFloat = 460 // the preview's sentence (each colour 230 wide)
 }
 
 /// Size-driven visibility for elements inside the eyedropper rows, threaded down to
@@ -146,7 +146,8 @@ struct ContentView: View {
             // Room-for flags: an element needs both enough height AND enough width, or it
             // clips. ANDed with user preferences below so the saved toggles survive
             // resizing (suppress-but-remember).
-            let allowPreview = height >= PikaAdaptiveHeight.preview && width >= PikaAdaptiveWidth.preview
+            // "Aa" alone fits at any width; the sentence needs more (`showsPreviewSentence`).
+            let allowPreview = height >= PikaAdaptiveHeight.preview
             // The contrast footer clings on far longer than the other elements. On height it
             // stays until the window is short enough that the expand affordance tucks into
             // the corner; on width it never hides outright — instead the WCAG/APCA rows drop
@@ -265,14 +266,13 @@ struct ContentView: View {
             }
             .frame(width: geo.size.width, height: geo.size.height, alignment: .topLeading)
             .environment(\.pikaAdaptiveVisibility, PikaAdaptiveVisibility(
-                // The previews sit at the top of the colours and the labels at the bottom, so
-                // the window floor keeps the labels whatever the preview does.
+                // Previews sit at the top and labels at the bottom, so the labels never shed for them.
                 showsTypeLabels: true,
                 showsColorNames: height >= PikaAdaptiveHeight.colorNames,
                 swatchWidth: width / 2,
                 bottomInset: contrastVisible ? Footer.floatingHeight + Footer.floatingInset : 0,
                 showsPreview: previewVisible,
-                showsPreviewSentence: width / 2 >= 230 && height >= 290
+                showsPreviewSentence: width >= PikaAdaptiveWidth.preview && height >= 290
             ))
             // Continuous hover is stable when the button appears under the cursor —
             // plain `.onHover` re-fires enter/exit as the overlay mounts, which flickers
