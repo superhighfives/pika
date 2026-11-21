@@ -150,25 +150,27 @@ extension Eyedropper.Types {
 }
 
 /// The cursor over a colour's pick area: an eyedropper, which is the hint that a click picks.
-/// The size of the system's own colour sampler, in the colour's label ink (like the Pick icon
-/// after the value), with a hairline outline in the opposite ink so it shows on any colour.
-/// Its hotspot is the tip.
+/// Drawn the way the Pick icon after the value is: the same outlined symbol, at the same size,
+/// in the colour's label ink at the same 70% opacity, with only a faint shadow in the opposite
+/// ink so it holds up over the colour. Its hotspot is the tip.
 enum EyedropperCursor {
-    private static let side: CGFloat = 20
+    private static let side: CGFloat = 18
     private static let inset: CGFloat = 2
     /// The tip, in the image's own coordinates (from the bottom left).
     private static let tip = NSPoint(x: inset + 0.5, y: inset + 0.5)
 
-    /// Dark on light colours, light on dark ones.
+    /// Dark on light colours, light on dark ones, like the label.
     static func image(ink: NSColor) -> NSImage {
         ink == .white ? light : dark
     }
 
-    private static let dark = draw(fill: .black, outline: .white)
-    private static let light = draw(fill: .white, outline: .black)
+    private static let dark = draw(ink: .black)
+    private static let light = draw(ink: .white)
 
-    private static func draw(fill fillColor: NSColor, outline outlineColor: NSColor) -> NSImage {
-        guard let symbol = NSImage(systemSymbolName: "eyedropper.halffull", accessibilityDescription: nil)
+    private static func draw(ink: NSColor) -> NSImage {
+        let config = NSImage.SymbolConfiguration(pointSize: 13, weight: .medium)
+        guard let symbol = NSImage(systemSymbolName: "eyedropper", accessibilityDescription: nil)?
+            .withSymbolConfiguration(config)
         else { return NSImage(size: NSSize(width: side, height: side)) }
         let glyph = NSRect(x: inset, y: inset, width: side - inset * 2, height: side - inset * 2)
 
@@ -182,17 +184,12 @@ enum EyedropperCursor {
             return image
         }
 
-        let outline = tinted(outlineColor)
-        let fill = tinted(fillColor)
+        let shadow = tinted(ink == .white ? .black : .white)
+        let fill = tinted(ink)
         let image = NSImage(size: NSSize(width: side, height: side))
         image.lockFocus()
-        // Half-point offsets: a one-pixel outline on a Retina display.
-        for dx in [-0.5, 0, 0.5] {
-            for dy in [-0.5, 0, 0.5] where dx != 0 || dy != 0 {
-                outline.draw(at: NSPoint(x: dx, y: dy), from: .zero, operation: .sourceOver, fraction: 0.8)
-            }
-        }
-        fill.draw(at: .zero, from: .zero, operation: .sourceOver, fraction: 0.85)
+        shadow.draw(at: NSPoint(x: 0, y: -0.5), from: .zero, operation: .sourceOver, fraction: 0.25)
+        fill.draw(at: .zero, from: .zero, operation: .sourceOver, fraction: 0.7)
         image.unlockFocus()
         return image
     }
