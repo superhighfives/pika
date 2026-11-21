@@ -22,6 +22,10 @@ final class SidebarLayout: ObservableObject {
     /// grows and shrinks on its left and the menu stays under the pointer. The title bar's
     /// sidebar button, at the top left, leaves it unset and the window changes on its right.
     var keepsRightEdge = false
+    /// Set while the window grows or shrinks on its left. The layout pins the colours to the
+    /// right edge, so the frame its geometry lags behind the window shows at the sidebar's edge
+    /// rather than as a gap of window background beside the colours.
+    @Published var pinsRight = false
 
     /// The sidebar's column in a window `width` wide.
     func column(in width: CGFloat) -> CGFloat {

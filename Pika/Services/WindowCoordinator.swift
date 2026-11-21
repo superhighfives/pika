@@ -751,7 +751,13 @@ private extension WindowCoordinator {
         // with the layout a frame behind it, so from the View menu it's stepped by hand: each
         // step resizes the window and lays out its content together.
         if keepsRightEdge {
-            stepFrame(to: frame) { withoutAnimation { layout.heldColourWidth = nil } }
+            withoutAnimation { layout.pinsRight = true }
+            stepFrame(to: frame) {
+                withoutAnimation {
+                    layout.heldColourWidth = nil
+                    layout.pinsRight = false
+                }
+            }
             return
         }
         NSAnimationContext.runAnimationGroup { context in

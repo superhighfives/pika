@@ -264,7 +264,7 @@ struct ContentView: View {
                     .frame(maxHeight: .infinity, alignment: .top)
                 }
             }
-            .frame(width: geo.size.width, height: geo.size.height, alignment: .topLeading)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: sidebarLayout.pinsRight ? .topTrailing : .topLeading)
             .environment(\.pikaAdaptiveVisibility, PikaAdaptiveVisibility(
                 // Previews sit at the top and labels at the bottom, so the labels never shed for them.
                 showsTypeLabels: true,
