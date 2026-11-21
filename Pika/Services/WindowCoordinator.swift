@@ -678,6 +678,9 @@ private extension WindowCoordinator {
     /// Kept on screen, and within the window's size limits.
     func resizeForSidebar(shown: Bool) {
         let layout = SidebarLayout.shared
+        // Used up by this toggle, whichever way it goes.
+        let keepsRightEdge = layout.keepsRightEdge
+        layout.keepsRightEdge = false
         guard !Defaults[.appMode].usesPopover, pikaWindow.isVisible, pikaWindow.contentView != nil else {
             layout.isVisible = shown
             return
@@ -700,6 +703,7 @@ private extension WindowCoordinator {
         layout.heldColourWidth = shown ? frame.width : frame.width - sidebar
         layout.isVisible = shown
         frame.size.width = width
+        if keepsRightEdge { frame.origin.x -= change }
         if let screen = pikaWindow.screen?.visibleFrame {
             frame.origin.x = min(max(frame.origin.x, screen.minX), screen.maxX - frame.width)
         }

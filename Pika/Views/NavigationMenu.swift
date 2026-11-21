@@ -210,6 +210,10 @@ private struct ViewMenuButton: View {
             // Written here rather than through the toggle action: that lands in a SwiftUI
             // handler, which waits for the menu to close.
             item.view = ToggleMenuRow(title: row.title, key: row.key, rows: rows, isOn: { Defaults[row.setting] }) {
+                // Palettes from here keep the window's right edge, under this menu.
+                if row.setting.name == Defaults.Keys.historyDrawerVisible.name {
+                    SidebarLayout.shared.keepsRightEdge = true
+                }
                 withAnimation(.easeInOut(duration: 0.25)) { Defaults[row.setting].toggle() }
             }
             menu.addItem(item)

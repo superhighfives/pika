@@ -150,56 +150,34 @@ extension Eyedropper.Types {
 }
 
 /// The cursor over a colour's pick area: an eyedropper, which is the hint that a click picks.
-/// Drawn the way the Pick icon after the value is: the same outlined symbol, at the same size,
-/// in the colour's label ink at the same 70% opacity, with only a faint shadow in the opposite
-/// ink so it holds up over the colour. Its hotspot is the tip.
+/// The Pick icon's own symbol at its size, in the label ink at its 70% opacity. Kept as the
+/// vector symbol rather than drawn into a bitmap: SwiftUI's pointer read a 2x bitmap's pixels as
+/// points and drew it twice the size. Its hotspot is the tip, at the bottom left.
 enum EyedropperCursor {
-    private static let side: CGFloat = 18
-    private static let inset: CGFloat = 2
-    /// The tip, in the image's own coordinates (from the bottom left).
-    private static let tip = NSPoint(x: inset + 0.5, y: inset + 0.5)
+    private static let pointSize: CGFloat = 13
 
     /// Dark on light colours, light on dark ones, like the label.
     static func image(ink: NSColor) -> NSImage {
         ink == .white ? light : dark
     }
 
-    private static let dark = draw(ink: .black)
-    private static let light = draw(ink: .white)
+    private static let dark = symbol(ink: .black)
+    private static let light = symbol(ink: .white)
 
-    private static func draw(ink: NSColor) -> NSImage {
-        let config = NSImage.SymbolConfiguration(pointSize: 13, weight: .medium)
-        guard let symbol = NSImage(systemSymbolName: "eyedropper", accessibilityDescription: nil)?
-            .withSymbolConfiguration(config)
-        else { return NSImage(size: NSSize(width: side, height: side)) }
-        let glyph = NSRect(x: inset, y: inset, width: side - inset * 2, height: side - inset * 2)
-
-        func tinted(_ color: NSColor) -> NSImage {
-            let image = NSImage(size: NSSize(width: side, height: side))
-            image.lockFocus()
-            symbol.draw(in: glyph)
-            color.set()
-            NSRect(x: 0, y: 0, width: side, height: side).fill(using: .sourceAtop)
-            image.unlockFocus()
-            return image
-        }
-
-        let shadow = tinted(ink == .white ? .black : .white)
-        let fill = tinted(ink)
-        let image = NSImage(size: NSSize(width: side, height: side))
-        image.lockFocus()
-        shadow.draw(at: NSPoint(x: 0, y: -0.5), from: .zero, operation: .sourceOver, fraction: 0.25)
-        fill.draw(at: .zero, from: .zero, operation: .sourceOver, fraction: 0.7)
-        image.unlockFocus()
-        return image
+    private static func symbol(ink: NSColor) -> NSImage {
+        let config = NSImage.SymbolConfiguration(pointSize: pointSize, weight: .medium)
+            .applying(NSImage.SymbolConfiguration(paletteColors: [ink.withAlphaComponent(0.7)]))
+        return NSImage(systemSymbolName: "eyedropper", accessibilityDescription: nil)?
+            .withSymbolConfiguration(config) ?? NSImage(size: NSSize(width: pointSize, height: pointSize))
     }
 
     /// The tip as a SwiftUI hotspot, which counts down from the top.
-    static let hotSpot = UnitPoint(x: tip.x / side, y: 1 - tip.y / side)
+    static let hotSpot = UnitPoint(x: 0.1, y: 0.9)
 
     /// For macOS 14, which has no SwiftUI pointer styles. Cursor hotspots count down from the top.
     static func cursor(ink: NSColor) -> NSCursor {
-        NSCursor(image: image(ink: ink), hotSpot: NSPoint(x: tip.x, y: side - tip.y))
+        let image = image(ink: ink)
+        return NSCursor(image: image, hotSpot: NSPoint(x: image.size.width * 0.1, y: image.size.height * 0.9))
     }
 }
 

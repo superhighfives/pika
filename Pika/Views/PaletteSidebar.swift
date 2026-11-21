@@ -18,6 +18,10 @@ final class SidebarLayout: ObservableObject {
     @Published var isVisible = Defaults[.historyDrawerVisible]
     /// The colours' width, held while the window resizes for the sidebar. `nil` otherwise.
     @Published var heldColourWidth: CGFloat?
+    /// Set just before a toggle from the View menu, at the window's top right, so the window
+    /// grows and shrinks on its left and the menu stays under the pointer. The title bar's
+    /// sidebar button, at the top left, leaves it unset and the window changes on its right.
+    var keepsRightEdge = false
 
     /// The sidebar's column in a window `width` wide.
     func column(in width: CGFloat) -> CGFloat {
