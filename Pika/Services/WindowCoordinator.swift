@@ -736,8 +736,12 @@ private extension WindowCoordinator {
             return
         }
 
-        layout.heldColourWidth = shown ? frame.width : frame.width - sidebar
-        layout.isVisible = shown
+        // Outside any SwiftUI animation (the View menu toggles inside one), which otherwise
+        // animated the column against the window's own movement.
+        withoutAnimation {
+            layout.heldColourWidth = shown ? frame.width : frame.width - sidebar
+            layout.isVisible = shown
+        }
         frame.size.width = width
         if keepsRightEdge { frame.origin.x -= change }
         if let screen = pikaWindow.screen?.visibleFrame {
@@ -747,7 +751,7 @@ private extension WindowCoordinator {
         // with the layout a frame behind it, so from the View menu it's stepped by hand: each
         // step resizes the window and lays out its content together.
         if keepsRightEdge {
-            stepFrame(to: frame) { layout.heldColourWidth = nil }
+            stepFrame(to: frame) { withoutAnimation { layout.heldColourWidth = nil } }
             return
         }
         NSAnimationContext.runAnimationGroup { context in
@@ -755,7 +759,14 @@ private extension WindowCoordinator {
             context.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
             pikaWindow.animator().setFrame(frame, display: true)
         } completionHandler: {
-            layout.heldColourWidth = nil
+            withoutAnimation { layout.heldColourWidth = nil }
         }
     }
+}
+
+/// Runs `changes` with SwiftUI animations switched off.
+private func withoutAnimation(_ changes: () -> Void) {
+    var transaction = Transaction()
+    transaction.disablesAnimations = true
+    withTransaction(transaction, changes)
 }

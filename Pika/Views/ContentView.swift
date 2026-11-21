@@ -175,15 +175,15 @@ struct ContentView: View {
             VStack(spacing: 0) {
                 Divider()
                 HStack(spacing: 0) {
-                    if sidebarShown {
-                        // Revealed by its column as the window widens, rather than drawn in a
-                        // transition of its own, so the colours never change width.
+                    // Revealed by its column as the window widens; kept at zero width, not removed.
+                    if usesSidebar {
                         HStack(spacing: 0) {
                             PaletteSidebar()
                             AdaptiveDivider(axis: .vertical)
                         }
                         .frame(width: sidebarColumn, alignment: .trailing)
                         .clipped()
+                        .allowsHitTesting(sidebarShown).accessibilityHidden(!sidebarShown)
                     }
                     VStack(alignment: .trailing, spacing: 0) {
                         // Swap shows while the colours (or Swap itself) are hovered.
