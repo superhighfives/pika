@@ -78,6 +78,8 @@ class WindowCoordinator: NSObject {
             self?.resizeForSidebar(shown: change.newValue)
         }.tieToLifetime(of: self)
 
+        resetCursorForMenus()
+
         // Re-apply the whole shadow configuration when the setting changes.
         Defaults.observe(.windowShadow) { [weak self] _ in
             self?.applyShadowState(animated: false)
@@ -672,6 +674,14 @@ extension WindowCoordinator {
 }
 
 private extension WindowCoordinator {
+    /// A menu opened over a colour kept the pick cursor for its items, so any menu opening
+    /// brings back the arrow.
+    func resetCursorForMenus() {
+        NotificationCenter.default.addObserver(
+            forName: NSMenu.didBeginTrackingNotification, object: nil, queue: .main
+        ) { _ in NSCursor.arrow.set() }
+    }
+
     /// Shows or hides the main window's sidebar by growing or shrinking the window, on the right,
     /// so the colours keep their size and the title bar's sidebar button stays put. The colours'
     /// width is held while the window animates, and the sidebar's column is the difference.
@@ -706,6 +716,14 @@ private extension WindowCoordinator {
         if keepsRightEdge { frame.origin.x -= change }
         if let screen = pikaWindow.screen?.visibleFrame {
             frame.origin.x = min(max(frame.origin.x, screen.minX), screen.maxX - frame.width)
+        }
+        // Moving the left edge as well as the width jittered as an animation, with the layout a
+        // frame behind the window, so from the View menu it changes in one step. The colours'
+        // width is still held until the window has its new size.
+        if keepsRightEdge {
+            pikaWindow.setFrame(frame, display: true, animate: false)
+            DispatchQueue.main.async { layout.heldColourWidth = nil }
+            return
         }
         NSAnimationContext.runAnimationGroup { context in
             context.duration = 0.25

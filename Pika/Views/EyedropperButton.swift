@@ -71,7 +71,7 @@ struct EyedropperButton: View {
                 onDismissEditing: { dismissEditingTrigger += 1 }
             )
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .eyedropperPointer(ink: eyedropper.color.getUIColor())
+            .pickPointer()
             .background(Color(eyedropper.color))
             .opacity(isPressed ? 0.8 : 1.0)
             .animation(.easeIn(duration: 0.15), value: Color(eyedropper.color))
@@ -253,11 +253,11 @@ struct EyedropperButton: View {
             }
             if inPickArea != pickAreaHovered {
                 pickAreaHovered = inPickArea
-                // The eyedropper is the pick area's only affordance. Pushed and popped with the
-                // hover, since SwiftUI's hosting view resets a cursor merely set from AppKit.
+                // The pointing hand is the pick area's only affordance. On macOS 14, which has
+                // no SwiftUI pointer styles, it's pushed and popped with the hover.
                 if #unavailable(macOS 15) {
                     if inPickArea {
-                        EyedropperCursor.cursor(ink: eyedropper.color.getUIColor()).push()
+                        NSCursor.pointingHand.push()
                     } else {
                         NSCursor.pop()
                     }

@@ -149,44 +149,13 @@ extension Eyedropper.Types {
     }
 }
 
-/// The cursor over a colour's pick area: an eyedropper, which is the hint that a click picks.
-/// The Pick icon's own symbol at its size, in the label ink at its 70% opacity. Kept as the
-/// vector symbol rather than drawn into a bitmap: SwiftUI's pointer read a 2x bitmap's pixels as
-/// points and drew it twice the size. Its hotspot is the tip, at the bottom left.
-enum EyedropperCursor {
-    private static let pointSize: CGFloat = 13
-
-    /// Dark on light colours, light on dark ones, like the label.
-    static func image(ink: NSColor) -> NSImage {
-        ink == .white ? light : dark
-    }
-
-    private static let dark = symbol(ink: .black)
-    private static let light = symbol(ink: .white)
-
-    private static func symbol(ink: NSColor) -> NSImage {
-        let config = NSImage.SymbolConfiguration(pointSize: pointSize, weight: .medium)
-            .applying(NSImage.SymbolConfiguration(paletteColors: [ink.withAlphaComponent(0.7)]))
-        return NSImage(systemSymbolName: "eyedropper", accessibilityDescription: nil)?
-            .withSymbolConfiguration(config) ?? NSImage(size: NSSize(width: pointSize, height: pointSize))
-    }
-
-    /// The tip as a SwiftUI hotspot, which counts down from the top.
-    static let hotSpot = UnitPoint(x: 0.1, y: 0.9)
-
-    /// For macOS 14, which has no SwiftUI pointer styles. Cursor hotspots count down from the top.
-    static func cursor(ink: NSColor) -> NSCursor {
-        let image = image(ink: ink)
-        return NSCursor(image: image, hotSpot: NSPoint(x: image.size.width * 0.1, y: image.size.height * 0.9))
-    }
-}
-
 extension View {
-    /// The eyedropper over a pick area. On macOS 15 and later SwiftUI owns the pointer, which
-    /// holds where a cursor set from AppKit was reset after a moment; macOS 14 pushes it on hover.
-    @ViewBuilder func eyedropperPointer(ink: NSColor) -> some View {
+    /// The pointing hand over a pick area, the system's own "click here". On macOS 15 and later
+    /// SwiftUI owns the pointer, which holds where a cursor set from AppKit was reset after a
+    /// moment; macOS 14 pushes the hand on hover instead (`EyedropperButton`).
+    @ViewBuilder func pickPointer() -> some View {
         if #available(macOS 15, *) {
-            pointerStyle(.image(Image(nsImage: EyedropperCursor.image(ink: ink)), hotSpot: EyedropperCursor.hotSpot))
+            pointerStyle(.link)
         } else {
             self
         }
