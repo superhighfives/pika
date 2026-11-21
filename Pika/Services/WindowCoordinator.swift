@@ -747,26 +747,10 @@ private extension WindowCoordinator {
         if let screen = pikaWindow.screen?.visibleFrame {
             frame.origin.x = min(max(frame.origin.x, screen.minX), screen.maxX - frame.width)
         }
-        // Moving the left edge as well as the width jittered under the window's own animation,
-        // with the layout a frame behind it, so from the View menu it's stepped by hand: each
-        // step resizes the window and lays out its content together.
-        if keepsRightEdge {
-            withoutAnimation { layout.pinsRight = true }
-            stepFrame(to: frame) {
-                withoutAnimation {
-                    layout.heldColourWidth = nil
-                    layout.pinsRight = false
-                }
-            }
-            return
-        }
-        NSAnimationContext.runAnimationGroup { context in
-            context.duration = 0.25
-            context.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
-            pikaWindow.animator().setFrame(frame, display: true)
-        } completionHandler: {
-            withoutAnimation { layout.heldColourWidth = nil }
-        }
+        // Stepped by hand rather than through the window's own animation, which drew no frames
+        // in between as it grew, and jittered as it moved the left edge: each step resizes the
+        // window and lays out its content together.
+        stepFrame(to: frame) { withoutAnimation { layout.heldColourWidth = nil } }
     }
 }
 

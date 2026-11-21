@@ -166,7 +166,7 @@ struct ContentView: View {
             // grow the window back to a size that fits everything the user has turned on.
             let suppressed = (showColorPreview && !allowPreview)
                 || (showCompliance && !allowContrast)
-                || (historyDrawerVisible && !allowPalettes)
+                || (historyDrawerVisible && !allowPalettes && sidebarLayout.heldColourWidth == nil) // not mid-resize
             // Always tuck the expand affordance into the top-right corner so it never sits
             // on top of the colour values.
             let expandAlignment: Alignment = .topTrailing
@@ -264,7 +264,7 @@ struct ContentView: View {
                     .frame(maxHeight: .infinity, alignment: .top)
                 }
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: sidebarLayout.pinsRight ? .topTrailing : .topLeading)
+            .frame(width: geo.size.width, height: geo.size.height, alignment: .topLeading)
             .environment(\.pikaAdaptiveVisibility, PikaAdaptiveVisibility(
                 // Previews sit at the top and labels at the bottom, so the labels never shed for them.
                 showsTypeLabels: true,
@@ -286,7 +286,7 @@ struct ContentView: View {
             .animation(.easeInOut(duration: 0.2), value: contrastVisible)
             .animation(.easeInOut(duration: 0.2), value: allowContrastHeight)
             .animation(.easeInOut(duration: 0.2), value: allowContrastWidth)
-            .animation(.easeInOut(duration: 0.2), value: allowPalettes)
+            .animation(.easeInOut(duration: 0.2), value: !usesSidebar && allowPalettes) // the drawer's
             .animation(.easeInOut(duration: 0.15), value: suppressed)
             .animation(.easeInOut(duration: 0.15), value: isHovering)
             #if TARGET_SPARKLE
