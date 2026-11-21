@@ -13,7 +13,7 @@ struct ReadoutHeightKey: PreferenceKey {
 struct ColorPickers: View {
     @EnvironmentObject var eyedroppers: Eyedroppers
     /// Whether the colours are hovered. Drives the Swap button.
-    var onPickAreaHover: (Bool) -> Void = { _ in }
+    var onHover: (Bool) -> Void = { _ in }
 
     /// Shared across both swatches rather than owned per-swatch: a click landing on either
     /// swatch's pick target while a colour field is focused needs to dismiss whichever swatch
@@ -40,8 +40,7 @@ struct ColorPickers: View {
                     eyedropper: eyedropper,
                     dismissEditingTrigger: $dismissEditingTrigger,
                     readoutHeight: readoutHeight,
-                    showsReadoutBoundary: pickersHovered,
-                    onPickAreaHover: { _ in }
+                    showsReadoutBoundary: pickersHovered
                 )
             }
         }
@@ -55,7 +54,7 @@ struct ColorPickers: View {
         // the colours is hovered rather than only the pick areas.
         .onHover { hovered in
             pickersHovered = hovered
-            onPickAreaHover(hovered)
+            onHover(hovered)
         }
         .onAppear { clickAway.start { dismissEditingTrigger += 1 } }
         .onDisappear { clickAway.stop() }

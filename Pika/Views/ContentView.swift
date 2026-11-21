@@ -14,7 +14,8 @@ enum PikaAdaptiveHeight {
     static let expandCornerBelow: CGFloat = 200 // below this content height (~240pt window) the button tucks top-right
     static let palettes: CGFloat = 300 // history drawer (`ColorHistoryDrawer.height`, 74pt)
     static let contrast: CGFloat = 250 // compliance footer (~50pt)
-    static let preview: CGFloat = 200 // preview pill
+    static let preview: CGFloat = 200 // the preview's "Aa"
+    static let previewSentence: CGFloat = 290 // the preview's sample sentence, under the "Aa"
     static let colorNames: CGFloat = 175 // CSS colour name under each value
 }
 
@@ -100,16 +101,16 @@ struct ContentView: View {
         @ObservedObject private var updates = PikaUpdateDriver.shared
     #endif
 
-    /// Content size that comfortably shows every element the user currently has enabled —
-    /// the target for the "expand to fit" control. Takes the largest width/height each
-    /// enabled element needs, plus a small margin so it lands just past each threshold.
+    /// The "expand to fit" target: the largest width and height each enabled element needs,
+    /// plus a small margin so it lands just past each threshold.
     private func expandTargetSize() -> CGSize {
         let margin: CGFloat = 8
         var width = PikaAdaptiveWidth.base
         var height = PikaAdaptiveHeight.floor
+        // The whole preview, sentence and all: "Aa" alone fits at any width.
         if showColorPreview {
             width = max(width, PikaAdaptiveWidth.preview)
-            height = max(height, PikaAdaptiveHeight.preview)
+            height = max(height, PikaAdaptiveHeight.previewSentence)
         }
         if showCompliance {
             width = max(width, PikaAdaptiveWidth.contrast)
@@ -185,9 +186,8 @@ struct ContentView: View {
                         .clipped()
                     }
                     VStack(alignment: .trailing, spacing: 0) {
-                        // Swap shows over the pick areas (and while it's hovered itself), not the
-                        // readouts, where the Copy and system picker buttons live.
-                        ColorPickers(onPickAreaHover: { hovered in
+                        // Swap shows while the colours (or Swap itself) are hovered.
+                        ColorPickers(onHover: { hovered in
                             swapAreaHovered = hovered
                             updateSwapVisibility()
                         })
@@ -272,7 +272,7 @@ struct ContentView: View {
                 swatchWidth: width / 2,
                 bottomInset: contrastVisible ? Footer.floatingHeight + Footer.floatingInset : 0,
                 showsPreview: previewVisible,
-                showsPreviewSentence: width >= PikaAdaptiveWidth.preview && height >= 290
+                showsPreviewSentence: width >= PikaAdaptiveWidth.preview && height >= PikaAdaptiveHeight.previewSentence
             ))
             // Continuous hover is stable when the button appears under the cursor —
             // plain `.onHover` re-fires enter/exit as the overlay mounts, which flickers

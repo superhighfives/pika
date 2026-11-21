@@ -16,9 +16,6 @@ struct EyedropperButton: View {
     var readoutHeight: CGFloat = 0
     /// Driven by hovering either swatch, so both boundaries show together.
     var showsReadoutBoundary: Bool = false
-    /// Reports whether the pointer is over the pick area: the swatch above the readout block.
-    /// The Swap button shows only while one of the two pick areas is hovered.
-    var onPickAreaHover: (Bool) -> Void = { _ in }
     @Default(.colorFormat) var colorFormat
     @Default(.copyFormat) var copyFormat
     @Default(.hideColorNames) var hideColorNames
@@ -32,8 +29,8 @@ struct EyedropperButton: View {
     /// Whether the pointer is over the readout block (below the hairline). The Copy and system
     /// picker buttons belong to the readout, so they show only while it, or they, are hovered.
     @State private var readoutHovered: Bool = false
-    /// Whether the pointer is over the pick area (above the hairline), so `onPickAreaHover`
-    /// fires on a change rather than on every pointer move.
+    /// Whether the pointer is over the pick area (above the hairline), so the macOS 14 cursor
+    /// changes on a change rather than on every pointer move.
     @State private var pickAreaHovered: Bool = false
     /// Top of the readout block in the swatch's own coordinates, where the pick area ends.
     @State private var readoutTop: CGFloat = .infinity
@@ -256,7 +253,6 @@ struct EyedropperButton: View {
             }
             if inPickArea != pickAreaHovered {
                 pickAreaHovered = inPickArea
-                onPickAreaHover(inPickArea)
                 // The eyedropper is the pick area's only affordance. Pushed and popped with the
                 // hover, since SwiftUI's hosting view resets a cursor merely set from AppKit.
                 if #unavailable(macOS 15) {
