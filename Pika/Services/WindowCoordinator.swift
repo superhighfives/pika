@@ -69,6 +69,17 @@ class WindowCoordinator: NSObject {
             self.resizeMainWindow(toFitContent: size)
         }
 
+        // Opening the palettes sidebar widens the window by the sidebar, and closing it narrows
+        // the window again, so the colours keep their size.
+        Defaults.observe(.historyDrawerVisible, options: []) { [weak self] change in
+            guard change.oldValue != change.newValue else { return }
+            // Straight away, before SwiftUI lays out the change, so the colours never squeeze
+            // to make room and then stretch back.
+            self?.resizeForSidebar(shown: change.newValue)
+        }.tieToLifetime(of: self)
+
+        resetCursorForMenus()
+
         // Re-apply the whole shadow configuration when the setting changes.
         Defaults.observe(.windowShadow) { [weak self] _ in
             self?.applyShadowState(animated: false)
@@ -299,13 +310,15 @@ class WindowCoordinator: NSObject {
         guard let eyedroppers = eyedroppers else { return }
         let contentView = ContentView()
             .environmentObject(eyedroppers)
+            .environment(\.pikaUsesSidebar, true)
             // Floor is well below the "everything visible" height: ContentView sheds
             // elements adaptively as it shrinks (see PikaAdaptiveHeight), so the window
             // can get compact again. Ideal stays at the comfortable first-launch size.
             .frame(
                 minWidth: 360,
                 idealWidth: 480,
-                maxWidth: 650,
+                // Room for the palettes sidebar beside the widest the colours go.
+                maxWidth: 650 + PaletteSidebar.width,
                 minHeight: 160,
                 idealHeight: 280,
                 maxHeight: 400,
@@ -658,4 +671,92 @@ extension WindowCoordinator {
         }
         bringForward(colorMatchWindow)
     }
+}
+
+private extension WindowCoordinator {
+    /// A menu opened over a colour kept the pick cursor for its items, so any menu opening
+    /// brings back the arrow.
+    func resetCursorForMenus() {
+        NotificationCenter.default.addObserver(
+            forName: NSMenu.didBeginTrackingNotification, object: nil, queue: .main
+        ) { _ in NSCursor.arrow.set() }
+    }
+
+    /// Animates the main window to `target` over a quarter second, one display frame at a time,
+    /// laying out and drawing its content with each step.
+    func stepFrame(to target: NSRect, completion: @escaping () -> Void) {
+        guard let window = pikaWindow as NSWindow? else { return completion() }
+        let start = window.frame
+        let duration = 0.25
+        let began = CACurrentMediaTime()
+        let timer = Timer(timeInterval: 1.0 / 120.0, repeats: true) { timer in
+            let progress = min((CACurrentMediaTime() - began) / duration, 1)
+            // Ease in and out.
+            let eased = progress < 0.5 ? 2 * progress * progress : 1 - pow(-2 * progress + 2, 2) / 2
+            func mix(_ from: CGFloat, _ to: CGFloat) -> CGFloat { (from + (to - from) * eased).rounded() }
+            window.setFrame(NSRect(
+                x: mix(start.minX, target.minX), y: mix(start.minY, target.minY),
+                width: mix(start.width, target.width), height: mix(start.height, target.height)
+            ), display: false)
+            window.contentView?.layoutSubtreeIfNeeded()
+            window.displayIfNeeded()
+            if progress >= 1 {
+                timer.invalidate()
+                completion()
+            }
+        }
+        RunLoop.main.add(timer, forMode: .common)
+    }
+
+    /// Shows or hides the main window's sidebar by growing or shrinking the window, on the right,
+    /// so the colours keep their size and the title bar's sidebar button stays put. The colours'
+    /// width is held while the window animates, and the sidebar's column is the difference.
+    /// Kept on screen, and within the window's size limits.
+    func resizeForSidebar(shown: Bool) {
+        let layout = SidebarLayout.shared
+        // Used up by this toggle, whichever way it goes.
+        let keepsRightEdge = layout.keepsRightEdge
+        layout.keepsRightEdge = false
+        guard !Defaults[.appMode].usesPopover, pikaWindow.isVisible, pikaWindow.contentView != nil else {
+            layout.isVisible = shown
+            return
+        }
+        let sidebar = SidebarLayout.fullWidth
+        var frame = pikaWindow.frame
+        // Hidden for want of room, it isn't taking any width, so closing gives nothing back.
+        let wasShowing = layout.column(in: frame.width) > 0
+        let minWidth = pikaWindow.contentMinSize.width
+        let maxWidth = pikaWindow.contentMaxSize.width
+        let width = shown
+            ? min(frame.width + sidebar, maxWidth)
+            : max(frame.width - (wasShowing ? sidebar : 0), minWidth)
+        let change = width - frame.width
+        guard change != 0 else {
+            layout.isVisible = shown
+            return
+        }
+
+        // Outside any SwiftUI animation (the View menu toggles inside one), which otherwise
+        // animated the column against the window's own movement.
+        withoutAnimation {
+            layout.heldColourWidth = shown ? frame.width : frame.width - sidebar
+            layout.isVisible = shown
+        }
+        frame.size.width = width
+        if keepsRightEdge { frame.origin.x -= change }
+        if let screen = pikaWindow.screen?.visibleFrame {
+            frame.origin.x = min(max(frame.origin.x, screen.minX), screen.maxX - frame.width)
+        }
+        // Stepped by hand rather than through the window's own animation, which drew no frames
+        // in between as it grew, and jittered as it moved the left edge: each step resizes the
+        // window and lays out its content together.
+        stepFrame(to: frame) { withoutAnimation { layout.heldColourWidth = nil } }
+    }
+}
+
+/// Runs `changes` with SwiftUI animations switched off.
+private func withoutAnimation(_ changes: () -> Void) {
+    var transaction = Transaction()
+    transaction.disablesAnimations = true
+    withTransaction(transaction, changes)
 }

@@ -106,13 +106,15 @@ struct SwapPreviewButton: View {
                     .buttonStyle(SwapButtonStyle(
                         isVisible: isVisible,
                         alt: PikaText.textColorSwap,
-                        ltr: true,
+                        ltr: false,
                         onHoverChange: onHoverChange
                     ))
                     .transition(.opacity)
             }
         }
         .animation(.easeInOut(duration: 0.3), value: showPreview)
+        // Swap sits over the pick area, but isn't a pick target, so it keeps the arrow.
+        .defaultPointer()
         .onReceive(NotificationCenter.default.publisher(for: .triggerSwap)) { _ in
             angle -= 180
         }

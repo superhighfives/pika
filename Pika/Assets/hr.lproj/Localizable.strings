@@ -280,6 +280,15 @@
 /* Copied */
 "color.copy.toast" = "Kopirano";
 
+/* Copy a colour in a format other than the shown one */
+"color.copy.as" = "Kopiraj kao";
+
+/* Foreground colour actions menu */
+"color.actions.foreground" = "Radnje prednje boje";
+
+/* Background colour actions menu */
+"color.actions.background" = "Radnje boje pozadine";
+
 /* Copy current format */
 "color.copy.current" = "Kopiraj trenutačni format";
 

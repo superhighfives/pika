@@ -280,6 +280,15 @@
 /* Copied */
 "color.copy.toast" = "Kopiert";
 
+/* Copy a colour in a format other than the shown one */
+"color.copy.as" = "Kopieren als";
+
+/* Foreground colour actions menu */
+"color.actions.foreground" = "Vordergrund-Aktionen";
+
+/* Background colour actions menu */
+"color.actions.background" = "Hintergrund-Aktionen";
+
 /* Copy current format */
 "color.copy.current" = "Aktuelles Format kopieren";
 
