@@ -682,6 +682,32 @@ private extension WindowCoordinator {
         ) { _ in NSCursor.arrow.set() }
     }
 
+    /// Animates the main window to `target` over a quarter second, one display frame at a time,
+    /// laying out and drawing its content with each step.
+    func stepFrame(to target: NSRect, completion: @escaping () -> Void) {
+        guard let window = pikaWindow as NSWindow? else { return completion() }
+        let start = window.frame
+        let duration = 0.25
+        let began = CACurrentMediaTime()
+        let timer = Timer(timeInterval: 1.0 / 120.0, repeats: true) { timer in
+            let progress = min((CACurrentMediaTime() - began) / duration, 1)
+            // Ease in and out.
+            let eased = progress < 0.5 ? 2 * progress * progress : 1 - pow(-2 * progress + 2, 2) / 2
+            func mix(_ from: CGFloat, _ to: CGFloat) -> CGFloat { (from + (to - from) * eased).rounded() }
+            window.setFrame(NSRect(
+                x: mix(start.minX, target.minX), y: mix(start.minY, target.minY),
+                width: mix(start.width, target.width), height: mix(start.height, target.height)
+            ), display: false)
+            window.contentView?.layoutSubtreeIfNeeded()
+            window.displayIfNeeded()
+            if progress >= 1 {
+                timer.invalidate()
+                completion()
+            }
+        }
+        RunLoop.main.add(timer, forMode: .common)
+    }
+
     /// Shows or hides the main window's sidebar by growing or shrinking the window, on the right,
     /// so the colours keep their size and the title bar's sidebar button stays put. The colours'
     /// width is held while the window animates, and the sidebar's column is the difference.
@@ -717,12 +743,11 @@ private extension WindowCoordinator {
         if let screen = pikaWindow.screen?.visibleFrame {
             frame.origin.x = min(max(frame.origin.x, screen.minX), screen.maxX - frame.width)
         }
-        // Moving the left edge as well as the width jittered as an animation, with the layout a
-        // frame behind the window, so from the View menu it changes in one step. The colours'
-        // width is still held until the window has its new size.
+        // Moving the left edge as well as the width jittered under the window's own animation,
+        // with the layout a frame behind it, so from the View menu it's stepped by hand: each
+        // step resizes the window and lays out its content together.
         if keepsRightEdge {
-            pikaWindow.setFrame(frame, display: true, animate: false)
-            DispatchQueue.main.async { layout.heldColourWidth = nil }
+            stepFrame(to: frame) { layout.heldColourWidth = nil }
             return
         }
         NSAnimationContext.runAnimationGroup { context in
