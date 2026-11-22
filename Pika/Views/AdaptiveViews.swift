@@ -1,3 +1,4 @@
+import Defaults
 import SwiftUI
 
 /// Shared surface for the footer and palette drawer. In light mode the under-window
@@ -62,5 +63,20 @@ struct ExpandToFitButton: View {
         .focusable(false)
         .onHover { hovering = $0 }
         .help(PikaText.textExpandToFit)
+    }
+}
+
+/// View settings the layout reads, updated the moment they're written. `@Default` caught up
+/// only once an open menu had closed, so Text Preview toggled from the View menu changed its
+/// tick but not the colours until the menu closed.
+final class LiveViewSettings: ObservableObject {
+    static let shared = LiveViewSettings()
+
+    @Published private(set) var showColorPreview = Defaults[.showColorPreview]
+
+    private init() {
+        Defaults.observe(.showColorPreview, options: []) { [weak self] change in
+            self?.showColorPreview = change.newValue
+        }.tieToLifetime(of: self)
     }
 }

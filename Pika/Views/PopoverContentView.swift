@@ -49,6 +49,7 @@ final class PopoverDrawerLayout: ObservableObject {
     @Published private(set) var revealed: CGFloat = Defaults[.historyDrawerVisible] ? ColorHistoryDrawer.height : 0
 
     private var step: Timer?
+    private var waitForMenu: NSObjectProtocol?
 
     private init() {
         Defaults.observe(.historyDrawerVisible, options: []) { [weak self] change in
@@ -59,6 +60,16 @@ final class PopoverDrawerLayout: ObservableObject {
 
     private func animate(to target: CGFloat) {
         step?.invalidate()
+        waitForMenu.map(NotificationCenter.default.removeObserver)
+        waitForMenu = nil
+        // An open menu (the View menu, toggling this) is placed from the popover's bottom edge,
+        // so resizing under it moved the menu. The drawer follows once the menu closes.
+        if RunLoop.current.currentMode == .eventTracking {
+            waitForMenu = NotificationCenter.default.addObserver(
+                forName: NSMenu.didEndTrackingNotification, object: nil, queue: .main
+            ) { [weak self] _ in self?.animate(to: Defaults[.historyDrawerVisible] ? ColorHistoryDrawer.height : 0) }
+            return
+        }
         let start = revealed
         let duration = 0.25
         let began = CACurrentMediaTime()

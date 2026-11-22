@@ -41,9 +41,10 @@ struct EyedropperButton: View {
     /// re-evaluates the whole tree, and `.animation(_:value:)` doesn't catch that — the row just
     /// snapped to full height. Driving an explicit state change is what makes it a transition.
     @State private var colorNameVisible = false
-    /// `adaptive.showsPreview` and `adaptive.bottomInset`, changed inside `withAnimation` for
-    /// the same reason as `colorNameVisible`: from the environment they snapped into place.
-    @State private var previewShown = false
+    /// `adaptive.bottomInset`, changed inside `withAnimation` for the same reason as
+    /// `colorNameVisible`: from the environment it snapped into place. The preview reads
+    /// `adaptive.showsPreview` directly: its setting now changes inside the toggle's own
+    /// animation (`LiveViewSettings`), and a copy here waited for an open View menu to close.
     @State private var bottomInset: CGFloat = 0
 
     private var wantsColorName: Bool { !hideColorNames && adaptive.showsColorNames }
@@ -79,17 +80,20 @@ struct EyedropperButton: View {
 
             // The other colour set as text on this one, so the pair reads both ways round.
             // Not hit-testable: a click here still picks.
-            if previewShown {
-                SwatchPreview(
-                    other: eyedropper.type == .foreground ? eyedroppers.background : eyedroppers.foreground,
-                    showsSentence: adaptive.showsPreviewSentence
-                )
-                .padding(.horizontal, 10.0)
-                .padding(.top, 14.0)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                .allowsHitTesting(false)
-                .transition(.opacity)
+            ZStack {
+                if adaptive.showsPreview {
+                    SwatchPreview(
+                        other: eyedropper.type == .foreground ? eyedroppers.background : eyedroppers.foreground,
+                        showsSentence: adaptive.showsPreviewSentence
+                    )
+                    .padding(.horizontal, 10.0)
+                    .padding(.top, 14.0)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                    .allowsHitTesting(false)
+                    .transition(.opacity)
+                }
             }
+            .animation(.easeInOut(duration: 0.25), value: adaptive.showsPreview)
 
             // Content overlay, lifted out of the pick button so the value's fields receive
             // clicks. The type label and colour name disable hit-testing so clicks fall
@@ -223,11 +227,7 @@ struct EyedropperButton: View {
             colorSpace = Defaults[.colorSpace]
         }
         .onAppear {
-            previewShown = adaptive.showsPreview
             bottomInset = adaptive.bottomInset
-        }
-        .onChange(of: adaptive.showsPreview) { shows in
-            withAnimation(.easeInOut(duration: 0.25)) { previewShown = shows }
         }
         .onChange(of: adaptive.bottomInset) { inset in
             withAnimation(.easeInOut(duration: 0.2)) { bottomInset = inset }

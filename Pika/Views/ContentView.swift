@@ -81,7 +81,7 @@ struct ContentView: View {
     @Default(.colorFormat) var colorFormat
     @Default(.historyDrawerVisible) var historyDrawerVisible
     @Environment(\.pikaShowsDrawer) var showsDrawer
-    @Default(.showColorPreview) var showColorPreview
+    @ObservedObject private var liveSettings = LiveViewSettings.shared
     @Default(.showCompliance) var showCompliance
     @Default(.palettes) var palettes
     @Default(.activePaletteIndex) var activePaletteIndex
@@ -109,7 +109,7 @@ struct ContentView: View {
         var width = PikaAdaptiveWidth.base
         var height = PikaAdaptiveHeight.floor
         // The whole preview, sentence and all: "Aa" alone fits at any width.
-        if showColorPreview {
+        if liveSettings.showColorPreview {
             width = max(width, PikaAdaptiveWidth.preview)
             height = max(height, PikaAdaptiveHeight.previewSentence)
         }
@@ -160,12 +160,12 @@ struct ContentView: View {
             let allowPalettes = usesSidebar
                 ? sidebarShown
                 : height >= PikaAdaptiveHeight.palettes && width >= PikaAdaptiveWidth.palettes
-            let previewVisible = showColorPreview && allowPreview
+            let previewVisible = liveSettings.showColorPreview && allowPreview
             let contrastVisible = showCompliance && allowContrastHeight
 
             // An enabled element we're hiding purely for space. When any exist, offer to
             // grow the window back to a size that fits everything the user has turned on.
-            let suppressed = (showColorPreview && !allowPreview)
+            let suppressed = (liveSettings.showColorPreview && !allowPreview)
                 || (showCompliance && !allowContrast)
                 || (historyDrawerVisible && !allowPalettes && sidebarLayout.heldColourWidth == nil) // not mid-resize
             // Always tuck the expand affordance into the top-right corner so it never sits
@@ -313,7 +313,7 @@ struct ContentView: View {
         }
         .onReceive(NotificationCenter.default.publisher(for: .toggleColorPreview)) { _ in
             withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
-                showColorPreview.toggle()
+                Defaults[.showColorPreview].toggle()
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: .toggleCompliance)) { _ in
