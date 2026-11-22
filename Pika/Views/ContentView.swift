@@ -80,6 +80,7 @@ struct ContentView: View {
     @Default(.copyFormat) var copyFormat
     @Default(.colorFormat) var colorFormat
     @Default(.historyDrawerVisible) var historyDrawerVisible
+    @Environment(\.pikaShowsDrawer) var showsDrawer
     @Default(.showColorPreview) var showColorPreview
     @Default(.showCompliance) var showCompliance
     @Default(.palettes) var palettes
@@ -252,9 +253,9 @@ struct ContentView: View {
                                 .transition(.move(edge: .bottom).combined(with: .opacity))
                             }
                         }
-                        if historyDrawerVisible, allowPalettes, !usesSidebar {
+                        if showsDrawer, allowPalettes, !usesSidebar { // revealed by `PopoverDrawerLayout`
                             ColorHistoryDrawer(foreground: eyedroppers.foreground, background: eyedroppers.background)
-                                .transition(.move(edge: .bottom).combined(with: .opacity))
+                                .accessibilityHidden(!historyDrawerVisible) // laid out while closed
                         }
                         #if TARGET_SPARKLE
                             InlineUpdateControl()
@@ -286,7 +287,6 @@ struct ContentView: View {
             .animation(.easeInOut(duration: 0.2), value: contrastVisible)
             .animation(.easeInOut(duration: 0.2), value: allowContrastHeight)
             .animation(.easeInOut(duration: 0.2), value: allowContrastWidth)
-            .animation(.easeInOut(duration: 0.2), value: !usesSidebar && allowPalettes) // the drawer's
             .animation(.easeInOut(duration: 0.15), value: suppressed)
             .animation(.easeInOut(duration: 0.15), value: isHovering)
             #if TARGET_SPARKLE
