@@ -67,7 +67,12 @@ final class PopoverDrawerLayout: ObservableObject {
         if RunLoop.current.currentMode == .eventTracking {
             waitForMenu = NotificationCenter.default.addObserver(
                 forName: NSMenu.didEndTrackingNotification, object: nil, queue: .main
-            ) { [weak self] _ in self?.animate(to: Defaults[.historyDrawerVisible] ? ColorHistoryDrawer.height : 0) }
+            ) { [weak self] _ in
+                // On the next pass: while this posts, the menu is still tracking.
+                DispatchQueue.main.async {
+                    self?.animate(to: Defaults[.historyDrawerVisible] ? ColorHistoryDrawer.height : 0)
+                }
+            }
             return
         }
         let start = revealed
