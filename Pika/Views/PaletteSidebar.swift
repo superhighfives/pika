@@ -1,9 +1,6 @@
 import Defaults
 import SwiftUI
 
-/// The main window's palettes, as a library down the left: the palettes listed with their counts,
-/// then the selected one's pairs as small "Aa" tiles in the pair's own colours, each with its
-/// contrast ratio. The menu bar popover keeps the drawer instead (`ColorHistoryDrawer`).
 /// Whether the main window's sidebar shows, and how wide its column is while the window resizes
 /// for it. `WindowCoordinator` drives this rather than the layout reading `historyDrawerVisible`
 /// directly: it notes the colours' width, then animates the window, and the column is whatever
@@ -22,6 +19,9 @@ final class SidebarLayout: ObservableObject {
     /// grows and shrinks on its left and the menu stays under the pointer. The title bar's
     /// sidebar button, at the top left, leaves it unset and the window changes on its right.
     var keepsRightEdge = false
+    /// The window resize in progress, if any. A toggle mid-resize stops it and starts its own,
+    /// so two never fight over the frame, and only the latest one releases the colours' width.
+    var step: Timer?
 
     /// The sidebar's column in a window `width` wide.
     func column(in width: CGFloat) -> CGFloat {
@@ -32,6 +32,9 @@ final class SidebarLayout: ObservableObject {
     }
 }
 
+/// The main window's palettes, as a library down the left: the palettes listed with their counts,
+/// then the selected one's pairs as small "Aa" tiles in the pair's own colours, each with its
+/// contrast ratio. The menu bar popover keeps the drawer instead (`ColorHistoryDrawer`).
 struct PaletteSidebar: View {
     static let width: CGFloat = 200
 
@@ -154,7 +157,7 @@ struct PaletteSidebar: View {
 
     private static let rowSpacing: CGFloat = 6
     /// A swatch's row, less the tile: the gap above the ratio, the ratio and the row spacing.
-    private static let rowExtras: CGFloat = 3 + 13 + rowSpacing
+    static let rowExtras: CGFloat = 3 + 13 + rowSpacing
 
     /// Tile height that leaves half a row showing at the bottom of `height`, so it's clear the
     /// grid scrolls. Picks the whole number of rows nearest the default tile size, then sizes

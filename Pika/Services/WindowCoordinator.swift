@@ -702,10 +702,12 @@ private extension WindowCoordinator {
             window.displayIfNeeded()
             if progress >= 1 {
                 timer.invalidate()
+                SidebarLayout.shared.step = nil
                 completion()
             }
         }
         RunLoop.main.add(timer, forMode: .common)
+        SidebarLayout.shared.step = timer
     }
 
     /// Shows or hides the main window's sidebar by growing or shrinking the window, on the right,
@@ -723,23 +725,28 @@ private extension WindowCoordinator {
         }
         let sidebar = SidebarLayout.fullWidth
         var frame = pikaWindow.frame
-        // Hidden for want of room, it isn't taking any width, so closing gives nothing back.
-        let wasShowing = layout.column(in: frame.width) > 0
-        let minWidth = pikaWindow.contentMinSize.width
-        let maxWidth = pikaWindow.contentMaxSize.width
+        // Mid-resize, the colours' width is the one already held. Otherwise it's what the
+        // sidebar's column leaves, and a sidebar hidden for want of room isn't taking any.
+        let colours = layout.heldColourWidth
+            ?? (layout.column(in: frame.width) > 0 ? frame.width - sidebar : frame.width)
         let width = shown
-            ? min(frame.width + sidebar, maxWidth)
-            : max(frame.width - (wasShowing ? sidebar : 0), minWidth)
+            ? min(colours + sidebar, pikaWindow.contentMaxSize.width)
+            : max(colours, pikaWindow.contentMinSize.width)
         let change = width - frame.width
+        layout.step?.invalidate()
+        layout.step = nil
         guard change != 0 else {
-            layout.isVisible = shown
+            withoutAnimation {
+                layout.heldColourWidth = nil
+                layout.isVisible = shown
+            }
             return
         }
 
         // Outside any SwiftUI animation (the View menu toggles inside one), which otherwise
         // animated the column against the window's own movement.
         withoutAnimation {
-            layout.heldColourWidth = shown ? frame.width : frame.width - sidebar
+            layout.heldColourWidth = colours
             layout.isVisible = shown
         }
         frame.size.width = width

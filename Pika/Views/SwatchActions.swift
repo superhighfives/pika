@@ -22,9 +22,7 @@ struct SwatchActionIcons: View {
             iconButton(copied ? "checkmark" : "doc.on.doc", label: PikaText.textColorCopy) {
                 // Copied here rather than through the copy action, which also shows the toast:
                 // the tick on the icon is the feedback for a click. ⌘C keeps the toast.
-                let pasteboard = NSPasteboard.general
-                pasteboard.clearContents()
-                pasteboard.setString(eyedropper.color.toFormat(format: colorFormat, style: copyFormat), forType: .string)
+                NSPasteboard.general.setColorString(eyedropper.color.toFormat(format: colorFormat, style: copyFormat))
                 showCopied()
             }
             iconButton("eyedropper", label: eyedropper.type.pickTitle) {
@@ -123,9 +121,15 @@ struct SwatchActionsMenu: View {
 
     /// Copies in a format other than the one shown, without changing the shown format.
     private func copy(as format: ColorFormat) {
-        let pasteboard = NSPasteboard.general
-        pasteboard.clearContents()
-        pasteboard.setString(eyedropper.color.toFormat(format: format, style: copyFormat), forType: .string)
+        NSPasteboard.general.setColorString(eyedropper.color.toFormat(format: format, style: copyFormat))
+    }
+}
+
+extension NSPasteboard {
+    /// Replaces the pasteboard's contents with a colour's value, as plain text.
+    func setColorString(_ value: String) {
+        clearContents()
+        setString(value, forType: .string)
     }
 }
 
@@ -161,12 +165,13 @@ extension View {
         }
     }
 
-    /// The ordinary arrow, for controls that sit over a pick area but don't pick.
+    /// The ordinary arrow, for controls that sit over a pick area but don't pick. macOS 14 sets
+    /// it on hover, over the pointing hand the pick area pushed.
     @ViewBuilder func defaultPointer() -> some View {
         if #available(macOS 15, *) {
             pointerStyle(.default)
         } else {
-            self
+            onHover { inside in if inside { NSCursor.arrow.set() } }
         }
     }
 }
