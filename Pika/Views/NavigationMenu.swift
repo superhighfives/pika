@@ -209,9 +209,16 @@ private struct ViewMenuButton: View {
             let item = NSMenuItem()
             // Written here rather than through the toggle action: that lands in a SwiftUI
             // handler, which waits for the menu to close.
-            item.view = ToggleMenuRow(title: row.title, key: row.key, rows: rows, isOn: { Defaults[row.setting] }) {
+            item.view = ToggleMenuRow(title: row.title, key: row.key, rows: rows, isOn: { Defaults[row.setting] }) { [weak menu] in
+                let isPalettes = row.setting.name == Defaults.Keys.historyDrawerVisible.name
+                // In the popover, Palettes resizes the popover, which an open menu is placed
+                // from, so it closes the menu as a standard menu item does. Contrast and Text
+                // Preview keep it open.
+                if isPalettes, Defaults[.appMode].usesPopover {
+                    menu?.cancelTracking()
+                }
                 // Palettes from here keep the window's right edge, under this menu.
-                if row.setting.name == Defaults.Keys.historyDrawerVisible.name {
+                if isPalettes {
                     SidebarLayout.shared.keepsRightEdge = true
                 }
                 withAnimation(.easeInOut(duration: 0.25)) { Defaults[row.setting].toggle() }
