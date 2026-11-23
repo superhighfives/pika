@@ -89,8 +89,6 @@
 		5A49CEF4F87747CDB61A3CBD /* PaletteComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35086BCEF529498582A432A1 /* PaletteComponents.swift */; };
 		EA03E39F2F5E619800998D8B /* ColorHistoryDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA03E39D2F5E619800998D8B /* ColorHistoryDrawer.swift */; };
 		D7FD6FDD5B1648D28EEAFEB2 /* PaletteComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35086BCEF529498582A432A1 /* PaletteComponents.swift */; };
-		EA03E3A12F5E619800998D8B /* ColorPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA03E3A02F5E619800998D8B /* ColorPreview.swift */; };
-		EA03E3A22F5E619800998D8B /* ColorPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA03E3A02F5E619800998D8B /* ColorPreview.swift */; };
 		EA0C525025AA729300AFF716 /* Visualisation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C524F25AA729300AFF716 /* Visualisation.swift */; };
 		EA0C526025AB5A2B00AFF716 /* NavigationMenuItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C525F25AB5A2B00AFF716 /* NavigationMenuItems.swift */; };
 		EA0C526425AB5D1700AFF716 /* PikaWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C526325AB5D1700AFF716 /* PikaWindow.swift */; };
@@ -103,7 +101,6 @@
 		8B7DF0908AB8B8B9BA673C6C /* FlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53C02D08D06EB2DC10A9D8B /* FlowLayout.swift */; };
 		6BA24CD764F102150B101D23 /* ScrubTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71CF5EAC0C44F25B406AAFD /* ScrubTextField.swift */; };
 		EA136072284887E9004F1630 /* AppearanceButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA136071284887E9004F1630 /* AppearanceButtonStyle.swift */; };
-		EA257BD125D8629300C3FC54 /* SwapButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA257BD025D8629300C3FC54 /* SwapButtonStyle.swift */; };
 		EA424C7D25CDEF98009056A9 /* ComplianceToggleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA424C7C25CDEF98009056A9 /* ComplianceToggleGroup.swift */; };
 		EA424CDE25CF0328009056A9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = EA424CE025CF0328009056A9 /* Localizable.strings */; };
 		EA635DCC25B3B42B0014D91A /* WCAGCompliance.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA635DCB25B3B42B0014D91A /* WCAGCompliance.swift */; };
@@ -200,7 +197,6 @@
 		FA970E37631A882EE51A223F /* FlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53C02D08D06EB2DC10A9D8B /* FlowLayout.swift */; };
 		AF6D70BF5DEF9B9AFD50EAC0 /* ScrubTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71CF5EAC0C44F25B406AAFD /* ScrubTextField.swift */; };
 		EAE23DC82D032A38005BB270 /* MetalShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = EA72BB8225A5334B008205E7 /* MetalShader.metal */; };
-		EAE23DC92D032A38005BB270 /* SwapButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA257BD025D8629300C3FC54 /* SwapButtonStyle.swift */; };
 		EAE23DCA2D032A38005BB270 /* NSWindowFade.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA72BBA825A7CE9C008205E7 /* NSWindowFade.swift */; };
 		EAE23DCB2D032A38005BB270 /* EyedropperButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD0B717259D146200FA2F67 /* EyedropperButtonStyle.swift */; };
 		EAE23DCD2D032A38005BB270 /* CircleButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAEBF64625E878A5002999D1 /* CircleButtonStyle.swift */; };
@@ -341,7 +337,6 @@
 		DEC0FACE0000000000000001 /* ColorDecomposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorDecomposition.swift; sourceTree = "<group>"; };
 		EA03E39D2F5E619800998D8B /* ColorHistoryDrawer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorHistoryDrawer.swift; sourceTree = "<group>"; };
 		35086BCEF529498582A432A1 /* PaletteComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteComponents.swift; sourceTree = "<group>"; };
-		EA03E3A02F5E619800998D8B /* ColorPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPreview.swift; sourceTree = "<group>"; };
 		EA0C524F25AA729300AFF716 /* Visualisation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Visualisation.swift; sourceTree = "<group>"; };
 		EA0C525F25AB5A2B00AFF716 /* NavigationMenuItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationMenuItems.swift; sourceTree = "<group>"; };
 		EA0C526325AB5D1700AFF716 /* PikaWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PikaWindow.swift; sourceTree = "<group>"; };
@@ -357,7 +352,6 @@
 		EA0F36B02929139000BFC7EB /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
 		EA136071284887E9004F1630 /* AppearanceButtonStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppearanceButtonStyle.swift; sourceTree = "<group>"; };
 		EA16C6562CF3301500FBC93E /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
-		EA257BD025D8629300C3FC54 /* SwapButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapButtonStyle.swift; sourceTree = "<group>"; };
 		EA424C7C25CDEF98009056A9 /* ComplianceToggleGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComplianceToggleGroup.swift; sourceTree = "<group>"; };
 		EA635DCB25B3B42B0014D91A /* WCAGCompliance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCAGCompliance.swift; sourceTree = "<group>"; };
 		EA635DDB25B4E90B0014D91A /* BindingOnChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingOnChange.swift; sourceTree = "<group>"; };
@@ -607,7 +601,6 @@
 				EA03E39D2F5E619800998D8B /* ColorHistoryDrawer.swift */,
 				35086BCEF529498582A432A1 /* PaletteComponents.swift */,
 				CCB1CA000000000000000100 /* PickerLoupeView.swift */,
-				EA03E3A02F5E619800998D8B /* ColorPreview.swift */,
 				EAD0B6F6259CF29300FA2F67 /* ContentView.swift */,
 				CCFEED0010000000000000B1 /* PopoverContentView.swift */,
 				EA8124C0259E307D00033F0B /* Footer.swift */,
@@ -626,7 +619,6 @@
 			children = (
 				EAD0B717259D146200FA2F67 /* EyedropperButtonStyle.swift */,
 				EA136071284887E9004F1630 /* AppearanceButtonStyle.swift */,
-				EA257BD025D8629300C3FC54 /* SwapButtonStyle.swift */,
 				EAEBF64625E878A5002999D1 /* CircleButtonStyle.swift */,
 			);
 			name = ButtonStyles;
@@ -1077,7 +1069,6 @@
 				221600FD25A636D600B8B7D9 /* ConditionalModifier.swift in Sources */,
 				EA03E39E2F5E619800998D8B /* ColorHistoryDrawer.swift in Sources */,
 				5A49CEF4F87747CDB61A3CBD /* PaletteComponents.swift in Sources */,
-				EA03E3A12F5E619800998D8B /* ColorPreview.swift in Sources */,
 				EA635DF125B5A6D80014D91A /* Toast.swift in Sources */,
 				EAD0B71C259D151400FA2F67 /* NavigationMenu.swift in Sources */,
 				CC3000000000000000000121 /* UpdateControl.swift in Sources */,
@@ -1106,7 +1097,6 @@
 				8B7DF0908AB8B8B9BA673C6C /* FlowLayout.swift in Sources */,
 				6BA24CD764F102150B101D23 /* ScrubTextField.swift in Sources */,
 				EA72BB8425A5334B008205E7 /* MetalShader.metal in Sources */,
-				EA257BD125D8629300C3FC54 /* SwapButtonStyle.swift in Sources */,
 				EA72BBA925A7CE9C008205E7 /* NSWindowFade.swift in Sources */,
 				EAD0B718259D146200FA2F67 /* EyedropperButtonStyle.swift in Sources */,
 				EAEBF64725E878A5002999D1 /* CircleButtonStyle.swift in Sources */,
@@ -1150,7 +1140,6 @@
 				EAE23DAC2D032A38005BB270 /* PikaTouchBar.swift in Sources */,
 				EA03E39F2F5E619800998D8B /* ColorHistoryDrawer.swift in Sources */,
 				D7FD6FDD5B1648D28EEAFEB2 /* PaletteComponents.swift in Sources */,
-				EA03E3A22F5E619800998D8B /* ColorPreview.swift in Sources */,
 				EAE23DAD2D032A38005BB270 /* LoadColors.swift in Sources */,
 				C49A11492DB394F500EE7E80 /* APCACompliance.swift in Sources */,
 				CC000001000000000000AAA2 /* Color+PikaControl.swift in Sources */,
@@ -1217,7 +1206,6 @@
 				AF6D70BF5DEF9B9AFD50EAC0 /* ScrubTextField.swift in Sources */,
 				EAE23DC82D032A38005BB270 /* MetalShader.metal in Sources */,
 				EAE2EB9F2D03C3DE00FA9BC9 /* LookUpAPI.swift in Sources */,
-				EAE23DC92D032A38005BB270 /* SwapButtonStyle.swift in Sources */,
 				EAE23DCA2D032A38005BB270 /* NSWindowFade.swift in Sources */,
 				EAE23DCB2D032A38005BB270 /* EyedropperButtonStyle.swift in Sources */,
 				EAE23DCD2D032A38005BB270 /* CircleButtonStyle.swift in Sources */,

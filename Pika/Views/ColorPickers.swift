@@ -12,8 +12,6 @@ struct ReadoutHeightKey: PreferenceKey {
 
 struct ColorPickers: View {
     @EnvironmentObject var eyedroppers: Eyedroppers
-    /// Whether the colours are hovered. Drives the Swap button.
-    var onHover: (Bool) -> Void = { _ in }
 
     /// Shared across both swatches rather than owned per-swatch: a click landing on either
     /// swatch's pick target while a colour field is focused needs to dismiss whichever swatch
@@ -50,12 +48,7 @@ struct ColorPickers: View {
             // the swatch-width measurement in `EditableColorValue`).
             DispatchQueue.main.async { readoutHeight = height }
         }
-        // Swap sits in the bottom-right corner, over a readout, so it shows while anywhere on
-        // the colours is hovered rather than only the pick areas.
-        .onHover { hovered in
-            pickersHovered = hovered
-            onHover(hovered)
-        }
+        .onHover { pickersHovered = $0 }
         .onAppear { clickAway.start { dismissEditingTrigger += 1 } }
         .onDisappear { clickAway.stop() }
     }

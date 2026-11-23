@@ -50,6 +50,8 @@ struct NavigationMenu: View {
             }
             .toolbarMenuChrome()
 
+            SwapButton()
+
             if standardViewMenu {
                 StandardViewMenu()
             } else {
@@ -228,6 +230,32 @@ private struct ViewMenuButton: View {
         // Just below the control, like the format and space menus.
         let below = anchor.isFlipped ? anchor.bounds.maxY + 4.0 : -4.0
         menu.popUp(positioning: nil, at: NSPoint(x: -4.0, y: below), in: anchor)
+    }
+}
+
+/// Swaps the two colours. In the toolbar, between the format and space they're read in and the
+/// View menu, so it's always in the same place rather than appearing over the colours on hover.
+private struct SwapButton: View {
+    @State private var angle: Double = 0
+
+    var body: some View {
+        Button {
+            NSApp.sendAction(#selector(AppDelegate.triggerSwap), to: nil, from: nil)
+        } label: {
+            IconImage(name: "arrow.triangle.swap")
+                .rotationEffect(.degrees(angle))
+                .padding(.horizontal, 8.0)
+                .frame(height: 22.0)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .toolbarMenuChrome()
+        .help(PikaText.textColorSwap)
+        .accessibilityLabel(PikaText.textColorSwap)
+        // A half-turn for every swap, from here, the menus or the shortcut.
+        .onReceive(NotificationCenter.default.publisher(for: .triggerSwap)) { _ in
+            withAnimation(.easeInOut) { angle -= 180 }
+        }
     }
 }
 
