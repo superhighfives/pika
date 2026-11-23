@@ -97,6 +97,7 @@
 		C569679815A50F9B197692D4 /* AdaptiveViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5AC198D07759E99C71329C8 /* AdaptiveViews.swift */; };
 		C5D5127AE97E5770150C11B9 /* PickTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EE99501CF0E745DB040721 /* PickTarget.swift */; };
 		C58711A905E801FC9385CD10 /* PaletteSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5CD784C924BA97A367C9500 /* PaletteSidebar.swift */; };
+		A1B2C3D4E5F60718293A4C02 /* SettingsComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A4C01 /* SettingsComponents.swift */; };
 		DEC0FACE0000000000000022 /* EditableColorValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC0FACE0000000000000020 /* EditableColorValue.swift */; };
 		8B7DF0908AB8B8B9BA673C6C /* FlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53C02D08D06EB2DC10A9D8B /* FlowLayout.swift */; };
 		6BA24CD764F102150B101D23 /* ScrubTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71CF5EAC0C44F25B406AAFD /* ScrubTextField.swift */; };
@@ -193,6 +194,7 @@
 		C53D9D0D66A64DC5F7FDD51F /* AdaptiveViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5AC198D07759E99C71329C8 /* AdaptiveViews.swift */; };
 		C5AD4A539B2FEC4538294B20 /* PickTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EE99501CF0E745DB040721 /* PickTarget.swift */; };
 		C572E45DCCCB03D0C16DC26D /* PaletteSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5CD784C924BA97A367C9500 /* PaletteSidebar.swift */; };
+		A1B2C3D4E5F60718293A4C03 /* SettingsComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A4C01 /* SettingsComponents.swift */; };
 		DEC0FACE0000000000000023 /* EditableColorValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC0FACE0000000000000020 /* EditableColorValue.swift */; };
 		FA970E37631A882EE51A223F /* FlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53C02D08D06EB2DC10A9D8B /* FlowLayout.swift */; };
 		AF6D70BF5DEF9B9AFD50EAC0 /* ScrubTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71CF5EAC0C44F25B406AAFD /* ScrubTextField.swift */; };
@@ -345,6 +347,7 @@
 		C5AC198D07759E99C71329C8 /* AdaptiveViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptiveViews.swift; sourceTree = "<group>"; };
 		C5EE99501CF0E745DB040721 /* PickTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickTarget.swift; sourceTree = "<group>"; };
 		C5CD784C924BA97A367C9500 /* PaletteSidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteSidebar.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60718293A4C01 /* SettingsComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsComponents.swift; sourceTree = "<group>"; };
 		DEC0FACE0000000000000020 /* EditableColorValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableColorValue.swift; sourceTree = "<group>"; };
 		C53C02D08D06EB2DC10A9D8B /* FlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowLayout.swift; sourceTree = "<group>"; };
 		B71CF5EAC0C44F25B406AAFD /* ScrubTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrubTextField.swift; sourceTree = "<group>"; };
@@ -668,6 +671,7 @@
 				C5AC198D07759E99C71329C8 /* AdaptiveViews.swift */,
 				C5EE99501CF0E745DB040721 /* PickTarget.swift */,
 				C5CD784C924BA97A367C9500 /* PaletteSidebar.swift */,
+				A1B2C3D4E5F60718293A4C01 /* SettingsComponents.swift */,
 				DEC0FACE0000000000000020 /* EditableColorValue.swift */,
 				C53C02D08D06EB2DC10A9D8B /* FlowLayout.swift */,
 				B71CF5EAC0C44F25B406AAFD /* ScrubTextField.swift */,
@@ -1093,6 +1097,7 @@
 				C569679815A50F9B197692D4 /* AdaptiveViews.swift in Sources */,
 				C5D5127AE97E5770150C11B9 /* PickTarget.swift in Sources */,
 				C58711A905E801FC9385CD10 /* PaletteSidebar.swift in Sources */,
+				A1B2C3D4E5F60718293A4C02 /* SettingsComponents.swift in Sources */,
 				DEC0FACE0000000000000022 /* EditableColorValue.swift in Sources */,
 				8B7DF0908AB8B8B9BA673C6C /* FlowLayout.swift in Sources */,
 				6BA24CD764F102150B101D23 /* ScrubTextField.swift in Sources */,
@@ -1201,6 +1206,7 @@
 				C53D9D0D66A64DC5F7FDD51F /* AdaptiveViews.swift in Sources */,
 				C5AD4A539B2FEC4538294B20 /* PickTarget.swift in Sources */,
 				C572E45DCCCB03D0C16DC26D /* PaletteSidebar.swift in Sources */,
+				A1B2C3D4E5F60718293A4C03 /* SettingsComponents.swift in Sources */,
 				DEC0FACE0000000000000023 /* EditableColorValue.swift in Sources */,
 				FA970E37631A882EE51A223F /* FlowLayout.swift in Sources */,
 				AF6D70BF5DEF9B9AFD50EAC0 /* ScrubTextField.swift in Sources */,

@@ -73,11 +73,7 @@
 /* Hide Pika while picking */
 "preferences.pick.hide" = "Masquer Pika lors de la sélection";
 
-/* General Settings */
-"preferences.general.title" = "Réglages";
 
-/* Selection Settings */
-"preferences.selection.title" = "Sélection";
 
 /* Hide menu bar icon */
 "preferences.icon.description" = "Masquer l'icône de la barre des menus";
@@ -97,8 +93,6 @@
 /* Always show Pika on launch */
 "preferences.show.description" = "Toujours afficher Pika au lancement";
 
-/* App Settings */
-"preferences.app.title" = "Application";
 
 /* Menu bar */
 "preferences.app.menubar.title" = "Barre de menus";
@@ -149,6 +143,13 @@
 "preferences.contrast.standard" = "Standard de Calcul de Contraste";
 "preferences.swatches.title" = "Échantillons de palette";
 "preferences.swatches.stacked" = "Empilés";
+"settings.tab.general" = "Général";
+"settings.tab.picking" = "Sélection";
+"settings.tab.color" = "Couleur";
+"settings.tab.shortcuts" = "Raccourcis";
+"settings.updates" = "Mises à jour";
+"settings.showIn" = "Afficher Pika dans";
+"settings.loupe.tab" = "Appuyez sur Tab pendant la sélection pour changer de style, et sur Maj-Tab pour revenir.";
 
 /* Both (combined WCAG and APCA) */
 "color.standard.both" = "Les deux";
@@ -651,8 +652,6 @@
 /* Expand to fit */
 "content.expandToFit" = "Agrandir pour ajuster";
 
-/* Window Settings */
-"preferences.window.title" = "Réglages de la fenêtre";
 
 /* Invalid input */
 "color.edit.invalid" = "Saisie non valide";

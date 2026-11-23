@@ -3,142 +3,109 @@ import KeyboardShortcuts
 import LaunchAtLogin
 import SwiftUI
 
-// MARK: - Sub-views
+// MARK: - General
 
-private struct GeneralAndSelectionSection: View {
-    @Default(.hideMenuBarIcon) var hideMenuBarIcon
-    @Default(.hideColorNames) var hideColorNames
+struct GeneralSettings: View {
+    @Default(.alwaysShowOnLaunch) var alwaysShowOnLaunch
+    @ObservedObject private var launchAtLogin = LaunchAtLogin.observable
     #if TARGET_SPARKLE
         @Default(.betaUpdates) var betaUpdates
     #endif
-    @Default(.hidePikaWhilePicking) var hidePikaWhilePicking
-    @Default(.windowShadow) var windowShadow
-    @Default(.pickContrastingColor) var pickContrastingColor
-    @Default(.appMode) var appMode
-    @Default(.appFloating) var appFloating
-    @Default(.alwaysShowOnLaunch) var alwaysShowOnLaunch
-    @Default(.showColorOverlay) var showColorOverlay
-    @Default(.colorOverlayDuration) var colorOverlayDuration
-    @Default(.pickerStyle) var pickerStyle
-    @State var disableHideMenuBarIcon = true
+
+    private var version: String {
+        let info = Bundle.main.infoDictionary
+        let version = info?["CFBundleShortVersionString"] as? String ?? PikaText.textAboutUnknown
+        let build = info?["CFBundleVersion"] as? String ?? PikaText.textAboutUnknown
+        return "\(PikaText.textAboutVersion) \(version) (\(PikaText.textAboutBuild) \(build))"
+    }
 
     var body: some View {
-        HStack(alignment: .top, spacing: 0) {
-            VStack(alignment: .leading, spacing: 10.0) {
-                Text(PikaText.textGeneralTitle).font(.system(size: 16))
-                LaunchAtLogin.Toggle {
-                    Text(PikaText.textLaunchDescription)
-                }
+        SettingsPage {
+            SettingsGroup {
+                SettingsToggle(PikaText.textLaunchDescription, isOn: $launchAtLogin.isEnabled)
+                SettingsDivider()
+                SettingsToggle(PikaText.textAlwaysShowOnLaunch, isOn: $alwaysShowOnLaunch)
+            }
+            SettingsGroup(title: PikaText.textSettingsUpdates) {
                 #if TARGET_SPARKLE
-                    Toggle(isOn: $betaUpdates) {
-                        Text(PikaText.textBetaDescription)
-                    }
-                #endif
-                Toggle(isOn: $alwaysShowOnLaunch) {
-                    Text(PikaText.textAlwaysShowOnLaunch)
-                }
-                if appMode != .menubar {
-                    Toggle(isOn: $disableHideMenuBarIcon) {
-                        Text(PikaText.textIconDescription)
-                    }.disabled(true)
-                } else {
-                    Toggle(isOn: $hideMenuBarIcon) {
-                        Text(PikaText.textIconDescription)
-                    }
-                }
-
-                Text(PikaText.textWindowSettingsTitle)
-                    .font(.system(size: 16))
-                    .padding(.top, 8.0)
-                Picker(PikaText.textWindowShadow, selection: $windowShadow) {
-                    ForEach(WindowShadow.allCases, id: \.self) { value in
-                        Text(value.localizedString())
-                    }
-                }
-                .labelsHidden()
-                .pickerStyle(.menu)
-                .fixedSize()
-            }
-            .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-            .padding(.all, 24.0)
-
-            Divider()
-
-            VStack(alignment: .leading, spacing: 10.0) {
-                Text(PikaText.textSelectionTitle).font(.system(size: 16))
-                Toggle(isOn: $hidePikaWhilePicking) {
-                    Text(PikaText.textPickHide)
-                }
-                Toggle(isOn: $pickContrastingColor) {
-                    Text(PikaText.textPickContrasting)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-                Toggle(isOn: $hideColorNames) {
-                    Text(PikaText.textColorNamesDescription)
-                }
-                Toggle(isOn: $appFloating) {
-                    Text(PikaText.textFloatDescription)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                .disabled(appMode == .menubarPopover)
-                // The custom picker shows the colour live in the loupe, so the post-pick
-                // overlay (and its duration) is redundant and hidden while it's active.
-                if pickerStyle != .custom {
-                    Toggle(isOn: $showColorOverlay) {
-                        Text(PikaText.textShowColorOverlay)
-                    }
-                    if showColorOverlay {
-                        HStack(spacing: 8.0) {
-                            Slider(value: $colorOverlayDuration, in: 1.0 ... 5.0, step: 0.5)
-                                .accessibilityLabel(PikaText.textDuration)
-                            Text(String(format: "%.1fs", colorOverlayDuration))
-                                .font(.system(size: 11))
-                                .foregroundStyle(.secondary)
+                    SettingsToggle(PikaText.textBetaDescription, isOn: $betaUpdates)
+                    SettingsDivider()
+                    SettingsRow(version) {
+                        Button("\(PikaText.textMenuUpdates)…") {
+                            NSApp.sendAction(#selector(AppDelegate.checkForUpdates), to: nil, from: nil)
                         }
-                        .padding(.leading, 20.0)
                     }
+                    .foregroundStyle(.secondary)
+                #else
+                    SettingsRow(version) { EmptyView() }
+                        .foregroundStyle(.secondary)
+                #endif
+            }
+        }
+    }
+}
+
+// MARK: - Appearance
+
+struct AppearanceSettings: View {
+    @Default(.appMode) var appMode
+    @Default(.hideMenuBarIcon) var hideMenuBarIcon
+    @Default(.appFloating) var appFloating
+    @Default(.windowShadow) var windowShadow
+    @Default(.contrastStandard) var contrastStandard
+    @Default(.paletteSwatchStyle) var paletteSwatchStyle
+    @EnvironmentObject var eyedroppers: Eyedroppers
+
+    var body: some View {
+        SettingsPage {
+            SettingsGroup(title: PikaText.textSettingsShowIn) {
+                SettingsBlock {
+                    HStack(spacing: 16.0) {
+                        AppModeButtons()
+                    }
+                    .frame(height: 96)
                 }
             }
-            .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-            .padding(.all, 24.0)
-        }
-        .fixedSize(horizontal: false, vertical: true)
-    }
-}
-
-private struct AppModeSection: View {
-    var body: some View {
-        VStack(alignment: .leading, spacing: 10.0) {
-            Text(PikaText.textAppTitle).font(.system(size: 16))
-            HStack(spacing: 16.0) {
-                AppModeButtons()
+            SettingsGroup {
+                // The icon is how you reach Pika in menu bar mode, so it can only be hidden there.
+                SettingsToggle(PikaText.textIconDescription, isOn: appMode == .menubar ? $hideMenuBarIcon : .constant(true))
+                    .disabled(appMode != .menubar)
+                SettingsDivider()
+                SettingsToggle(PikaText.textFloatDescription, isOn: $appFloating)
+                    .disabled(appMode == .menubarPopover)
+                SettingsDivider()
+                SettingsRow(PikaText.textWindowShadow) {
+                    Picker(PikaText.textWindowShadow, selection: $windowShadow) {
+                        ForEach(WindowShadow.allCases, id: \.self) { value in
+                            Text(value.localizedString())
+                        }
+                    }
+                    .labelsHidden()
+                    .pickerStyle(.menu)
+                    .fixedSize()
+                }
             }
-            .frame(height: 96)
-        }
-        .padding(.horizontal, 24.0)
-    }
-}
-
-private struct PickerStyleSection: View {
-    @Default(.pickerStyle) var pickerStyle
-    @Default(.loupeTheme) var loupeTheme
-    @State private var pendingRelaunch = false
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 10.0) {
-            Text(PikaText.textPickerStyleTitle).font(.system(size: 16))
-
-            // Same gated System/Custom comparison as the first-run splash.
-            PickerChoiceView(pendingRelaunch: $pendingRelaunch)
-
-            // The Pro loupe's style. Only relevant when the custom picker is chosen.
-            if pickerStyle == .custom {
-                HStack(spacing: 8.0) {
-                    Text(PikaText.textLoupeTheme).font(.system(size: 13))
-                    Spacer(minLength: 12.0)
-                    Picker("", selection: $loupeTheme) {
-                        ForEach(LoupeTheme.allCases, id: \.self) { theme in
-                            Text(theme.localizedName).tag(theme)
+            SettingsGroup(title: PikaText.textViewContrast) {
+                SettingsRow(PikaText.textContrastStandard) {
+                    Picker(PikaText.textContrastStandard, selection: $contrastStandard) {
+                        ForEach(ContrastStandard.allCases, id: \.self) { value in
+                            Text(value.localizedString())
+                        }
+                    }
+                    .labelsHidden()
+                    .pickerStyle(.segmented)
+                    .fixedSize()
+                }
+                SettingsDivider()
+                SettingsBlock {
+                    compliancePreview.frame(height: 115)
+                }
+            }
+            SettingsGroup(title: PikaText.textViewPalettes) {
+                SettingsRow(PikaText.textPaletteSwatches) {
+                    Picker(PikaText.textPaletteSwatches, selection: $paletteSwatchStyle) {
+                        ForEach(PaletteSwatchStyle.allCases, id: \.self) { value in
+                            Text(value.localizedString())
                         }
                     }
                     .labelsHidden()
@@ -146,113 +113,127 @@ private struct PickerStyleSection: View {
                     .fixedSize()
                 }
             }
-
-            // Pair picking is controlled by the single "Pick a contrasting
-            // background color after the foreground" toggle in the Selection
-            // section — it applies to both picker styles, so it isn't duplicated
-            // here per picker.
         }
-        .padding(.horizontal, 24.0)
+    }
+
+    @ViewBuilder private var compliancePreview: some View {
+        switch contrastStandard {
+        case .wcag:
+            CompliancePreviewWCAG(width: 240, foreground: eyedroppers.foreground, background: eyedroppers.background)
+        case .apca:
+            CompliancePreviewAPCA(foreground: eyedroppers.foreground, background: eyedroppers.background)
+        case .both:
+            CompliancePreviewBoth(foreground: eyedroppers.foreground, background: eyedroppers.background)
+        }
     }
 }
 
-private struct ColorNamesSection: View {
-    var body: some View {
-        // The picker owns its heading and description (with the refresh state on the right).
-        ColorListPickerView(
-            titleFont: .system(size: 16),
-            subtitleFont: .system(size: 12)
-        )
-        .padding(.horizontal, 24.0)
-    }
-}
+// MARK: - Picking
 
-private struct AppearanceSection: View {
-    @Default(.contrastStandard) var contrastStandard
-    @Default(.paletteSwatchStyle) var paletteSwatchStyle
-    @EnvironmentObject var eyedroppers: Eyedroppers
+struct PickingSettings: View {
+    @Default(.pickerStyle) var pickerStyle
+    @Default(.loupeTheme) var loupeTheme
+    @Default(.hidePikaWhilePicking) var hidePikaWhilePicking
+    @Default(.pickContrastingColor) var pickContrastingColor
+    @Default(.copyColorOnPick) var copyColorOnPick
+    @Default(.showColorOverlay) var showColorOverlay
+    @Default(.colorOverlayDuration) var colorOverlayDuration
+    @State private var pendingRelaunch = false
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 10.0) {
-            Text(PikaText.textAppearanceTitle).font(.system(size: 16))
-            HStack(spacing: 16.0) {
-                Picker(PikaText.textContrastStandard, selection: $contrastStandard) {
-                    ForEach(ContrastStandard.allCases, id: \.self) { value in
-                        Text(value.localizedString())
+        SettingsPage {
+            SettingsGroup(title: PikaText.textPickerStyleTitle) {
+                SettingsBlock {
+                    // Same gated System/Custom comparison as the first-run splash.
+                    PickerChoiceView(pendingRelaunch: $pendingRelaunch)
+                }
+            }
+            // The Pro loupe's style, and how to change it mid-pick.
+            if pickerStyle == .custom {
+                SettingsGroup(footer: PikaText.textLoupeTabHint) {
+                    SettingsRow(PikaText.textLoupeTheme) {
+                        Picker(PikaText.textLoupeTheme, selection: $loupeTheme) {
+                            ForEach(LoupeTheme.allCases, id: \.self) { theme in
+                                Text(theme.localizedName).tag(theme)
+                            }
+                        }
+                        .labelsHidden()
+                        .pickerStyle(.segmented)
+                        .fixedSize()
                     }
                 }
-                .pickerStyle(RadioGroupPickerStyle())
-                .horizontalRadioGroupLayout()
-                .fixedSize()
             }
-            .padding(.bottom, 8.0)
-            Group {
-                if contrastStandard == .wcag {
-                    CompliancePreviewWCAG(
-                        width: 258,
-                        foreground: eyedroppers.foreground,
-                        background: eyedroppers.background
-                    )
-                } else if contrastStandard == .apca {
-                    CompliancePreviewAPCA(
-                        foreground: eyedroppers.foreground,
-                        background: eyedroppers.background
-                    )
-                } else {
-                    CompliancePreviewBoth(
-                        foreground: eyedroppers.foreground,
-                        background: eyedroppers.background
-                    )
+            SettingsGroup {
+                SettingsToggle(PikaText.textPickHide, isOn: $hidePikaWhilePicking)
+                SettingsDivider()
+                SettingsToggle(PikaText.textPickContrasting, isOn: $pickContrastingColor)
+                SettingsDivider()
+                SettingsToggle(PikaText.textCopyAutomatic, isOn: $copyColorOnPick)
+                // The Pro picker shows the colour live in the loupe, so the post-pick overlay
+                // (and its duration) is redundant there.
+                if pickerStyle != .custom {
+                    SettingsDivider()
+                    SettingsToggle(PikaText.textShowColorOverlay, isOn: $showColorOverlay)
+                    if showColorOverlay {
+                        SettingsRow(PikaText.textDuration) {
+                            HStack(spacing: 8.0) {
+                                Slider(value: $colorOverlayDuration, in: 1.0 ... 5.0, step: 0.5)
+                                    .frame(width: 180)
+                                    .accessibilityLabel(PikaText.textDuration)
+                                Text(String(format: "%.1fs", colorOverlayDuration))
+                                    .font(.system(size: 11))
+                                    .foregroundStyle(.secondary)
+                                    .monospacedDigit()
+                            }
+                        }
+                    }
                 }
             }
-            .frame(height: 115)
-            Picker(PikaText.textPaletteSwatches, selection: $paletteSwatchStyle) {
-                ForEach(PaletteSwatchStyle.allCases, id: \.self) { value in
-                    Text(value.localizedString())
-                }
-            }
-            .pickerStyle(RadioGroupPickerStyle())
-            .horizontalRadioGroupLayout()
-            .fixedSize()
-            .padding(.top, 8.0)
         }
-        .padding(.horizontal, 24.0)
     }
 }
 
-private struct CopySettingsSection: View {
+// MARK: - Color
+
+struct ColorSettings: View {
     @Default(.copyFormat) var copyFormat
-    @Default(.copyColorOnPick) var copyColorOnPick
+    @Default(.hideColorNames) var hideColorNames
     @EnvironmentObject var eyedroppers: Eyedroppers
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 10.0) {
-            Text(PikaText.textCopyTitle).font(.system(size: 16))
-            VStack(alignment: .leading, spacing: 12.0) {
-                VStack(alignment: .leading, spacing: 12.0) {
+        SettingsPage {
+            ColorSpaceSettings()
+            SettingsGroup(title: PikaText.textCopyTitle) {
+                SettingsRow(PikaText.textCopyExport) {
                     Picker(PikaText.textCopyExport, selection: $copyFormat) {
                         ForEach(CopyFormat.allCases, id: \.self) { value in
                             Text(value.localizedString())
                         }
-                        Divider()
                     }
+                    .labelsHidden()
                     .pickerStyle(.menu)
-                    // The menu style draws the title as separate text that VoiceOver doesn't
-                    // tie to the control, so name it explicitly.
-                    .accessibilityLabel(PikaText.textCopyExport)
+                    .fixedSize()
                 }
-                ColorExampleRow(copyFormat: copyFormat, eyedropper: eyedroppers.foreground)
+                SettingsDivider()
+                // Every format's example, scrolling sideways rather than widening the window.
+                ScrollView(.horizontal, showsIndicators: false) {
+                    ColorExampleRow(copyFormat: copyFormat, eyedropper: eyedroppers.foreground)
+                        .padding(14.0)
+                }
             }
-            Toggle(isOn: $copyColorOnPick) {
-                Text(PikaText.textCopyAutomatic)
-                    .fixedSize(horizontal: false, vertical: true)
+            SettingsGroup {
+                SettingsBlock {
+                    // The picker owns its heading and description (with the refresh state on the right).
+                    ColorListPickerView(titleFont: .system(size: 13, weight: .semibold), subtitleFont: .system(size: 11))
+                }
+                SettingsDivider()
+                SettingsToggle(PikaText.textColorNamesDescription, isOn: $hideColorNames)
             }
         }
-        .padding(.horizontal, 24.0)
     }
 }
 
-private struct ColorSpaceSection: View {
+private struct ColorSpaceSettings: View {
     @State private var option = ColorSpacePreference.current
 
     /// Spaces offered after the divider: everything else the system has, without the three
@@ -283,32 +264,26 @@ private struct ColorSpaceSection: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8.0) {
-            Text(PikaText.textSpaceTitle).font(.system(size: 16))
-            VStack(alignment: .leading, spacing: 8.0) {
+        SettingsGroup(title: PikaText.textSpaceTitle, footer: hint) {
+            SettingsRow(PikaText.textSpaceLabel) {
                 Picker(PikaText.textSpaceLabel, selection: $option.onChange { ColorSpacePreference.select($0) }) {
                     ColorSpaceOptions(otherSpaces: otherSpaces)
                 }
+                .labelsHidden()
                 .pickerStyle(.menu)
-                .fixedSize()
-                .accessibilityLabel(PikaText.textSpaceLabel)
-                Text(hint)
-                    .font(.system(size: 12))
-                    .foregroundStyle(.secondary)
-                    .fixedSize(horizontal: false, vertical: true)
-                // "Colors don't match? Check a Color", with only the window's name as the link.
-                HStack(spacing: 4.0) {
-                    Text(PikaText.textSpaceMismatchPrompt)
-                        .foregroundStyle(.secondary)
-                    Button(PikaText.textMatchTitle) {
-                        NSApp.sendAction(#selector(AppDelegate.openColorMatchWindow), to: nil, from: nil)
-                    }
-                    .buttonStyle(.link)
-                }
-                .font(.system(size: 12))
+                // A menu picker is as wide as its longest item, and some spaces' names are long.
+                .frame(width: 220)
             }
+            SettingsDivider()
+            // "Colors don't match? Check a Color", with only the window's name as the link.
+            SettingsRow(PikaText.textSpaceMismatchPrompt) {
+                Button(PikaText.textMatchTitle) {
+                    NSApp.sendAction(#selector(AppDelegate.openColorMatchWindow), to: nil, from: nil)
+                }
+                .buttonStyle(.link)
+            }
+            .foregroundStyle(.secondary)
         }
-        .padding(.horizontal, 24.0)
         // The readout's tag can change the space too.
         .onReceive(NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification)) { _ in
             let current = ColorSpacePreference.current
@@ -335,120 +310,22 @@ struct ColorSpaceOptions: View {
     }
 }
 
-private struct GlobalShortcutSection: View {
+// MARK: - Shortcuts
+
+struct ShortcutSettings: View {
     var body: some View {
-        VStack(alignment: .leading, spacing: 8.0) {
-            Section(header: Text(PikaText.textHotkeyTitle).font(.system(size: 16))) {
-                // Both global shortcuts the splash offers. Pick-pair was only settable during
-                // onboarding, so there was no way to change ⌥⌘D afterwards.
-                Grid(alignment: .leading, horizontalSpacing: 12.0, verticalSpacing: 10.0) {
-                    GridRow {
-                        Text(PikaText.textHotkeyDescription).font(.system(size: 13, weight: .medium))
-                        KeyboardShortcuts.Recorder(for: .togglePika)
-                    }
-                    GridRow {
-                        Text(PikaText.textPickPair).font(.system(size: 13, weight: .medium))
-                        KeyboardShortcuts.Recorder(for: .pickPair)
-                    }
+        SettingsPage {
+            // Both global shortcuts the splash offers.
+            SettingsGroup(title: PikaText.textHotkeyTitle) {
+                SettingsRow(PikaText.textHotkeyDescription) {
+                    KeyboardShortcuts.Recorder(for: .togglePika)
+                }
+                SettingsDivider()
+                SettingsRow(PikaText.textPickPair) {
+                    KeyboardShortcuts.Recorder(for: .pickPair)
                 }
             }
-            .padding(.horizontal, 24.0)
         }
-    }
-}
-
-// MARK: - Version Info
-
-private struct PreferencesVersionInfo: View {
-    let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
-    let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 2) {
-            let textVersion = PikaText.textAboutVersion
-            let textBuild = PikaText.textAboutBuild
-            let textUnknown = PikaText.textAboutUnknown
-            Text("\(textVersion) \(appVersion ?? textUnknown)")
-                .fontWeight(.semibold)
-                .foregroundStyle(.white)
-                .shadow(color: Color.black.opacity(0.3), radius: 0, x: 0, y: 1)
-            Text("(\(textBuild) \(buildNumber ?? textUnknown))")
-                .foregroundStyle(.white.opacity(0.5))
-                .shadow(color: Color.black.opacity(0.3), radius: 0, x: 0, y: 1)
-        }
-    }
-}
-
-// MARK: - Main View
-
-struct PreferencesView: View {
-    private static let headerHeight: CGFloat = 180
-
-    var body: some View {
-        scrollContent
-            .modifier(HeaderTitlebarBackdrop(headerHeight: Self.headerHeight))
-    }
-
-    private var scrollContent: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 0) {
-                // MARK: Header
-
-                VisualisationHeader(height: Self.headerHeight) {
-                    PreferencesVersionInfo()
-                        .padding(.horizontal, 20)
-                        .padding(.bottom, 14)
-                }
-                .background(
-                    GeometryReader { geo in
-                        Color(red: 0.4, green: 0.0, blue: 0.7)
-                            .frame(height: geo.size.height + 500)
-                            .offset(y: -500)
-                    }
-                )
-                Divider()
-
-                // MARK: Content
-
-                VStack(alignment: .leading, spacing: 0) {
-                    GeneralAndSelectionSection()
-
-                    Divider().padding(.bottom, 16.0)
-
-                    AppModeSection()
-
-                    Divider().padding(.vertical, 16.0)
-
-                    PickerStyleSection()
-
-                    Divider().padding(.vertical, 16.0)
-
-                    ColorNamesSection()
-
-                    Divider().padding(.vertical, 16.0)
-
-                    AppearanceSection()
-
-                    Divider().padding(.vertical, 16.0)
-
-                    CopySettingsSection()
-
-                    Divider().padding(.vertical, 16.0)
-
-                    ColorSpaceSection()
-
-                    Divider().padding(.vertical, 16.0)
-
-                    GlobalShortcutSection()
-                }
-                // Extra leading for labels that wrap in the narrow two-column layout (e.g. "Pick
-                // contrasting color after foreground"); the default read as cramped next to the
-                // spacing between rows. Single-line text is unaffected.
-                .lineSpacing(3)
-                .padding(.bottom, 24.0)
-            }
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 
@@ -508,10 +385,10 @@ private struct TitlebarBackdrop: View {
     }
 }
 
-struct PreferencesView_Previews: PreviewProvider {
+struct SettingsPages_Previews: PreviewProvider {
     static var previews: some View {
-        PreferencesView()
-            .environmentObject(Eyedroppers())
-            .frame(width: 580, height: 600)
+        ForEach(SettingsTab.allCases, id: \.self) { tab in
+            tab.page.environmentObject(Eyedroppers())
+        }
     }
 }
