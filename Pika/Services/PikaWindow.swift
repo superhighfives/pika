@@ -72,8 +72,9 @@ class PikaWindow {
     /// When the whole toolbar won't fit beside the sidebar button, Swap gives way first, then View,
     /// then the colour space's label shortens (`ToolbarSpace`).
     private static func fitToolbar(_ toolbar: FittingHostingView<NavigationMenu>, besides sidebar: NSView, in window: NSWindow) {
-        let updateFit = { [weak window] in
-            guard let window else { return }
+        // Weak, since the closure is kept on the toolbar itself and by the observer below.
+        let updateFit = { [weak window, weak toolbar, weak sidebar] in
+            guard let window, let toolbar, let sidebar else { return }
             let space = ToolbarSpace.shared
             let available = window.frame.width - sidebar.convert(sidebar.bounds, to: nil).maxX - 8
             // The toolbar's width with everything at full size, from its width now.

@@ -283,11 +283,12 @@ final class ToolbarSpace: ObservableObject {
         width(spaceLabel(for: ColorSpacePreference.current, compact: compact, limit: limit))
     }
 
-    private static func width(_ text: String) -> CGFloat {
+    static func width(_ text: String) -> CGFloat {
         ceil((text as NSString).size(withAttributes: [.font: labelFont]).width)
     }
 
-    private static func truncated(_ text: String, to maxWidth: CGFloat) -> String {
+    /// `text` cut short with an ellipsis to fit `maxWidth`, down to the ellipsis alone.
+    static func truncated(_ text: String, to maxWidth: CGFloat) -> String {
         guard width(text) > maxWidth else { return text }
         var kept = text
         while !kept.isEmpty, width(kept.trimmingCharacters(in: .whitespaces) + "…") > maxWidth {

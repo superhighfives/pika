@@ -32,4 +32,16 @@ final class PaletteSidebarTileTests: XCTestCase {
             XCTAssertEqual(rows - rows.rounded(.down), 0.5, accuracy: 0.001, "height \(height)")
         }
     }
+
+    /// With the contrast hidden (Both), a row is just the tile: still within limits, and still
+    /// ending half a row in.
+    func testWithoutContrastEndsHalfARowIn() {
+        for height: CGFloat in [200, 333, 517, 900] {
+            let tile = PaletteSidebar.tileHeight(showingHalfRowIn: height, showsContrast: false)
+            XCTAssert((28 ... 44).contains(tile), "height \(height)")
+            guard tile > 28, tile < 44 else { continue }
+            let rows = (height - inset) / (tile + 6)
+            XCTAssertEqual(rows - rows.rounded(.down), 0.5, accuracy: 0.001, "height \(height)")
+        }
+    }
 }
