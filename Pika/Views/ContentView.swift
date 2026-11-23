@@ -14,7 +14,8 @@ enum PikaAdaptiveHeight {
     static let expandCornerBelow: CGFloat = 200 // below this content height (~240pt window) the button tucks top-right
     static let palettes: CGFloat = 300 // history drawer (`ColorHistoryDrawer.height`, 74pt)
     static let contrast: CGFloat = 250 // compliance footer (~50pt)
-    static let preview: CGFloat = 200 // preview pill
+    static let preview: CGFloat = 200 // the preview's "Aa"
+    static let previewSentence: CGFloat = 290 // the preview's sample sentence, under the "Aa"
     static let colorNames: CGFloat = 175 // CSS colour name under each value
 }
 
@@ -26,7 +27,7 @@ enum PikaAdaptiveWidth {
     // they appear/disappear together — different values read as a bug.
     static let palettes: CGFloat = 410
     static let contrast: CGFloat = 410
-    static let preview: CGFloat = 420 // preview pill
+    static let preview: CGFloat = 460 // the preview's sentence (each colour 230 wide)
 }
 
 /// Size-driven visibility for elements inside the eyedropper rows, threaded down to
@@ -41,6 +42,14 @@ struct PikaAdaptiveVisibility: Equatable {
     /// the tree: a `GeometryReader`/preference round trip placed inside `EyedropperButton`'s own
     /// `ZStack` was found to never fire past its initial (zero) value.
     var swatchWidth: CGFloat = 0
+    /// Space kept clear at the bottom of each swatch for the floating contrast bar, so the
+    /// readouts sit above it. 0 when the bar is hidden.
+    var bottomInset: CGFloat = 0
+    /// Whether each swatch shows the text preview: the other colour set as "Aa" and a line of
+    /// sample text, so the pair reads both ways round.
+    var showsPreview: Bool = false
+    /// Whether the preview has room for its sample sentence; without it, it's just "Aa".
+    var showsPreviewSentence: Bool = true
 }
 
 private struct PikaAdaptiveVisibilityKey: EnvironmentKey {
@@ -52,6 +61,17 @@ extension EnvironmentValues {
         get { self[PikaAdaptiveVisibilityKey.self] }
         set { self[PikaAdaptiveVisibilityKey.self] = newValue }
     }
+
+    /// Whether palettes show as a sidebar (the main window) rather than a drawer along the
+    /// bottom (the menu bar popover, which has no room for one).
+    var pikaUsesSidebar: Bool {
+        get { self[PikaUsesSidebarKey.self] }
+        set { self[PikaUsesSidebarKey.self] = newValue }
+    }
+}
+
+private struct PikaUsesSidebarKey: EnvironmentKey {
+    static let defaultValue = false
 }
 
 struct ContentView: View {
@@ -60,18 +80,16 @@ struct ContentView: View {
     @Default(.copyFormat) var copyFormat
     @Default(.colorFormat) var colorFormat
     @Default(.historyDrawerVisible) var historyDrawerVisible
-    @Default(.showColorPreview) var showColorPreview
+    @Environment(\.pikaShowsDrawer) var showsDrawer
+    @ObservedObject private var liveSettings = LiveViewSettings.shared
     @Default(.showCompliance) var showCompliance
     @Default(.palettes) var palettes
     @Default(.activePaletteIndex) var activePaletteIndex
     @Environment(\.colorScheme) var colorScheme: ColorScheme
+    @Environment(\.pikaUsesSidebar) var usesSidebar
+    @ObservedObject private var sidebarLayout = SidebarLayout.shared
     let pasteboard = NSPasteboard.general
 
-    @State var swapVisible: Bool = false
-    @State private var swapTimerSubscription: Cancellable?
-    @State private var swapTimer = Timer.publish(every: 0.25, on: .main, in: .common)
-    @State private var swapAreaHovered = false
-    @State private var swapButtonHovered = false
     @State private var isHovering: Bool = false
     #if TARGET_SPARKLE
         /// Observed here, not just in the bar, so the swatches resize with the update bar as it
@@ -79,49 +97,44 @@ struct ContentView: View {
         @ObservedObject private var updates = PikaUpdateDriver.shared
     #endif
 
-    /// Content size that comfortably shows every element the user currently has enabled —
-    /// the target for the "expand to fit" control. Takes the largest width/height each
-    /// enabled element needs, plus a small margin so it lands just past each threshold.
+    /// The "expand to fit" target: the largest width and height each enabled element needs,
+    /// plus a small margin so it lands just past each threshold.
     private func expandTargetSize() -> CGSize {
         let margin: CGFloat = 8
         var width = PikaAdaptiveWidth.base
         var height = PikaAdaptiveHeight.floor
-        if showColorPreview {
+        // The whole preview, sentence and all: "Aa" alone fits at any width.
+        if liveSettings.showColorPreview {
             width = max(width, PikaAdaptiveWidth.preview)
-            height = max(height, PikaAdaptiveHeight.preview)
+            height = max(height, PikaAdaptiveHeight.previewSentence)
         }
         if showCompliance {
             width = max(width, PikaAdaptiveWidth.contrast)
             height = max(height, PikaAdaptiveHeight.contrast)
         }
-        if historyDrawerVisible {
+        // The window's sidebar sits beside the colours; the popover's drawer sits under them.
+        if historyDrawerVisible, usesSidebar {
+            width += SidebarLayout.fullWidth
+        } else if historyDrawerVisible {
             width = max(width, PikaAdaptiveWidth.palettes)
             height = max(height, PikaAdaptiveHeight.palettes)
         }
         return CGSize(width: width + margin, height: height + margin)
     }
 
-    /// Shows Swap while a pick area or the button itself is hovered, and hides it a quarter
-    /// second after neither is, so moving between the two swatches or onto the button keeps it.
-    private func updateSwapVisibility() {
-        if swapAreaHovered || swapButtonHovered {
-            swapVisible = true
-            swapTimerSubscription?.cancel()
-            swapTimerSubscription = nil
-        } else if swapTimerSubscription == nil {
-            swapTimer = Timer.publish(every: 0.25, on: .main, in: .common)
-            swapTimerSubscription = swapTimer.connect()
-        }
-    }
-
     var body: some View {
         GeometryReader { geo in
             let height = geo.size.height
-            let width = geo.size.width
+            // The palettes sidebar takes its column off the left; everything else lays out in
+            // what's left, so the colours and their thresholds see the main area only.
+            let sidebarColumn = usesSidebar ? sidebarLayout.column(in: geo.size.width) : 0
+            let sidebarShown = sidebarColumn > 0
+            let width = geo.size.width - sidebarColumn
             // Room-for flags: an element needs both enough height AND enough width, or it
             // clips. ANDed with user preferences below so the saved toggles survive
             // resizing (suppress-but-remember).
-            let allowPreview = height >= PikaAdaptiveHeight.preview && width >= PikaAdaptiveWidth.preview
+            // "Aa" alone fits at any width; the sentence needs more (`showsPreviewSentence`).
+            let allowPreview = height >= PikaAdaptiveHeight.preview
             // The contrast footer clings on far longer than the other elements. On height it
             // stays until the window is short enough that the expand affordance tucks into
             // the corner; on width it never hides outright — instead the WCAG/APCA rows drop
@@ -129,100 +142,90 @@ struct ContentView: View {
             let allowContrastHeight = height >= PikaAdaptiveHeight.expandCornerBelow
             let allowContrastWidth = width >= PikaAdaptiveWidth.contrast
             let allowContrast = allowContrastHeight && allowContrastWidth
-            let allowPalettes = height >= PikaAdaptiveHeight.palettes && width >= PikaAdaptiveWidth.palettes
-            let previewVisible = showColorPreview && allowPreview
+            let allowPalettes = usesSidebar
+                ? sidebarShown
+                : height >= PikaAdaptiveHeight.palettes && width >= PikaAdaptiveWidth.palettes
+            let previewVisible = liveSettings.showColorPreview && allowPreview
+            let contrastVisible = showCompliance && allowContrastHeight
 
             // An enabled element we're hiding purely for space. When any exist, offer to
             // grow the window back to a size that fits everything the user has turned on.
-            let suppressed = (showColorPreview && !allowPreview)
+            let suppressed = (liveSettings.showColorPreview && !allowPreview)
                 || (showCompliance && !allowContrast)
-                || (historyDrawerVisible && !allowPalettes)
+                || (historyDrawerVisible && !allowPalettes && sidebarLayout.heldColourWidth == nil) // not mid-resize
             // Always tuck the expand affordance into the top-right corner so it never sits
             // on top of the colour values.
             let expandAlignment: Alignment = .topTrailing
 
-            VStack(alignment: .trailing, spacing: 0) {
+            // One divider under the title bar, across the sidebar and the colours.
+            VStack(spacing: 0) {
                 Divider()
-                // Swap shows over the pick areas (and while it's hovered itself), not the
-                // readouts, where the Copy and system picker buttons live.
-                ColorPickers(onPickAreaHover: { hovered in
-                    swapAreaHovered = hovered
-                    updateSwapVisibility()
-                })
-                .onReceive(swapTimer) { _ in
-                    if !swapAreaHovered, !swapButtonHovered { swapVisible = false }
-                    swapTimerSubscription?.cancel()
-                    swapTimerSubscription = nil
-                }
-                .overlay(
-                    SwapPreviewButton(
-                        foreground: eyedroppers.foreground,
-                        background: eyedroppers.background,
-                        showPreview: previewVisible,
-                        isVisible: swapVisible,
-                        onHoverChange: { hovered in
-                            swapButtonHovered = hovered
-                            updateSwapVisibility()
-                        },
-                        onSwap: {
-                            NSApp.sendAction(#selector(AppDelegate.triggerSwap), to: nil, from: nil)
+                HStack(spacing: 0) {
+                    // Revealed by its column as the window widens; kept at zero width, not removed.
+                    if usesSidebar {
+                        HStack(spacing: 0) {
+                            PaletteSidebar()
+                            AdaptiveDivider(axis: .vertical)
                         }
-                    )
-                    .onReceive(NotificationCenter.default.publisher(for: .triggerSwap)) { _ in
-                        withAnimation(.easeInOut(duration: 0.2)) {
-                            eyedroppers.swap()
-                        }
+                        .frame(width: sidebarColumn, alignment: .trailing)
+                        .clipped()
+                        .allowsHitTesting(sidebarShown).accessibilityHidden(!sidebarShown)
                     }
-                    .focusable(false)
-                    .padding(.horizontal, 16.0)
-                    .padding(.top, 16.0)
-                    .frame(maxHeight: .infinity, alignment: .top)
-                )
-                // Expand-to-fit sits over the colour tiles (not the whole app), so it
-                // centres on the swatches rather than drifting down over the footer.
-                .overlay(alignment: expandAlignment) {
-                    if suppressed, isHovering {
-                        ExpandToFitButton {
-                            NotificationCenter.default.post(
-                                name: .expandToFit,
-                                object: NSValue(size: expandTargetSize())
-                            )
-                        }
-                        .padding(expandAlignment == .topTrailing ? 8 : 0)
-                        .transition(.scale(scale: 0.9).combined(with: .opacity))
-                    }
-                }
+                    VStack(alignment: .trailing, spacing: 0) {
+                        ColorPickers()
+                            // Expand-to-fit sits over the colour tiles (not the whole app), so it
+                            // centres on the swatches rather than drifting down over the footer.
+                            .overlay(alignment: expandAlignment) {
+                                if suppressed, isHovering {
+                                    ExpandToFitButton {
+                                        NotificationCenter.default.post(
+                                            name: .expandToFit,
+                                            object: NSValue(size: expandTargetSize())
+                                        )
+                                    }
+                                    .padding(expandAlignment == .topTrailing ? 8 : 0)
+                                    .transition(.scale(scale: 0.9).combined(with: .opacity))
+                                }
+                            }
 
-                if showCompliance, allowContrastHeight {
-                    AdaptiveDivider()
-                    // Slide only — no opacity fade, so the footer is always full opacity.
-                    // `showsCompliance` drops the right-hand badges when there isn't the
-                    // width for them, so the footer stays put and only sheds on height.
-                    Footer(
-                        foreground: eyedroppers.foreground,
-                        background: eyedroppers.background,
-                        showsCompliance: allowContrastWidth
-                    )
-                    .transition(.move(edge: .bottom))
+                            // The contrast bar floats over the bottom of the colours rather than sitting
+                            // in a band under them. The swatches keep `bottomInset` clear for it.
+                            .overlay(alignment: .bottom) {
+                                if contrastVisible {
+                                    // `showsCompliance` drops the right-hand badges when there isn't the
+                                    // width for them, so the bar stays put and only sheds on height.
+                                    Footer(
+                                        foreground: eyedroppers.foreground,
+                                        background: eyedroppers.background,
+                                        showsCompliance: allowContrastWidth,
+                                        floating: true
+                                    )
+                                    .padding(Footer.floatingInset)
+                                    .transition(.move(edge: .bottom).combined(with: .opacity))
+                                }
+                            }
+                        // Above the drawer, which the popover lays out even while it's closed.
+                        #if TARGET_SPARKLE
+                            InlineUpdateControl()
+                        #endif
+                        if showsDrawer, allowPalettes, !usesSidebar { // revealed by `PopoverDrawerLayout`
+                            ColorHistoryDrawer(foreground: eyedroppers.foreground, background: eyedroppers.background)
+                                .accessibilityHidden(!historyDrawerVisible) // laid out while closed
+                        }
+                    }
+                    .frame(width: width, alignment: .top)
+                    .frame(maxHeight: .infinity, alignment: .top)
                 }
-                if historyDrawerVisible, allowPalettes {
-                    ColorHistoryDrawer(foreground: eyedroppers.foreground, background: eyedroppers.background)
-                        .transition(.move(edge: .bottom).combined(with: .opacity))
-                }
-                #if TARGET_SPARKLE
-                    InlineUpdateControl()
-                #endif
             }
-            .frame(width: geo.size.width, height: geo.size.height, alignment: .top)
+            .frame(width: geo.size.width, height: geo.size.height, alignment: .topLeading)
             .environment(\.pikaAdaptiveVisibility, PikaAdaptiveVisibility(
-                // Not tied to the preview pill: the pill is anchored to the top of the
-                // swatches and the labels to the bottom, so they don't contend for the same
-                // space — measured at every height from the pill's own minimum (200) upward,
-                // the smallest gap between them is still ~30pt. The window floor keeps height
-                // above any threshold that would drop the labels on their own account.
+                // Previews sit at the top and labels at the bottom, so the labels never shed for them.
                 showsTypeLabels: true,
                 showsColorNames: height >= PikaAdaptiveHeight.colorNames,
-                swatchWidth: width / 2
+                swatchWidth: width / 2,
+                bottomInset: contrastVisible ? Footer.floatingHeight + Footer.floatingInset : 0,
+                showsPreview: previewVisible,
+                showsPreviewSentence: width >= PikaAdaptiveWidth.preview && height >= PikaAdaptiveHeight.previewSentence
             ))
             // Continuous hover is stable when the button appears under the cursor —
             // plain `.onHover` re-fires enter/exit as the overlay mounts, which flickers
@@ -233,9 +236,9 @@ struct ContentView: View {
                 case .ended: isHovering = false
                 }
             }
+            .animation(.easeInOut(duration: 0.2), value: contrastVisible)
             .animation(.easeInOut(duration: 0.2), value: allowContrastHeight)
             .animation(.easeInOut(duration: 0.2), value: allowContrastWidth)
-            .animation(.easeInOut(duration: 0.2), value: allowPalettes)
             .animation(.easeInOut(duration: 0.15), value: suppressed)
             .animation(.easeInOut(duration: 0.15), value: isHovering)
             #if TARGET_SPARKLE
@@ -246,6 +249,10 @@ struct ContentView: View {
             if Defaults[.palettes].first?.pairs.isEmpty ?? true {
                 eyedroppers.recordHistory()
             }
+        }
+        // From the toolbar's Swap, the menus and the shortcut.
+        .onReceive(NotificationCenter.default.publisher(for: .triggerSwap)) { _ in
+            withAnimation(.easeInOut(duration: 0.2)) { eyedroppers.swap() }
         }
         .onReceive(NotificationCenter.default.publisher(for: .colorPicked)) { _ in
             withAnimation(.easeInOut(duration: 0.2)) {
@@ -262,7 +269,7 @@ struct ContentView: View {
         }
         .onReceive(NotificationCenter.default.publisher(for: .toggleColorPreview)) { _ in
             withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
-                showColorPreview.toggle()
+                Defaults[.showColorPreview].toggle()
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: .toggleCompliance)) { _ in
@@ -300,104 +307,44 @@ struct ContentView: View {
             )
             pasteboard.setString(contents, forType: .string)
         }
-        .onReceive(NotificationCenter.default.publisher(for: .exportPalette)) { notification in
-            let idx: Int
-            if let paletteIndex = notification.object as? Int {
-                idx = paletteIndex
-            } else if !historyDrawerVisible {
-                idx = 0
-            } else {
-                idx = activePaletteIndex
-            }
-            let palette: Palette? = (idx >= 0 && idx < palettes.count) ? palettes[idx] : palettes.first
-            guard let palette = palette else { return }
-
-            let json = Exporter.paletteToJSON(pairs: palette.pairs, name: palette.name)
-            let invalidChars = CharacterSet(charactersIn: "/:\\")
-            let fileName = (palette.name ?? "color-history")
-                .lowercased()
-                .replacingOccurrences(of: " ", with: "-")
-                .components(separatedBy: invalidChars)
-                .joined()
-
-            let savePanel = NSSavePanel()
-            savePanel.allowedContentTypes = [.json]
-            savePanel.nameFieldStringValue = "\(fileName).json"
-            savePanel.isExtensionHidden = false
-            if savePanel.runModal() == .OK, let url = savePanel.url {
-                do {
-                    try json.write(to: url, atomically: true, encoding: .utf8)
-                } catch {
-                    let alert = NSAlert(error: error)
-                    alert.runModal()
-                }
-            }
-        }
+        .onReceive(NotificationCenter.default.publisher(for: .exportPalette)) { exportPalette($0) }
     }
 }
 
-/// Shared surface for the footer and palette drawer. In light mode the under-window
-/// vibrancy material washes out to near-nothing, so use the standard window background
-/// for a clearly-defined panel; dark mode keeps the material, which reads well there.
-struct AdaptivePanelBackground: View {
-    @Environment(\.colorScheme) private var colorScheme
-
-    var body: some View {
-        if colorScheme == .dark {
-            VisualEffect(
-                material: NSVisualEffectView.Material.underWindowBackground,
-                blendingMode: NSVisualEffectView.BlendingMode.behindWindow
-            )
+extension ContentView {
+    /// Saves a palette (the one in the notification, else the active one) as JSON.
+    func exportPalette(_ notification: Notification) {
+        let idx: Int
+        if let paletteIndex = notification.object as? Int {
+            idx = paletteIndex
+        } else if !historyDrawerVisible {
+            idx = 0
         } else {
-            Color(NSColor.windowBackgroundColor)
+            idx = activePaletteIndex
         }
-    }
-}
+        let palette: Palette? = (idx >= 0 && idx < palettes.count) ? palettes[idx] : palettes.first
+        guard let palette = palette else { return }
 
-/// Divider that reads as a recessed seam in both appearances. The system `Divider`
-/// renders too light over the footer/drawer materials in light mode (looks white rather
-/// than a darker separator), so tint explicitly with `primary`, which flips per scheme.
-struct AdaptiveDivider: View {
-    static let thickness: CGFloat = 1
+        let json = Exporter.paletteToJSON(pairs: palette.pairs, name: palette.name)
+        let invalidChars = CharacterSet(charactersIn: "/:\\")
+        let fileName = (palette.name ?? "color-history")
+            .lowercased()
+            .replacingOccurrences(of: " ", with: "-")
+            .components(separatedBy: invalidChars)
+            .joined()
 
-    @Environment(\.colorScheme) private var colorScheme
-    var axis: Axis = .horizontal
-
-    var body: some View {
-        Rectangle()
-            .fill(colorScheme == .dark ? Color.white.opacity(0.14) : Color.black.opacity(0.24))
-            .frame(
-                width: axis == .vertical ? Self.thickness : nil,
-                height: axis == .horizontal ? Self.thickness : nil
-            )
-    }
-}
-
-/// Small floating capsule shown when the adaptive layout is hiding enabled elements.
-/// Tapping it grows the window just enough to reveal them again.
-private struct ExpandToFitButton: View {
-    let action: () -> Void
-    @State private var hovering = false
-
-    var body: some View {
-        Button(action: action) {
-            HStack(spacing: 5.0) {
-                Image(systemName: "arrow.up.left.and.arrow.down.right")
-                    .font(.system(size: 10, weight: .semibold))
-                Text(PikaText.textExpandToFit)
-                    .font(.system(size: 11, weight: .medium))
+        let savePanel = NSSavePanel()
+        savePanel.allowedContentTypes = [.json]
+        savePanel.nameFieldStringValue = "\(fileName).json"
+        savePanel.isExtensionHidden = false
+        if savePanel.runModal() == .OK, let url = savePanel.url {
+            do {
+                try json.write(to: url, atomically: true, encoding: .utf8)
+            } catch {
+                let alert = NSAlert(error: error)
+                alert.runModal()
             }
-            .padding(.horizontal, 10.0)
-            .padding(.vertical, 5.0)
-            .background(.regularMaterial, in: Capsule())
-            .overlay(Capsule().strokeBorder(Color.primary.opacity(0.12)))
-            .opacity(hovering ? 1.0 : 0.9)
-            .shadow(color: .black.opacity(0.2), radius: 4, x: 0, y: 1)
         }
-        .buttonStyle(.plain)
-        .focusable(false)
-        .onHover { hovering = $0 }
-        .help(PikaText.textExpandToFit)
     }
 }
 

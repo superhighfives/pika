@@ -79,8 +79,6 @@
 /* Window shadow */
 "preferences.shadow.description" = "سایهٔ پنجره";
 
-/* Window Settings */
-"preferences.window.title" = "تنظیمات پنجره";
 
 /* Window shadow: always on */
 "preferences.shadow.options.always" = "نمایش سایه";
@@ -94,11 +92,7 @@
 /* Expand the window to fit hidden elements */
 "content.expandToFit" = "گسترش برای جاگیری";
 
-/* General Settings */
-"preferences.general.title" = "تنظیمات عمومی";
 
-/* Selection Settings */
-"preferences.selection.title" = "تنظیمات انتخاب";
 
 /* Hide menu bar icon */
 "preferences.icon.description" = "پنهان کردن نماد نوار منو";
@@ -118,8 +112,6 @@
 /* Always show Pika on launch */
 "preferences.show.description" = "نمایش همیشگی Pika هنگام اجرا";
 
-/* App Settings */
-"preferences.app.title" = "تنظیمات برنامه";
 
 /* Menu bar */
 "preferences.app.menubar.title" = "نوار منو";
@@ -168,6 +160,15 @@
 
 /* Contrast Calculation Standard */
 "preferences.contrast.standard" = "استاندارد محاسبهٔ کنتراست";
+"preferences.swatches.title" = "نمونه‌های پالت";
+"preferences.swatches.stacked" = "روی هم";
+"settings.tab.general" = "عمومی";
+"settings.tab.picking" = "انتخاب رنگ";
+"settings.tab.color" = "رنگ";
+"settings.tab.shortcuts" = "میان‌برها";
+"settings.updates" = "به‌روزرسانی‌ها";
+"settings.showIn" = "نمایش Pika در";
+"settings.loupe.tab" = "هنگام انتخاب رنگ، Tab را بزنید تا سبک عوض شود، و Shift-Tab را برای برگشت.";
 
 /* Both (combined WCAG and APCA) */
 "color.standard.both" = "هر دو";
@@ -309,6 +310,15 @@
 
 /* Copied */
 "color.copy.toast" = "کپی شد";
+
+/* Copy a colour in a format other than the shown one */
+"color.copy.as" = "کپی به‌صورت";
+
+/* Foreground colour actions menu */
+"color.actions.foreground" = "کارهای پیش‌زمینه";
+
+/* Background colour actions menu */
+"color.actions.background" = "کارهای پس‌زمینه";
 
 /* Copy current format */
 "color.copy.current" = "کپی قالب فعلی";

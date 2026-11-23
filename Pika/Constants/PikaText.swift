@@ -42,6 +42,12 @@ enum PikaText {
     static let textColorPaste = NSLocalizedString("color.paste", comment: "Paste")
     static let textColorSystemPicker = NSLocalizedString("color.system", comment: "System picker")
     static let textColorCopied = NSLocalizedString("color.copy.toast", comment: "Copied")
+    static let textColorCopyAs = NSLocalizedString("color.copy.as", comment: "Copy a colour in a format other than the shown one")
+    static func textSwatchActions(_ type: Eyedropper.Types) -> String {
+        type == .foreground
+            ? NSLocalizedString("color.actions.foreground", comment: "Foreground colour actions menu")
+            : NSLocalizedString("color.actions.background", comment: "Background colour actions menu")
+    }
 
     /*
      * Menu
@@ -316,7 +322,6 @@ enum PikaText {
      */
 
     // General Settings
-    static let textGeneralTitle = NSLocalizedString("preferences.general.title", comment: "General Settings")
     static let textLaunchDescription = NSLocalizedString(
         "preferences.launch.description",
         comment: "Launch at login"
@@ -325,7 +330,6 @@ enum PikaText {
         "preferences.beta.description",
         comment: "Subscribe to beta releases"
     )
-    static let textSelectionTitle = NSLocalizedString("preferences.selection.title", comment: "Selection Settings")
     static let textPickHide = NSLocalizedString("preferences.pick.hide", comment: "Hide Pika while picking")
     static let textPickContrasting = NSLocalizedString(
         "preferences.pick.contrasting",
@@ -334,10 +338,6 @@ enum PikaText {
     static let textWindowShadow = NSLocalizedString(
         "preferences.shadow.description",
         comment: "Window shadow"
-    )
-    static let textWindowSettingsTitle = NSLocalizedString(
-        "preferences.window.title",
-        comment: "Window Settings"
     )
     static let textExpandToFit = NSLocalizedString(
         "content.expandToFit",
@@ -390,7 +390,6 @@ enum PikaText {
     )
 
     // App Settings
-    static let textAppTitle = NSLocalizedString("preferences.app.title", comment: "App Settings")
     static let textAppMenubarTitle = NSLocalizedString("preferences.app.menubar.title", comment: "Menu bar")
     static let textAppMenubarDescription = NSLocalizedString(
         "preferences.app.menubar.description", comment: "Show in menu bar"
@@ -434,6 +433,22 @@ enum PikaText {
     static let textContrastStandard = NSLocalizedString(
         "preferences.contrast.standard",
         comment: "Contrast Standard"
+    )
+    // Settings tabs and sections
+    static let textSettingsGeneral = NSLocalizedString("settings.tab.general", comment: "Settings tab: startup and updates")
+    static let textSettingsPicking = NSLocalizedString("settings.tab.picking", comment: "Settings tab: the picker and what happens on a pick")
+    static let textSettingsColor = NSLocalizedString("settings.tab.color", comment: "Settings tab: color space, copy format and color names")
+    static let textSettingsShortcuts = NSLocalizedString("settings.tab.shortcuts", comment: "Settings tab: global keyboard shortcuts")
+    static let textSettingsUpdates = NSLocalizedString("settings.updates", comment: "Settings section heading for updates")
+    static let textSettingsShowIn = NSLocalizedString(
+        "settings.showIn", comment: "Settings heading above the menu bar, popover and Dock choices"
+    )
+    static let textLoupeTabHint = NSLocalizedString(
+        "settings.loupe.tab", comment: "Note under Loupe style: Tab cycles the loupe's style while picking"
+    )
+    static let textPaletteSwatches = NSLocalizedString(
+        "preferences.swatches.title",
+        comment: "How palette swatches are drawn: \"Aa\" in the pair's colours, or the two colours stacked"
     )
 
     // Copy Settings

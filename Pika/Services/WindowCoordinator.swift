@@ -69,6 +69,17 @@ class WindowCoordinator: NSObject {
             self.resizeMainWindow(toFitContent: size)
         }
 
+        // Opening the palettes sidebar widens the window by the sidebar, and closing it narrows
+        // the window again, so the colours keep their size.
+        Defaults.observe(.historyDrawerVisible, options: []) { [weak self] change in
+            guard change.oldValue != change.newValue else { return }
+            // Straight away, before SwiftUI lays out the change, so the colours never squeeze
+            // to make room and then stretch back.
+            self?.resizeForSidebar(shown: change.newValue)
+        }.tieToLifetime(of: self)
+
+        resetCursorForMenus()
+
         // Re-apply the whole shadow configuration when the setting changes.
         Defaults.observe(.windowShadow) { [weak self] _ in
             self?.applyShadowState(animated: false)
@@ -297,20 +308,9 @@ class WindowCoordinator: NSObject {
     /// alongside the popover's copy.
     func installMainWindowContent() {
         guard let eyedroppers = eyedroppers else { return }
-        let contentView = ContentView()
+        let contentView = MainWindowContent()
             .environmentObject(eyedroppers)
-            // Floor is well below the "everything visible" height: ContentView sheds
-            // elements adaptively as it shrinks (see PikaAdaptiveHeight), so the window
-            // can get compact again. Ideal stays at the comfortable first-launch size.
-            .frame(
-                minWidth: 360,
-                idealWidth: 480,
-                maxWidth: 650,
-                minHeight: 160,
-                idealHeight: 280,
-                maxHeight: 400,
-                alignment: .center
-            )
+            .environment(\.pikaUsesSidebar, true)
         let hostingView = NSHostingView(rootView: contentView)
         // Apply the SwiftUI min/max as the window's resize limits, but omit
         // `.intrinsicContentSize` so the hosting view doesn't snap the window back
@@ -318,6 +318,7 @@ class WindowCoordinator: NSObject {
         // user defaults each launch and defeat window persistence.
         hostingView.sizingOptions = [.minSize, .maxSize]
         pikaWindow.contentView = hostingView
+        widenForSidebar()
     }
 
     func removeMainWindowContent() {
@@ -460,28 +461,24 @@ class WindowCoordinator: NSObject {
 
     func openPreferencesWindow() {
         if preferencesWindow == nil, let eyedroppers {
-            // Width is pinned by the window's own min/max below, not by the SwiftUI frame:
-            // pinning both would demand the full 580 for content *and* leave the scroller
-            // with nowhere to go, pushing it past the right edge where the window clips it.
-            // Letting the content flex mirrors the Help window, whose scroller sits inboard.
-            // `PreferencesView` ignores the safe area itself, inside a reader that needs the
-            // titlebar's height.
-            let rootView = PreferencesView()
-                .frame(maxWidth: .infinity, minHeight: 400, maxHeight: .infinity)
-                .environmentObject(eyedroppers)
-            let view = NSHostingView(rootView: rootView)
-            preferencesWindow = PikaWindow.createSecondaryWindow(
-                title: PikaText.textMenuPreferences,
-                size: NSRect(x: 0, y: 0, width: 580, height: 600),
-                styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView]
-            )
-            // Matches About/Help/Splash — lets the header gradient run up behind the titlebar
-            // instead of leaving an opaque bar above it.
-            preferencesWindow?.titlebarAppearsTransparent = true
-            preferencesWindow?.minSize = NSSize(width: 580, height: 400)
-            preferencesWindow?.maxSize = NSSize(width: 580, height: CGFloat.greatestFiniteMagnitude)
-            preferencesWindow?.contentMinSize = NSSize(width: 580, height: 400)
-            preferencesWindow?.contentView = view
+            // A standard Settings window: toolbar tabs, titled after the selected tab and sized
+            // to fit it (`SettingsTabController`).
+            let tabs = SettingsTabController(eyedroppers: eyedroppers)
+            let window = NSWindow(contentViewController: tabs)
+            window.styleMask = [.titled, .closable, .miniaturizable]
+            window.toolbarStyle = .preference
+            window.title = tabs.tabViewItems.first?.label ?? PikaText.textMenuPreferences
+            // Tracks the main window's level, like the other secondary windows, so it isn't
+            // buried behind Pika when "float above windows" is on.
+            window.level = Defaults[.appFloating] ? .floating : .normal
+            window.isReleasedWhenClosed = false
+            // The saved position, then the first tab's size from its top edge: a saved size is
+            // an older layout's (2.0 saved a 580-wide window under this name) or another tab's.
+            let autosaveName = "\(PikaText.textMenuPreferences) Window"
+            if !window.setFrameUsingName(autosaveName) { window.center() }
+            window.setFrameAutosaveName(autosaveName)
+            tabs.fitWindow(animate: false)
+            preferencesWindow = window
         }
         bringForward(preferencesWindow)
         preferencesWindow?.makeFirstResponder(nil)
@@ -657,5 +654,140 @@ extension WindowCoordinator {
             model.window = colorMatchWindow
         }
         bringForward(colorMatchWindow)
+    }
+}
+
+private extension WindowCoordinator {
+    /// With Palettes on, widens a window too narrow for the sidebar beside the colours, as one
+    /// saved before the sidebar (2.0's drawer fitted under the colours) can be. Keeps the left edge.
+    func widenForSidebar() {
+        let needed = PikaAdaptiveWidth.base + SidebarLayout.fullWidth
+        guard SidebarLayout.shared.isVisible, pikaWindow.frame.width < needed else { return }
+        var frame = pikaWindow.frame
+        frame.size.width = needed
+        if let screen = pikaWindow.screen?.visibleFrame {
+            frame.origin.x = min(max(frame.origin.x, screen.minX), screen.maxX - frame.width)
+        }
+        pikaWindow.setFrame(frame, display: true)
+    }
+
+    /// A menu opened over a colour kept the pick cursor for its items, so any menu opening
+    /// brings back the arrow.
+    func resetCursorForMenus() {
+        NotificationCenter.default.addObserver(
+            forName: NSMenu.didBeginTrackingNotification, object: nil, queue: .main
+        ) { _ in NSCursor.arrow.set() }
+    }
+
+    /// Animates the main window to `target` over a quarter second, one display frame at a time,
+    /// laying out and drawing its content with each step.
+    func stepFrame(to target: NSRect, completion: @escaping () -> Void) {
+        guard let window = pikaWindow as NSWindow? else { return completion() }
+        let start = window.frame
+        let duration = 0.25
+        let began = CACurrentMediaTime()
+        let timer = Timer(timeInterval: 1.0 / 120.0, repeats: true) { timer in
+            let progress = min((CACurrentMediaTime() - began) / duration, 1)
+            // Ease in and out.
+            let eased = progress < 0.5 ? 2 * progress * progress : 1 - pow(-2 * progress + 2, 2) / 2
+            func mix(_ from: CGFloat, _ to: CGFloat) -> CGFloat { (from + (to - from) * eased).rounded() }
+            window.setFrame(NSRect(
+                x: mix(start.minX, target.minX), y: mix(start.minY, target.minY),
+                width: mix(start.width, target.width), height: mix(start.height, target.height)
+            ), display: false)
+            window.contentView?.layoutSubtreeIfNeeded()
+            window.displayIfNeeded()
+            if progress >= 1 {
+                timer.invalidate()
+                SidebarLayout.shared.step = nil
+                completion()
+            }
+        }
+        RunLoop.main.add(timer, forMode: .common)
+        SidebarLayout.shared.step = timer
+    }
+
+    /// Shows or hides the main window's sidebar by growing or shrinking the window, on the right,
+    /// so the colours keep their size and the title bar's sidebar button stays put. The colours'
+    /// width is held while the window animates, and the sidebar's column is the difference.
+    /// Kept on screen, and within the window's size limits.
+    func resizeForSidebar(shown: Bool) {
+        let layout = SidebarLayout.shared
+        // Used up by this toggle, whichever way it goes.
+        let keepsRightEdge = layout.keepsRightEdge
+        layout.keepsRightEdge = false
+        guard !Defaults[.appMode].usesPopover, pikaWindow.isVisible, pikaWindow.contentView != nil else {
+            layout.isVisible = shown
+            return
+        }
+        let sidebar = SidebarLayout.fullWidth
+        var frame = pikaWindow.frame
+        // Mid-resize, the colours' width is the one already held. Otherwise it's what the
+        // sidebar's column leaves, and a sidebar hidden for want of room isn't taking any.
+        let colours = layout.heldColourWidth
+            ?? (layout.column(in: frame.width) > 0 ? frame.width - sidebar : frame.width)
+        // The colours' own floor, not the window's minimum, which counts the open sidebar.
+        let width = shown
+            ? min(colours + sidebar, pikaWindow.contentMaxSize.width)
+            : max(colours, PikaAdaptiveWidth.base)
+        let change = width - frame.width
+        layout.step?.invalidate()
+        layout.step = nil
+        guard change != 0 else {
+            withoutAnimation {
+                layout.heldColourWidth = nil
+                layout.isVisible = shown
+            }
+            return
+        }
+
+        // Outside any SwiftUI animation (the View menu toggles inside one), which otherwise
+        // animated the column against the window's own movement.
+        withoutAnimation {
+            layout.heldColourWidth = colours
+            layout.isVisible = shown
+        }
+        frame.size.width = width
+        if keepsRightEdge { frame.origin.x -= change }
+        if let screen = pikaWindow.screen?.visibleFrame {
+            frame.origin.x = min(max(frame.origin.x, screen.minX), screen.maxX - frame.width)
+        }
+        // Stepped by hand rather than through the window's own animation, which drew no frames
+        // in between as it grew, and jittered as it moved the left edge: each step resizes the
+        // window and lays out its content together.
+        stepFrame(to: frame) { withoutAnimation { layout.heldColourWidth = nil } }
+    }
+}
+
+/// Runs `changes` with SwiftUI animations switched off.
+private func withoutAnimation(_ changes: () -> Void) {
+    var transaction = Transaction()
+    transaction.disablesAnimations = true
+    withTransaction(transaction, changes)
+}
+
+/// The main window's content and its size limits. The minimum width counts the sidebar while it's
+/// open, so the window can't get too narrow for it: hidden for want of room, it left its button
+/// showing on and a first click doing nothing. Not while the window resizes for the sidebar,
+/// which starts or ends narrower than that.
+private struct MainWindowContent: View {
+    @ObservedObject private var layout = SidebarLayout.shared
+
+    var body: some View {
+        let sidebar = layout.isVisible && layout.heldColourWidth == nil ? SidebarLayout.fullWidth : 0
+        ContentView()
+            // Floor is well below the "everything visible" height: ContentView sheds
+            // elements adaptively as it shrinks (see PikaAdaptiveHeight), so the window
+            // can get compact again. Ideal stays at the comfortable first-launch size.
+            .frame(
+                minWidth: PikaAdaptiveWidth.base + sidebar,
+                idealWidth: 480,
+                // Room for the palettes sidebar beside the widest the colours go.
+                maxWidth: 650 + SidebarLayout.fullWidth,
+                minHeight: 160,
+                idealHeight: 280,
+                maxHeight: 400,
+                alignment: .center
+            )
     }
 }

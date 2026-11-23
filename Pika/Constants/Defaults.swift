@@ -48,6 +48,19 @@ enum ContrastStandard: String, Codable, CaseIterable {
     }
 }
 
+/// How palette swatches are drawn: "Aa" in the pair's own colours, or the two colours stacked.
+enum PaletteSwatchStyle: String, Codable, CaseIterable {
+    case text = "TEXT"
+    case stacked = "STACKED"
+
+    func localizedString() -> String {
+        switch self {
+        case .text: return "Aa"
+        case .stacked: return NSLocalizedString("preferences.swatches.stacked", comment: "Stacked")
+        }
+    }
+}
+
 enum WindowShadow: String, Codable, CaseIterable {
     case always = "preferences.shadow.options.always"
     case hiddenWhilePicking = "preferences.shadow.options.hiddenWhilePicking"
@@ -137,6 +150,7 @@ extension Defaults.Keys {
     static let appFloating = Key<Bool>("appFloating", default: true)
     static let alwaysShowOnLaunch = Key<Bool>("alwaysShowOnLaunch", default: false)
     static let contrastStandard = Key<ContrastStandard>("contrastStandard", default: .wcag)
+    static let paletteSwatchStyle = Key<PaletteSwatchStyle>("paletteSwatchStyle", default: .text)
     static let showColorOverlay = Key<Bool>("showColorOverlay", default: true)
     static let colorOverlayDuration = Key<Double>("colorOverlayDuration", default: 2.0)
     static let colorHistory = Key<[ColorPair]>("colorHistory", default: [])

@@ -44,6 +44,16 @@ class PikaWindow {
         titlebarAccessory.layoutAttribute = .trailing
         window.addTitlebarAccessoryViewController(titlebarAccessory)
 
+        // The palettes sidebar's toggle, after the traffic lights.
+        let sidebarButton = FittingHostingView(rootView: SidebarToggleButton())
+        sidebarButton.frame.size = sidebarButton.fittingSize
+        let sidebarAccessory = NSTitlebarAccessoryViewController()
+        sidebarAccessory.view = sidebarButton
+        sidebarAccessory.layoutAttribute = .leading
+        window.addTitlebarAccessoryViewController(sidebarAccessory)
+
+        fitToolbar(toolbarButtons, besides: sidebarButton, in: window)
+
         // Restore the previously saved frame so size and position survive quitting
         // and reopening. `setFrameAutosaveName` alone does not reliably re-apply a
         // saved frame, so restore it explicitly and only center on first launch.
@@ -57,6 +67,40 @@ class PikaWindow {
         }
 
         return window
+    }
+
+    /// When the whole toolbar won't fit beside the sidebar button, Swap gives way first, then View,
+    /// then the colour space's label shortens (`ToolbarSpace`).
+    private static func fitToolbar(_ toolbar: FittingHostingView<NavigationMenu>, besides sidebar: NSView, in window: NSWindow) {
+        // Weak, since the closure is kept on the toolbar itself and by the observer below.
+        let updateFit = { [weak window, weak toolbar, weak sidebar] in
+            guard let window, let toolbar, let sidebar else { return }
+            let space = ToolbarSpace.shared
+            let available = window.frame.width - sidebar.convert(sidebar.bounds, to: nil).maxX - 8
+            // The toolbar's width with everything at full size, from its width now.
+            let swapWidth = ToolbarSpace.swapWidth, viewWidth = ToolbarSpace.viewWidth
+            let fullLabel = ToolbarSpace.labelWidth(compact: false, limit: nil)
+            let full = toolbar.fittingSize.width
+                + (space.showsSwap ? 0 : swapWidth)
+                + (space.showsView ? 0 : viewWidth)
+                - ToolbarSpace.labelWidth(compact: space.compactSpace, limit: space.spaceLimit)
+                + fullLabel
+            // Swap gives way first, then View, then the space's label shortens.
+            let showsSwap = available >= full
+            let showsView = available >= full - swapWidth
+            let compactSpace = available < full - swapWidth - viewWidth
+            // What's left for the space's label once everything else is in.
+            let room = available - (full - swapWidth - viewWidth - fullLabel)
+            let limit = compactSpace && room < ToolbarSpace.labelWidth(compact: true, limit: nil) ? max(room, 0) : nil
+            if space.showsSwap != showsSwap { space.showsSwap = showsSwap }
+            if space.showsView != showsView { space.showsView = showsView }
+            if space.compactSpace != compactSpace { space.compactSpace = compactSpace }
+            if space.spaceLimit != limit { space.spaceLimit = limit }
+        }
+        NotificationCenter.default.addObserver(
+            forName: NSWindow.didResizeNotification, object: window, queue: .main
+        ) { _ in updateFit() }
+        toolbar.onWidthChange = updateFit
     }
 
     static func createSecondaryWindow(
@@ -98,13 +142,19 @@ class PikaWindow {
 /// A hosting view that keeps its frame at its fitting size. A titlebar accessory takes its view's
 /// frame as given, so without this the toolbar kept its launch width and clipped longer labels.
 final class FittingHostingView<Content: View>: NSHostingView<Content> {
+    /// After the view takes a new width, such as when a menu's label changes.
+    var onWidthChange: (() -> Void)?
+
     override func layout() {
         super.layout()
         // After this layout pass, and width only: the titlebar sets the height.
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             let width = fittingSize.width
-            if frame.width != width { setFrameSize(NSSize(width: width, height: frame.height)) }
+            if frame.width != width {
+                setFrameSize(NSSize(width: width, height: frame.height))
+                onWidthChange?()
+            }
         }
     }
 }

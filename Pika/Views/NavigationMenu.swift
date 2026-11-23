@@ -2,6 +2,11 @@ import Defaults
 import SwiftUI
 
 struct NavigationMenu: View {
+    /// The menu bar popover's View menu is a standard menu (`StandardViewMenu`).
+    var standardViewMenu = false
+
+    @ObservedObject private var toolbarSpace = ToolbarSpace.shared
+
     @Default(.colorFormat) var colorFormat
     @Default(.copyFormat) var copyFormat
     @Default(.historyDrawerVisible) var historyDrawerVisible
@@ -43,11 +48,23 @@ struct NavigationMenu: View {
                     .fill(Color(nsColor: .separatorColor))
                     .frame(width: 1, height: 14)
 
-                ColorSpaceMenu()
+                ColorSpaceMenu(
+                    compact: !standardViewMenu && toolbarSpace.compactSpace,
+                    limit: standardViewMenu ? nil : toolbarSpace.spaceLimit
+                )
             }
             .toolbarMenuChrome()
 
-            ViewMenuButton()
+            // The popover is always wide enough; the window's toolbar gives Swap up first.
+            if standardViewMenu || toolbarSpace.showsSwap {
+                SwapButton()
+            }
+
+            if standardViewMenu {
+                StandardViewMenu()
+            } else if toolbarSpace.showsView {
+                ViewMenuButton()
+            }
 
             Menu {
                 NavigationMenuItems()
@@ -107,16 +124,13 @@ struct NavigationMenu: View {
 /// The colour space setting, beside the format it applies to, so the space the readout and copies
 /// are in is always visible. One for the whole app: a menu on each swatch read as per-swatch spaces.
 private struct ColorSpaceMenu: View {
+    /// Shortened, when the window's toolbar is short of room (`ToolbarSpace.compactSpace`).
+    var compact = false
+    var limit: CGFloat?
+
     @State private var option = ColorSpacePreference.current
 
-    private var label: String {
-        switch option {
-        case .space(.sRGB): return "sRGB"
-        case .space(.displayP3): return "Display P3"
-        case .matchDisplay: return PikaText.textSpaceShortDisplay
-        case let .space(space): return space.localizedName ?? "—"
-        }
-    }
+    private var label: String { ToolbarSpace.spaceLabel(for: option, compact: compact, limit: limit) }
 
     /// A checkable space, with a second line saying what it's for.
     private func spaceItem(_ value: ColorSpaceOption, title: String, subtitle: String?) -> some View {
@@ -155,7 +169,8 @@ private struct ColorSpaceMenu: View {
             Text(label).foregroundStyle(.secondary)
         }
         .accessibilityLabel(PikaText.textSpaceTitle)
-        .accessibilityValue(label)
+        // The full name, which the label may cut short.
+        .accessibilityValue(ToolbarSpace.spaceLabel(for: option, compact: false, truncates: false))
         .toolbarMenuSegment()
         .help(PikaText.textSpaceTitle)
         // Settings, Check a Color and Match display following the screen change it too.
@@ -169,7 +184,7 @@ private struct ColorSpaceMenu: View {
 /// The View control: the window's optional parts as checkable rows. An AppKit menu rather than a
 /// SwiftUI `Menu`, so a row can stay open after a click (a macOS menu closes on any standard item,
 /// but not on one drawn by a custom view) and several parts can be switched in one visit.
-private struct ViewMenuButton: View {
+struct ViewMenuButton: View {
     private struct Row {
         let title: String
         let key: String
@@ -210,6 +225,10 @@ private struct ViewMenuButton: View {
             // Written here rather than through the toggle action: that lands in a SwiftUI
             // handler, which waits for the menu to close.
             item.view = ToggleMenuRow(title: row.title, key: row.key, rows: rows, isOn: { Defaults[row.setting] }) {
+                // Palettes from here keep the window's right edge, under this menu.
+                if row.setting.name == Defaults.Keys.historyDrawerVisible.name {
+                    SidebarLayout.shared.keepsRightEdge = true
+                }
                 withAnimation(.easeInOut(duration: 0.25)) { Defaults[row.setting].toggle() }
             }
             menu.addItem(item)
@@ -217,6 +236,112 @@ private struct ViewMenuButton: View {
         // Just below the control, like the format and space menus.
         let below = anchor.isFlipped ? anchor.bounds.maxY + 4.0 : -4.0
         menu.popUp(positioning: nil, at: NSPoint(x: -4.0, y: below), in: anchor)
+    }
+}
+
+/// Whether the main window's toolbar has room for Swap. Set by `PikaWindow` as the window
+/// resizes: Swap is also in the ⋯ menu, so it gives way when the toolbar would otherwise run into
+/// the traffic lights and the sidebar button.
+final class ToolbarSpace: ObservableObject {
+    static let shared = ToolbarSpace()
+    @Published var showsSwap = true
+    /// View goes next; its toggles are also in the ⋯ menu.
+    @Published var showsView = true
+    /// Short of room even without Swap, the colour space's label shortens ("Display P3" to "P3").
+    @Published var compactSpace = false
+    /// Still short of room, the label is cut to this width: format and space names both vary, so
+    /// no one short form fits every pair at the window's narrowest.
+    @Published var spaceLimit: CGFloat?
+
+    private static let labelFont = NSFont.systemFont(ofSize: NSFont.systemFontSize)
+
+    /// Widths Swap and View take in the toolbar, with the gap before each.
+    static let swapWidth = NSHostingView(rootView: SwapButton()).fittingSize.width + 8
+    static let viewWidth = NSHostingView(rootView: ViewMenuButton()).fittingSize.width + 8
+
+    /// The colour space's toolbar label. Any other space chosen in Settings is cut short with an
+    /// ellipsis (its menu item has the full name): some, like "ACES CG Linear (Academy Color
+    /// Encoding System AP1)", ran the toolbar past the window's edge.
+    static func spaceLabel(
+        for option: ColorSpaceOption, compact: Bool, limit: CGFloat? = nil, truncates: Bool = true
+    ) -> String {
+        let label: String
+        switch option {
+        case .space(.sRGB): label = "sRGB"
+        case .space(.displayP3): label = compact ? "P3" : "Display P3"
+        case .matchDisplay: label = PikaText.textSpaceShortDisplay
+        case let .space(space):
+            let name = space.localizedName ?? "—"
+            label = truncates ? truncated(name, to: compact ? 44 : 110) : name
+        }
+        guard truncates, let limit else { return label }
+        return truncated(label, to: limit)
+    }
+
+    /// The current space's label width, as `spaceLabel` would give it.
+    static func labelWidth(compact: Bool, limit: CGFloat?) -> CGFloat {
+        width(spaceLabel(for: ColorSpacePreference.current, compact: compact, limit: limit))
+    }
+
+    static func width(_ text: String) -> CGFloat {
+        ceil((text as NSString).size(withAttributes: [.font: labelFont]).width)
+    }
+
+    /// `text` cut short with an ellipsis to fit `maxWidth`, down to the ellipsis alone.
+    static func truncated(_ text: String, to maxWidth: CGFloat) -> String {
+        guard width(text) > maxWidth else { return text }
+        var kept = text
+        while !kept.isEmpty, width(kept.trimmingCharacters(in: .whitespaces) + "…") > maxWidth {
+            kept.removeLast()
+        }
+        return kept.trimmingCharacters(in: .whitespaces) + "…"
+    }
+}
+
+/// Swaps the two colours. In the toolbar, between the format and space they're read in and the
+/// View menu, so it's always in the same place rather than appearing over the colours on hover.
+struct SwapButton: View {
+    @State private var angle: Double = 0
+
+    var body: some View {
+        Button {
+            NSApp.sendAction(#selector(AppDelegate.triggerSwap), to: nil, from: nil)
+        } label: {
+            HStack(spacing: 4.0) {
+                IconImage(name: "arrow.triangle.swap")
+                    .rotationEffect(.degrees(angle))
+                Text(PikaText.textColorSwap)
+            }
+            .padding(.horizontal, 8.0)
+            .frame(height: 22.0)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .toolbarMenuChrome()
+        .help(PikaText.textColorSwap)
+        .accessibilityLabel(PikaText.textColorSwap)
+        // A half-turn for every swap, from here, the menus or the shortcut.
+        .onReceive(NotificationCenter.default.publisher(for: .triggerSwap)) { _ in
+            withAnimation(.easeInOut) { angle -= 180 }
+        }
+    }
+}
+
+/// The View menu in the menu bar popover: a standard menu, like the format and space menus
+/// beside it, so a choice flashes and closes it. Its change lands once the menu has gone, which
+/// matters for Palettes: that resizes the popover, and an open menu is placed from the popover's
+/// bottom edge, so it moved.
+private struct StandardViewMenu: View {
+    var body: some View {
+        Menu {
+            ViewMenuToggles()
+        } label: {
+            Text(PikaText.textViewMenu)
+        }
+        .accessibilityLabel(PikaText.textViewMenu)
+        .toolbarMenuSegment()
+        .toolbarMenuChrome()
+        .help(PikaText.textViewMenu)
     }
 }
 

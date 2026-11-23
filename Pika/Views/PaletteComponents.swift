@@ -21,43 +21,47 @@ struct ColorHistoryChip: View {
         (color.usingColorSpace(colorSpace) ?? color).toFormat(format: colorFormat, style: copyFormat)
     }
 
+    /// The palettes sidebar's tile (`SidebarSwatch`), sized for the drawer's row: "Aa" in the
+    /// pair's own colours, with its contrast ratio under it.
+    @Default(.paletteSwatchStyle) private var swatchStyle
+
+    /// The palettes sidebar's tile (`SidebarSwatch`), sized for the drawer's row, with the pair's
+    /// contrast under it.
     var body: some View {
-        RoundedRectangle(cornerRadius: 6)
-            .fill(Color.clear)
-            .frame(width: 24, height: 24)
-            .overlay(
-                VStack(spacing: 0) {
-                    Color(pair.foregroundColor)
-                    Color(pair.backgroundColor)
-                }
-                .clipShape(RoundedRectangle(cornerRadius: 6))
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: 6)
-                    .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: 6)
-                    .strokeBorder(Color.accentColor, lineWidth: 2)
-                    .opacity(isActive ? 1 : 0)
-            )
-            .shadow(radius: isHovered ? 3 : 0)
-            .animation(.easeInOut(duration: 0.1), value: isHovered)
-            .onHover { hovering in isHovered = hovering }
-            .onTapGesture { onApplyBoth() }
-            .contextMenu {
-                Button(PikaText.textHistoryApplyForeground, action: onApplyForeground)
-                Button(PikaText.textHistoryApplyBackground, action: onApplyBackground)
-                Divider()
-                Button(isAutoHistory ? PikaText.textHistoryRemove : PikaText.textPaletteRemoveChip, action: onRemove)
-                if let onClearAll = onClearAll {
-                    Button(PikaText.textHistoryClear, action: onClearAll)
-                }
+        VStack(spacing: 2) {
+            PairTile(pair: pair, fontSize: 12)
+                // The stacked style keeps its original square.
+                .frame(width: swatchStyle == .stacked ? 24 : 34, height: 24)
+                .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 6, style: .continuous)
+                        .strokeBorder(Color.primary.opacity(0.12))
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 6, style: .continuous)
+                        .strokeBorder(Color.accentColor, lineWidth: 2)
+                        .opacity(isActive ? 1 : 0)
+                )
+                .shadow(color: .black.opacity(isHovered ? 0.25 : 0), radius: 3, y: 1)
+            SwatchContrastLabel(pair: pair, fontSize: 9)
+        }
+        .contentShape(Rectangle())
+        .animation(.easeInOut(duration: 0.1), value: isHovered)
+        .onHover { hovering in isHovered = hovering }
+        .onTapGesture { onApplyBoth() }
+        .contextMenu {
+            Button(PikaText.textHistoryApplyForeground, action: onApplyForeground)
+            Button(PikaText.textHistoryApplyBackground, action: onApplyBackground)
+            Divider()
+            Button(isAutoHistory ? PikaText.textHistoryRemove : PikaText.textPaletteRemoveChip, action: onRemove)
+            if let onClearAll = onClearAll {
+                Button(PikaText.textHistoryClear, action: onClearAll)
             }
-            .help("\(formatted(pair.foregroundColor)) / \(formatted(pair.backgroundColor))")
-            .onReceive(NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification)) { _ in
-                colorSpace = Defaults[.colorSpace]
-            }
+        }
+        .help("\(formatted(pair.foregroundColor)) / \(formatted(pair.backgroundColor))")
+        .onReceive(NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification)) { _ in
+            colorSpace = Defaults[.colorSpace]
+        }
     }
 }
 
@@ -241,6 +245,63 @@ struct PaletteTabBar: View {
                     eyedroppers.deletePalette(at: index)
                 }
             }
+        }
+    }
+}
+
+/// A pair's tile: "Aa" in the foreground colour on the background, or the two colours stacked,
+/// as Settings → Palette Swatches chooses. Sized and shaped by the caller.
+struct PairTile: View {
+    let pair: ColorPair
+    let fontSize: CGFloat
+
+    @Default(.paletteSwatchStyle) private var style
+
+    var body: some View {
+        switch style {
+        case .text:
+            Text("Aa")
+                .font(.system(size: fontSize, weight: .bold))
+                .foregroundStyle(Color(pair.foregroundColor))
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Color(pair.backgroundColor))
+        case .stacked:
+            VStack(spacing: 0) {
+                Color(pair.foregroundColor)
+                Color(pair.backgroundColor)
+            }
+        }
+    }
+}
+
+/// The contrast under a palette swatch, in the standard the contrast bar uses: the WCAG ratio, or
+/// APCA's Lc. Nothing with both, which wouldn't fit. Bold when it passes for body text (WCAG
+/// 4.5:1, APCA Lc 75).
+struct SwatchContrastLabel: View {
+    let pair: ColorPair
+    let fontSize: CGFloat
+
+    @Default(.contrastStandard) private var standard
+
+    var body: some View {
+        if let (text, passes) = value {
+            Text(text)
+                .font(.system(size: fontSize, weight: passes ? .semibold : .regular))
+                .foregroundStyle(passes ? Color.primary.opacity(0.85) : Color.secondary)
+                .monospacedDigit()
+        }
+    }
+
+    private var value: (String, Bool)? {
+        switch standard {
+        case .wcag:
+            let ratio = pair.foregroundColor.contrastRatio(with: pair.backgroundColor)
+            return (String(format: "%.1f", ratio), ratio >= 4.5)
+        case .apca:
+            let contrast = abs(pair.foregroundColor.toAPCACompliance(with: pair.backgroundColor).value)
+            return (String(format: "%.0f", contrast), contrast >= 75)
+        case .both:
+            return nil
         }
     }
 }

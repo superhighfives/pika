@@ -2,138 +2,9 @@ import AppKit
 import Defaults
 import SwiftUI
 
-/// The full-size background pick target: owns its own `mouseDown` (mirroring `ScrubTextField`'s
-/// approach in `EditableColorValue.swift`) so it can check the window's first responder *before*
-/// deciding what a click means. A plain SwiftUI `Button` can't make that distinction — its action
-/// fires unconditionally on tap, so a click intended to dismiss a focused colour-value field would
-/// also fall through and start a new pick. If a field is currently being edited, this click's only
-/// job is to end that edit (matching standard click-away-to-blur behaviour); otherwise it starts
-/// a pick, same as before.
-private struct PickTarget: NSViewRepresentable {
-    let onPick: () -> Void
-    let onPressChange: (Bool) -> Void
-    /// Called instead of `onPick` when the click's only job is to end an active edit session.
-    /// AppKit's own `endEditing(for:)` resigns the field editor, but doesn't reliably notify
-    /// `EditableColorValue`'s own focus-tracking state back up (its outline stays stuck showing
-    /// "focused") — so the parent also needs an explicit nudge to clear that state itself.
-    let onDismissEditing: () -> Void
-
-    func makeNSView(context _: Context) -> PickTargetView {
-        let view = PickTargetView()
-        view.onPick = onPick
-        view.onPressChange = onPressChange
-        view.onDismissEditing = onDismissEditing
-        return view
-    }
-
-    func updateNSView(_ view: PickTargetView, context _: Context) {
-        view.onPick = onPick
-        view.onPressChange = onPressChange
-        view.onDismissEditing = onDismissEditing
-    }
-
-    final class PickTargetView: NSView, EditDismissingClickTarget {
-        var onPick: (() -> Void)?
-        var onPressChange: ((Bool) -> Void)?
-        var onDismissEditing: (() -> Void)?
-
-        override func mouseDown(with _: NSEvent) {
-            if window?.firstResponder is NSText {
-                window?.endEditing(for: nil)
-                onDismissEditing?()
-                return
-            }
-
-            onPressChange?(true)
-            while true {
-                guard let next = NSApp.nextEvent(
-                    matching: [.leftMouseDragged, .leftMouseUp],
-                    until: .distantFuture,
-                    inMode: .eventTracking,
-                    dequeue: true
-                ) else {
-                    onPressChange?(false)
-                    return
-                }
-                if next.type == .leftMouseUp {
-                    let point = convert(next.locationInWindow, from: nil)
-                    onPressChange?(false)
-                    if bounds.contains(point) { onPick?() }
-                    return
-                }
-            }
-        }
-    }
-}
-
-/// A view whose own `mouseDown` already ends an active colour-field edit (and needs to see the
-/// field still focused to know that's all the click should do), so `EditingClickAway` leaves
-/// clicks on it alone.
-protocol EditDismissingClickTarget: NSView {}
-
-/// Click-away-to-blur for the colour fields. A click on a swatch already ended an edit (see
-/// `PickTarget`), and a click on a button fired the button, but a click anywhere else in the
-/// window — the labels, the contrast footer, the title bar — left the field focused. This
-/// watches mouse-downs while a field is being edited and ends the edit for any that land
-/// outside it. The click itself is never swallowed.
-final class EditingClickAway {
-    private var monitor: Any?
-
-    func start(onDismiss: @escaping () -> Void) {
-        guard monitor == nil else { return }
-        monitor = NSEvent.addLocalMonitorForEvents(matching: .leftMouseDown) { event in
-            guard let window = event.window else { return event }
-            // `hitTest` takes a point in the superview's coordinates; the content view's
-            // superview is the window's frame view, whose coordinates are the window's.
-            let root = window.contentView?.superview ?? window.contentView
-            let hit = root?.hitTest(event.locationInWindow)
-            if Self.shouldEndEditing(firstResponder: window.firstResponder, clicked: hit) {
-                window.endEditing(for: nil)
-                onDismiss()
-            }
-            return event
-        }
-    }
-
-    func stop() {
-        if let monitor { NSEvent.removeMonitor(monitor) }
-        monitor = nil
-    }
-
-    deinit { stop() }
-
-    /// Whether a mouse-down on `clicked` should end the edit in progress: only when a colour
-    /// field is the one being edited, and the click isn't on a colour field (which moves focus
-    /// itself) or on a view that ends the edit in its own `mouseDown`.
-    static func shouldEndEditing(firstResponder: NSResponder?, clicked: NSView?) -> Bool {
-        guard let editor = firstResponder as? NSText, editor.delegate is ScrubTextField else { return false }
-        var view = clicked
-        while let current = view {
-            if current is ScrubTextField || current is EditDismissingClickTarget { return false }
-            view = current.superview
-        }
-        return true
-    }
-}
-
-/// Swallows clicks over the readout block so they don't fall through to `PickTarget` and start
-/// a screen pick. An AppKit view rather than a SwiftUI `contentShape`: `PickTarget` is itself an
-/// `NSView` sitting in the same z-order, so the thing shadowing it has to win AppKit's own
-/// hit-testing, not just SwiftUI's.
-private struct ClickShield: NSViewRepresentable {
-    func makeNSView(context _: Context) -> NSView { ShieldView() }
-    func updateNSView(_: NSView, context _: Context) {}
-
-    final class ShieldView: NSView {
-        // Absorb rather than forward: the readout's own fields sit in front of this and keep
-        // receiving their clicks, but the labels, colour name, and the gaps between them no
-        // longer act as a pick target.
-        override func mouseDown(with _: NSEvent) {}
-    }
-}
-
 struct EyedropperButton: View {
     @ObservedObject var eyedropper: Eyedropper
+    @EnvironmentObject var eyedroppers: Eyedroppers
     /// Shared with the other swatch (owned by `ColorPickers`) rather than local: a click on
     /// *this* swatch's `PickTarget` can be dismissing a field focused on the *other* swatch,
     /// since the first-responder check that decides "dismiss vs. pick" is window-wide, not
@@ -145,9 +16,6 @@ struct EyedropperButton: View {
     var readoutHeight: CGFloat = 0
     /// Driven by hovering either swatch, so both boundaries show together.
     var showsReadoutBoundary: Bool = false
-    /// Reports whether the pointer is over the pick area: the swatch above the readout block.
-    /// The Swap button shows only while one of the two pick areas is hovered.
-    var onPickAreaHover: (Bool) -> Void = { _ in }
     @Default(.colorFormat) var colorFormat
     @Default(.copyFormat) var copyFormat
     @Default(.hideColorNames) var hideColorNames
@@ -161,8 +29,8 @@ struct EyedropperButton: View {
     /// Whether the pointer is over the readout block (below the hairline). The Copy and system
     /// picker buttons belong to the readout, so they show only while it, or they, are hovered.
     @State private var readoutHovered: Bool = false
-    /// Whether the pointer is over the pick area (above the hairline), so `onPickAreaHover`
-    /// fires on a change rather than on every pointer move.
+    /// Whether the pointer is over the pick area (above the hairline), so the macOS 14 cursor
+    /// changes on a change rather than on every pointer move.
     @State private var pickAreaHovered: Bool = false
     /// Top of the readout block in the swatch's own coordinates, where the pick area ends.
     @State private var readoutTop: CGFloat = .infinity
@@ -173,6 +41,11 @@ struct EyedropperButton: View {
     /// re-evaluates the whole tree, and `.animation(_:value:)` doesn't catch that — the row just
     /// snapped to full height. Driving an explicit state change is what makes it a transition.
     @State private var colorNameVisible = false
+    /// `adaptive.bottomInset`, changed inside `withAnimation` for the same reason as
+    /// `colorNameVisible`: from the environment it snapped into place. The preview reads
+    /// `adaptive.showsPreview` directly: its setting now changes inside the toggle's own
+    /// animation (`LiveViewSettings`), and a copy here waited for an open View menu to close.
+    @State private var bottomInset: CGFloat = 0
 
     private var wantsColorName: Bool { !hideColorNames && adaptive.showsColorNames }
 
@@ -199,15 +72,33 @@ struct EyedropperButton: View {
                 onDismissEditing: { dismissEditingTrigger += 1 }
             )
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .pickPointer()
             .background(Color(eyedropper.color))
             .opacity(isPressed ? 0.8 : 1.0)
             .animation(.easeIn(duration: 0.15), value: Color(eyedropper.color))
             .animation(.easeIn(duration: 0.15), value: isPressed)
 
+            // The other colour set as text on this one, so the pair reads both ways round.
+            // Not hit-testable: a click here still picks.
+            ZStack {
+                if adaptive.showsPreview {
+                    SwatchPreview(
+                        other: eyedropper.type == .foreground ? eyedroppers.background : eyedroppers.foreground,
+                        showsSentence: adaptive.showsPreviewSentence
+                    )
+                    .padding(.horizontal, 10.0)
+                    .padding(.top, 14.0)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                    .allowsHitTesting(false)
+                    .transition(.opacity)
+                }
+            }
+            .animation(.easeInOut(duration: 0.25), value: adaptive.showsPreview)
+
             // Content overlay, lifted out of the pick button so the value's fields receive
             // clicks. The type label and colour name disable hit-testing so clicks fall
             // through to the pick button behind them.
-            VStack(alignment: .leading, spacing: 2.0) {
+            VStack(alignment: .leading, spacing: 4.0) {
                 // `adaptive.showsTypeLabels` is hardcoded `true` (ContentView.swift) as of
                 // `81fe9f9`, so the fade below is currently vestigial — kept in case that's
                 // revisited, rather than stripped along with the conditional that once drove it.
@@ -237,6 +128,9 @@ struct EyedropperButton: View {
                         .frame(width: 0)
                         .accessibilityHidden(true)
                         .allowsHitTesting(false)
+                    // Copy, Pick and ⋯ always here, small, so they're always in the same place.
+                    Spacer(minLength: 0)
+                    actionIcons
                 }
                 .opacity(showsTypeLabel || valueInvalid ? 1 : 0)
                 .animation(
@@ -250,8 +144,8 @@ struct EyedropperButton: View {
                 // height: the name has to be able to collapse to nothing, and a `VStack`
                 // spacing would still be contributing 6pt when it did.
                 VStack(alignment: .leading, spacing: 0) {
-                    // Trailing gutter keeps the value clear of the copy / system-picker hover
-                    // buttons; the value shrinks to fit as its column narrows.
+                    // The quiet Copy, Pick and ⋯ icons follow the value on its row. The value
+                    // shrinks and wraps to fit what's left of the column after them.
                     EditableColorValue(
                         eyedropper: eyedropper,
                         format: colorFormat,
@@ -261,7 +155,6 @@ struct EyedropperButton: View {
                         isInvalid: $valueInvalid,
                         dismissEditingTrigger: dismissEditingTrigger
                     )
-                    .padding(.trailing, 32.0)
 
                     // Always in the hierarchy, collapsing to zero height rather than being
                     // inserted and removed. This block is bottom-anchored, so a row appearing
@@ -282,8 +175,9 @@ struct EyedropperButton: View {
                     withAnimation(.easeInOut(duration: 0.2)) { colorNameVisible = shows }
                 }
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 10.0)
-            .padding(.bottom, 10.0)
+            .padding(.bottom, 10.0 + bottomInset)
             // Roomier above than below, so the hairline doesn't crowd the type label.
             .padding(.top, 16.0)
             // Measured *before* the shared height is imposed below, so this reports what the
@@ -306,6 +200,7 @@ struct EyedropperButton: View {
             }
             // Both of these sit outside the shadow above, so the hairline stays crisp.
             .background(ClickShield())
+            .defaultPointer()
             .background(
                 GeometryReader { geo in
                     let top = geo.frame(in: .named(Self.swatchSpace)).minY
@@ -324,55 +219,18 @@ struct EyedropperButton: View {
             }
             .animation(.easeInOut(duration: 0.15), value: showsReadoutBoundary)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
-
-            VStack(spacing: 4.0) {
-                Button(action: {
-                    NSApp.sendAction(eyedropper.type.copySelector, to: nil, from: nil)
-                }, label: {
-                    IconImage(name: "doc.on.doc", resizable: true)
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 14, height: 14)
-                })
-                .buttonStyle(SwapButtonStyle(
-                    isVisible: hoverVisible,
-                    alt: PikaText.textColorCopy,
-                    onHoverChange: { hover in
-                        childHovered = hover
-                        updateButtonVisibility()
-                    }
-                ))
-                .frame(maxWidth: .infinity, alignment: .trailing)
-                .focusable(false)
-                // The style only draws `alt` on hover; the label itself is a bare SF Symbol.
-                .accessibilityLabel(PikaText.textColorCopy)
-
-                Button(action: {
-                    NSApp.sendAction(eyedropper.type.systemPickerSelector, to: nil, from: nil)
-                }, label: {
-                    IconImage(name: "paintpalette", resizable: true)
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 14, height: 14)
-                })
-                .buttonStyle(SwapButtonStyle(
-                    isVisible: hoverVisible,
-                    alt: PikaText.textColorSystemPicker,
-                    onHoverChange: { hover in
-                        childHovered = hover
-                        updateButtonVisibility()
-                    }
-                ))
-                .frame(maxWidth: .infinity, alignment: .trailing)
-                .focusable(false)
-                // The style only draws `alt` on hover; the label itself is a bare SF Symbol.
-                .accessibilityLabel(PikaText.textColorSystemPicker)
-            }
-            .padding(.all, 8.0)
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
         }
         .onReceive(NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification)) { _ in
             colorSpace = Defaults[.colorSpace]
         }
+        .onAppear {
+            bottomInset = adaptive.bottomInset
+        }
+        .onChange(of: adaptive.bottomInset) { inset in
+            withAnimation(.easeInOut(duration: 0.2)) { bottomInset = inset }
+        }
         .coordinateSpace(name: Self.swatchSpace)
+        .contextMenu { SwatchActionsMenu(eyedropper: eyedropper) }
         .onContinuousHover(coordinateSpace: .named(Self.swatchSpace)) { phase in
             let inReadout: Bool
             let inPickArea: Bool
@@ -384,18 +242,38 @@ struct EyedropperButton: View {
                 inReadout = false
                 inPickArea = false
             }
-            if inReadout != readoutHovered {
-                readoutHovered = inReadout
+            // The icons show while anywhere on the colour is hovered.
+            let inSwatch = inReadout || inPickArea
+            if inSwatch != readoutHovered {
+                readoutHovered = inSwatch
                 updateButtonVisibility()
             }
             if inPickArea != pickAreaHovered {
                 pickAreaHovered = inPickArea
-                onPickAreaHover(inPickArea)
+                // The pointing hand is the pick area's only affordance. On macOS 14, which has
+                // no SwiftUI pointer styles, it's pushed and popped with the hover.
+                if #unavailable(macOS 15) {
+                    PickAreaCursor.hover(eyedropper.type, inside: inPickArea)
+                }
             }
         }
     }
 
     private static let swatchSpace = "swatch"
+
+    /// Whether the icons fit after the value. In a narrow colour, reserving their room would
+    /// shrink the value, so they move to the end of the type label's row instead.
+
+    private var actionIcons: some View {
+        SwatchActionIcons(
+            eyedropper: eyedropper,
+            isVisible: hoverVisible,
+            onHoverChange: { hover in
+                childHovered = hover
+                updateButtonVisibility()
+            }
+        )
+    }
 
     /// Shows the Copy and system picker buttons while the readout or the buttons are hovered,
     /// and hides them a moment after neither is, so crossing the gap onto a button doesn't
@@ -416,6 +294,41 @@ struct EyedropperButton: View {
     }
 }
 
+/// "Aa" and a line of sample text in the other swatch's colour, drawn on this one.
+private struct SwatchPreview: View {
+    @ObservedObject var other: Eyedropper
+    var showsSentence = true
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4.0) {
+            Text("Aa")
+                .font(.system(size: 34, weight: .bold))
+            if showsSentence {
+                Text(Self.sampleText)
+                    .font(.system(size: 13))
+                    .lineLimit(2)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .transition(.opacity)
+            }
+        }
+        .animation(.easeInOut(duration: 0.2), value: showsSentence)
+        .foregroundStyle(Color(other.color))
+        .accessibilityHidden(true)
+    }
+
+    /// The sample sentence broken over two lines at the space nearest its middle, so it reads
+    /// as a short block rather than one long line. Languages without spaces wrap as they fall.
+    static let sampleText: String = {
+        let sample = NSLocalizedString("color.preview.sample", comment: "Sample preview text")
+        let middle = sample.index(sample.startIndex, offsetBy: sample.count / 2)
+        let spaces = sample.indices.filter { sample[$0] == " " }
+        guard let split = spaces.min(by: {
+            abs(sample.distance(from: $0, to: middle)) < abs(sample.distance(from: $1, to: middle))
+        }) else { return sample }
+        return sample.replacingCharacters(in: split ... split, with: "\n")
+    }()
+}
+
 struct EyedropperButton_Previews: PreviewProvider {
     static var previews: some View {
         EyedropperButton(
@@ -423,5 +336,19 @@ struct EyedropperButton_Previews: PreviewProvider {
             dismissEditingTrigger: .constant(0)
         )
         .frame(width: 170.0)
+    }
+}
+
+/// The pointing hand over the pick areas on macOS 14, pushed once for both colours. Each pushed
+/// and popped its own, and moving straight from one into the other could take the pop after
+/// the push and leave the arrow over a pick area.
+private enum PickAreaCursor {
+    private static var hovered: Set<Eyedropper.Types> = []
+
+    static func hover(_ area: Eyedropper.Types, inside: Bool) {
+        let wasHovering = !hovered.isEmpty
+        if inside { hovered.insert(area) } else { hovered.remove(area) }
+        if !wasHovering, !hovered.isEmpty { NSCursor.pointingHand.push() }
+        if wasHovering, hovered.isEmpty { NSCursor.pop() }
     }
 }

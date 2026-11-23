@@ -73,11 +73,7 @@
 /* Hide Pika while picking */
 "preferences.pick.hide" = "ピック中はPikaを非表示";
 
-/* General Settings */
-"preferences.general.title" = "一般設定";
 
-/* Selection Settings */
-"preferences.selection.title" = "選択設定";
 
 /* Hide menu bar icon */
 "preferences.icon.description" = "メニューバーアイコンを非表示";
@@ -97,8 +93,6 @@
 /* Always show Pika on launch */
 "preferences.show.description" = "起動時に常にPikaを表示";
 
-/* App Settings */
-"preferences.app.title" = "アプリ設定";
 
 /* Menu bar */
 "preferences.app.menubar.title" = "メニューバー";
@@ -147,6 +141,15 @@
 
 /* Contrast Calculation Standard */
 "preferences.contrast.standard" = "コントラスト計算基準";
+"preferences.swatches.title" = "パレットのスウォッチ";
+"preferences.swatches.stacked" = "積み重ね";
+"settings.tab.general" = "一般";
+"settings.tab.picking" = "スポイト";
+"settings.tab.color" = "カラー";
+"settings.tab.shortcuts" = "ショートカット";
+"settings.updates" = "アップデート";
+"settings.showIn" = "Pikaの表示場所";
+"settings.loupe.tab" = "スポイト使用中にTabキーでスタイルを切り替え、Shift+Tabで前に戻ります。";
 
 /* Both (combined WCAG and APCA) */
 "color.standard.both" = "両方";
@@ -279,6 +282,15 @@
 
 /* Copied */
 "color.copy.toast" = "コピーしました";
+
+/* Copy a colour in a format other than the shown one */
+"color.copy.as" = "形式を指定してコピー";
+
+/* Foreground colour actions menu */
+"color.actions.foreground" = "前景色のアクション";
+
+/* Background colour actions menu */
+"color.actions.background" = "背景色のアクション";
 
 /* Copy current format */
 "color.copy.current" = "現在のフォーマットでコピー";
@@ -640,8 +652,6 @@
 /* Expand to fit */
 "content.expandToFit" = "広げて表示";
 
-/* Window Settings */
-"preferences.window.title" = "ウインドウ設定";
 
 /* Invalid input */
 "color.edit.invalid" = "無効な入力";

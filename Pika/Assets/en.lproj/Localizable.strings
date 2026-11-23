@@ -79,8 +79,6 @@
 /* Window shadow */
 "preferences.shadow.description" = "Window shadow";
 
-/* Window Settings */
-"preferences.window.title" = "Window Settings";
 
 /* Window shadow: always on */
 "preferences.shadow.options.always" = "Show shadow";
@@ -94,11 +92,7 @@
 /* Expand the window to fit hidden elements */
 "content.expandToFit" = "Expand to fit";
 
-/* General Settings */
-"preferences.general.title" = "General Settings";
 
-/* Selection Settings */
-"preferences.selection.title" = "Selection Settings";
 
 /* Hide menu bar icon */
 "preferences.icon.description" = "Hide menu bar icon";
@@ -118,8 +112,6 @@
 /* Always show Pika on launch */
 "preferences.show.description" = "Always show Pika on launch";
 
-/* App Settings */
-"preferences.app.title" = "App Settings";
 
 /* Menu bar */
 "preferences.app.menubar.title" = "Menu Bar";
@@ -168,6 +160,15 @@
 
 /* Contrast Calculation Standard */
 "preferences.contrast.standard" = "Contrast Calculation Standard";
+"preferences.swatches.title" = "Palette Swatches";
+"preferences.swatches.stacked" = "Stacked";
+"settings.tab.general" = "General";
+"settings.tab.picking" = "Picking";
+"settings.tab.color" = "Color";
+"settings.tab.shortcuts" = "Shortcuts";
+"settings.updates" = "Updates";
+"settings.showIn" = "Show Pika in";
+"settings.loupe.tab" = "Press Tab while picking to switch styles, and Shift-Tab to go back.";
 
 /* Both (combined WCAG and APCA) */
 "color.standard.both" = "Both";
@@ -309,6 +310,15 @@
 
 /* Copied */
 "color.copy.toast" = "Copied";
+
+/* Copy a colour in a format other than the shown one */
+"color.copy.as" = "Copy As";
+
+/* Foreground colour actions menu */
+"color.actions.foreground" = "Foreground Actions";
+
+/* Background colour actions menu */
+"color.actions.background" = "Background Actions";
 
 /* Copy current format */
 "color.copy.current" = "Copy current format";
