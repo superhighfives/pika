@@ -185,14 +185,6 @@ private struct AppearanceSection: View {
                 .horizontalRadioGroupLayout()
                 .fixedSize()
             }
-            Picker(PikaText.textPaletteSwatches, selection: $paletteSwatchStyle) {
-                ForEach(PaletteSwatchStyle.allCases, id: \.self) { value in
-                    Text(value.localizedString())
-                }
-            }
-            .pickerStyle(RadioGroupPickerStyle())
-            .horizontalRadioGroupLayout()
-            .fixedSize()
             .padding(.bottom, 8.0)
             Group {
                 if contrastStandard == .wcag {
@@ -214,6 +206,15 @@ private struct AppearanceSection: View {
                 }
             }
             .frame(height: 115)
+            Picker(PikaText.textPaletteSwatches, selection: $paletteSwatchStyle) {
+                ForEach(PaletteSwatchStyle.allCases, id: \.self) { value in
+                    Text(value.localizedString())
+                }
+            }
+            .pickerStyle(RadioGroupPickerStyle())
+            .horizontalRadioGroupLayout()
+            .fixedSize()
+            .padding(.top, 8.0)
         }
         .padding(.horizontal, 24.0)
     }
