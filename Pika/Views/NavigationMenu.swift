@@ -5,6 +5,8 @@ struct NavigationMenu: View {
     /// The menu bar popover's View menu is a standard menu (`StandardViewMenu`).
     var standardViewMenu = false
 
+    @ObservedObject private var toolbarSpace = ToolbarSpace.shared
+
     @Default(.colorFormat) var colorFormat
     @Default(.copyFormat) var copyFormat
     @Default(.historyDrawerVisible) var historyDrawerVisible
@@ -50,7 +52,10 @@ struct NavigationMenu: View {
             }
             .toolbarMenuChrome()
 
-            SwapButton()
+            // The popover is always wide enough; the window's toolbar gives Swap up first.
+            if standardViewMenu || toolbarSpace.showsSwap {
+                SwapButton()
+            }
 
             if standardViewMenu {
                 StandardViewMenu()
@@ -233,20 +238,31 @@ private struct ViewMenuButton: View {
     }
 }
 
+/// Whether the main window's toolbar has room for Swap. Set by `PikaWindow` as the window
+/// resizes: Swap is also in the ⋯ menu, so it gives way when the toolbar would otherwise run into
+/// the traffic lights and the sidebar button.
+final class ToolbarSpace: ObservableObject {
+    static let shared = ToolbarSpace()
+    @Published var showsSwap = true
+}
+
 /// Swaps the two colours. In the toolbar, between the format and space they're read in and the
 /// View menu, so it's always in the same place rather than appearing over the colours on hover.
-private struct SwapButton: View {
+struct SwapButton: View {
     @State private var angle: Double = 0
 
     var body: some View {
         Button {
             NSApp.sendAction(#selector(AppDelegate.triggerSwap), to: nil, from: nil)
         } label: {
-            IconImage(name: "arrow.triangle.swap")
-                .rotationEffect(.degrees(angle))
-                .padding(.horizontal, 8.0)
-                .frame(height: 22.0)
-                .contentShape(Rectangle())
+            HStack(spacing: 4.0) {
+                IconImage(name: "arrow.triangle.swap")
+                    .rotationEffect(.degrees(angle))
+                Text(PikaText.textColorSwap)
+            }
+            .padding(.horizontal, 8.0)
+            .frame(height: 22.0)
+            .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .toolbarMenuChrome()
