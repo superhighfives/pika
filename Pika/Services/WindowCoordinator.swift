@@ -472,9 +472,12 @@ class WindowCoordinator: NSObject {
             // buried behind Pika when "float above windows" is on.
             window.level = Defaults[.appFloating] ? .floating : .normal
             window.isReleasedWhenClosed = false
+            // The saved position, then the first tab's size from its top edge: a saved size is
+            // an older layout's (2.0 saved a 580-wide window under this name) or another tab's.
+            let autosaveName = "\(PikaText.textMenuPreferences) Window"
+            if !window.setFrameUsingName(autosaveName) { window.center() }
+            window.setFrameAutosaveName(autosaveName)
             tabs.fitWindow(animate: false)
-            window.center()
-            window.setFrameAutosaveName("\(PikaText.textMenuPreferences) Window")
             preferencesWindow = window
         }
         bringForward(preferencesWindow)
