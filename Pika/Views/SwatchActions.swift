@@ -8,6 +8,8 @@ struct SwatchActionIcons: View {
     /// Shown while the colour is hovered. Kept in the layout either way, so the value doesn't
     /// move as they appear.
     var isVisible: Bool
+    /// Smaller, to sit beside the type label rather than after the value.
+    var compact = false
     var onHoverChange: (Bool) -> Void = { _ in }
 
     @Default(.colorFormat) private var colorFormat
@@ -15,10 +17,13 @@ struct SwatchActionIcons: View {
     @State private var copied = false
     @State private var copiedTask: Task<Void, Never>?
 
+    private var symbolSize: CGFloat { compact ? 11 : 13 }
+    private var frameSize: CGFloat { compact ? 14 : 18 }
+
     private var ink: Color { Color(eyedropper.color.getUIColor()).opacity(0.7) }
 
     var body: some View {
-        HStack(spacing: 10.0) {
+        HStack(spacing: compact ? 8.0 : 10.0) {
             iconButton(copied ? "checkmark" : "doc.on.doc", label: PikaText.textColorCopy) {
                 // Copied here rather than through the copy action, which also shows the toast:
                 // the tick on the icon is the feedback for a click. ⌘C keeps the toast.
@@ -32,9 +37,9 @@ struct SwatchActionIcons: View {
                 SwatchActionsMenu(eyedropper: eyedropper)
             } label: {
                 Image(systemName: "ellipsis")
-                    .font(.system(size: 13, weight: .semibold))
+                    .font(.system(size: symbolSize, weight: .semibold))
                     .foregroundStyle(ink)
-                    .frame(width: 18, height: 18)
+                    .frame(width: frameSize, height: frameSize)
                     .contentShape(Rectangle())
             }
             // A plain button style, so the label keeps the ink: the borderless menu style drew it
@@ -54,9 +59,9 @@ struct SwatchActionIcons: View {
     private func iconButton(_ symbol: String, label: String, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Image(systemName: symbol)
-                .font(.system(size: 13, weight: .medium))
+                .font(.system(size: symbolSize, weight: .medium))
                 .foregroundStyle(ink)
-                .frame(width: 18, height: 18)
+                .frame(width: frameSize, height: frameSize)
                 .contentShape(Rectangle())
                 .contentTransition(.symbolEffect(.replace))
         }

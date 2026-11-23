@@ -130,12 +130,12 @@ struct EyedropperButton: View {
                         .allowsHitTesting(false)
                     if !iconsInline {
                         Spacer(minLength: 0)
-                        actionIcons
+                        actionIcons(compact: true)
                     }
                 }
-                // The icons' height whether or not they're here, so the value doesn't move
-                // when they move up beside the label.
-                .frame(minHeight: 18.0)
+                // The small icons' height whether or not they're here, so the value doesn't
+                // move when they move up beside the label.
+                .frame(minHeight: 14.0)
                 .opacity(showsTypeLabel || valueInvalid ? 1 : 0)
                 .animation(
                     showsTypeLabel
@@ -158,7 +158,7 @@ struct EyedropperButton: View {
                         availableWidth: adaptive.swatchWidth,
                         isInvalid: $valueInvalid,
                         dismissEditingTrigger: dismissEditingTrigger,
-                        trailingAccessory: iconsInline ? AnyView(actionIcons) : nil,
+                        trailingAccessory: iconsInline ? AnyView(actionIcons(compact: false)) : nil,
                         accessoryWidth: iconsInline ? Self.actionIconsWidth : 0
                     )
 
@@ -280,10 +280,12 @@ struct EyedropperButton: View {
         )
     }
 
-    private var actionIcons: some View {
+    /// Compact beside the type label, full size after the value.
+    private func actionIcons(compact: Bool) -> some View {
         SwatchActionIcons(
             eyedropper: eyedropper,
             isVisible: hoverVisible,
+            compact: compact,
             onHoverChange: { hover in
                 childHovered = hover
                 updateButtonVisibility()
