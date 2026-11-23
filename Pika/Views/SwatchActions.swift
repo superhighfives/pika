@@ -1,15 +1,13 @@
 import Defaults
 import SwiftUI
 
-/// The quiet controls after a colour's value: Copy, Pick and ⋯. Drawn in the label's own ink with
-/// no background, so nothing but the floating bar sits on the colour as glass.
+/// The quiet controls opposite a colour's type label: Copy, Pick and ⋯. Drawn in the label's own
+/// ink with no background, so nothing but the floating bar sits on the colour as glass.
 struct SwatchActionIcons: View {
     @ObservedObject var eyedropper: Eyedropper
     /// Shown while the colour is hovered. Kept in the layout either way, so the value doesn't
     /// move as they appear.
     var isVisible: Bool
-    /// Smaller, to sit beside the type label rather than after the value.
-    var compact = false
     var onHoverChange: (Bool) -> Void = { _ in }
 
     @Default(.colorFormat) private var colorFormat
@@ -17,13 +15,14 @@ struct SwatchActionIcons: View {
     @State private var copied = false
     @State private var copiedTask: Task<Void, Never>?
 
-    private var symbolSize: CGFloat { compact ? 11 : 13 }
-    private var frameSize: CGFloat { compact ? 14 : 18 }
+    /// Sized to the type label they sit beside.
+    private let symbolSize: CGFloat = 11
+    private let frameSize: CGFloat = 14
 
     private var ink: Color { Color(eyedropper.color.getUIColor()).opacity(0.7) }
 
     var body: some View {
-        HStack(spacing: compact ? 8.0 : 10.0) {
+        HStack(spacing: 8.0) {
             iconButton(copied ? "checkmark" : "doc.on.doc", label: PikaText.textColorCopy) {
                 // Copied here rather than through the copy action, which also shows the toast:
                 // the tick on the icon is the feedback for a click. ⌘C keeps the toast.

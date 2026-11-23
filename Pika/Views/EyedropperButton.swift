@@ -128,14 +128,10 @@ struct EyedropperButton: View {
                         .frame(width: 0)
                         .accessibilityHidden(true)
                         .allowsHitTesting(false)
-                    if !iconsInline {
-                        Spacer(minLength: 0)
-                        actionIcons(compact: true)
-                    }
+                    // Copy, Pick and ⋯ always here, small, so they're always in the same place.
+                    Spacer(minLength: 0)
+                    actionIcons
                 }
-                // The small icons' height whether or not they're here, so the value doesn't
-                // move when they move up beside the label.
-                .frame(minHeight: 14.0)
                 .opacity(showsTypeLabel || valueInvalid ? 1 : 0)
                 .animation(
                     showsTypeLabel
@@ -157,9 +153,7 @@ struct EyedropperButton: View {
                         colorSpace: colorSpace,
                         availableWidth: adaptive.swatchWidth,
                         isInvalid: $valueInvalid,
-                        dismissEditingTrigger: dismissEditingTrigger,
-                        trailingAccessory: iconsInline ? AnyView(actionIcons(compact: false)) : nil,
-                        accessoryWidth: iconsInline ? Self.actionIconsWidth : 0
+                        dismissEditingTrigger: dismissEditingTrigger
                     )
 
                     // Always in the hierarchy, collapsing to zero height rather than being
@@ -273,29 +267,17 @@ struct EyedropperButton: View {
 
     /// Whether the icons fit after the value. In a narrow colour, reserving their room would
     /// shrink the value, so they move to the end of the type label's row instead.
-    private var iconsInline: Bool {
-        EditableColorValue.fitsOnOneLine(
-            colorFormat.decompose(eyedropper.color, style: copyFormat, in: colorSpace),
-            availableWidth: adaptive.swatchWidth, accessoryWidth: Self.actionIconsWidth
-        )
-    }
 
-    /// Compact beside the type label, full size after the value.
-    private func actionIcons(compact: Bool) -> some View {
+    private var actionIcons: some View {
         SwatchActionIcons(
             eyedropper: eyedropper,
             isVisible: hoverVisible,
-            compact: compact,
             onHoverChange: { hover in
                 childHovered = hover
                 updateButtonVisibility()
             }
         )
     }
-
-    /// Room the Copy, Pick and ⋯ icons take after the value: three 18pt icons, the gaps
-    /// between them and the gap before them.
-    private static let actionIconsWidth: CGFloat = 3 * 18 + 2 * 10 + 10
 
     /// Shows the Copy and system picker buttons while the readout or the buttons are hovered,
     /// and hides them a moment after neither is, so crossing the gap onto a button doesn't
@@ -358,15 +340,5 @@ struct EyedropperButton_Previews: PreviewProvider {
             dismissEditingTrigger: .constant(0)
         )
         .frame(width: 170.0)
-    }
-}
-
-extension EditableColorValue {
-    /// Whether a value (`layout`) fits on one line at full size in a swatch `availableWidth` wide,
-    /// with `accessoryWidth` beside it. The swatch's icons follow the value when it does, and
-    /// move up beside its label when it doesn't, rather than wrapping onto a line of their own.
-    static func fitsOnOneLine(_ layout: DecomposedColor, availableWidth: CGFloat, accessoryWidth: CGFloat) -> Bool {
-        let width = wrapUnits(layout, values: layout.values).map { unitWidth($0, size: baseSize) }.reduce(0, +)
-        return width <= availableWidth - horizontalInset - accessoryWidth - wrapSafetyMargin
     }
 }
