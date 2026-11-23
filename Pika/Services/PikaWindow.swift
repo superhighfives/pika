@@ -78,13 +78,19 @@ class PikaWindow {
             let space = ToolbarSpace.shared
             let available = window.frame.width - sidebar.convert(sidebar.bounds, to: nil).maxX - 8
             // The toolbar's width with everything at full size, from its width now.
+            let fullLabel = ToolbarSpace.labelWidth(compact: false, limit: nil)
             let full = toolbar.fittingSize.width
                 + (space.showsSwap ? 0 : swapWidth)
-                + (space.compactSpace ? ToolbarSpace.compactSaving : 0)
+                - ToolbarSpace.labelWidth(compact: space.compactSpace, limit: space.spaceLimit)
+                + fullLabel
             let showsSwap = available >= full
             let compactSpace = !showsSwap && available < full - swapWidth
+            // What's left for the space's label once everything else is in.
+            let room = available - (full - swapWidth - fullLabel)
+            let limit = compactSpace && room < ToolbarSpace.labelWidth(compact: true, limit: nil) ? max(room, 0) : nil
             if space.showsSwap != showsSwap { space.showsSwap = showsSwap }
             if space.compactSpace != compactSpace { space.compactSpace = compactSpace }
+            if space.spaceLimit != limit { space.spaceLimit = limit }
         }
         NotificationCenter.default.addObserver(
             forName: NSWindow.didResizeNotification, object: window, queue: .main

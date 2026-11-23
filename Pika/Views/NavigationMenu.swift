@@ -48,7 +48,10 @@ struct NavigationMenu: View {
                     .fill(Color(nsColor: .separatorColor))
                     .frame(width: 1, height: 14)
 
-                ColorSpaceMenu(compact: !standardViewMenu && toolbarSpace.compactSpace)
+                ColorSpaceMenu(
+                    compact: !standardViewMenu && toolbarSpace.compactSpace,
+                    limit: standardViewMenu ? nil : toolbarSpace.spaceLimit
+                )
             }
             .toolbarMenuChrome()
 
@@ -123,10 +126,11 @@ struct NavigationMenu: View {
 private struct ColorSpaceMenu: View {
     /// Shortened, when the window's toolbar is short of room (`ToolbarSpace.compactSpace`).
     var compact = false
+    var limit: CGFloat?
 
     @State private var option = ColorSpacePreference.current
 
-    private var label: String { ToolbarSpace.spaceLabel(for: option, compact: compact) }
+    private var label: String { ToolbarSpace.spaceLabel(for: option, compact: compact, limit: limit) }
 
     /// A checkable space, with a second line saying what it's for.
     private func spaceItem(_ value: ColorSpaceOption, title: String, subtitle: String?) -> some View {
@@ -165,7 +169,8 @@ private struct ColorSpaceMenu: View {
             Text(label).foregroundStyle(.secondary)
         }
         .accessibilityLabel(PikaText.textSpaceTitle)
-        .accessibilityValue(label)
+        // The full name, which the label may cut short.
+        .accessibilityValue(ToolbarSpace.spaceLabel(for: option, compact: false, truncates: false))
         .toolbarMenuSegment()
         .help(PikaText.textSpaceTitle)
         // Settings, Check a Color and Match display following the screen change it too.
@@ -242,22 +247,47 @@ final class ToolbarSpace: ObservableObject {
     @Published var showsSwap = true
     /// Short of room even without Swap, the colour space's label shortens ("Display P3" to "P3").
     @Published var compactSpace = false
+    /// Still short of room, the label is cut to this width: format and space names both vary, so
+    /// no one short form fits every pair at the window's narrowest.
+    @Published var spaceLimit: CGFloat?
 
-    static func spaceLabel(for option: ColorSpaceOption, compact: Bool) -> String {
+    private static let labelFont = NSFont.systemFont(ofSize: NSFont.systemFontSize)
+
+    /// The colour space's toolbar label. Any other space chosen in Settings is cut short with an
+    /// ellipsis (its menu item has the full name): some, like "ACES CG Linear (Academy Color
+    /// Encoding System AP1)", ran the toolbar past the window's edge.
+    static func spaceLabel(
+        for option: ColorSpaceOption, compact: Bool, limit: CGFloat? = nil, truncates: Bool = true
+    ) -> String {
+        let label: String
         switch option {
-        case .space(.sRGB): return "sRGB"
-        case .space(.displayP3): return compact ? "P3" : "Display P3"
-        case .matchDisplay: return PikaText.textSpaceShortDisplay
-        case let .space(space): return space.localizedName ?? "—"
+        case .space(.sRGB): label = "sRGB"
+        case .space(.displayP3): label = compact ? "P3" : "Display P3"
+        case .matchDisplay: label = PikaText.textSpaceShortDisplay
+        case let .space(space):
+            let name = space.localizedName ?? "—"
+            label = truncates ? truncated(name, to: compact ? 44 : 110) : name
         }
+        guard truncates, let limit else { return label }
+        return truncated(label, to: limit)
     }
 
-    /// Width the colour space's label saves when shortened.
-    static var compactSaving: CGFloat {
-        let option = ColorSpacePreference.current
-        let font = NSFont.systemFont(ofSize: NSFont.systemFontSize)
-        func width(_ text: String) -> CGFloat { ceil((text as NSString).size(withAttributes: [.font: font]).width) }
-        return width(spaceLabel(for: option, compact: false)) - width(spaceLabel(for: option, compact: true))
+    /// The current space's label width, as `spaceLabel` would give it.
+    static func labelWidth(compact: Bool, limit: CGFloat?) -> CGFloat {
+        width(spaceLabel(for: ColorSpacePreference.current, compact: compact, limit: limit))
+    }
+
+    private static func width(_ text: String) -> CGFloat {
+        ceil((text as NSString).size(withAttributes: [.font: labelFont]).width)
+    }
+
+    private static func truncated(_ text: String, to maxWidth: CGFloat) -> String {
+        guard width(text) > maxWidth else { return text }
+        var kept = text
+        while !kept.isEmpty, width(kept.trimmingCharacters(in: .whitespaces) + "…") > maxWidth {
+            kept.removeLast()
+        }
+        return kept.trimmingCharacters(in: .whitespaces) + "…"
     }
 }
 
