@@ -52,20 +52,7 @@ class PikaWindow {
         sidebarAccessory.layoutAttribute = .leading
         window.addTitlebarAccessoryViewController(sidebarAccessory)
 
-        // Swap gives way when the whole toolbar won't fit beside the sidebar button.
-        let swapWidth = NSHostingView(rootView: SwapButton()).fittingSize.width + 8
-        let updateSwap = { [weak window] in
-            guard let window else { return }
-            let space = ToolbarSpace.shared
-            let leading = sidebarButton.convert(sidebarButton.bounds, to: nil).maxX
-            let toolbar = toolbarButtons.fittingSize.width + (space.showsSwap ? 0 : swapWidth)
-            let fits = window.frame.width - leading - 8 >= toolbar
-            if space.showsSwap != fits { space.showsSwap = fits }
-        }
-        NotificationCenter.default.addObserver(
-            forName: NSWindow.didResizeNotification, object: window, queue: .main
-        ) { _ in updateSwap() }
-        toolbarButtons.onWidthChange = updateSwap
+        fitToolbar(toolbarButtons, besides: sidebarButton, in: window)
 
         // Restore the previously saved frame so size and position survive quitting
         // and reopening. `setFrameAutosaveName` alone does not reliably re-apply a
@@ -80,6 +67,29 @@ class PikaWindow {
         }
 
         return window
+    }
+
+    /// When the whole toolbar won't fit beside the sidebar button, Swap gives way first, then the
+    /// colour space's label shortens (`ToolbarSpace`).
+    private static func fitToolbar(_ toolbar: FittingHostingView<NavigationMenu>, besides sidebar: NSView, in window: NSWindow) {
+        let swapWidth = NSHostingView(rootView: SwapButton()).fittingSize.width + 8
+        let updateFit = { [weak window] in
+            guard let window else { return }
+            let space = ToolbarSpace.shared
+            let available = window.frame.width - sidebar.convert(sidebar.bounds, to: nil).maxX - 8
+            // The toolbar's width with everything at full size, from its width now.
+            let full = toolbar.fittingSize.width
+                + (space.showsSwap ? 0 : swapWidth)
+                + (space.compactSpace ? ToolbarSpace.compactSaving : 0)
+            let showsSwap = available >= full
+            let compactSpace = !showsSwap && available < full - swapWidth
+            if space.showsSwap != showsSwap { space.showsSwap = showsSwap }
+            if space.compactSpace != compactSpace { space.compactSpace = compactSpace }
+        }
+        NotificationCenter.default.addObserver(
+            forName: NSWindow.didResizeNotification, object: window, queue: .main
+        ) { _ in updateFit() }
+        toolbar.onWidthChange = updateFit
     }
 
     static func createSecondaryWindow(

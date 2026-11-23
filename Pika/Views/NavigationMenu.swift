@@ -48,7 +48,7 @@ struct NavigationMenu: View {
                     .fill(Color(nsColor: .separatorColor))
                     .frame(width: 1, height: 14)
 
-                ColorSpaceMenu()
+                ColorSpaceMenu(compact: !standardViewMenu && toolbarSpace.compactSpace)
             }
             .toolbarMenuChrome()
 
@@ -121,16 +121,12 @@ struct NavigationMenu: View {
 /// The colour space setting, beside the format it applies to, so the space the readout and copies
 /// are in is always visible. One for the whole app: a menu on each swatch read as per-swatch spaces.
 private struct ColorSpaceMenu: View {
+    /// Shortened, when the window's toolbar is short of room (`ToolbarSpace.compactSpace`).
+    var compact = false
+
     @State private var option = ColorSpacePreference.current
 
-    private var label: String {
-        switch option {
-        case .space(.sRGB): return "sRGB"
-        case .space(.displayP3): return "Display P3"
-        case .matchDisplay: return PikaText.textSpaceShortDisplay
-        case let .space(space): return space.localizedName ?? "—"
-        }
-    }
+    private var label: String { ToolbarSpace.spaceLabel(for: option, compact: compact) }
 
     /// A checkable space, with a second line saying what it's for.
     private func spaceItem(_ value: ColorSpaceOption, title: String, subtitle: String?) -> some View {
@@ -244,6 +240,25 @@ private struct ViewMenuButton: View {
 final class ToolbarSpace: ObservableObject {
     static let shared = ToolbarSpace()
     @Published var showsSwap = true
+    /// Short of room even without Swap, the colour space's label shortens ("Display P3" to "P3").
+    @Published var compactSpace = false
+
+    static func spaceLabel(for option: ColorSpaceOption, compact: Bool) -> String {
+        switch option {
+        case .space(.sRGB): return "sRGB"
+        case .space(.displayP3): return compact ? "P3" : "Display P3"
+        case .matchDisplay: return PikaText.textSpaceShortDisplay
+        case let .space(space): return space.localizedName ?? "—"
+        }
+    }
+
+    /// Width the colour space's label saves when shortened.
+    static var compactSaving: CGFloat {
+        let option = ColorSpacePreference.current
+        let font = NSFont.systemFont(ofSize: NSFont.systemFontSize)
+        func width(_ text: String) -> CGFloat { ceil((text as NSString).size(withAttributes: [.font: font]).width) }
+        return width(spaceLabel(for: option, compact: false)) - width(spaceLabel(for: option, compact: true))
+    }
 }
 
 /// Swaps the two colours. In the toolbar, between the format and space they're read in and the
