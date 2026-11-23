@@ -98,7 +98,7 @@ struct EyedropperButton: View {
             // Content overlay, lifted out of the pick button so the value's fields receive
             // clicks. The type label and colour name disable hit-testing so clicks fall
             // through to the pick button behind them.
-            VStack(alignment: .leading, spacing: 2.0) {
+            VStack(alignment: .leading, spacing: 4.0) {
                 // `adaptive.showsTypeLabels` is hardcoded `true` (ContentView.swift) as of
                 // `81fe9f9`, so the fade below is currently vestigial — kept in case that's
                 // revisited, rather than stripped along with the conditional that once drove it.
@@ -133,6 +133,9 @@ struct EyedropperButton: View {
                         actionIcons
                     }
                 }
+                // The icons' height whether or not they're here, so the value doesn't move
+                // when they move up beside the label.
+                .frame(minHeight: 18.0)
                 .opacity(showsTypeLabel || valueInvalid ? 1 : 0)
                 .animation(
                     showsTypeLabel
@@ -270,7 +273,12 @@ struct EyedropperButton: View {
 
     /// Whether the icons fit after the value. In a narrow colour, reserving their room would
     /// shrink the value, so they move to the end of the type label's row instead.
-    private var iconsInline: Bool { adaptive.swatchWidth >= 250 }
+    private var iconsInline: Bool {
+        EditableColorValue.fitsOnOneLine(
+            colorFormat.decompose(eyedropper.color, style: copyFormat, in: colorSpace),
+            availableWidth: adaptive.swatchWidth, accessoryWidth: Self.actionIconsWidth
+        )
+    }
 
     private var actionIcons: some View {
         SwatchActionIcons(
@@ -348,5 +356,15 @@ struct EyedropperButton_Previews: PreviewProvider {
             dismissEditingTrigger: .constant(0)
         )
         .frame(width: 170.0)
+    }
+}
+
+extension EditableColorValue {
+    /// Whether a value (`layout`) fits on one line at full size in a swatch `availableWidth` wide,
+    /// with `accessoryWidth` beside it. The swatch's icons follow the value when it does, and
+    /// move up beside its label when it doesn't, rather than wrapping onto a line of their own.
+    static func fitsOnOneLine(_ layout: DecomposedColor, availableWidth: CGFloat, accessoryWidth: CGFloat) -> Bool {
+        let width = wrapUnits(layout, values: layout.values).map { unitWidth($0, size: baseSize) }.reduce(0, +)
+        return width <= availableWidth - horizontalInset - accessoryWidth - wrapSafetyMargin
     }
 }

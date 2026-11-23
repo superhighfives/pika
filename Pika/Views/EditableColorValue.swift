@@ -107,7 +107,7 @@ struct EditableColorValue: View {
     /// share a line whenever the value fits on one.
     var accessoryWidth: CGFloat = 0
 
-    private let baseSize: CGFloat = 18
+    static let baseSize: CGFloat = 18
     private let minSize: CGFloat = 11
 
     /// Identifies which (format, style, colorSpace) a cached `values` array was decomposed for,
@@ -124,8 +124,8 @@ struct EditableColorValue: View {
     /// its call site (`.padding(.trailing, 32)`, reserved for the copy/system-picker hover
     /// buttons) — both applied *outside* this view, so `availableWidth` (measured at the swatch
     /// content's outer edge) has to have them subtracted back out here.
-    private let horizontalInset: CGFloat = 52
-    private var effectiveWidth: CGFloat { max(availableWidth - horizontalInset, 0) }
+    static let horizontalInset: CGFloat = 52
+    private var effectiveWidth: CGFloat { max(availableWidth - Self.horizontalInset, 0) }
     /// The width the value itself is fitted to: the row, less room for the trailing accessory.
     private var fitWidth: CGFloat { max(effectiveWidth - accessoryWidth, 0) }
 
@@ -190,14 +190,14 @@ struct EditableColorValue: View {
     /// Width a value field occupies beyond its text: `ScrubTextField`'s 2pt intrinsic slack, its
     /// cell's own rendering margin, and `ColorComponentField`'s 1pt horizontal padding each side
     /// (measured: a field renders ~6pt wider than its text).
-    private let fieldChrome: CGFloat = 6
+    static let fieldChrome: CGFloat = 6
     /// Kept free on every line. A row sized to fit exactly can still wrap a unit early on a
     /// sub-point rounding difference, and then the remainder overflows the last line.
-    private let wrapSafetyMargin: CGFloat = 4
+    static let wrapSafetyMargin: CGFloat = 4
 
     var body: some View {
         let layout = decomposed
-        let fit = frozenSize ?? fontSize(forUnits: wrapUnits(layout, values: layout.values))
+        let fit = frozenSize ?? fontSize(forUnits: Self.wrapUnits(layout, values: layout.values))
         let size = fit.size
 
         FlowLayout(maxLines: fit.lines) {
@@ -463,14 +463,14 @@ struct EditableColorValue: View {
     /// then shrank the moment a field was clicked, before anything was typed.
     private func freezeSizeForEdit(layout: DecomposedColor) {
         let current = values.count == layout.components.count ? values : layout.values
-        frozenSize = fontSize(forUnits: wrapUnits(layout, values: current))
+        frozenSize = fontSize(forUnits: Self.wrapUnits(layout, values: current))
     }
 
     /// Shrinks the frozen size when what's been typed no longer fits at it, and never grows it
     /// back mid-edit, so the text only moves when it has to and doesn't bounce as you type.
     private func shrinkFrozenSizeIfNeeded(layout: DecomposedColor) {
         guard isEditing, let frozen = frozenSize else { return }
-        let needed = fontSize(forUnits: wrapUnits(layout, values: values))
+        let needed = fontSize(forUnits: Self.wrapUnits(layout, values: values))
         if needed.size < frozen.size || needed.lines > frozen.lines { frozenSize = needed }
     }
 
@@ -669,10 +669,10 @@ struct EditableColorValue: View {
 
 // MARK: - Value row sizing
 
-private extension EditableColorValue {
+extension EditableColorValue {
     /// The units `FlowLayout` wraps, as `body` builds them: the leading affix on its own, then
     /// each value grouped with the punctuation after it.
-    func wrapUnits(_ layout: DecomposedColor, values: [String]) -> [(value: String?, affix: String)] {
+    static func wrapUnits(_ layout: DecomposedColor, values: [String]) -> [(value: String?, affix: String)] {
         var units: [(value: String?, affix: String)] = [(nil, layout.leading)]
         for (index, value) in values.enumerated() {
             units.append((value, index < layout.separators.count ? layout.separators[index] : layout.trailing))
@@ -687,29 +687,29 @@ private extension EditableColorValue {
     /// This replaced sizing the whole string to 1.7 lines of width, which assumed a roughly even
     /// split. Long styles break unevenly at unit boundaries: SwiftUI's `Color(red:` sat alone on
     /// line 1 and everything else overflowed line 2, clipping the value.
-    func fontSize(forUnits units: [(value: String?, affix: String)]) -> (size: CGFloat, lines: Int) {
-        guard fitWidth > 4 else { return (baseSize, maxLines) }
+    private func fontSize(forUnits units: [(value: String?, affix: String)]) -> (size: CGFloat, lines: Int) {
+        guard fitWidth > 4 else { return (Self.baseSize, maxLines) }
         for lines in [maxLines, fallbackMaxLines] {
-            var size = baseSize
+            var size = Self.baseSize
             while size >= minSize {
-                if wrapsWithinLines(units.map { unitWidth($0, size: size) }, lines: lines) { return (size, lines) }
+                if wrapsWithinLines(units.map { Self.unitWidth($0, size: size) }, lines: lines) { return (size, lines) }
                 size -= 0.5
             }
         }
         return (minSize, fallbackMaxLines)
     }
 
-    func unitWidth(_ unit: (value: String?, affix: String), size: CGFloat) -> CGFloat {
+    static func unitWidth(_ unit: (value: String?, affix: String), size: CGFloat) -> CGFloat {
         let font = NSFont.systemFont(ofSize: size)
         func textWidth(_ text: String) -> CGFloat {
             text.isEmpty ? 0 : ceil((text as NSString).size(withAttributes: [.font: font]).width) + 1
         }
-        return (unit.value.map { textWidth($0) + fieldChrome } ?? 0) + textWidth(unit.affix)
+        return (unit.value.map { textWidth($0) + Self.fieldChrome } ?? 0) + textWidth(unit.affix)
     }
 
     /// Mirrors `FlowLayout`'s greedy wrap rule; keep the two in step if either changes.
-    func wrapsWithinLines(_ widths: [CGFloat], lines maxLineCount: Int) -> Bool {
-        let lineLimit = fitWidth - wrapSafetyMargin
+    private func wrapsWithinLines(_ widths: [CGFloat], lines maxLineCount: Int) -> Bool {
+        let lineLimit = fitWidth - Self.wrapSafetyMargin
         var lines = 1
         var lineWidth: CGFloat = 0
         for width in widths {
