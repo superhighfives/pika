@@ -112,7 +112,10 @@ struct ContentView: View {
             width = max(width, PikaAdaptiveWidth.contrast)
             height = max(height, PikaAdaptiveHeight.contrast)
         }
-        if historyDrawerVisible {
+        // The window's sidebar sits beside the colours; the popover's drawer sits under them.
+        if historyDrawerVisible, usesSidebar {
+            width += SidebarLayout.fullWidth
+        } else if historyDrawerVisible {
             width = max(width, PikaAdaptiveWidth.palettes)
             height = max(height, PikaAdaptiveHeight.palettes)
         }
@@ -201,13 +204,14 @@ struct ContentView: View {
                                     .transition(.move(edge: .bottom).combined(with: .opacity))
                                 }
                             }
+                        // Above the drawer, which the popover lays out even while it's closed.
+                        #if TARGET_SPARKLE
+                            InlineUpdateControl()
+                        #endif
                         if showsDrawer, allowPalettes, !usesSidebar { // revealed by `PopoverDrawerLayout`
                             ColorHistoryDrawer(foreground: eyedroppers.foreground, background: eyedroppers.background)
                                 .accessibilityHidden(!historyDrawerVisible) // laid out while closed
                         }
-                        #if TARGET_SPARKLE
-                            InlineUpdateControl()
-                        #endif
                     }
                     .frame(width: width, alignment: .top)
                     .frame(maxHeight: .infinity, alignment: .top)

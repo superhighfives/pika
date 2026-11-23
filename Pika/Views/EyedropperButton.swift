@@ -253,11 +253,7 @@ struct EyedropperButton: View {
                 // The pointing hand is the pick area's only affordance. On macOS 14, which has
                 // no SwiftUI pointer styles, it's pushed and popped with the hover.
                 if #unavailable(macOS 15) {
-                    if inPickArea {
-                        NSCursor.pointingHand.push()
-                    } else {
-                        NSCursor.pop()
-                    }
+                    PickAreaCursor.hover(eyedropper.type, inside: inPickArea)
                 }
             }
         }
@@ -340,5 +336,19 @@ struct EyedropperButton_Previews: PreviewProvider {
             dismissEditingTrigger: .constant(0)
         )
         .frame(width: 170.0)
+    }
+}
+
+/// The pointing hand over the pick areas on macOS 14, pushed once for both colours. Each pushed
+/// and popped its own, and moving straight from one into the other could take the pop after
+/// the push and leave the arrow over a pick area.
+private enum PickAreaCursor {
+    private static var hovered: Set<Eyedropper.Types> = []
+
+    static func hover(_ area: Eyedropper.Types, inside: Bool) {
+        let wasHovering = !hovered.isEmpty
+        if inside { hovered.insert(area) } else { hovered.remove(area) }
+        if !wasHovering, !hovered.isEmpty { NSCursor.pointingHand.push() }
+        if wasHovering, hovered.isEmpty { NSCursor.pop() }
     }
 }

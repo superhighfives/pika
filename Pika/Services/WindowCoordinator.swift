@@ -308,22 +308,9 @@ class WindowCoordinator: NSObject {
     /// alongside the popover's copy.
     func installMainWindowContent() {
         guard let eyedroppers = eyedroppers else { return }
-        let contentView = ContentView()
+        let contentView = MainWindowContent()
             .environmentObject(eyedroppers)
             .environment(\.pikaUsesSidebar, true)
-            // Floor is well below the "everything visible" height: ContentView sheds
-            // elements adaptively as it shrinks (see PikaAdaptiveHeight), so the window
-            // can get compact again. Ideal stays at the comfortable first-launch size.
-            .frame(
-                minWidth: 360,
-                idealWidth: 480,
-                // Room for the palettes sidebar beside the widest the colours go.
-                maxWidth: 650 + PaletteSidebar.width,
-                minHeight: 160,
-                idealHeight: 280,
-                maxHeight: 400,
-                alignment: .center
-            )
         let hostingView = NSHostingView(rootView: contentView)
         // Apply the SwiftUI min/max as the window's resize limits, but omit
         // `.intrinsicContentSize` so the hosting view doesn't snap the window back
@@ -331,6 +318,7 @@ class WindowCoordinator: NSObject {
         // user defaults each launch and defeat window persistence.
         hostingView.sizingOptions = [.minSize, .maxSize]
         pikaWindow.contentView = hostingView
+        widenForSidebar()
     }
 
     func removeMainWindowContent() {
@@ -674,6 +662,19 @@ extension WindowCoordinator {
 }
 
 private extension WindowCoordinator {
+    /// With Palettes on, widens a window too narrow for the sidebar beside the colours, as one
+    /// saved before the sidebar (2.0's drawer fitted under the colours) can be. Keeps the left edge.
+    func widenForSidebar() {
+        let needed = PikaAdaptiveWidth.base + SidebarLayout.fullWidth
+        guard SidebarLayout.shared.isVisible, pikaWindow.frame.width < needed else { return }
+        var frame = pikaWindow.frame
+        frame.size.width = needed
+        if let screen = pikaWindow.screen?.visibleFrame {
+            frame.origin.x = min(max(frame.origin.x, screen.minX), screen.maxX - frame.width)
+        }
+        pikaWindow.setFrame(frame, display: true)
+    }
+
     /// A menu opened over a colour kept the pick cursor for its items, so any menu opening
     /// brings back the arrow.
     func resetCursorForMenus() {
@@ -729,9 +730,10 @@ private extension WindowCoordinator {
         // sidebar's column leaves, and a sidebar hidden for want of room isn't taking any.
         let colours = layout.heldColourWidth
             ?? (layout.column(in: frame.width) > 0 ? frame.width - sidebar : frame.width)
+        // The colours' own floor, not the window's minimum, which counts the open sidebar.
         let width = shown
             ? min(colours + sidebar, pikaWindow.contentMaxSize.width)
-            : max(colours, pikaWindow.contentMinSize.width)
+            : max(colours, PikaAdaptiveWidth.base)
         let change = width - frame.width
         layout.step?.invalidate()
         layout.step = nil
@@ -766,4 +768,30 @@ private func withoutAnimation(_ changes: () -> Void) {
     var transaction = Transaction()
     transaction.disablesAnimations = true
     withTransaction(transaction, changes)
+}
+
+/// The main window's content and its size limits. The minimum width counts the sidebar while it's
+/// open, so the window can't get too narrow for it: hidden for want of room, it left its button
+/// showing on and a first click doing nothing. Not while the window resizes for the sidebar,
+/// which starts or ends narrower than that.
+private struct MainWindowContent: View {
+    @ObservedObject private var layout = SidebarLayout.shared
+
+    var body: some View {
+        let sidebar = layout.isVisible && layout.heldColourWidth == nil ? SidebarLayout.fullWidth : 0
+        ContentView()
+            // Floor is well below the "everything visible" height: ContentView sheds
+            // elements adaptively as it shrinks (see PikaAdaptiveHeight), so the window
+            // can get compact again. Ideal stays at the comfortable first-launch size.
+            .frame(
+                minWidth: PikaAdaptiveWidth.base + sidebar,
+                idealWidth: 480,
+                // Room for the palettes sidebar beside the widest the colours go.
+                maxWidth: 650 + SidebarLayout.fullWidth,
+                minHeight: 160,
+                idealHeight: 280,
+                maxHeight: 400,
+                alignment: .center
+            )
+    }
 }
