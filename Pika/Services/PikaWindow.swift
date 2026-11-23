@@ -69,26 +69,30 @@ class PikaWindow {
         return window
     }
 
-    /// When the whole toolbar won't fit beside the sidebar button, Swap gives way first, then the
-    /// colour space's label shortens (`ToolbarSpace`).
+    /// When the whole toolbar won't fit beside the sidebar button, Swap gives way first, then View,
+    /// then the colour space's label shortens (`ToolbarSpace`).
     private static func fitToolbar(_ toolbar: FittingHostingView<NavigationMenu>, besides sidebar: NSView, in window: NSWindow) {
-        let swapWidth = NSHostingView(rootView: SwapButton()).fittingSize.width + 8
         let updateFit = { [weak window] in
             guard let window else { return }
             let space = ToolbarSpace.shared
             let available = window.frame.width - sidebar.convert(sidebar.bounds, to: nil).maxX - 8
             // The toolbar's width with everything at full size, from its width now.
+            let swapWidth = ToolbarSpace.swapWidth, viewWidth = ToolbarSpace.viewWidth
             let fullLabel = ToolbarSpace.labelWidth(compact: false, limit: nil)
             let full = toolbar.fittingSize.width
                 + (space.showsSwap ? 0 : swapWidth)
+                + (space.showsView ? 0 : viewWidth)
                 - ToolbarSpace.labelWidth(compact: space.compactSpace, limit: space.spaceLimit)
                 + fullLabel
+            // Swap gives way first, then View, then the space's label shortens.
             let showsSwap = available >= full
-            let compactSpace = !showsSwap && available < full - swapWidth
+            let showsView = available >= full - swapWidth
+            let compactSpace = available < full - swapWidth - viewWidth
             // What's left for the space's label once everything else is in.
-            let room = available - (full - swapWidth - fullLabel)
+            let room = available - (full - swapWidth - viewWidth - fullLabel)
             let limit = compactSpace && room < ToolbarSpace.labelWidth(compact: true, limit: nil) ? max(room, 0) : nil
             if space.showsSwap != showsSwap { space.showsSwap = showsSwap }
+            if space.showsView != showsView { space.showsView = showsView }
             if space.compactSpace != compactSpace { space.compactSpace = compactSpace }
             if space.spaceLimit != limit { space.spaceLimit = limit }
         }

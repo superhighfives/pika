@@ -62,7 +62,7 @@ struct NavigationMenu: View {
 
             if standardViewMenu {
                 StandardViewMenu()
-            } else {
+            } else if toolbarSpace.showsView {
                 ViewMenuButton()
             }
 
@@ -184,7 +184,7 @@ private struct ColorSpaceMenu: View {
 /// The View control: the window's optional parts as checkable rows. An AppKit menu rather than a
 /// SwiftUI `Menu`, so a row can stay open after a click (a macOS menu closes on any standard item,
 /// but not on one drawn by a custom view) and several parts can be switched in one visit.
-private struct ViewMenuButton: View {
+struct ViewMenuButton: View {
     private struct Row {
         let title: String
         let key: String
@@ -245,6 +245,8 @@ private struct ViewMenuButton: View {
 final class ToolbarSpace: ObservableObject {
     static let shared = ToolbarSpace()
     @Published var showsSwap = true
+    /// View goes next; its toggles are also in the ⋯ menu.
+    @Published var showsView = true
     /// Short of room even without Swap, the colour space's label shortens ("Display P3" to "P3").
     @Published var compactSpace = false
     /// Still short of room, the label is cut to this width: format and space names both vary, so
@@ -252,6 +254,10 @@ final class ToolbarSpace: ObservableObject {
     @Published var spaceLimit: CGFloat?
 
     private static let labelFont = NSFont.systemFont(ofSize: NSFont.systemFontSize)
+
+    /// Widths Swap and View take in the toolbar, with the gap before each.
+    static let swapWidth = NSHostingView(rootView: SwapButton()).fittingSize.width + 8
+    static let viewWidth = NSHostingView(rootView: ViewMenuButton()).fittingSize.width + 8
 
     /// The colour space's toolbar label. Any other space chosen in Settings is cut short with an
     /// ellipsis (its menu item has the full name): some, like "ACES CG Linear (Academy Color
@@ -325,15 +331,9 @@ struct SwapButton: View {
 /// matters for Palettes: that resizes the popover, and an open menu is placed from the popover's
 /// bottom edge, so it moved.
 private struct StandardViewMenu: View {
-    @Default(.showCompliance) var showCompliance
-    @Default(.historyDrawerVisible) var historyDrawerVisible
-    @Default(.showColorPreview) var showColorPreview
-
     var body: some View {
         Menu {
-            item(PikaText.textViewContrast, key: "c", isOn: $showCompliance)
-            item(PikaText.textViewPalettes, key: "h", isOn: $historyDrawerVisible)
-            item(PikaText.textViewPreview, key: "p", isOn: $showColorPreview)
+            ViewMenuToggles()
         } label: {
             Text(PikaText.textViewMenu)
         }
@@ -341,14 +341,6 @@ private struct StandardViewMenu: View {
         .toolbarMenuSegment()
         .toolbarMenuChrome()
         .help(PikaText.textViewMenu)
-    }
-
-    private func item(_ title: String, key: KeyEquivalent, isOn: Binding<Bool>) -> some View {
-        Toggle(title, isOn: Binding(
-            get: { isOn.wrappedValue },
-            set: { value in withAnimation(.easeInOut(duration: 0.25)) { isOn.wrappedValue = value } }
-        ))
-        .keyboardShortcut(key, modifiers: [])
     }
 }
 

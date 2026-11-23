@@ -44,6 +44,8 @@ enum PikaMenuEntry {
     case divider
     /// New and Export Palette, which follow the drawer's state; only in More.
     case palettes
+    /// The View menu's toggles, so they're here when a narrow window hides View; only in More.
+    case view
 }
 
 enum PikaMenu {
@@ -95,6 +97,7 @@ enum PikaMenu {
             .action(PikaMenuAction(title: PikaText.textColorUndo, action: #selector(AppDelegate.triggerUndo), windowOnly: true)),
             .action(PikaMenuAction(title: PikaText.textColorRedo, action: #selector(AppDelegate.triggerRedo), windowOnly: true)),
             .divider,
+            .view,
             .palettes,
             .group("Pika", pika),
             .action(PikaMenuAction(title: "\(PikaText.textMenuPreferences)…",
@@ -126,7 +129,7 @@ enum PikaMenu {
                     addDivider()
                 case .divider:
                     addDivider()
-                case .action, .palettes:
+                case .action, .palettes, .view:
                     break
                 }
             }
@@ -170,6 +173,8 @@ struct NavigationMenuItems: View {
             MenuGroup(title: title) { AnyView(entries(children)) }
         case .divider:
             Divider()
+        case .view:
+            MenuGroup(title: PikaText.textViewMenu) { ViewMenuToggles() }
         case .palettes:
             MenuGroup(title: PikaText.textViewPalettes) {
                 Button(PikaText.textPaletteNew) { NotificationCenter.default.post(name: .savePalette, object: nil) }
@@ -194,6 +199,28 @@ struct NavigationMenuItems: View {
         if flags.contains(.option) { modifiers.insert(.option) }
         if flags.contains(.control) { modifiers.insert(.control) }
         return modifiers
+    }
+}
+
+/// Contrast, Palettes and Text Preview as checkable items with their keys: the popover's View
+/// menu, and View in the ⋯ menu.
+struct ViewMenuToggles: View {
+    @Default(.showCompliance) var showCompliance
+    @Default(.historyDrawerVisible) var historyDrawerVisible
+    @Default(.showColorPreview) var showColorPreview
+
+    var body: some View {
+        item(PikaText.textViewContrast, key: "c", isOn: $showCompliance)
+        item(PikaText.textViewPalettes, key: "h", isOn: $historyDrawerVisible)
+        item(PikaText.textViewPreview, key: "p", isOn: $showColorPreview)
+    }
+
+    private func item(_ title: String, key: KeyEquivalent, isOn: Binding<Bool>) -> some View {
+        Toggle(title, isOn: Binding(
+            get: { isOn.wrappedValue },
+            set: { value in withAnimation(.easeInOut(duration: 0.25)) { isOn.wrappedValue = value } }
+        ))
+        .keyboardShortcut(key, modifiers: [])
     }
 }
 
