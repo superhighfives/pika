@@ -2,6 +2,9 @@ import Defaults
 import SwiftUI
 
 struct NavigationMenu: View {
+    /// The menu bar popover's View menu is a standard menu (`StandardViewMenu`).
+    var standardViewMenu = false
+
     @Default(.colorFormat) var colorFormat
     @Default(.copyFormat) var copyFormat
     @Default(.historyDrawerVisible) var historyDrawerVisible
@@ -47,7 +50,11 @@ struct NavigationMenu: View {
             }
             .toolbarMenuChrome()
 
-            ViewMenuButton()
+            if standardViewMenu {
+                StandardViewMenu()
+            } else {
+                ViewMenuButton()
+            }
 
             Menu {
                 NavigationMenuItems()
@@ -209,27 +216,50 @@ private struct ViewMenuButton: View {
             let item = NSMenuItem()
             // Written here rather than through the toggle action: that lands in a SwiftUI
             // handler, which waits for the menu to close.
-            item.view = ToggleMenuRow(title: row.title, key: row.key, rows: rows, isOn: { Defaults[row.setting] }) { [weak menu] in
-                let toggle = { withAnimation(.easeInOut(duration: 0.25)) { Defaults[row.setting].toggle() } }
-                // In the popover it's a standard menu: a choice closes it. The menu goes at once,
-                // and the change follows once it's gone: Palettes resizes the popover, which an
-                // open (or fading) menu is placed from, so the menu moved with it.
-                if Defaults[.appMode].usesPopover {
-                    menu?.cancelTrackingWithoutAnimation()
-                    DispatchQueue.main.async(execute: toggle)
-                    return
-                }
+            item.view = ToggleMenuRow(title: row.title, key: row.key, rows: rows, isOn: { Defaults[row.setting] }) {
                 // Palettes from here keep the window's right edge, under this menu.
                 if row.setting.name == Defaults.Keys.historyDrawerVisible.name {
                     SidebarLayout.shared.keepsRightEdge = true
                 }
-                toggle()
+                withAnimation(.easeInOut(duration: 0.25)) { Defaults[row.setting].toggle() }
             }
             menu.addItem(item)
         }
         // Just below the control, like the format and space menus.
         let below = anchor.isFlipped ? anchor.bounds.maxY + 4.0 : -4.0
         menu.popUp(positioning: nil, at: NSPoint(x: -4.0, y: below), in: anchor)
+    }
+}
+
+/// The View menu in the menu bar popover: a standard menu, like the format and space menus
+/// beside it, so a choice flashes and closes it. Its change lands once the menu has gone, which
+/// matters for Palettes: that resizes the popover, and an open menu is placed from the popover's
+/// bottom edge, so it moved.
+private struct StandardViewMenu: View {
+    @Default(.showCompliance) var showCompliance
+    @Default(.historyDrawerVisible) var historyDrawerVisible
+    @Default(.showColorPreview) var showColorPreview
+
+    var body: some View {
+        Menu {
+            item(PikaText.textViewContrast, key: "c", isOn: $showCompliance)
+            item(PikaText.textViewPalettes, key: "h", isOn: $historyDrawerVisible)
+            item(PikaText.textViewPreview, key: "p", isOn: $showColorPreview)
+        } label: {
+            Text(PikaText.textViewMenu)
+        }
+        .accessibilityLabel(PikaText.textViewMenu)
+        .toolbarMenuSegment()
+        .toolbarMenuChrome()
+        .help(PikaText.textViewMenu)
+    }
+
+    private func item(_ title: String, key: KeyEquivalent, isOn: Binding<Bool>) -> some View {
+        Toggle(title, isOn: Binding(
+            get: { isOn.wrappedValue },
+            set: { value in withAnimation(.easeInOut(duration: 0.25)) { isOn.wrappedValue = value } }
+        ))
+        .keyboardShortcut(key, modifiers: [])
     }
 }
 

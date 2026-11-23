@@ -18,7 +18,7 @@ struct PopoverContentView: View {
         VStack(spacing: 0) {
             HStack {
                 Spacer()
-                NavigationMenu()
+                NavigationMenu(standardViewMenu: true)
             }
             .padding(.horizontal, 12)
             // The same above and below, so the controls sit in the middle of the bar.
