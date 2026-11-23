@@ -168,6 +168,8 @@
 
 /* Contrast Calculation Standard */
 "preferences.contrast.standard" = "Contrast Calculation Standard";
+"preferences.swatches.title" = "Palette Swatches";
+"preferences.swatches.stacked" = "Stacked";
 
 /* Both (combined WCAG and APCA) */
 "color.standard.both" = "Both";

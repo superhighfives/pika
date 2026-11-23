@@ -147,6 +147,8 @@
 
 /* Contrast Calculation Standard */
 "preferences.contrast.standard" = "对比度计算标准";
+"preferences.swatches.title" = "调色板色样";
+"preferences.swatches.stacked" = "堆叠";
 
 /* Both (combined WCAG and APCA) */
 "color.standard.both" = "两者";

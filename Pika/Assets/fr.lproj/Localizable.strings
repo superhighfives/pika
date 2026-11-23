@@ -147,6 +147,8 @@
 
 /* Contrast Calculation Standard */
 "preferences.contrast.standard" = "Standard de Calcul de Contraste";
+"preferences.swatches.title" = "Échantillons de palette";
+"preferences.swatches.stacked" = "Empilés";
 
 /* Both (combined WCAG and APCA) */
 "color.standard.both" = "Les deux";

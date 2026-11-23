@@ -168,6 +168,8 @@
 
 /* Contrast Calculation Standard */
 "preferences.contrast.standard" = "استاندارد محاسبهٔ کنتراست";
+"preferences.swatches.title" = "نمونه‌های پالت";
+"preferences.swatches.stacked" = "روی هم";
 
 /* Both (combined WCAG and APCA) */
 "color.standard.both" = "هر دو";

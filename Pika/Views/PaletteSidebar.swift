@@ -42,6 +42,7 @@ struct PaletteSidebar: View {
     @Default(.palettes) var palettes
     @Default(.activePaletteIndex) var activePaletteIndex
     @Default(.historyDrawerVisible) var historyDrawerVisible
+    @Default(.contrastStandard) var contrastStandard
 
     @State private var isShowingNewField = false
     @State private var renamingIndex: Int?
@@ -106,7 +107,7 @@ struct PaletteSidebar: View {
             .padding(.trailing, 12)
 
             GeometryReader { geo in
-                let tileHeight = Self.tileHeight(showingHalfRowIn: geo.size.height)
+                let tileHeight = Self.tileHeight(showingHalfRowIn: geo.size.height, showsContrast: contrastStandard != .both)
                 ScrollView {
                     LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: 3), spacing: Self.rowSpacing) {
                         ForEach(activePalette?.pairs ?? []) { pair in
@@ -156,13 +157,15 @@ struct PaletteSidebar: View {
     }
 
     private static let rowSpacing: CGFloat = 6
-    /// A swatch's row, less the tile: the gap above the ratio, the ratio and the row spacing.
+    /// A swatch's row, less the tile: the gap above the contrast, the contrast and the row spacing.
     static let rowExtras: CGFloat = 3 + 13 + rowSpacing
 
     /// Tile height that leaves half a row showing at the bottom of `height`, so it's clear the
     /// grid scrolls. Picks the whole number of rows nearest the default tile size, then sizes
     /// the tiles to fit that many and a half.
-    static func tileHeight(showingHalfRowIn height: CGFloat) -> CGFloat {
+    /// Without the contrast under each tile (`showsContrast` false), a row is just the tile.
+    static func tileHeight(showingHalfRowIn height: CGFloat, showsContrast: Bool = true) -> CGFloat {
+        let rowExtras = showsContrast ? Self.rowExtras : rowSpacing
         let preferred: CGFloat = 34
         let available = height - 4
         guard available > 0 else { return preferred }
@@ -302,16 +305,11 @@ private struct SidebarSwatch: View {
 
     @State private var isHovered = false
 
-    private var ratio: CGFloat { pair.foregroundColor.contrastRatio(with: pair.backgroundColor) }
-
     var body: some View {
         VStack(spacing: 3) {
-            Text("Aa")
-                .font(.system(size: 14, weight: .bold))
-                .foregroundStyle(Color(pair.foregroundColor))
-                .frame(maxWidth: .infinity)
+            PairTile(pair: pair, fontSize: 14)
                 .frame(height: tileHeight)
-                .background(Color(pair.backgroundColor), in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
                 .overlay(
                     RoundedRectangle(cornerRadius: 8, style: .continuous)
                         .strokeBorder(Color.primary.opacity(0.12))
@@ -323,10 +321,7 @@ private struct SidebarSwatch: View {
                         .opacity(isActive ? 1 : 0)
                 )
                 .shadow(color: .black.opacity(isHovered ? 0.25 : 0), radius: 3, y: 1)
-            Text(String(format: "%.1f", ratio))
-                .font(.system(size: 10, weight: ratio >= 4.5 ? .semibold : .regular))
-                .foregroundStyle(ratio >= 4.5 ? Color.primary.opacity(0.85) : Color.secondary)
-                .monospacedDigit()
+            SwatchContrastLabel(pair: pair, fontSize: 10)
         }
         .contentShape(Rectangle())
         .onHover { isHovered = $0 }

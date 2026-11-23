@@ -147,6 +147,8 @@
 
 /* Contrast Calculation Standard */
 "preferences.contrast.standard" = "Standard izračuna kontrasta";
+"preferences.swatches.title" = "Uzorci palete";
+"preferences.swatches.stacked" = "Složeno";
 
 /* Both (combined WCAG and APCA) */
 "color.standard.both" = "Obje";

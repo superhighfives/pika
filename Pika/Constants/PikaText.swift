@@ -441,6 +441,10 @@ enum PikaText {
         "preferences.contrast.standard",
         comment: "Contrast Standard"
     )
+    static let textPaletteSwatches = NSLocalizedString(
+        "preferences.swatches.title",
+        comment: "How palette swatches are drawn: \"Aa\" in the pair's colours, or the two colours stacked"
+    )
 
     // Copy Settings
     static let textCopyTitle = NSLocalizedString("preferences.copy.title", comment: "Copy Settings")

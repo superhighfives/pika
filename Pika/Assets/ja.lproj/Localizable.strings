@@ -147,6 +147,8 @@
 
 /* Contrast Calculation Standard */
 "preferences.contrast.standard" = "コントラスト計算基準";
+"preferences.swatches.title" = "パレットのスウォッチ";
+"preferences.swatches.stacked" = "積み重ね";
 
 /* Both (combined WCAG and APCA) */
 "color.standard.both" = "両方";

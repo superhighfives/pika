@@ -147,6 +147,8 @@
 
 /* Contrast Calculation Standard */
 "preferences.contrast.standard" = "Kontrastberechnungsstandard";
+"preferences.swatches.title" = "Palettenfarbfelder";
+"preferences.swatches.stacked" = "Gestapelt";
 
 /* Both (combined WCAG and APCA) */
 "color.standard.both" = "Beide";

@@ -147,6 +147,8 @@
 
 /* Contrast Calculation Standard */
 "preferences.contrast.standard" = "Estándar de Cálculo de Contraste";
+"preferences.swatches.title" = "Muestras de paleta";
+"preferences.swatches.stacked" = "Apiladas";
 
 /* Both (combined WCAG and APCA) */
 "color.standard.both" = "Ambos";
