@@ -73,11 +73,7 @@
 /* Hide Pika while picking */
 "preferences.pick.hide" = "Sakrij Pika tijekom biranja";
 
-/* General Settings */
-"preferences.general.title" = "Opće postavke";
 
-/* Selection Settings */
-"preferences.selection.title" = "Postavke odabira";
 
 /* Hide menu bar icon */
 "preferences.icon.description" = "Sakrij ikonu u traci izbornika";
@@ -97,8 +93,6 @@
 /* Always show Pika on launch */
 "preferences.show.description" = "Uvijek prikaži Pika nakon pokretanja";
 
-/* App Settings */
-"preferences.app.title" = "Postavke aplikacije";
 
 /* Menu bar */
 "preferences.app.menubar.title" = "Traka izbornika";
@@ -149,6 +143,13 @@
 "preferences.contrast.standard" = "Standard izračuna kontrasta";
 "preferences.swatches.title" = "Uzorci palete";
 "preferences.swatches.stacked" = "Složeno";
+"settings.tab.general" = "Općenito";
+"settings.tab.picking" = "Odabir";
+"settings.tab.color" = "Boja";
+"settings.tab.shortcuts" = "Prečaci";
+"settings.updates" = "Ažuriranja";
+"settings.showIn" = "Prikaži Piku u";
+"settings.loupe.tab" = "Tijekom odabira pritisnite Tab za promjenu stila, a Shift-Tab za povratak.";
 
 /* Both (combined WCAG and APCA) */
 "color.standard.both" = "Obje";
@@ -651,8 +652,6 @@
 /* Expand to fit */
 "content.expandToFit" = "Proširi za prilagodbu";
 
-/* Window Settings */
-"preferences.window.title" = "Postavke prozora";
 
 /* Invalid input */
 "color.edit.invalid" = "Neispravan unos";

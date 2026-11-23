@@ -461,28 +461,24 @@ class WindowCoordinator: NSObject {
 
     func openPreferencesWindow() {
         if preferencesWindow == nil, let eyedroppers {
-            // Width is pinned by the window's own min/max below, not by the SwiftUI frame:
-            // pinning both would demand the full 580 for content *and* leave the scroller
-            // with nowhere to go, pushing it past the right edge where the window clips it.
-            // Letting the content flex mirrors the Help window, whose scroller sits inboard.
-            // `PreferencesView` ignores the safe area itself, inside a reader that needs the
-            // titlebar's height.
-            let rootView = PreferencesView()
-                .frame(maxWidth: .infinity, minHeight: 400, maxHeight: .infinity)
-                .environmentObject(eyedroppers)
-            let view = NSHostingView(rootView: rootView)
-            preferencesWindow = PikaWindow.createSecondaryWindow(
-                title: PikaText.textMenuPreferences,
-                size: NSRect(x: 0, y: 0, width: 580, height: 600),
-                styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView]
-            )
-            // Matches About/Help/Splash — lets the header gradient run up behind the titlebar
-            // instead of leaving an opaque bar above it.
-            preferencesWindow?.titlebarAppearsTransparent = true
-            preferencesWindow?.minSize = NSSize(width: 580, height: 400)
-            preferencesWindow?.maxSize = NSSize(width: 580, height: CGFloat.greatestFiniteMagnitude)
-            preferencesWindow?.contentMinSize = NSSize(width: 580, height: 400)
-            preferencesWindow?.contentView = view
+            // A standard Settings window: toolbar tabs, titled after the selected tab and sized
+            // to fit it (`SettingsTabController`).
+            let tabs = SettingsTabController(eyedroppers: eyedroppers)
+            let window = NSWindow(contentViewController: tabs)
+            window.styleMask = [.titled, .closable, .miniaturizable]
+            window.toolbarStyle = .preference
+            window.title = tabs.tabViewItems.first?.label ?? PikaText.textMenuPreferences
+            // Tracks the main window's level, like the other secondary windows, so it isn't
+            // buried behind Pika when "float above windows" is on.
+            window.level = Defaults[.appFloating] ? .floating : .normal
+            window.isReleasedWhenClosed = false
+            // The saved position, then the first tab's size from its top edge: a saved size is
+            // an older layout's (2.0 saved a 580-wide window under this name) or another tab's.
+            let autosaveName = "\(PikaText.textMenuPreferences) Window"
+            if !window.setFrameUsingName(autosaveName) { window.center() }
+            window.setFrameAutosaveName(autosaveName)
+            tabs.fitWindow(animate: false)
+            preferencesWindow = window
         }
         bringForward(preferencesWindow)
         preferencesWindow?.makeFirstResponder(nil)

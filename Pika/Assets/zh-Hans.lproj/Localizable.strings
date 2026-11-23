@@ -73,11 +73,7 @@
 /* Hide Pika while picking */
 "preferences.pick.hide" = "选择颜色时隐藏 Pika";
 
-/* General Settings */
-"preferences.general.title" = "常规设置";
 
-/* Selection Settings */
-"preferences.selection.title" = "选择设置";
 
 /* Hide menu bar icon */
 "preferences.icon.description" = "隐藏菜单栏图标";
@@ -97,8 +93,6 @@
 /* Always show Pika on launch */
 "preferences.show.description" = "启动时始终显示 Pika";
 
-/* App Settings */
-"preferences.app.title" = "应用设置";
 
 /* Menu bar */
 "preferences.app.menubar.title" = "菜单栏";
@@ -149,6 +143,13 @@
 "preferences.contrast.standard" = "对比度计算标准";
 "preferences.swatches.title" = "调色板色样";
 "preferences.swatches.stacked" = "堆叠";
+"settings.tab.general" = "通用";
+"settings.tab.picking" = "取色";
+"settings.tab.color" = "颜色";
+"settings.tab.shortcuts" = "快捷键";
+"settings.updates" = "更新";
+"settings.showIn" = "Pika 显示位置";
+"settings.loupe.tab" = "取色时按 Tab 键切换样式，按 Shift-Tab 返回。";
 
 /* Both (combined WCAG and APCA) */
 "color.standard.both" = "两者";
@@ -651,8 +652,6 @@
 /* Expand to fit */
 "content.expandToFit" = "展开以适应";
 
-/* Window Settings */
-"preferences.window.title" = "窗口设置";
 
 /* Invalid input */
 "color.edit.invalid" = "无效输入";
