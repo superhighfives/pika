@@ -120,6 +120,10 @@ class StatusBarController: NSObject, NSMenuDelegate, NSPopoverDelegate {
 
     private func presentPopover(_ popover: NSPopover, from button: NSStatusBarButton) {
         NSApp.activate(ignoringOtherApps: true)
+        // A popover takes its appearance from the menu bar it hangs from, so an appearance set
+        // on the app (pika://appearance/light, which the marketing capture uses) didn't reach it.
+        // Nil, as when the app follows the system, still follows the menu bar.
+        popover.appearance = NSApp.appearance
         popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
     }
 
